@@ -20,7 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "I2C.h"
 /** @addtogroup Template_Project
   * @{
   */ 
@@ -31,7 +31,7 @@
 /* Private variables ---------------------------------------------------------*/
 static __IO uint32_t uwTimingDelay;
 RCC_ClocksTypeDef RCC_Clocks;
-
+int16_t AX, AY, AZ, GX, GY, GZ,HX,HY,HZ;
 /* Private function prototypes -----------------------------------------------*/
 static void Delay(__IO uint32_t nTime);
 
@@ -70,16 +70,18 @@ int main(void)
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
-  
-
+  int8_t test = 0;
+  GY_Init();
      
   /* Infinite loop */
   while (1)
   {
+	   //∞Â‘ÿLD2…¡À∏
 	   GPIO_SetBits(GPIOA,GPIO_Pin_5);
 	   Delay(50);
 	   GPIO_ResetBits(GPIOA,GPIO_Pin_5);
 	   Delay(50);
+//	   GY_GetData(&AX, &AY, &AZ, &GX, &GY, &GZ,&HX, &HY, &HZ);
   }
 }
 

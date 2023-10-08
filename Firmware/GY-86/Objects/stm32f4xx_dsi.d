@@ -1,31 +1,20 @@
-.\objects\stm32f4xx_dsi.o: Library\stm32f4xx_dsi.c
-.\objects\stm32f4xx_dsi.o: Library\stm32f4xx_dsi.h
-.\objects\stm32f4xx_dsi.o: .\Startup\stm32f4xx.h
-.\objects\stm32f4xx_dsi.o: D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h
-.\objects\stm32f4xx_dsi.o: D:\Softwares\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\stm32f4xx_dsi.o: D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h
-.\objects\stm32f4xx_dsi.o: D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h
-.\objects\stm32f4xx_dsi.o: D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h
-.\objects\stm32f4xx_dsi.o: D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h
-.\objects\stm32f4xx_dsi.o: .\Startup\system_stm32f4xx.h
-.\objects\stm32f4xx_dsi.o: .\User\stm32f4xx_conf.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_adc.h
-.\objects\stm32f4xx_dsi.o: .\Startup\stm32f4xx.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_crc.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_dbgmcu.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_dma.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_exti.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_flash.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_gpio.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_i2c.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_iwdg.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_pwr.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_rcc.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_rtc.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_sdio.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_spi.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_syscfg.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_tim.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_usart.h
-.\objects\stm32f4xx_dsi.o: .\Library\stm32f4xx_wwdg.h
-.\objects\stm32f4xx_dsi.o: .\Library\misc.h
+./objects/stm32f4xx_dsi.o: Library\stm32f4xx_dsi.c \
+  Library\stm32f4xx_dsi.h Startup\stm32f4xx.h \
+  D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h \
+  D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\stdint.h \
+  D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h \
+  D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h \
+  D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h \
+  D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
+  D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\arm_acle.h \
+  D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h \
+  Startup\system_stm32f4xx.h User\stm32f4xx_conf.h \
+  Library\stm32f4xx_adc.h Library\stm32f4xx_crc.h \
+  Library\stm32f4xx_dbgmcu.h Library\stm32f4xx_dma.h \
+  Library\stm32f4xx_exti.h Library\stm32f4xx_flash.h \
+  Library\stm32f4xx_gpio.h Library\stm32f4xx_i2c.h \
+  Library\stm32f4xx_iwdg.h Library\stm32f4xx_pwr.h \
+  Library\stm32f4xx_rcc.h Library\stm32f4xx_rtc.h \
+  Library\stm32f4xx_sdio.h Library\stm32f4xx_spi.h \
+  Library\stm32f4xx_syscfg.h Library\stm32f4xx_tim.h \
+  Library\stm32f4xx_usart.h Library\stm32f4xx_wwdg.h Library\misc.h
