@@ -63,6 +63,7 @@
 ## Trouble
 
 - ~~找不到F4的库函数  :（~~
+- ~~呜呜呜GY_init()函数进不去呜呜呜呜~~
 
 # Repository - Quadcopter_Group3
 
