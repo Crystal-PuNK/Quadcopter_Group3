@@ -17,4 +17,4 @@
   Library\stm32f4xx_sdio.h Library\stm32f4xx_spi.h \
   Library\stm32f4xx_syscfg.h Library\stm32f4xx_tim.h \
   Library\stm32f4xx_usart.h Library\stm32f4xx_wwdg.h Library\misc.h \
-  I2C.h
+  Delay.h MyIIC.h LD2.h

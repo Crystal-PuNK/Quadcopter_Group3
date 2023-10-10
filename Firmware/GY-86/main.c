@@ -20,20 +20,23 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "I2C.h"
+
 /** @addtogroup Template_Project
   * @{
   */ 
 
 /* Private typedef -----------------------------------------------------------*/
+
 /* Private define ------------------------------------------------------------*/
+
 /* Private macro -------------------------------------------------------------*/
+
 /* Private variables ---------------------------------------------------------*/
 static __IO uint32_t uwTimingDelay;
 RCC_ClocksTypeDef RCC_Clocks;
 int16_t AX, AY, AZ, GX, GY, GZ,HX,HY,HZ;
 /* Private function prototypes -----------------------------------------------*/
-static void Delay(__IO uint32_t nTime);
+
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -44,9 +47,11 @@ static void Delay(__IO uint32_t nTime);
   */
 int main(void)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
+	
+	
+/* System -------------------------------------------------------------------*/ 
  
- /*!< At this stage the microcontroller clock setting is already configured, 
+  /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files before to branch to application main.
        To reconfigure the default setting of SystemInit() function, 
@@ -60,30 +65,54 @@ int main(void)
   /* Insert 50 ms delay */
   Delay(5);
   
+/* Initials -------------------------------------------------------------------*/ 
+	LD2_init();
+	MyIIC_Init();
+	
+/* IIC_test-------------------------------------------------------------------*/ 	
+	MyIIC_Start();
+	MyIIC_SendByte(0xD0);  //1101 000 0
+	uint8_t Ack = MyIIC_ReceiveACK();
+	MyIIC_Stop();
 
-  /* Enable the GPIOA peripheral */ 
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-  
-
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
-  int8_t test = 0;
-  GY_Init();
-     
-  /* Infinite loop */
+/* Infinite Loop -------------------------------------------------------------------*/ 
   while (1)
   {
-	   //°åÔØLD2ÉÁË¸
-	   GPIO_SetBits(GPIOA,GPIO_Pin_5);
-	   Delay(50);
-	   GPIO_ResetBits(GPIOA,GPIO_Pin_5);
-	   Delay(50);
-//	   GY_GetData(&AX, &AY, &AZ, &GX, &GY, &GZ,&HX, &HY, &HZ);
+	  if(Ack == 0)
+		  LD2_Toggle(100);
+	  else
+		  LD2_Toggle(1000);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
   * @brief  Inserts a delay time.

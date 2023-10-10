@@ -24,13 +24,15 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
-
+#include "Delay.h"
+#include "MyIIC.h"
+#include "LD2.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void TimingDelay_Decrement(void);
-
+static void Delay(__IO uint32_t nTime);
 #endif /* __MAIN_H */
 
