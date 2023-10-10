@@ -1,4 +1,4 @@
-./objects/delay.o: Delay.c Delay.h Startup\stm32f4xx.h \
+./objects/delay.o: System\Delay.c System\Delay.h Startup\stm32f4xx.h \
   D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h \
   D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\stdint.h \
   D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h \

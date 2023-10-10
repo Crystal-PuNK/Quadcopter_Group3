@@ -25,8 +25,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 #include "Delay.h"
-#include "MyIIC.h"
+#include "MPU6050.h"
 #include "LD2.h"
+#include "OLED.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

@@ -49,6 +49,7 @@ int main(void)
 {
 	
 	
+	
 /* System -------------------------------------------------------------------*/ 
  
   /*!< At this stage the microcontroller clock setting is already configured, 
@@ -65,23 +66,36 @@ int main(void)
   /* Insert 50 ms delay */
   Delay(5);
   
+	
+	
+	
+	
+	
 /* Initials -------------------------------------------------------------------*/ 
 	LD2_init();
-	MyIIC_Init();
+	MPU6050_init();
+	OLED_Init();
 	
-/* IIC_test-------------------------------------------------------------------*/ 	
-	MyIIC_Start();
-	MyIIC_SendByte(0xD0);  //1101 000 0
-	uint8_t Ack = MyIIC_ReceiveACK();
-	MyIIC_Stop();
+/* IIC_test-----SUCCESS--------------------------------------------------------------*/ 	
+
+//	MyIIC_Start();
+//	MyIIC_SendByte(0xD2);  //1101 000 0
+//	uint8_t Ack = MyIIC_ReceiveACK();
+//	MyIIC_Stop();
+//	OLED_ShowString(1,1,"MPU6050");
+//	OLED_ShowString(2,1,"ACK:");
+//	OLED_ShowNum(2,5,Ack,1);
+
+
+/* MPU6050_test-----SUCCESS--------------------------------------------------------------*/ 
+	uint8_t ID_MPU6050 = MPU6050_ReadRegister(0x75);
+	OLED_ShowString(1,1,"MPU6050_ID");
+	OLED_ShowHexNum(2,1,ID_MPU6050,2);
 
 /* Infinite Loop -------------------------------------------------------------------*/ 
   while (1)
   {
-	  if(Ack == 0)
-		  LD2_Toggle(100);
-	  else
-		  LD2_Toggle(1000);
+	  
   }
 }
 

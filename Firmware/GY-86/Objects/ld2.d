@@ -1,4 +1,4 @@
-./objects/ld2.o: LD2.c LD2.h Startup\stm32f4xx.h \
+./objects/ld2.o: Harware\LD2.c Harware\LD2.h Startup\stm32f4xx.h \
   D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h \
   D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\stdint.h \
   D:\Softwares\Keil5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h \
@@ -17,4 +17,4 @@
   Library\stm32f4xx_sdio.h Library\stm32f4xx_spi.h \
   Library\stm32f4xx_syscfg.h Library\stm32f4xx_tim.h \
   Library\stm32f4xx_usart.h Library\stm32f4xx_wwdg.h Library\misc.h \
-  Delay.h
+  System\Delay.h

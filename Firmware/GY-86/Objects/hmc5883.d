@@ -1,1 +1,1 @@
-./objects/hmc5883.o: HMC5883.c
+./objects/hmc5883.o: Harware\HMC5883.c

@@ -120,7 +120,7 @@ uint8_t MyIIC_ReceiveByte(void)
  *  -除了终止状态，所有状态开始前都需要保证SCL以低电平结束，方便个单元拼接
  ********************************************************************************/
 
-void MyIIC_ACK(uint8_t AckBit)
+void MyIIC_SendACK(uint8_t AckBit)
 {
 	MyIIC_W_SDA(AckBit); //经典操作，也可以使用Byte>>7
 	MyIIC_W_SCL(1);
