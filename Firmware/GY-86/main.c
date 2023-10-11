@@ -88,13 +88,29 @@ int main(void)
 
 
 /* MPU6050_test-----SUCCESS--------------------------------------------------------------*/ 
-	uint8_t ID_MPU6050 = MPU6050_ReadRegister(0x75);
-	OLED_ShowString(1,1,"MPU6050_ID");
-	OLED_ShowHexNum(2,1,ID_MPU6050,2);
+//	uint8_t ID_MPU6050 = MPU6050_ReadRegister(0x75);
+//	OLED_ShowString(1,1,"MPU6050_ID");
+//	OLED_ShowHexNum(2,1,ID_MPU6050,2);
+
+
+/* MPU6050------------------------------------------------------------------------------*/ 
+	OLED_ShowString(1,1,"Acc");	
+	OLED_ShowString(1,8,"Gyro");
+	
+	
+
+
 
 /* Infinite Loop -------------------------------------------------------------------*/ 
   while (1)
   {
+	  MPU6050_GetData(&AX, &AY, &AZ, &GX, &GY, &GZ);
+	  OLED_ShowSignedNum(2,1,AX,5);
+	  OLED_ShowSignedNum(3,1,AY,5);
+	  OLED_ShowSignedNum(4,1,AZ,5);
+	  OLED_ShowSignedNum(2,8,GX,5);
+	  OLED_ShowSignedNum(3,8,GY,5);
+	  OLED_ShowSignedNum(4,8,GZ,5);
 	  
   }
 }
