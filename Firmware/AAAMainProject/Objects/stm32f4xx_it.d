@@ -18,7 +18,7 @@
   Library\stm32f4xx_sdio.h Library\stm32f4xx_spi.h \
   Library\stm32f4xx_syscfg.h Library\stm32f4xx_tim.h \
   Library\stm32f4xx_usart.h Library\stm32f4xx_wwdg.h Library\misc.h \
-  main.h System\Delay.h Hardware\MPU6050.h Hardware\MyIIC.h \
-  Hardware\LD2.h Hardware\OLED.h Hardware\ATKBLE01.h \
+  main.h System\Delay.h Hardware\GY86.h Hardware\MyIIC.h Hardware\LD2.h \
+  Hardware\OLED.h Hardware\ATKBLE01.h \
   D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\stdarg.h

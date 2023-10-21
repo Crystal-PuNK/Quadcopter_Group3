@@ -25,12 +25,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 #include "Delay.h"
-#include "MPU6050.h"
+#include "GY86.h"
 #include "LD2.h"
 #include "OLED.h"
 #include "ATKBLE01.h"
 
 /* Exported types ------------------------------------------------------------*/
+extern struct GY86_Data GY86DataList;
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

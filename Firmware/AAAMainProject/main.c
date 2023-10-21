@@ -34,7 +34,7 @@
 /* Private variables ---------------------------------------------------------*/
 static __IO uint32_t uwTimingDelay;
 RCC_ClocksTypeDef RCC_Clocks;
-int16_t AX, AY, AZ, GX, GY, GZ,HX,HY,HZ;
+
 /* Private function prototypes -----------------------------------------------*/
 
 
@@ -73,7 +73,7 @@ int main(void)
 	
 /* Initials -------------------------------------------------------------------*/ 
 	LD2_init();
-	MPU6050_init();
+	GY86_init();
 	OLED_Init();
 	BLE_Init();
 	
@@ -98,8 +98,7 @@ int main(void)
 
 
 /* MPU6050------------------------------------------------------------------------------*/ 
-	OLED_ShowString(1,1,"Acc");	
-	OLED_ShowString(1,8,"Gyro");
+	
 
 	
 
@@ -108,18 +107,39 @@ int main(void)
 /* Infinite Loop -------------------------------------------------------------------*/ 
   while (1)
   {
-	MPU6050_GetData(&AX, &AY, &AZ, &GX, &GY, &GZ);
-	OLED_ShowSignedNum(2,1,AX,5);
-	OLED_ShowSignedNum(3,1,AY,5);
-	OLED_ShowSignedNum(4,1,AZ,5);
-	OLED_ShowSignedNum(2,8,GX,5);
-	OLED_ShowSignedNum(3,8,GY,5);
-	OLED_ShowSignedNum(4,8,GZ,5);
+	GY86_GetData();
 	LD2_ON();
-	Delay_ms(500);
-	  BLE_Printf("Acc:%d-%d-%d",AX,AY,AZ);
+//	  
+//	 
+//	OLED_ShowString(1,1,"Acc");	
+//	OLED_ShowString(1,8,"Gyro");
+//	OLED_ShowSignedNum(2,1,GY86DataList.AX,5);
+//	OLED_ShowSignedNum(3,1,GY86DataList.AY,5);
+//	OLED_ShowSignedNum(4,1,GY86DataList.AZ,5);
+//	OLED_ShowSignedNum(2,8,GY86DataList.GX,5);
+//	OLED_ShowSignedNum(3,8,GY86DataList.GY,5);
+//	OLED_ShowSignedNum(4,8,GY86DataList.GZ,5);
+
+//	Delay_ms(1000);
+//	OLED_Clear();
+//	
+	OLED_ShowString(1,1,"Temperature");
+	OLED_ShowSignedNum(2,1,GY86DataList.CORE_Temperature,5);
+	OLED_ShowString(3,1,"Pressure");
+	OLED_ShowSignedNum(4,1,GY86DataList.Height,5);
+	Delay_ms(100);
+//	OLED_Clear();
+//	
+//	OLED_ShowString(1,1,"Gauss");
+//	OLED_ShowSignedNum(2,1,GY86DataList.GaX,5);
+//	OLED_ShowSignedNum(3,1,GY86DataList.GaY,5);
+//	OLED_ShowSignedNum(4,1,GY86DataList.GaZ,5);
+//	
+//	Delay_ms(1000);
+//	OLED_Clear();
 	
 	LD2_OFF();
+//	Delay_ms(2000);
   }
 }
 
