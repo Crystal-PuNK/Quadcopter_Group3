@@ -20,4 +20,4 @@
   System\Delay.h Hardware\GY86.h Hardware\MyIIC.h Hardware\LD2.h \
   Hardware\OLED.h Hardware\ATKBLE01.h \
   D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\stdarg.h
+  D:\Softwares\Keil5\ARM\ARMCLANG\Bin\..\include\stdarg.h Hardware\PWM.h
