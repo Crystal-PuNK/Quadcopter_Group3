@@ -10,6 +10,6 @@
 
 /* Functions ------------------------------------------------------------------*/
 void PWM_Init();
-void PWM_SetCompare1(uint16_t Compare);
+void PWM_SetCompareAll(uint16_t Compare);
 
 #endif

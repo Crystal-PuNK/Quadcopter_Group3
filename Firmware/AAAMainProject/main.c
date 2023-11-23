@@ -145,19 +145,19 @@ int main(void)
 
 
 //2ms(2000= 1s)
-	PWM_SetCompare1(200-1);
+	PWM_SetCompareAll(200-1);
 	LD2_ON();
 	Delay_ms(5000);
 	LD2_OFF();
-	PWM_SetCompare1(100-1);
+	PWM_SetCompareAll(100-1);
 	Delay_ms(1500);
 	LD2_ON();
 	Delay_ms(10000);
 	
 	LD2_OFF();
-	PWM_SetCompare1(120-1);
+	PWM_SetCompareAll(120-1);
 	Delay_ms(3000);
-	PWM_SetCompare1(100-1);
+	PWM_SetCompareAll(100-1);
 //	LD2_OFF();
 //	PWM_SetCompare1(140-1);
 
