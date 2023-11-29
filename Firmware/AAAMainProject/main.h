@@ -30,6 +30,7 @@
 #include "OLED.h"
 #include "ATKBLE01.h"
 #include "PWM.h"
+#include "Receiver.h"
 
 /* Exported types ------------------------------------------------------------*/
 extern struct GY86_Data GY86DataList;

@@ -77,6 +77,7 @@ int main(void)
 	OLED_Init();
 	BLE_Init();
 	PWM_Init();
+	REC_Init2();
 	
 /* IIC_test-----SUCCESS--------------------------------------------------------------*/ 	
 
@@ -143,7 +144,7 @@ int main(void)
 /* PWM TEST -------------SUCCESS-------------------------------------------------*/ 
 
 
-
+//½âËøµçµ÷
 //2ms(2000= 1s)
 	PWM_SetCompareAll(200-1);
 	LD2_ON();
@@ -155,9 +156,15 @@ int main(void)
 	Delay_ms(10000);
 	
 	LD2_OFF();
-	PWM_SetCompareAll(120-1);
-	Delay_ms(3000);
-	PWM_SetCompareAll(100-1);
+	
+
+	while(1)
+	{
+		OLED_ShowSignedNum(1,1,CH2[3],5);
+		PWM_SetCompareAll((int)(CH2[3]/10));
+		
+	}
+
 //	LD2_OFF();
 //	PWM_SetCompare1(140-1);
 
