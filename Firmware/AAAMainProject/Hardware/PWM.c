@@ -63,3 +63,22 @@ void PWM_SetCompareAll(uint16_t Compare)
 	TIM_SetCompare3(TIM3, Compare);
 	TIM_SetCompare4(TIM3, Compare);
 }
+
+
+void Motor_Init()
+{
+	PWM_Init();
+	PWM_SetCompareAll(100);
+	Delay_ms(5000);
+}
+
+void Motor_SetSpeed_All(uint8_t speed)
+{
+	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
+	PWM_SetCompareAll(speed+100);
+}	
+
+
+
+
+

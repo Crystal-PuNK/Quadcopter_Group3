@@ -3,13 +3,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 #include <stdio.h>
-
+#include <Delay.h>
 
 /* Defines -------------------------------------------------------------------*/ 
 
 
-/* Functions ------------------------------------------------------------------*/
-void PWM_Init();
-void PWM_SetCompareAll(uint16_t Compare);
-
+/* Public Functions ------------------------------------------------------------------*/
+void Motor_Init();
+void Motor_SetSpeed_All(uint8_t speed);
 #endif
+

@@ -1,7 +1,10 @@
 #include "ATKBLE01.h"
 
-/* Functions -------------------------------------------------------------------*/ 
+/* Private Functions -------------------------------------------------------------------*/
+void USART1_SendByte(uint8_t Byte);
 
+
+//
 /*********************************************************************************
  *USART的初始化，包括
  * -GPIO和USART时钟源
@@ -58,7 +61,7 @@ void BLE_Init(void)
 
 
  
-void BLE_SendByte(uint8_t Byte)
+void USART1_SendByte(uint8_t Byte)
 {
 	USART_SendData(USART1, Byte);
 	while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET); //等待TDR中的数据完全移到移位寄存器
@@ -69,7 +72,7 @@ void BLE_SendArray(uint8_t *Array, uint16_t Length)
 	uint16_t i;
 	for (i = 0; i < Length; i ++)
 	{
-		BLE_SendByte(Array[i]);
+		USART1_SendByte(Array[i]);
 	}
 }
 
@@ -78,7 +81,7 @@ void BLE_SendString(char *String)
 	uint8_t i;
 	for (i = 0; String[i] != '\0'; i ++)
 	{
-		BLE_SendByte(String[i]);
+		USART1_SendByte(String[i]);
 	}
 }
 
@@ -97,13 +100,13 @@ void BLE_SendNumber(uint32_t Number, uint8_t Length)
 	uint8_t i;
 	for (i = 0; i < Length; i ++)
 	{
-		BLE_SendByte(Number / BLE_Pow(10, Length - i - 1) % 10 + '0');
+		USART1_SendByte(Number / BLE_Pow(10, Length - i - 1) % 10 + '0');
 	}
 }
 
 int fputc(int ch, FILE *f)
 {
-	BLE_SendByte(ch);
+	USART1_SendByte(ch);
 	return ch;
 }
 

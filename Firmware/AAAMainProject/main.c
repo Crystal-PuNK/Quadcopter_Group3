@@ -76,7 +76,6 @@ int main(void)
 	GY86_init();
 	OLED_Init();
 	BLE_Init();
-	PWM_Init();
 	REC_Init2();
 	
 /* IIC_test-----SUCCESS--------------------------------------------------------------*/ 	
@@ -101,7 +100,7 @@ int main(void)
 
 /* GY-86 TEST--------------------SUCCESS------------------------------------------------*/ 
 /*	
-  while (1)
+  while (1)0
   {
 	GY86_GetData();
 	LD2_ON();
@@ -146,22 +145,12 @@ int main(void)
 
 //½âËøµçµ÷
 //2ms(2000= 1s)
-	PWM_SetCompareAll(200-1);
-	LD2_ON();
-	Delay_ms(5000);
-	LD2_OFF();
-	PWM_SetCompareAll(100-1);
-	Delay_ms(1500);
-	LD2_ON();
-	Delay_ms(10000);
-	
-	LD2_OFF();
-	
+	Motor_Init();
 
 	while(1)
 	{
 		OLED_ShowSignedNum(1,1,CH2[3],5);
-		PWM_SetCompareAll((int)(CH2[3]/10));
+		Motor_SetSpeed_All((int)(CH2[3]/10)-100);
 		
 	}
 

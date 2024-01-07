@@ -5,24 +5,15 @@
 #include "stm32f4xx.h"
 #include "Delay.h"
 
-/* Defines -------------------------------------------------------------------*/ 
-#define SCL_PORT   GPIOB
-#define SCL_PIN    GPIO_Pin_8
 
-#define SDA_PORT   GPIOB
-#define SDA_PIN    GPIO_Pin_9
+/*Public Functions ------------------------------------------------------------------*/
 
-/* Functions ------------------------------------------------------------------*/
+void    MyIIC_Init(void);
 
-uint8_t MyIIC_R_SCL(void);
+void    MyIIC_Start(void);
+void    MyIIC_Stop(void);
 
-
-void MyIIC_Init(void);
-
-void MyIIC_Start(void);
-void MyIIC_Stop(void);
-
-void MyIIC_SendByte(uint8_t Byte);
+void    MyIIC_SendByte(uint8_t Byte);
 uint8_t MyIIC_ReceiveByte(void);
 
 void MyIIC_SendACK(uint8_t AckBit);

@@ -28,14 +28,10 @@ void REC_Init2(void)
 	TIM2->CCER |= 1<<4;    //使能捕获寄存器
 	TIM2->DIER |= 1<<2;    //捕获中断使能
 	
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	SCB->AIRCR = 0x05FA0000 | 0x500;  //划分优先组 NVIC_PriorityGroup_2
 	
-	NVIC_InitTypeDef NVIC_InitStructure;
-	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-	NVIC_Init(&NVIC_InitStructure);
+	NVIC->IP[28] = 0x9 << 4;          //抢占优先级2，响应优先级1
+	NVIC->ISER[0] = 1 << 28;          //开启NVIC中断
 	
 	TIM2->CR1 |= 1;  //TIM2使能
 }
