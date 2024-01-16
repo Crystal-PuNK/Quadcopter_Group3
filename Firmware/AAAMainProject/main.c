@@ -75,6 +75,7 @@ int main(void)
 	LD2_init();
 	GY86_init();
 	OLED_Init();
+	OLED2_Init();
 	BLE_Init();
 	REC_Init2();
 	
@@ -146,11 +147,40 @@ int main(void)
 //½âËøµçµ÷
 //2ms(2000= 1s)
 	Motor_Init();
-
+	LD2_ON();
 	while(1)
 	{
-		OLED_ShowSignedNum(1,1,CH2[3],5);
-		Motor_SetSpeed_All((int)(CH2[3]/10)-100);
+		GY86_GetData();
+		OLED_ShowSignedNum(1,1,GY86DataList.AX,5);
+		OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
+		OLED_ShowSignedNum(3,1,GY86DataList.AZ,5);
+		OLED_ShowSignedNum(1,8,GY86DataList.GX,5);
+		OLED_ShowSignedNum(2,8,GY86DataList.GY,5);
+		OLED_ShowSignedNum(3,8,GY86DataList.GZ,5);
+		
+		OLED_ShowSignedNum(4,1,GY86DataList.GaX,5);
+		OLED_ShowSignedNum(4,8,GY86DataList.GaY,5);
+		
+		OLED2_ShowString(1,1,"Group3 LCCZD");
+		
+		OLED2_ShowNum(2,1,CH2[1],5);
+		OLED2_ShowNum(2,8,CH2[2],5);
+		
+		OLED2_ShowNum(3,1,CH2[3],5);
+		OLED2_ShowNum(3,8,CH2[4],5);
+		
+		OLED2_ShowNum(4,1,CH2[5],5);
+		OLED2_ShowNum(4,8,CH2[6],5);
+		
+		BLE_Printf("Acc:%d-%d-%d\n",GY86DataList.AX,GY86DataList.AY,GY86DataList.AZ);
+		BLE_Printf("G:%d-%d-%d\n",GY86DataList.GX,GY86DataList.GY,GY86DataList.GZ);
+
+//		BLE_Printf("CH[1]:%d  CH[2]:%d\n",CH2[1],CH2[2]);
+//		BLE_Printf("CH[3]:%d  CH[4]:%d\n",CH2[3],CH2[4]);
+//		BLE_Printf("CH[5]:%d  CH[6]:%d\n",CH2[5],CH2[6]);
+//		BLE_Printf("CH[7]:%d  CH[8]:%d\n",CH2[7],CH2[8]);
+
+		Motor_SetSpeed_All((CH2[3]/10)-100);
 		
 	}
 

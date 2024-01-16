@@ -10,6 +10,6 @@
 
 /* Public Functions ------------------------------------------------------------------*/
 void Motor_Init();
-void Motor_SetSpeed_All(uint8_t speed);
+void Motor_SetSpeed_All(int8_t speed);
 #endif
 

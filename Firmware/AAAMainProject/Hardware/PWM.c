@@ -68,11 +68,9 @@ void PWM_SetCompareAll(uint16_t Compare)
 void Motor_Init()
 {
 	PWM_Init();
-	PWM_SetCompareAll(100);
-	Delay_ms(5000);
 }
 
-void Motor_SetSpeed_All(uint8_t speed)
+void Motor_SetSpeed_All(int8_t speed)
 {
 	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
 	PWM_SetCompareAll(speed+100);

@@ -88,19 +88,7 @@ void MS5611_GetPressure(uint8_t MS5611_D1_OSR_xxxx);
 
 /* Variables -------------------------------------------------------------------*/
 // Public
-struct GY86_Data{
-	int16_t AX;
-	int16_t AY;
-	int16_t AZ;
-	int16_t CORE_Temperature;
-	int16_t GX;
-	int16_t GY;
-	int16_t GZ;
-	int16_t GaX;
-	int16_t GaY;
-	int16_t GaZ;
-	int32_t Height;
-}GY86DataList={0,0,0,0,0,0,0,0,0,0,0};
+struct GY86_Data GY86DataList={1,2,3,0,0,0,0,0,0,0,0};
 // Private
 struct GY86_Data* Original_Data_List = &GY86DataList;
 
@@ -242,6 +230,8 @@ void GY86_GetData(void)
 	
 	MS5611_GetPressure(MS5611_D2_OSR_4096);
 	Original_Data_List->Height = P_100times;
+	
+
 }
 
  

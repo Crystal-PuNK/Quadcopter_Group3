@@ -28,6 +28,7 @@
 #include "GY86.h"
 #include "LD2.h"
 #include "OLED.h"
+#include "OLED2.h"
 #include "ATKBLE01.h"
 #include "PWM.h"
 #include "Receiver.h"
