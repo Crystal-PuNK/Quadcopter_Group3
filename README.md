@@ -1,4 +1,4 @@
-> # Quadcopter_Group3
+> # 黑鹳_Group3
 >
 > 第三组的四轴飞行器Github仓库~
 
@@ -23,7 +23,7 @@
 
 ---
 
-<img src="./README.assets/image-20231129175809982.png" alt="image-20231129175809982" style="zoom: 33%;" />
+![HeiGuan_V1.0](README.assets/HeiGuan_V1.0.jpeg)
 
 ---
 
@@ -95,17 +95,17 @@
 
 - 2023.11.27
 
-    - 尽可能改写为调用汇编函数
-    - 期末答辩预备——拿下高高的分！！！
-    - 探索FreeRTOS的部署
+    - ~~尽可能改写为调用汇编函数~~
+    - ~~期末答辩预备——拿下高高的分！！！~~
+    - ~~探索FreeRTOS的部署(失败😭)~~
+    
+- 2024.1.17
 
+    - 绘制一体飞控板
+    - 琢磨下PX4飞控与NuttX
+    
 
-## Trouble
-
-- ~~找不到F4的库函数  :（~~
-- ~~呜呜呜GY_init()函数进不去呜呜呜呜~~
-
-# Repository - Quadcopter_Group3
+# Repository - 黑鹳_Group3
 
 > Group 3
 
@@ -128,6 +128,9 @@
 
 - #### Firmware
 
+    - HeiGuan
+        - VScode开发环境下的工程文件
+
     - Quadcoper
         - 用于存放 Keil5工程，这个工程将是未来四轴飞行器的最终版本
     - Quadcoper_TEST_XXX
@@ -140,11 +143,11 @@
 
     - 各个挑战点的相关文档
     - 在网络平台上搜到的教程
-    
+
 - #### Test
 
     - 前期测试git分支使用，后续可能会删除掉。
-    
+
 
 ## Branches
 
