@@ -1,0 +1,2410 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4xx_cryp.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.CRYP_DeInit,"ax",%progbits
+  20              		.align	1
+  21              		.global	CRYP_DeInit
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	CRYP_DeInit:
+  27              	.LFB123:
+  28              		.file 1 "./Library/stm32f4xx_cryp.c"
+   1:./Library/stm32f4xx_cryp.c **** /**
+   2:./Library/stm32f4xx_cryp.c ****   ******************************************************************************
+   3:./Library/stm32f4xx_cryp.c ****   * @file    stm32f4xx_cryp.c
+   4:./Library/stm32f4xx_cryp.c ****   * @author  MCD Application Team
+   5:./Library/stm32f4xx_cryp.c ****   * @version V1.8.1
+   6:./Library/stm32f4xx_cryp.c ****   * @date    27-January-2022
+   7:./Library/stm32f4xx_cryp.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:./Library/stm32f4xx_cryp.c ****   *          functionalities of the  Cryptographic processor (CRYP) peripheral:
+   9:./Library/stm32f4xx_cryp.c ****   *           + Initialization and Configuration functions
+  10:./Library/stm32f4xx_cryp.c ****   *           + Data treatment functions 
+  11:./Library/stm32f4xx_cryp.c ****   *           + Context swapping functions     
+  12:./Library/stm32f4xx_cryp.c ****   *           + DMA interface function       
+  13:./Library/stm32f4xx_cryp.c ****   *           + Interrupts and flags management       
+  14:./Library/stm32f4xx_cryp.c ****   *
+  15:./Library/stm32f4xx_cryp.c **** @verbatim
+  16:./Library/stm32f4xx_cryp.c ****  ===================================================================      
+  17:./Library/stm32f4xx_cryp.c ****                  ##### How to use this driver #####
+  18:./Library/stm32f4xx_cryp.c ****  =================================================================== 
+  19:./Library/stm32f4xx_cryp.c ****  [..]
+  20:./Library/stm32f4xx_cryp.c ****    (#) Enable the CRYP controller clock using 
+  21:./Library/stm32f4xx_cryp.c ****        RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_CRYP, ENABLE); function.
+  22:./Library/stm32f4xx_cryp.c ****   
+  23:./Library/stm32f4xx_cryp.c ****    (#) Initialize the CRYP using CRYP_Init(), CRYP_KeyInit() and if needed 
+  24:./Library/stm32f4xx_cryp.c ****        CRYP_IVInit(). 
+  25:./Library/stm32f4xx_cryp.c ****   
+  26:./Library/stm32f4xx_cryp.c ****    (#) Flush the IN and OUT FIFOs by using CRYP_FIFOFlush() function.
+  27:./Library/stm32f4xx_cryp.c ****   
+  28:./Library/stm32f4xx_cryp.c ****    (#) Enable the CRYP controller using the CRYP_Cmd() function. 
+  29:./Library/stm32f4xx_cryp.c ****   
+  30:./Library/stm32f4xx_cryp.c ****    (#) If using DMA for Data input and output transfer, activate the needed DMA 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 2
+
+
+  31:./Library/stm32f4xx_cryp.c ****        Requests using CRYP_DMACmd() function 
+  32:./Library/stm32f4xx_cryp.c ****   
+  33:./Library/stm32f4xx_cryp.c ****    (#) If DMA is not used for data transfer, use CRYP_DataIn() and  CRYP_DataOut() 
+  34:./Library/stm32f4xx_cryp.c ****        functions to enter data to IN FIFO and get result from OUT FIFO.
+  35:./Library/stm32f4xx_cryp.c ****   
+  36:./Library/stm32f4xx_cryp.c ****    (#) To control CRYP events you can use one of the following two methods:
+  37:./Library/stm32f4xx_cryp.c ****        (++) Check on CRYP flags using the CRYP_GetFlagStatus() function.  
+  38:./Library/stm32f4xx_cryp.c ****        (++) Use CRYP interrupts through the function CRYP_ITConfig() at 
+  39:./Library/stm32f4xx_cryp.c ****             initialization phase and CRYP_GetITStatus() function into interrupt 
+  40:./Library/stm32f4xx_cryp.c ****             routines in processing phase.
+  41:./Library/stm32f4xx_cryp.c ****          
+  42:./Library/stm32f4xx_cryp.c ****    (#) Save and restore Cryptographic processor context using CRYP_SaveContext() 
+  43:./Library/stm32f4xx_cryp.c ****        and CRYP_RestoreContext() functions.     
+  44:./Library/stm32f4xx_cryp.c ****   
+  45:./Library/stm32f4xx_cryp.c ****   
+  46:./Library/stm32f4xx_cryp.c ****  *** Procedure to perform an encryption or a decryption ***
+  47:./Library/stm32f4xx_cryp.c ****  ========================================================== 
+  48:./Library/stm32f4xx_cryp.c ****   
+  49:./Library/stm32f4xx_cryp.c ****  *** Initialization ***
+  50:./Library/stm32f4xx_cryp.c ****  ====================== 
+  51:./Library/stm32f4xx_cryp.c ****  [..] 
+  52:./Library/stm32f4xx_cryp.c ****    (#) Initialize the peripheral using CRYP_Init(), CRYP_KeyInit() and CRYP_IVInit 
+  53:./Library/stm32f4xx_cryp.c ****        functions:
+  54:./Library/stm32f4xx_cryp.c ****        (++) Configure the key size (128-, 192- or 256-bit, in the AES only) 
+  55:./Library/stm32f4xx_cryp.c ****        (++) Enter the symmetric key 
+  56:./Library/stm32f4xx_cryp.c ****        (++) Configure the data type
+  57:./Library/stm32f4xx_cryp.c ****        (++) In case of decryption in AES-ECB or AES-CBC, you must prepare 
+  58:./Library/stm32f4xx_cryp.c ****             the key: configure the key preparation mode. Then Enable the CRYP 
+  59:./Library/stm32f4xx_cryp.c ****             peripheral using CRYP_Cmd() function: the BUSY flag is set. 
+  60:./Library/stm32f4xx_cryp.c ****             Wait until BUSY flag is reset : the key is prepared for decryption
+  61:./Library/stm32f4xx_cryp.c ****        (++) Configure the algorithm and chaining (the DES/TDES in ECB/CBC, the 
+  62:./Library/stm32f4xx_cryp.c ****             AES in ECB/CBC/CTR) 
+  63:./Library/stm32f4xx_cryp.c ****        (++) Configure the direction (encryption/decryption).
+  64:./Library/stm32f4xx_cryp.c ****        (++) Write the initialization vectors (in CBC or CTR modes only)
+  65:./Library/stm32f4xx_cryp.c ****   
+  66:./Library/stm32f4xx_cryp.c ****    (#) Flush the IN and OUT FIFOs using the CRYP_FIFOFlush() function
+  67:./Library/stm32f4xx_cryp.c ****   
+  68:./Library/stm32f4xx_cryp.c ****   
+  69:./Library/stm32f4xx_cryp.c ****   *** Basic Processing mode (polling mode) *** 
+  70:./Library/stm32f4xx_cryp.c ****   ============================================  
+  71:./Library/stm32f4xx_cryp.c ****   [..]
+  72:./Library/stm32f4xx_cryp.c ****     (#) Enable the cryptographic processor using CRYP_Cmd() function.
+  73:./Library/stm32f4xx_cryp.c ****   
+  74:./Library/stm32f4xx_cryp.c ****     (#) Write the first blocks in the input FIFO (2 to 8 words) using 
+  75:./Library/stm32f4xx_cryp.c ****         CRYP_DataIn() function.
+  76:./Library/stm32f4xx_cryp.c ****   
+  77:./Library/stm32f4xx_cryp.c ****     (#) Repeat the following sequence until the complete message has been 
+  78:./Library/stm32f4xx_cryp.c ****         processed:
+  79:./Library/stm32f4xx_cryp.c ****   
+  80:./Library/stm32f4xx_cryp.c ****         (++) Wait for flag CRYP_FLAG_OFNE occurs (using CRYP_GetFlagStatus() 
+  81:./Library/stm32f4xx_cryp.c ****             function), then read the OUT-FIFO using CRYP_DataOut() function
+  82:./Library/stm32f4xx_cryp.c ****             (1 block or until the FIFO is empty)
+  83:./Library/stm32f4xx_cryp.c ****   
+  84:./Library/stm32f4xx_cryp.c ****          (++) Wait for flag CRYP_FLAG_IFNF occurs, (using CRYP_GetFlagStatus() 
+  85:./Library/stm32f4xx_cryp.c ****             function then write the IN FIFO using CRYP_DataIn() function 
+  86:./Library/stm32f4xx_cryp.c ****             (1 block or until the FIFO is full)
+  87:./Library/stm32f4xx_cryp.c ****   
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 3
+
+
+  88:./Library/stm32f4xx_cryp.c ****     (#) At the end of the processing, CRYP_FLAG_BUSY flag will be reset and 
+  89:./Library/stm32f4xx_cryp.c ****           both FIFOs are empty (CRYP_FLAG_IFEM is set and CRYP_FLAG_OFNE is 
+  90:./Library/stm32f4xx_cryp.c ****           reset). You can disable the peripheral using CRYP_Cmd() function.
+  91:./Library/stm32f4xx_cryp.c ****   
+  92:./Library/stm32f4xx_cryp.c ****  *** Interrupts Processing mode *** 
+  93:./Library/stm32f4xx_cryp.c ****  ==================================
+  94:./Library/stm32f4xx_cryp.c ****  [..] In this mode, Processing is done when the data are transferred by the 
+  95:./Library/stm32f4xx_cryp.c ****       CPU during interrupts.
+  96:./Library/stm32f4xx_cryp.c ****   
+  97:./Library/stm32f4xx_cryp.c ****     (#) Enable the interrupts CRYP_IT_INI and CRYP_IT_OUTI using CRYP_ITConfig()
+  98:./Library/stm32f4xx_cryp.c ****         function.
+  99:./Library/stm32f4xx_cryp.c ****   
+ 100:./Library/stm32f4xx_cryp.c ****     (#) Enable the cryptographic processor using CRYP_Cmd() function.
+ 101:./Library/stm32f4xx_cryp.c ****   
+ 102:./Library/stm32f4xx_cryp.c ****     (#) In the CRYP_IT_INI interrupt handler : load the input message into the 
+ 103:./Library/stm32f4xx_cryp.c ****          IN FIFO using CRYP_DataIn() function . You can load 2 or 4 words at a 
+ 104:./Library/stm32f4xx_cryp.c ****          time, or load data until the IN FIFO is full. When the last word of
+ 105:./Library/stm32f4xx_cryp.c ****          the message has been entered into the IN FIFO, disable the CRYP_IT_INI 
+ 106:./Library/stm32f4xx_cryp.c ****          interrupt (using CRYP_ITConfig() function).
+ 107:./Library/stm32f4xx_cryp.c ****   
+ 108:./Library/stm32f4xx_cryp.c ****     (#) In the CRYP_IT_OUTI interrupt handler : read the output message from 
+ 109:./Library/stm32f4xx_cryp.c ****          the OUT FIFO using CRYP_DataOut() function. You can read 1 block (2 or 
+ 110:./Library/stm32f4xx_cryp.c ****          4 words) at a time or read data until the FIFO is empty.
+ 111:./Library/stm32f4xx_cryp.c ****          When the last word has been read, INIM=0, BUSY=0 and both FIFOs are 
+ 112:./Library/stm32f4xx_cryp.c ****          empty (CRYP_FLAG_IFEM is set and CRYP_FLAG_OFNE is reset). 
+ 113:./Library/stm32f4xx_cryp.c ****          You can disable the CRYP_IT_OUTI interrupt (using CRYP_ITConfig() 
+ 114:./Library/stm32f4xx_cryp.c ****          function) and you can disable the peripheral using CRYP_Cmd() function.
+ 115:./Library/stm32f4xx_cryp.c ****   
+ 116:./Library/stm32f4xx_cryp.c ****  *** DMA Processing mode *** 
+ 117:./Library/stm32f4xx_cryp.c ****  ===========================
+ 118:./Library/stm32f4xx_cryp.c ****  [..] In this mode, Processing is done when the DMA is used to transfer the 
+ 119:./Library/stm32f4xx_cryp.c ****       data from/to the memory.
+ 120:./Library/stm32f4xx_cryp.c ****   
+ 121:./Library/stm32f4xx_cryp.c ****     (#) Configure the DMA controller to transfer the input data from the 
+ 122:./Library/stm32f4xx_cryp.c ****          memory using DMA_Init() function. 
+ 123:./Library/stm32f4xx_cryp.c ****          The transfer length is the length of the message. 
+ 124:./Library/stm32f4xx_cryp.c ****          As message padding is not managed by the peripheral, the message 
+ 125:./Library/stm32f4xx_cryp.c ****          length must be an entire number of blocks. The data are transferred 
+ 126:./Library/stm32f4xx_cryp.c ****          in burst mode. The burst length is 4 words in the AES and 2 or 4 
+ 127:./Library/stm32f4xx_cryp.c ****          words in the DES/TDES. The DMA should be configured to set an 
+ 128:./Library/stm32f4xx_cryp.c ****          interrupt on transfer completion of the output data to indicate that 
+ 129:./Library/stm32f4xx_cryp.c ****          the processing is finished. 
+ 130:./Library/stm32f4xx_cryp.c ****          Refer to DMA peripheral driver for more details.  
+ 131:./Library/stm32f4xx_cryp.c ****   
+ 132:./Library/stm32f4xx_cryp.c ****      (#) Enable the cryptographic processor using CRYP_Cmd() function. 
+ 133:./Library/stm32f4xx_cryp.c ****          Enable the DMA requests CRYP_DMAReq_DataIN and CRYP_DMAReq_DataOUT 
+ 134:./Library/stm32f4xx_cryp.c ****          using CRYP_DMACmd() function.
+ 135:./Library/stm32f4xx_cryp.c ****   
+ 136:./Library/stm32f4xx_cryp.c ****      (#) All the transfers and processing are managed by the DMA and the 
+ 137:./Library/stm32f4xx_cryp.c ****          cryptographic processor. The DMA transfer complete interrupt indicates 
+ 138:./Library/stm32f4xx_cryp.c ****          that the processing is complete. Both FIFOs are normally empty and 
+ 139:./Library/stm32f4xx_cryp.c ****          CRYP_FLAG_BUSY flag is reset.
+ 140:./Library/stm32f4xx_cryp.c ****   
+ 141:./Library/stm32f4xx_cryp.c ****     @endverbatim
+ 142:./Library/stm32f4xx_cryp.c ****   *
+ 143:./Library/stm32f4xx_cryp.c ****   ******************************************************************************
+ 144:./Library/stm32f4xx_cryp.c ****   * @attention
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 4
+
+
+ 145:./Library/stm32f4xx_cryp.c ****   *
+ 146:./Library/stm32f4xx_cryp.c ****   * Copyright (c) 2016 STMicroelectronics.
+ 147:./Library/stm32f4xx_cryp.c ****   * All rights reserved.
+ 148:./Library/stm32f4xx_cryp.c ****   *
+ 149:./Library/stm32f4xx_cryp.c ****   * This software is licensed under terms that can be found in the LICENSE file
+ 150:./Library/stm32f4xx_cryp.c ****   * in the root directory of this software component.
+ 151:./Library/stm32f4xx_cryp.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+ 152:./Library/stm32f4xx_cryp.c ****   *
+ 153:./Library/stm32f4xx_cryp.c ****   ******************************************************************************
+ 154:./Library/stm32f4xx_cryp.c ****   */
+ 155:./Library/stm32f4xx_cryp.c **** 
+ 156:./Library/stm32f4xx_cryp.c **** /* Includes ------------------------------------------------------------------*/
+ 157:./Library/stm32f4xx_cryp.c **** #include "stm32f4xx_cryp.h"
+ 158:./Library/stm32f4xx_cryp.c **** #include "stm32f4xx_rcc.h"
+ 159:./Library/stm32f4xx_cryp.c **** 
+ 160:./Library/stm32f4xx_cryp.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+ 161:./Library/stm32f4xx_cryp.c ****   * @{
+ 162:./Library/stm32f4xx_cryp.c ****   */
+ 163:./Library/stm32f4xx_cryp.c **** 
+ 164:./Library/stm32f4xx_cryp.c **** /** @defgroup CRYP 
+ 165:./Library/stm32f4xx_cryp.c ****   * @brief CRYP driver modules
+ 166:./Library/stm32f4xx_cryp.c ****   * @{
+ 167:./Library/stm32f4xx_cryp.c ****   */ 
+ 168:./Library/stm32f4xx_cryp.c **** 
+ 169:./Library/stm32f4xx_cryp.c **** /* Private typedef -----------------------------------------------------------*/
+ 170:./Library/stm32f4xx_cryp.c **** /* Private define ------------------------------------------------------------*/
+ 171:./Library/stm32f4xx_cryp.c **** #define FLAG_MASK     ((uint8_t)0x20)
+ 172:./Library/stm32f4xx_cryp.c **** #define MAX_TIMEOUT   ((uint16_t)0xFFFF)
+ 173:./Library/stm32f4xx_cryp.c **** 
+ 174:./Library/stm32f4xx_cryp.c **** /* Private macro -------------------------------------------------------------*/
+ 175:./Library/stm32f4xx_cryp.c **** /* Private variables ---------------------------------------------------------*/
+ 176:./Library/stm32f4xx_cryp.c **** /* Private function prototypes -----------------------------------------------*/
+ 177:./Library/stm32f4xx_cryp.c **** /* Private functions ---------------------------------------------------------*/
+ 178:./Library/stm32f4xx_cryp.c **** 
+ 179:./Library/stm32f4xx_cryp.c **** /** @defgroup CRYP_Private_Functions
+ 180:./Library/stm32f4xx_cryp.c ****   * @{
+ 181:./Library/stm32f4xx_cryp.c ****   */ 
+ 182:./Library/stm32f4xx_cryp.c **** 
+ 183:./Library/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group1 Initialization and Configuration functions
+ 184:./Library/stm32f4xx_cryp.c ****  *  @brief    Initialization and Configuration functions 
+ 185:./Library/stm32f4xx_cryp.c ****  *
+ 186:./Library/stm32f4xx_cryp.c **** @verbatim    
+ 187:./Library/stm32f4xx_cryp.c ****  ===============================================================================
+ 188:./Library/stm32f4xx_cryp.c ****              ##### Initialization and Configuration functions #####
+ 189:./Library/stm32f4xx_cryp.c ****  ===============================================================================  
+ 190:./Library/stm32f4xx_cryp.c ****  [..] This section provides functions allowing to 
+ 191:./Library/stm32f4xx_cryp.c ****    (+) Initialize the cryptographic Processor using CRYP_Init() function 
+ 192:./Library/stm32f4xx_cryp.c ****        (++)  Encrypt or Decrypt 
+ 193:./Library/stm32f4xx_cryp.c ****        (++)  mode : TDES-ECB, TDES-CBC, 
+ 194:./Library/stm32f4xx_cryp.c ****                     DES-ECB, DES-CBC, 
+ 195:./Library/stm32f4xx_cryp.c ****                     AES-ECB, AES-CBC, AES-CTR, AES-Key, AES-GCM, AES-CCM 
+ 196:./Library/stm32f4xx_cryp.c ****        (++) DataType :  32-bit data, 16-bit data, bit data or bit-string
+ 197:./Library/stm32f4xx_cryp.c ****        (++) Key Size (only in AES modes)
+ 198:./Library/stm32f4xx_cryp.c ****    (+) Configure the Encrypt or Decrypt Key using CRYP_KeyInit() function 
+ 199:./Library/stm32f4xx_cryp.c ****    (+) Configure the Initialization Vectors(IV) for CBC and CTR modes using 
+ 200:./Library/stm32f4xx_cryp.c ****        CRYP_IVInit() function.  
+ 201:./Library/stm32f4xx_cryp.c ****    (+) Flushes the IN and OUT FIFOs : using CRYP_FIFOFlush() function.                         
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 5
+
+
+ 202:./Library/stm32f4xx_cryp.c ****    (+) Enable or disable the CRYP Processor using CRYP_Cmd() function 
+ 203:./Library/stm32f4xx_cryp.c ****        
+ 204:./Library/stm32f4xx_cryp.c **** @endverbatim
+ 205:./Library/stm32f4xx_cryp.c ****   * @{
+ 206:./Library/stm32f4xx_cryp.c ****   */
+ 207:./Library/stm32f4xx_cryp.c **** /**
+ 208:./Library/stm32f4xx_cryp.c ****   * @brief  Deinitializes the CRYP peripheral registers to their default reset values
+ 209:./Library/stm32f4xx_cryp.c ****   * @param  None
+ 210:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 211:./Library/stm32f4xx_cryp.c ****   */
+ 212:./Library/stm32f4xx_cryp.c **** void CRYP_DeInit(void)
+ 213:./Library/stm32f4xx_cryp.c **** {
+  29              		.loc 1 213 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+ 214:./Library/stm32f4xx_cryp.c ****   /* Enable CRYP reset state */
+ 215:./Library/stm32f4xx_cryp.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_CRYP, ENABLE);
+  38              		.loc 1 215 3 view .LVU1
+  39 0002 0121     		movs	r1, #1
+  40 0004 1020     		movs	r0, #16
+  41 0006 FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  42              	.LVL0:
+ 216:./Library/stm32f4xx_cryp.c **** 
+ 217:./Library/stm32f4xx_cryp.c ****   /* Release CRYP from reset state */
+ 218:./Library/stm32f4xx_cryp.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_CRYP, DISABLE);
+  43              		.loc 1 218 3 view .LVU2
+  44 000a 0021     		movs	r1, #0
+  45 000c 1020     		movs	r0, #16
+  46 000e FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  47              	.LVL1:
+ 219:./Library/stm32f4xx_cryp.c **** }
+  48              		.loc 1 219 1 is_stmt 0 view .LVU3
+  49 0012 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE123:
+  53              		.section	.text.CRYP_Init,"ax",%progbits
+  54              		.align	1
+  55              		.global	CRYP_Init
+  56              		.syntax unified
+  57              		.thumb
+  58              		.thumb_func
+  60              	CRYP_Init:
+  61              	.LVL2:
+  62              	.LFB124:
+ 220:./Library/stm32f4xx_cryp.c **** 
+ 221:./Library/stm32f4xx_cryp.c **** /**
+ 222:./Library/stm32f4xx_cryp.c ****   * @brief  Initializes the CRYP peripheral according to the specified parameters
+ 223:./Library/stm32f4xx_cryp.c ****   *         in the CRYP_InitStruct.
+ 224:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_InitStruct: pointer to a CRYP_InitTypeDef structure that contains
+ 225:./Library/stm32f4xx_cryp.c ****   *         the configuration information for the CRYP peripheral.
+ 226:./Library/stm32f4xx_cryp.c ****   * @retval None
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 6
+
+
+ 227:./Library/stm32f4xx_cryp.c ****   */
+ 228:./Library/stm32f4xx_cryp.c **** void CRYP_Init(CRYP_InitTypeDef* CRYP_InitStruct)
+ 229:./Library/stm32f4xx_cryp.c **** {
+  63              		.loc 1 229 1 is_stmt 1 view -0
+  64              		.cfi_startproc
+  65              		@ args = 0, pretend = 0, frame = 0
+  66              		@ frame_needed = 0, uses_anonymous_args = 0
+  67              		@ link register save eliminated.
+ 230:./Library/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 231:./Library/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_ALGOMODE(CRYP_InitStruct->CRYP_AlgoMode));
+  68              		.loc 1 231 3 view .LVU5
+ 232:./Library/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_DATATYPE(CRYP_InitStruct->CRYP_DataType));
+  69              		.loc 1 232 3 view .LVU6
+ 233:./Library/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_ALGODIR(CRYP_InitStruct->CRYP_AlgoDir));
+  70              		.loc 1 233 3 view .LVU7
+ 234:./Library/stm32f4xx_cryp.c **** 
+ 235:./Library/stm32f4xx_cryp.c ****   /* Select Algorithm mode*/  
+ 236:./Library/stm32f4xx_cryp.c ****   CRYP->CR &= ~CRYP_CR_ALGOMODE;
+  71              		.loc 1 236 3 view .LVU8
+  72              		.loc 1 236 12 is_stmt 0 view .LVU9
+  73 0000 164B     		ldr	r3, .L5
+  74 0002 1A68     		ldr	r2, [r3]
+  75 0004 22F40022 		bic	r2, r2, #524288
+  76 0008 22F03802 		bic	r2, r2, #56
+  77 000c 1A60     		str	r2, [r3]
+ 237:./Library/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_InitStruct->CRYP_AlgoMode;
+  78              		.loc 1 237 3 is_stmt 1 view .LVU10
+  79              		.loc 1 237 12 is_stmt 0 view .LVU11
+  80 000e 1A68     		ldr	r2, [r3]
+  81              		.loc 1 237 30 view .LVU12
+  82 0010 4168     		ldr	r1, [r0, #4]
+  83              		.loc 1 237 12 view .LVU13
+  84 0012 0A43     		orrs	r2, r2, r1
+  85 0014 1A60     		str	r2, [r3]
+ 238:./Library/stm32f4xx_cryp.c **** 
+ 239:./Library/stm32f4xx_cryp.c ****   /* Select dataType */ 
+ 240:./Library/stm32f4xx_cryp.c ****   CRYP->CR &= ~CRYP_CR_DATATYPE;
+  86              		.loc 1 240 3 is_stmt 1 view .LVU14
+  87              		.loc 1 240 12 is_stmt 0 view .LVU15
+  88 0016 1A68     		ldr	r2, [r3]
+  89 0018 22F0C002 		bic	r2, r2, #192
+  90 001c 1A60     		str	r2, [r3]
+ 241:./Library/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_InitStruct->CRYP_DataType;
+  91              		.loc 1 241 3 is_stmt 1 view .LVU16
+  92              		.loc 1 241 12 is_stmt 0 view .LVU17
+  93 001e 1A68     		ldr	r2, [r3]
+  94              		.loc 1 241 30 view .LVU18
+  95 0020 8168     		ldr	r1, [r0, #8]
+  96              		.loc 1 241 12 view .LVU19
+  97 0022 0A43     		orrs	r2, r2, r1
+  98 0024 1A60     		str	r2, [r3]
+ 242:./Library/stm32f4xx_cryp.c **** 
+ 243:./Library/stm32f4xx_cryp.c ****   /* select Key size (used only with AES algorithm) */
+ 244:./Library/stm32f4xx_cryp.c ****   if ((CRYP_InitStruct->CRYP_AlgoMode != CRYP_AlgoMode_TDES_ECB) &&
+  99              		.loc 1 244 3 is_stmt 1 view .LVU20
+ 100              		.loc 1 244 23 is_stmt 0 view .LVU21
+ 101 0026 4368     		ldr	r3, [r0, #4]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 7
+
+
+ 102              		.loc 1 244 6 view .LVU22
+ 103 0028 73B1     		cbz	r3, .L4
+ 104              		.loc 1 244 66 discriminator 1 view .LVU23
+ 105 002a 082B     		cmp	r3, #8
+ 106 002c 0CD0     		beq	.L4
+ 245:./Library/stm32f4xx_cryp.c ****       (CRYP_InitStruct->CRYP_AlgoMode != CRYP_AlgoMode_TDES_CBC) &&
+ 107              		.loc 1 245 66 view .LVU24
+ 108 002e 102B     		cmp	r3, #16
+ 109 0030 0AD0     		beq	.L4
+ 246:./Library/stm32f4xx_cryp.c ****       (CRYP_InitStruct->CRYP_AlgoMode != CRYP_AlgoMode_DES_ECB) &&
+ 110              		.loc 1 246 65 view .LVU25
+ 111 0032 182B     		cmp	r3, #24
+ 112 0034 08D0     		beq	.L4
+ 247:./Library/stm32f4xx_cryp.c ****       (CRYP_InitStruct->CRYP_AlgoMode != CRYP_AlgoMode_DES_CBC))
+ 248:./Library/stm32f4xx_cryp.c ****   {
+ 249:./Library/stm32f4xx_cryp.c ****     assert_param(IS_CRYP_KEYSIZE(CRYP_InitStruct->CRYP_KeySize));
+ 113              		.loc 1 249 5 is_stmt 1 view .LVU26
+ 250:./Library/stm32f4xx_cryp.c ****     CRYP->CR &= ~CRYP_CR_KEYSIZE;
+ 114              		.loc 1 250 5 view .LVU27
+ 115              		.loc 1 250 14 is_stmt 0 view .LVU28
+ 116 0036 094B     		ldr	r3, .L5
+ 117 0038 1A68     		ldr	r2, [r3]
+ 118 003a 22F44072 		bic	r2, r2, #768
+ 119 003e 1A60     		str	r2, [r3]
+ 251:./Library/stm32f4xx_cryp.c ****     CRYP->CR |= CRYP_InitStruct->CRYP_KeySize; /* Key size and value must be 
+ 120              		.loc 1 251 5 is_stmt 1 view .LVU29
+ 121              		.loc 1 251 14 is_stmt 0 view .LVU30
+ 122 0040 1A68     		ldr	r2, [r3]
+ 123              		.loc 1 251 32 view .LVU31
+ 124 0042 C168     		ldr	r1, [r0, #12]
+ 125              		.loc 1 251 14 view .LVU32
+ 126 0044 0A43     		orrs	r2, r2, r1
+ 127 0046 1A60     		str	r2, [r3]
+ 128              	.L4:
+ 252:./Library/stm32f4xx_cryp.c ****                                                   configured once the key has 
+ 253:./Library/stm32f4xx_cryp.c ****                                                   been prepared */
+ 254:./Library/stm32f4xx_cryp.c ****   }
+ 255:./Library/stm32f4xx_cryp.c **** 
+ 256:./Library/stm32f4xx_cryp.c ****   /* Select data Direction */ 
+ 257:./Library/stm32f4xx_cryp.c ****   CRYP->CR &= ~CRYP_CR_ALGODIR;
+ 129              		.loc 1 257 3 is_stmt 1 view .LVU33
+ 130              		.loc 1 257 12 is_stmt 0 view .LVU34
+ 131 0048 044B     		ldr	r3, .L5
+ 132 004a 1A68     		ldr	r2, [r3]
+ 133 004c 22F00402 		bic	r2, r2, #4
+ 134 0050 1A60     		str	r2, [r3]
+ 258:./Library/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_InitStruct->CRYP_AlgoDir;
+ 135              		.loc 1 258 3 is_stmt 1 view .LVU35
+ 136              		.loc 1 258 12 is_stmt 0 view .LVU36
+ 137 0052 1A68     		ldr	r2, [r3]
+ 138              		.loc 1 258 30 view .LVU37
+ 139 0054 0168     		ldr	r1, [r0]
+ 140              		.loc 1 258 12 view .LVU38
+ 141 0056 0A43     		orrs	r2, r2, r1
+ 142 0058 1A60     		str	r2, [r3]
+ 259:./Library/stm32f4xx_cryp.c **** }
+ 143              		.loc 1 259 1 view .LVU39
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 8
+
+
+ 144 005a 7047     		bx	lr
+ 145              	.L6:
+ 146              		.align	2
+ 147              	.L5:
+ 148 005c 00000650 		.word	1342570496
+ 149              		.cfi_endproc
+ 150              	.LFE124:
+ 152              		.section	.text.CRYP_StructInit,"ax",%progbits
+ 153              		.align	1
+ 154              		.global	CRYP_StructInit
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	CRYP_StructInit:
+ 160              	.LVL3:
+ 161              	.LFB125:
+ 260:./Library/stm32f4xx_cryp.c **** 
+ 261:./Library/stm32f4xx_cryp.c **** /**
+ 262:./Library/stm32f4xx_cryp.c ****   * @brief  Fills each CRYP_InitStruct member with its default value.
+ 263:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_InitStruct: pointer to a CRYP_InitTypeDef structure which will
+ 264:./Library/stm32f4xx_cryp.c ****   *         be initialized.
+ 265:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 266:./Library/stm32f4xx_cryp.c ****   */
+ 267:./Library/stm32f4xx_cryp.c **** void CRYP_StructInit(CRYP_InitTypeDef* CRYP_InitStruct)
+ 268:./Library/stm32f4xx_cryp.c **** {
+ 162              		.loc 1 268 1 is_stmt 1 view -0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
+ 269:./Library/stm32f4xx_cryp.c ****   /* Initialize the CRYP_AlgoDir member */
+ 270:./Library/stm32f4xx_cryp.c ****   CRYP_InitStruct->CRYP_AlgoDir = CRYP_AlgoDir_Encrypt;
+ 167              		.loc 1 270 3 view .LVU41
+ 168              		.loc 1 270 33 is_stmt 0 view .LVU42
+ 169 0000 0023     		movs	r3, #0
+ 170 0002 0360     		str	r3, [r0]
+ 271:./Library/stm32f4xx_cryp.c **** 
+ 272:./Library/stm32f4xx_cryp.c ****   /* initialize the CRYP_AlgoMode member */
+ 273:./Library/stm32f4xx_cryp.c ****   CRYP_InitStruct->CRYP_AlgoMode = CRYP_AlgoMode_TDES_ECB;
+ 171              		.loc 1 273 3 is_stmt 1 view .LVU43
+ 172              		.loc 1 273 34 is_stmt 0 view .LVU44
+ 173 0004 4360     		str	r3, [r0, #4]
+ 274:./Library/stm32f4xx_cryp.c **** 
+ 275:./Library/stm32f4xx_cryp.c ****   /* initialize the CRYP_DataType member */
+ 276:./Library/stm32f4xx_cryp.c ****   CRYP_InitStruct->CRYP_DataType = CRYP_DataType_32b;
+ 174              		.loc 1 276 3 is_stmt 1 view .LVU45
+ 175              		.loc 1 276 34 is_stmt 0 view .LVU46
+ 176 0006 8360     		str	r3, [r0, #8]
+ 277:./Library/stm32f4xx_cryp.c ****   
+ 278:./Library/stm32f4xx_cryp.c ****   /* Initialize the CRYP_KeySize member */
+ 279:./Library/stm32f4xx_cryp.c ****   CRYP_InitStruct->CRYP_KeySize = CRYP_KeySize_128b;
+ 177              		.loc 1 279 3 is_stmt 1 view .LVU47
+ 178              		.loc 1 279 33 is_stmt 0 view .LVU48
+ 179 0008 C360     		str	r3, [r0, #12]
+ 280:./Library/stm32f4xx_cryp.c **** }
+ 180              		.loc 1 280 1 view .LVU49
+ 181 000a 7047     		bx	lr
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 9
+
+
+ 182              		.cfi_endproc
+ 183              	.LFE125:
+ 185              		.section	.text.CRYP_KeyInit,"ax",%progbits
+ 186              		.align	1
+ 187              		.global	CRYP_KeyInit
+ 188              		.syntax unified
+ 189              		.thumb
+ 190              		.thumb_func
+ 192              	CRYP_KeyInit:
+ 193              	.LVL4:
+ 194              	.LFB126:
+ 281:./Library/stm32f4xx_cryp.c **** 
+ 282:./Library/stm32f4xx_cryp.c **** /**
+ 283:./Library/stm32f4xx_cryp.c ****   * @brief  Initializes the CRYP Keys according to the specified parameters in
+ 284:./Library/stm32f4xx_cryp.c ****   *         the CRYP_KeyInitStruct.
+ 285:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_KeyInitStruct: pointer to a CRYP_KeyInitTypeDef structure that
+ 286:./Library/stm32f4xx_cryp.c ****   *         contains the configuration information for the CRYP Keys.
+ 287:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 288:./Library/stm32f4xx_cryp.c ****   */
+ 289:./Library/stm32f4xx_cryp.c **** void CRYP_KeyInit(CRYP_KeyInitTypeDef* CRYP_KeyInitStruct)
+ 290:./Library/stm32f4xx_cryp.c **** {
+ 195              		.loc 1 290 1 is_stmt 1 view -0
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199              		@ link register save eliminated.
+ 291:./Library/stm32f4xx_cryp.c ****   /* Key Initialisation */
+ 292:./Library/stm32f4xx_cryp.c ****   CRYP->K0LR = CRYP_KeyInitStruct->CRYP_Key0Left;
+ 200              		.loc 1 292 3 view .LVU51
+ 201              		.loc 1 292 34 is_stmt 0 view .LVU52
+ 202 0000 0268     		ldr	r2, [r0]
+ 203              		.loc 1 292 14 view .LVU53
+ 204 0002 084B     		ldr	r3, .L9
+ 205 0004 1A62     		str	r2, [r3, #32]
+ 293:./Library/stm32f4xx_cryp.c ****   CRYP->K0RR = CRYP_KeyInitStruct->CRYP_Key0Right;
+ 206              		.loc 1 293 3 is_stmt 1 view .LVU54
+ 207              		.loc 1 293 34 is_stmt 0 view .LVU55
+ 208 0006 4268     		ldr	r2, [r0, #4]
+ 209              		.loc 1 293 14 view .LVU56
+ 210 0008 5A62     		str	r2, [r3, #36]
+ 294:./Library/stm32f4xx_cryp.c ****   CRYP->K1LR = CRYP_KeyInitStruct->CRYP_Key1Left;
+ 211              		.loc 1 294 3 is_stmt 1 view .LVU57
+ 212              		.loc 1 294 34 is_stmt 0 view .LVU58
+ 213 000a 8268     		ldr	r2, [r0, #8]
+ 214              		.loc 1 294 14 view .LVU59
+ 215 000c 9A62     		str	r2, [r3, #40]
+ 295:./Library/stm32f4xx_cryp.c ****   CRYP->K1RR = CRYP_KeyInitStruct->CRYP_Key1Right;
+ 216              		.loc 1 295 3 is_stmt 1 view .LVU60
+ 217              		.loc 1 295 34 is_stmt 0 view .LVU61
+ 218 000e C268     		ldr	r2, [r0, #12]
+ 219              		.loc 1 295 14 view .LVU62
+ 220 0010 DA62     		str	r2, [r3, #44]
+ 296:./Library/stm32f4xx_cryp.c ****   CRYP->K2LR = CRYP_KeyInitStruct->CRYP_Key2Left;
+ 221              		.loc 1 296 3 is_stmt 1 view .LVU63
+ 222              		.loc 1 296 34 is_stmt 0 view .LVU64
+ 223 0012 0269     		ldr	r2, [r0, #16]
+ 224              		.loc 1 296 14 view .LVU65
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 10
+
+
+ 225 0014 1A63     		str	r2, [r3, #48]
+ 297:./Library/stm32f4xx_cryp.c ****   CRYP->K2RR = CRYP_KeyInitStruct->CRYP_Key2Right;
+ 226              		.loc 1 297 3 is_stmt 1 view .LVU66
+ 227              		.loc 1 297 34 is_stmt 0 view .LVU67
+ 228 0016 4269     		ldr	r2, [r0, #20]
+ 229              		.loc 1 297 14 view .LVU68
+ 230 0018 5A63     		str	r2, [r3, #52]
+ 298:./Library/stm32f4xx_cryp.c ****   CRYP->K3LR = CRYP_KeyInitStruct->CRYP_Key3Left;
+ 231              		.loc 1 298 3 is_stmt 1 view .LVU69
+ 232              		.loc 1 298 34 is_stmt 0 view .LVU70
+ 233 001a 8269     		ldr	r2, [r0, #24]
+ 234              		.loc 1 298 14 view .LVU71
+ 235 001c 9A63     		str	r2, [r3, #56]
+ 299:./Library/stm32f4xx_cryp.c ****   CRYP->K3RR = CRYP_KeyInitStruct->CRYP_Key3Right;
+ 236              		.loc 1 299 3 is_stmt 1 view .LVU72
+ 237              		.loc 1 299 34 is_stmt 0 view .LVU73
+ 238 001e C269     		ldr	r2, [r0, #28]
+ 239              		.loc 1 299 14 view .LVU74
+ 240 0020 DA63     		str	r2, [r3, #60]
+ 300:./Library/stm32f4xx_cryp.c **** }
+ 241              		.loc 1 300 1 view .LVU75
+ 242 0022 7047     		bx	lr
+ 243              	.L10:
+ 244              		.align	2
+ 245              	.L9:
+ 246 0024 00000650 		.word	1342570496
+ 247              		.cfi_endproc
+ 248              	.LFE126:
+ 250              		.section	.text.CRYP_KeyStructInit,"ax",%progbits
+ 251              		.align	1
+ 252              		.global	CRYP_KeyStructInit
+ 253              		.syntax unified
+ 254              		.thumb
+ 255              		.thumb_func
+ 257              	CRYP_KeyStructInit:
+ 258              	.LVL5:
+ 259              	.LFB127:
+ 301:./Library/stm32f4xx_cryp.c **** 
+ 302:./Library/stm32f4xx_cryp.c **** /**
+ 303:./Library/stm32f4xx_cryp.c ****   * @brief  Fills each CRYP_KeyInitStruct member with its default value.
+ 304:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_KeyInitStruct: pointer to a CRYP_KeyInitTypeDef structure 
+ 305:./Library/stm32f4xx_cryp.c ****   *         which will be initialized.
+ 306:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 307:./Library/stm32f4xx_cryp.c ****   */
+ 308:./Library/stm32f4xx_cryp.c **** void CRYP_KeyStructInit(CRYP_KeyInitTypeDef* CRYP_KeyInitStruct)
+ 309:./Library/stm32f4xx_cryp.c **** {
+ 260              		.loc 1 309 1 is_stmt 1 view -0
+ 261              		.cfi_startproc
+ 262              		@ args = 0, pretend = 0, frame = 0
+ 263              		@ frame_needed = 0, uses_anonymous_args = 0
+ 264              		@ link register save eliminated.
+ 310:./Library/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key0Left  = 0;
+ 265              		.loc 1 310 3 view .LVU77
+ 266              		.loc 1 310 38 is_stmt 0 view .LVU78
+ 267 0000 0023     		movs	r3, #0
+ 268 0002 0360     		str	r3, [r0]
+ 311:./Library/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key0Right = 0;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 11
+
+
+ 269              		.loc 1 311 3 is_stmt 1 view .LVU79
+ 270              		.loc 1 311 38 is_stmt 0 view .LVU80
+ 271 0004 4360     		str	r3, [r0, #4]
+ 312:./Library/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key1Left  = 0;
+ 272              		.loc 1 312 3 is_stmt 1 view .LVU81
+ 273              		.loc 1 312 38 is_stmt 0 view .LVU82
+ 274 0006 8360     		str	r3, [r0, #8]
+ 313:./Library/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key1Right = 0;
+ 275              		.loc 1 313 3 is_stmt 1 view .LVU83
+ 276              		.loc 1 313 38 is_stmt 0 view .LVU84
+ 277 0008 C360     		str	r3, [r0, #12]
+ 314:./Library/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key2Left  = 0;
+ 278              		.loc 1 314 3 is_stmt 1 view .LVU85
+ 279              		.loc 1 314 38 is_stmt 0 view .LVU86
+ 280 000a 0361     		str	r3, [r0, #16]
+ 315:./Library/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key2Right = 0;
+ 281              		.loc 1 315 3 is_stmt 1 view .LVU87
+ 282              		.loc 1 315 38 is_stmt 0 view .LVU88
+ 283 000c 4361     		str	r3, [r0, #20]
+ 316:./Library/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key3Left  = 0;
+ 284              		.loc 1 316 3 is_stmt 1 view .LVU89
+ 285              		.loc 1 316 38 is_stmt 0 view .LVU90
+ 286 000e 8361     		str	r3, [r0, #24]
+ 317:./Library/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key3Right = 0;
+ 287              		.loc 1 317 3 is_stmt 1 view .LVU91
+ 288              		.loc 1 317 38 is_stmt 0 view .LVU92
+ 289 0010 C361     		str	r3, [r0, #28]
+ 318:./Library/stm32f4xx_cryp.c **** }
+ 290              		.loc 1 318 1 view .LVU93
+ 291 0012 7047     		bx	lr
+ 292              		.cfi_endproc
+ 293              	.LFE127:
+ 295              		.section	.text.CRYP_IVInit,"ax",%progbits
+ 296              		.align	1
+ 297              		.global	CRYP_IVInit
+ 298              		.syntax unified
+ 299              		.thumb
+ 300              		.thumb_func
+ 302              	CRYP_IVInit:
+ 303              	.LVL6:
+ 304              	.LFB128:
+ 319:./Library/stm32f4xx_cryp.c **** /**
+ 320:./Library/stm32f4xx_cryp.c ****   * @brief  Initializes the CRYP Initialization Vectors(IV) according to the
+ 321:./Library/stm32f4xx_cryp.c ****   *         specified parameters in the CRYP_IVInitStruct.
+ 322:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_IVInitStruct: pointer to a CRYP_IVInitTypeDef structure that contains
+ 323:./Library/stm32f4xx_cryp.c ****   *         the configuration information for the CRYP Initialization Vectors(IV).
+ 324:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 325:./Library/stm32f4xx_cryp.c ****   */
+ 326:./Library/stm32f4xx_cryp.c **** void CRYP_IVInit(CRYP_IVInitTypeDef* CRYP_IVInitStruct)
+ 327:./Library/stm32f4xx_cryp.c **** {
+ 305              		.loc 1 327 1 is_stmt 1 view -0
+ 306              		.cfi_startproc
+ 307              		@ args = 0, pretend = 0, frame = 0
+ 308              		@ frame_needed = 0, uses_anonymous_args = 0
+ 309              		@ link register save eliminated.
+ 328:./Library/stm32f4xx_cryp.c ****   CRYP->IV0LR = CRYP_IVInitStruct->CRYP_IV0Left;
+ 310              		.loc 1 328 3 view .LVU95
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 12
+
+
+ 311              		.loc 1 328 34 is_stmt 0 view .LVU96
+ 312 0000 0268     		ldr	r2, [r0]
+ 313              		.loc 1 328 15 view .LVU97
+ 314 0002 044B     		ldr	r3, .L13
+ 315 0004 1A64     		str	r2, [r3, #64]
+ 329:./Library/stm32f4xx_cryp.c ****   CRYP->IV0RR = CRYP_IVInitStruct->CRYP_IV0Right;
+ 316              		.loc 1 329 3 is_stmt 1 view .LVU98
+ 317              		.loc 1 329 34 is_stmt 0 view .LVU99
+ 318 0006 4268     		ldr	r2, [r0, #4]
+ 319              		.loc 1 329 15 view .LVU100
+ 320 0008 5A64     		str	r2, [r3, #68]
+ 330:./Library/stm32f4xx_cryp.c ****   CRYP->IV1LR = CRYP_IVInitStruct->CRYP_IV1Left;
+ 321              		.loc 1 330 3 is_stmt 1 view .LVU101
+ 322              		.loc 1 330 34 is_stmt 0 view .LVU102
+ 323 000a 8268     		ldr	r2, [r0, #8]
+ 324              		.loc 1 330 15 view .LVU103
+ 325 000c 9A64     		str	r2, [r3, #72]
+ 331:./Library/stm32f4xx_cryp.c ****   CRYP->IV1RR = CRYP_IVInitStruct->CRYP_IV1Right;
+ 326              		.loc 1 331 3 is_stmt 1 view .LVU104
+ 327              		.loc 1 331 34 is_stmt 0 view .LVU105
+ 328 000e C268     		ldr	r2, [r0, #12]
+ 329              		.loc 1 331 15 view .LVU106
+ 330 0010 DA64     		str	r2, [r3, #76]
+ 332:./Library/stm32f4xx_cryp.c **** }
+ 331              		.loc 1 332 1 view .LVU107
+ 332 0012 7047     		bx	lr
+ 333              	.L14:
+ 334              		.align	2
+ 335              	.L13:
+ 336 0014 00000650 		.word	1342570496
+ 337              		.cfi_endproc
+ 338              	.LFE128:
+ 340              		.section	.text.CRYP_IVStructInit,"ax",%progbits
+ 341              		.align	1
+ 342              		.global	CRYP_IVStructInit
+ 343              		.syntax unified
+ 344              		.thumb
+ 345              		.thumb_func
+ 347              	CRYP_IVStructInit:
+ 348              	.LVL7:
+ 349              	.LFB129:
+ 333:./Library/stm32f4xx_cryp.c **** 
+ 334:./Library/stm32f4xx_cryp.c **** /**
+ 335:./Library/stm32f4xx_cryp.c ****   * @brief  Fills each CRYP_IVInitStruct member with its default value.
+ 336:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_IVInitStruct: pointer to a CRYP_IVInitTypeDef Initialization 
+ 337:./Library/stm32f4xx_cryp.c ****   *         Vectors(IV) structure which will be initialized.
+ 338:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 339:./Library/stm32f4xx_cryp.c ****   */
+ 340:./Library/stm32f4xx_cryp.c **** void CRYP_IVStructInit(CRYP_IVInitTypeDef* CRYP_IVInitStruct)
+ 341:./Library/stm32f4xx_cryp.c **** {
+ 350              		.loc 1 341 1 is_stmt 1 view -0
+ 351              		.cfi_startproc
+ 352              		@ args = 0, pretend = 0, frame = 0
+ 353              		@ frame_needed = 0, uses_anonymous_args = 0
+ 354              		@ link register save eliminated.
+ 342:./Library/stm32f4xx_cryp.c ****   CRYP_IVInitStruct->CRYP_IV0Left  = 0;
+ 355              		.loc 1 342 3 view .LVU109
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 13
+
+
+ 356              		.loc 1 342 36 is_stmt 0 view .LVU110
+ 357 0000 0023     		movs	r3, #0
+ 358 0002 0360     		str	r3, [r0]
+ 343:./Library/stm32f4xx_cryp.c ****   CRYP_IVInitStruct->CRYP_IV0Right = 0;
+ 359              		.loc 1 343 3 is_stmt 1 view .LVU111
+ 360              		.loc 1 343 36 is_stmt 0 view .LVU112
+ 361 0004 4360     		str	r3, [r0, #4]
+ 344:./Library/stm32f4xx_cryp.c ****   CRYP_IVInitStruct->CRYP_IV1Left  = 0;
+ 362              		.loc 1 344 3 is_stmt 1 view .LVU113
+ 363              		.loc 1 344 36 is_stmt 0 view .LVU114
+ 364 0006 8360     		str	r3, [r0, #8]
+ 345:./Library/stm32f4xx_cryp.c ****   CRYP_IVInitStruct->CRYP_IV1Right = 0;
+ 365              		.loc 1 345 3 is_stmt 1 view .LVU115
+ 366              		.loc 1 345 36 is_stmt 0 view .LVU116
+ 367 0008 C360     		str	r3, [r0, #12]
+ 346:./Library/stm32f4xx_cryp.c **** }
+ 368              		.loc 1 346 1 view .LVU117
+ 369 000a 7047     		bx	lr
+ 370              		.cfi_endproc
+ 371              	.LFE129:
+ 373              		.section	.text.CRYP_PhaseConfig,"ax",%progbits
+ 374              		.align	1
+ 375              		.global	CRYP_PhaseConfig
+ 376              		.syntax unified
+ 377              		.thumb
+ 378              		.thumb_func
+ 380              	CRYP_PhaseConfig:
+ 381              	.LVL8:
+ 382              	.LFB130:
+ 347:./Library/stm32f4xx_cryp.c **** 
+ 348:./Library/stm32f4xx_cryp.c **** /**
+ 349:./Library/stm32f4xx_cryp.c ****   * @brief  Configures the AES-CCM and AES-GCM phases
+ 350:./Library/stm32f4xx_cryp.c ****   * @note   This function is used only with AES-CCM or AES-GCM Algorithms  
+ 351:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_Phase: specifies the CRYP AES-CCM and AES-GCM phase to be configured.
+ 352:./Library/stm32f4xx_cryp.c ****   *           This parameter can be one of the following values:
+ 353:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_Phase_Init: Initialization phase
+ 354:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_Phase_Header: Header phase
+ 355:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_Phase_Payload: Payload phase
+ 356:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_Phase_Final: Final phase 
+ 357:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 358:./Library/stm32f4xx_cryp.c ****   */
+ 359:./Library/stm32f4xx_cryp.c **** void CRYP_PhaseConfig(uint32_t CRYP_Phase)
+ 360:./Library/stm32f4xx_cryp.c **** { uint32_t tempcr = 0;
+ 383              		.loc 1 360 1 is_stmt 1 view -0
+ 384              		.cfi_startproc
+ 385              		@ args = 0, pretend = 0, frame = 0
+ 386              		@ frame_needed = 0, uses_anonymous_args = 0
+ 387              		@ link register save eliminated.
+ 388              		.loc 1 360 3 view .LVU119
+ 361:./Library/stm32f4xx_cryp.c **** 
+ 362:./Library/stm32f4xx_cryp.c ****   /* Check the parameter */
+ 363:./Library/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_PHASE(CRYP_Phase));
+ 389              		.loc 1 363 3 view .LVU120
+ 364:./Library/stm32f4xx_cryp.c **** 
+ 365:./Library/stm32f4xx_cryp.c ****   /* Get the CR register */
+ 366:./Library/stm32f4xx_cryp.c ****   tempcr = CRYP->CR;
+ 390              		.loc 1 366 3 view .LVU121
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 14
+
+
+ 391              		.loc 1 366 10 is_stmt 0 view .LVU122
+ 392 0000 034A     		ldr	r2, .L17
+ 393 0002 1368     		ldr	r3, [r2]
+ 394              	.LVL9:
+ 367:./Library/stm32f4xx_cryp.c ****   
+ 368:./Library/stm32f4xx_cryp.c ****   /* Reset the phase configuration bits: GCMP_CCMPH */
+ 369:./Library/stm32f4xx_cryp.c ****   tempcr &= (uint32_t)(~CRYP_CR_GCM_CCMPH);
+ 395              		.loc 1 369 3 is_stmt 1 view .LVU123
+ 396              		.loc 1 369 10 is_stmt 0 view .LVU124
+ 397 0004 23F44033 		bic	r3, r3, #196608
+ 398              	.LVL10:
+ 370:./Library/stm32f4xx_cryp.c ****   /* Set the selected phase */
+ 371:./Library/stm32f4xx_cryp.c ****   tempcr |= (uint32_t)CRYP_Phase;
+ 399              		.loc 1 371 3 is_stmt 1 view .LVU125
+ 400              		.loc 1 371 10 is_stmt 0 view .LVU126
+ 401 0008 0343     		orrs	r3, r3, r0
+ 402              	.LVL11:
+ 372:./Library/stm32f4xx_cryp.c **** 
+ 373:./Library/stm32f4xx_cryp.c ****   /* Set the CR register */ 
+ 374:./Library/stm32f4xx_cryp.c ****   CRYP->CR = tempcr;    
+ 403              		.loc 1 374 3 is_stmt 1 view .LVU127
+ 404              		.loc 1 374 12 is_stmt 0 view .LVU128
+ 405 000a 1360     		str	r3, [r2]
+ 375:./Library/stm32f4xx_cryp.c **** }
+ 406              		.loc 1 375 1 view .LVU129
+ 407 000c 7047     		bx	lr
+ 408              	.L18:
+ 409 000e 00BF     		.align	2
+ 410              	.L17:
+ 411 0010 00000650 		.word	1342570496
+ 412              		.cfi_endproc
+ 413              	.LFE130:
+ 415              		.section	.text.CRYP_FIFOFlush,"ax",%progbits
+ 416              		.align	1
+ 417              		.global	CRYP_FIFOFlush
+ 418              		.syntax unified
+ 419              		.thumb
+ 420              		.thumb_func
+ 422              	CRYP_FIFOFlush:
+ 423              	.LFB131:
+ 376:./Library/stm32f4xx_cryp.c **** 
+ 377:./Library/stm32f4xx_cryp.c **** /**
+ 378:./Library/stm32f4xx_cryp.c ****   * @brief  Flushes the IN and OUT FIFOs (that is read and write pointers of the 
+ 379:./Library/stm32f4xx_cryp.c ****   *         FIFOs are reset)
+ 380:./Library/stm32f4xx_cryp.c ****   * @note   The FIFOs must be flushed only when BUSY flag is reset.  
+ 381:./Library/stm32f4xx_cryp.c ****   * @param  None
+ 382:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 383:./Library/stm32f4xx_cryp.c ****   */
+ 384:./Library/stm32f4xx_cryp.c **** void CRYP_FIFOFlush(void)
+ 385:./Library/stm32f4xx_cryp.c **** {
+ 424              		.loc 1 385 1 is_stmt 1 view -0
+ 425              		.cfi_startproc
+ 426              		@ args = 0, pretend = 0, frame = 0
+ 427              		@ frame_needed = 0, uses_anonymous_args = 0
+ 428              		@ link register save eliminated.
+ 386:./Library/stm32f4xx_cryp.c ****   /* Reset the read and write pointers of the FIFOs */
+ 387:./Library/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_CR_FFLUSH;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 15
+
+
+ 429              		.loc 1 387 3 view .LVU131
+ 430              		.loc 1 387 12 is_stmt 0 view .LVU132
+ 431 0000 024A     		ldr	r2, .L20
+ 432 0002 1368     		ldr	r3, [r2]
+ 433 0004 43F48043 		orr	r3, r3, #16384
+ 434 0008 1360     		str	r3, [r2]
+ 388:./Library/stm32f4xx_cryp.c **** }
+ 435              		.loc 1 388 1 view .LVU133
+ 436 000a 7047     		bx	lr
+ 437              	.L21:
+ 438              		.align	2
+ 439              	.L20:
+ 440 000c 00000650 		.word	1342570496
+ 441              		.cfi_endproc
+ 442              	.LFE131:
+ 444              		.section	.text.CRYP_Cmd,"ax",%progbits
+ 445              		.align	1
+ 446              		.global	CRYP_Cmd
+ 447              		.syntax unified
+ 448              		.thumb
+ 449              		.thumb_func
+ 451              	CRYP_Cmd:
+ 452              	.LVL12:
+ 453              	.LFB132:
+ 389:./Library/stm32f4xx_cryp.c **** 
+ 390:./Library/stm32f4xx_cryp.c **** /**
+ 391:./Library/stm32f4xx_cryp.c ****   * @brief  Enables or disables the CRYP peripheral.
+ 392:./Library/stm32f4xx_cryp.c ****   * @param  NewState: new state of the CRYP peripheral.
+ 393:./Library/stm32f4xx_cryp.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 394:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 395:./Library/stm32f4xx_cryp.c ****   */
+ 396:./Library/stm32f4xx_cryp.c **** void CRYP_Cmd(FunctionalState NewState)
+ 397:./Library/stm32f4xx_cryp.c **** {
+ 454              		.loc 1 397 1 is_stmt 1 view -0
+ 455              		.cfi_startproc
+ 456              		@ args = 0, pretend = 0, frame = 0
+ 457              		@ frame_needed = 0, uses_anonymous_args = 0
+ 458              		@ link register save eliminated.
+ 398:./Library/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 399:./Library/stm32f4xx_cryp.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 459              		.loc 1 399 3 view .LVU135
+ 400:./Library/stm32f4xx_cryp.c **** 
+ 401:./Library/stm32f4xx_cryp.c ****   if (NewState != DISABLE)
+ 460              		.loc 1 401 3 view .LVU136
+ 461              		.loc 1 401 6 is_stmt 0 view .LVU137
+ 462 0000 28B1     		cbz	r0, .L23
+ 402:./Library/stm32f4xx_cryp.c ****   {
+ 403:./Library/stm32f4xx_cryp.c ****     /* Enable the Cryptographic processor */
+ 404:./Library/stm32f4xx_cryp.c ****     CRYP->CR |= CRYP_CR_CRYPEN;
+ 463              		.loc 1 404 5 is_stmt 1 view .LVU138
+ 464              		.loc 1 404 14 is_stmt 0 view .LVU139
+ 465 0002 064A     		ldr	r2, .L25
+ 466 0004 1368     		ldr	r3, [r2]
+ 467 0006 43F40043 		orr	r3, r3, #32768
+ 468 000a 1360     		str	r3, [r2]
+ 469 000c 7047     		bx	lr
+ 470              	.L23:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 16
+
+
+ 405:./Library/stm32f4xx_cryp.c ****   }
+ 406:./Library/stm32f4xx_cryp.c ****   else
+ 407:./Library/stm32f4xx_cryp.c ****   {
+ 408:./Library/stm32f4xx_cryp.c ****     /* Disable the Cryptographic processor */
+ 409:./Library/stm32f4xx_cryp.c ****     CRYP->CR &= ~CRYP_CR_CRYPEN;
+ 471              		.loc 1 409 5 is_stmt 1 view .LVU140
+ 472              		.loc 1 409 14 is_stmt 0 view .LVU141
+ 473 000e 034A     		ldr	r2, .L25
+ 474 0010 1368     		ldr	r3, [r2]
+ 475 0012 23F40043 		bic	r3, r3, #32768
+ 476 0016 1360     		str	r3, [r2]
+ 410:./Library/stm32f4xx_cryp.c ****   }
+ 411:./Library/stm32f4xx_cryp.c **** }
+ 477              		.loc 1 411 1 view .LVU142
+ 478 0018 7047     		bx	lr
+ 479              	.L26:
+ 480 001a 00BF     		.align	2
+ 481              	.L25:
+ 482 001c 00000650 		.word	1342570496
+ 483              		.cfi_endproc
+ 484              	.LFE132:
+ 486              		.section	.text.CRYP_DataIn,"ax",%progbits
+ 487              		.align	1
+ 488              		.global	CRYP_DataIn
+ 489              		.syntax unified
+ 490              		.thumb
+ 491              		.thumb_func
+ 493              	CRYP_DataIn:
+ 494              	.LVL13:
+ 495              	.LFB133:
+ 412:./Library/stm32f4xx_cryp.c **** /**
+ 413:./Library/stm32f4xx_cryp.c ****   * @}
+ 414:./Library/stm32f4xx_cryp.c ****   */
+ 415:./Library/stm32f4xx_cryp.c ****   
+ 416:./Library/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group2 CRYP Data processing functions
+ 417:./Library/stm32f4xx_cryp.c ****  *  @brief    CRYP Data processing functions
+ 418:./Library/stm32f4xx_cryp.c ****  *
+ 419:./Library/stm32f4xx_cryp.c **** @verbatim    
+ 420:./Library/stm32f4xx_cryp.c ****  ===============================================================================
+ 421:./Library/stm32f4xx_cryp.c ****                     ##### CRYP Data processing functions #####
+ 422:./Library/stm32f4xx_cryp.c ****  ===============================================================================  
+ 423:./Library/stm32f4xx_cryp.c ****  [..] This section provides functions allowing the encryption and decryption 
+ 424:./Library/stm32f4xx_cryp.c ****       operations: 
+ 425:./Library/stm32f4xx_cryp.c ****    (+) Enter data to be treated in the IN FIFO : using CRYP_DataIn() function.
+ 426:./Library/stm32f4xx_cryp.c ****    (+) Get the data result from the OUT FIFO : using CRYP_DataOut() function.
+ 427:./Library/stm32f4xx_cryp.c **** 
+ 428:./Library/stm32f4xx_cryp.c **** @endverbatim
+ 429:./Library/stm32f4xx_cryp.c ****   * @{
+ 430:./Library/stm32f4xx_cryp.c ****   */
+ 431:./Library/stm32f4xx_cryp.c **** 
+ 432:./Library/stm32f4xx_cryp.c **** /**
+ 433:./Library/stm32f4xx_cryp.c ****   * @brief  Writes data in the Data Input register (DIN).
+ 434:./Library/stm32f4xx_cryp.c ****   * @note   After the DIN register has been read once or several times, 
+ 435:./Library/stm32f4xx_cryp.c ****   *         the FIFO must be flushed (using CRYP_FIFOFlush() function).  
+ 436:./Library/stm32f4xx_cryp.c ****   * @param  Data: data to write in Data Input register
+ 437:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 438:./Library/stm32f4xx_cryp.c ****   */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 17
+
+
+ 439:./Library/stm32f4xx_cryp.c **** void CRYP_DataIn(uint32_t Data)
+ 440:./Library/stm32f4xx_cryp.c **** {
+ 496              		.loc 1 440 1 is_stmt 1 view -0
+ 497              		.cfi_startproc
+ 498              		@ args = 0, pretend = 0, frame = 0
+ 499              		@ frame_needed = 0, uses_anonymous_args = 0
+ 500              		@ link register save eliminated.
+ 441:./Library/stm32f4xx_cryp.c ****   CRYP->DR = Data;
+ 501              		.loc 1 441 3 view .LVU144
+ 502              		.loc 1 441 12 is_stmt 0 view .LVU145
+ 503 0000 014B     		ldr	r3, .L28
+ 504 0002 9860     		str	r0, [r3, #8]
+ 442:./Library/stm32f4xx_cryp.c **** }
+ 505              		.loc 1 442 1 view .LVU146
+ 506 0004 7047     		bx	lr
+ 507              	.L29:
+ 508 0006 00BF     		.align	2
+ 509              	.L28:
+ 510 0008 00000650 		.word	1342570496
+ 511              		.cfi_endproc
+ 512              	.LFE133:
+ 514              		.section	.text.CRYP_DataOut,"ax",%progbits
+ 515              		.align	1
+ 516              		.global	CRYP_DataOut
+ 517              		.syntax unified
+ 518              		.thumb
+ 519              		.thumb_func
+ 521              	CRYP_DataOut:
+ 522              	.LFB134:
+ 443:./Library/stm32f4xx_cryp.c **** 
+ 444:./Library/stm32f4xx_cryp.c **** /**
+ 445:./Library/stm32f4xx_cryp.c ****   * @brief  Returns the last data entered into the output FIFO.
+ 446:./Library/stm32f4xx_cryp.c ****   * @param  None
+ 447:./Library/stm32f4xx_cryp.c ****   * @retval Last data entered into the output FIFO.
+ 448:./Library/stm32f4xx_cryp.c ****   */
+ 449:./Library/stm32f4xx_cryp.c **** uint32_t CRYP_DataOut(void)
+ 450:./Library/stm32f4xx_cryp.c **** {
+ 523              		.loc 1 450 1 is_stmt 1 view -0
+ 524              		.cfi_startproc
+ 525              		@ args = 0, pretend = 0, frame = 0
+ 526              		@ frame_needed = 0, uses_anonymous_args = 0
+ 527              		@ link register save eliminated.
+ 451:./Library/stm32f4xx_cryp.c ****   return CRYP->DOUT;
+ 528              		.loc 1 451 3 view .LVU148
+ 529              		.loc 1 451 14 is_stmt 0 view .LVU149
+ 530 0000 014B     		ldr	r3, .L31
+ 531 0002 D868     		ldr	r0, [r3, #12]
+ 452:./Library/stm32f4xx_cryp.c **** }
+ 532              		.loc 1 452 1 view .LVU150
+ 533 0004 7047     		bx	lr
+ 534              	.L32:
+ 535 0006 00BF     		.align	2
+ 536              	.L31:
+ 537 0008 00000650 		.word	1342570496
+ 538              		.cfi_endproc
+ 539              	.LFE134:
+ 541              		.section	.text.CRYP_SaveContext,"ax",%progbits
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 18
+
+
+ 542              		.align	1
+ 543              		.global	CRYP_SaveContext
+ 544              		.syntax unified
+ 545              		.thumb
+ 546              		.thumb_func
+ 548              	CRYP_SaveContext:
+ 549              	.LVL14:
+ 550              	.LFB135:
+ 453:./Library/stm32f4xx_cryp.c **** /**
+ 454:./Library/stm32f4xx_cryp.c ****   * @}
+ 455:./Library/stm32f4xx_cryp.c ****   */
+ 456:./Library/stm32f4xx_cryp.c ****   
+ 457:./Library/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group3 Context swapping functions
+ 458:./Library/stm32f4xx_cryp.c ****  *  @brief   Context swapping functions
+ 459:./Library/stm32f4xx_cryp.c ****  *
+ 460:./Library/stm32f4xx_cryp.c **** @verbatim   
+ 461:./Library/stm32f4xx_cryp.c ****  ===============================================================================
+ 462:./Library/stm32f4xx_cryp.c ****                       ##### Context swapping functions #####
+ 463:./Library/stm32f4xx_cryp.c ****  ===============================================================================  
+ 464:./Library/stm32f4xx_cryp.c ****  [..] This section provides functions allowing to save and store CRYP Context
+ 465:./Library/stm32f4xx_cryp.c **** 
+ 466:./Library/stm32f4xx_cryp.c ****  [..] It is possible to interrupt an encryption/ decryption/ key generation process 
+ 467:./Library/stm32f4xx_cryp.c ****       to perform another processing with a higher priority, and to complete the 
+ 468:./Library/stm32f4xx_cryp.c ****       interrupted process later on, when the higher-priority task is complete. To do 
+ 469:./Library/stm32f4xx_cryp.c ****       so, the context of the interrupted task must be saved from the CRYP registers 
+ 470:./Library/stm32f4xx_cryp.c ****       to memory, and then be restored from memory to the CRYP registers.
+ 471:./Library/stm32f4xx_cryp.c ****    
+ 472:./Library/stm32f4xx_cryp.c ****    (#) To save the current context, use CRYP_SaveContext() function
+ 473:./Library/stm32f4xx_cryp.c ****    (#) To restore the saved context, use CRYP_RestoreContext() function 
+ 474:./Library/stm32f4xx_cryp.c **** 
+ 475:./Library/stm32f4xx_cryp.c **** @endverbatim
+ 476:./Library/stm32f4xx_cryp.c ****   * @{
+ 477:./Library/stm32f4xx_cryp.c ****   */
+ 478:./Library/stm32f4xx_cryp.c ****   
+ 479:./Library/stm32f4xx_cryp.c **** /**
+ 480:./Library/stm32f4xx_cryp.c ****   * @brief  Saves the CRYP peripheral Context. 
+ 481:./Library/stm32f4xx_cryp.c ****   * @note   This function stops DMA transfer before to save the context. After 
+ 482:./Library/stm32f4xx_cryp.c ****   *         restoring the context, you have to enable the DMA again (if the DMA
+ 483:./Library/stm32f4xx_cryp.c ****   *         was previously used).
+ 484:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_ContextSave: pointer to a CRYP_Context structure that contains
+ 485:./Library/stm32f4xx_cryp.c ****   *         the repository for current context.
+ 486:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_KeyInitStruct: pointer to a CRYP_KeyInitTypeDef structure that 
+ 487:./Library/stm32f4xx_cryp.c ****   *         contains the configuration information for the CRYP Keys.  
+ 488:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 489:./Library/stm32f4xx_cryp.c ****   */
+ 490:./Library/stm32f4xx_cryp.c **** ErrorStatus CRYP_SaveContext(CRYP_Context* CRYP_ContextSave,
+ 491:./Library/stm32f4xx_cryp.c ****                              CRYP_KeyInitTypeDef* CRYP_KeyInitStruct)
+ 492:./Library/stm32f4xx_cryp.c **** {
+ 551              		.loc 1 492 1 is_stmt 1 view -0
+ 552              		.cfi_startproc
+ 553              		@ args = 0, pretend = 0, frame = 8
+ 554              		@ frame_needed = 0, uses_anonymous_args = 0
+ 555              		@ link register save eliminated.
+ 556              		.loc 1 492 1 is_stmt 0 view .LVU152
+ 557 0000 10B4     		push	{r4}
+ 558              	.LCFI1:
+ 559              		.cfi_def_cfa_offset 4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 19
+
+
+ 560              		.cfi_offset 4, -4
+ 561 0002 83B0     		sub	sp, sp, #12
+ 562              	.LCFI2:
+ 563              		.cfi_def_cfa_offset 16
+ 493:./Library/stm32f4xx_cryp.c ****   __IO uint32_t timeout = 0;
+ 564              		.loc 1 493 3 is_stmt 1 view .LVU153
+ 565              		.loc 1 493 17 is_stmt 0 view .LVU154
+ 566 0004 0023     		movs	r3, #0
+ 567 0006 0193     		str	r3, [sp, #4]
+ 494:./Library/stm32f4xx_cryp.c ****   uint32_t ckeckmask = 0, bitstatus;    
+ 568              		.loc 1 494 3 is_stmt 1 view .LVU155
+ 569              	.LVL15:
+ 495:./Library/stm32f4xx_cryp.c ****   ErrorStatus status = ERROR;
+ 570              		.loc 1 495 3 view .LVU156
+ 496:./Library/stm32f4xx_cryp.c **** 
+ 497:./Library/stm32f4xx_cryp.c ****   /* Stop DMA transfers on the IN FIFO by clearing the DIEN bit in the CRYP_DMACR */
+ 498:./Library/stm32f4xx_cryp.c ****   CRYP->DMACR &= ~(uint32_t)CRYP_DMACR_DIEN;
+ 571              		.loc 1 498 3 view .LVU157
+ 572              		.loc 1 498 15 is_stmt 0 view .LVU158
+ 573 0008 3C4B     		ldr	r3, .L42
+ 574 000a 1A69     		ldr	r2, [r3, #16]
+ 575 000c 22F00102 		bic	r2, r2, #1
+ 576 0010 1A61     		str	r2, [r3, #16]
+ 499:./Library/stm32f4xx_cryp.c ****     
+ 500:./Library/stm32f4xx_cryp.c ****   /* Wait until both the IN and OUT FIFOs are empty  
+ 501:./Library/stm32f4xx_cryp.c ****     (IFEM=1 and OFNE=0 in the CRYP_SR register) and the 
+ 502:./Library/stm32f4xx_cryp.c ****      BUSY bit is cleared. */
+ 503:./Library/stm32f4xx_cryp.c **** 
+ 504:./Library/stm32f4xx_cryp.c ****   if ((CRYP->CR & (uint32_t)(CRYP_CR_ALGOMODE_TDES_ECB | CRYP_CR_ALGOMODE_TDES_CBC)) != (uint32_t)0
+ 577              		.loc 1 504 3 is_stmt 1 view .LVU159
+ 578              		.loc 1 504 12 is_stmt 0 view .LVU160
+ 579 0012 1B68     		ldr	r3, [r3]
+ 580              		.loc 1 504 6 view .LVU161
+ 581 0014 13F0080F 		tst	r3, #8
+ 582 0018 1BD0     		beq	.L38
+ 505:./Library/stm32f4xx_cryp.c ****   { 
+ 506:./Library/stm32f4xx_cryp.c ****     ckeckmask =  CRYP_SR_IFEM | CRYP_SR_BUSY ;
+ 583              		.loc 1 506 15 view .LVU162
+ 584 001a 4FF0110C 		mov	ip, #17
+ 585              	.LVL16:
+ 586              	.L36:
+ 507:./Library/stm32f4xx_cryp.c ****   }
+ 508:./Library/stm32f4xx_cryp.c ****   else /* AES or DES */
+ 509:./Library/stm32f4xx_cryp.c ****   {
+ 510:./Library/stm32f4xx_cryp.c ****     ckeckmask =  CRYP_SR_IFEM | CRYP_SR_BUSY | CRYP_SR_OFNE;
+ 511:./Library/stm32f4xx_cryp.c ****   }           
+ 512:./Library/stm32f4xx_cryp.c ****    
+ 513:./Library/stm32f4xx_cryp.c ****   do 
+ 587              		.loc 1 513 3 is_stmt 1 discriminator 2 view .LVU163
+ 514:./Library/stm32f4xx_cryp.c ****   {
+ 515:./Library/stm32f4xx_cryp.c ****     bitstatus = CRYP->SR & ckeckmask;
+ 588              		.loc 1 515 5 discriminator 2 view .LVU164
+ 589              		.loc 1 515 21 is_stmt 0 discriminator 2 view .LVU165
+ 590 001e 374B     		ldr	r3, .L42
+ 591 0020 5A68     		ldr	r2, [r3, #4]
+ 592              		.loc 1 515 15 discriminator 2 view .LVU166
+ 593 0022 02EA0C02 		and	r2, r2, ip
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 20
+
+
+ 594              	.LVL17:
+ 516:./Library/stm32f4xx_cryp.c ****     timeout++;
+ 595              		.loc 1 516 5 is_stmt 1 discriminator 2 view .LVU167
+ 596              		.loc 1 516 12 is_stmt 0 discriminator 2 view .LVU168
+ 597 0026 019B     		ldr	r3, [sp, #4]
+ 598 0028 0133     		adds	r3, r3, #1
+ 599 002a 0193     		str	r3, [sp, #4]
+ 517:./Library/stm32f4xx_cryp.c ****   }
+ 518:./Library/stm32f4xx_cryp.c ****   while ((timeout != MAX_TIMEOUT) && (bitstatus != CRYP_SR_IFEM));
+ 600              		.loc 1 518 9 is_stmt 1 discriminator 2 view .LVU169
+ 601              		.loc 1 518 19 is_stmt 0 discriminator 2 view .LVU170
+ 602 002c 019C     		ldr	r4, [sp, #4]
+ 603              		.loc 1 518 3 discriminator 2 view .LVU171
+ 604 002e 4FF6FF73 		movw	r3, #65535
+ 605 0032 9C42     		cmp	r4, r3
+ 606 0034 01D0     		beq	.L35
+ 607              		.loc 1 518 35 discriminator 1 view .LVU172
+ 608 0036 012A     		cmp	r2, #1
+ 609 0038 F1D1     		bne	.L36
+ 610              	.L35:
+ 519:./Library/stm32f4xx_cryp.c ****      
+ 520:./Library/stm32f4xx_cryp.c ****   if ((CRYP->SR & ckeckmask) != CRYP_SR_IFEM)
+ 611              		.loc 1 520 3 is_stmt 1 view .LVU173
+ 612              		.loc 1 520 12 is_stmt 0 view .LVU174
+ 613 003a 304B     		ldr	r3, .L42
+ 614 003c 5B68     		ldr	r3, [r3, #4]
+ 615              		.loc 1 520 17 view .LVU175
+ 616 003e 03EA0C0C 		and	ip, r3, ip
+ 617              	.LVL18:
+ 618              		.loc 1 520 6 view .LVU176
+ 619 0042 BCF1010F 		cmp	ip, #1
+ 620 0046 07D0     		beq	.L41
+ 521:./Library/stm32f4xx_cryp.c ****   {
+ 522:./Library/stm32f4xx_cryp.c ****     status = ERROR;
+ 621              		.loc 1 522 12 view .LVU177
+ 622 0048 0020     		movs	r0, #0
+ 623              	.LVL19:
+ 624              	.L37:
+ 523:./Library/stm32f4xx_cryp.c ****   }
+ 524:./Library/stm32f4xx_cryp.c ****   else
+ 525:./Library/stm32f4xx_cryp.c ****   {      
+ 526:./Library/stm32f4xx_cryp.c ****     /* Stop DMA transfers on the OUT FIFO by 
+ 527:./Library/stm32f4xx_cryp.c ****        - writing the DOEN bit to 0 in the CRYP_DMACR register 
+ 528:./Library/stm32f4xx_cryp.c ****        - and clear the CRYPEN bit. */
+ 529:./Library/stm32f4xx_cryp.c **** 
+ 530:./Library/stm32f4xx_cryp.c ****     CRYP->DMACR &= ~(uint32_t)CRYP_DMACR_DOEN;
+ 531:./Library/stm32f4xx_cryp.c ****     CRYP->CR &= ~(uint32_t)CRYP_CR_CRYPEN;
+ 532:./Library/stm32f4xx_cryp.c **** 
+ 533:./Library/stm32f4xx_cryp.c ****     /* Save the current configuration (bit 19, bit[17:16] and bits [9:2] in the CRYP_CR register) *
+ 534:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CR_CurrentConfig  = CRYP->CR & (CRYP_CR_GCM_CCMPH |
+ 535:./Library/stm32f4xx_cryp.c ****                                                       CRYP_CR_KEYSIZE  |
+ 536:./Library/stm32f4xx_cryp.c ****                                                       CRYP_CR_DATATYPE |
+ 537:./Library/stm32f4xx_cryp.c ****                                                       CRYP_CR_ALGOMODE |
+ 538:./Library/stm32f4xx_cryp.c ****                                                       CRYP_CR_ALGODIR);
+ 539:./Library/stm32f4xx_cryp.c **** 
+ 540:./Library/stm32f4xx_cryp.c ****     /* and, if not in ECB mode, the initialization vectors. */
+ 541:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV0LR = CRYP->IV0LR;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 21
+
+
+ 542:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV0RR = CRYP->IV0RR;
+ 543:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1LR = CRYP->IV1LR;
+ 544:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1RR = CRYP->IV1RR;
+ 545:./Library/stm32f4xx_cryp.c **** 
+ 546:./Library/stm32f4xx_cryp.c ****     /* save The key value */
+ 547:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K0LR = CRYP_KeyInitStruct->CRYP_Key0Left; 
+ 548:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K0RR = CRYP_KeyInitStruct->CRYP_Key0Right; 
+ 549:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1LR = CRYP_KeyInitStruct->CRYP_Key1Left; 
+ 550:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1RR = CRYP_KeyInitStruct->CRYP_Key1Right; 
+ 551:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2LR = CRYP_KeyInitStruct->CRYP_Key2Left; 
+ 552:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2RR = CRYP_KeyInitStruct->CRYP_Key2Right; 
+ 553:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3LR = CRYP_KeyInitStruct->CRYP_Key3Left; 
+ 554:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3RR = CRYP_KeyInitStruct->CRYP_Key3Right; 
+ 555:./Library/stm32f4xx_cryp.c **** 
+ 556:./Library/stm32f4xx_cryp.c ****     /* Save the content of context swap registers */
+ 557:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[0] = CRYP->CSGCMCCM0R;
+ 558:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[1] = CRYP->CSGCMCCM1R;
+ 559:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[2] = CRYP->CSGCMCCM2R;
+ 560:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[3] = CRYP->CSGCMCCM3R;
+ 561:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[4] = CRYP->CSGCMCCM4R;
+ 562:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[5] = CRYP->CSGCMCCM5R;
+ 563:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[6] = CRYP->CSGCMCCM6R;
+ 564:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[7] = CRYP->CSGCMCCM7R;
+ 565:./Library/stm32f4xx_cryp.c ****     
+ 566:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[0] = CRYP->CSGCM0R;
+ 567:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[1] = CRYP->CSGCM1R;
+ 568:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[2] = CRYP->CSGCM2R;
+ 569:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[3] = CRYP->CSGCM3R;
+ 570:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[4] = CRYP->CSGCM4R;
+ 571:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[5] = CRYP->CSGCM5R;
+ 572:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[6] = CRYP->CSGCM6R;
+ 573:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[7] = CRYP->CSGCM7R;
+ 574:./Library/stm32f4xx_cryp.c ****     
+ 575:./Library/stm32f4xx_cryp.c ****    /* When needed, save the DMA status (pointers for IN and OUT messages, 
+ 576:./Library/stm32f4xx_cryp.c ****       number of remaining bytes, etc.) */
+ 577:./Library/stm32f4xx_cryp.c ****      
+ 578:./Library/stm32f4xx_cryp.c ****     status = SUCCESS;
+ 579:./Library/stm32f4xx_cryp.c ****   }
+ 580:./Library/stm32f4xx_cryp.c **** 
+ 581:./Library/stm32f4xx_cryp.c ****    return status;
+ 625              		.loc 1 581 4 is_stmt 1 view .LVU178
+ 582:./Library/stm32f4xx_cryp.c **** }
+ 626              		.loc 1 582 1 is_stmt 0 view .LVU179
+ 627 004a 03B0     		add	sp, sp, #12
+ 628              	.LCFI3:
+ 629              		.cfi_remember_state
+ 630              		.cfi_def_cfa_offset 4
+ 631              		@ sp needed
+ 632 004c 5DF8044B 		ldr	r4, [sp], #4
+ 633              	.LCFI4:
+ 634              		.cfi_restore 4
+ 635              		.cfi_def_cfa_offset 0
+ 636 0050 7047     		bx	lr
+ 637              	.LVL20:
+ 638              	.L38:
+ 639              	.LCFI5:
+ 640              		.cfi_restore_state
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 22
+
+
+ 510:./Library/stm32f4xx_cryp.c ****   }           
+ 641              		.loc 1 510 15 view .LVU180
+ 642 0052 4FF0150C 		mov	ip, #21
+ 643              	.LVL21:
+ 510:./Library/stm32f4xx_cryp.c ****   }           
+ 644              		.loc 1 510 15 view .LVU181
+ 645 0056 E2E7     		b	.L36
+ 646              	.LVL22:
+ 647              	.L41:
+ 530:./Library/stm32f4xx_cryp.c ****     CRYP->CR &= ~(uint32_t)CRYP_CR_CRYPEN;
+ 648              		.loc 1 530 5 is_stmt 1 view .LVU182
+ 530:./Library/stm32f4xx_cryp.c ****     CRYP->CR &= ~(uint32_t)CRYP_CR_CRYPEN;
+ 649              		.loc 1 530 17 is_stmt 0 view .LVU183
+ 650 0058 284B     		ldr	r3, .L42
+ 651 005a 1A69     		ldr	r2, [r3, #16]
+ 652              	.LVL23:
+ 530:./Library/stm32f4xx_cryp.c ****     CRYP->CR &= ~(uint32_t)CRYP_CR_CRYPEN;
+ 653              		.loc 1 530 17 view .LVU184
+ 654 005c 22F00202 		bic	r2, r2, #2
+ 655 0060 1A61     		str	r2, [r3, #16]
+ 531:./Library/stm32f4xx_cryp.c **** 
+ 656              		.loc 1 531 5 is_stmt 1 view .LVU185
+ 531:./Library/stm32f4xx_cryp.c **** 
+ 657              		.loc 1 531 14 is_stmt 0 view .LVU186
+ 658 0062 1A68     		ldr	r2, [r3]
+ 659 0064 22F40042 		bic	r2, r2, #32768
+ 660 0068 1A60     		str	r2, [r3]
+ 534:./Library/stm32f4xx_cryp.c ****                                                       CRYP_CR_KEYSIZE  |
+ 661              		.loc 1 534 5 is_stmt 1 view .LVU187
+ 534:./Library/stm32f4xx_cryp.c ****                                                       CRYP_CR_KEYSIZE  |
+ 662              		.loc 1 534 47 is_stmt 0 view .LVU188
+ 663 006a 1A68     		ldr	r2, [r3]
+ 534:./Library/stm32f4xx_cryp.c ****                                                       CRYP_CR_KEYSIZE  |
+ 664              		.loc 1 534 52 view .LVU189
+ 665 006c 22F07F42 		bic	r2, r2, #-16777216
+ 666 0070 22F47402 		bic	r2, r2, #15990784
+ 667 0074 22F47C42 		bic	r2, r2, #64512
+ 668 0078 22F00302 		bic	r2, r2, #3
+ 534:./Library/stm32f4xx_cryp.c ****                                                       CRYP_CR_KEYSIZE  |
+ 669              		.loc 1 534 41 view .LVU190
+ 670 007c 0260     		str	r2, [r0]
+ 541:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV0RR = CRYP->IV0RR;
+ 671              		.loc 1 541 5 is_stmt 1 view .LVU191
+ 541:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV0RR = CRYP->IV0RR;
+ 672              		.loc 1 541 40 is_stmt 0 view .LVU192
+ 673 007e 1A6C     		ldr	r2, [r3, #64]
+ 541:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV0RR = CRYP->IV0RR;
+ 674              		.loc 1 541 34 view .LVU193
+ 675 0080 4260     		str	r2, [r0, #4]
+ 542:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1LR = CRYP->IV1LR;
+ 676              		.loc 1 542 5 is_stmt 1 view .LVU194
+ 542:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1LR = CRYP->IV1LR;
+ 677              		.loc 1 542 40 is_stmt 0 view .LVU195
+ 678 0082 5A6C     		ldr	r2, [r3, #68]
+ 542:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1LR = CRYP->IV1LR;
+ 679              		.loc 1 542 34 view .LVU196
+ 680 0084 8260     		str	r2, [r0, #8]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 23
+
+
+ 543:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1RR = CRYP->IV1RR;
+ 681              		.loc 1 543 5 is_stmt 1 view .LVU197
+ 543:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1RR = CRYP->IV1RR;
+ 682              		.loc 1 543 40 is_stmt 0 view .LVU198
+ 683 0086 9A6C     		ldr	r2, [r3, #72]
+ 543:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1RR = CRYP->IV1RR;
+ 684              		.loc 1 543 34 view .LVU199
+ 685 0088 C260     		str	r2, [r0, #12]
+ 544:./Library/stm32f4xx_cryp.c **** 
+ 686              		.loc 1 544 5 is_stmt 1 view .LVU200
+ 544:./Library/stm32f4xx_cryp.c **** 
+ 687              		.loc 1 544 40 is_stmt 0 view .LVU201
+ 688 008a DA6C     		ldr	r2, [r3, #76]
+ 544:./Library/stm32f4xx_cryp.c **** 
+ 689              		.loc 1 544 34 view .LVU202
+ 690 008c 0261     		str	r2, [r0, #16]
+ 547:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K0RR = CRYP_KeyInitStruct->CRYP_Key0Right; 
+ 691              		.loc 1 547 5 is_stmt 1 view .LVU203
+ 547:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K0RR = CRYP_KeyInitStruct->CRYP_Key0Right; 
+ 692              		.loc 1 547 53 is_stmt 0 view .LVU204
+ 693 008e 0A68     		ldr	r2, [r1]
+ 547:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K0RR = CRYP_KeyInitStruct->CRYP_Key0Right; 
+ 694              		.loc 1 547 33 view .LVU205
+ 695 0090 4261     		str	r2, [r0, #20]
+ 548:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1LR = CRYP_KeyInitStruct->CRYP_Key1Left; 
+ 696              		.loc 1 548 5 is_stmt 1 view .LVU206
+ 548:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1LR = CRYP_KeyInitStruct->CRYP_Key1Left; 
+ 697              		.loc 1 548 53 is_stmt 0 view .LVU207
+ 698 0092 4A68     		ldr	r2, [r1, #4]
+ 548:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1LR = CRYP_KeyInitStruct->CRYP_Key1Left; 
+ 699              		.loc 1 548 33 view .LVU208
+ 700 0094 8261     		str	r2, [r0, #24]
+ 549:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1RR = CRYP_KeyInitStruct->CRYP_Key1Right; 
+ 701              		.loc 1 549 5 is_stmt 1 view .LVU209
+ 549:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1RR = CRYP_KeyInitStruct->CRYP_Key1Right; 
+ 702              		.loc 1 549 53 is_stmt 0 view .LVU210
+ 703 0096 8A68     		ldr	r2, [r1, #8]
+ 549:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1RR = CRYP_KeyInitStruct->CRYP_Key1Right; 
+ 704              		.loc 1 549 33 view .LVU211
+ 705 0098 C261     		str	r2, [r0, #28]
+ 550:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2LR = CRYP_KeyInitStruct->CRYP_Key2Left; 
+ 706              		.loc 1 550 5 is_stmt 1 view .LVU212
+ 550:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2LR = CRYP_KeyInitStruct->CRYP_Key2Left; 
+ 707              		.loc 1 550 53 is_stmt 0 view .LVU213
+ 708 009a CA68     		ldr	r2, [r1, #12]
+ 550:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2LR = CRYP_KeyInitStruct->CRYP_Key2Left; 
+ 709              		.loc 1 550 33 view .LVU214
+ 710 009c 0262     		str	r2, [r0, #32]
+ 551:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2RR = CRYP_KeyInitStruct->CRYP_Key2Right; 
+ 711              		.loc 1 551 5 is_stmt 1 view .LVU215
+ 551:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2RR = CRYP_KeyInitStruct->CRYP_Key2Right; 
+ 712              		.loc 1 551 53 is_stmt 0 view .LVU216
+ 713 009e 0A69     		ldr	r2, [r1, #16]
+ 551:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2RR = CRYP_KeyInitStruct->CRYP_Key2Right; 
+ 714              		.loc 1 551 33 view .LVU217
+ 715 00a0 4262     		str	r2, [r0, #36]
+ 552:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3LR = CRYP_KeyInitStruct->CRYP_Key3Left; 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 24
+
+
+ 716              		.loc 1 552 5 is_stmt 1 view .LVU218
+ 552:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3LR = CRYP_KeyInitStruct->CRYP_Key3Left; 
+ 717              		.loc 1 552 53 is_stmt 0 view .LVU219
+ 718 00a2 4A69     		ldr	r2, [r1, #20]
+ 552:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3LR = CRYP_KeyInitStruct->CRYP_Key3Left; 
+ 719              		.loc 1 552 33 view .LVU220
+ 720 00a4 8262     		str	r2, [r0, #40]
+ 553:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3RR = CRYP_KeyInitStruct->CRYP_Key3Right; 
+ 721              		.loc 1 553 5 is_stmt 1 view .LVU221
+ 553:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3RR = CRYP_KeyInitStruct->CRYP_Key3Right; 
+ 722              		.loc 1 553 53 is_stmt 0 view .LVU222
+ 723 00a6 8A69     		ldr	r2, [r1, #24]
+ 553:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3RR = CRYP_KeyInitStruct->CRYP_Key3Right; 
+ 724              		.loc 1 553 33 view .LVU223
+ 725 00a8 C262     		str	r2, [r0, #44]
+ 554:./Library/stm32f4xx_cryp.c **** 
+ 726              		.loc 1 554 5 is_stmt 1 view .LVU224
+ 554:./Library/stm32f4xx_cryp.c **** 
+ 727              		.loc 1 554 53 is_stmt 0 view .LVU225
+ 728 00aa CA69     		ldr	r2, [r1, #28]
+ 554:./Library/stm32f4xx_cryp.c **** 
+ 729              		.loc 1 554 33 view .LVU226
+ 730 00ac 0263     		str	r2, [r0, #48]
+ 557:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[1] = CRYP->CSGCMCCM1R;
+ 731              		.loc 1 557 5 is_stmt 1 view .LVU227
+ 557:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[1] = CRYP->CSGCMCCM1R;
+ 732              		.loc 1 557 47 is_stmt 0 view .LVU228
+ 733 00ae 1A6D     		ldr	r2, [r3, #80]
+ 557:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[1] = CRYP->CSGCMCCM1R;
+ 734              		.loc 1 557 41 view .LVU229
+ 735 00b0 4263     		str	r2, [r0, #52]
+ 558:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[2] = CRYP->CSGCMCCM2R;
+ 736              		.loc 1 558 5 is_stmt 1 view .LVU230
+ 558:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[2] = CRYP->CSGCMCCM2R;
+ 737              		.loc 1 558 47 is_stmt 0 view .LVU231
+ 738 00b2 5A6D     		ldr	r2, [r3, #84]
+ 558:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[2] = CRYP->CSGCMCCM2R;
+ 739              		.loc 1 558 41 view .LVU232
+ 740 00b4 8263     		str	r2, [r0, #56]
+ 559:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[3] = CRYP->CSGCMCCM3R;
+ 741              		.loc 1 559 5 is_stmt 1 view .LVU233
+ 559:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[3] = CRYP->CSGCMCCM3R;
+ 742              		.loc 1 559 47 is_stmt 0 view .LVU234
+ 743 00b6 9A6D     		ldr	r2, [r3, #88]
+ 559:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[3] = CRYP->CSGCMCCM3R;
+ 744              		.loc 1 559 41 view .LVU235
+ 745 00b8 C263     		str	r2, [r0, #60]
+ 560:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[4] = CRYP->CSGCMCCM4R;
+ 746              		.loc 1 560 5 is_stmt 1 view .LVU236
+ 560:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[4] = CRYP->CSGCMCCM4R;
+ 747              		.loc 1 560 47 is_stmt 0 view .LVU237
+ 748 00ba DA6D     		ldr	r2, [r3, #92]
+ 560:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[4] = CRYP->CSGCMCCM4R;
+ 749              		.loc 1 560 41 view .LVU238
+ 750 00bc 0264     		str	r2, [r0, #64]
+ 561:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[5] = CRYP->CSGCMCCM5R;
+ 751              		.loc 1 561 5 is_stmt 1 view .LVU239
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 25
+
+
+ 561:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[5] = CRYP->CSGCMCCM5R;
+ 752              		.loc 1 561 47 is_stmt 0 view .LVU240
+ 753 00be 1A6E     		ldr	r2, [r3, #96]
+ 561:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[5] = CRYP->CSGCMCCM5R;
+ 754              		.loc 1 561 41 view .LVU241
+ 755 00c0 4264     		str	r2, [r0, #68]
+ 562:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[6] = CRYP->CSGCMCCM6R;
+ 756              		.loc 1 562 5 is_stmt 1 view .LVU242
+ 562:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[6] = CRYP->CSGCMCCM6R;
+ 757              		.loc 1 562 47 is_stmt 0 view .LVU243
+ 758 00c2 5A6E     		ldr	r2, [r3, #100]
+ 562:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[6] = CRYP->CSGCMCCM6R;
+ 759              		.loc 1 562 41 view .LVU244
+ 760 00c4 8264     		str	r2, [r0, #72]
+ 563:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[7] = CRYP->CSGCMCCM7R;
+ 761              		.loc 1 563 5 is_stmt 1 view .LVU245
+ 563:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[7] = CRYP->CSGCMCCM7R;
+ 762              		.loc 1 563 47 is_stmt 0 view .LVU246
+ 763 00c6 9A6E     		ldr	r2, [r3, #104]
+ 563:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[7] = CRYP->CSGCMCCM7R;
+ 764              		.loc 1 563 41 view .LVU247
+ 765 00c8 C264     		str	r2, [r0, #76]
+ 564:./Library/stm32f4xx_cryp.c ****     
+ 766              		.loc 1 564 5 is_stmt 1 view .LVU248
+ 564:./Library/stm32f4xx_cryp.c ****     
+ 767              		.loc 1 564 47 is_stmt 0 view .LVU249
+ 768 00ca DA6E     		ldr	r2, [r3, #108]
+ 564:./Library/stm32f4xx_cryp.c ****     
+ 769              		.loc 1 564 41 view .LVU250
+ 770 00cc 0265     		str	r2, [r0, #80]
+ 566:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[1] = CRYP->CSGCM1R;
+ 771              		.loc 1 566 5 is_stmt 1 view .LVU251
+ 566:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[1] = CRYP->CSGCM1R;
+ 772              		.loc 1 566 44 is_stmt 0 view .LVU252
+ 773 00ce 1A6F     		ldr	r2, [r3, #112]
+ 566:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[1] = CRYP->CSGCM1R;
+ 774              		.loc 1 566 38 view .LVU253
+ 775 00d0 4265     		str	r2, [r0, #84]
+ 567:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[2] = CRYP->CSGCM2R;
+ 776              		.loc 1 567 5 is_stmt 1 view .LVU254
+ 567:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[2] = CRYP->CSGCM2R;
+ 777              		.loc 1 567 44 is_stmt 0 view .LVU255
+ 778 00d2 5A6F     		ldr	r2, [r3, #116]
+ 567:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[2] = CRYP->CSGCM2R;
+ 779              		.loc 1 567 38 view .LVU256
+ 780 00d4 8265     		str	r2, [r0, #88]
+ 568:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[3] = CRYP->CSGCM3R;
+ 781              		.loc 1 568 5 is_stmt 1 view .LVU257
+ 568:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[3] = CRYP->CSGCM3R;
+ 782              		.loc 1 568 44 is_stmt 0 view .LVU258
+ 783 00d6 9A6F     		ldr	r2, [r3, #120]
+ 568:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[3] = CRYP->CSGCM3R;
+ 784              		.loc 1 568 38 view .LVU259
+ 785 00d8 C265     		str	r2, [r0, #92]
+ 569:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[4] = CRYP->CSGCM4R;
+ 786              		.loc 1 569 5 is_stmt 1 view .LVU260
+ 569:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[4] = CRYP->CSGCM4R;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 26
+
+
+ 787              		.loc 1 569 44 is_stmt 0 view .LVU261
+ 788 00da DA6F     		ldr	r2, [r3, #124]
+ 569:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[4] = CRYP->CSGCM4R;
+ 789              		.loc 1 569 38 view .LVU262
+ 790 00dc 0266     		str	r2, [r0, #96]
+ 570:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[5] = CRYP->CSGCM5R;
+ 791              		.loc 1 570 5 is_stmt 1 view .LVU263
+ 570:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[5] = CRYP->CSGCM5R;
+ 792              		.loc 1 570 44 is_stmt 0 view .LVU264
+ 793 00de D3F88020 		ldr	r2, [r3, #128]
+ 570:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[5] = CRYP->CSGCM5R;
+ 794              		.loc 1 570 38 view .LVU265
+ 795 00e2 4266     		str	r2, [r0, #100]
+ 571:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[6] = CRYP->CSGCM6R;
+ 796              		.loc 1 571 5 is_stmt 1 view .LVU266
+ 571:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[6] = CRYP->CSGCM6R;
+ 797              		.loc 1 571 44 is_stmt 0 view .LVU267
+ 798 00e4 D3F88420 		ldr	r2, [r3, #132]
+ 571:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[6] = CRYP->CSGCM6R;
+ 799              		.loc 1 571 38 view .LVU268
+ 800 00e8 8266     		str	r2, [r0, #104]
+ 572:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[7] = CRYP->CSGCM7R;
+ 801              		.loc 1 572 5 is_stmt 1 view .LVU269
+ 572:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[7] = CRYP->CSGCM7R;
+ 802              		.loc 1 572 44 is_stmt 0 view .LVU270
+ 803 00ea D3F88820 		ldr	r2, [r3, #136]
+ 572:./Library/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[7] = CRYP->CSGCM7R;
+ 804              		.loc 1 572 38 view .LVU271
+ 805 00ee C266     		str	r2, [r0, #108]
+ 573:./Library/stm32f4xx_cryp.c ****     
+ 806              		.loc 1 573 5 is_stmt 1 view .LVU272
+ 573:./Library/stm32f4xx_cryp.c ****     
+ 807              		.loc 1 573 44 is_stmt 0 view .LVU273
+ 808 00f0 D3F88C30 		ldr	r3, [r3, #140]
+ 573:./Library/stm32f4xx_cryp.c ****     
+ 809              		.loc 1 573 38 view .LVU274
+ 810 00f4 0367     		str	r3, [r0, #112]
+ 578:./Library/stm32f4xx_cryp.c ****   }
+ 811              		.loc 1 578 5 is_stmt 1 view .LVU275
+ 812              	.LVL24:
+ 578:./Library/stm32f4xx_cryp.c ****   }
+ 813              		.loc 1 578 12 is_stmt 0 view .LVU276
+ 814 00f6 0120     		movs	r0, #1
+ 815              	.LVL25:
+ 578:./Library/stm32f4xx_cryp.c ****   }
+ 816              		.loc 1 578 12 view .LVU277
+ 817 00f8 A7E7     		b	.L37
+ 818              	.L43:
+ 819 00fa 00BF     		.align	2
+ 820              	.L42:
+ 821 00fc 00000650 		.word	1342570496
+ 822              		.cfi_endproc
+ 823              	.LFE135:
+ 825              		.section	.text.CRYP_RestoreContext,"ax",%progbits
+ 826              		.align	1
+ 827              		.global	CRYP_RestoreContext
+ 828              		.syntax unified
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 27
+
+
+ 829              		.thumb
+ 830              		.thumb_func
+ 832              	CRYP_RestoreContext:
+ 833              	.LVL26:
+ 834              	.LFB136:
+ 583:./Library/stm32f4xx_cryp.c **** 
+ 584:./Library/stm32f4xx_cryp.c **** /**
+ 585:./Library/stm32f4xx_cryp.c ****   * @brief  Restores the CRYP peripheral Context.
+ 586:./Library/stm32f4xx_cryp.c ****   * @note   Since the DMA transfer is stopped in CRYP_SaveContext() function,
+ 587:./Library/stm32f4xx_cryp.c ****   *         after restoring the context, you have to enable the DMA again (if the
+ 588:./Library/stm32f4xx_cryp.c ****   *         DMA was previously used).  
+ 589:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_ContextRestore: pointer to a CRYP_Context structure that contains
+ 590:./Library/stm32f4xx_cryp.c ****   *         the repository for saved context.
+ 591:./Library/stm32f4xx_cryp.c ****   * @note   The data that were saved during context saving must be rewritten into
+ 592:./Library/stm32f4xx_cryp.c ****   *         the IN FIFO.
+ 593:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 594:./Library/stm32f4xx_cryp.c ****   */
+ 595:./Library/stm32f4xx_cryp.c **** void CRYP_RestoreContext(CRYP_Context* CRYP_ContextRestore)  
+ 596:./Library/stm32f4xx_cryp.c **** {
+ 835              		.loc 1 596 1 is_stmt 1 view -0
+ 836              		.cfi_startproc
+ 837              		@ args = 0, pretend = 0, frame = 0
+ 838              		@ frame_needed = 0, uses_anonymous_args = 0
+ 839              		@ link register save eliminated.
+ 597:./Library/stm32f4xx_cryp.c **** 
+ 598:./Library/stm32f4xx_cryp.c ****   /* Configure the processor with the saved configuration */
+ 599:./Library/stm32f4xx_cryp.c ****   CRYP->CR = CRYP_ContextRestore->CR_CurrentConfig;
+ 840              		.loc 1 599 3 view .LVU279
+ 841              		.loc 1 599 33 is_stmt 0 view .LVU280
+ 842 0000 0268     		ldr	r2, [r0]
+ 843              		.loc 1 599 12 view .LVU281
+ 844 0002 214B     		ldr	r3, .L45
+ 845 0004 1A60     		str	r2, [r3]
+ 600:./Library/stm32f4xx_cryp.c **** 
+ 601:./Library/stm32f4xx_cryp.c ****   /* restore The key value */
+ 602:./Library/stm32f4xx_cryp.c ****   CRYP->K0LR = CRYP_ContextRestore->CRYP_K0LR; 
+ 846              		.loc 1 602 3 is_stmt 1 view .LVU282
+ 847              		.loc 1 602 35 is_stmt 0 view .LVU283
+ 848 0006 4269     		ldr	r2, [r0, #20]
+ 849              		.loc 1 602 14 view .LVU284
+ 850 0008 1A62     		str	r2, [r3, #32]
+ 603:./Library/stm32f4xx_cryp.c ****   CRYP->K0RR = CRYP_ContextRestore->CRYP_K0RR;
+ 851              		.loc 1 603 3 is_stmt 1 view .LVU285
+ 852              		.loc 1 603 35 is_stmt 0 view .LVU286
+ 853 000a 8269     		ldr	r2, [r0, #24]
+ 854              		.loc 1 603 14 view .LVU287
+ 855 000c 5A62     		str	r2, [r3, #36]
+ 604:./Library/stm32f4xx_cryp.c ****   CRYP->K1LR = CRYP_ContextRestore->CRYP_K1LR;
+ 856              		.loc 1 604 3 is_stmt 1 view .LVU288
+ 857              		.loc 1 604 35 is_stmt 0 view .LVU289
+ 858 000e C269     		ldr	r2, [r0, #28]
+ 859              		.loc 1 604 14 view .LVU290
+ 860 0010 9A62     		str	r2, [r3, #40]
+ 605:./Library/stm32f4xx_cryp.c ****   CRYP->K1RR = CRYP_ContextRestore->CRYP_K1RR;
+ 861              		.loc 1 605 3 is_stmt 1 view .LVU291
+ 862              		.loc 1 605 35 is_stmt 0 view .LVU292
+ 863 0012 026A     		ldr	r2, [r0, #32]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 28
+
+
+ 864              		.loc 1 605 14 view .LVU293
+ 865 0014 DA62     		str	r2, [r3, #44]
+ 606:./Library/stm32f4xx_cryp.c ****   CRYP->K2LR = CRYP_ContextRestore->CRYP_K2LR;
+ 866              		.loc 1 606 3 is_stmt 1 view .LVU294
+ 867              		.loc 1 606 35 is_stmt 0 view .LVU295
+ 868 0016 426A     		ldr	r2, [r0, #36]
+ 869              		.loc 1 606 14 view .LVU296
+ 870 0018 1A63     		str	r2, [r3, #48]
+ 607:./Library/stm32f4xx_cryp.c ****   CRYP->K2RR = CRYP_ContextRestore->CRYP_K2RR;
+ 871              		.loc 1 607 3 is_stmt 1 view .LVU297
+ 872              		.loc 1 607 35 is_stmt 0 view .LVU298
+ 873 001a 826A     		ldr	r2, [r0, #40]
+ 874              		.loc 1 607 14 view .LVU299
+ 875 001c 5A63     		str	r2, [r3, #52]
+ 608:./Library/stm32f4xx_cryp.c ****   CRYP->K3LR = CRYP_ContextRestore->CRYP_K3LR;
+ 876              		.loc 1 608 3 is_stmt 1 view .LVU300
+ 877              		.loc 1 608 35 is_stmt 0 view .LVU301
+ 878 001e C26A     		ldr	r2, [r0, #44]
+ 879              		.loc 1 608 14 view .LVU302
+ 880 0020 9A63     		str	r2, [r3, #56]
+ 609:./Library/stm32f4xx_cryp.c ****   CRYP->K3RR = CRYP_ContextRestore->CRYP_K3RR;
+ 881              		.loc 1 609 3 is_stmt 1 view .LVU303
+ 882              		.loc 1 609 35 is_stmt 0 view .LVU304
+ 883 0022 026B     		ldr	r2, [r0, #48]
+ 884              		.loc 1 609 14 view .LVU305
+ 885 0024 DA63     		str	r2, [r3, #60]
+ 610:./Library/stm32f4xx_cryp.c **** 
+ 611:./Library/stm32f4xx_cryp.c ****   /* and the initialization vectors. */
+ 612:./Library/stm32f4xx_cryp.c ****   CRYP->IV0LR = CRYP_ContextRestore->CRYP_IV0LR;
+ 886              		.loc 1 612 3 is_stmt 1 view .LVU306
+ 887              		.loc 1 612 36 is_stmt 0 view .LVU307
+ 888 0026 4268     		ldr	r2, [r0, #4]
+ 889              		.loc 1 612 15 view .LVU308
+ 890 0028 1A64     		str	r2, [r3, #64]
+ 613:./Library/stm32f4xx_cryp.c ****   CRYP->IV0RR = CRYP_ContextRestore->CRYP_IV0RR;
+ 891              		.loc 1 613 3 is_stmt 1 view .LVU309
+ 892              		.loc 1 613 36 is_stmt 0 view .LVU310
+ 893 002a 8268     		ldr	r2, [r0, #8]
+ 894              		.loc 1 613 15 view .LVU311
+ 895 002c 5A64     		str	r2, [r3, #68]
+ 614:./Library/stm32f4xx_cryp.c ****   CRYP->IV1LR = CRYP_ContextRestore->CRYP_IV1LR;
+ 896              		.loc 1 614 3 is_stmt 1 view .LVU312
+ 897              		.loc 1 614 36 is_stmt 0 view .LVU313
+ 898 002e C268     		ldr	r2, [r0, #12]
+ 899              		.loc 1 614 15 view .LVU314
+ 900 0030 9A64     		str	r2, [r3, #72]
+ 615:./Library/stm32f4xx_cryp.c ****   CRYP->IV1RR = CRYP_ContextRestore->CRYP_IV1RR;
+ 901              		.loc 1 615 3 is_stmt 1 view .LVU315
+ 902              		.loc 1 615 36 is_stmt 0 view .LVU316
+ 903 0032 0269     		ldr	r2, [r0, #16]
+ 904              		.loc 1 615 15 view .LVU317
+ 905 0034 DA64     		str	r2, [r3, #76]
+ 616:./Library/stm32f4xx_cryp.c **** 
+ 617:./Library/stm32f4xx_cryp.c ****   /* Restore the content of context swap registers */
+ 618:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM0R = CRYP_ContextRestore->CRYP_CSGCMCCMR[0];
+ 906              		.loc 1 618 3 is_stmt 1 view .LVU318
+ 907              		.loc 1 618 57 is_stmt 0 view .LVU319
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 29
+
+
+ 908 0036 426B     		ldr	r2, [r0, #52]
+ 909              		.loc 1 618 20 view .LVU320
+ 910 0038 1A65     		str	r2, [r3, #80]
+ 619:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM1R = CRYP_ContextRestore->CRYP_CSGCMCCMR[1];
+ 911              		.loc 1 619 3 is_stmt 1 view .LVU321
+ 912              		.loc 1 619 57 is_stmt 0 view .LVU322
+ 913 003a 826B     		ldr	r2, [r0, #56]
+ 914              		.loc 1 619 20 view .LVU323
+ 915 003c 5A65     		str	r2, [r3, #84]
+ 620:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM2R = CRYP_ContextRestore->CRYP_CSGCMCCMR[2];
+ 916              		.loc 1 620 3 is_stmt 1 view .LVU324
+ 917              		.loc 1 620 57 is_stmt 0 view .LVU325
+ 918 003e C26B     		ldr	r2, [r0, #60]
+ 919              		.loc 1 620 20 view .LVU326
+ 920 0040 9A65     		str	r2, [r3, #88]
+ 621:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM3R = CRYP_ContextRestore->CRYP_CSGCMCCMR[3];
+ 921              		.loc 1 621 3 is_stmt 1 view .LVU327
+ 922              		.loc 1 621 57 is_stmt 0 view .LVU328
+ 923 0042 026C     		ldr	r2, [r0, #64]
+ 924              		.loc 1 621 20 view .LVU329
+ 925 0044 DA65     		str	r2, [r3, #92]
+ 622:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM4R = CRYP_ContextRestore->CRYP_CSGCMCCMR[4];
+ 926              		.loc 1 622 3 is_stmt 1 view .LVU330
+ 927              		.loc 1 622 57 is_stmt 0 view .LVU331
+ 928 0046 426C     		ldr	r2, [r0, #68]
+ 929              		.loc 1 622 20 view .LVU332
+ 930 0048 1A66     		str	r2, [r3, #96]
+ 623:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM5R = CRYP_ContextRestore->CRYP_CSGCMCCMR[5];
+ 931              		.loc 1 623 3 is_stmt 1 view .LVU333
+ 932              		.loc 1 623 57 is_stmt 0 view .LVU334
+ 933 004a 826C     		ldr	r2, [r0, #72]
+ 934              		.loc 1 623 20 view .LVU335
+ 935 004c 5A66     		str	r2, [r3, #100]
+ 624:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM6R = CRYP_ContextRestore->CRYP_CSGCMCCMR[6];
+ 936              		.loc 1 624 3 is_stmt 1 view .LVU336
+ 937              		.loc 1 624 57 is_stmt 0 view .LVU337
+ 938 004e C26C     		ldr	r2, [r0, #76]
+ 939              		.loc 1 624 20 view .LVU338
+ 940 0050 9A66     		str	r2, [r3, #104]
+ 625:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM7R = CRYP_ContextRestore->CRYP_CSGCMCCMR[7];
+ 941              		.loc 1 625 3 is_stmt 1 view .LVU339
+ 942              		.loc 1 625 57 is_stmt 0 view .LVU340
+ 943 0052 026D     		ldr	r2, [r0, #80]
+ 944              		.loc 1 625 20 view .LVU341
+ 945 0054 DA66     		str	r2, [r3, #108]
+ 626:./Library/stm32f4xx_cryp.c ****   
+ 627:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCM0R = CRYP_ContextRestore->CRYP_CSGCMR[0];
+ 946              		.loc 1 627 3 is_stmt 1 view .LVU342
+ 947              		.loc 1 627 51 is_stmt 0 view .LVU343
+ 948 0056 426D     		ldr	r2, [r0, #84]
+ 949              		.loc 1 627 17 view .LVU344
+ 950 0058 1A67     		str	r2, [r3, #112]
+ 628:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCM1R = CRYP_ContextRestore->CRYP_CSGCMR[1];
+ 951              		.loc 1 628 3 is_stmt 1 view .LVU345
+ 952              		.loc 1 628 51 is_stmt 0 view .LVU346
+ 953 005a 826D     		ldr	r2, [r0, #88]
+ 954              		.loc 1 628 17 view .LVU347
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 30
+
+
+ 955 005c 5A67     		str	r2, [r3, #116]
+ 629:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCM2R = CRYP_ContextRestore->CRYP_CSGCMR[2];
+ 956              		.loc 1 629 3 is_stmt 1 view .LVU348
+ 957              		.loc 1 629 51 is_stmt 0 view .LVU349
+ 958 005e C26D     		ldr	r2, [r0, #92]
+ 959              		.loc 1 629 17 view .LVU350
+ 960 0060 9A67     		str	r2, [r3, #120]
+ 630:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCM3R = CRYP_ContextRestore->CRYP_CSGCMR[3];
+ 961              		.loc 1 630 3 is_stmt 1 view .LVU351
+ 962              		.loc 1 630 51 is_stmt 0 view .LVU352
+ 963 0062 026E     		ldr	r2, [r0, #96]
+ 964              		.loc 1 630 17 view .LVU353
+ 965 0064 DA67     		str	r2, [r3, #124]
+ 631:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCM4R = CRYP_ContextRestore->CRYP_CSGCMR[4];
+ 966              		.loc 1 631 3 is_stmt 1 view .LVU354
+ 967              		.loc 1 631 51 is_stmt 0 view .LVU355
+ 968 0066 426E     		ldr	r2, [r0, #100]
+ 969              		.loc 1 631 17 view .LVU356
+ 970 0068 C3F88020 		str	r2, [r3, #128]
+ 632:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCM5R = CRYP_ContextRestore->CRYP_CSGCMR[5];
+ 971              		.loc 1 632 3 is_stmt 1 view .LVU357
+ 972              		.loc 1 632 51 is_stmt 0 view .LVU358
+ 973 006c 826E     		ldr	r2, [r0, #104]
+ 974              		.loc 1 632 17 view .LVU359
+ 975 006e C3F88420 		str	r2, [r3, #132]
+ 633:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCM6R = CRYP_ContextRestore->CRYP_CSGCMR[6];
+ 976              		.loc 1 633 3 is_stmt 1 view .LVU360
+ 977              		.loc 1 633 51 is_stmt 0 view .LVU361
+ 978 0072 C26E     		ldr	r2, [r0, #108]
+ 979              		.loc 1 633 17 view .LVU362
+ 980 0074 C3F88820 		str	r2, [r3, #136]
+ 634:./Library/stm32f4xx_cryp.c ****   CRYP->CSGCM7R = CRYP_ContextRestore->CRYP_CSGCMR[7];
+ 981              		.loc 1 634 3 is_stmt 1 view .LVU363
+ 982              		.loc 1 634 51 is_stmt 0 view .LVU364
+ 983 0078 026F     		ldr	r2, [r0, #112]
+ 984              		.loc 1 634 17 view .LVU365
+ 985 007a C3F88C20 		str	r2, [r3, #140]
+ 635:./Library/stm32f4xx_cryp.c ****   
+ 636:./Library/stm32f4xx_cryp.c ****   /* Enable the cryptographic processor */
+ 637:./Library/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_CR_CRYPEN;
+ 986              		.loc 1 637 3 is_stmt 1 view .LVU366
+ 987              		.loc 1 637 12 is_stmt 0 view .LVU367
+ 988 007e 1A68     		ldr	r2, [r3]
+ 989 0080 42F40042 		orr	r2, r2, #32768
+ 990 0084 1A60     		str	r2, [r3]
+ 638:./Library/stm32f4xx_cryp.c **** }
+ 991              		.loc 1 638 1 view .LVU368
+ 992 0086 7047     		bx	lr
+ 993              	.L46:
+ 994              		.align	2
+ 995              	.L45:
+ 996 0088 00000650 		.word	1342570496
+ 997              		.cfi_endproc
+ 998              	.LFE136:
+ 1000              		.section	.text.CRYP_DMACmd,"ax",%progbits
+ 1001              		.align	1
+ 1002              		.global	CRYP_DMACmd
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 31
+
+
+ 1003              		.syntax unified
+ 1004              		.thumb
+ 1005              		.thumb_func
+ 1007              	CRYP_DMACmd:
+ 1008              	.LVL27:
+ 1009              	.LFB137:
+ 639:./Library/stm32f4xx_cryp.c **** /**
+ 640:./Library/stm32f4xx_cryp.c ****   * @}
+ 641:./Library/stm32f4xx_cryp.c ****   */
+ 642:./Library/stm32f4xx_cryp.c **** 
+ 643:./Library/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group4 CRYP's DMA interface Configuration function
+ 644:./Library/stm32f4xx_cryp.c ****  *  @brief   CRYP's DMA interface Configuration function 
+ 645:./Library/stm32f4xx_cryp.c ****  *
+ 646:./Library/stm32f4xx_cryp.c **** @verbatim   
+ 647:./Library/stm32f4xx_cryp.c ****  ===============================================================================
+ 648:./Library/stm32f4xx_cryp.c ****              ##### CRYP's DMA interface Configuration function #####
+ 649:./Library/stm32f4xx_cryp.c ****  ===============================================================================  
+ 650:./Library/stm32f4xx_cryp.c ****  [..] This section provides functions allowing to configure the DMA interface for 
+ 651:./Library/stm32f4xx_cryp.c ****       CRYP data input and output transfer.
+ 652:./Library/stm32f4xx_cryp.c ****    
+ 653:./Library/stm32f4xx_cryp.c ****  [..] When the DMA mode is enabled (using the CRYP_DMACmd() function), data can be 
+ 654:./Library/stm32f4xx_cryp.c ****       transferred:
+ 655:./Library/stm32f4xx_cryp.c ****    (+) From memory to the CRYP IN FIFO using the DMA peripheral by enabling 
+ 656:./Library/stm32f4xx_cryp.c ****        the CRYP_DMAReq_DataIN request.
+ 657:./Library/stm32f4xx_cryp.c ****    (+) From the CRYP OUT FIFO to the memory using the DMA peripheral by enabling 
+ 658:./Library/stm32f4xx_cryp.c ****        the CRYP_DMAReq_DataOUT request.
+ 659:./Library/stm32f4xx_cryp.c **** 
+ 660:./Library/stm32f4xx_cryp.c **** @endverbatim
+ 661:./Library/stm32f4xx_cryp.c ****   * @{
+ 662:./Library/stm32f4xx_cryp.c ****   */
+ 663:./Library/stm32f4xx_cryp.c **** 
+ 664:./Library/stm32f4xx_cryp.c **** /**
+ 665:./Library/stm32f4xx_cryp.c ****   * @brief  Enables or disables the CRYP DMA interface.
+ 666:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_DMAReq: specifies the CRYP DMA transfer request to be enabled or disabled.
+ 667:./Library/stm32f4xx_cryp.c ****   *           This parameter can be any combination of the following values:
+ 668:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_DMAReq_DataOUT: DMA for outgoing(Tx) data transfer
+ 669:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_DMAReq_DataIN: DMA for incoming(Rx) data transfer
+ 670:./Library/stm32f4xx_cryp.c ****   * @param  NewState: new state of the selected CRYP DMA transfer request.
+ 671:./Library/stm32f4xx_cryp.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 672:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 673:./Library/stm32f4xx_cryp.c ****   */
+ 674:./Library/stm32f4xx_cryp.c **** void CRYP_DMACmd(uint8_t CRYP_DMAReq, FunctionalState NewState)
+ 675:./Library/stm32f4xx_cryp.c **** {
+ 1010              		.loc 1 675 1 is_stmt 1 view -0
+ 1011              		.cfi_startproc
+ 1012              		@ args = 0, pretend = 0, frame = 0
+ 1013              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1014              		@ link register save eliminated.
+ 676:./Library/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 677:./Library/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_DMAREQ(CRYP_DMAReq));
+ 1015              		.loc 1 677 3 view .LVU370
+ 678:./Library/stm32f4xx_cryp.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 1016              		.loc 1 678 3 view .LVU371
+ 679:./Library/stm32f4xx_cryp.c **** 
+ 680:./Library/stm32f4xx_cryp.c ****   if (NewState != DISABLE)
+ 1017              		.loc 1 680 3 view .LVU372
+ 1018              		.loc 1 680 6 is_stmt 0 view .LVU373
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 32
+
+
+ 1019 0000 21B1     		cbz	r1, .L48
+ 681:./Library/stm32f4xx_cryp.c ****   {
+ 682:./Library/stm32f4xx_cryp.c ****     /* Enable the selected CRYP DMA request */
+ 683:./Library/stm32f4xx_cryp.c ****     CRYP->DMACR |= CRYP_DMAReq;
+ 1020              		.loc 1 683 5 is_stmt 1 view .LVU374
+ 1021              		.loc 1 683 17 is_stmt 0 view .LVU375
+ 1022 0002 064B     		ldr	r3, .L50
+ 1023 0004 1A69     		ldr	r2, [r3, #16]
+ 1024 0006 1043     		orrs	r0, r0, r2
+ 1025              	.LVL28:
+ 1026              		.loc 1 683 17 view .LVU376
+ 1027 0008 1861     		str	r0, [r3, #16]
+ 1028 000a 7047     		bx	lr
+ 1029              	.LVL29:
+ 1030              	.L48:
+ 684:./Library/stm32f4xx_cryp.c ****   }
+ 685:./Library/stm32f4xx_cryp.c ****   else
+ 686:./Library/stm32f4xx_cryp.c ****   {
+ 687:./Library/stm32f4xx_cryp.c ****     /* Disable the selected CRYP DMA request */
+ 688:./Library/stm32f4xx_cryp.c ****     CRYP->DMACR &= (uint8_t)~CRYP_DMAReq;
+ 1031              		.loc 1 688 5 is_stmt 1 view .LVU377
+ 1032              		.loc 1 688 17 is_stmt 0 view .LVU378
+ 1033 000c 034A     		ldr	r2, .L50
+ 1034 000e 1369     		ldr	r3, [r2, #16]
+ 1035              		.loc 1 688 20 view .LVU379
+ 1036 0010 C043     		mvns	r0, r0
+ 1037              	.LVL30:
+ 1038              		.loc 1 688 20 view .LVU380
+ 1039 0012 C0B2     		uxtb	r0, r0
+ 1040              		.loc 1 688 17 view .LVU381
+ 1041 0014 1840     		ands	r0, r0, r3
+ 1042 0016 1061     		str	r0, [r2, #16]
+ 689:./Library/stm32f4xx_cryp.c ****   }
+ 690:./Library/stm32f4xx_cryp.c **** }
+ 1043              		.loc 1 690 1 view .LVU382
+ 1044 0018 7047     		bx	lr
+ 1045              	.L51:
+ 1046 001a 00BF     		.align	2
+ 1047              	.L50:
+ 1048 001c 00000650 		.word	1342570496
+ 1049              		.cfi_endproc
+ 1050              	.LFE137:
+ 1052              		.section	.text.CRYP_ITConfig,"ax",%progbits
+ 1053              		.align	1
+ 1054              		.global	CRYP_ITConfig
+ 1055              		.syntax unified
+ 1056              		.thumb
+ 1057              		.thumb_func
+ 1059              	CRYP_ITConfig:
+ 1060              	.LVL31:
+ 1061              	.LFB138:
+ 691:./Library/stm32f4xx_cryp.c **** /**
+ 692:./Library/stm32f4xx_cryp.c ****   * @}
+ 693:./Library/stm32f4xx_cryp.c ****   */
+ 694:./Library/stm32f4xx_cryp.c **** 
+ 695:./Library/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group5 Interrupts and flags management functions
+ 696:./Library/stm32f4xx_cryp.c ****  *  @brief   Interrupts and flags management functions
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 33
+
+
+ 697:./Library/stm32f4xx_cryp.c ****  *
+ 698:./Library/stm32f4xx_cryp.c **** @verbatim   
+ 699:./Library/stm32f4xx_cryp.c ****  ===============================================================================
+ 700:./Library/stm32f4xx_cryp.c ****               ##### Interrupts and flags management functions #####
+ 701:./Library/stm32f4xx_cryp.c ****  ===============================================================================  
+ 702:./Library/stm32f4xx_cryp.c ****  
+ 703:./Library/stm32f4xx_cryp.c ****  [..] This section provides functions allowing to configure the CRYP Interrupts and 
+ 704:./Library/stm32f4xx_cryp.c ****       to get the status and Interrupts pending bits.
+ 705:./Library/stm32f4xx_cryp.c **** 
+ 706:./Library/stm32f4xx_cryp.c ****  [..] The CRYP provides 2 Interrupts sources and 7 Flags:
+ 707:./Library/stm32f4xx_cryp.c **** 
+ 708:./Library/stm32f4xx_cryp.c ****  *** Flags : ***
+ 709:./Library/stm32f4xx_cryp.c ****  ===============
+ 710:./Library/stm32f4xx_cryp.c ****  [..] 
+ 711:./Library/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_IFEM :  Set when Input FIFO is empty. This Flag is cleared only
+ 712:./Library/stm32f4xx_cryp.c ****        by hardware.
+ 713:./Library/stm32f4xx_cryp.c ****       
+ 714:./Library/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_IFNF :  Set when Input FIFO is not full. This Flag is cleared 
+ 715:./Library/stm32f4xx_cryp.c ****        only by hardware.
+ 716:./Library/stm32f4xx_cryp.c **** 
+ 717:./Library/stm32f4xx_cryp.c **** 
+ 718:./Library/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_INRIS  : Set when Input FIFO Raw interrupt is pending it gives 
+ 719:./Library/stm32f4xx_cryp.c ****        the raw interrupt state prior to masking of the input FIFO service interrupt.
+ 720:./Library/stm32f4xx_cryp.c ****        This Flag is cleared only by hardware.
+ 721:./Library/stm32f4xx_cryp.c ****      
+ 722:./Library/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_OFNE   : Set when Output FIFO not empty. This Flag is cleared 
+ 723:./Library/stm32f4xx_cryp.c ****        only by hardware.
+ 724:./Library/stm32f4xx_cryp.c ****         
+ 725:./Library/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_OFFU   : Set when Output FIFO is full. This Flag is cleared only 
+ 726:./Library/stm32f4xx_cryp.c ****        by hardware.
+ 727:./Library/stm32f4xx_cryp.c ****                            
+ 728:./Library/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_OUTRIS : Set when Output FIFO Raw interrupt is pending it gives 
+ 729:./Library/stm32f4xx_cryp.c ****        the raw interrupt state prior to masking of the output FIFO service interrupt.
+ 730:./Library/stm32f4xx_cryp.c ****        This Flag is cleared only by hardware.
+ 731:./Library/stm32f4xx_cryp.c ****                                
+ 732:./Library/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_BUSY   : Set when the CRYP core is currently processing a block 
+ 733:./Library/stm32f4xx_cryp.c ****        of data or a key preparation (for AES decryption). This Flag is cleared 
+ 734:./Library/stm32f4xx_cryp.c ****        only by hardware. To clear it, the CRYP core must be disabled and the last
+ 735:./Library/stm32f4xx_cryp.c ****        processing has completed. 
+ 736:./Library/stm32f4xx_cryp.c **** 
+ 737:./Library/stm32f4xx_cryp.c ****  *** Interrupts : ***
+ 738:./Library/stm32f4xx_cryp.c ****  ====================
+ 739:./Library/stm32f4xx_cryp.c ****  [..]
+ 740:./Library/stm32f4xx_cryp.c ****    (#) CRYP_IT_INI   : The input FIFO service interrupt is asserted when there 
+ 741:./Library/stm32f4xx_cryp.c ****       are less than 4 words in the input FIFO. This interrupt is associated to 
+ 742:./Library/stm32f4xx_cryp.c ****       CRYP_FLAG_INRIS flag.
+ 743:./Library/stm32f4xx_cryp.c **** 
+ 744:./Library/stm32f4xx_cryp.c ****       -@- This interrupt is cleared by performing write operations to the input FIFO 
+ 745:./Library/stm32f4xx_cryp.c ****           until it holds 4 or more words. The input FIFO service interrupt INMIS is 
+ 746:./Library/stm32f4xx_cryp.c ****           enabled with the CRYP enable bit. Consequently, when CRYP is disabled, the 
+ 747:./Library/stm32f4xx_cryp.c ****           INMIS signal is low even if the input FIFO is empty.
+ 748:./Library/stm32f4xx_cryp.c **** 
+ 749:./Library/stm32f4xx_cryp.c **** 
+ 750:./Library/stm32f4xx_cryp.c **** 
+ 751:./Library/stm32f4xx_cryp.c ****    (#) CRYP_IT_OUTI  : The output FIFO service interrupt is asserted when there 
+ 752:./Library/stm32f4xx_cryp.c ****        is one or more (32-bit word) data items in the output FIFO. This interrupt 
+ 753:./Library/stm32f4xx_cryp.c ****        is associated to CRYP_FLAG_OUTRIS flag.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 34
+
+
+ 754:./Library/stm32f4xx_cryp.c **** 
+ 755:./Library/stm32f4xx_cryp.c ****        -@- This interrupt is cleared by reading data from the output FIFO until there 
+ 756:./Library/stm32f4xx_cryp.c ****            is no valid (32-bit) word left (that is, the interrupt follows the state 
+ 757:./Library/stm32f4xx_cryp.c ****            of the OFNE (output FIFO not empty) flag).
+ 758:./Library/stm32f4xx_cryp.c **** 
+ 759:./Library/stm32f4xx_cryp.c ****  *** Managing the CRYP controller events : ***
+ 760:./Library/stm32f4xx_cryp.c ****  =============================================
+ 761:./Library/stm32f4xx_cryp.c ****  [..] The user should identify which mode will be used in his application to manage 
+ 762:./Library/stm32f4xx_cryp.c ****       the CRYP controller events: Polling mode or Interrupt mode.
+ 763:./Library/stm32f4xx_cryp.c **** 
+ 764:./Library/stm32f4xx_cryp.c ****    (#) In the Polling Mode it is advised to use the following functions:
+ 765:./Library/stm32f4xx_cryp.c ****        (++) CRYP_GetFlagStatus() : to check if flags events occur. 
+ 766:./Library/stm32f4xx_cryp.c **** 
+ 767:./Library/stm32f4xx_cryp.c ****        -@@- The CRYPT flags do not need to be cleared since they are cleared as 
+ 768:./Library/stm32f4xx_cryp.c ****             soon as the associated event are reset.   
+ 769:./Library/stm32f4xx_cryp.c **** 
+ 770:./Library/stm32f4xx_cryp.c **** 
+ 771:./Library/stm32f4xx_cryp.c ****    (#) In the Interrupt Mode it is advised to use the following functions:
+ 772:./Library/stm32f4xx_cryp.c ****        (++) CRYP_ITConfig()       : to enable or disable the interrupt source.
+ 773:./Library/stm32f4xx_cryp.c ****        (++) CRYP_GetITStatus()    : to check if Interrupt occurs.
+ 774:./Library/stm32f4xx_cryp.c **** 
+ 775:./Library/stm32f4xx_cryp.c ****        -@@- The CRYPT interrupts have no pending bits, the interrupt is cleared as 
+ 776:./Library/stm32f4xx_cryp.c ****              soon as the associated event is reset. 
+ 777:./Library/stm32f4xx_cryp.c **** 
+ 778:./Library/stm32f4xx_cryp.c **** @endverbatim
+ 779:./Library/stm32f4xx_cryp.c ****   * @{
+ 780:./Library/stm32f4xx_cryp.c ****   */ 
+ 781:./Library/stm32f4xx_cryp.c **** 
+ 782:./Library/stm32f4xx_cryp.c **** /**
+ 783:./Library/stm32f4xx_cryp.c ****   * @brief  Enables or disables the specified CRYP interrupts.
+ 784:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_IT: specifies the CRYP interrupt source to be enabled or disabled.
+ 785:./Library/stm32f4xx_cryp.c ****   *          This parameter can be any combination of the following values:
+ 786:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_IT_INI: Input FIFO interrupt
+ 787:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_IT_OUTI: Output FIFO interrupt
+ 788:./Library/stm32f4xx_cryp.c ****   * @param  NewState: new state of the specified CRYP interrupt.
+ 789:./Library/stm32f4xx_cryp.c ****   *           This parameter can be: ENABLE or DISABLE.
+ 790:./Library/stm32f4xx_cryp.c ****   * @retval None
+ 791:./Library/stm32f4xx_cryp.c ****   */
+ 792:./Library/stm32f4xx_cryp.c **** void CRYP_ITConfig(uint8_t CRYP_IT, FunctionalState NewState)
+ 793:./Library/stm32f4xx_cryp.c **** {
+ 1062              		.loc 1 793 1 is_stmt 1 view -0
+ 1063              		.cfi_startproc
+ 1064              		@ args = 0, pretend = 0, frame = 0
+ 1065              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1066              		@ link register save eliminated.
+ 794:./Library/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 795:./Library/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_CONFIG_IT(CRYP_IT));
+ 1067              		.loc 1 795 3 view .LVU384
+ 796:./Library/stm32f4xx_cryp.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 1068              		.loc 1 796 3 view .LVU385
+ 797:./Library/stm32f4xx_cryp.c **** 
+ 798:./Library/stm32f4xx_cryp.c ****   if (NewState != DISABLE)
+ 1069              		.loc 1 798 3 view .LVU386
+ 1070              		.loc 1 798 6 is_stmt 0 view .LVU387
+ 1071 0000 21B1     		cbz	r1, .L53
+ 799:./Library/stm32f4xx_cryp.c ****   {
+ 800:./Library/stm32f4xx_cryp.c ****     /* Enable the selected CRYP interrupt */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 35
+
+
+ 801:./Library/stm32f4xx_cryp.c ****     CRYP->IMSCR |= CRYP_IT;
+ 1072              		.loc 1 801 5 is_stmt 1 view .LVU388
+ 1073              		.loc 1 801 17 is_stmt 0 view .LVU389
+ 1074 0002 064B     		ldr	r3, .L55
+ 1075 0004 5A69     		ldr	r2, [r3, #20]
+ 1076 0006 1043     		orrs	r0, r0, r2
+ 1077              	.LVL32:
+ 1078              		.loc 1 801 17 view .LVU390
+ 1079 0008 5861     		str	r0, [r3, #20]
+ 1080 000a 7047     		bx	lr
+ 1081              	.LVL33:
+ 1082              	.L53:
+ 802:./Library/stm32f4xx_cryp.c ****   }
+ 803:./Library/stm32f4xx_cryp.c ****   else
+ 804:./Library/stm32f4xx_cryp.c ****   {
+ 805:./Library/stm32f4xx_cryp.c ****     /* Disable the selected CRYP interrupt */
+ 806:./Library/stm32f4xx_cryp.c ****     CRYP->IMSCR &= (uint8_t)~CRYP_IT;
+ 1083              		.loc 1 806 5 is_stmt 1 view .LVU391
+ 1084              		.loc 1 806 17 is_stmt 0 view .LVU392
+ 1085 000c 034A     		ldr	r2, .L55
+ 1086 000e 5369     		ldr	r3, [r2, #20]
+ 1087              		.loc 1 806 20 view .LVU393
+ 1088 0010 C043     		mvns	r0, r0
+ 1089              	.LVL34:
+ 1090              		.loc 1 806 20 view .LVU394
+ 1091 0012 C0B2     		uxtb	r0, r0
+ 1092              		.loc 1 806 17 view .LVU395
+ 1093 0014 1840     		ands	r0, r0, r3
+ 1094 0016 5061     		str	r0, [r2, #20]
+ 807:./Library/stm32f4xx_cryp.c ****   }
+ 808:./Library/stm32f4xx_cryp.c **** }
+ 1095              		.loc 1 808 1 view .LVU396
+ 1096 0018 7047     		bx	lr
+ 1097              	.L56:
+ 1098 001a 00BF     		.align	2
+ 1099              	.L55:
+ 1100 001c 00000650 		.word	1342570496
+ 1101              		.cfi_endproc
+ 1102              	.LFE138:
+ 1104              		.section	.text.CRYP_GetITStatus,"ax",%progbits
+ 1105              		.align	1
+ 1106              		.global	CRYP_GetITStatus
+ 1107              		.syntax unified
+ 1108              		.thumb
+ 1109              		.thumb_func
+ 1111              	CRYP_GetITStatus:
+ 1112              	.LVL35:
+ 1113              	.LFB139:
+ 809:./Library/stm32f4xx_cryp.c **** 
+ 810:./Library/stm32f4xx_cryp.c **** /**
+ 811:./Library/stm32f4xx_cryp.c ****   * @brief  Checks whether the specified CRYP interrupt has occurred or not.
+ 812:./Library/stm32f4xx_cryp.c ****   * @note   This function checks the status of the masked interrupt (i.e the 
+ 813:./Library/stm32f4xx_cryp.c ****   *         interrupt should be previously enabled).     
+ 814:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_IT: specifies the CRYP (masked) interrupt source to check.
+ 815:./Library/stm32f4xx_cryp.c ****   *           This parameter can be one of the following values:
+ 816:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_IT_INI: Input FIFO interrupt
+ 817:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_IT_OUTI: Output FIFO interrupt
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 36
+
+
+ 818:./Library/stm32f4xx_cryp.c ****   * @retval The new state of CRYP_IT (SET or RESET).
+ 819:./Library/stm32f4xx_cryp.c ****   */
+ 820:./Library/stm32f4xx_cryp.c **** ITStatus CRYP_GetITStatus(uint8_t CRYP_IT)
+ 821:./Library/stm32f4xx_cryp.c **** {
+ 1114              		.loc 1 821 1 is_stmt 1 view -0
+ 1115              		.cfi_startproc
+ 1116              		@ args = 0, pretend = 0, frame = 0
+ 1117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1118              		@ link register save eliminated.
+ 822:./Library/stm32f4xx_cryp.c ****   ITStatus bitstatus = RESET;
+ 1119              		.loc 1 822 3 view .LVU398
+ 823:./Library/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 824:./Library/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_GET_IT(CRYP_IT));
+ 1120              		.loc 1 824 3 view .LVU399
+ 825:./Library/stm32f4xx_cryp.c **** 
+ 826:./Library/stm32f4xx_cryp.c ****   /* Check the status of the specified CRYP interrupt */
+ 827:./Library/stm32f4xx_cryp.c ****   if ((CRYP->MISR &  CRYP_IT) != (uint8_t)RESET)
+ 1121              		.loc 1 827 3 view .LVU400
+ 1122              		.loc 1 827 12 is_stmt 0 view .LVU401
+ 1123 0000 034B     		ldr	r3, .L60
+ 1124 0002 DB69     		ldr	r3, [r3, #28]
+ 1125              		.loc 1 827 6 view .LVU402
+ 1126 0004 1842     		tst	r0, r3
+ 1127 0006 01D0     		beq	.L59
+ 828:./Library/stm32f4xx_cryp.c ****   {
+ 829:./Library/stm32f4xx_cryp.c ****     /* CRYP_IT is set */
+ 830:./Library/stm32f4xx_cryp.c ****     bitstatus = SET;
+ 1128              		.loc 1 830 15 view .LVU403
+ 1129 0008 0120     		movs	r0, #1
+ 1130              	.LVL36:
+ 1131              		.loc 1 830 15 view .LVU404
+ 1132 000a 7047     		bx	lr
+ 1133              	.LVL37:
+ 1134              	.L59:
+ 831:./Library/stm32f4xx_cryp.c ****   }
+ 832:./Library/stm32f4xx_cryp.c ****   else
+ 833:./Library/stm32f4xx_cryp.c ****   {
+ 834:./Library/stm32f4xx_cryp.c ****     /* CRYP_IT is reset */
+ 835:./Library/stm32f4xx_cryp.c ****     bitstatus = RESET;
+ 1135              		.loc 1 835 15 view .LVU405
+ 1136 000c 0020     		movs	r0, #0
+ 1137              	.LVL38:
+ 836:./Library/stm32f4xx_cryp.c ****   }
+ 837:./Library/stm32f4xx_cryp.c ****   /* Return the CRYP_IT status */
+ 838:./Library/stm32f4xx_cryp.c ****   return bitstatus;
+ 1138              		.loc 1 838 3 is_stmt 1 view .LVU406
+ 839:./Library/stm32f4xx_cryp.c **** }
+ 1139              		.loc 1 839 1 is_stmt 0 view .LVU407
+ 1140 000e 7047     		bx	lr
+ 1141              	.L61:
+ 1142              		.align	2
+ 1143              	.L60:
+ 1144 0010 00000650 		.word	1342570496
+ 1145              		.cfi_endproc
+ 1146              	.LFE139:
+ 1148              		.section	.text.CRYP_GetCmdStatus,"ax",%progbits
+ 1149              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 37
+
+
+ 1150              		.global	CRYP_GetCmdStatus
+ 1151              		.syntax unified
+ 1152              		.thumb
+ 1153              		.thumb_func
+ 1155              	CRYP_GetCmdStatus:
+ 1156              	.LFB140:
+ 840:./Library/stm32f4xx_cryp.c **** 
+ 841:./Library/stm32f4xx_cryp.c **** /**
+ 842:./Library/stm32f4xx_cryp.c ****   * @brief  Returns whether CRYP peripheral is enabled or disabled.
+ 843:./Library/stm32f4xx_cryp.c ****   * @param  none.
+ 844:./Library/stm32f4xx_cryp.c ****   * @retval Current state of the CRYP peripheral (ENABLE or DISABLE).
+ 845:./Library/stm32f4xx_cryp.c ****   */
+ 846:./Library/stm32f4xx_cryp.c **** FunctionalState CRYP_GetCmdStatus(void)
+ 847:./Library/stm32f4xx_cryp.c **** {
+ 1157              		.loc 1 847 1 is_stmt 1 view -0
+ 1158              		.cfi_startproc
+ 1159              		@ args = 0, pretend = 0, frame = 0
+ 1160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1161              		@ link register save eliminated.
+ 848:./Library/stm32f4xx_cryp.c ****   FunctionalState state = DISABLE;
+ 1162              		.loc 1 848 3 view .LVU409
+ 1163              	.LVL39:
+ 849:./Library/stm32f4xx_cryp.c **** 
+ 850:./Library/stm32f4xx_cryp.c ****   if ((CRYP->CR & CRYP_CR_CRYPEN) != 0)
+ 1164              		.loc 1 850 3 view .LVU410
+ 1165              		.loc 1 850 12 is_stmt 0 view .LVU411
+ 1166 0000 044B     		ldr	r3, .L65
+ 1167 0002 1B68     		ldr	r3, [r3]
+ 1168              		.loc 1 850 6 view .LVU412
+ 1169 0004 13F4004F 		tst	r3, #32768
+ 1170 0008 01D0     		beq	.L64
+ 851:./Library/stm32f4xx_cryp.c ****   {
+ 852:./Library/stm32f4xx_cryp.c ****     /* CRYPEN bit is set */
+ 853:./Library/stm32f4xx_cryp.c ****     state = ENABLE;
+ 1171              		.loc 1 853 11 view .LVU413
+ 1172 000a 0120     		movs	r0, #1
+ 1173 000c 7047     		bx	lr
+ 1174              	.L64:
+ 854:./Library/stm32f4xx_cryp.c ****   }
+ 855:./Library/stm32f4xx_cryp.c ****   else
+ 856:./Library/stm32f4xx_cryp.c ****   {
+ 857:./Library/stm32f4xx_cryp.c ****     /* CRYPEN bit is reset */
+ 858:./Library/stm32f4xx_cryp.c ****     state = DISABLE;
+ 1175              		.loc 1 858 11 view .LVU414
+ 1176 000e 0020     		movs	r0, #0
+ 1177              	.LVL40:
+ 859:./Library/stm32f4xx_cryp.c ****   }
+ 860:./Library/stm32f4xx_cryp.c ****   return state;
+ 1178              		.loc 1 860 3 is_stmt 1 view .LVU415
+ 861:./Library/stm32f4xx_cryp.c **** }
+ 1179              		.loc 1 861 1 is_stmt 0 view .LVU416
+ 1180 0010 7047     		bx	lr
+ 1181              	.L66:
+ 1182 0012 00BF     		.align	2
+ 1183              	.L65:
+ 1184 0014 00000650 		.word	1342570496
+ 1185              		.cfi_endproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 38
+
+
+ 1186              	.LFE140:
+ 1188              		.section	.text.CRYP_GetFlagStatus,"ax",%progbits
+ 1189              		.align	1
+ 1190              		.global	CRYP_GetFlagStatus
+ 1191              		.syntax unified
+ 1192              		.thumb
+ 1193              		.thumb_func
+ 1195              	CRYP_GetFlagStatus:
+ 1196              	.LVL41:
+ 1197              	.LFB141:
+ 862:./Library/stm32f4xx_cryp.c **** 
+ 863:./Library/stm32f4xx_cryp.c **** /**
+ 864:./Library/stm32f4xx_cryp.c ****   * @brief  Checks whether the specified CRYP flag is set or not.
+ 865:./Library/stm32f4xx_cryp.c ****   * @param  CRYP_FLAG: specifies the CRYP flag to check.
+ 866:./Library/stm32f4xx_cryp.c ****   *          This parameter can be one of the following values:
+ 867:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_IFEM: Input FIFO Empty flag.
+ 868:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_IFNF: Input FIFO Not Full flag.
+ 869:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_OFNE: Output FIFO Not Empty flag.
+ 870:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_OFFU: Output FIFO Full flag.
+ 871:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_BUSY: Busy flag.
+ 872:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_OUTRIS: Output FIFO raw interrupt flag.
+ 873:./Library/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_INRIS: Input FIFO raw interrupt flag.
+ 874:./Library/stm32f4xx_cryp.c ****   * @retval The new state of CRYP_FLAG (SET or RESET).
+ 875:./Library/stm32f4xx_cryp.c ****   */
+ 876:./Library/stm32f4xx_cryp.c **** FlagStatus CRYP_GetFlagStatus(uint8_t CRYP_FLAG)
+ 877:./Library/stm32f4xx_cryp.c **** {
+ 1198              		.loc 1 877 1 is_stmt 1 view -0
+ 1199              		.cfi_startproc
+ 1200              		@ args = 0, pretend = 0, frame = 0
+ 1201              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1202              		@ link register save eliminated.
+ 878:./Library/stm32f4xx_cryp.c ****   FlagStatus bitstatus = RESET;
+ 1203              		.loc 1 878 3 view .LVU418
+ 879:./Library/stm32f4xx_cryp.c ****   uint32_t tempreg = 0;
+ 1204              		.loc 1 879 3 view .LVU419
+ 880:./Library/stm32f4xx_cryp.c **** 
+ 881:./Library/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 882:./Library/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_GET_FLAG(CRYP_FLAG));
+ 1205              		.loc 1 882 3 view .LVU420
+ 883:./Library/stm32f4xx_cryp.c **** 
+ 884:./Library/stm32f4xx_cryp.c ****   /* check if the FLAG is in RISR register */
+ 885:./Library/stm32f4xx_cryp.c ****   if ((CRYP_FLAG & FLAG_MASK) != 0x00) 
+ 1206              		.loc 1 885 3 view .LVU421
+ 1207              		.loc 1 885 6 is_stmt 0 view .LVU422
+ 1208 0000 10F0200F 		tst	r0, #32
+ 1209 0004 05D0     		beq	.L68
+ 886:./Library/stm32f4xx_cryp.c ****   {
+ 887:./Library/stm32f4xx_cryp.c ****     tempreg = CRYP->RISR;
+ 1210              		.loc 1 887 5 is_stmt 1 view .LVU423
+ 1211              		.loc 1 887 13 is_stmt 0 view .LVU424
+ 1212 0006 054B     		ldr	r3, .L72
+ 1213 0008 9B69     		ldr	r3, [r3, #24]
+ 1214              	.LVL42:
+ 1215              	.L69:
+ 888:./Library/stm32f4xx_cryp.c ****   }
+ 889:./Library/stm32f4xx_cryp.c ****   else  /* The FLAG is in SR register */
+ 890:./Library/stm32f4xx_cryp.c ****   {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 39
+
+
+ 891:./Library/stm32f4xx_cryp.c ****     tempreg = CRYP->SR;
+ 892:./Library/stm32f4xx_cryp.c ****   }
+ 893:./Library/stm32f4xx_cryp.c **** 
+ 894:./Library/stm32f4xx_cryp.c **** 
+ 895:./Library/stm32f4xx_cryp.c ****   /* Check the status of the specified CRYP flag */
+ 896:./Library/stm32f4xx_cryp.c ****   if ((tempreg & CRYP_FLAG ) != (uint8_t)RESET)
+ 1216              		.loc 1 896 3 is_stmt 1 view .LVU425
+ 1217              		.loc 1 896 6 is_stmt 0 view .LVU426
+ 1218 000a 1842     		tst	r0, r3
+ 1219 000c 04D0     		beq	.L71
+ 897:./Library/stm32f4xx_cryp.c ****   {
+ 898:./Library/stm32f4xx_cryp.c ****     /* CRYP_FLAG is set */
+ 899:./Library/stm32f4xx_cryp.c ****     bitstatus = SET;
+ 1220              		.loc 1 899 15 view .LVU427
+ 1221 000e 0120     		movs	r0, #1
+ 1222              	.LVL43:
+ 1223              		.loc 1 899 15 view .LVU428
+ 1224 0010 7047     		bx	lr
+ 1225              	.LVL44:
+ 1226              	.L68:
+ 891:./Library/stm32f4xx_cryp.c ****   }
+ 1227              		.loc 1 891 5 is_stmt 1 view .LVU429
+ 891:./Library/stm32f4xx_cryp.c ****   }
+ 1228              		.loc 1 891 13 is_stmt 0 view .LVU430
+ 1229 0012 024B     		ldr	r3, .L72
+ 1230 0014 5B68     		ldr	r3, [r3, #4]
+ 1231              	.LVL45:
+ 891:./Library/stm32f4xx_cryp.c ****   }
+ 1232              		.loc 1 891 13 view .LVU431
+ 1233 0016 F8E7     		b	.L69
+ 1234              	.L71:
+ 900:./Library/stm32f4xx_cryp.c ****   }
+ 901:./Library/stm32f4xx_cryp.c ****   else
+ 902:./Library/stm32f4xx_cryp.c ****   {
+ 903:./Library/stm32f4xx_cryp.c ****     /* CRYP_FLAG is reset */
+ 904:./Library/stm32f4xx_cryp.c ****     bitstatus = RESET;
+ 1235              		.loc 1 904 15 view .LVU432
+ 1236 0018 0020     		movs	r0, #0
+ 1237              	.LVL46:
+ 905:./Library/stm32f4xx_cryp.c ****   }
+ 906:./Library/stm32f4xx_cryp.c **** 
+ 907:./Library/stm32f4xx_cryp.c ****   /* Return the CRYP_FLAG status */
+ 908:./Library/stm32f4xx_cryp.c ****   return  bitstatus;
+ 1238              		.loc 1 908 3 is_stmt 1 view .LVU433
+ 909:./Library/stm32f4xx_cryp.c **** }
+ 1239              		.loc 1 909 1 is_stmt 0 view .LVU434
+ 1240 001a 7047     		bx	lr
+ 1241              	.L73:
+ 1242              		.align	2
+ 1243              	.L72:
+ 1244 001c 00000650 		.word	1342570496
+ 1245              		.cfi_endproc
+ 1246              	.LFE141:
+ 1248              		.text
+ 1249              	.Letext0:
+ 1250              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1251              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 40
+
+
+ 1252              		.file 4 "./CORE/stm32f4xx.h"
+ 1253              		.file 5 "./Library/stm32f4xx_cryp.h"
+ 1254              		.file 6 "./Library/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 41
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_cryp.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:20     .text.CRYP_DeInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:26     .text.CRYP_DeInit:0000000000000000 CRYP_DeInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:54     .text.CRYP_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:60     .text.CRYP_Init:0000000000000000 CRYP_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:148    .text.CRYP_Init:000000000000005c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:153    .text.CRYP_StructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:159    .text.CRYP_StructInit:0000000000000000 CRYP_StructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:186    .text.CRYP_KeyInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:192    .text.CRYP_KeyInit:0000000000000000 CRYP_KeyInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:246    .text.CRYP_KeyInit:0000000000000024 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:251    .text.CRYP_KeyStructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:257    .text.CRYP_KeyStructInit:0000000000000000 CRYP_KeyStructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:296    .text.CRYP_IVInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:302    .text.CRYP_IVInit:0000000000000000 CRYP_IVInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:336    .text.CRYP_IVInit:0000000000000014 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:341    .text.CRYP_IVStructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:347    .text.CRYP_IVStructInit:0000000000000000 CRYP_IVStructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:374    .text.CRYP_PhaseConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:380    .text.CRYP_PhaseConfig:0000000000000000 CRYP_PhaseConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:411    .text.CRYP_PhaseConfig:0000000000000010 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:416    .text.CRYP_FIFOFlush:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:422    .text.CRYP_FIFOFlush:0000000000000000 CRYP_FIFOFlush
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:440    .text.CRYP_FIFOFlush:000000000000000c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:445    .text.CRYP_Cmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:451    .text.CRYP_Cmd:0000000000000000 CRYP_Cmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:482    .text.CRYP_Cmd:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:487    .text.CRYP_DataIn:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:493    .text.CRYP_DataIn:0000000000000000 CRYP_DataIn
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:510    .text.CRYP_DataIn:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:515    .text.CRYP_DataOut:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:521    .text.CRYP_DataOut:0000000000000000 CRYP_DataOut
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:537    .text.CRYP_DataOut:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:542    .text.CRYP_SaveContext:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:548    .text.CRYP_SaveContext:0000000000000000 CRYP_SaveContext
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:821    .text.CRYP_SaveContext:00000000000000fc $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:826    .text.CRYP_RestoreContext:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:832    .text.CRYP_RestoreContext:0000000000000000 CRYP_RestoreContext
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:996    .text.CRYP_RestoreContext:0000000000000088 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1001   .text.CRYP_DMACmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1007   .text.CRYP_DMACmd:0000000000000000 CRYP_DMACmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1048   .text.CRYP_DMACmd:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1053   .text.CRYP_ITConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1059   .text.CRYP_ITConfig:0000000000000000 CRYP_ITConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1100   .text.CRYP_ITConfig:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1105   .text.CRYP_GetITStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1111   .text.CRYP_GetITStatus:0000000000000000 CRYP_GetITStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1144   .text.CRYP_GetITStatus:0000000000000010 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1149   .text.CRYP_GetCmdStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1155   .text.CRYP_GetCmdStatus:0000000000000000 CRYP_GetCmdStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1184   .text.CRYP_GetCmdStatus:0000000000000014 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1189   .text.CRYP_GetFlagStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1195   .text.CRYP_GetFlagStatus:0000000000000000 CRYP_GetFlagStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s:1244   .text.CRYP_GetFlagStatus:000000000000001c $d
+
+UNDEFINED SYMBOLS
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccijUTII.s 			page 42
+
+
+RCC_AHB2PeriphResetCmd

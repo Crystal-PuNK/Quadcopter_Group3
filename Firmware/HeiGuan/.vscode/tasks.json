@@ -1,0 +1,50 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "编译",
+            "command": [
+                "make"
+            ],
+            "args": [],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "By arm-none-eabi-gcc 10.3.1 20210824 (release)"
+        },
+        {
+            "type": "shell",
+            "label": "清除",
+            "command": [
+                "make clean"
+            ],
+            "args": [],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "By arm-none-eabi-gcc 10.3.1 20210824 (release)"
+        },
+        {
+            "type": "shell",
+            "label": "烧录",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "interface/stlink.cfg",
+                "-f",
+                "target/stm32f4x.cfg",
+                "-c",
+                "program build/HeiGuan.elf verify reset exit"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "By arm-none-eabi-gcc 10.3.1 20210824 (release)"
+        },
+        
+    ]
+}

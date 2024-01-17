@@ -1,0 +1,580 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"misc.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.NVIC_PriorityGroupConfig,"ax",%progbits
+  20              		.align	1
+  21              		.global	NVIC_PriorityGroupConfig
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	NVIC_PriorityGroupConfig:
+  27              	.LVL0:
+  28              	.LFB123:
+  29              		.file 1 "./Library/misc.c"
+   1:./Library/misc.c **** /**
+   2:./Library/misc.c ****   ******************************************************************************
+   3:./Library/misc.c ****   * @file    misc.c
+   4:./Library/misc.c ****   * @author  MCD Application Team
+   5:./Library/misc.c ****   * @version V1.8.1
+   6:./Library/misc.c ****   * @date    27-January-2022
+   7:./Library/misc.c ****   * @brief   This file provides all the miscellaneous firmware functions (add-on
+   8:./Library/misc.c ****   *          to CMSIS functions).
+   9:./Library/misc.c ****   *          
+  10:./Library/misc.c ****   *  @verbatim   
+  11:./Library/misc.c ****   *                               
+  12:./Library/misc.c ****   *          ===================================================================      
+  13:./Library/misc.c ****   *                        How to configure Interrupts using driver 
+  14:./Library/misc.c ****   *          ===================================================================      
+  15:./Library/misc.c ****   * 
+  16:./Library/misc.c ****   *            This section provide functions allowing to configure the NVIC interrupts (IRQ).
+  17:./Library/misc.c ****   *            The Cortex-M4 exceptions are managed by CMSIS functions.
+  18:./Library/misc.c ****   *
+  19:./Library/misc.c ****   *            1. Configure the NVIC Priority Grouping using NVIC_PriorityGroupConfig()
+  20:./Library/misc.c ****   *                function according to the following table.
+  21:./Library/misc.c ****  
+  22:./Library/misc.c ****   *  The table below gives the allowed values of the pre-emption priority and subpriority according
+  23:./Library/misc.c ****   *  to the Priority Grouping configuration performed by NVIC_PriorityGroupConfig function
+  24:./Library/misc.c ****   *    ============================================================================================
+  25:./Library/misc.c ****   *      NVIC_PriorityGroup   | NVIC_IRQChannelPreemptionPriority | NVIC_IRQChannelSubPriority  |  
+  26:./Library/misc.c ****   *    ============================================================================================
+  27:./Library/misc.c ****   *     NVIC_PriorityGroup_0  |                0                  |            0-15             | 0
+  28:./Library/misc.c ****   *                           |                                   |                             | 4
+  29:./Library/misc.c ****   *    --------------------------------------------------------------------------------------------
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 2
+
+
+  30:./Library/misc.c ****   *     NVIC_PriorityGroup_1  |                0-1                |            0-7              | 1
+  31:./Library/misc.c ****   *                           |                                   |                             | 3
+  32:./Library/misc.c ****   *    --------------------------------------------------------------------------------------------
+  33:./Library/misc.c ****   *     NVIC_PriorityGroup_2  |                0-3                |            0-3              | 2
+  34:./Library/misc.c ****   *                           |                                   |                             | 2
+  35:./Library/misc.c ****   *    --------------------------------------------------------------------------------------------
+  36:./Library/misc.c ****   *     NVIC_PriorityGroup_3  |                0-7                |            0-1              | 3
+  37:./Library/misc.c ****   *                           |                                   |                             | 1
+  38:./Library/misc.c ****   *    --------------------------------------------------------------------------------------------
+  39:./Library/misc.c ****   *     NVIC_PriorityGroup_4  |                0-15               |            0                | 4
+  40:./Library/misc.c ****   *                           |                                   |                             | 0
+  41:./Library/misc.c ****   *    ============================================================================================
+  42:./Library/misc.c ****   *
+  43:./Library/misc.c ****   *            2. Enable and Configure the priority of the selected IRQ Channels using NVIC_Init() 
+  44:./Library/misc.c ****   *
+  45:./Library/misc.c ****   * @note  When the NVIC_PriorityGroup_0 is selected, IRQ pre-emption is no more possible. 
+  46:./Library/misc.c ****   *        The pending IRQ priority will be managed only by the subpriority.
+  47:./Library/misc.c ****   *
+  48:./Library/misc.c ****   * @note  IRQ priority order (sorted by highest to lowest priority):
+  49:./Library/misc.c ****   *         - Lowest pre-emption priority
+  50:./Library/misc.c ****   *         - Lowest subpriority
+  51:./Library/misc.c ****   *         - Lowest hardware priority (IRQ number)
+  52:./Library/misc.c ****   *
+  53:./Library/misc.c ****   *  @endverbatim
+  54:./Library/misc.c ****   *
+  55:./Library/misc.c ****   ******************************************************************************
+  56:./Library/misc.c ****   * @attention
+  57:./Library/misc.c ****   *
+  58:./Library/misc.c ****   * Copyright (c) 2016 STMicroelectronics.
+  59:./Library/misc.c ****   * All rights reserved.
+  60:./Library/misc.c ****   *
+  61:./Library/misc.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  62:./Library/misc.c ****   * in the root directory of this software component.
+  63:./Library/misc.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  64:./Library/misc.c ****   *
+  65:./Library/misc.c ****   ******************************************************************************
+  66:./Library/misc.c ****   */
+  67:./Library/misc.c **** 
+  68:./Library/misc.c **** /* Includes ------------------------------------------------------------------*/
+  69:./Library/misc.c **** #include "misc.h"
+  70:./Library/misc.c **** 
+  71:./Library/misc.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  72:./Library/misc.c ****   * @{
+  73:./Library/misc.c ****   */
+  74:./Library/misc.c **** 
+  75:./Library/misc.c **** /** @defgroup MISC 
+  76:./Library/misc.c ****   * @brief MISC driver modules
+  77:./Library/misc.c ****   * @{
+  78:./Library/misc.c ****   */
+  79:./Library/misc.c **** 
+  80:./Library/misc.c **** /* Private typedef -----------------------------------------------------------*/
+  81:./Library/misc.c **** /* Private define ------------------------------------------------------------*/
+  82:./Library/misc.c **** #define AIRCR_VECTKEY_MASK    ((uint32_t)0x05FA0000)
+  83:./Library/misc.c **** 
+  84:./Library/misc.c **** /* Private macro -------------------------------------------------------------*/
+  85:./Library/misc.c **** /* Private variables ---------------------------------------------------------*/
+  86:./Library/misc.c **** /* Private function prototypes -----------------------------------------------*/
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 3
+
+
+  87:./Library/misc.c **** /* Private functions ---------------------------------------------------------*/
+  88:./Library/misc.c **** 
+  89:./Library/misc.c **** /** @defgroup MISC_Private_Functions
+  90:./Library/misc.c ****   * @{
+  91:./Library/misc.c ****   */
+  92:./Library/misc.c **** 
+  93:./Library/misc.c **** /**
+  94:./Library/misc.c ****   * @brief  Configures the priority grouping: pre-emption priority and subpriority.
+  95:./Library/misc.c ****   * @param  NVIC_PriorityGroup: specifies the priority grouping bits length. 
+  96:./Library/misc.c ****   *   This parameter can be one of the following values:
+  97:./Library/misc.c ****   *     @arg NVIC_PriorityGroup_0: 0 bits for pre-emption priority
+  98:./Library/misc.c ****   *                                4 bits for subpriority
+  99:./Library/misc.c ****   *     @arg NVIC_PriorityGroup_1: 1 bits for pre-emption priority
+ 100:./Library/misc.c ****   *                                3 bits for subpriority
+ 101:./Library/misc.c ****   *     @arg NVIC_PriorityGroup_2: 2 bits for pre-emption priority
+ 102:./Library/misc.c ****   *                                2 bits for subpriority
+ 103:./Library/misc.c ****   *     @arg NVIC_PriorityGroup_3: 3 bits for pre-emption priority
+ 104:./Library/misc.c ****   *                                1 bits for subpriority
+ 105:./Library/misc.c ****   *     @arg NVIC_PriorityGroup_4: 4 bits for pre-emption priority
+ 106:./Library/misc.c ****   *                                0 bits for subpriority
+ 107:./Library/misc.c ****   * @note   When the NVIC_PriorityGroup_0 is selected, IRQ pre-emption is no more possible. 
+ 108:./Library/misc.c ****   *         The pending IRQ priority will be managed only by the subpriority. 
+ 109:./Library/misc.c ****   * @retval None
+ 110:./Library/misc.c ****   */
+ 111:./Library/misc.c **** void NVIC_PriorityGroupConfig(uint32_t NVIC_PriorityGroup)
+ 112:./Library/misc.c **** {
+  30              		.loc 1 112 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+ 113:./Library/misc.c ****   /* Check the parameters */
+ 114:./Library/misc.c ****   assert_param(IS_NVIC_PRIORITY_GROUP(NVIC_PriorityGroup));
+  35              		.loc 1 114 3 view .LVU1
+ 115:./Library/misc.c ****   
+ 116:./Library/misc.c ****   /* Set the PRIGROUP[10:8] bits according to NVIC_PriorityGroup value */
+ 117:./Library/misc.c ****   SCB->AIRCR = AIRCR_VECTKEY_MASK | NVIC_PriorityGroup;
+  36              		.loc 1 117 3 view .LVU2
+  37              		.loc 1 117 35 is_stmt 0 view .LVU3
+  38 0000 40F0BF60 		orr	r0, r0, #100139008
+  39              	.LVL1:
+  40              		.loc 1 117 35 view .LVU4
+  41 0004 40F40030 		orr	r0, r0, #131072
+  42              		.loc 1 117 14 view .LVU5
+  43 0008 014B     		ldr	r3, .L2
+  44 000a D860     		str	r0, [r3, #12]
+ 118:./Library/misc.c **** }
+  45              		.loc 1 118 1 view .LVU6
+  46 000c 7047     		bx	lr
+  47              	.L3:
+  48 000e 00BF     		.align	2
+  49              	.L2:
+  50 0010 00ED00E0 		.word	-536810240
+  51              		.cfi_endproc
+  52              	.LFE123:
+  54              		.section	.text.NVIC_Init,"ax",%progbits
+  55              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 4
+
+
+  56              		.global	NVIC_Init
+  57              		.syntax unified
+  58              		.thumb
+  59              		.thumb_func
+  61              	NVIC_Init:
+  62              	.LVL2:
+  63              	.LFB124:
+ 119:./Library/misc.c **** 
+ 120:./Library/misc.c **** /**
+ 121:./Library/misc.c ****   * @brief  Initializes the NVIC peripheral according to the specified
+ 122:./Library/misc.c ****   *         parameters in the NVIC_InitStruct.
+ 123:./Library/misc.c ****   * @note   To configure interrupts priority correctly, the NVIC_PriorityGroupConfig()
+ 124:./Library/misc.c ****   *         function should be called before. 
+ 125:./Library/misc.c ****   * @param  NVIC_InitStruct: pointer to a NVIC_InitTypeDef structure that contains
+ 126:./Library/misc.c ****   *         the configuration information for the specified NVIC peripheral.
+ 127:./Library/misc.c ****   * @retval None
+ 128:./Library/misc.c ****   */
+ 129:./Library/misc.c **** void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
+ 130:./Library/misc.c **** {
+  64              		.loc 1 130 1 is_stmt 1 view -0
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+ 131:./Library/misc.c ****   uint8_t tmppriority = 0x00, tmppre = 0x00, tmpsub = 0x0F;
+  69              		.loc 1 131 3 view .LVU8
+ 132:./Library/misc.c ****   
+ 133:./Library/misc.c ****   /* Check the parameters */
+ 134:./Library/misc.c ****   assert_param(IS_FUNCTIONAL_STATE(NVIC_InitStruct->NVIC_IRQChannelCmd));
+  70              		.loc 1 134 3 view .LVU9
+ 135:./Library/misc.c ****   assert_param(IS_NVIC_PREEMPTION_PRIORITY(NVIC_InitStruct->NVIC_IRQChannelPreemptionPriority));  
+  71              		.loc 1 135 3 view .LVU10
+ 136:./Library/misc.c ****   assert_param(IS_NVIC_SUB_PRIORITY(NVIC_InitStruct->NVIC_IRQChannelSubPriority));
+  72              		.loc 1 136 3 view .LVU11
+ 137:./Library/misc.c ****     
+ 138:./Library/misc.c ****   if (NVIC_InitStruct->NVIC_IRQChannelCmd != DISABLE)
+  73              		.loc 1 138 3 view .LVU12
+  74              		.loc 1 138 22 is_stmt 0 view .LVU13
+  75 0000 C378     		ldrb	r3, [r0, #3]	@ zero_extendqisi2
+  76              		.loc 1 138 6 view .LVU14
+  77 0002 FBB1     		cbz	r3, .L5
+ 139:./Library/misc.c ****   {
+ 140:./Library/misc.c ****     /* Compute the Corresponding IRQ Priority --------------------------------*/    
+ 141:./Library/misc.c ****     tmppriority = (0x700 - ((SCB->AIRCR) & (uint32_t)0x700))>> 0x08;
+  78              		.loc 1 141 5 is_stmt 1 view .LVU15
+  79              		.loc 1 141 33 is_stmt 0 view .LVU16
+  80 0004 154B     		ldr	r3, .L7
+  81 0006 DB68     		ldr	r3, [r3, #12]
+  82              		.loc 1 141 26 view .LVU17
+  83 0008 DB43     		mvns	r3, r3
+  84              		.loc 1 141 17 view .LVU18
+  85 000a C3F30222 		ubfx	r2, r3, #8, #3
+  86              	.LVL3:
+ 142:./Library/misc.c ****     tmppre = (0x4 - tmppriority);
+  87              		.loc 1 142 5 is_stmt 1 view .LVU19
+  88              		.loc 1 142 12 is_stmt 0 view .LVU20
+  89 000e C2F10401 		rsb	r1, r2, #4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 5
+
+
+  90 0012 C9B2     		uxtb	r1, r1
+  91              	.LVL4:
+ 143:./Library/misc.c ****     tmpsub = tmpsub >> tmppriority;
+  92              		.loc 1 143 5 is_stmt 1 view .LVU21
+  93              		.loc 1 143 21 is_stmt 0 view .LVU22
+  94 0014 0F23     		movs	r3, #15
+  95 0016 1341     		asrs	r3, r3, r2
+  96              	.LVL5:
+ 144:./Library/misc.c **** 
+ 145:./Library/misc.c ****     tmppriority = NVIC_InitStruct->NVIC_IRQChannelPreemptionPriority << tmppre;
+  97              		.loc 1 145 5 is_stmt 1 view .LVU23
+  98              		.loc 1 145 34 is_stmt 0 view .LVU24
+  99 0018 4278     		ldrb	r2, [r0, #1]	@ zero_extendqisi2
+ 100              	.LVL6:
+ 101              		.loc 1 145 70 view .LVU25
+ 102 001a 8A40     		lsls	r2, r2, r1
+ 103              		.loc 1 145 17 view .LVU26
+ 104 001c D2B2     		uxtb	r2, r2
+ 105              	.LVL7:
+ 146:./Library/misc.c ****     tmppriority |=  (uint8_t)(NVIC_InitStruct->NVIC_IRQChannelSubPriority & tmpsub);
+ 106              		.loc 1 146 5 is_stmt 1 view .LVU27
+ 107              		.loc 1 146 46 is_stmt 0 view .LVU28
+ 108 001e 8178     		ldrb	r1, [r0, #2]	@ zero_extendqisi2
+ 109              	.LVL8:
+ 110              		.loc 1 146 21 view .LVU29
+ 111 0020 0B40     		ands	r3, r3, r1
+ 112              	.LVL9:
+ 113              		.loc 1 146 17 view .LVU30
+ 114 0022 1343     		orrs	r3, r3, r2
+ 115              	.LVL10:
+ 147:./Library/misc.c ****         
+ 148:./Library/misc.c ****     tmppriority = tmppriority << 0x04;
+ 116              		.loc 1 148 5 is_stmt 1 view .LVU31
+ 117              		.loc 1 148 17 is_stmt 0 view .LVU32
+ 118 0024 1B01     		lsls	r3, r3, #4
+ 119              	.LVL11:
+ 120              		.loc 1 148 17 view .LVU33
+ 121 0026 DBB2     		uxtb	r3, r3
+ 122              	.LVL12:
+ 149:./Library/misc.c ****         
+ 150:./Library/misc.c ****     NVIC->IP[NVIC_InitStruct->NVIC_IRQChannel] = tmppriority;
+ 123              		.loc 1 150 5 is_stmt 1 view .LVU34
+ 124              		.loc 1 150 29 is_stmt 0 view .LVU35
+ 125 0028 0278     		ldrb	r2, [r0]	@ zero_extendqisi2
+ 126              		.loc 1 150 48 view .LVU36
+ 127 002a 0D49     		ldr	r1, .L7+4
+ 128 002c 0A44     		add	r2, r2, r1
+ 129 002e 82F80033 		strb	r3, [r2, #768]
+ 151:./Library/misc.c ****     
+ 152:./Library/misc.c ****     /* Enable the Selected IRQ Channels --------------------------------------*/
+ 153:./Library/misc.c ****     NVIC->ISER[NVIC_InitStruct->NVIC_IRQChannel >> 0x05] =
+ 130              		.loc 1 153 5 is_stmt 1 view .LVU37
+ 154:./Library/misc.c ****       (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+ 131              		.loc 1 154 41 is_stmt 0 view .LVU38
+ 132 0032 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 133              	.LVL13:
+ 134              		.loc 1 154 59 view .LVU39
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 6
+
+
+ 135 0034 03F01F00 		and	r0, r3, #31
+ 136              	.LVL14:
+ 153:./Library/misc.c ****       (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+ 137              		.loc 1 153 49 view .LVU40
+ 138 0038 5B09     		lsrs	r3, r3, #5
+ 139              		.loc 1 154 22 view .LVU41
+ 140 003a 0122     		movs	r2, #1
+ 141              	.LVL15:
+ 142              		.loc 1 154 22 view .LVU42
+ 143 003c 8240     		lsls	r2, r2, r0
+ 153:./Library/misc.c ****       (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+ 144              		.loc 1 153 58 view .LVU43
+ 145 003e 41F82320 		str	r2, [r1, r3, lsl #2]
+ 153:./Library/misc.c ****       (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+ 146              		.loc 1 153 58 view .LVU44
+ 147 0042 7047     		bx	lr
+ 148              	.LVL16:
+ 149              	.L5:
+ 155:./Library/misc.c ****   }
+ 156:./Library/misc.c ****   else
+ 157:./Library/misc.c ****   {
+ 158:./Library/misc.c ****     /* Disable the Selected IRQ Channels -------------------------------------*/
+ 159:./Library/misc.c ****     NVIC->ICER[NVIC_InitStruct->NVIC_IRQChannel >> 0x05] =
+ 150              		.loc 1 159 5 is_stmt 1 view .LVU45
+ 160:./Library/misc.c ****       (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+ 151              		.loc 1 160 41 is_stmt 0 view .LVU46
+ 152 0044 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 153              		.loc 1 160 59 view .LVU47
+ 154 0046 03F01F01 		and	r1, r3, #31
+ 159:./Library/misc.c ****       (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+ 155              		.loc 1 159 49 view .LVU48
+ 156 004a 5B09     		lsrs	r3, r3, #5
+ 157              		.loc 1 160 22 view .LVU49
+ 158 004c 0122     		movs	r2, #1
+ 159 004e 8A40     		lsls	r2, r2, r1
+ 159:./Library/misc.c ****       (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+ 160              		.loc 1 159 58 view .LVU50
+ 161 0050 2033     		adds	r3, r3, #32
+ 162 0052 0349     		ldr	r1, .L7+4
+ 163 0054 41F82320 		str	r2, [r1, r3, lsl #2]
+ 161:./Library/misc.c ****   }
+ 162:./Library/misc.c **** }
+ 164              		.loc 1 162 1 view .LVU51
+ 165 0058 7047     		bx	lr
+ 166              	.L8:
+ 167 005a 00BF     		.align	2
+ 168              	.L7:
+ 169 005c 00ED00E0 		.word	-536810240
+ 170 0060 00E100E0 		.word	-536813312
+ 171              		.cfi_endproc
+ 172              	.LFE124:
+ 174              		.section	.text.NVIC_SetVectorTable,"ax",%progbits
+ 175              		.align	1
+ 176              		.global	NVIC_SetVectorTable
+ 177              		.syntax unified
+ 178              		.thumb
+ 179              		.thumb_func
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 7
+
+
+ 181              	NVIC_SetVectorTable:
+ 182              	.LVL17:
+ 183              	.LFB125:
+ 163:./Library/misc.c **** 
+ 164:./Library/misc.c **** /**
+ 165:./Library/misc.c ****   * @brief  Sets the vector table location and Offset.
+ 166:./Library/misc.c ****   * @param  NVIC_VectTab: specifies if the vector table is in RAM or FLASH memory.
+ 167:./Library/misc.c ****   *   This parameter can be one of the following values:
+ 168:./Library/misc.c ****   *     @arg NVIC_VectTab_RAM: Vector Table in internal SRAM.
+ 169:./Library/misc.c ****   *     @arg NVIC_VectTab_FLASH: Vector Table in internal FLASH.
+ 170:./Library/misc.c ****   * @param  Offset: Vector Table base offset field. This value must be a multiple of 0x200.
+ 171:./Library/misc.c ****   * @retval None
+ 172:./Library/misc.c ****   */
+ 173:./Library/misc.c **** void NVIC_SetVectorTable(uint32_t NVIC_VectTab, uint32_t Offset)
+ 174:./Library/misc.c **** { 
+ 184              		.loc 1 174 1 is_stmt 1 view -0
+ 185              		.cfi_startproc
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188              		@ link register save eliminated.
+ 175:./Library/misc.c ****   /* Check the parameters */
+ 176:./Library/misc.c ****   assert_param(IS_NVIC_VECTTAB(NVIC_VectTab));
+ 189              		.loc 1 176 3 view .LVU53
+ 177:./Library/misc.c ****   assert_param(IS_NVIC_OFFSET(Offset));  
+ 190              		.loc 1 177 3 view .LVU54
+ 178:./Library/misc.c ****    
+ 179:./Library/misc.c ****   SCB->VTOR = NVIC_VectTab | (Offset & (uint32_t)0x1FFFFF80);
+ 191              		.loc 1 179 3 view .LVU55
+ 192              		.loc 1 179 38 is_stmt 0 view .LVU56
+ 193 0000 21F06041 		bic	r1, r1, #-536870912
+ 194              	.LVL18:
+ 195              		.loc 1 179 38 view .LVU57
+ 196 0004 21F07F01 		bic	r1, r1, #127
+ 197              		.loc 1 179 28 view .LVU58
+ 198 0008 0143     		orrs	r1, r1, r0
+ 199              		.loc 1 179 13 view .LVU59
+ 200 000a 014B     		ldr	r3, .L10
+ 201 000c 9960     		str	r1, [r3, #8]
+ 180:./Library/misc.c **** }
+ 202              		.loc 1 180 1 view .LVU60
+ 203 000e 7047     		bx	lr
+ 204              	.L11:
+ 205              		.align	2
+ 206              	.L10:
+ 207 0010 00ED00E0 		.word	-536810240
+ 208              		.cfi_endproc
+ 209              	.LFE125:
+ 211              		.section	.text.NVIC_SystemLPConfig,"ax",%progbits
+ 212              		.align	1
+ 213              		.global	NVIC_SystemLPConfig
+ 214              		.syntax unified
+ 215              		.thumb
+ 216              		.thumb_func
+ 218              	NVIC_SystemLPConfig:
+ 219              	.LVL19:
+ 220              	.LFB126:
+ 181:./Library/misc.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 8
+
+
+ 182:./Library/misc.c **** /**
+ 183:./Library/misc.c ****   * @brief  Selects the condition for the system to enter low power mode.
+ 184:./Library/misc.c ****   * @param  LowPowerMode: Specifies the new mode for the system to enter low power mode.
+ 185:./Library/misc.c ****   *   This parameter can be one of the following values:
+ 186:./Library/misc.c ****   *     @arg NVIC_LP_SEVONPEND: Low Power SEV on Pend.
+ 187:./Library/misc.c ****   *     @arg NVIC_LP_SLEEPDEEP: Low Power DEEPSLEEP request.
+ 188:./Library/misc.c ****   *     @arg NVIC_LP_SLEEPONEXIT: Low Power Sleep on Exit.
+ 189:./Library/misc.c ****   * @param  NewState: new state of LP condition. This parameter can be: ENABLE or DISABLE.
+ 190:./Library/misc.c ****   * @retval None
+ 191:./Library/misc.c ****   */
+ 192:./Library/misc.c **** void NVIC_SystemLPConfig(uint8_t LowPowerMode, FunctionalState NewState)
+ 193:./Library/misc.c **** {
+ 221              		.loc 1 193 1 is_stmt 1 view -0
+ 222              		.cfi_startproc
+ 223              		@ args = 0, pretend = 0, frame = 0
+ 224              		@ frame_needed = 0, uses_anonymous_args = 0
+ 225              		@ link register save eliminated.
+ 194:./Library/misc.c ****   /* Check the parameters */
+ 195:./Library/misc.c ****   assert_param(IS_NVIC_LP(LowPowerMode));
+ 226              		.loc 1 195 3 view .LVU62
+ 196:./Library/misc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));  
+ 227              		.loc 1 196 3 view .LVU63
+ 197:./Library/misc.c ****   
+ 198:./Library/misc.c ****   if (NewState != DISABLE)
+ 228              		.loc 1 198 3 view .LVU64
+ 229              		.loc 1 198 6 is_stmt 0 view .LVU65
+ 230 0000 21B1     		cbz	r1, .L13
+ 199:./Library/misc.c ****   {
+ 200:./Library/misc.c ****     SCB->SCR |= LowPowerMode;
+ 231              		.loc 1 200 5 is_stmt 1 view .LVU66
+ 232              		.loc 1 200 14 is_stmt 0 view .LVU67
+ 233 0002 054B     		ldr	r3, .L15
+ 234 0004 1A69     		ldr	r2, [r3, #16]
+ 235 0006 1043     		orrs	r0, r0, r2
+ 236              	.LVL20:
+ 237              		.loc 1 200 14 view .LVU68
+ 238 0008 1861     		str	r0, [r3, #16]
+ 239 000a 7047     		bx	lr
+ 240              	.LVL21:
+ 241              	.L13:
+ 201:./Library/misc.c ****   }
+ 202:./Library/misc.c ****   else
+ 203:./Library/misc.c ****   {
+ 204:./Library/misc.c ****     SCB->SCR &= (uint32_t)(~(uint32_t)LowPowerMode);
+ 242              		.loc 1 204 5 is_stmt 1 view .LVU69
+ 243              		.loc 1 204 14 is_stmt 0 view .LVU70
+ 244 000c 024A     		ldr	r2, .L15
+ 245 000e 1369     		ldr	r3, [r2, #16]
+ 246 0010 23EA0000 		bic	r0, r3, r0
+ 247              	.LVL22:
+ 248              		.loc 1 204 14 view .LVU71
+ 249 0014 1061     		str	r0, [r2, #16]
+ 205:./Library/misc.c ****   }
+ 206:./Library/misc.c **** }
+ 250              		.loc 1 206 1 view .LVU72
+ 251 0016 7047     		bx	lr
+ 252              	.L16:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 9
+
+
+ 253              		.align	2
+ 254              	.L15:
+ 255 0018 00ED00E0 		.word	-536810240
+ 256              		.cfi_endproc
+ 257              	.LFE126:
+ 259              		.section	.text.SysTick_CLKSourceConfig,"ax",%progbits
+ 260              		.align	1
+ 261              		.global	SysTick_CLKSourceConfig
+ 262              		.syntax unified
+ 263              		.thumb
+ 264              		.thumb_func
+ 266              	SysTick_CLKSourceConfig:
+ 267              	.LVL23:
+ 268              	.LFB127:
+ 207:./Library/misc.c **** 
+ 208:./Library/misc.c **** /**
+ 209:./Library/misc.c ****   * @brief  Configures the SysTick clock source.
+ 210:./Library/misc.c ****   * @param  SysTick_CLKSource: specifies the SysTick clock source.
+ 211:./Library/misc.c ****   *   This parameter can be one of the following values:
+ 212:./Library/misc.c ****   *     @arg SysTick_CLKSource_HCLK_Div8: AHB clock divided by 8 selected as SysTick clock source.
+ 213:./Library/misc.c ****   *     @arg SysTick_CLKSource_HCLK: AHB clock selected as SysTick clock source.
+ 214:./Library/misc.c ****   * @retval None
+ 215:./Library/misc.c ****   */
+ 216:./Library/misc.c **** void SysTick_CLKSourceConfig(uint32_t SysTick_CLKSource)
+ 217:./Library/misc.c **** {
+ 269              		.loc 1 217 1 is_stmt 1 view -0
+ 270              		.cfi_startproc
+ 271              		@ args = 0, pretend = 0, frame = 0
+ 272              		@ frame_needed = 0, uses_anonymous_args = 0
+ 273              		@ link register save eliminated.
+ 218:./Library/misc.c ****   /* Check the parameters */
+ 219:./Library/misc.c ****   assert_param(IS_SYSTICK_CLK_SOURCE(SysTick_CLKSource));
+ 274              		.loc 1 219 3 view .LVU74
+ 220:./Library/misc.c ****   if (SysTick_CLKSource == SysTick_CLKSource_HCLK)
+ 275              		.loc 1 220 3 view .LVU75
+ 276              		.loc 1 220 6 is_stmt 0 view .LVU76
+ 277 0000 0428     		cmp	r0, #4
+ 278 0002 06D0     		beq	.L20
+ 221:./Library/misc.c ****   {
+ 222:./Library/misc.c ****     SysTick->CTRL |= SysTick_CLKSource_HCLK;
+ 223:./Library/misc.c ****   }
+ 224:./Library/misc.c ****   else
+ 225:./Library/misc.c ****   {
+ 226:./Library/misc.c ****     SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;
+ 279              		.loc 1 226 5 is_stmt 1 view .LVU77
+ 280              		.loc 1 226 19 is_stmt 0 view .LVU78
+ 281 0004 4FF0E022 		mov	r2, #-536813568
+ 282 0008 1369     		ldr	r3, [r2, #16]
+ 283 000a 23F00403 		bic	r3, r3, #4
+ 284 000e 1361     		str	r3, [r2, #16]
+ 227:./Library/misc.c ****   }
+ 228:./Library/misc.c **** }
+ 285              		.loc 1 228 1 view .LVU79
+ 286 0010 7047     		bx	lr
+ 287              	.L20:
+ 222:./Library/misc.c ****   }
+ 288              		.loc 1 222 5 is_stmt 1 view .LVU80
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 10
+
+
+ 222:./Library/misc.c ****   }
+ 289              		.loc 1 222 19 is_stmt 0 view .LVU81
+ 290 0012 4FF0E022 		mov	r2, #-536813568
+ 291 0016 1369     		ldr	r3, [r2, #16]
+ 292 0018 43F00403 		orr	r3, r3, #4
+ 293 001c 1361     		str	r3, [r2, #16]
+ 294 001e 7047     		bx	lr
+ 295              		.cfi_endproc
+ 296              	.LFE127:
+ 298              		.text
+ 299              	.Letext0:
+ 300              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 301              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 302              		.file 4 "./CORE/core_cm4.h"
+ 303              		.file 5 "./CORE/stm32f4xx.h"
+ 304              		.file 6 "./Library/misc.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 misc.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:20     .text.NVIC_PriorityGroupConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:26     .text.NVIC_PriorityGroupConfig:0000000000000000 NVIC_PriorityGroupConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:50     .text.NVIC_PriorityGroupConfig:0000000000000010 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:55     .text.NVIC_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:61     .text.NVIC_Init:0000000000000000 NVIC_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:169    .text.NVIC_Init:000000000000005c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:175    .text.NVIC_SetVectorTable:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:181    .text.NVIC_SetVectorTable:0000000000000000 NVIC_SetVectorTable
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:207    .text.NVIC_SetVectorTable:0000000000000010 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:212    .text.NVIC_SystemLPConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:218    .text.NVIC_SystemLPConfig:0000000000000000 NVIC_SystemLPConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:255    .text.NVIC_SystemLPConfig:0000000000000018 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:260    .text.SysTick_CLKSourceConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRw0J8B.s:266    .text.SysTick_CLKSourceConfig:0000000000000000 SysTick_CLKSourceConfig
+
+NO UNDEFINED SYMBOLS

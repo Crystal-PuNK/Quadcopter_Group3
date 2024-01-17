@@ -1,0 +1,1687 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4xx_hash.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.HASH_DeInit,"ax",%progbits
+  20              		.align	1
+  21              		.global	HASH_DeInit
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	HASH_DeInit:
+  27              	.LFB123:
+  28              		.file 1 "./Library/stm32f4xx_hash.c"
+   1:./Library/stm32f4xx_hash.c **** /**
+   2:./Library/stm32f4xx_hash.c ****   ******************************************************************************
+   3:./Library/stm32f4xx_hash.c ****   * @file    stm32f4xx_hash.c
+   4:./Library/stm32f4xx_hash.c ****   * @author  MCD Application Team
+   5:./Library/stm32f4xx_hash.c ****   * @version V1.8.1
+   6:./Library/stm32f4xx_hash.c ****   * @date    27-January-2022
+   7:./Library/stm32f4xx_hash.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:./Library/stm32f4xx_hash.c ****   *          functionalities of the HASH / HMAC Processor (HASH) peripheral:           
+   9:./Library/stm32f4xx_hash.c ****   *           - Initialization and Configuration functions
+  10:./Library/stm32f4xx_hash.c ****   *           - Message Digest generation functions
+  11:./Library/stm32f4xx_hash.c ****   *           - context swapping functions   
+  12:./Library/stm32f4xx_hash.c ****   *           - DMA interface function       
+  13:./Library/stm32f4xx_hash.c ****   *           - Interrupts and flags management       
+  14:./Library/stm32f4xx_hash.c ****   *         
+  15:./Library/stm32f4xx_hash.c **** @verbatim
+  16:./Library/stm32f4xx_hash.c ****  ===================================================================      
+  17:./Library/stm32f4xx_hash.c ****                  ##### How to use this driver #####
+  18:./Library/stm32f4xx_hash.c ****  ===================================================================
+  19:./Library/stm32f4xx_hash.c ****             
+  20:./Library/stm32f4xx_hash.c ****  *** HASH operation : *** 
+  21:./Library/stm32f4xx_hash.c ****  ========================                 
+  22:./Library/stm32f4xx_hash.c ****  [..]
+  23:./Library/stm32f4xx_hash.c ****    (#) Enable the HASH controller clock using 
+  24:./Library/stm32f4xx_hash.c ****        RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_HASH, ENABLE) function.
+  25:./Library/stm32f4xx_hash.c ****              
+  26:./Library/stm32f4xx_hash.c ****    (#) Initialize the HASH using HASH_Init() function. 
+  27:./Library/stm32f4xx_hash.c ****                  
+  28:./Library/stm32f4xx_hash.c ****    (#) Reset the HASH processor core, so that the HASH will be ready 
+  29:./Library/stm32f4xx_hash.c ****        to compute he message digest of a new message by using HASH_Reset() function.
+  30:./Library/stm32f4xx_hash.c ****   
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 2
+
+
+  31:./Library/stm32f4xx_hash.c ****    (#) Enable the HASH controller using the HASH_Cmd() function. 
+  32:./Library/stm32f4xx_hash.c ****                   
+  33:./Library/stm32f4xx_hash.c ****    (#) if using DMA for Data input transfer, Activate the DMA Request 
+  34:./Library/stm32f4xx_hash.c ****        using HASH_DMACmd() function 
+  35:./Library/stm32f4xx_hash.c ****                       
+  36:./Library/stm32f4xx_hash.c ****    (#) if DMA is not used for data transfer, use HASH_DataIn() function 
+  37:./Library/stm32f4xx_hash.c ****        to enter data to IN FIFO.
+  38:./Library/stm32f4xx_hash.c ****                
+  39:./Library/stm32f4xx_hash.c ****             
+  40:./Library/stm32f4xx_hash.c ****    (#) Configure the Number of valid bits in last word of the message 
+  41:./Library/stm32f4xx_hash.c ****        using HASH_SetLastWordValidBitsNbr() function.
+  42:./Library/stm32f4xx_hash.c ****                
+  43:./Library/stm32f4xx_hash.c ****    (#) if the message length is not an exact multiple of 512 bits, 
+  44:./Library/stm32f4xx_hash.c ****        then the function HASH_StartDigest() must be called to launch the computation
+  45:./Library/stm32f4xx_hash.c ****        of the final digest.     
+  46:./Library/stm32f4xx_hash.c ****                
+  47:./Library/stm32f4xx_hash.c ****    (#) Once computed, the digest can be read using HASH_GetDigest() function.         
+  48:./Library/stm32f4xx_hash.c ****                      
+  49:./Library/stm32f4xx_hash.c ****    (#) To control HASH events you can use one of the following wo methods:
+  50:./Library/stm32f4xx_hash.c ****        (++) Check on HASH flags using the HASH_GetFlagStatus() function.  
+  51:./Library/stm32f4xx_hash.c ****        (++) Use HASH interrupts through the function HASH_ITConfig() at 
+  52:./Library/stm32f4xx_hash.c ****             initialization phase and HASH_GetITStatus() function into 
+  53:./Library/stm32f4xx_hash.c ****             interrupt routines in hashing phase.
+  54:./Library/stm32f4xx_hash.c ****             After checking on a flag you should clear it using HASH_ClearFlag()
+  55:./Library/stm32f4xx_hash.c ****             function. And after checking on an interrupt event you should 
+  56:./Library/stm32f4xx_hash.c ****             clear it using HASH_ClearITPendingBit() function.     
+  57:./Library/stm32f4xx_hash.c ****                        
+  58:./Library/stm32f4xx_hash.c ****    (#) Save and restore hash processor context using 
+  59:./Library/stm32f4xx_hash.c ****        HASH_SaveContext() and HASH_RestoreContext() functions.     
+  60:./Library/stm32f4xx_hash.c ****                 
+  61:./Library/stm32f4xx_hash.c ****   
+  62:./Library/stm32f4xx_hash.c ****               
+  63:./Library/stm32f4xx_hash.c ****  *** HMAC operation : *** 
+  64:./Library/stm32f4xx_hash.c ****  ========================
+  65:./Library/stm32f4xx_hash.c ****  [..] The HMAC algorithm is used for message authentication, by 
+  66:./Library/stm32f4xx_hash.c ****       irreversibly binding the message being processed to a key chosen 
+  67:./Library/stm32f4xx_hash.c ****       by the user. 
+  68:./Library/stm32f4xx_hash.c ****       For HMAC specifications, refer to "HMAC: keyed-hashing for message 
+  69:./Library/stm32f4xx_hash.c ****       authentication, H. Krawczyk, M. Bellare, R. Canetti, February 1997"
+  70:./Library/stm32f4xx_hash.c ****             
+  71:./Library/stm32f4xx_hash.c ****  [..] Basically, the HMAC algorithm consists of two nested hash operations:
+  72:./Library/stm32f4xx_hash.c ****       HMAC(message) = Hash[((key | pad) XOR 0x5C) | Hash(((key | pad) XOR 0x36) | message)]
+  73:./Library/stm32f4xx_hash.c ****       where:
+  74:./Library/stm32f4xx_hash.c ****       (+) "pad" is a sequence of zeroes needed to extend the key to the 
+  75:./Library/stm32f4xx_hash.c ****           length of the underlying hash function data block (that is 
+  76:./Library/stm32f4xx_hash.c ****           512 bits for both the SHA-1 and MD5 hash algorithms)
+  77:./Library/stm32f4xx_hash.c ****       (+) "|"   represents the concatenation operator 
+  78:./Library/stm32f4xx_hash.c ****             
+  79:./Library/stm32f4xx_hash.c ****            
+  80:./Library/stm32f4xx_hash.c ****  [..]To compute the HMAC, four different phases are required:                  
+  81:./Library/stm32f4xx_hash.c ****    (#) Initialize the HASH using HASH_Init() function to do HMAC 
+  82:./Library/stm32f4xx_hash.c ****        operation. 
+  83:./Library/stm32f4xx_hash.c ****                   
+  84:./Library/stm32f4xx_hash.c ****    (#) The key (to be used for the inner hash function) is then given to the core. 
+  85:./Library/stm32f4xx_hash.c ****        This operation follows the same mechanism as the one used to send the 
+  86:./Library/stm32f4xx_hash.c ****        message in the hash operation (that is, by HASH_DataIn() function and, 
+  87:./Library/stm32f4xx_hash.c ****        finally, HASH_StartDigest() function.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 3
+
+
+  88:./Library/stm32f4xx_hash.c ****             
+  89:./Library/stm32f4xx_hash.c ****    (#) Once the last word has been entered and computation has started, 
+  90:./Library/stm32f4xx_hash.c ****        the hash processor elaborates the key. It is then ready to accept the message
+  91:./Library/stm32f4xx_hash.c ****        text using the same mechanism as the one used to send the message in the
+  92:./Library/stm32f4xx_hash.c ****        hash operation.
+  93:./Library/stm32f4xx_hash.c ****          
+  94:./Library/stm32f4xx_hash.c ****    (#) After the first hash round, the hash processor returns "ready" to indicate 
+  95:./Library/stm32f4xx_hash.c ****        that it is ready to receive the key to be used for the outer hash function 
+  96:./Library/stm32f4xx_hash.c ****        (normally, this key is the same as the one used for the inner hash function). 
+  97:./Library/stm32f4xx_hash.c ****        When the last word of the key is entered and computation starts, the HMAC 
+  98:./Library/stm32f4xx_hash.c ****        result is made available using HASH_GetDigest() function.
+  99:./Library/stm32f4xx_hash.c **** 
+ 100:./Library/stm32f4xx_hash.c **** @endverbatim
+ 101:./Library/stm32f4xx_hash.c ****   *         
+ 102:./Library/stm32f4xx_hash.c ****   ******************************************************************************
+ 103:./Library/stm32f4xx_hash.c ****   * @attention
+ 104:./Library/stm32f4xx_hash.c ****   *
+ 105:./Library/stm32f4xx_hash.c ****   * Copyright (c) 2016 STMicroelectronics.
+ 106:./Library/stm32f4xx_hash.c ****   * All rights reserved.
+ 107:./Library/stm32f4xx_hash.c ****   *
+ 108:./Library/stm32f4xx_hash.c ****   * This software is licensed under terms that can be found in the LICENSE file
+ 109:./Library/stm32f4xx_hash.c ****   * in the root directory of this software component.
+ 110:./Library/stm32f4xx_hash.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+ 111:./Library/stm32f4xx_hash.c ****   *
+ 112:./Library/stm32f4xx_hash.c ****   ******************************************************************************
+ 113:./Library/stm32f4xx_hash.c ****   */
+ 114:./Library/stm32f4xx_hash.c **** 
+ 115:./Library/stm32f4xx_hash.c **** /* Includes ------------------------------------------------------------------*/
+ 116:./Library/stm32f4xx_hash.c **** #include "stm32f4xx_hash.h"
+ 117:./Library/stm32f4xx_hash.c **** #include "stm32f4xx_rcc.h"
+ 118:./Library/stm32f4xx_hash.c **** 
+ 119:./Library/stm32f4xx_hash.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+ 120:./Library/stm32f4xx_hash.c ****   * @{
+ 121:./Library/stm32f4xx_hash.c ****   */
+ 122:./Library/stm32f4xx_hash.c **** 
+ 123:./Library/stm32f4xx_hash.c **** /** @defgroup HASH 
+ 124:./Library/stm32f4xx_hash.c ****   * @brief HASH driver modules
+ 125:./Library/stm32f4xx_hash.c ****   * @{
+ 126:./Library/stm32f4xx_hash.c ****   */ 
+ 127:./Library/stm32f4xx_hash.c **** 
+ 128:./Library/stm32f4xx_hash.c **** /* Private typedef -----------------------------------------------------------*/
+ 129:./Library/stm32f4xx_hash.c **** /* Private define ------------------------------------------------------------*/
+ 130:./Library/stm32f4xx_hash.c **** /* Private macro -------------------------------------------------------------*/
+ 131:./Library/stm32f4xx_hash.c **** /* Private variables ---------------------------------------------------------*/
+ 132:./Library/stm32f4xx_hash.c **** /* Private function prototypes -----------------------------------------------*/
+ 133:./Library/stm32f4xx_hash.c **** /* Private functions ---------------------------------------------------------*/ 
+ 134:./Library/stm32f4xx_hash.c **** 
+ 135:./Library/stm32f4xx_hash.c **** /** @defgroup HASH_Private_Functions
+ 136:./Library/stm32f4xx_hash.c ****   * @{
+ 137:./Library/stm32f4xx_hash.c ****   */ 
+ 138:./Library/stm32f4xx_hash.c **** 
+ 139:./Library/stm32f4xx_hash.c **** /** @defgroup HASH_Group1 Initialization and Configuration functions
+ 140:./Library/stm32f4xx_hash.c ****  *  @brief    Initialization and Configuration functions 
+ 141:./Library/stm32f4xx_hash.c ****  *
+ 142:./Library/stm32f4xx_hash.c **** @verbatim    
+ 143:./Library/stm32f4xx_hash.c ****  ===============================================================================
+ 144:./Library/stm32f4xx_hash.c ****               ##### Initialization and Configuration functions #####
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 4
+
+
+ 145:./Library/stm32f4xx_hash.c ****  ===============================================================================  
+ 146:./Library/stm32f4xx_hash.c ****  [..] This section provides functions allowing to 
+ 147:./Library/stm32f4xx_hash.c ****    (+) Initialize the HASH peripheral
+ 148:./Library/stm32f4xx_hash.c ****    (+) Configure the HASH Processor 
+ 149:./Library/stm32f4xx_hash.c ****    (+) MD5/SHA1, 
+ 150:./Library/stm32f4xx_hash.c ****    (+) HASH/HMAC, 
+ 151:./Library/stm32f4xx_hash.c ****    (+) datatype 
+ 152:./Library/stm32f4xx_hash.c ****    (+) HMAC Key (if mode = HMAC)
+ 153:./Library/stm32f4xx_hash.c ****    (+) Reset the HASH Processor 
+ 154:./Library/stm32f4xx_hash.c ****    
+ 155:./Library/stm32f4xx_hash.c **** @endverbatim
+ 156:./Library/stm32f4xx_hash.c ****   * @{
+ 157:./Library/stm32f4xx_hash.c ****   */
+ 158:./Library/stm32f4xx_hash.c ****   
+ 159:./Library/stm32f4xx_hash.c **** /**
+ 160:./Library/stm32f4xx_hash.c ****   * @brief  De-initializes the HASH peripheral registers to their default reset values
+ 161:./Library/stm32f4xx_hash.c ****   * @param  None
+ 162:./Library/stm32f4xx_hash.c ****   * @retval None
+ 163:./Library/stm32f4xx_hash.c ****   */
+ 164:./Library/stm32f4xx_hash.c **** void HASH_DeInit(void)
+ 165:./Library/stm32f4xx_hash.c **** {
+  29              		.loc 1 165 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+ 166:./Library/stm32f4xx_hash.c ****   /* Enable HASH reset state */
+ 167:./Library/stm32f4xx_hash.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_HASH, ENABLE);
+  38              		.loc 1 167 3 view .LVU1
+  39 0002 0121     		movs	r1, #1
+  40 0004 2020     		movs	r0, #32
+  41 0006 FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  42              	.LVL0:
+ 168:./Library/stm32f4xx_hash.c ****   /* Release HASH from reset state */
+ 169:./Library/stm32f4xx_hash.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_HASH, DISABLE);
+  43              		.loc 1 169 3 view .LVU2
+  44 000a 0021     		movs	r1, #0
+  45 000c 2020     		movs	r0, #32
+  46 000e FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  47              	.LVL1:
+ 170:./Library/stm32f4xx_hash.c **** }
+  48              		.loc 1 170 1 is_stmt 0 view .LVU3
+  49 0012 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE123:
+  53              		.section	.text.HASH_Init,"ax",%progbits
+  54              		.align	1
+  55              		.global	HASH_Init
+  56              		.syntax unified
+  57              		.thumb
+  58              		.thumb_func
+  60              	HASH_Init:
+  61              	.LVL2:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 5
+
+
+  62              	.LFB124:
+ 171:./Library/stm32f4xx_hash.c **** 
+ 172:./Library/stm32f4xx_hash.c **** /**
+ 173:./Library/stm32f4xx_hash.c ****   * @brief  Initializes the HASH peripheral according to the specified parameters
+ 174:./Library/stm32f4xx_hash.c ****   *         in the HASH_InitStruct structure.
+ 175:./Library/stm32f4xx_hash.c ****   * @note   the hash processor is reset when calling this function so that the
+ 176:./Library/stm32f4xx_hash.c ****   *         HASH will be ready to compute the message digest of a new message.
+ 177:./Library/stm32f4xx_hash.c ****   *         There is no need to call HASH_Reset() function.           
+ 178:./Library/stm32f4xx_hash.c ****   * @param  HASH_InitStruct: pointer to a HASH_InitTypeDef structure that contains
+ 179:./Library/stm32f4xx_hash.c ****   *         the configuration information for the HASH peripheral.
+ 180:./Library/stm32f4xx_hash.c ****   * @note   The field HASH_HMACKeyType in HASH_InitTypeDef must be filled only 
+ 181:./Library/stm32f4xx_hash.c ****   *          if the algorithm mode is HMAC.       
+ 182:./Library/stm32f4xx_hash.c ****   * @retval None
+ 183:./Library/stm32f4xx_hash.c ****   */
+ 184:./Library/stm32f4xx_hash.c **** void HASH_Init(HASH_InitTypeDef* HASH_InitStruct)
+ 185:./Library/stm32f4xx_hash.c **** {
+  63              		.loc 1 185 1 is_stmt 1 view -0
+  64              		.cfi_startproc
+  65              		@ args = 0, pretend = 0, frame = 0
+  66              		@ frame_needed = 0, uses_anonymous_args = 0
+  67              		@ link register save eliminated.
+  68              		.loc 1 185 1 is_stmt 0 view .LVU5
+  69 0000 10B4     		push	{r4}
+  70              	.LCFI1:
+  71              		.cfi_def_cfa_offset 4
+  72              		.cfi_offset 4, -4
+ 186:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 187:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_ALGOSELECTION(HASH_InitStruct->HASH_AlgoSelection));
+  73              		.loc 1 187 3 is_stmt 1 view .LVU6
+ 188:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_DATATYPE(HASH_InitStruct->HASH_DataType));
+  74              		.loc 1 188 3 view .LVU7
+ 189:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_ALGOMODE(HASH_InitStruct->HASH_AlgoMode));
+  75              		.loc 1 189 3 view .LVU8
+ 190:./Library/stm32f4xx_hash.c ****   
+ 191:./Library/stm32f4xx_hash.c ****   /* Configure the Algorithm used, algorithm mode and the datatype */
+ 192:./Library/stm32f4xx_hash.c ****   HASH->CR &= ~ (HASH_CR_ALGO | HASH_CR_DATATYPE | HASH_CR_MODE);
+  76              		.loc 1 192 3 view .LVU9
+  77              		.loc 1 192 12 is_stmt 0 view .LVU10
+  78 0002 124A     		ldr	r2, .L7
+  79 0004 1368     		ldr	r3, [r2]
+  80 0006 23F48023 		bic	r3, r3, #262144
+  81 000a 23F0F003 		bic	r3, r3, #240
+  82 000e 1360     		str	r3, [r2]
+ 193:./Library/stm32f4xx_hash.c ****   HASH->CR |= (HASH_InitStruct->HASH_AlgoSelection | \
+  83              		.loc 1 193 3 is_stmt 1 view .LVU11
+  84              		.loc 1 193 12 is_stmt 0 view .LVU12
+  85 0010 1168     		ldr	r1, [r2]
+  86              		.loc 1 193 31 view .LVU13
+  87 0012 0368     		ldr	r3, [r0]
+  88              		.loc 1 193 52 view .LVU14
+  89 0014 8468     		ldr	r4, [r0, #8]
+  90 0016 2343     		orrs	r3, r3, r4
+ 194:./Library/stm32f4xx_hash.c ****                HASH_InitStruct->HASH_DataType | \
+  91              		.loc 1 194 47 view .LVU15
+  92 0018 4468     		ldr	r4, [r0, #4]
+  93 001a 2343     		orrs	r3, r3, r4
+ 193:./Library/stm32f4xx_hash.c ****   HASH->CR |= (HASH_InitStruct->HASH_AlgoSelection | \
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 6
+
+
+  94              		.loc 1 193 12 view .LVU16
+  95 001c 0B43     		orrs	r3, r3, r1
+  96 001e 1360     		str	r3, [r2]
+ 195:./Library/stm32f4xx_hash.c ****                HASH_InitStruct->HASH_AlgoMode);
+ 196:./Library/stm32f4xx_hash.c ****   
+ 197:./Library/stm32f4xx_hash.c ****   /* if algorithm mode is HMAC, set the Key */  
+ 198:./Library/stm32f4xx_hash.c ****   if(HASH_InitStruct->HASH_AlgoMode == HASH_AlgoMode_HMAC) 
+  97              		.loc 1 198 3 is_stmt 1 view .LVU17
+  98              		.loc 1 198 21 is_stmt 0 view .LVU18
+  99 0020 4368     		ldr	r3, [r0, #4]
+ 100              		.loc 1 198 5 view .LVU19
+ 101 0022 402B     		cmp	r3, #64
+ 102 0024 07D0     		beq	.L6
+ 103              	.L4:
+ 199:./Library/stm32f4xx_hash.c ****   {
+ 200:./Library/stm32f4xx_hash.c ****     assert_param(IS_HASH_HMAC_KEYTYPE(HASH_InitStruct->HASH_HMACKeyType));
+ 201:./Library/stm32f4xx_hash.c ****     HASH->CR &= ~HASH_CR_LKEY;
+ 202:./Library/stm32f4xx_hash.c ****     HASH->CR |= HASH_InitStruct->HASH_HMACKeyType;
+ 203:./Library/stm32f4xx_hash.c ****   }
+ 204:./Library/stm32f4xx_hash.c **** 
+ 205:./Library/stm32f4xx_hash.c ****   /* Reset the HASH processor core, so that the HASH will be ready to compute 
+ 206:./Library/stm32f4xx_hash.c ****      the message digest of a new message */
+ 207:./Library/stm32f4xx_hash.c ****   HASH->CR |= HASH_CR_INIT;  
+ 104              		.loc 1 207 3 is_stmt 1 view .LVU20
+ 105              		.loc 1 207 12 is_stmt 0 view .LVU21
+ 106 0026 094A     		ldr	r2, .L7
+ 107 0028 1368     		ldr	r3, [r2]
+ 108 002a 43F00403 		orr	r3, r3, #4
+ 109 002e 1360     		str	r3, [r2]
+ 208:./Library/stm32f4xx_hash.c **** }
+ 110              		.loc 1 208 1 view .LVU22
+ 111 0030 5DF8044B 		ldr	r4, [sp], #4
+ 112              	.LCFI2:
+ 113              		.cfi_remember_state
+ 114              		.cfi_restore 4
+ 115              		.cfi_def_cfa_offset 0
+ 116 0034 7047     		bx	lr
+ 117              	.L6:
+ 118              	.LCFI3:
+ 119              		.cfi_restore_state
+ 200:./Library/stm32f4xx_hash.c ****     HASH->CR &= ~HASH_CR_LKEY;
+ 120              		.loc 1 200 5 is_stmt 1 view .LVU23
+ 201:./Library/stm32f4xx_hash.c ****     HASH->CR |= HASH_InitStruct->HASH_HMACKeyType;
+ 121              		.loc 1 201 5 view .LVU24
+ 201:./Library/stm32f4xx_hash.c ****     HASH->CR |= HASH_InitStruct->HASH_HMACKeyType;
+ 122              		.loc 1 201 14 is_stmt 0 view .LVU25
+ 123 0036 1346     		mov	r3, r2
+ 124 0038 1268     		ldr	r2, [r2]
+ 125 003a 22F48032 		bic	r2, r2, #65536
+ 126 003e 1A60     		str	r2, [r3]
+ 202:./Library/stm32f4xx_hash.c ****   }
+ 127              		.loc 1 202 5 is_stmt 1 view .LVU26
+ 202:./Library/stm32f4xx_hash.c ****   }
+ 128              		.loc 1 202 14 is_stmt 0 view .LVU27
+ 129 0040 1A68     		ldr	r2, [r3]
+ 202:./Library/stm32f4xx_hash.c ****   }
+ 130              		.loc 1 202 32 view .LVU28
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 7
+
+
+ 131 0042 C168     		ldr	r1, [r0, #12]
+ 202:./Library/stm32f4xx_hash.c ****   }
+ 132              		.loc 1 202 14 view .LVU29
+ 133 0044 0A43     		orrs	r2, r2, r1
+ 134 0046 1A60     		str	r2, [r3]
+ 135 0048 EDE7     		b	.L4
+ 136              	.L8:
+ 137 004a 00BF     		.align	2
+ 138              	.L7:
+ 139 004c 00040650 		.word	1342571520
+ 140              		.cfi_endproc
+ 141              	.LFE124:
+ 143              		.section	.text.HASH_StructInit,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	HASH_StructInit
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 150              	HASH_StructInit:
+ 151              	.LVL3:
+ 152              	.LFB125:
+ 209:./Library/stm32f4xx_hash.c **** 
+ 210:./Library/stm32f4xx_hash.c **** /**
+ 211:./Library/stm32f4xx_hash.c ****   * @brief  Fills each HASH_InitStruct member with its default value.
+ 212:./Library/stm32f4xx_hash.c ****   * @param  HASH_InitStruct : pointer to a HASH_InitTypeDef structure which will
+ 213:./Library/stm32f4xx_hash.c ****   *          be initialized.  
+ 214:./Library/stm32f4xx_hash.c ****   *  @note  The default values set are : Processor mode is HASH, Algorithm selected is SHA1,
+ 215:./Library/stm32f4xx_hash.c ****   *          Data type selected is 32b and HMAC Key Type is short key.  
+ 216:./Library/stm32f4xx_hash.c ****   * @retval None
+ 217:./Library/stm32f4xx_hash.c ****   */
+ 218:./Library/stm32f4xx_hash.c **** void HASH_StructInit(HASH_InitTypeDef* HASH_InitStruct)
+ 219:./Library/stm32f4xx_hash.c **** {
+ 153              		.loc 1 219 1 is_stmt 1 view -0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157              		@ link register save eliminated.
+ 220:./Library/stm32f4xx_hash.c ****   /* Initialize the HASH_AlgoSelection member */
+ 221:./Library/stm32f4xx_hash.c ****   HASH_InitStruct->HASH_AlgoSelection = HASH_AlgoSelection_SHA1;
+ 158              		.loc 1 221 3 view .LVU31
+ 159              		.loc 1 221 39 is_stmt 0 view .LVU32
+ 160 0000 0023     		movs	r3, #0
+ 161 0002 0360     		str	r3, [r0]
+ 222:./Library/stm32f4xx_hash.c **** 
+ 223:./Library/stm32f4xx_hash.c ****   /* Initialize the HASH_AlgoMode member */
+ 224:./Library/stm32f4xx_hash.c ****   HASH_InitStruct->HASH_AlgoMode = HASH_AlgoMode_HASH;
+ 162              		.loc 1 224 3 is_stmt 1 view .LVU33
+ 163              		.loc 1 224 34 is_stmt 0 view .LVU34
+ 164 0004 4360     		str	r3, [r0, #4]
+ 225:./Library/stm32f4xx_hash.c **** 
+ 226:./Library/stm32f4xx_hash.c ****   /* Initialize the HASH_DataType member */
+ 227:./Library/stm32f4xx_hash.c ****   HASH_InitStruct->HASH_DataType = HASH_DataType_32b;
+ 165              		.loc 1 227 3 is_stmt 1 view .LVU35
+ 166              		.loc 1 227 34 is_stmt 0 view .LVU36
+ 167 0006 8360     		str	r3, [r0, #8]
+ 228:./Library/stm32f4xx_hash.c **** 
+ 229:./Library/stm32f4xx_hash.c ****   /* Initialize the HASH_HMACKeyType member */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 8
+
+
+ 230:./Library/stm32f4xx_hash.c ****   HASH_InitStruct->HASH_HMACKeyType = HASH_HMACKeyType_ShortKey;
+ 168              		.loc 1 230 3 is_stmt 1 view .LVU37
+ 169              		.loc 1 230 37 is_stmt 0 view .LVU38
+ 170 0008 C360     		str	r3, [r0, #12]
+ 231:./Library/stm32f4xx_hash.c **** }
+ 171              		.loc 1 231 1 view .LVU39
+ 172 000a 7047     		bx	lr
+ 173              		.cfi_endproc
+ 174              	.LFE125:
+ 176              		.section	.text.HASH_Reset,"ax",%progbits
+ 177              		.align	1
+ 178              		.global	HASH_Reset
+ 179              		.syntax unified
+ 180              		.thumb
+ 181              		.thumb_func
+ 183              	HASH_Reset:
+ 184              	.LFB126:
+ 232:./Library/stm32f4xx_hash.c **** 
+ 233:./Library/stm32f4xx_hash.c **** /**
+ 234:./Library/stm32f4xx_hash.c ****   * @brief  Resets the HASH processor core, so that the HASH will be ready
+ 235:./Library/stm32f4xx_hash.c ****   *         to compute the message digest of a new message.
+ 236:./Library/stm32f4xx_hash.c ****   * @note   Calling this function will clear the HASH_SR_DCIS (Digest calculation 
+ 237:./Library/stm32f4xx_hash.c ****   *         completion interrupt status) bit corresponding to HASH_IT_DCI 
+ 238:./Library/stm32f4xx_hash.c ****   *         interrupt and HASH_FLAG_DCIS flag. 
+ 239:./Library/stm32f4xx_hash.c ****   * @param  None
+ 240:./Library/stm32f4xx_hash.c ****   * @retval None
+ 241:./Library/stm32f4xx_hash.c ****   */
+ 242:./Library/stm32f4xx_hash.c **** void HASH_Reset(void)
+ 243:./Library/stm32f4xx_hash.c **** {
+ 185              		.loc 1 243 1 is_stmt 1 view -0
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 0
+ 188              		@ frame_needed = 0, uses_anonymous_args = 0
+ 189              		@ link register save eliminated.
+ 244:./Library/stm32f4xx_hash.c ****   /* Reset the HASH processor core */
+ 245:./Library/stm32f4xx_hash.c ****   HASH->CR |= HASH_CR_INIT;
+ 190              		.loc 1 245 3 view .LVU41
+ 191              		.loc 1 245 12 is_stmt 0 view .LVU42
+ 192 0000 024A     		ldr	r2, .L11
+ 193 0002 1368     		ldr	r3, [r2]
+ 194 0004 43F00403 		orr	r3, r3, #4
+ 195 0008 1360     		str	r3, [r2]
+ 246:./Library/stm32f4xx_hash.c **** }
+ 196              		.loc 1 246 1 view .LVU43
+ 197 000a 7047     		bx	lr
+ 198              	.L12:
+ 199              		.align	2
+ 200              	.L11:
+ 201 000c 00040650 		.word	1342571520
+ 202              		.cfi_endproc
+ 203              	.LFE126:
+ 205              		.section	.text.HASH_SetLastWordValidBitsNbr,"ax",%progbits
+ 206              		.align	1
+ 207              		.global	HASH_SetLastWordValidBitsNbr
+ 208              		.syntax unified
+ 209              		.thumb
+ 210              		.thumb_func
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 9
+
+
+ 212              	HASH_SetLastWordValidBitsNbr:
+ 213              	.LVL4:
+ 214              	.LFB127:
+ 247:./Library/stm32f4xx_hash.c **** /**
+ 248:./Library/stm32f4xx_hash.c ****   * @}
+ 249:./Library/stm32f4xx_hash.c ****   */
+ 250:./Library/stm32f4xx_hash.c ****  
+ 251:./Library/stm32f4xx_hash.c **** /** @defgroup HASH_Group2 Message Digest generation functions
+ 252:./Library/stm32f4xx_hash.c ****  *  @brief    Message Digest generation functions
+ 253:./Library/stm32f4xx_hash.c ****  *
+ 254:./Library/stm32f4xx_hash.c **** @verbatim    
+ 255:./Library/stm32f4xx_hash.c ****  ===============================================================================
+ 256:./Library/stm32f4xx_hash.c ****                   ##### Message Digest generation functions #####
+ 257:./Library/stm32f4xx_hash.c ****  ===============================================================================  
+ 258:./Library/stm32f4xx_hash.c ****  [..] This section provides functions allowing the generation of message digest: 
+ 259:./Library/stm32f4xx_hash.c ****    (+) Push data in the IN FIFO : using HASH_DataIn()
+ 260:./Library/stm32f4xx_hash.c ****    (+) Get the number of words set in IN FIFO, use HASH_GetInFIFOWordsNbr()  
+ 261:./Library/stm32f4xx_hash.c ****    (+) set the last word valid bits number using HASH_SetLastWordValidBitsNbr() 
+ 262:./Library/stm32f4xx_hash.c ****    (+) start digest calculation : using HASH_StartDigest()
+ 263:./Library/stm32f4xx_hash.c ****    (+) Get the Digest message : using HASH_GetDigest()
+ 264:./Library/stm32f4xx_hash.c ****  
+ 265:./Library/stm32f4xx_hash.c **** @endverbatim
+ 266:./Library/stm32f4xx_hash.c ****   * @{
+ 267:./Library/stm32f4xx_hash.c ****   */
+ 268:./Library/stm32f4xx_hash.c **** 
+ 269:./Library/stm32f4xx_hash.c **** 
+ 270:./Library/stm32f4xx_hash.c **** /**
+ 271:./Library/stm32f4xx_hash.c ****   * @brief  Configure the Number of valid bits in last word of the message
+ 272:./Library/stm32f4xx_hash.c ****   * @param  ValidNumber: Number of valid bits in last word of the message.
+ 273:./Library/stm32f4xx_hash.c ****   *           This parameter must be a number between 0 and 0x1F.
+ 274:./Library/stm32f4xx_hash.c ****   *             - 0x00: All 32 bits of the last data written are valid
+ 275:./Library/stm32f4xx_hash.c ****   *             - 0x01: Only bit [0] of the last data written is valid
+ 276:./Library/stm32f4xx_hash.c ****   *             - 0x02: Only bits[1:0] of the last data written are valid
+ 277:./Library/stm32f4xx_hash.c ****   *             - 0x03: Only bits[2:0] of the last data written are valid
+ 278:./Library/stm32f4xx_hash.c ****   *             - ...
+ 279:./Library/stm32f4xx_hash.c ****   *             - 0x1F: Only bits[30:0] of the last data written are valid    
+ 280:./Library/stm32f4xx_hash.c ****   * @note   The Number of valid bits must be set before to start the message 
+ 281:./Library/stm32f4xx_hash.c ****   *         digest competition (in Hash and HMAC) and key treatment(in HMAC).    
+ 282:./Library/stm32f4xx_hash.c ****   * @retval None
+ 283:./Library/stm32f4xx_hash.c ****   */
+ 284:./Library/stm32f4xx_hash.c **** void HASH_SetLastWordValidBitsNbr(uint16_t ValidNumber)
+ 285:./Library/stm32f4xx_hash.c **** {
+ 215              		.loc 1 285 1 is_stmt 1 view -0
+ 216              		.cfi_startproc
+ 217              		@ args = 0, pretend = 0, frame = 0
+ 218              		@ frame_needed = 0, uses_anonymous_args = 0
+ 219              		@ link register save eliminated.
+ 286:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 287:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_VALIDBITSNUMBER(ValidNumber));
+ 220              		.loc 1 287 3 view .LVU45
+ 288:./Library/stm32f4xx_hash.c ****   
+ 289:./Library/stm32f4xx_hash.c ****   /* Configure the Number of valid bits in last word of the message */
+ 290:./Library/stm32f4xx_hash.c ****   HASH->STR &= ~(HASH_STR_NBW);
+ 221              		.loc 1 290 3 view .LVU46
+ 222              		.loc 1 290 13 is_stmt 0 view .LVU47
+ 223 0000 044B     		ldr	r3, .L14
+ 224 0002 9A68     		ldr	r2, [r3, #8]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 10
+
+
+ 225 0004 22F01F02 		bic	r2, r2, #31
+ 226 0008 9A60     		str	r2, [r3, #8]
+ 291:./Library/stm32f4xx_hash.c ****   HASH->STR |= ValidNumber;
+ 227              		.loc 1 291 3 is_stmt 1 view .LVU48
+ 228              		.loc 1 291 13 is_stmt 0 view .LVU49
+ 229 000a 9A68     		ldr	r2, [r3, #8]
+ 230 000c 1043     		orrs	r0, r0, r2
+ 231              	.LVL5:
+ 232              		.loc 1 291 13 view .LVU50
+ 233 000e 9860     		str	r0, [r3, #8]
+ 292:./Library/stm32f4xx_hash.c **** }
+ 234              		.loc 1 292 1 view .LVU51
+ 235 0010 7047     		bx	lr
+ 236              	.L15:
+ 237 0012 00BF     		.align	2
+ 238              	.L14:
+ 239 0014 00040650 		.word	1342571520
+ 240              		.cfi_endproc
+ 241              	.LFE127:
+ 243              		.section	.text.HASH_DataIn,"ax",%progbits
+ 244              		.align	1
+ 245              		.global	HASH_DataIn
+ 246              		.syntax unified
+ 247              		.thumb
+ 248              		.thumb_func
+ 250              	HASH_DataIn:
+ 251              	.LVL6:
+ 252              	.LFB128:
+ 293:./Library/stm32f4xx_hash.c **** 
+ 294:./Library/stm32f4xx_hash.c **** /**
+ 295:./Library/stm32f4xx_hash.c ****   * @brief  Writes data in the Data Input FIFO
+ 296:./Library/stm32f4xx_hash.c ****   * @param  Data: new data of the message to be processed.
+ 297:./Library/stm32f4xx_hash.c ****   * @retval None
+ 298:./Library/stm32f4xx_hash.c ****   */
+ 299:./Library/stm32f4xx_hash.c **** void HASH_DataIn(uint32_t Data)
+ 300:./Library/stm32f4xx_hash.c **** {
+ 253              		.loc 1 300 1 is_stmt 1 view -0
+ 254              		.cfi_startproc
+ 255              		@ args = 0, pretend = 0, frame = 0
+ 256              		@ frame_needed = 0, uses_anonymous_args = 0
+ 257              		@ link register save eliminated.
+ 301:./Library/stm32f4xx_hash.c ****   /* Write in the DIN register a new data */
+ 302:./Library/stm32f4xx_hash.c ****   HASH->DIN = Data;
+ 258              		.loc 1 302 3 view .LVU53
+ 259              		.loc 1 302 13 is_stmt 0 view .LVU54
+ 260 0000 014B     		ldr	r3, .L17
+ 261 0002 5860     		str	r0, [r3, #4]
+ 303:./Library/stm32f4xx_hash.c **** }
+ 262              		.loc 1 303 1 view .LVU55
+ 263 0004 7047     		bx	lr
+ 264              	.L18:
+ 265 0006 00BF     		.align	2
+ 266              	.L17:
+ 267 0008 00040650 		.word	1342571520
+ 268              		.cfi_endproc
+ 269              	.LFE128:
+ 271              		.section	.text.HASH_GetInFIFOWordsNbr,"ax",%progbits
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 11
+
+
+ 272              		.align	1
+ 273              		.global	HASH_GetInFIFOWordsNbr
+ 274              		.syntax unified
+ 275              		.thumb
+ 276              		.thumb_func
+ 278              	HASH_GetInFIFOWordsNbr:
+ 279              	.LFB129:
+ 304:./Library/stm32f4xx_hash.c **** 
+ 305:./Library/stm32f4xx_hash.c **** /**
+ 306:./Library/stm32f4xx_hash.c ****   * @brief  Returns the number of words already pushed into the IN FIFO.
+ 307:./Library/stm32f4xx_hash.c ****   * @param  None
+ 308:./Library/stm32f4xx_hash.c ****   * @retval The value of words already pushed into the IN FIFO.
+ 309:./Library/stm32f4xx_hash.c ****   */
+ 310:./Library/stm32f4xx_hash.c **** uint8_t HASH_GetInFIFOWordsNbr(void)
+ 311:./Library/stm32f4xx_hash.c **** {
+ 280              		.loc 1 311 1 is_stmt 1 view -0
+ 281              		.cfi_startproc
+ 282              		@ args = 0, pretend = 0, frame = 0
+ 283              		@ frame_needed = 0, uses_anonymous_args = 0
+ 284              		@ link register save eliminated.
+ 312:./Library/stm32f4xx_hash.c ****   /* Return the value of NBW bits */
+ 313:./Library/stm32f4xx_hash.c ****   return ((HASH->CR & HASH_CR_NBW) >> 8);
+ 285              		.loc 1 313 3 view .LVU57
+ 286              		.loc 1 313 16 is_stmt 0 view .LVU58
+ 287 0000 024B     		ldr	r3, .L20
+ 288 0002 1868     		ldr	r0, [r3]
+ 314:./Library/stm32f4xx_hash.c **** }
+ 289              		.loc 1 314 1 view .LVU59
+ 290 0004 C0F30320 		ubfx	r0, r0, #8, #4
+ 291 0008 7047     		bx	lr
+ 292              	.L21:
+ 293 000a 00BF     		.align	2
+ 294              	.L20:
+ 295 000c 00040650 		.word	1342571520
+ 296              		.cfi_endproc
+ 297              	.LFE129:
+ 299              		.section	.text.HASH_GetDigest,"ax",%progbits
+ 300              		.align	1
+ 301              		.global	HASH_GetDigest
+ 302              		.syntax unified
+ 303              		.thumb
+ 304              		.thumb_func
+ 306              	HASH_GetDigest:
+ 307              	.LVL7:
+ 308              	.LFB130:
+ 315:./Library/stm32f4xx_hash.c **** 
+ 316:./Library/stm32f4xx_hash.c **** /**
+ 317:./Library/stm32f4xx_hash.c ****   * @brief  Provides the message digest result.
+ 318:./Library/stm32f4xx_hash.c ****   * @note   In MD5 mode, Data[7] to Data[4] filed of HASH_MsgDigest structure is not used
+ 319:./Library/stm32f4xx_hash.c ****   *         and is read as zero.
+ 320:./Library/stm32f4xx_hash.c ****   *         In SHA-1 mode, Data[7] to Data[5] filed of HASH_MsgDigest structure is not used
+ 321:./Library/stm32f4xx_hash.c ****   *         and is read as zero.    
+ 322:./Library/stm32f4xx_hash.c ****   *         In SHA-224 mode, Data[7] filed of HASH_MsgDigest structure is not used
+ 323:./Library/stm32f4xx_hash.c ****   *         and is read as zero.  
+ 324:./Library/stm32f4xx_hash.c ****   * @param  HASH_MessageDigest: pointer to a HASH_MsgDigest structure which will 
+ 325:./Library/stm32f4xx_hash.c ****   *         hold the message digest result 
+ 326:./Library/stm32f4xx_hash.c ****   * @retval None
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 12
+
+
+ 327:./Library/stm32f4xx_hash.c ****   */
+ 328:./Library/stm32f4xx_hash.c **** void HASH_GetDigest(HASH_MsgDigest* HASH_MessageDigest)
+ 329:./Library/stm32f4xx_hash.c **** {
+ 309              		.loc 1 329 1 is_stmt 1 view -0
+ 310              		.cfi_startproc
+ 311              		@ args = 0, pretend = 0, frame = 0
+ 312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 313              		@ link register save eliminated.
+ 330:./Library/stm32f4xx_hash.c ****   /* Get the data field */
+ 331:./Library/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[0] = HASH->HR[0];
+ 314              		.loc 1 331 3 view .LVU61
+ 315              		.loc 1 331 41 is_stmt 0 view .LVU62
+ 316 0000 094B     		ldr	r3, .L23
+ 317 0002 DA68     		ldr	r2, [r3, #12]
+ 318              		.loc 1 331 31 view .LVU63
+ 319 0004 0260     		str	r2, [r0]
+ 332:./Library/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[1] = HASH->HR[1];
+ 320              		.loc 1 332 3 is_stmt 1 view .LVU64
+ 321              		.loc 1 332 41 is_stmt 0 view .LVU65
+ 322 0006 1A69     		ldr	r2, [r3, #16]
+ 323              		.loc 1 332 31 view .LVU66
+ 324 0008 4260     		str	r2, [r0, #4]
+ 333:./Library/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[2] = HASH->HR[2];
+ 325              		.loc 1 333 3 is_stmt 1 view .LVU67
+ 326              		.loc 1 333 41 is_stmt 0 view .LVU68
+ 327 000a 5A69     		ldr	r2, [r3, #20]
+ 328              		.loc 1 333 31 view .LVU69
+ 329 000c 8260     		str	r2, [r0, #8]
+ 334:./Library/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[3] = HASH->HR[3];
+ 330              		.loc 1 334 3 is_stmt 1 view .LVU70
+ 331              		.loc 1 334 41 is_stmt 0 view .LVU71
+ 332 000e 9A69     		ldr	r2, [r3, #24]
+ 333              		.loc 1 334 31 view .LVU72
+ 334 0010 C260     		str	r2, [r0, #12]
+ 335:./Library/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[4] = HASH->HR[4];
+ 335              		.loc 1 335 3 is_stmt 1 view .LVU73
+ 336              		.loc 1 335 41 is_stmt 0 view .LVU74
+ 337 0012 DB69     		ldr	r3, [r3, #28]
+ 338              		.loc 1 335 31 view .LVU75
+ 339 0014 0361     		str	r3, [r0, #16]
+ 336:./Library/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[5] = HASH_DIGEST->HR[5];
+ 340              		.loc 1 336 3 is_stmt 1 view .LVU76
+ 341              		.loc 1 336 48 is_stmt 0 view .LVU77
+ 342 0016 054B     		ldr	r3, .L23+4
+ 343 0018 5A6A     		ldr	r2, [r3, #36]
+ 344              		.loc 1 336 31 view .LVU78
+ 345 001a 4261     		str	r2, [r0, #20]
+ 337:./Library/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[6] = HASH_DIGEST->HR[6];
+ 346              		.loc 1 337 3 is_stmt 1 view .LVU79
+ 347              		.loc 1 337 48 is_stmt 0 view .LVU80
+ 348 001c 9A6A     		ldr	r2, [r3, #40]
+ 349              		.loc 1 337 31 view .LVU81
+ 350 001e 8261     		str	r2, [r0, #24]
+ 338:./Library/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[7] = HASH_DIGEST->HR[7];
+ 351              		.loc 1 338 3 is_stmt 1 view .LVU82
+ 352              		.loc 1 338 48 is_stmt 0 view .LVU83
+ 353 0020 DB6A     		ldr	r3, [r3, #44]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 13
+
+
+ 354              		.loc 1 338 31 view .LVU84
+ 355 0022 C361     		str	r3, [r0, #28]
+ 339:./Library/stm32f4xx_hash.c **** }
+ 356              		.loc 1 339 1 view .LVU85
+ 357 0024 7047     		bx	lr
+ 358              	.L24:
+ 359 0026 00BF     		.align	2
+ 360              	.L23:
+ 361 0028 00040650 		.word	1342571520
+ 362 002c 00070650 		.word	1342572288
+ 363              		.cfi_endproc
+ 364              	.LFE130:
+ 366              		.section	.text.HASH_StartDigest,"ax",%progbits
+ 367              		.align	1
+ 368              		.global	HASH_StartDigest
+ 369              		.syntax unified
+ 370              		.thumb
+ 371              		.thumb_func
+ 373              	HASH_StartDigest:
+ 374              	.LFB131:
+ 340:./Library/stm32f4xx_hash.c **** 
+ 341:./Library/stm32f4xx_hash.c **** /**
+ 342:./Library/stm32f4xx_hash.c ****   * @brief  Starts the message padding and calculation of the final message     
+ 343:./Library/stm32f4xx_hash.c ****   * @param  None
+ 344:./Library/stm32f4xx_hash.c ****   * @retval None
+ 345:./Library/stm32f4xx_hash.c ****   */
+ 346:./Library/stm32f4xx_hash.c **** void HASH_StartDigest(void)
+ 347:./Library/stm32f4xx_hash.c **** {
+ 375              		.loc 1 347 1 is_stmt 1 view -0
+ 376              		.cfi_startproc
+ 377              		@ args = 0, pretend = 0, frame = 0
+ 378              		@ frame_needed = 0, uses_anonymous_args = 0
+ 379              		@ link register save eliminated.
+ 348:./Library/stm32f4xx_hash.c ****   /* Start the Digest calculation */
+ 349:./Library/stm32f4xx_hash.c ****   HASH->STR |= HASH_STR_DCAL;
+ 380              		.loc 1 349 3 view .LVU87
+ 381              		.loc 1 349 13 is_stmt 0 view .LVU88
+ 382 0000 024A     		ldr	r2, .L26
+ 383 0002 9368     		ldr	r3, [r2, #8]
+ 384 0004 43F48073 		orr	r3, r3, #256
+ 385 0008 9360     		str	r3, [r2, #8]
+ 350:./Library/stm32f4xx_hash.c **** }
+ 386              		.loc 1 350 1 view .LVU89
+ 387 000a 7047     		bx	lr
+ 388              	.L27:
+ 389              		.align	2
+ 390              	.L26:
+ 391 000c 00040650 		.word	1342571520
+ 392              		.cfi_endproc
+ 393              	.LFE131:
+ 395              		.section	.text.HASH_SaveContext,"ax",%progbits
+ 396              		.align	1
+ 397              		.global	HASH_SaveContext
+ 398              		.syntax unified
+ 399              		.thumb
+ 400              		.thumb_func
+ 402              	HASH_SaveContext:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 14
+
+
+ 403              	.LVL8:
+ 404              	.LFB132:
+ 351:./Library/stm32f4xx_hash.c **** /**
+ 352:./Library/stm32f4xx_hash.c ****   * @}
+ 353:./Library/stm32f4xx_hash.c ****   */
+ 354:./Library/stm32f4xx_hash.c **** 
+ 355:./Library/stm32f4xx_hash.c **** /** @defgroup HASH_Group3 Context swapping functions
+ 356:./Library/stm32f4xx_hash.c ****  *  @brief   Context swapping functions
+ 357:./Library/stm32f4xx_hash.c ****  *
+ 358:./Library/stm32f4xx_hash.c **** @verbatim   
+ 359:./Library/stm32f4xx_hash.c ****  ===============================================================================
+ 360:./Library/stm32f4xx_hash.c ****                       ##### Context swapping functions #####
+ 361:./Library/stm32f4xx_hash.c ****  ===============================================================================  
+ 362:./Library/stm32f4xx_hash.c ****  
+ 363:./Library/stm32f4xx_hash.c ****  [..] This section provides functions allowing to save and store HASH Context
+ 364:./Library/stm32f4xx_hash.c ****   
+ 365:./Library/stm32f4xx_hash.c ****  [..] It is possible to interrupt a HASH/HMAC process to perform another processing 
+ 366:./Library/stm32f4xx_hash.c ****       with a higher priority, and to complete the interrupted process later on, when 
+ 367:./Library/stm32f4xx_hash.c ****       the higher priority task is complete. To do so, the context of the interrupted 
+ 368:./Library/stm32f4xx_hash.c ****       task must be saved from the HASH registers to memory, and then be restored 
+ 369:./Library/stm32f4xx_hash.c ****       from memory to the HASH registers.
+ 370:./Library/stm32f4xx_hash.c ****   
+ 371:./Library/stm32f4xx_hash.c ****    (#) To save the current context, use HASH_SaveContext() function
+ 372:./Library/stm32f4xx_hash.c ****    (#) To restore the saved context, use HASH_RestoreContext() function 
+ 373:./Library/stm32f4xx_hash.c ****   
+ 374:./Library/stm32f4xx_hash.c **** 
+ 375:./Library/stm32f4xx_hash.c **** @endverbatim
+ 376:./Library/stm32f4xx_hash.c ****   * @{
+ 377:./Library/stm32f4xx_hash.c ****   */
+ 378:./Library/stm32f4xx_hash.c ****   
+ 379:./Library/stm32f4xx_hash.c **** /**
+ 380:./Library/stm32f4xx_hash.c ****   * @brief  Save the Hash peripheral Context. 
+ 381:./Library/stm32f4xx_hash.c ****   * @note   The context can be saved only when no block is currently being 
+ 382:./Library/stm32f4xx_hash.c ****   *         processed. So user must wait for DINIS = 1 (the last block has been 
+ 383:./Library/stm32f4xx_hash.c ****   *         processed and the input FIFO is empty) or NBW != 0 (the FIFO is not 
+ 384:./Library/stm32f4xx_hash.c ****   *         full and no processing is ongoing).   
+ 385:./Library/stm32f4xx_hash.c ****   * @param  HASH_ContextSave: pointer to a HASH_Context structure that contains
+ 386:./Library/stm32f4xx_hash.c ****   *         the repository for current context.
+ 387:./Library/stm32f4xx_hash.c ****   * @retval None
+ 388:./Library/stm32f4xx_hash.c ****   */
+ 389:./Library/stm32f4xx_hash.c **** void HASH_SaveContext(HASH_Context* HASH_ContextSave)
+ 390:./Library/stm32f4xx_hash.c **** {
+ 405              		.loc 1 390 1 is_stmt 1 view -0
+ 406              		.cfi_startproc
+ 407              		@ args = 0, pretend = 0, frame = 0
+ 408              		@ frame_needed = 0, uses_anonymous_args = 0
+ 409              		@ link register save eliminated.
+ 391:./Library/stm32f4xx_hash.c ****   uint8_t i = 0;
+ 410              		.loc 1 391 3 view .LVU91
+ 392:./Library/stm32f4xx_hash.c ****   
+ 393:./Library/stm32f4xx_hash.c ****   /* save context registers */
+ 394:./Library/stm32f4xx_hash.c ****   HASH_ContextSave->HASH_IMR = HASH->IMR;  
+ 411              		.loc 1 394 3 view .LVU92
+ 412              		.loc 1 394 36 is_stmt 0 view .LVU93
+ 413 0000 0B4B     		ldr	r3, .L31
+ 414 0002 1A6A     		ldr	r2, [r3, #32]
+ 415              		.loc 1 394 30 view .LVU94
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 15
+
+
+ 416 0004 0260     		str	r2, [r0]
+ 395:./Library/stm32f4xx_hash.c ****   HASH_ContextSave->HASH_STR = HASH->STR;      
+ 417              		.loc 1 395 3 is_stmt 1 view .LVU95
+ 418              		.loc 1 395 36 is_stmt 0 view .LVU96
+ 419 0006 9A68     		ldr	r2, [r3, #8]
+ 420              		.loc 1 395 30 view .LVU97
+ 421 0008 4260     		str	r2, [r0, #4]
+ 396:./Library/stm32f4xx_hash.c ****   HASH_ContextSave->HASH_CR  = HASH->CR;     
+ 422              		.loc 1 396 3 is_stmt 1 view .LVU98
+ 423              		.loc 1 396 36 is_stmt 0 view .LVU99
+ 424 000a 1B68     		ldr	r3, [r3]
+ 425              		.loc 1 396 30 view .LVU100
+ 426 000c 8360     		str	r3, [r0, #8]
+ 397:./Library/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 427              		.loc 1 397 3 is_stmt 1 view .LVU101
+ 428              		.loc 1 397 8 is_stmt 0 view .LVU102
+ 429 000e 0023     		movs	r3, #0
+ 430              		.loc 1 397 3 view .LVU103
+ 431 0010 0AE0     		b	.L29
+ 432              	.LVL9:
+ 433              	.L30:
+ 398:./Library/stm32f4xx_hash.c ****   {
+ 399:./Library/stm32f4xx_hash.c ****      HASH_ContextSave->HASH_CSR[i] = HASH->CSR[i];
+ 434              		.loc 1 399 6 is_stmt 1 discriminator 3 view .LVU104
+ 435              		.loc 1 399 47 is_stmt 0 discriminator 3 view .LVU105
+ 436 0012 03F13E01 		add	r1, r3, #62
+ 437 0016 064A     		ldr	r2, .L31
+ 438 0018 52F82110 		ldr	r1, [r2, r1, lsl #2]
+ 439              		.loc 1 399 36 discriminator 3 view .LVU106
+ 440 001c 9A1C     		adds	r2, r3, #2
+ 441 001e 00EB8202 		add	r2, r0, r2, lsl #2
+ 442 0022 5160     		str	r1, [r2, #4]
+ 397:./Library/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 443              		.loc 1 397 18 is_stmt 1 discriminator 3 view .LVU107
+ 397:./Library/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 444              		.loc 1 397 19 is_stmt 0 discriminator 3 view .LVU108
+ 445 0024 0133     		adds	r3, r3, #1
+ 446              	.LVL10:
+ 397:./Library/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 447              		.loc 1 397 19 discriminator 3 view .LVU109
+ 448 0026 DBB2     		uxtb	r3, r3
+ 449              	.LVL11:
+ 450              	.L29:
+ 397:./Library/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 451              		.loc 1 397 12 is_stmt 1 discriminator 1 view .LVU110
+ 397:./Library/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 452              		.loc 1 397 3 is_stmt 0 discriminator 1 view .LVU111
+ 453 0028 352B     		cmp	r3, #53
+ 454 002a F2D9     		bls	.L30
+ 400:./Library/stm32f4xx_hash.c ****   }   
+ 401:./Library/stm32f4xx_hash.c **** }
+ 455              		.loc 1 401 1 view .LVU112
+ 456 002c 7047     		bx	lr
+ 457              	.L32:
+ 458 002e 00BF     		.align	2
+ 459              	.L31:
+ 460 0030 00040650 		.word	1342571520
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 16
+
+
+ 461              		.cfi_endproc
+ 462              	.LFE132:
+ 464              		.section	.text.HASH_RestoreContext,"ax",%progbits
+ 465              		.align	1
+ 466              		.global	HASH_RestoreContext
+ 467              		.syntax unified
+ 468              		.thumb
+ 469              		.thumb_func
+ 471              	HASH_RestoreContext:
+ 472              	.LVL12:
+ 473              	.LFB133:
+ 402:./Library/stm32f4xx_hash.c **** 
+ 403:./Library/stm32f4xx_hash.c **** /**
+ 404:./Library/stm32f4xx_hash.c ****   * @brief  Restore the Hash peripheral Context.  
+ 405:./Library/stm32f4xx_hash.c ****   * @note   After calling this function, user can restart the processing from the
+ 406:./Library/stm32f4xx_hash.c ****   *         point where it has been interrupted.  
+ 407:./Library/stm32f4xx_hash.c ****   * @param  HASH_ContextRestore: pointer to a HASH_Context structure that contains
+ 408:./Library/stm32f4xx_hash.c ****   *         the repository for saved context.
+ 409:./Library/stm32f4xx_hash.c ****   * @retval None
+ 410:./Library/stm32f4xx_hash.c ****   */
+ 411:./Library/stm32f4xx_hash.c **** void HASH_RestoreContext(HASH_Context* HASH_ContextRestore)  
+ 412:./Library/stm32f4xx_hash.c **** {
+ 474              		.loc 1 412 1 is_stmt 1 view -0
+ 475              		.cfi_startproc
+ 476              		@ args = 0, pretend = 0, frame = 0
+ 477              		@ frame_needed = 0, uses_anonymous_args = 0
+ 478              		@ link register save eliminated.
+ 479              		.loc 1 412 1 is_stmt 0 view .LVU114
+ 480 0000 8446     		mov	ip, r0
+ 413:./Library/stm32f4xx_hash.c ****   uint8_t i = 0;
+ 481              		.loc 1 413 3 is_stmt 1 view .LVU115
+ 482              	.LVL13:
+ 414:./Library/stm32f4xx_hash.c ****   
+ 415:./Library/stm32f4xx_hash.c ****   /* restore context registers */
+ 416:./Library/stm32f4xx_hash.c ****   HASH->IMR = HASH_ContextRestore->HASH_IMR;   
+ 483              		.loc 1 416 3 view .LVU116
+ 484              		.loc 1 416 34 is_stmt 0 view .LVU117
+ 485 0002 0268     		ldr	r2, [r0]
+ 486              		.loc 1 416 13 view .LVU118
+ 487 0004 0C4B     		ldr	r3, .L36
+ 488 0006 1A62     		str	r2, [r3, #32]
+ 417:./Library/stm32f4xx_hash.c ****   HASH->STR = HASH_ContextRestore->HASH_STR;     
+ 489              		.loc 1 417 3 is_stmt 1 view .LVU119
+ 490              		.loc 1 417 34 is_stmt 0 view .LVU120
+ 491 0008 4268     		ldr	r2, [r0, #4]
+ 492              		.loc 1 417 13 view .LVU121
+ 493 000a 9A60     		str	r2, [r3, #8]
+ 418:./Library/stm32f4xx_hash.c ****   HASH->CR = HASH_ContextRestore->HASH_CR;
+ 494              		.loc 1 418 3 is_stmt 1 view .LVU122
+ 495              		.loc 1 418 33 is_stmt 0 view .LVU123
+ 496 000c 8268     		ldr	r2, [r0, #8]
+ 497              		.loc 1 418 12 view .LVU124
+ 498 000e 1A60     		str	r2, [r3]
+ 419:./Library/stm32f4xx_hash.c ****   
+ 420:./Library/stm32f4xx_hash.c ****   /* Initialize the hash processor */
+ 421:./Library/stm32f4xx_hash.c ****   HASH->CR |= HASH_CR_INIT; 
+ 499              		.loc 1 421 3 is_stmt 1 view .LVU125
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 17
+
+
+ 500              		.loc 1 421 12 is_stmt 0 view .LVU126
+ 501 0010 1A68     		ldr	r2, [r3]
+ 502 0012 42F00402 		orr	r2, r2, #4
+ 503 0016 1A60     		str	r2, [r3]
+ 422:./Library/stm32f4xx_hash.c ****   
+ 423:./Library/stm32f4xx_hash.c ****    /* continue restoring context registers */     
+ 424:./Library/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 504              		.loc 1 424 3 is_stmt 1 view .LVU127
+ 505              		.loc 1 424 8 is_stmt 0 view .LVU128
+ 506 0018 0023     		movs	r3, #0
+ 507              		.loc 1 424 3 view .LVU129
+ 508 001a 0AE0     		b	.L34
+ 509              	.LVL14:
+ 510              	.L35:
+ 425:./Library/stm32f4xx_hash.c ****   {
+ 426:./Library/stm32f4xx_hash.c ****      HASH->CSR[i] = HASH_ContextRestore->HASH_CSR[i];
+ 511              		.loc 1 426 6 is_stmt 1 discriminator 3 view .LVU130
+ 512              		.loc 1 426 50 is_stmt 0 discriminator 3 view .LVU131
+ 513 001c 9A1C     		adds	r2, r3, #2
+ 514 001e 0CEB8202 		add	r2, ip, r2, lsl #2
+ 515 0022 5068     		ldr	r0, [r2, #4]
+ 516              		.loc 1 426 19 discriminator 3 view .LVU132
+ 517 0024 03F13E01 		add	r1, r3, #62
+ 518 0028 034A     		ldr	r2, .L36
+ 519 002a 42F82100 		str	r0, [r2, r1, lsl #2]
+ 424:./Library/stm32f4xx_hash.c ****   {
+ 520              		.loc 1 424 18 is_stmt 1 discriminator 3 view .LVU133
+ 424:./Library/stm32f4xx_hash.c ****   {
+ 521              		.loc 1 424 19 is_stmt 0 discriminator 3 view .LVU134
+ 522 002e 0133     		adds	r3, r3, #1
+ 523              	.LVL15:
+ 424:./Library/stm32f4xx_hash.c ****   {
+ 524              		.loc 1 424 19 discriminator 3 view .LVU135
+ 525 0030 DBB2     		uxtb	r3, r3
+ 526              	.LVL16:
+ 527              	.L34:
+ 424:./Library/stm32f4xx_hash.c ****   {
+ 528              		.loc 1 424 12 is_stmt 1 discriminator 1 view .LVU136
+ 424:./Library/stm32f4xx_hash.c ****   {
+ 529              		.loc 1 424 3 is_stmt 0 discriminator 1 view .LVU137
+ 530 0032 352B     		cmp	r3, #53
+ 531 0034 F2D9     		bls	.L35
+ 427:./Library/stm32f4xx_hash.c ****   }   
+ 428:./Library/stm32f4xx_hash.c **** }
+ 532              		.loc 1 428 1 view .LVU138
+ 533 0036 7047     		bx	lr
+ 534              	.L37:
+ 535              		.align	2
+ 536              	.L36:
+ 537 0038 00040650 		.word	1342571520
+ 538              		.cfi_endproc
+ 539              	.LFE133:
+ 541              		.section	.text.HASH_AutoStartDigest,"ax",%progbits
+ 542              		.align	1
+ 543              		.global	HASH_AutoStartDigest
+ 544              		.syntax unified
+ 545              		.thumb
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 18
+
+
+ 546              		.thumb_func
+ 548              	HASH_AutoStartDigest:
+ 549              	.LVL17:
+ 550              	.LFB134:
+ 429:./Library/stm32f4xx_hash.c **** /**
+ 430:./Library/stm32f4xx_hash.c ****   * @}
+ 431:./Library/stm32f4xx_hash.c ****   */
+ 432:./Library/stm32f4xx_hash.c **** 
+ 433:./Library/stm32f4xx_hash.c **** /** @defgroup HASH_Group4 HASH's DMA interface Configuration function
+ 434:./Library/stm32f4xx_hash.c ****  *  @brief   HASH's DMA interface Configuration function 
+ 435:./Library/stm32f4xx_hash.c ****  *
+ 436:./Library/stm32f4xx_hash.c **** @verbatim   
+ 437:./Library/stm32f4xx_hash.c ****  ===============================================================================
+ 438:./Library/stm32f4xx_hash.c ****                ##### HASH's DMA interface Configuration function #####
+ 439:./Library/stm32f4xx_hash.c ****  ===============================================================================  
+ 440:./Library/stm32f4xx_hash.c **** 
+ 441:./Library/stm32f4xx_hash.c ****  [..] This section provides functions allowing to configure the DMA interface for 
+ 442:./Library/stm32f4xx_hash.c ****       HASH/ HMAC data input transfer.
+ 443:./Library/stm32f4xx_hash.c ****    
+ 444:./Library/stm32f4xx_hash.c ****  [..] When the DMA mode is enabled (using the HASH_DMACmd() function), data can be 
+ 445:./Library/stm32f4xx_hash.c ****       sent to the IN FIFO using the DMA peripheral.
+ 446:./Library/stm32f4xx_hash.c **** 
+ 447:./Library/stm32f4xx_hash.c **** @endverbatim
+ 448:./Library/stm32f4xx_hash.c ****   * @{
+ 449:./Library/stm32f4xx_hash.c ****   */
+ 450:./Library/stm32f4xx_hash.c **** 
+ 451:./Library/stm32f4xx_hash.c **** /**
+ 452:./Library/stm32f4xx_hash.c ****   * @brief  Enables or disables auto-start message padding and
+ 453:./Library/stm32f4xx_hash.c ****   *         calculation of the final message digest at the end of DMA transfer.
+ 454:./Library/stm32f4xx_hash.c ****   * @param  NewState: new state of the selected HASH DMA transfer request.
+ 455:./Library/stm32f4xx_hash.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 456:./Library/stm32f4xx_hash.c ****   * @retval None
+ 457:./Library/stm32f4xx_hash.c ****   */
+ 458:./Library/stm32f4xx_hash.c **** void HASH_AutoStartDigest(FunctionalState NewState)
+ 459:./Library/stm32f4xx_hash.c **** {
+ 551              		.loc 1 459 1 is_stmt 1 view -0
+ 552              		.cfi_startproc
+ 553              		@ args = 0, pretend = 0, frame = 0
+ 554              		@ frame_needed = 0, uses_anonymous_args = 0
+ 555              		@ link register save eliminated.
+ 460:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 461:./Library/stm32f4xx_hash.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 556              		.loc 1 461 3 view .LVU140
+ 462:./Library/stm32f4xx_hash.c **** 
+ 463:./Library/stm32f4xx_hash.c ****   if (NewState != DISABLE)
+ 557              		.loc 1 463 3 view .LVU141
+ 558              		.loc 1 463 6 is_stmt 0 view .LVU142
+ 559 0000 28B1     		cbz	r0, .L39
+ 464:./Library/stm32f4xx_hash.c ****   {
+ 465:./Library/stm32f4xx_hash.c ****     /* Enable the auto start of the final message digest at the end of DMA transfer */
+ 466:./Library/stm32f4xx_hash.c ****     HASH->CR &= ~HASH_CR_MDMAT;
+ 560              		.loc 1 466 5 is_stmt 1 view .LVU143
+ 561              		.loc 1 466 14 is_stmt 0 view .LVU144
+ 562 0002 064A     		ldr	r2, .L41
+ 563 0004 1368     		ldr	r3, [r2]
+ 564 0006 23F40053 		bic	r3, r3, #8192
+ 565 000a 1360     		str	r3, [r2]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 19
+
+
+ 566 000c 7047     		bx	lr
+ 567              	.L39:
+ 467:./Library/stm32f4xx_hash.c ****   }
+ 468:./Library/stm32f4xx_hash.c ****   else
+ 469:./Library/stm32f4xx_hash.c ****   {
+ 470:./Library/stm32f4xx_hash.c ****     /* Disable the auto start of the final message digest at the end of DMA transfer */
+ 471:./Library/stm32f4xx_hash.c ****     HASH->CR |= HASH_CR_MDMAT;
+ 568              		.loc 1 471 5 is_stmt 1 view .LVU145
+ 569              		.loc 1 471 14 is_stmt 0 view .LVU146
+ 570 000e 034A     		ldr	r2, .L41
+ 571 0010 1368     		ldr	r3, [r2]
+ 572 0012 43F40053 		orr	r3, r3, #8192
+ 573 0016 1360     		str	r3, [r2]
+ 472:./Library/stm32f4xx_hash.c ****   }
+ 473:./Library/stm32f4xx_hash.c **** }
+ 574              		.loc 1 473 1 view .LVU147
+ 575 0018 7047     		bx	lr
+ 576              	.L42:
+ 577 001a 00BF     		.align	2
+ 578              	.L41:
+ 579 001c 00040650 		.word	1342571520
+ 580              		.cfi_endproc
+ 581              	.LFE134:
+ 583              		.section	.text.HASH_DMACmd,"ax",%progbits
+ 584              		.align	1
+ 585              		.global	HASH_DMACmd
+ 586              		.syntax unified
+ 587              		.thumb
+ 588              		.thumb_func
+ 590              	HASH_DMACmd:
+ 591              	.LVL18:
+ 592              	.LFB135:
+ 474:./Library/stm32f4xx_hash.c ****   
+ 475:./Library/stm32f4xx_hash.c **** /**
+ 476:./Library/stm32f4xx_hash.c ****   * @brief  Enables or disables the HASH DMA interface.
+ 477:./Library/stm32f4xx_hash.c ****   * @note   The DMA is disabled by hardware after the end of transfer.
+ 478:./Library/stm32f4xx_hash.c ****   * @param  NewState: new state of the selected HASH DMA transfer request.
+ 479:./Library/stm32f4xx_hash.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 480:./Library/stm32f4xx_hash.c ****   * @retval None
+ 481:./Library/stm32f4xx_hash.c ****   */
+ 482:./Library/stm32f4xx_hash.c **** void HASH_DMACmd(FunctionalState NewState)
+ 483:./Library/stm32f4xx_hash.c **** {
+ 593              		.loc 1 483 1 is_stmt 1 view -0
+ 594              		.cfi_startproc
+ 595              		@ args = 0, pretend = 0, frame = 0
+ 596              		@ frame_needed = 0, uses_anonymous_args = 0
+ 597              		@ link register save eliminated.
+ 484:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 485:./Library/stm32f4xx_hash.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 598              		.loc 1 485 3 view .LVU149
+ 486:./Library/stm32f4xx_hash.c **** 
+ 487:./Library/stm32f4xx_hash.c ****   if (NewState != DISABLE)
+ 599              		.loc 1 487 3 view .LVU150
+ 600              		.loc 1 487 6 is_stmt 0 view .LVU151
+ 601 0000 28B1     		cbz	r0, .L44
+ 488:./Library/stm32f4xx_hash.c ****   {
+ 489:./Library/stm32f4xx_hash.c ****     /* Enable the HASH DMA request */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 20
+
+
+ 490:./Library/stm32f4xx_hash.c ****     HASH->CR |= HASH_CR_DMAE;
+ 602              		.loc 1 490 5 is_stmt 1 view .LVU152
+ 603              		.loc 1 490 14 is_stmt 0 view .LVU153
+ 604 0002 064A     		ldr	r2, .L46
+ 605 0004 1368     		ldr	r3, [r2]
+ 606 0006 43F00803 		orr	r3, r3, #8
+ 607 000a 1360     		str	r3, [r2]
+ 608 000c 7047     		bx	lr
+ 609              	.L44:
+ 491:./Library/stm32f4xx_hash.c ****   }
+ 492:./Library/stm32f4xx_hash.c ****   else
+ 493:./Library/stm32f4xx_hash.c ****   {
+ 494:./Library/stm32f4xx_hash.c ****     /* Disable the HASH DMA request */
+ 495:./Library/stm32f4xx_hash.c ****     HASH->CR &= ~HASH_CR_DMAE;
+ 610              		.loc 1 495 5 is_stmt 1 view .LVU154
+ 611              		.loc 1 495 14 is_stmt 0 view .LVU155
+ 612 000e 034A     		ldr	r2, .L46
+ 613 0010 1368     		ldr	r3, [r2]
+ 614 0012 23F00803 		bic	r3, r3, #8
+ 615 0016 1360     		str	r3, [r2]
+ 496:./Library/stm32f4xx_hash.c ****   }
+ 497:./Library/stm32f4xx_hash.c **** }
+ 616              		.loc 1 497 1 view .LVU156
+ 617 0018 7047     		bx	lr
+ 618              	.L47:
+ 619 001a 00BF     		.align	2
+ 620              	.L46:
+ 621 001c 00040650 		.word	1342571520
+ 622              		.cfi_endproc
+ 623              	.LFE135:
+ 625              		.section	.text.HASH_ITConfig,"ax",%progbits
+ 626              		.align	1
+ 627              		.global	HASH_ITConfig
+ 628              		.syntax unified
+ 629              		.thumb
+ 630              		.thumb_func
+ 632              	HASH_ITConfig:
+ 633              	.LVL19:
+ 634              	.LFB136:
+ 498:./Library/stm32f4xx_hash.c **** /**
+ 499:./Library/stm32f4xx_hash.c ****   * @}
+ 500:./Library/stm32f4xx_hash.c ****   */
+ 501:./Library/stm32f4xx_hash.c **** 
+ 502:./Library/stm32f4xx_hash.c **** /** @defgroup HASH_Group5 Interrupts and flags management functions
+ 503:./Library/stm32f4xx_hash.c ****  *  @brief   Interrupts and flags management functions
+ 504:./Library/stm32f4xx_hash.c ****  *
+ 505:./Library/stm32f4xx_hash.c **** @verbatim   
+ 506:./Library/stm32f4xx_hash.c ****  ===============================================================================
+ 507:./Library/stm32f4xx_hash.c ****                ##### Interrupts and flags management functions #####
+ 508:./Library/stm32f4xx_hash.c ****  ===============================================================================  
+ 509:./Library/stm32f4xx_hash.c **** 
+ 510:./Library/stm32f4xx_hash.c ****  [..] This section provides functions allowing to configure the HASH Interrupts and 
+ 511:./Library/stm32f4xx_hash.c ****       to get the status and clear flags and Interrupts pending bits.
+ 512:./Library/stm32f4xx_hash.c ****   
+ 513:./Library/stm32f4xx_hash.c ****  [..] The HASH provides 2 Interrupts sources and 5 Flags:
+ 514:./Library/stm32f4xx_hash.c ****   
+ 515:./Library/stm32f4xx_hash.c ****  *** Flags : ***
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 21
+
+
+ 516:./Library/stm32f4xx_hash.c ****  =============== 
+ 517:./Library/stm32f4xx_hash.c ****  [..]
+ 518:./Library/stm32f4xx_hash.c ****    (#) HASH_FLAG_DINIS : set when 16 locations are free in the Data IN FIFO 
+ 519:./Library/stm32f4xx_hash.c ****       which means that a  new block (512 bit) can be entered into the input buffer.
+ 520:./Library/stm32f4xx_hash.c ****                           
+ 521:./Library/stm32f4xx_hash.c ****    (#) HASH_FLAG_DCIS :  set when Digest calculation is complete
+ 522:./Library/stm32f4xx_hash.c ****       
+ 523:./Library/stm32f4xx_hash.c ****    (#) HASH_FLAG_DMAS :  set when HASH's DMA interface is enabled (DMAE=1) or 
+ 524:./Library/stm32f4xx_hash.c ****        a transfer is ongoing. This Flag is cleared only by hardware.
+ 525:./Library/stm32f4xx_hash.c ****                            
+ 526:./Library/stm32f4xx_hash.c ****    (#) HASH_FLAG_BUSY :  set when The hash core is processing a block of data
+ 527:./Library/stm32f4xx_hash.c ****        This Flag is cleared only by hardware. 
+ 528:./Library/stm32f4xx_hash.c ****                            
+ 529:./Library/stm32f4xx_hash.c ****    (#) HASH_FLAG_DINNE : set when Data IN FIFO is not empty which means that 
+ 530:./Library/stm32f4xx_hash.c ****        the Data IN FIFO contains at least one word of data. This Flag is cleared 
+ 531:./Library/stm32f4xx_hash.c ****        only by hardware.
+ 532:./Library/stm32f4xx_hash.c ****      
+ 533:./Library/stm32f4xx_hash.c ****  *** Interrupts : ***
+ 534:./Library/stm32f4xx_hash.c ****  ====================
+ 535:./Library/stm32f4xx_hash.c ****  [..]   
+ 536:./Library/stm32f4xx_hash.c ****    (#) HASH_IT_DINI  : if enabled, this interrupt source is pending when 16 
+ 537:./Library/stm32f4xx_hash.c ****        locations are free in the Data IN FIFO  which means that a new block (512 bit)
+ 538:./Library/stm32f4xx_hash.c ****        can be entered into the input buffer. This interrupt source is cleared using 
+ 539:./Library/stm32f4xx_hash.c ****        HASH_ClearITPendingBit(HASH_IT_DINI) function.
+ 540:./Library/stm32f4xx_hash.c ****    
+ 541:./Library/stm32f4xx_hash.c ****    (#) HASH_IT_DCI   : if enabled, this interrupt source is pending when Digest 
+ 542:./Library/stm32f4xx_hash.c ****        calculation is complete. This interrupt source is cleared using 
+ 543:./Library/stm32f4xx_hash.c ****        HASH_ClearITPendingBit(HASH_IT_DCI) function.
+ 544:./Library/stm32f4xx_hash.c **** 
+ 545:./Library/stm32f4xx_hash.c ****  *** Managing the HASH controller events : ***
+ 546:./Library/stm32f4xx_hash.c ****  =============================================
+ 547:./Library/stm32f4xx_hash.c ****  [..] The user should identify which mode will be used in his application to manage 
+ 548:./Library/stm32f4xx_hash.c ****       the HASH controller events: Polling mode or Interrupt mode.
+ 549:./Library/stm32f4xx_hash.c ****   
+ 550:./Library/stm32f4xx_hash.c ****    (#) In the Polling Mode it is advised to use the following functions:
+ 551:./Library/stm32f4xx_hash.c ****        (++) HASH_GetFlagStatus() : to check if flags events occur. 
+ 552:./Library/stm32f4xx_hash.c ****        (++) HASH_ClearFlag()     : to clear the flags events.
+ 553:./Library/stm32f4xx_hash.c ****     
+ 554:./Library/stm32f4xx_hash.c ****    (#)  In the Interrupt Mode it is advised to use the following functions:
+ 555:./Library/stm32f4xx_hash.c ****        (++) HASH_ITConfig()       : to enable or disable the interrupt source.
+ 556:./Library/stm32f4xx_hash.c ****        (++) HASH_GetITStatus()    : to check if Interrupt occurs.
+ 557:./Library/stm32f4xx_hash.c ****        (++) HASH_ClearITPendingBit() : to clear the Interrupt pending Bit 
+ 558:./Library/stm32f4xx_hash.c ****             (corresponding Flag). 
+ 559:./Library/stm32f4xx_hash.c **** 
+ 560:./Library/stm32f4xx_hash.c **** @endverbatim
+ 561:./Library/stm32f4xx_hash.c ****   * @{
+ 562:./Library/stm32f4xx_hash.c ****   */ 
+ 563:./Library/stm32f4xx_hash.c ****   
+ 564:./Library/stm32f4xx_hash.c **** /**
+ 565:./Library/stm32f4xx_hash.c ****   * @brief  Enables or disables the specified HASH interrupts.
+ 566:./Library/stm32f4xx_hash.c ****   * @param  HASH_IT: specifies the HASH interrupt source to be enabled or disabled.
+ 567:./Library/stm32f4xx_hash.c ****   *          This parameter can be any combination of the following values:
+ 568:./Library/stm32f4xx_hash.c ****   *            @arg HASH_IT_DINI: Data Input interrupt
+ 569:./Library/stm32f4xx_hash.c ****   *            @arg HASH_IT_DCI: Digest Calculation Completion Interrupt
+ 570:./Library/stm32f4xx_hash.c ****   * @param  NewState: new state of the specified HASH interrupt.
+ 571:./Library/stm32f4xx_hash.c ****   *           This parameter can be: ENABLE or DISABLE.
+ 572:./Library/stm32f4xx_hash.c ****   * @retval None
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 22
+
+
+ 573:./Library/stm32f4xx_hash.c ****   */
+ 574:./Library/stm32f4xx_hash.c **** void HASH_ITConfig(uint32_t HASH_IT, FunctionalState NewState)
+ 575:./Library/stm32f4xx_hash.c **** {
+ 635              		.loc 1 575 1 is_stmt 1 view -0
+ 636              		.cfi_startproc
+ 637              		@ args = 0, pretend = 0, frame = 0
+ 638              		@ frame_needed = 0, uses_anonymous_args = 0
+ 639              		@ link register save eliminated.
+ 576:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 577:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_IT(HASH_IT));
+ 640              		.loc 1 577 3 view .LVU158
+ 578:./Library/stm32f4xx_hash.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 641              		.loc 1 578 3 view .LVU159
+ 579:./Library/stm32f4xx_hash.c **** 
+ 580:./Library/stm32f4xx_hash.c ****   if (NewState != DISABLE)
+ 642              		.loc 1 580 3 view .LVU160
+ 643              		.loc 1 580 6 is_stmt 0 view .LVU161
+ 644 0000 21B1     		cbz	r1, .L49
+ 581:./Library/stm32f4xx_hash.c ****   {
+ 582:./Library/stm32f4xx_hash.c ****     /* Enable the selected HASH interrupt */
+ 583:./Library/stm32f4xx_hash.c ****     HASH->IMR |= HASH_IT;
+ 645              		.loc 1 583 5 is_stmt 1 view .LVU162
+ 646              		.loc 1 583 15 is_stmt 0 view .LVU163
+ 647 0002 054A     		ldr	r2, .L51
+ 648 0004 136A     		ldr	r3, [r2, #32]
+ 649 0006 1843     		orrs	r0, r0, r3
+ 650              	.LVL20:
+ 651              		.loc 1 583 15 view .LVU164
+ 652 0008 1062     		str	r0, [r2, #32]
+ 653 000a 7047     		bx	lr
+ 654              	.LVL21:
+ 655              	.L49:
+ 584:./Library/stm32f4xx_hash.c ****   }
+ 585:./Library/stm32f4xx_hash.c ****   else
+ 586:./Library/stm32f4xx_hash.c ****   {
+ 587:./Library/stm32f4xx_hash.c ****     /* Disable the selected HASH interrupt */
+ 588:./Library/stm32f4xx_hash.c ****     HASH->IMR &= (uint32_t)(~HASH_IT);
+ 656              		.loc 1 588 5 is_stmt 1 view .LVU165
+ 657              		.loc 1 588 15 is_stmt 0 view .LVU166
+ 658 000c 024A     		ldr	r2, .L51
+ 659 000e 136A     		ldr	r3, [r2, #32]
+ 660 0010 23EA0000 		bic	r0, r3, r0
+ 661              	.LVL22:
+ 662              		.loc 1 588 15 view .LVU167
+ 663 0014 1062     		str	r0, [r2, #32]
+ 589:./Library/stm32f4xx_hash.c ****   }
+ 590:./Library/stm32f4xx_hash.c **** }
+ 664              		.loc 1 590 1 view .LVU168
+ 665 0016 7047     		bx	lr
+ 666              	.L52:
+ 667              		.align	2
+ 668              	.L51:
+ 669 0018 00040650 		.word	1342571520
+ 670              		.cfi_endproc
+ 671              	.LFE136:
+ 673              		.section	.text.HASH_GetFlagStatus,"ax",%progbits
+ 674              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 23
+
+
+ 675              		.global	HASH_GetFlagStatus
+ 676              		.syntax unified
+ 677              		.thumb
+ 678              		.thumb_func
+ 680              	HASH_GetFlagStatus:
+ 681              	.LVL23:
+ 682              	.LFB137:
+ 591:./Library/stm32f4xx_hash.c **** 
+ 592:./Library/stm32f4xx_hash.c **** /**
+ 593:./Library/stm32f4xx_hash.c ****   * @brief  Checks whether the specified HASH flag is set or not.
+ 594:./Library/stm32f4xx_hash.c ****   * @param  HASH_FLAG: specifies the HASH flag to check.
+ 595:./Library/stm32f4xx_hash.c ****   *          This parameter can be one of the following values:
+ 596:./Library/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DINIS: Data input interrupt status flag
+ 597:./Library/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DCIS: Digest calculation completion interrupt status flag
+ 598:./Library/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_BUSY: Busy flag
+ 599:./Library/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DMAS: DMAS Status flag
+ 600:./Library/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DINNE: Data Input register (DIN) not empty status flag
+ 601:./Library/stm32f4xx_hash.c ****   * @retval The new state of HASH_FLAG (SET or RESET)
+ 602:./Library/stm32f4xx_hash.c ****   */
+ 603:./Library/stm32f4xx_hash.c **** FlagStatus HASH_GetFlagStatus(uint32_t HASH_FLAG)
+ 604:./Library/stm32f4xx_hash.c **** {
+ 683              		.loc 1 604 1 is_stmt 1 view -0
+ 684              		.cfi_startproc
+ 685              		@ args = 0, pretend = 0, frame = 0
+ 686              		@ frame_needed = 0, uses_anonymous_args = 0
+ 687              		@ link register save eliminated.
+ 605:./Library/stm32f4xx_hash.c ****   FlagStatus bitstatus = RESET;
+ 688              		.loc 1 605 3 view .LVU170
+ 606:./Library/stm32f4xx_hash.c ****   uint32_t tempreg = 0;
+ 689              		.loc 1 606 3 view .LVU171
+ 607:./Library/stm32f4xx_hash.c **** 
+ 608:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 609:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_GET_FLAG(HASH_FLAG));
+ 690              		.loc 1 609 3 view .LVU172
+ 610:./Library/stm32f4xx_hash.c **** 
+ 611:./Library/stm32f4xx_hash.c ****   /* check if the FLAG is in CR register */
+ 612:./Library/stm32f4xx_hash.c ****   if ((HASH_FLAG & HASH_FLAG_DINNE) != (uint32_t)RESET ) 
+ 691              		.loc 1 612 3 view .LVU173
+ 692              		.loc 1 612 6 is_stmt 0 view .LVU174
+ 693 0000 10F4805F 		tst	r0, #4096
+ 694 0004 05D0     		beq	.L54
+ 613:./Library/stm32f4xx_hash.c ****   {
+ 614:./Library/stm32f4xx_hash.c ****     tempreg = HASH->CR;
+ 695              		.loc 1 614 5 is_stmt 1 view .LVU175
+ 696              		.loc 1 614 13 is_stmt 0 view .LVU176
+ 697 0006 054B     		ldr	r3, .L58
+ 698 0008 1B68     		ldr	r3, [r3]
+ 699              	.LVL24:
+ 700              	.L55:
+ 615:./Library/stm32f4xx_hash.c ****   }
+ 616:./Library/stm32f4xx_hash.c ****   else /* The FLAG is in SR register */
+ 617:./Library/stm32f4xx_hash.c ****   {
+ 618:./Library/stm32f4xx_hash.c ****     tempreg = HASH->SR;
+ 619:./Library/stm32f4xx_hash.c ****   }
+ 620:./Library/stm32f4xx_hash.c **** 
+ 621:./Library/stm32f4xx_hash.c ****   /* Check the status of the specified HASH flag */
+ 622:./Library/stm32f4xx_hash.c ****   if ((tempreg & HASH_FLAG) != (uint32_t)RESET)
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 24
+
+
+ 701              		.loc 1 622 3 is_stmt 1 view .LVU177
+ 702              		.loc 1 622 6 is_stmt 0 view .LVU178
+ 703 000a 0342     		tst	r3, r0
+ 704 000c 04D0     		beq	.L57
+ 623:./Library/stm32f4xx_hash.c ****   {
+ 624:./Library/stm32f4xx_hash.c ****     /* HASH is set */
+ 625:./Library/stm32f4xx_hash.c ****     bitstatus = SET;
+ 705              		.loc 1 625 15 view .LVU179
+ 706 000e 0120     		movs	r0, #1
+ 707              	.LVL25:
+ 708              		.loc 1 625 15 view .LVU180
+ 709 0010 7047     		bx	lr
+ 710              	.LVL26:
+ 711              	.L54:
+ 618:./Library/stm32f4xx_hash.c ****   }
+ 712              		.loc 1 618 5 is_stmt 1 view .LVU181
+ 618:./Library/stm32f4xx_hash.c ****   }
+ 713              		.loc 1 618 13 is_stmt 0 view .LVU182
+ 714 0012 024B     		ldr	r3, .L58
+ 715 0014 5B6A     		ldr	r3, [r3, #36]
+ 716              	.LVL27:
+ 618:./Library/stm32f4xx_hash.c ****   }
+ 717              		.loc 1 618 13 view .LVU183
+ 718 0016 F8E7     		b	.L55
+ 719              	.L57:
+ 626:./Library/stm32f4xx_hash.c ****   }
+ 627:./Library/stm32f4xx_hash.c ****   else
+ 628:./Library/stm32f4xx_hash.c ****   {
+ 629:./Library/stm32f4xx_hash.c ****     /* HASH_FLAG is reset */
+ 630:./Library/stm32f4xx_hash.c ****     bitstatus = RESET;
+ 720              		.loc 1 630 15 view .LVU184
+ 721 0018 0020     		movs	r0, #0
+ 722              	.LVL28:
+ 631:./Library/stm32f4xx_hash.c ****   }
+ 632:./Library/stm32f4xx_hash.c **** 
+ 633:./Library/stm32f4xx_hash.c ****   /* Return the HASH_FLAG status */
+ 634:./Library/stm32f4xx_hash.c ****   return  bitstatus;
+ 723              		.loc 1 634 3 is_stmt 1 view .LVU185
+ 635:./Library/stm32f4xx_hash.c **** }
+ 724              		.loc 1 635 1 is_stmt 0 view .LVU186
+ 725 001a 7047     		bx	lr
+ 726              	.L59:
+ 727              		.align	2
+ 728              	.L58:
+ 729 001c 00040650 		.word	1342571520
+ 730              		.cfi_endproc
+ 731              	.LFE137:
+ 733              		.section	.text.HASH_ClearFlag,"ax",%progbits
+ 734              		.align	1
+ 735              		.global	HASH_ClearFlag
+ 736              		.syntax unified
+ 737              		.thumb
+ 738              		.thumb_func
+ 740              	HASH_ClearFlag:
+ 741              	.LVL29:
+ 742              	.LFB138:
+ 636:./Library/stm32f4xx_hash.c **** /**
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 25
+
+
+ 637:./Library/stm32f4xx_hash.c ****   * @brief  Clears the HASH flags.
+ 638:./Library/stm32f4xx_hash.c ****   * @param  HASH_FLAG: specifies the flag to clear. 
+ 639:./Library/stm32f4xx_hash.c ****   *          This parameter can be any combination of the following values:
+ 640:./Library/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DINIS: Data Input Flag
+ 641:./Library/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DCIS: Digest Calculation Completion Flag                       
+ 642:./Library/stm32f4xx_hash.c ****   * @retval None
+ 643:./Library/stm32f4xx_hash.c ****   */
+ 644:./Library/stm32f4xx_hash.c **** void HASH_ClearFlag(uint32_t HASH_FLAG)
+ 645:./Library/stm32f4xx_hash.c **** {
+ 743              		.loc 1 645 1 is_stmt 1 view -0
+ 744              		.cfi_startproc
+ 745              		@ args = 0, pretend = 0, frame = 0
+ 746              		@ frame_needed = 0, uses_anonymous_args = 0
+ 747              		@ link register save eliminated.
+ 646:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 647:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_CLEAR_FLAG(HASH_FLAG));
+ 748              		.loc 1 647 3 view .LVU188
+ 648:./Library/stm32f4xx_hash.c ****   
+ 649:./Library/stm32f4xx_hash.c ****   /* Clear the selected HASH flags */
+ 650:./Library/stm32f4xx_hash.c ****   HASH->SR = ~(uint32_t)HASH_FLAG;
+ 749              		.loc 1 650 3 view .LVU189
+ 750              		.loc 1 650 14 is_stmt 0 view .LVU190
+ 751 0000 C043     		mvns	r0, r0
+ 752              	.LVL30:
+ 753              		.loc 1 650 12 view .LVU191
+ 754 0002 014B     		ldr	r3, .L61
+ 755 0004 5862     		str	r0, [r3, #36]
+ 651:./Library/stm32f4xx_hash.c **** }
+ 756              		.loc 1 651 1 view .LVU192
+ 757 0006 7047     		bx	lr
+ 758              	.L62:
+ 759              		.align	2
+ 760              	.L61:
+ 761 0008 00040650 		.word	1342571520
+ 762              		.cfi_endproc
+ 763              	.LFE138:
+ 765              		.section	.text.HASH_GetITStatus,"ax",%progbits
+ 766              		.align	1
+ 767              		.global	HASH_GetITStatus
+ 768              		.syntax unified
+ 769              		.thumb
+ 770              		.thumb_func
+ 772              	HASH_GetITStatus:
+ 773              	.LVL31:
+ 774              	.LFB139:
+ 652:./Library/stm32f4xx_hash.c **** /**
+ 653:./Library/stm32f4xx_hash.c ****   * @brief  Checks whether the specified HASH interrupt has occurred or not.
+ 654:./Library/stm32f4xx_hash.c ****   * @param  HASH_IT: specifies the HASH interrupt source to check.
+ 655:./Library/stm32f4xx_hash.c ****   *          This parameter can be one of the following values:
+ 656:./Library/stm32f4xx_hash.c ****   *            @arg HASH_IT_DINI: Data Input interrupt
+ 657:./Library/stm32f4xx_hash.c ****   *            @arg HASH_IT_DCI: Digest Calculation Completion Interrupt
+ 658:./Library/stm32f4xx_hash.c ****   * @retval The new state of HASH_IT (SET or RESET).
+ 659:./Library/stm32f4xx_hash.c ****   */
+ 660:./Library/stm32f4xx_hash.c **** ITStatus HASH_GetITStatus(uint32_t HASH_IT)
+ 661:./Library/stm32f4xx_hash.c **** {
+ 775              		.loc 1 661 1 is_stmt 1 view -0
+ 776              		.cfi_startproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 26
+
+
+ 777              		@ args = 0, pretend = 0, frame = 0
+ 778              		@ frame_needed = 0, uses_anonymous_args = 0
+ 779              		@ link register save eliminated.
+ 662:./Library/stm32f4xx_hash.c ****   ITStatus bitstatus = RESET;
+ 780              		.loc 1 662 3 view .LVU194
+ 663:./Library/stm32f4xx_hash.c ****   uint32_t tmpreg = 0;
+ 781              		.loc 1 663 3 view .LVU195
+ 664:./Library/stm32f4xx_hash.c **** 
+ 665:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 666:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_GET_IT(HASH_IT));  
+ 782              		.loc 1 666 3 view .LVU196
+ 667:./Library/stm32f4xx_hash.c **** 
+ 668:./Library/stm32f4xx_hash.c **** 
+ 669:./Library/stm32f4xx_hash.c ****   /* Check the status of the specified HASH interrupt */
+ 670:./Library/stm32f4xx_hash.c ****   tmpreg =  HASH->SR;
+ 783              		.loc 1 670 3 view .LVU197
+ 784              		.loc 1 670 10 is_stmt 0 view .LVU198
+ 785 0000 044A     		ldr	r2, .L66
+ 786 0002 516A     		ldr	r1, [r2, #36]
+ 787              	.LVL32:
+ 671:./Library/stm32f4xx_hash.c **** 
+ 672:./Library/stm32f4xx_hash.c ****   if (((HASH->IMR & tmpreg) & HASH_IT) != RESET)
+ 788              		.loc 1 672 3 is_stmt 1 view .LVU199
+ 789              		.loc 1 672 13 is_stmt 0 view .LVU200
+ 790 0004 136A     		ldr	r3, [r2, #32]
+ 791              		.loc 1 672 19 view .LVU201
+ 792 0006 0B40     		ands	r3, r3, r1
+ 793              		.loc 1 672 6 view .LVU202
+ 794 0008 0342     		tst	r3, r0
+ 795 000a 01D0     		beq	.L65
+ 673:./Library/stm32f4xx_hash.c ****   {
+ 674:./Library/stm32f4xx_hash.c ****     /* HASH_IT is set */
+ 675:./Library/stm32f4xx_hash.c ****     bitstatus = SET;
+ 796              		.loc 1 675 15 view .LVU203
+ 797 000c 0120     		movs	r0, #1
+ 798              	.LVL33:
+ 799              		.loc 1 675 15 view .LVU204
+ 800 000e 7047     		bx	lr
+ 801              	.LVL34:
+ 802              	.L65:
+ 676:./Library/stm32f4xx_hash.c ****   }
+ 677:./Library/stm32f4xx_hash.c ****   else
+ 678:./Library/stm32f4xx_hash.c ****   {
+ 679:./Library/stm32f4xx_hash.c ****     /* HASH_IT is reset */
+ 680:./Library/stm32f4xx_hash.c ****     bitstatus = RESET;
+ 803              		.loc 1 680 15 view .LVU205
+ 804 0010 0020     		movs	r0, #0
+ 805              	.LVL35:
+ 681:./Library/stm32f4xx_hash.c ****   }
+ 682:./Library/stm32f4xx_hash.c ****   /* Return the HASH_IT status */
+ 683:./Library/stm32f4xx_hash.c ****   return bitstatus;
+ 806              		.loc 1 683 3 is_stmt 1 view .LVU206
+ 684:./Library/stm32f4xx_hash.c **** }
+ 807              		.loc 1 684 1 is_stmt 0 view .LVU207
+ 808 0012 7047     		bx	lr
+ 809              	.L67:
+ 810              		.align	2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 27
+
+
+ 811              	.L66:
+ 812 0014 00040650 		.word	1342571520
+ 813              		.cfi_endproc
+ 814              	.LFE139:
+ 816              		.section	.text.HASH_ClearITPendingBit,"ax",%progbits
+ 817              		.align	1
+ 818              		.global	HASH_ClearITPendingBit
+ 819              		.syntax unified
+ 820              		.thumb
+ 821              		.thumb_func
+ 823              	HASH_ClearITPendingBit:
+ 824              	.LVL36:
+ 825              	.LFB140:
+ 685:./Library/stm32f4xx_hash.c **** 
+ 686:./Library/stm32f4xx_hash.c **** /**
+ 687:./Library/stm32f4xx_hash.c ****   * @brief  Clears the HASH interrupt pending bit(s).
+ 688:./Library/stm32f4xx_hash.c ****   * @param  HASH_IT: specifies the HASH interrupt pending bit(s) to clear.
+ 689:./Library/stm32f4xx_hash.c ****   *          This parameter can be any combination of the following values:
+ 690:./Library/stm32f4xx_hash.c ****   *            @arg HASH_IT_DINI: Data Input interrupt
+ 691:./Library/stm32f4xx_hash.c ****   *            @arg HASH_IT_DCI: Digest Calculation Completion Interrupt
+ 692:./Library/stm32f4xx_hash.c ****   * @retval None
+ 693:./Library/stm32f4xx_hash.c ****   */
+ 694:./Library/stm32f4xx_hash.c **** void HASH_ClearITPendingBit(uint32_t HASH_IT)
+ 695:./Library/stm32f4xx_hash.c **** {
+ 826              		.loc 1 695 1 is_stmt 1 view -0
+ 827              		.cfi_startproc
+ 828              		@ args = 0, pretend = 0, frame = 0
+ 829              		@ frame_needed = 0, uses_anonymous_args = 0
+ 830              		@ link register save eliminated.
+ 696:./Library/stm32f4xx_hash.c ****   /* Check the parameters */
+ 697:./Library/stm32f4xx_hash.c ****   assert_param(IS_HASH_IT(HASH_IT));
+ 831              		.loc 1 697 3 view .LVU209
+ 698:./Library/stm32f4xx_hash.c **** 
+ 699:./Library/stm32f4xx_hash.c ****   /* Clear the selected HASH interrupt pending bit */
+ 700:./Library/stm32f4xx_hash.c ****   HASH->SR = (uint32_t)(~HASH_IT);
+ 832              		.loc 1 700 3 view .LVU210
+ 833              		.loc 1 700 25 is_stmt 0 view .LVU211
+ 834 0000 C043     		mvns	r0, r0
+ 835              	.LVL37:
+ 836              		.loc 1 700 12 view .LVU212
+ 837 0002 014B     		ldr	r3, .L69
+ 838 0004 5862     		str	r0, [r3, #36]
+ 701:./Library/stm32f4xx_hash.c **** }
+ 839              		.loc 1 701 1 view .LVU213
+ 840 0006 7047     		bx	lr
+ 841              	.L70:
+ 842              		.align	2
+ 843              	.L69:
+ 844 0008 00040650 		.word	1342571520
+ 845              		.cfi_endproc
+ 846              	.LFE140:
+ 848              		.text
+ 849              	.Letext0:
+ 850              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 851              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 852              		.file 4 "./CORE/stm32f4xx.h"
+ 853              		.file 5 "./Library/stm32f4xx_hash.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 28
+
+
+ 854              		.file 6 "./Library/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 29
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_hash.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:20     .text.HASH_DeInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:26     .text.HASH_DeInit:0000000000000000 HASH_DeInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:54     .text.HASH_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:60     .text.HASH_Init:0000000000000000 HASH_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:139    .text.HASH_Init:000000000000004c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:144    .text.HASH_StructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:150    .text.HASH_StructInit:0000000000000000 HASH_StructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:177    .text.HASH_Reset:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:183    .text.HASH_Reset:0000000000000000 HASH_Reset
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:201    .text.HASH_Reset:000000000000000c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:206    .text.HASH_SetLastWordValidBitsNbr:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:212    .text.HASH_SetLastWordValidBitsNbr:0000000000000000 HASH_SetLastWordValidBitsNbr
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:239    .text.HASH_SetLastWordValidBitsNbr:0000000000000014 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:244    .text.HASH_DataIn:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:250    .text.HASH_DataIn:0000000000000000 HASH_DataIn
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:267    .text.HASH_DataIn:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:272    .text.HASH_GetInFIFOWordsNbr:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:278    .text.HASH_GetInFIFOWordsNbr:0000000000000000 HASH_GetInFIFOWordsNbr
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:295    .text.HASH_GetInFIFOWordsNbr:000000000000000c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:300    .text.HASH_GetDigest:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:306    .text.HASH_GetDigest:0000000000000000 HASH_GetDigest
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:361    .text.HASH_GetDigest:0000000000000028 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:367    .text.HASH_StartDigest:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:373    .text.HASH_StartDigest:0000000000000000 HASH_StartDigest
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:391    .text.HASH_StartDigest:000000000000000c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:396    .text.HASH_SaveContext:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:402    .text.HASH_SaveContext:0000000000000000 HASH_SaveContext
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:460    .text.HASH_SaveContext:0000000000000030 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:465    .text.HASH_RestoreContext:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:471    .text.HASH_RestoreContext:0000000000000000 HASH_RestoreContext
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:537    .text.HASH_RestoreContext:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:542    .text.HASH_AutoStartDigest:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:548    .text.HASH_AutoStartDigest:0000000000000000 HASH_AutoStartDigest
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:579    .text.HASH_AutoStartDigest:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:584    .text.HASH_DMACmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:590    .text.HASH_DMACmd:0000000000000000 HASH_DMACmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:621    .text.HASH_DMACmd:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:626    .text.HASH_ITConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:632    .text.HASH_ITConfig:0000000000000000 HASH_ITConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:669    .text.HASH_ITConfig:0000000000000018 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:674    .text.HASH_GetFlagStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:680    .text.HASH_GetFlagStatus:0000000000000000 HASH_GetFlagStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:729    .text.HASH_GetFlagStatus:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:734    .text.HASH_ClearFlag:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:740    .text.HASH_ClearFlag:0000000000000000 HASH_ClearFlag
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:761    .text.HASH_ClearFlag:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:766    .text.HASH_GetITStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:772    .text.HASH_GetITStatus:0000000000000000 HASH_GetITStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:812    .text.HASH_GetITStatus:0000000000000014 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:817    .text.HASH_ClearITPendingBit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:823    .text.HASH_ClearITPendingBit:0000000000000000 HASH_ClearITPendingBit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s:844    .text.HASH_ClearITPendingBit:0000000000000008 $d
+
+UNDEFINED SYMBOLS
+RCC_AHB2PeriphResetCmd
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc8WWRlp.s 			page 30
+
+

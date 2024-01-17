@@ -1,0 +1,765 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Delay.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Delay_ms,"ax",%progbits
+  20              		.align	1
+  21              		.global	Delay_ms
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	Delay_ms:
+  27              	.LVL0:
+  28              	.LFB124:
+  29              		.file 1 "./User/Delay.c"
+   1:./User/Delay.c **** /**
+   2:./User/Delay.c ****   ******************************************************************************
+   3:./User/Delay.c ****   * @file    Delay.c
+   4:./User/Delay.c ****   * @author  XinLi
+   5:./User/Delay.c ****   * @version v1.0
+   6:./User/Delay.c ****   * @date    24-October-2017
+   7:./User/Delay.c ****   * @brief   Delay module driver.
+   8:./User/Delay.c ****   ******************************************************************************
+   9:./User/Delay.c ****   * @attention
+  10:./User/Delay.c ****   *
+  11:./User/Delay.c ****   * <h2><center>Copyright &copy; 2017 XinLi</center></h2>
+  12:./User/Delay.c ****   *
+  13:./User/Delay.c ****   * This program is free software: you can redistribute it and/or modify
+  14:./User/Delay.c ****   * it under the terms of the GNU General Public License as published by
+  15:./User/Delay.c ****   * the Free Software Foundation, either version 3 of the License, or
+  16:./User/Delay.c ****   * (at your option) any later version.
+  17:./User/Delay.c ****   *
+  18:./User/Delay.c ****   * This program is distributed in the hope that it will be useful,
+  19:./User/Delay.c ****   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  20:./User/Delay.c ****   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  21:./User/Delay.c ****   * GNU General Public License for more details.
+  22:./User/Delay.c ****   *
+  23:./User/Delay.c ****   * You should have received a copy of the GNU General Public License
+  24:./User/Delay.c ****   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  25:./User/Delay.c ****   *
+  26:./User/Delay.c ****   ******************************************************************************
+  27:./User/Delay.c ****   */
+  28:./User/Delay.c **** 
+  29:./User/Delay.c **** /* Header includes -----------------------------------------------------------*/
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 2
+
+
+  30:./User/Delay.c **** #include "Delay.h"
+  31:./User/Delay.c **** 
+  32:./User/Delay.c **** /* Macro definitions ---------------------------------------------------------*/
+  33:./User/Delay.c **** /* Type definitions ----------------------------------------------------------*/
+  34:./User/Delay.c **** /* Variable declarations -----------------------------------------------------*/
+  35:./User/Delay.c **** /* Variable definitions ------------------------------------------------------*/
+  36:./User/Delay.c **** /* Function declarations -----------------------------------------------------*/
+  37:./User/Delay.c **** /* Function definitions ------------------------------------------------------*/
+  38:./User/Delay.c **** 
+  39:./User/Delay.c **** /**
+  40:./User/Delay.c ****   * @brief  Microsecond delay.
+  41:./User/Delay.c ****   * @param  [in] nus: The number of microseconds delay.
+  42:./User/Delay.c ****   * @return None.
+  43:./User/Delay.c ****   */
+  44:./User/Delay.c **** void Delay_us(uint64_t nus)
+  45:./User/Delay.c **** {
+  46:./User/Delay.c ****   uint64_t nms = 0;
+  47:./User/Delay.c ****   
+  48:./User/Delay.c ****   if(nus == 0)
+  49:./User/Delay.c ****   {
+  50:./User/Delay.c ****     return;
+  51:./User/Delay.c ****   }
+  52:./User/Delay.c ****   
+  53:./User/Delay.c ****   nms = nus / 1000;
+  54:./User/Delay.c ****   nus = nus % 1000;
+  55:./User/Delay.c ****   
+  56:./User/Delay.c ****   if(nms > 0)
+  57:./User/Delay.c ****   {
+  58:./User/Delay.c ****     Delay_ms(nms);
+  59:./User/Delay.c ****   }
+  60:./User/Delay.c ****   
+  61:./User/Delay.c ****   if(nus > 0)
+  62:./User/Delay.c ****   {
+  63:./User/Delay.c ****     RCC_ClocksTypeDef RCC_ClockFreq;
+  64:./User/Delay.c ****     
+  65:./User/Delay.c ****     RCC_GetClocksFreq(&RCC_ClockFreq);                              /* Get the frequencies of diffe
+  66:./User/Delay.c ****     
+  67:./User/Delay.c ****     if(RCC_ClockFreq.HCLK_Frequency < 8000000)
+  68:./User/Delay.c ****     {
+  69:./User/Delay.c ****       SysTick->CTRL |= SysTick_CLKSource_HCLK;                      /* Configures the SysTick clock
+  70:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000000 * nus; /* Time load (SysTick-> LOAD is
+  71:./User/Delay.c ****     }
+  72:./User/Delay.c ****     else
+  73:./User/Delay.c ****     {
+  74:./User/Delay.c ****       SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;                 /* Configures the SysTick clock
+  75:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000000 * nus; /* Time load (SysTick-> LOAD is
+  76:./User/Delay.c ****     }
+  77:./User/Delay.c ****     
+  78:./User/Delay.c ****     SysTick->VAL = 0;                                               /* Empty counter. */
+  79:./User/Delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
+  80:./User/Delay.c ****     
+  81:./User/Delay.c ****     while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                  /* Wait time is reached. */
+  82:./User/Delay.c ****     
+  83:./User/Delay.c ****     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                      /* Close counter. */
+  84:./User/Delay.c ****   }
+  85:./User/Delay.c **** }
+  86:./User/Delay.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 3
+
+
+  87:./User/Delay.c **** /**
+  88:./User/Delay.c ****   * @brief  Millisecond delay.
+  89:./User/Delay.c ****   * @param  [in] nms: The number of millisecond delay.
+  90:./User/Delay.c ****   * @return None.
+  91:./User/Delay.c ****   */
+  92:./User/Delay.c **** void Delay_ms(uint64_t nms)
+  93:./User/Delay.c **** {
+  30              		.loc 1 93 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 32
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 93 1 is_stmt 0 view .LVU1
+  35 0000 30B5     		push	{r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 12
+  38              		.cfi_offset 4, -12
+  39              		.cfi_offset 5, -8
+  40              		.cfi_offset 14, -4
+  41 0002 89B0     		sub	sp, sp, #36
+  42              	.LCFI1:
+  43              		.cfi_def_cfa_offset 48
+  44 0004 0446     		mov	r4, r0
+  45 0006 0D46     		mov	r5, r1
+  94:./User/Delay.c ****   if(nms == 0)
+  46              		.loc 1 94 3 is_stmt 1 view .LVU2
+  47              		.loc 1 94 5 is_stmt 0 view .LVU3
+  48 0008 50EA0103 		orrs	r3, r0, r1
+  49 000c 28D1     		bne	.L2
+  50 000e 6EE0     		b	.L1
+  51              	.LVL1:
+  52              	.L4:
+  53              	.LBB2:
+  95:./User/Delay.c ****   {
+  96:./User/Delay.c ****     return;
+  97:./User/Delay.c ****   }
+  98:./User/Delay.c ****   
+  99:./User/Delay.c ****   while(nms > 500)
+ 100:./User/Delay.c ****   {
+ 101:./User/Delay.c ****     RCC_ClocksTypeDef RCC_ClockFreq;
+ 102:./User/Delay.c ****     
+ 103:./User/Delay.c ****     RCC_GetClocksFreq(&RCC_ClockFreq);                            /* Get the frequencies of differe
+ 104:./User/Delay.c ****     
+ 105:./User/Delay.c ****     if(RCC_ClockFreq.HCLK_Frequency < 8000000)
+ 106:./User/Delay.c ****     {
+ 107:./User/Delay.c ****       SysTick->CTRL |= SysTick_CLKSource_HCLK;                    /* Configures the SysTick clock s
+ 108:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000 * 500;  /* Time load (SysTick-> LOAD is 2
+ 109:./User/Delay.c ****     }
+ 110:./User/Delay.c ****     else
+ 111:./User/Delay.c ****     {
+ 112:./User/Delay.c ****       SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;               /* Configures the SysTick clock s
+  54              		.loc 1 112 7 is_stmt 1 view .LVU4
+  55              		.loc 1 112 21 is_stmt 0 view .LVU5
+  56 0010 4FF0E022 		mov	r2, #-536813568
+  57 0014 1369     		ldr	r3, [r2, #16]
+  58 0016 23F00403 		bic	r3, r3, #4
+  59 001a 1361     		str	r3, [r2, #16]
+ 113:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000 * 500;  /* Time load (SysTick-> LOAD is 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 4
+
+
+  60              		.loc 1 113 7 is_stmt 1 view .LVU6
+  61              		.loc 1 113 52 is_stmt 0 view .LVU7
+  62 001c 019B     		ldr	r3, [sp, #4]
+  63 001e 3C49     		ldr	r1, .L13
+  64 0020 A1FB0313 		umull	r1, r3, r1, r3
+  65 0024 5B0A     		lsrs	r3, r3, #9
+  66              		.loc 1 113 59 view .LVU8
+  67 0026 4FF4FA71 		mov	r1, #500
+  68 002a 01FB03F3 		mul	r3, r1, r3
+  69              		.loc 1 113 21 view .LVU9
+  70 002e 5361     		str	r3, [r2, #20]
+  71              	.L5:
+ 114:./User/Delay.c ****     }
+ 115:./User/Delay.c ****     
+ 116:./User/Delay.c ****     SysTick->VAL = 0;                                             /* Empty counter. */
+  72              		.loc 1 116 5 is_stmt 1 view .LVU10
+  73              		.loc 1 116 18 is_stmt 0 view .LVU11
+  74 0030 4FF0E023 		mov	r3, #-536813568
+  75 0034 0022     		movs	r2, #0
+  76 0036 9A61     		str	r2, [r3, #24]
+ 117:./User/Delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                     /* Start the countdown. */
+  77              		.loc 1 117 5 is_stmt 1 view .LVU12
+  78              		.loc 1 117 19 is_stmt 0 view .LVU13
+  79 0038 1A69     		ldr	r2, [r3, #16]
+  80 003a 42F00102 		orr	r2, r2, #1
+  81 003e 1A61     		str	r2, [r3, #16]
+ 118:./User/Delay.c ****     
+ 119:./User/Delay.c ****     while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                /* Wait time is reached. */
+  82              		.loc 1 119 5 is_stmt 1 view .LVU14
+  83              	.L6:
+  84              		.loc 1 119 50 discriminator 1 view .LVU15
+  85              		.loc 1 119 10 discriminator 1 view .LVU16
+  86              		.loc 1 119 19 is_stmt 0 discriminator 1 view .LVU17
+  87 0040 4FF0E023 		mov	r3, #-536813568
+  88 0044 1B69     		ldr	r3, [r3, #16]
+  89              		.loc 1 119 10 discriminator 1 view .LVU18
+  90 0046 13F4803F 		tst	r3, #65536
+  91 004a F9D0     		beq	.L6
+ 120:./User/Delay.c ****     
+ 121:./User/Delay.c ****     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                    /* Close counter. */
+  92              		.loc 1 121 5 is_stmt 1 view .LVU19
+  93              		.loc 1 121 19 is_stmt 0 view .LVU20
+  94 004c 4FF0E022 		mov	r2, #-536813568
+  95 0050 1369     		ldr	r3, [r2, #16]
+  96 0052 23F00103 		bic	r3, r3, #1
+  97 0056 1361     		str	r3, [r2, #16]
+ 122:./User/Delay.c ****     
+ 123:./User/Delay.c ****     nms -= 500;
+  98              		.loc 1 123 5 is_stmt 1 view .LVU21
+  99              		.loc 1 123 9 is_stmt 0 view .LVU22
+ 100 0058 B4F5FA74 		subs	r4, r4, #500
+ 101              	.LVL2:
+ 102              		.loc 1 123 9 view .LVU23
+ 103 005c 45F1FF35 		adc	r5, r5, #-1
+ 104              	.LVL3:
+ 105              	.L2:
+ 106              		.loc 1 123 9 view .LVU24
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 5
+
+
+ 107              	.LBE2:
+  99:./User/Delay.c ****   {
+ 108              		.loc 1 99 8 is_stmt 1 view .LVU25
+ 109 0060 40F2F513 		movw	r3, #501
+ 110 0064 9C42     		cmp	r4, r3
+ 111 0066 75F10003 		sbcs	r3, r5, #0
+ 112 006a 17D3     		bcc	.L12
+ 113              	.LBB3:
+ 101:./User/Delay.c ****     
+ 114              		.loc 1 101 5 view .LVU26
+ 103:./User/Delay.c ****     
+ 115              		.loc 1 103 5 view .LVU27
+ 116 006c 6846     		mov	r0, sp
+ 117 006e FFF7FEFF 		bl	RCC_GetClocksFreq
+ 118              	.LVL4:
+ 105:./User/Delay.c ****     {
+ 119              		.loc 1 105 5 view .LVU28
+ 105:./User/Delay.c ****     {
+ 120              		.loc 1 105 7 is_stmt 0 view .LVU29
+ 121 0072 019A     		ldr	r2, [sp, #4]
+ 122 0074 274B     		ldr	r3, .L13+4
+ 123 0076 9A42     		cmp	r2, r3
+ 124 0078 CAD2     		bcs	.L4
+ 107:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000 * 500;  /* Time load (SysTick-> LOAD is 2
+ 125              		.loc 1 107 7 is_stmt 1 view .LVU30
+ 107:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000 * 500;  /* Time load (SysTick-> LOAD is 2
+ 126              		.loc 1 107 21 is_stmt 0 view .LVU31
+ 127 007a 4FF0E022 		mov	r2, #-536813568
+ 128 007e 1369     		ldr	r3, [r2, #16]
+ 129 0080 43F00403 		orr	r3, r3, #4
+ 130 0084 1361     		str	r3, [r2, #16]
+ 108:./User/Delay.c ****     }
+ 131              		.loc 1 108 7 is_stmt 1 view .LVU32
+ 108:./User/Delay.c ****     }
+ 132              		.loc 1 108 52 is_stmt 0 view .LVU33
+ 133 0086 019B     		ldr	r3, [sp, #4]
+ 134 0088 2149     		ldr	r1, .L13
+ 135 008a A1FB0313 		umull	r1, r3, r1, r3
+ 136 008e 9B09     		lsrs	r3, r3, #6
+ 108:./User/Delay.c ****     }
+ 137              		.loc 1 108 59 view .LVU34
+ 138 0090 4FF4FA71 		mov	r1, #500
+ 139 0094 01FB03F3 		mul	r3, r1, r3
+ 108:./User/Delay.c ****     }
+ 140              		.loc 1 108 21 view .LVU35
+ 141 0098 5361     		str	r3, [r2, #20]
+ 142 009a C9E7     		b	.L5
+ 143              	.L12:
+ 144              	.LBE3:
+ 124:./User/Delay.c ****   }
+ 125:./User/Delay.c ****   
+ 126:./User/Delay.c ****   RCC_ClocksTypeDef RCC_ClockFreq;
+ 145              		.loc 1 126 3 is_stmt 1 view .LVU36
+ 127:./User/Delay.c ****   
+ 128:./User/Delay.c ****   RCC_GetClocksFreq(&RCC_ClockFreq);                              /* Get the frequencies of differe
+ 146              		.loc 1 128 3 view .LVU37
+ 147 009c 04A8     		add	r0, sp, #16
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 6
+
+
+ 148 009e FFF7FEFF 		bl	RCC_GetClocksFreq
+ 149              	.LVL5:
+ 129:./User/Delay.c ****   
+ 130:./User/Delay.c ****   if(RCC_ClockFreq.HCLK_Frequency < 8000000)
+ 150              		.loc 1 130 3 view .LVU38
+ 151              		.loc 1 130 5 is_stmt 0 view .LVU39
+ 152 00a2 059A     		ldr	r2, [sp, #20]
+ 153 00a4 1B4B     		ldr	r3, .L13+4
+ 154 00a6 9A42     		cmp	r2, r3
+ 155 00a8 23D2     		bcs	.L8
+ 131:./User/Delay.c ****   {
+ 132:./User/Delay.c ****     SysTick->CTRL |= SysTick_CLKSource_HCLK;                      /* Configures the SysTick clock s
+ 156              		.loc 1 132 5 is_stmt 1 view .LVU40
+ 157              		.loc 1 132 19 is_stmt 0 view .LVU41
+ 158 00aa 4FF0E022 		mov	r2, #-536813568
+ 159 00ae 1369     		ldr	r3, [r2, #16]
+ 160 00b0 43F00403 		orr	r3, r3, #4
+ 161 00b4 1361     		str	r3, [r2, #16]
+ 133:./User/Delay.c ****     SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000 * nms;    /* Time load (SysTick-> LOAD is 2
+ 162              		.loc 1 133 5 is_stmt 1 view .LVU42
+ 163              		.loc 1 133 50 is_stmt 0 view .LVU43
+ 164 00b6 059B     		ldr	r3, [sp, #20]
+ 165 00b8 1549     		ldr	r1, .L13
+ 166 00ba A1FB0313 		umull	r1, r3, r1, r3
+ 167 00be 9B09     		lsrs	r3, r3, #6
+ 168              		.loc 1 133 19 view .LVU44
+ 169 00c0 03FB04F4 		mul	r4, r3, r4
+ 170              	.LVL6:
+ 171              		.loc 1 133 19 view .LVU45
+ 172 00c4 5461     		str	r4, [r2, #20]
+ 173              	.L9:
+ 134:./User/Delay.c ****   }
+ 135:./User/Delay.c ****   else
+ 136:./User/Delay.c ****   {
+ 137:./User/Delay.c ****     SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;                 /* Configures the SysTick clock s
+ 138:./User/Delay.c ****     SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000 * nms;    /* Time load (SysTick-> LOAD is 2
+ 139:./User/Delay.c ****   }
+ 140:./User/Delay.c ****   
+ 141:./User/Delay.c ****   SysTick->VAL = 0;                                               /* Empty counter. */
+ 174              		.loc 1 141 3 is_stmt 1 view .LVU46
+ 175              		.loc 1 141 16 is_stmt 0 view .LVU47
+ 176 00c6 4FF0E023 		mov	r3, #-536813568
+ 177 00ca 0022     		movs	r2, #0
+ 178 00cc 9A61     		str	r2, [r3, #24]
+ 142:./User/Delay.c ****   SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
+ 179              		.loc 1 142 3 is_stmt 1 view .LVU48
+ 180              		.loc 1 142 17 is_stmt 0 view .LVU49
+ 181 00ce 1A69     		ldr	r2, [r3, #16]
+ 182 00d0 42F00102 		orr	r2, r2, #1
+ 183 00d4 1A61     		str	r2, [r3, #16]
+ 143:./User/Delay.c ****   
+ 144:./User/Delay.c ****   while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                  /* Wait time is reached. */
+ 184              		.loc 1 144 3 is_stmt 1 view .LVU50
+ 185              	.L10:
+ 186              		.loc 1 144 48 discriminator 1 view .LVU51
+ 187              		.loc 1 144 8 discriminator 1 view .LVU52
+ 188              		.loc 1 144 17 is_stmt 0 discriminator 1 view .LVU53
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 7
+
+
+ 189 00d6 4FF0E023 		mov	r3, #-536813568
+ 190 00da 1B69     		ldr	r3, [r3, #16]
+ 191              		.loc 1 144 8 discriminator 1 view .LVU54
+ 192 00dc 13F4803F 		tst	r3, #65536
+ 193 00e0 F9D0     		beq	.L10
+ 145:./User/Delay.c ****   
+ 146:./User/Delay.c ****   SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                      /* Close counter. */
+ 194              		.loc 1 146 3 is_stmt 1 view .LVU55
+ 195              		.loc 1 146 17 is_stmt 0 view .LVU56
+ 196 00e2 4FF0E022 		mov	r2, #-536813568
+ 197 00e6 1369     		ldr	r3, [r2, #16]
+ 198 00e8 23F00103 		bic	r3, r3, #1
+ 199 00ec 1361     		str	r3, [r2, #16]
+ 200              	.L1:
+ 147:./User/Delay.c **** }
+ 201              		.loc 1 147 1 view .LVU57
+ 202 00ee 09B0     		add	sp, sp, #36
+ 203              	.LCFI2:
+ 204              		.cfi_remember_state
+ 205              		.cfi_def_cfa_offset 12
+ 206              		@ sp needed
+ 207 00f0 30BD     		pop	{r4, r5, pc}
+ 208              	.LVL7:
+ 209              	.L8:
+ 210              	.LCFI3:
+ 211              		.cfi_restore_state
+ 137:./User/Delay.c ****     SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000 * nms;    /* Time load (SysTick-> LOAD is 2
+ 212              		.loc 1 137 5 is_stmt 1 view .LVU58
+ 137:./User/Delay.c ****     SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000 * nms;    /* Time load (SysTick-> LOAD is 2
+ 213              		.loc 1 137 19 is_stmt 0 view .LVU59
+ 214 00f2 4FF0E022 		mov	r2, #-536813568
+ 215 00f6 1369     		ldr	r3, [r2, #16]
+ 216 00f8 23F00403 		bic	r3, r3, #4
+ 217 00fc 1361     		str	r3, [r2, #16]
+ 138:./User/Delay.c ****   }
+ 218              		.loc 1 138 5 is_stmt 1 view .LVU60
+ 138:./User/Delay.c ****   }
+ 219              		.loc 1 138 50 is_stmt 0 view .LVU61
+ 220 00fe 059B     		ldr	r3, [sp, #20]
+ 221 0100 0349     		ldr	r1, .L13
+ 222 0102 A1FB0313 		umull	r1, r3, r1, r3
+ 223 0106 5B0A     		lsrs	r3, r3, #9
+ 138:./User/Delay.c ****   }
+ 224              		.loc 1 138 19 view .LVU62
+ 225 0108 03FB04F4 		mul	r4, r3, r4
+ 226              	.LVL8:
+ 138:./User/Delay.c ****   }
+ 227              		.loc 1 138 19 view .LVU63
+ 228 010c 5461     		str	r4, [r2, #20]
+ 229 010e DAE7     		b	.L9
+ 230              	.L14:
+ 231              		.align	2
+ 232              	.L13:
+ 233 0110 D34D6210 		.word	274877907
+ 234 0114 00127A00 		.word	8000000
+ 235              		.cfi_endproc
+ 236              	.LFE124:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 8
+
+
+ 238              		.global	__aeabi_uldivmod
+ 239              		.section	.text.Delay_us,"ax",%progbits
+ 240              		.align	1
+ 241              		.global	Delay_us
+ 242              		.syntax unified
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	Delay_us:
+ 247              	.LVL9:
+ 248              	.LFB123:
+  45:./User/Delay.c ****   uint64_t nms = 0;
+ 249              		.loc 1 45 1 is_stmt 1 view -0
+ 250              		.cfi_startproc
+ 251              		@ args = 0, pretend = 0, frame = 16
+ 252              		@ frame_needed = 0, uses_anonymous_args = 0
+  46:./User/Delay.c ****   
+ 253              		.loc 1 46 3 view .LVU65
+  48:./User/Delay.c ****   {
+ 254              		.loc 1 48 3 view .LVU66
+  48:./User/Delay.c ****   {
+ 255              		.loc 1 48 5 is_stmt 0 view .LVU67
+ 256 0000 50EA0103 		orrs	r3, r0, r1
+ 257 0004 5DD0     		beq	.L22
+  45:./User/Delay.c ****   uint64_t nms = 0;
+ 258              		.loc 1 45 1 view .LVU68
+ 259 0006 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 260              	.LCFI4:
+ 261              		.cfi_def_cfa_offset 28
+ 262              		.cfi_offset 4, -28
+ 263              		.cfi_offset 5, -24
+ 264              		.cfi_offset 6, -20
+ 265              		.cfi_offset 7, -16
+ 266              		.cfi_offset 8, -12
+ 267              		.cfi_offset 9, -8
+ 268              		.cfi_offset 14, -4
+ 269 000a 85B0     		sub	sp, sp, #20
+ 270              	.LCFI5:
+ 271              		.cfi_def_cfa_offset 48
+ 272 000c 8046     		mov	r8, r0
+ 273 000e 0C46     		mov	r4, r1
+  53:./User/Delay.c ****   nus = nus % 1000;
+ 274              		.loc 1 53 3 is_stmt 1 view .LVU69
+  53:./User/Delay.c ****   nus = nus % 1000;
+ 275              		.loc 1 53 7 is_stmt 0 view .LVU70
+ 276 0010 4FF47A72 		mov	r2, #1000
+ 277 0014 0023     		movs	r3, #0
+ 278 0016 FFF7FEFF 		bl	__aeabi_uldivmod
+ 279              	.LVL10:
+  53:./User/Delay.c ****   nus = nus % 1000;
+ 280              		.loc 1 53 7 view .LVU71
+ 281 001a 8146     		mov	r9, r0
+ 282 001c 0F46     		mov	r7, r1
+ 283              	.LVL11:
+  54:./User/Delay.c ****   
+ 284              		.loc 1 54 3 is_stmt 1 view .LVU72
+  54:./User/Delay.c ****   
+ 285              		.loc 1 54 7 is_stmt 0 view .LVU73
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 9
+
+
+ 286 001e 4FF47A72 		mov	r2, #1000
+ 287 0022 0023     		movs	r3, #0
+ 288 0024 4046     		mov	r0, r8
+ 289              	.LVL12:
+  54:./User/Delay.c ****   
+ 290              		.loc 1 54 7 view .LVU74
+ 291 0026 2146     		mov	r1, r4
+ 292              	.LVL13:
+  54:./User/Delay.c ****   
+ 293              		.loc 1 54 7 view .LVU75
+ 294 0028 FFF7FEFF 		bl	__aeabi_uldivmod
+ 295              	.LVL14:
+ 296 002c 1546     		mov	r5, r2
+ 297 002e 1E46     		mov	r6, r3
+ 298              	.LVL15:
+  56:./User/Delay.c ****   {
+ 299              		.loc 1 56 3 is_stmt 1 view .LVU76
+  56:./User/Delay.c ****   {
+ 300              		.loc 1 56 5 is_stmt 0 view .LVU77
+ 301 0030 B8F57A7F 		cmp	r8, #1000
+ 302 0034 74F10003 		sbcs	r3, r4, #0
+ 303              	.LVL16:
+  56:./User/Delay.c ****   {
+ 304              		.loc 1 56 5 view .LVU78
+ 305 0038 05D2     		bcs	.L25
+ 306              	.LVL17:
+ 307              	.L17:
+  61:./User/Delay.c ****   {
+ 308              		.loc 1 61 3 is_stmt 1 view .LVU79
+  61:./User/Delay.c ****   {
+ 309              		.loc 1 61 5 is_stmt 0 view .LVU80
+ 310 003a 56EA0503 		orrs	r3, r6, r5
+ 311 003e 07D1     		bne	.L26
+ 312              	.LVL18:
+ 313              	.L15:
+  85:./User/Delay.c **** 
+ 314              		.loc 1 85 1 view .LVU81
+ 315 0040 05B0     		add	sp, sp, #20
+ 316              	.LCFI6:
+ 317              		.cfi_remember_state
+ 318              		.cfi_def_cfa_offset 28
+ 319              		@ sp needed
+ 320 0042 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 321              	.LVL19:
+ 322              	.L25:
+ 323              	.LCFI7:
+ 324              		.cfi_restore_state
+  58:./User/Delay.c ****   }
+ 325              		.loc 1 58 5 is_stmt 1 view .LVU82
+ 326 0046 4846     		mov	r0, r9
+ 327 0048 3946     		mov	r1, r7
+ 328 004a FFF7FEFF 		bl	Delay_ms
+ 329              	.LVL20:
+  58:./User/Delay.c ****   }
+ 330              		.loc 1 58 5 is_stmt 0 view .LVU83
+ 331 004e F4E7     		b	.L17
+ 332              	.L26:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 10
+
+
+ 333              	.LBB4:
+  63:./User/Delay.c ****     
+ 334              		.loc 1 63 5 is_stmt 1 view .LVU84
+  65:./User/Delay.c ****     
+ 335              		.loc 1 65 5 view .LVU85
+ 336 0050 6846     		mov	r0, sp
+ 337 0052 FFF7FEFF 		bl	RCC_GetClocksFreq
+ 338              	.LVL21:
+  67:./User/Delay.c ****     {
+ 339              		.loc 1 67 5 view .LVU86
+  67:./User/Delay.c ****     {
+ 340              		.loc 1 67 7 is_stmt 0 view .LVU87
+ 341 0056 019A     		ldr	r2, [sp, #4]
+ 342 0058 1A4B     		ldr	r3, .L27
+ 343 005a 9A42     		cmp	r2, r3
+ 344 005c 22D2     		bcs	.L18
+  69:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000000 * nus; /* Time load (SysTick-> LOAD is
+ 345              		.loc 1 69 7 is_stmt 1 view .LVU88
+  69:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000000 * nus; /* Time load (SysTick-> LOAD is
+ 346              		.loc 1 69 21 is_stmt 0 view .LVU89
+ 347 005e 4FF0E022 		mov	r2, #-536813568
+ 348 0062 1369     		ldr	r3, [r2, #16]
+ 349 0064 43F00403 		orr	r3, r3, #4
+ 350 0068 1361     		str	r3, [r2, #16]
+  70:./User/Delay.c ****     }
+ 351              		.loc 1 70 7 is_stmt 1 view .LVU90
+  70:./User/Delay.c ****     }
+ 352              		.loc 1 70 52 is_stmt 0 view .LVU91
+ 353 006a 019B     		ldr	r3, [sp, #4]
+ 354 006c 1649     		ldr	r1, .L27+4
+ 355 006e A1FB0313 		umull	r1, r3, r1, r3
+ 356 0072 9B0C     		lsrs	r3, r3, #18
+  70:./User/Delay.c ****     }
+ 357              		.loc 1 70 21 view .LVU92
+ 358 0074 03FB05F5 		mul	r5, r3, r5
+ 359              	.LVL22:
+  70:./User/Delay.c ****     }
+ 360              		.loc 1 70 21 view .LVU93
+ 361 0078 5561     		str	r5, [r2, #20]
+ 362              	.L19:
+  78:./User/Delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
+ 363              		.loc 1 78 5 is_stmt 1 view .LVU94
+  78:./User/Delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
+ 364              		.loc 1 78 18 is_stmt 0 view .LVU95
+ 365 007a 4FF0E023 		mov	r3, #-536813568
+ 366 007e 0022     		movs	r2, #0
+ 367 0080 9A61     		str	r2, [r3, #24]
+  79:./User/Delay.c ****     
+ 368              		.loc 1 79 5 is_stmt 1 view .LVU96
+  79:./User/Delay.c ****     
+ 369              		.loc 1 79 19 is_stmt 0 view .LVU97
+ 370 0082 1A69     		ldr	r2, [r3, #16]
+ 371 0084 42F00102 		orr	r2, r2, #1
+ 372 0088 1A61     		str	r2, [r3, #16]
+  81:./User/Delay.c ****     
+ 373              		.loc 1 81 5 is_stmt 1 view .LVU98
+ 374              	.L20:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 11
+
+
+  81:./User/Delay.c ****     
+ 375              		.loc 1 81 50 discriminator 1 view .LVU99
+  81:./User/Delay.c ****     
+ 376              		.loc 1 81 10 discriminator 1 view .LVU100
+  81:./User/Delay.c ****     
+ 377              		.loc 1 81 19 is_stmt 0 discriminator 1 view .LVU101
+ 378 008a 4FF0E023 		mov	r3, #-536813568
+ 379 008e 1B69     		ldr	r3, [r3, #16]
+  81:./User/Delay.c ****     
+ 380              		.loc 1 81 10 discriminator 1 view .LVU102
+ 381 0090 13F4803F 		tst	r3, #65536
+ 382 0094 F9D0     		beq	.L20
+  83:./User/Delay.c ****   }
+ 383              		.loc 1 83 5 is_stmt 1 view .LVU103
+  83:./User/Delay.c ****   }
+ 384              		.loc 1 83 19 is_stmt 0 view .LVU104
+ 385 0096 4FF0E022 		mov	r2, #-536813568
+ 386 009a 1369     		ldr	r3, [r2, #16]
+ 387 009c 23F00103 		bic	r3, r3, #1
+ 388 00a0 1361     		str	r3, [r2, #16]
+ 389 00a2 CDE7     		b	.L15
+ 390              	.LVL23:
+ 391              	.L18:
+  74:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000000 * nus; /* Time load (SysTick-> LOAD is
+ 392              		.loc 1 74 7 is_stmt 1 view .LVU105
+  74:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000000 * nus; /* Time load (SysTick-> LOAD is
+ 393              		.loc 1 74 21 is_stmt 0 view .LVU106
+ 394 00a4 4FF0E022 		mov	r2, #-536813568
+ 395 00a8 1369     		ldr	r3, [r2, #16]
+ 396 00aa 23F00403 		bic	r3, r3, #4
+ 397 00ae 1361     		str	r3, [r2, #16]
+  75:./User/Delay.c ****     }
+ 398              		.loc 1 75 7 is_stmt 1 view .LVU107
+  75:./User/Delay.c ****     }
+ 399              		.loc 1 75 52 is_stmt 0 view .LVU108
+ 400 00b0 019B     		ldr	r3, [sp, #4]
+ 401 00b2 0549     		ldr	r1, .L27+4
+ 402 00b4 A1FB0313 		umull	r1, r3, r1, r3
+ 403 00b8 5B0D     		lsrs	r3, r3, #21
+  75:./User/Delay.c ****     }
+ 404              		.loc 1 75 21 view .LVU109
+ 405 00ba 03FB05F5 		mul	r5, r3, r5
+ 406              	.LVL24:
+  75:./User/Delay.c ****     }
+ 407              		.loc 1 75 21 view .LVU110
+ 408 00be 5561     		str	r5, [r2, #20]
+ 409 00c0 DBE7     		b	.L19
+ 410              	.LVL25:
+ 411              	.L22:
+ 412              	.LCFI8:
+ 413              		.cfi_def_cfa_offset 0
+ 414              		.cfi_restore 4
+ 415              		.cfi_restore 5
+ 416              		.cfi_restore 6
+ 417              		.cfi_restore 7
+ 418              		.cfi_restore 8
+ 419              		.cfi_restore 9
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 12
+
+
+ 420              		.cfi_restore 14
+  75:./User/Delay.c ****     }
+ 421              		.loc 1 75 21 view .LVU111
+ 422 00c2 7047     		bx	lr
+ 423              	.L28:
+ 424              		.align	2
+ 425              	.L27:
+ 426 00c4 00127A00 		.word	8000000
+ 427 00c8 83DE1B43 		.word	1125899907
+ 428              	.LBE4:
+ 429              		.cfi_endproc
+ 430              	.LFE123:
+ 432              		.section	.text.Delay_s,"ax",%progbits
+ 433              		.align	1
+ 434              		.global	Delay_s
+ 435              		.syntax unified
+ 436              		.thumb
+ 437              		.thumb_func
+ 439              	Delay_s:
+ 440              	.LVL26:
+ 441              	.LFB125:
+ 148:./User/Delay.c **** 
+ 149:./User/Delay.c **** /**
+ 150:./User/Delay.c ****   * @brief  Second delay.
+ 151:./User/Delay.c ****   * @param  [in] ns: The number of second delay.
+ 152:./User/Delay.c ****   * @return None.
+ 153:./User/Delay.c ****   */
+ 154:./User/Delay.c **** void Delay_s(uint64_t ns)
+ 155:./User/Delay.c **** {
+ 442              		.loc 1 155 1 is_stmt 1 view -0
+ 443              		.cfi_startproc
+ 444              		@ args = 0, pretend = 0, frame = 0
+ 445              		@ frame_needed = 0, uses_anonymous_args = 0
+ 446              		.loc 1 155 1 is_stmt 0 view .LVU113
+ 447 0000 38B5     		push	{r3, r4, r5, lr}
+ 448              	.LCFI9:
+ 449              		.cfi_def_cfa_offset 16
+ 450              		.cfi_offset 3, -16
+ 451              		.cfi_offset 4, -12
+ 452              		.cfi_offset 5, -8
+ 453              		.cfi_offset 14, -4
+ 454 0002 0446     		mov	r4, r0
+ 455 0004 0D46     		mov	r5, r1
+ 156:./User/Delay.c ****   while(ns > 0)
+ 456              		.loc 1 156 3 is_stmt 1 view .LVU114
+ 457              		.loc 1 156 8 is_stmt 0 view .LVU115
+ 458 0006 07E0     		b	.L30
+ 459              	.LVL27:
+ 460              	.L31:
+ 157:./User/Delay.c ****   {
+ 158:./User/Delay.c ****     Delay_ms(1000);
+ 461              		.loc 1 158 5 is_stmt 1 view .LVU116
+ 462 0008 4FF47A70 		mov	r0, #1000
+ 463 000c 0021     		movs	r1, #0
+ 464 000e FFF7FEFF 		bl	Delay_ms
+ 465              	.LVL28:
+ 159:./User/Delay.c ****     ns--;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 13
+
+
+ 466              		.loc 1 159 5 view .LVU117
+ 467              		.loc 1 159 7 is_stmt 0 view .LVU118
+ 468 0012 013C     		subs	r4, r4, #1
+ 469              	.LVL29:
+ 470              		.loc 1 159 7 view .LVU119
+ 471 0014 45F1FF35 		adc	r5, r5, #-1
+ 472              	.LVL30:
+ 473              	.L30:
+ 156:./User/Delay.c ****   while(ns > 0)
+ 474              		.loc 1 156 8 is_stmt 1 view .LVU120
+ 475 0018 54EA0503 		orrs	r3, r4, r5
+ 476 001c F4D1     		bne	.L31
+ 160:./User/Delay.c ****   }
+ 161:./User/Delay.c **** }
+ 477              		.loc 1 161 1 is_stmt 0 view .LVU121
+ 478 001e 38BD     		pop	{r3, r4, r5, pc}
+ 479              		.loc 1 161 1 view .LVU122
+ 480              		.cfi_endproc
+ 481              	.LFE125:
+ 483              		.text
+ 484              	.Letext0:
+ 485              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 486              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 487              		.file 4 "./CORE/core_cm4.h"
+ 488              		.file 5 "./Library/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Delay.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s:20     .text.Delay_ms:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s:26     .text.Delay_ms:0000000000000000 Delay_ms
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s:233    .text.Delay_ms:0000000000000110 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s:240    .text.Delay_us:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s:246    .text.Delay_us:0000000000000000 Delay_us
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s:426    .text.Delay_us:00000000000000c4 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s:433    .text.Delay_s:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqKaF76.s:439    .text.Delay_s:0000000000000000 Delay_s
+
+UNDEFINED SYMBOLS
+RCC_GetClocksFreq
+__aeabi_uldivmod

@@ -1,0 +1,416 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4xx_dbgmcu.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.DBGMCU_GetREVID,"ax",%progbits
+  20              		.align	1
+  21              		.global	DBGMCU_GetREVID
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	DBGMCU_GetREVID:
+  27              	.LFB123:
+  28              		.file 1 "./Library/stm32f4xx_dbgmcu.c"
+   1:./Library/stm32f4xx_dbgmcu.c **** /**
+   2:./Library/stm32f4xx_dbgmcu.c ****   ******************************************************************************
+   3:./Library/stm32f4xx_dbgmcu.c ****   * @file    stm32f4xx_dbgmcu.c
+   4:./Library/stm32f4xx_dbgmcu.c ****   * @author  MCD Application Team
+   5:./Library/stm32f4xx_dbgmcu.c ****   * @version V1.8.1
+   6:./Library/stm32f4xx_dbgmcu.c ****   * @date    27-January-2022
+   7:./Library/stm32f4xx_dbgmcu.c ****   * @brief   This file provides all the DBGMCU firmware functions.
+   8:./Library/stm32f4xx_dbgmcu.c ****   ******************************************************************************
+   9:./Library/stm32f4xx_dbgmcu.c ****   * @attention
+  10:./Library/stm32f4xx_dbgmcu.c ****   *
+  11:./Library/stm32f4xx_dbgmcu.c ****   * Copyright (c) 2016 STMicroelectronics.
+  12:./Library/stm32f4xx_dbgmcu.c ****   * All rights reserved.
+  13:./Library/stm32f4xx_dbgmcu.c ****   *
+  14:./Library/stm32f4xx_dbgmcu.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  15:./Library/stm32f4xx_dbgmcu.c ****   * in the root directory of this software component.
+  16:./Library/stm32f4xx_dbgmcu.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  17:./Library/stm32f4xx_dbgmcu.c ****   *
+  18:./Library/stm32f4xx_dbgmcu.c ****   ******************************************************************************
+  19:./Library/stm32f4xx_dbgmcu.c ****   */
+  20:./Library/stm32f4xx_dbgmcu.c **** 
+  21:./Library/stm32f4xx_dbgmcu.c **** /* Includes ------------------------------------------------------------------*/
+  22:./Library/stm32f4xx_dbgmcu.c **** #include "stm32f4xx_dbgmcu.h"
+  23:./Library/stm32f4xx_dbgmcu.c **** 
+  24:./Library/stm32f4xx_dbgmcu.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  25:./Library/stm32f4xx_dbgmcu.c ****   * @{
+  26:./Library/stm32f4xx_dbgmcu.c ****   */
+  27:./Library/stm32f4xx_dbgmcu.c **** 
+  28:./Library/stm32f4xx_dbgmcu.c **** /** @defgroup DBGMCU 
+  29:./Library/stm32f4xx_dbgmcu.c ****   * @brief DBGMCU driver modules
+  30:./Library/stm32f4xx_dbgmcu.c ****   * @{
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s 			page 2
+
+
+  31:./Library/stm32f4xx_dbgmcu.c ****   */ 
+  32:./Library/stm32f4xx_dbgmcu.c **** 
+  33:./Library/stm32f4xx_dbgmcu.c **** /* Private typedef -----------------------------------------------------------*/
+  34:./Library/stm32f4xx_dbgmcu.c **** /* Private define ------------------------------------------------------------*/
+  35:./Library/stm32f4xx_dbgmcu.c **** #define IDCODE_DEVID_MASK    ((uint32_t)0x00000FFF)
+  36:./Library/stm32f4xx_dbgmcu.c **** 
+  37:./Library/stm32f4xx_dbgmcu.c **** /* Private macro -------------------------------------------------------------*/
+  38:./Library/stm32f4xx_dbgmcu.c **** /* Private variables ---------------------------------------------------------*/
+  39:./Library/stm32f4xx_dbgmcu.c **** /* Private function prototypes -----------------------------------------------*/
+  40:./Library/stm32f4xx_dbgmcu.c **** /* Private functions ---------------------------------------------------------*/
+  41:./Library/stm32f4xx_dbgmcu.c **** 
+  42:./Library/stm32f4xx_dbgmcu.c **** /** @defgroup DBGMCU_Private_Functions
+  43:./Library/stm32f4xx_dbgmcu.c ****   * @{
+  44:./Library/stm32f4xx_dbgmcu.c ****   */ 
+  45:./Library/stm32f4xx_dbgmcu.c **** 
+  46:./Library/stm32f4xx_dbgmcu.c **** /**
+  47:./Library/stm32f4xx_dbgmcu.c ****   * @brief  Returns the device revision identifier.
+  48:./Library/stm32f4xx_dbgmcu.c ****   * @param  None
+  49:./Library/stm32f4xx_dbgmcu.c ****   * @retval Device revision identifier
+  50:./Library/stm32f4xx_dbgmcu.c ****   */
+  51:./Library/stm32f4xx_dbgmcu.c **** uint32_t DBGMCU_GetREVID(void)
+  52:./Library/stm32f4xx_dbgmcu.c **** {
+  29              		.loc 1 52 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  53:./Library/stm32f4xx_dbgmcu.c ****    return(DBGMCU->IDCODE >> 16);
+  34              		.loc 1 53 4 view .LVU1
+  35              		.loc 1 53 17 is_stmt 0 view .LVU2
+  36 0000 014B     		ldr	r3, .L2
+  37 0002 1868     		ldr	r0, [r3]
+  54:./Library/stm32f4xx_dbgmcu.c **** }
+  38              		.loc 1 54 1 view .LVU3
+  39 0004 000C     		lsrs	r0, r0, #16
+  40 0006 7047     		bx	lr
+  41              	.L3:
+  42              		.align	2
+  43              	.L2:
+  44 0008 002004E0 		.word	-536600576
+  45              		.cfi_endproc
+  46              	.LFE123:
+  48              		.section	.text.DBGMCU_GetDEVID,"ax",%progbits
+  49              		.align	1
+  50              		.global	DBGMCU_GetDEVID
+  51              		.syntax unified
+  52              		.thumb
+  53              		.thumb_func
+  55              	DBGMCU_GetDEVID:
+  56              	.LFB124:
+  55:./Library/stm32f4xx_dbgmcu.c **** 
+  56:./Library/stm32f4xx_dbgmcu.c **** /**
+  57:./Library/stm32f4xx_dbgmcu.c ****   * @brief  Returns the device identifier.
+  58:./Library/stm32f4xx_dbgmcu.c ****   * @param  None
+  59:./Library/stm32f4xx_dbgmcu.c ****   * @retval Device identifier
+  60:./Library/stm32f4xx_dbgmcu.c ****   */
+  61:./Library/stm32f4xx_dbgmcu.c **** uint32_t DBGMCU_GetDEVID(void)
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s 			page 3
+
+
+  62:./Library/stm32f4xx_dbgmcu.c **** {
+  57              		.loc 1 62 1 is_stmt 1 view -0
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              		@ link register save eliminated.
+  63:./Library/stm32f4xx_dbgmcu.c ****    return(DBGMCU->IDCODE & IDCODE_DEVID_MASK);
+  62              		.loc 1 63 4 view .LVU5
+  63              		.loc 1 63 17 is_stmt 0 view .LVU6
+  64 0000 024B     		ldr	r3, .L5
+  65 0002 1868     		ldr	r0, [r3]
+  64:./Library/stm32f4xx_dbgmcu.c **** }
+  66              		.loc 1 64 1 view .LVU7
+  67 0004 C0F30B00 		ubfx	r0, r0, #0, #12
+  68 0008 7047     		bx	lr
+  69              	.L6:
+  70 000a 00BF     		.align	2
+  71              	.L5:
+  72 000c 002004E0 		.word	-536600576
+  73              		.cfi_endproc
+  74              	.LFE124:
+  76              		.section	.text.DBGMCU_Config,"ax",%progbits
+  77              		.align	1
+  78              		.global	DBGMCU_Config
+  79              		.syntax unified
+  80              		.thumb
+  81              		.thumb_func
+  83              	DBGMCU_Config:
+  84              	.LVL0:
+  85              	.LFB125:
+  65:./Library/stm32f4xx_dbgmcu.c **** 
+  66:./Library/stm32f4xx_dbgmcu.c **** /**
+  67:./Library/stm32f4xx_dbgmcu.c ****   * @brief  Configures low power mode behavior when the MCU is in Debug mode.
+  68:./Library/stm32f4xx_dbgmcu.c ****   * @param  DBGMCU_Periph: specifies the low power mode.
+  69:./Library/stm32f4xx_dbgmcu.c ****   *   This parameter can be any combination of the following values:
+  70:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_SLEEP: Keep debugger connection during SLEEP mode              
+  71:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_STOP: Keep debugger connection during STOP mode               
+  72:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_STANDBY: Keep debugger connection during STANDBY mode        
+  73:./Library/stm32f4xx_dbgmcu.c ****   * @param  NewState: new state of the specified low power mode in Debug mode.
+  74:./Library/stm32f4xx_dbgmcu.c ****   *   This parameter can be: ENABLE or DISABLE.
+  75:./Library/stm32f4xx_dbgmcu.c ****   * @retval None
+  76:./Library/stm32f4xx_dbgmcu.c ****   */
+  77:./Library/stm32f4xx_dbgmcu.c **** void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState)
+  78:./Library/stm32f4xx_dbgmcu.c **** {
+  86              		.loc 1 78 1 is_stmt 1 view -0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              		@ link register save eliminated.
+  79:./Library/stm32f4xx_dbgmcu.c ****   /* Check the parameters */
+  80:./Library/stm32f4xx_dbgmcu.c ****   assert_param(IS_DBGMCU_PERIPH(DBGMCU_Periph));
+  91              		.loc 1 80 3 view .LVU9
+  81:./Library/stm32f4xx_dbgmcu.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+  92              		.loc 1 81 3 view .LVU10
+  82:./Library/stm32f4xx_dbgmcu.c ****   if (NewState != DISABLE)
+  93              		.loc 1 82 3 view .LVU11
+  94              		.loc 1 82 6 is_stmt 0 view .LVU12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s 			page 4
+
+
+  95 0000 21B1     		cbz	r1, .L8
+  83:./Library/stm32f4xx_dbgmcu.c ****   {
+  84:./Library/stm32f4xx_dbgmcu.c ****     DBGMCU->CR |= DBGMCU_Periph;
+  96              		.loc 1 84 5 is_stmt 1 view .LVU13
+  97              		.loc 1 84 16 is_stmt 0 view .LVU14
+  98 0002 054A     		ldr	r2, .L10
+  99 0004 5368     		ldr	r3, [r2, #4]
+ 100 0006 1843     		orrs	r0, r0, r3
+ 101              	.LVL1:
+ 102              		.loc 1 84 16 view .LVU15
+ 103 0008 5060     		str	r0, [r2, #4]
+ 104 000a 7047     		bx	lr
+ 105              	.LVL2:
+ 106              	.L8:
+  85:./Library/stm32f4xx_dbgmcu.c ****   }
+  86:./Library/stm32f4xx_dbgmcu.c ****   else
+  87:./Library/stm32f4xx_dbgmcu.c ****   {
+  88:./Library/stm32f4xx_dbgmcu.c ****     DBGMCU->CR &= ~DBGMCU_Periph;
+ 107              		.loc 1 88 5 is_stmt 1 view .LVU16
+ 108              		.loc 1 88 16 is_stmt 0 view .LVU17
+ 109 000c 024A     		ldr	r2, .L10
+ 110 000e 5368     		ldr	r3, [r2, #4]
+ 111 0010 23EA0000 		bic	r0, r3, r0
+ 112              	.LVL3:
+ 113              		.loc 1 88 16 view .LVU18
+ 114 0014 5060     		str	r0, [r2, #4]
+  89:./Library/stm32f4xx_dbgmcu.c ****   }
+  90:./Library/stm32f4xx_dbgmcu.c **** }
+ 115              		.loc 1 90 1 view .LVU19
+ 116 0016 7047     		bx	lr
+ 117              	.L11:
+ 118              		.align	2
+ 119              	.L10:
+ 120 0018 002004E0 		.word	-536600576
+ 121              		.cfi_endproc
+ 122              	.LFE125:
+ 124              		.section	.text.DBGMCU_APB1PeriphConfig,"ax",%progbits
+ 125              		.align	1
+ 126              		.global	DBGMCU_APB1PeriphConfig
+ 127              		.syntax unified
+ 128              		.thumb
+ 129              		.thumb_func
+ 131              	DBGMCU_APB1PeriphConfig:
+ 132              	.LVL4:
+ 133              	.LFB126:
+  91:./Library/stm32f4xx_dbgmcu.c **** 
+  92:./Library/stm32f4xx_dbgmcu.c **** /**
+  93:./Library/stm32f4xx_dbgmcu.c ****   * @brief  Configures APB1 peripheral behavior when the MCU is in Debug mode.
+  94:./Library/stm32f4xx_dbgmcu.c ****   * @param  DBGMCU_Periph: specifies the APB1 peripheral.
+  95:./Library/stm32f4xx_dbgmcu.c ****   *   This parameter can be any combination of the following values:        
+  96:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM2_STOP: TIM2 counter stopped when Core is halted          
+  97:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM3_STOP: TIM3 counter stopped when Core is halted          
+  98:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM4_STOP: TIM4 counter stopped when Core is halted
+  99:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM5_STOP: TIM5 counter stopped when Core is halted          
+ 100:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM6_STOP: TIM6 counter stopped when Core is halted          
+ 101:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM7_STOP: TIM7 counter stopped when Core is halted
+ 102:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM12_STOP: TIM12 counter stopped when Core is halted  
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s 			page 5
+
+
+ 103:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM13_STOP: TIM13 counter stopped when Core is halted  
+ 104:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM14_STOP: TIM14 counter stopped when Core is halted 
+ 105:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_RTC_STOP: RTC Calendar and Wakeup counter stopped when Core is halted.         
+ 106:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_WWDG_STOP: Debug WWDG stopped when Core is halted
+ 107:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_IWDG_STOP: Debug IWDG stopped when Core is halted        
+ 108:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_I2C1_SMBUS_TIMEOUT: I2C1 SMBUS timeout mode stopped when Core is halted
+ 109:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_I2C2_SMBUS_TIMEOUT: I2C2 SMBUS timeout mode stopped when Core is halted
+ 110:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_I2C3_SMBUS_TIMEOUT: I2C3 SMBUS timeout mode stopped when Core is halted
+ 111:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_CAN2_STOP: Debug CAN1 stopped when Core is halted           
+ 112:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_CAN1_STOP: Debug CAN2 stopped when Core is halted        
+ 113:./Library/stm32f4xx_dbgmcu.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 114:./Library/stm32f4xx_dbgmcu.c ****   * @retval None
+ 115:./Library/stm32f4xx_dbgmcu.c ****   */
+ 116:./Library/stm32f4xx_dbgmcu.c **** void DBGMCU_APB1PeriphConfig(uint32_t DBGMCU_Periph, FunctionalState NewState)
+ 117:./Library/stm32f4xx_dbgmcu.c **** {
+ 134              		.loc 1 117 1 is_stmt 1 view -0
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 0
+ 137              		@ frame_needed = 0, uses_anonymous_args = 0
+ 138              		@ link register save eliminated.
+ 118:./Library/stm32f4xx_dbgmcu.c ****   /* Check the parameters */
+ 119:./Library/stm32f4xx_dbgmcu.c ****   assert_param(IS_DBGMCU_APB1PERIPH(DBGMCU_Periph));
+ 139              		.loc 1 119 3 view .LVU21
+ 120:./Library/stm32f4xx_dbgmcu.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 140              		.loc 1 120 3 view .LVU22
+ 121:./Library/stm32f4xx_dbgmcu.c **** 
+ 122:./Library/stm32f4xx_dbgmcu.c ****   if (NewState != DISABLE)
+ 141              		.loc 1 122 3 view .LVU23
+ 142              		.loc 1 122 6 is_stmt 0 view .LVU24
+ 143 0000 21B1     		cbz	r1, .L13
+ 123:./Library/stm32f4xx_dbgmcu.c ****   {
+ 124:./Library/stm32f4xx_dbgmcu.c ****     DBGMCU->APB1FZ |= DBGMCU_Periph;
+ 144              		.loc 1 124 5 is_stmt 1 view .LVU25
+ 145              		.loc 1 124 20 is_stmt 0 view .LVU26
+ 146 0002 054A     		ldr	r2, .L15
+ 147 0004 9368     		ldr	r3, [r2, #8]
+ 148 0006 1843     		orrs	r0, r0, r3
+ 149              	.LVL5:
+ 150              		.loc 1 124 20 view .LVU27
+ 151 0008 9060     		str	r0, [r2, #8]
+ 152 000a 7047     		bx	lr
+ 153              	.LVL6:
+ 154              	.L13:
+ 125:./Library/stm32f4xx_dbgmcu.c ****   }
+ 126:./Library/stm32f4xx_dbgmcu.c ****   else
+ 127:./Library/stm32f4xx_dbgmcu.c ****   {
+ 128:./Library/stm32f4xx_dbgmcu.c ****     DBGMCU->APB1FZ &= ~DBGMCU_Periph;
+ 155              		.loc 1 128 5 is_stmt 1 view .LVU28
+ 156              		.loc 1 128 20 is_stmt 0 view .LVU29
+ 157 000c 024A     		ldr	r2, .L15
+ 158 000e 9368     		ldr	r3, [r2, #8]
+ 159 0010 23EA0000 		bic	r0, r3, r0
+ 160              	.LVL7:
+ 161              		.loc 1 128 20 view .LVU30
+ 162 0014 9060     		str	r0, [r2, #8]
+ 129:./Library/stm32f4xx_dbgmcu.c ****   }
+ 130:./Library/stm32f4xx_dbgmcu.c **** }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s 			page 6
+
+
+ 163              		.loc 1 130 1 view .LVU31
+ 164 0016 7047     		bx	lr
+ 165              	.L16:
+ 166              		.align	2
+ 167              	.L15:
+ 168 0018 002004E0 		.word	-536600576
+ 169              		.cfi_endproc
+ 170              	.LFE126:
+ 172              		.section	.text.DBGMCU_APB2PeriphConfig,"ax",%progbits
+ 173              		.align	1
+ 174              		.global	DBGMCU_APB2PeriphConfig
+ 175              		.syntax unified
+ 176              		.thumb
+ 177              		.thumb_func
+ 179              	DBGMCU_APB2PeriphConfig:
+ 180              	.LVL8:
+ 181              	.LFB127:
+ 131:./Library/stm32f4xx_dbgmcu.c **** 
+ 132:./Library/stm32f4xx_dbgmcu.c **** /**
+ 133:./Library/stm32f4xx_dbgmcu.c ****   * @brief  Configures APB2 peripheral behavior when the MCU is in Debug mode.
+ 134:./Library/stm32f4xx_dbgmcu.c ****   * @param  DBGMCU_Periph: specifies the APB2 peripheral.
+ 135:./Library/stm32f4xx_dbgmcu.c ****   *   This parameter can be any combination of the following values:       
+ 136:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM1_STOP: TIM1 counter stopped when Core is halted                
+ 137:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM8_STOP: TIM8 counter stopped when Core is halted
+ 138:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM9_STOP: TIM9 counter stopped when Core is halted   
+ 139:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM10_STOP: TIM10 counter stopped when Core is halted   
+ 140:./Library/stm32f4xx_dbgmcu.c ****   *     @arg DBGMCU_TIM11_STOP: TIM11 counter stopped when Core is halted                          
+ 141:./Library/stm32f4xx_dbgmcu.c ****   * @param  NewState: new state of the specified peripheral in Debug mode.
+ 142:./Library/stm32f4xx_dbgmcu.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 143:./Library/stm32f4xx_dbgmcu.c ****   * @retval None
+ 144:./Library/stm32f4xx_dbgmcu.c ****   */
+ 145:./Library/stm32f4xx_dbgmcu.c **** void DBGMCU_APB2PeriphConfig(uint32_t DBGMCU_Periph, FunctionalState NewState)
+ 146:./Library/stm32f4xx_dbgmcu.c **** {
+ 182              		.loc 1 146 1 is_stmt 1 view -0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 147:./Library/stm32f4xx_dbgmcu.c ****   /* Check the parameters */
+ 148:./Library/stm32f4xx_dbgmcu.c ****   assert_param(IS_DBGMCU_APB2PERIPH(DBGMCU_Periph));
+ 187              		.loc 1 148 3 view .LVU33
+ 149:./Library/stm32f4xx_dbgmcu.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 188              		.loc 1 149 3 view .LVU34
+ 150:./Library/stm32f4xx_dbgmcu.c **** 
+ 151:./Library/stm32f4xx_dbgmcu.c ****   if (NewState != DISABLE)
+ 189              		.loc 1 151 3 view .LVU35
+ 190              		.loc 1 151 6 is_stmt 0 view .LVU36
+ 191 0000 21B1     		cbz	r1, .L18
+ 152:./Library/stm32f4xx_dbgmcu.c ****   {
+ 153:./Library/stm32f4xx_dbgmcu.c ****     DBGMCU->APB2FZ |= DBGMCU_Periph;
+ 192              		.loc 1 153 5 is_stmt 1 view .LVU37
+ 193              		.loc 1 153 20 is_stmt 0 view .LVU38
+ 194 0002 054A     		ldr	r2, .L20
+ 195 0004 D368     		ldr	r3, [r2, #12]
+ 196 0006 1843     		orrs	r0, r0, r3
+ 197              	.LVL9:
+ 198              		.loc 1 153 20 view .LVU39
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s 			page 7
+
+
+ 199 0008 D060     		str	r0, [r2, #12]
+ 200 000a 7047     		bx	lr
+ 201              	.LVL10:
+ 202              	.L18:
+ 154:./Library/stm32f4xx_dbgmcu.c ****   }
+ 155:./Library/stm32f4xx_dbgmcu.c ****   else
+ 156:./Library/stm32f4xx_dbgmcu.c ****   {
+ 157:./Library/stm32f4xx_dbgmcu.c ****     DBGMCU->APB2FZ &= ~DBGMCU_Periph;
+ 203              		.loc 1 157 5 is_stmt 1 view .LVU40
+ 204              		.loc 1 157 20 is_stmt 0 view .LVU41
+ 205 000c 024A     		ldr	r2, .L20
+ 206 000e D368     		ldr	r3, [r2, #12]
+ 207 0010 23EA0000 		bic	r0, r3, r0
+ 208              	.LVL11:
+ 209              		.loc 1 157 20 view .LVU42
+ 210 0014 D060     		str	r0, [r2, #12]
+ 158:./Library/stm32f4xx_dbgmcu.c ****   }
+ 159:./Library/stm32f4xx_dbgmcu.c **** }
+ 211              		.loc 1 159 1 view .LVU43
+ 212 0016 7047     		bx	lr
+ 213              	.L21:
+ 214              		.align	2
+ 215              	.L20:
+ 216 0018 002004E0 		.word	-536600576
+ 217              		.cfi_endproc
+ 218              	.LFE127:
+ 220              		.text
+ 221              	.Letext0:
+ 222              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 223              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 224              		.file 4 "./CORE/stm32f4xx.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_dbgmcu.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:20     .text.DBGMCU_GetREVID:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:26     .text.DBGMCU_GetREVID:0000000000000000 DBGMCU_GetREVID
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:44     .text.DBGMCU_GetREVID:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:49     .text.DBGMCU_GetDEVID:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:55     .text.DBGMCU_GetDEVID:0000000000000000 DBGMCU_GetDEVID
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:72     .text.DBGMCU_GetDEVID:000000000000000c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:77     .text.DBGMCU_Config:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:83     .text.DBGMCU_Config:0000000000000000 DBGMCU_Config
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:120    .text.DBGMCU_Config:0000000000000018 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:125    .text.DBGMCU_APB1PeriphConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:131    .text.DBGMCU_APB1PeriphConfig:0000000000000000 DBGMCU_APB1PeriphConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:168    .text.DBGMCU_APB1PeriphConfig:0000000000000018 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:173    .text.DBGMCU_APB2PeriphConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:179    .text.DBGMCU_APB2PeriphConfig:0000000000000000 DBGMCU_APB2PeriphConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsAZJ0A.s:216    .text.DBGMCU_APB2PeriphConfig:0000000000000018 $d
+
+NO UNDEFINED SYMBOLS

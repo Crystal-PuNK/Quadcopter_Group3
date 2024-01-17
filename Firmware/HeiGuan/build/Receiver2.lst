@@ -1,0 +1,385 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Receiver2.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.REC_Init2,"ax",%progbits
+  20              		.align	1
+  21              		.global	REC_Init2
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	REC_Init2:
+  27              	.LFB123:
+  28              		.file 1 "./Hardware/Receiver2.c"
+   1:./Hardware/Receiver2.c **** /* Inculdes -------------------------------------------------------------------*/ 
+   2:./Hardware/Receiver2.c **** #include "Receiver.h"
+   3:./Hardware/Receiver2.c **** 
+   4:./Hardware/Receiver2.c **** /* Functions -------------------------------------------------------------------*/ 
+   5:./Hardware/Receiver2.c **** uint16_t CH2[9];
+   6:./Hardware/Receiver2.c **** uint16_t i2;
+   7:./Hardware/Receiver2.c **** uint16_t okay2 = 0;
+   8:./Hardware/Receiver2.c **** /*********************************************************************************
+   9:./Hardware/Receiver2.c ****  *初始化TIM2定时器  TIM2_CH2
+  10:./Hardware/Receiver2.c ****  ********************************************************************************/
+  11:./Hardware/Receiver2.c **** void REC_Init2(void)
+  12:./Hardware/Receiver2.c **** {
+  29              		.loc 1 12 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  13:./Hardware/Receiver2.c **** 	RCC->APB1ENR |= 1;   //打开TIM2时钟
+  34              		.loc 1 13 2 view .LVU1
+  35              		.loc 1 13 15 is_stmt 0 view .LVU2
+  36 0000 2A4B     		ldr	r3, .L2
+  37 0002 1A6C     		ldr	r2, [r3, #64]
+  38 0004 42F00102 		orr	r2, r2, #1
+  39 0008 1A64     		str	r2, [r3, #64]
+  14:./Hardware/Receiver2.c **** 	RCC->AHB1ENR |= 1;   //打开GPIOA时钟
+  40              		.loc 1 14 2 is_stmt 1 view .LVU3
+  41              		.loc 1 14 15 is_stmt 0 view .LVU4
+  42 000a 1A6B     		ldr	r2, [r3, #48]
+  43 000c 42F00102 		orr	r2, r2, #1
+  44 0010 1A63     		str	r2, [r3, #48]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s 			page 2
+
+
+  15:./Hardware/Receiver2.c **** 	
+  16:./Hardware/Receiver2.c **** 	GPIOA->MODER |= 1<<3; //复用模式
+  45              		.loc 1 16 2 is_stmt 1 view .LVU5
+  46              		.loc 1 16 15 is_stmt 0 view .LVU6
+  47 0012 A3F56053 		sub	r3, r3, #14336
+  48 0016 1A68     		ldr	r2, [r3]
+  49 0018 42F00802 		orr	r2, r2, #8
+  50 001c 1A60     		str	r2, [r3]
+  17:./Hardware/Receiver2.c **** 	GPIOA->OSPEEDR |= 3<<2; //high speed
+  51              		.loc 1 17 2 is_stmt 1 view .LVU7
+  52              		.loc 1 17 17 is_stmt 0 view .LVU8
+  53 001e 9A68     		ldr	r2, [r3, #8]
+  54 0020 42F00C02 		orr	r2, r2, #12
+  55 0024 9A60     		str	r2, [r3, #8]
+  18:./Hardware/Receiver2.c **** 	GPIOA->AFR[0] &= ~(0xF<<4);
+  56              		.loc 1 18 2 is_stmt 1 view .LVU9
+  57              		.loc 1 18 16 is_stmt 0 view .LVU10
+  58 0026 1A6A     		ldr	r2, [r3, #32]
+  59 0028 22F0F002 		bic	r2, r2, #240
+  60 002c 1A62     		str	r2, [r3, #32]
+  19:./Hardware/Receiver2.c **** 	GPIOA->AFR[0] |= 1<<4;  //复用AF1
+  61              		.loc 1 19 2 is_stmt 1 view .LVU11
+  62              		.loc 1 19 16 is_stmt 0 view .LVU12
+  63 002e 1A6A     		ldr	r2, [r3, #32]
+  64 0030 42F01002 		orr	r2, r2, #16
+  65 0034 1A62     		str	r2, [r3, #32]
+  20:./Hardware/Receiver2.c **** 	
+  21:./Hardware/Receiver2.c **** 	TIM2->ARR |= 65536-1;
+  66              		.loc 1 21 2 is_stmt 1 view .LVU13
+  67              		.loc 1 21 12 is_stmt 0 view .LVU14
+  68 0036 4FF08043 		mov	r3, #1073741824
+  69 003a DA6A     		ldr	r2, [r3, #44]
+  70 003c 6FEA1242 		mvn	r2, r2, lsr #16
+  71 0040 6FEA0242 		mvn	r2, r2, lsl #16
+  72 0044 DA62     		str	r2, [r3, #44]
+  22:./Hardware/Receiver2.c **** 	TIM2->PSC |= 16-1;
+  73              		.loc 1 22 2 is_stmt 1 view .LVU15
+  74              		.loc 1 22 12 is_stmt 0 view .LVU16
+  75 0046 1A8D     		ldrh	r2, [r3, #40]
+  76 0048 92B2     		uxth	r2, r2
+  77 004a 42F00F02 		orr	r2, r2, #15
+  78 004e 1A85     		strh	r2, [r3, #40]	@ movhi
+  23:./Hardware/Receiver2.c **** 	
+  24:./Hardware/Receiver2.c **** 	TIM2->SMCR |= 6<<4;  //TL2FP2
+  79              		.loc 1 24 2 is_stmt 1 view .LVU17
+  80              		.loc 1 24 13 is_stmt 0 view .LVU18
+  81 0050 1A89     		ldrh	r2, [r3, #8]
+  82 0052 92B2     		uxth	r2, r2
+  83 0054 42F06002 		orr	r2, r2, #96
+  84 0058 1A81     		strh	r2, [r3, #8]	@ movhi
+  25:./Hardware/Receiver2.c **** 	TIM2->SMCR |= 1<<2;  //复位模式 内部时钟源
+  85              		.loc 1 25 2 is_stmt 1 view .LVU19
+  86              		.loc 1 25 13 is_stmt 0 view .LVU20
+  87 005a 1A89     		ldrh	r2, [r3, #8]
+  88 005c 92B2     		uxth	r2, r2
+  89 005e 42F00402 		orr	r2, r2, #4
+  90 0062 1A81     		strh	r2, [r3, #8]	@ movhi
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s 			page 3
+
+
+  26:./Hardware/Receiver2.c **** 	TIM2->CCMR1 |= 1<<8; //IC2映射到TL2上
+  91              		.loc 1 26 2 is_stmt 1 view .LVU21
+  92              		.loc 1 26 14 is_stmt 0 view .LVU22
+  93 0064 1A8B     		ldrh	r2, [r3, #24]
+  94 0066 92B2     		uxth	r2, r2
+  95 0068 42F48072 		orr	r2, r2, #256
+  96 006c 1A83     		strh	r2, [r3, #24]	@ movhi
+  27:./Hardware/Receiver2.c **** 	TIM2->CCMR1 |= 16<<12; //0xF滤波
+  97              		.loc 1 27 2 is_stmt 1 view .LVU23
+  98              		.loc 1 27 14 is_stmt 0 view .LVU24
+  99 006e 1A8B     		ldrh	r2, [r3, #24]
+ 100 0070 92B2     		uxth	r2, r2
+ 101 0072 1A83     		strh	r2, [r3, #24]	@ movhi
+  28:./Hardware/Receiver2.c **** 	TIM2->CCER |= 1<<4;    //使能捕获寄存器
+ 102              		.loc 1 28 2 is_stmt 1 view .LVU25
+ 103              		.loc 1 28 13 is_stmt 0 view .LVU26
+ 104 0074 1A8C     		ldrh	r2, [r3, #32]
+ 105 0076 92B2     		uxth	r2, r2
+ 106 0078 42F01002 		orr	r2, r2, #16
+ 107 007c 1A84     		strh	r2, [r3, #32]	@ movhi
+  29:./Hardware/Receiver2.c **** 	TIM2->DIER |= 1<<2;    //捕获中断使能
+ 108              		.loc 1 29 2 is_stmt 1 view .LVU27
+ 109              		.loc 1 29 13 is_stmt 0 view .LVU28
+ 110 007e 9A89     		ldrh	r2, [r3, #12]
+ 111 0080 92B2     		uxth	r2, r2
+ 112 0082 42F00402 		orr	r2, r2, #4
+ 113 0086 9A81     		strh	r2, [r3, #12]	@ movhi
+  30:./Hardware/Receiver2.c **** 	
+  31:./Hardware/Receiver2.c **** 	SCB->AIRCR = 0x05FA0000 | 0x500;  //划分优先组 NVIC_PriorityGroup_2
+ 114              		.loc 1 31 2 is_stmt 1 view .LVU29
+ 115              		.loc 1 31 13 is_stmt 0 view .LVU30
+ 116 0088 094A     		ldr	r2, .L2+4
+ 117 008a 0A49     		ldr	r1, .L2+8
+ 118 008c D160     		str	r1, [r2, #12]
+  32:./Hardware/Receiver2.c **** 	
+  33:./Hardware/Receiver2.c **** 	NVIC->IP[28] = 0x9 << 4;          //抢占优先级2，响应优先级1
+ 119              		.loc 1 33 2 is_stmt 1 view .LVU31
+ 120              		.loc 1 33 15 is_stmt 0 view .LVU32
+ 121 008e A2F54062 		sub	r2, r2, #3072
+ 122 0092 9021     		movs	r1, #144
+ 123 0094 82F81C13 		strb	r1, [r2, #796]
+  34:./Hardware/Receiver2.c **** 	NVIC->ISER[0] = 1 << 28;          //开启NVIC中断
+ 124              		.loc 1 34 2 is_stmt 1 view .LVU33
+ 125              		.loc 1 34 16 is_stmt 0 view .LVU34
+ 126 0098 4FF08051 		mov	r1, #268435456
+ 127 009c 1160     		str	r1, [r2]
+  35:./Hardware/Receiver2.c **** 	
+  36:./Hardware/Receiver2.c **** 	TIM2->CR1 |= 1;  //TIM2使能
+ 128              		.loc 1 36 2 is_stmt 1 view .LVU35
+ 129              		.loc 1 36 12 is_stmt 0 view .LVU36
+ 130 009e 1A88     		ldrh	r2, [r3]
+ 131 00a0 92B2     		uxth	r2, r2
+ 132 00a2 42F00102 		orr	r2, r2, #1
+ 133 00a6 1A80     		strh	r2, [r3]	@ movhi
+  37:./Hardware/Receiver2.c **** }
+ 134              		.loc 1 37 1 view .LVU37
+ 135 00a8 7047     		bx	lr
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s 			page 4
+
+
+ 136              	.L3:
+ 137 00aa 00BF     		.align	2
+ 138              	.L2:
+ 139 00ac 00380240 		.word	1073887232
+ 140 00b0 00ED00E0 		.word	-536810240
+ 141 00b4 0005FA05 		.word	100271360
+ 142              		.cfi_endproc
+ 143              	.LFE123:
+ 145              		.section	.text.TIM2_IRQHandler,"ax",%progbits
+ 146              		.align	1
+ 147              		.global	TIM2_IRQHandler
+ 148              		.syntax unified
+ 149              		.thumb
+ 150              		.thumb_func
+ 152              	TIM2_IRQHandler:
+ 153              	.LFB124:
+  38:./Hardware/Receiver2.c **** 
+  39:./Hardware/Receiver2.c **** void TIM2_IRQHandler(void)
+  40:./Hardware/Receiver2.c **** {
+ 154              		.loc 1 40 1 is_stmt 1 view -0
+ 155              		.cfi_startproc
+ 156              		@ args = 0, pretend = 0, frame = 0
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158              		@ link register save eliminated.
+  41:./Hardware/Receiver2.c **** 	if ((TIM2->SR & (1<<2))!=0)
+ 159              		.loc 1 41 2 view .LVU39
+ 160              		.loc 1 41 11 is_stmt 0 view .LVU40
+ 161 0000 4FF08043 		mov	r3, #1073741824
+ 162 0004 1B8A     		ldrh	r3, [r3, #16]
+ 163              		.loc 1 41 5 view .LVU41
+ 164 0006 13F0040F 		tst	r3, #4
+ 165 000a 1BD0     		beq	.L4
+ 166              	.LBB2:
+  42:./Hardware/Receiver2.c **** 	{
+  43:./Hardware/Receiver2.c **** 		uint16_t CCR2 = TIM2->CCR2;
+ 167              		.loc 1 43 3 is_stmt 1 view .LVU42
+ 168              		.loc 1 43 23 is_stmt 0 view .LVU43
+ 169 000c 4FF08043 		mov	r3, #1073741824
+ 170 0010 9B6B     		ldr	r3, [r3, #56]
+ 171              		.loc 1 43 12 view .LVU44
+ 172 0012 9BB2     		uxth	r3, r3
+ 173              	.LVL0:
+  44:./Hardware/Receiver2.c **** 		if((CCR2 >= 3500) && (CCR2<= 11500)){
+ 174              		.loc 1 44 3 is_stmt 1 view .LVU45
+ 175              		.loc 1 44 21 is_stmt 0 view .LVU46
+ 176 0014 A3F6AC52 		subw	r2, r3, #3500
+ 177 0018 92B2     		uxth	r2, r2
+ 178              		.loc 1 44 5 view .LVU47
+ 179 001a B2F5FA5F 		cmp	r2, #8000
+ 180 001e 05D8     		bhi	.L6
+  45:./Hardware/Receiver2.c **** 			okay2 = 1;
+ 181              		.loc 1 45 4 is_stmt 1 view .LVU48
+ 182              		.loc 1 45 10 is_stmt 0 view .LVU49
+ 183 0020 104A     		ldr	r2, .L9
+ 184 0022 0121     		movs	r1, #1
+ 185 0024 1180     		strh	r1, [r2]	@ movhi
+  46:./Hardware/Receiver2.c **** 			i2=0;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s 			page 5
+
+
+ 186              		.loc 1 46 4 is_stmt 1 view .LVU50
+ 187              		.loc 1 46 6 is_stmt 0 view .LVU51
+ 188 0026 104A     		ldr	r2, .L9+4
+ 189 0028 0021     		movs	r1, #0
+ 190 002a 1180     		strh	r1, [r2]	@ movhi
+ 191              	.L6:
+  47:./Hardware/Receiver2.c **** 		}
+  48:./Hardware/Receiver2.c **** 		if(okay2==1){
+ 192              		.loc 1 48 3 is_stmt 1 view .LVU52
+ 193              		.loc 1 48 11 is_stmt 0 view .LVU53
+ 194 002c 0D4A     		ldr	r2, .L9
+ 195 002e 1288     		ldrh	r2, [r2]
+ 196              		.loc 1 48 5 view .LVU54
+ 197 0030 012A     		cmp	r2, #1
+ 198 0032 08D0     		beq	.L8
+ 199              	.LVL1:
+ 200              	.L7:
+  49:./Hardware/Receiver2.c **** 			CH2[i2] = CCR2;
+  50:./Hardware/Receiver2.c **** 			i2++;
+  51:./Hardware/Receiver2.c **** 			if(i2>=9){
+  52:./Hardware/Receiver2.c **** 				okay2 = 0;
+  53:./Hardware/Receiver2.c **** 			}
+  54:./Hardware/Receiver2.c **** 		}
+  55:./Hardware/Receiver2.c **** 		TIM2->SR &= (uint16_t)~0x4;
+ 201              		.loc 1 55 3 is_stmt 1 view .LVU55
+ 202              		.loc 1 55 12 is_stmt 0 view .LVU56
+ 203 0034 4FF08042 		mov	r2, #1073741824
+ 204 0038 138A     		ldrh	r3, [r2, #16]
+ 205 003a 9BB2     		uxth	r3, r3
+ 206 003c 23F00403 		bic	r3, r3, #4
+ 207 0040 9BB2     		uxth	r3, r3
+ 208 0042 1382     		strh	r3, [r2, #16]	@ movhi
+ 209              	.L4:
+ 210              		.loc 1 55 12 view .LVU57
+ 211              	.LBE2:
+  56:./Hardware/Receiver2.c **** 	}
+  57:./Hardware/Receiver2.c **** }
+ 212              		.loc 1 57 1 view .LVU58
+ 213 0044 7047     		bx	lr
+ 214              	.LVL2:
+ 215              	.L8:
+ 216              	.LBB3:
+  49:./Hardware/Receiver2.c **** 			CH2[i2] = CCR2;
+ 217              		.loc 1 49 4 is_stmt 1 view .LVU59
+  49:./Hardware/Receiver2.c **** 			CH2[i2] = CCR2;
+ 218              		.loc 1 49 7 is_stmt 0 view .LVU60
+ 219 0046 0849     		ldr	r1, .L9+4
+ 220 0048 0A88     		ldrh	r2, [r1]
+  49:./Hardware/Receiver2.c **** 			CH2[i2] = CCR2;
+ 221              		.loc 1 49 12 view .LVU61
+ 222 004a 0848     		ldr	r0, .L9+8
+ 223 004c 20F81230 		strh	r3, [r0, r2, lsl #1]	@ movhi
+  50:./Hardware/Receiver2.c **** 			if(i2>=9){
+ 224              		.loc 1 50 4 is_stmt 1 view .LVU62
+  50:./Hardware/Receiver2.c **** 			if(i2>=9){
+ 225              		.loc 1 50 6 is_stmt 0 view .LVU63
+ 226 0050 531C     		adds	r3, r2, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s 			page 6
+
+
+ 227              	.LVL3:
+  50:./Hardware/Receiver2.c **** 			if(i2>=9){
+ 228              		.loc 1 50 6 view .LVU64
+ 229 0052 9BB2     		uxth	r3, r3
+ 230 0054 0B80     		strh	r3, [r1]	@ movhi
+  51:./Hardware/Receiver2.c **** 				okay2 = 0;
+ 231              		.loc 1 51 4 is_stmt 1 view .LVU65
+  51:./Hardware/Receiver2.c **** 				okay2 = 0;
+ 232              		.loc 1 51 6 is_stmt 0 view .LVU66
+ 233 0056 082B     		cmp	r3, #8
+ 234 0058 ECD9     		bls	.L7
+  52:./Hardware/Receiver2.c **** 			}
+ 235              		.loc 1 52 5 is_stmt 1 view .LVU67
+  52:./Hardware/Receiver2.c **** 			}
+ 236              		.loc 1 52 11 is_stmt 0 view .LVU68
+ 237 005a 024B     		ldr	r3, .L9
+ 238 005c 0022     		movs	r2, #0
+ 239              	.LVL4:
+  52:./Hardware/Receiver2.c **** 			}
+ 240              		.loc 1 52 11 view .LVU69
+ 241 005e 1A80     		strh	r2, [r3]	@ movhi
+ 242 0060 E8E7     		b	.L7
+ 243              	.L10:
+ 244 0062 00BF     		.align	2
+ 245              	.L9:
+ 246 0064 00000000 		.word	.LANCHOR0
+ 247 0068 00000000 		.word	.LANCHOR1
+ 248 006c 00000000 		.word	.LANCHOR2
+ 249              	.LBE3:
+ 250              		.cfi_endproc
+ 251              	.LFE124:
+ 253              		.global	okay2
+ 254              		.global	i2
+ 255              		.global	CH2
+ 256              		.section	.bss.CH2,"aw",%nobits
+ 257              		.align	2
+ 258              		.set	.LANCHOR2,. + 0
+ 261              	CH2:
+ 262 0000 00000000 		.space	18
+ 262      00000000 
+ 262      00000000 
+ 262      00000000 
+ 262      0000
+ 263              		.section	.bss.i2,"aw",%nobits
+ 264              		.align	1
+ 265              		.set	.LANCHOR1,. + 0
+ 268              	i2:
+ 269 0000 0000     		.space	2
+ 270              		.section	.bss.okay2,"aw",%nobits
+ 271              		.align	1
+ 272              		.set	.LANCHOR0,. + 0
+ 275              	okay2:
+ 276 0000 0000     		.space	2
+ 277              		.text
+ 278              	.Letext0:
+ 279              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 280              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s 			page 7
+
+
+ 281              		.file 4 "./CORE/core_cm4.h"
+ 282              		.file 5 "./CORE/stm32f4xx.h"
+ 283              		.file 6 "./Hardware/Receiver.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Receiver2.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:20     .text.REC_Init2:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:26     .text.REC_Init2:0000000000000000 REC_Init2
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:139    .text.REC_Init2:00000000000000ac $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:146    .text.TIM2_IRQHandler:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:152    .text.TIM2_IRQHandler:0000000000000000 TIM2_IRQHandler
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:246    .text.TIM2_IRQHandler:0000000000000064 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:275    .bss.okay2:0000000000000000 okay2
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:268    .bss.i2:0000000000000000 i2
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:261    .bss.CH2:0000000000000000 CH2
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:257    .bss.CH2:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:264    .bss.i2:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccdg1FdY.s:271    .bss.okay2:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS
