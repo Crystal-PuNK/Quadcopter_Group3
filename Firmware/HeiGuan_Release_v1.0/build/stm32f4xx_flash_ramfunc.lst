@@ -1,0 +1,258 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4xx_flash_ramfunc.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.RamFunc,"ax",%progbits
+  20              		.align	1
+  21              		.global	FLASH_FlashInterfaceCmd
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	FLASH_FlashInterfaceCmd:
+  27              	.LVL0:
+  28              	.LFB123:
+  29              		.file 1 "./Library/stm32f4xx_flash_ramfunc.c"
+   1:./Library/stm32f4xx_flash_ramfunc.c **** /**
+   2:./Library/stm32f4xx_flash_ramfunc.c ****   ******************************************************************************
+   3:./Library/stm32f4xx_flash_ramfunc.c ****   * @file    stm32f4xx_flash_ramfunc.c
+   4:./Library/stm32f4xx_flash_ramfunc.c ****   * @author  MCD Application Team
+   5:./Library/stm32f4xx_flash_ramfunc.c ****   * @version V1.8.1
+   6:./Library/stm32f4xx_flash_ramfunc.c ****   * @date    27-January-2022
+   7:./Library/stm32f4xx_flash_ramfunc.c ****   * @brief   FLASH RAMFUNC module driver.
+   8:./Library/stm32f4xx_flash_ramfunc.c ****   *          This file provides a FLASH firmware functions which should be 
+   9:./Library/stm32f4xx_flash_ramfunc.c ****   *          executed from internal SRAM
+  10:./Library/stm32f4xx_flash_ramfunc.c ****   *            + Stop/Start the flash interface while System Run
+  11:./Library/stm32f4xx_flash_ramfunc.c ****   *            + Enable/Disable the flash sleep while System Run
+  12:./Library/stm32f4xx_flash_ramfunc.c ****   *  
+  13:./Library/stm32f4xx_flash_ramfunc.c ****  @verbatim    
+  14:./Library/stm32f4xx_flash_ramfunc.c ****  ==============================================================================
+  15:./Library/stm32f4xx_flash_ramfunc.c ****                     ##### APIs executed from Internal RAM #####
+  16:./Library/stm32f4xx_flash_ramfunc.c ****   ==============================================================================
+  17:./Library/stm32f4xx_flash_ramfunc.c ****   [..]
+  18:./Library/stm32f4xx_flash_ramfunc.c ****     *** ARM Compiler ***
+  19:./Library/stm32f4xx_flash_ramfunc.c ****     --------------------
+  20:./Library/stm32f4xx_flash_ramfunc.c ****     [..] RAM functions are defined using the toolchain options. 
+  21:./Library/stm32f4xx_flash_ramfunc.c ****          Functions that are be executed in RAM should reside in a separate
+  22:./Library/stm32f4xx_flash_ramfunc.c ****          source module. Using the 'Options for File' dialog you can simply change
+  23:./Library/stm32f4xx_flash_ramfunc.c ****          the 'Code / Const' area of a module to a memory space in physical RAM.
+  24:./Library/stm32f4xx_flash_ramfunc.c ****          Available memory areas are declared in the 'Target' tab of the 
+  25:./Library/stm32f4xx_flash_ramfunc.c ****          Options for Target' dialog.
+  26:./Library/stm32f4xx_flash_ramfunc.c **** 
+  27:./Library/stm32f4xx_flash_ramfunc.c ****     *** ICCARM Compiler ***
+  28:./Library/stm32f4xx_flash_ramfunc.c ****     -----------------------
+  29:./Library/stm32f4xx_flash_ramfunc.c ****     [..] RAM functions are defined using a specific toolchain keyword "__ramfunc".
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s 			page 2
+
+
+  30:./Library/stm32f4xx_flash_ramfunc.c **** 
+  31:./Library/stm32f4xx_flash_ramfunc.c ****     *** GNU Compiler ***
+  32:./Library/stm32f4xx_flash_ramfunc.c ****     --------------------
+  33:./Library/stm32f4xx_flash_ramfunc.c ****     [..] RAM functions are defined using a specific toolchain attribute
+  34:./Library/stm32f4xx_flash_ramfunc.c ****          "__attribute__((section(".RamFunc")))".
+  35:./Library/stm32f4xx_flash_ramfunc.c ****   
+  36:./Library/stm32f4xx_flash_ramfunc.c ****   @endverbatim
+  37:./Library/stm32f4xx_flash_ramfunc.c ****   ******************************************************************************
+  38:./Library/stm32f4xx_flash_ramfunc.c ****   * @attention
+  39:./Library/stm32f4xx_flash_ramfunc.c ****   *
+  40:./Library/stm32f4xx_flash_ramfunc.c ****   * Copyright (c) 2016 STMicroelectronics.
+  41:./Library/stm32f4xx_flash_ramfunc.c ****   * All rights reserved.
+  42:./Library/stm32f4xx_flash_ramfunc.c ****   *
+  43:./Library/stm32f4xx_flash_ramfunc.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  44:./Library/stm32f4xx_flash_ramfunc.c ****   * in the root directory of this software component.
+  45:./Library/stm32f4xx_flash_ramfunc.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  46:./Library/stm32f4xx_flash_ramfunc.c ****   *
+  47:./Library/stm32f4xx_flash_ramfunc.c ****   ******************************************************************************
+  48:./Library/stm32f4xx_flash_ramfunc.c ****   */
+  49:./Library/stm32f4xx_flash_ramfunc.c **** 
+  50:./Library/stm32f4xx_flash_ramfunc.c **** /* Includes ------------------------------------------------------------------*/
+  51:./Library/stm32f4xx_flash_ramfunc.c **** #include "stm32f4xx_flash_ramfunc.h"
+  52:./Library/stm32f4xx_flash_ramfunc.c **** 
+  53:./Library/stm32f4xx_flash_ramfunc.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  54:./Library/stm32f4xx_flash_ramfunc.c ****   * @{
+  55:./Library/stm32f4xx_flash_ramfunc.c ****   */
+  56:./Library/stm32f4xx_flash_ramfunc.c **** 
+  57:./Library/stm32f4xx_flash_ramfunc.c **** /** @defgroup FLASH RAMFUNC 
+  58:./Library/stm32f4xx_flash_ramfunc.c ****   * @brief FLASH RAMFUNC driver modules
+  59:./Library/stm32f4xx_flash_ramfunc.c ****   * @{
+  60:./Library/stm32f4xx_flash_ramfunc.c ****   */ 
+  61:./Library/stm32f4xx_flash_ramfunc.c **** 
+  62:./Library/stm32f4xx_flash_ramfunc.c **** /* Private typedef -----------------------------------------------------------*/
+  63:./Library/stm32f4xx_flash_ramfunc.c **** /* Private define ------------------------------------------------------------*/
+  64:./Library/stm32f4xx_flash_ramfunc.c **** /* Private macro -------------------------------------------------------------*/
+  65:./Library/stm32f4xx_flash_ramfunc.c **** /* Private variables ---------------------------------------------------------*/
+  66:./Library/stm32f4xx_flash_ramfunc.c **** /* Private function prototypes -----------------------------------------------*/
+  67:./Library/stm32f4xx_flash_ramfunc.c **** /* Private functions ---------------------------------------------------------*/
+  68:./Library/stm32f4xx_flash_ramfunc.c **** 
+  69:./Library/stm32f4xx_flash_ramfunc.c **** /** @defgroup FLASH_RAMFUNC_Private_Functions
+  70:./Library/stm32f4xx_flash_ramfunc.c ****   * @{
+  71:./Library/stm32f4xx_flash_ramfunc.c ****   */
+  72:./Library/stm32f4xx_flash_ramfunc.c **** 
+  73:./Library/stm32f4xx_flash_ramfunc.c **** /** @defgroup FLASH_RAMFUNC_Group1 Peripheral features functions executed from internal RAM 
+  74:./Library/stm32f4xx_flash_ramfunc.c ****   *  @brief Peripheral Extended features functions 
+  75:./Library/stm32f4xx_flash_ramfunc.c ****   *
+  76:./Library/stm32f4xx_flash_ramfunc.c **** @verbatim   
+  77:./Library/stm32f4xx_flash_ramfunc.c **** 
+  78:./Library/stm32f4xx_flash_ramfunc.c ****  ===============================================================================
+  79:./Library/stm32f4xx_flash_ramfunc.c ****                       ##### ramfunc functions #####
+  80:./Library/stm32f4xx_flash_ramfunc.c ****  ===============================================================================
+  81:./Library/stm32f4xx_flash_ramfunc.c ****     [..]
+  82:./Library/stm32f4xx_flash_ramfunc.c ****     This subsection provides a set of functions that should be executed from RAM 
+  83:./Library/stm32f4xx_flash_ramfunc.c ****     transfers.
+  84:./Library/stm32f4xx_flash_ramfunc.c ****     
+  85:./Library/stm32f4xx_flash_ramfunc.c **** @endverbatim
+  86:./Library/stm32f4xx_flash_ramfunc.c ****   * @{
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s 			page 3
+
+
+  87:./Library/stm32f4xx_flash_ramfunc.c ****   */
+  88:./Library/stm32f4xx_flash_ramfunc.c **** 
+  89:./Library/stm32f4xx_flash_ramfunc.c **** /**
+  90:./Library/stm32f4xx_flash_ramfunc.c ****   * @brief Start/Stop the flash interface while System Run
+  91:./Library/stm32f4xx_flash_ramfunc.c ****   * @note  This mode is only available for STM32F411xx devices. 
+  92:./Library/stm32f4xx_flash_ramfunc.c ****   * @note  This mode could n't be set while executing with the flash itself. 
+  93:./Library/stm32f4xx_flash_ramfunc.c ****   *        It should be done with specific routine executed from RAM.     
+  94:./Library/stm32f4xx_flash_ramfunc.c ****   * @param  NewState: new state of the Smart Card mode.
+  95:./Library/stm32f4xx_flash_ramfunc.c ****   *          This parameter can be: ENABLE or DISABLE.  
+  96:./Library/stm32f4xx_flash_ramfunc.c ****   * @retval None
+  97:./Library/stm32f4xx_flash_ramfunc.c ****   */
+  98:./Library/stm32f4xx_flash_ramfunc.c **** __RAM_FUNC FLASH_FlashInterfaceCmd(FunctionalState NewState)
+  99:./Library/stm32f4xx_flash_ramfunc.c **** {
+  30              		.loc 1 99 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+ 100:./Library/stm32f4xx_flash_ramfunc.c ****   if (NewState != DISABLE)
+  35              		.loc 1 100 3 view .LVU1
+  36              		.loc 1 100 6 is_stmt 0 view .LVU2
+  37 0000 28B1     		cbz	r0, .L2
+ 101:./Library/stm32f4xx_flash_ramfunc.c ****   {
+ 102:./Library/stm32f4xx_flash_ramfunc.c ****     /* Start the flash interface while System Run */
+ 103:./Library/stm32f4xx_flash_ramfunc.c ****     CLEAR_BIT(PWR->CR, PWR_CR_FISSR);
+  38              		.loc 1 103 5 is_stmt 1 view .LVU3
+  39 0002 064A     		ldr	r2, .L4
+  40 0004 1368     		ldr	r3, [r2]
+  41 0006 23F40013 		bic	r3, r3, #2097152
+  42 000a 1360     		str	r3, [r2]
+  43 000c 7047     		bx	lr
+  44              	.L2:
+ 104:./Library/stm32f4xx_flash_ramfunc.c ****   }
+ 105:./Library/stm32f4xx_flash_ramfunc.c ****   else
+ 106:./Library/stm32f4xx_flash_ramfunc.c ****   {
+ 107:./Library/stm32f4xx_flash_ramfunc.c ****     /* Stop the flash interface while System Run */  
+ 108:./Library/stm32f4xx_flash_ramfunc.c ****     SET_BIT(PWR->CR, PWR_CR_FISSR);
+  45              		.loc 1 108 5 view .LVU4
+  46 000e 034A     		ldr	r2, .L4
+  47 0010 1368     		ldr	r3, [r2]
+  48 0012 43F40013 		orr	r3, r3, #2097152
+  49 0016 1360     		str	r3, [r2]
+ 109:./Library/stm32f4xx_flash_ramfunc.c ****   }
+ 110:./Library/stm32f4xx_flash_ramfunc.c **** }
+  50              		.loc 1 110 1 is_stmt 0 view .LVU5
+  51 0018 7047     		bx	lr
+  52              	.L5:
+  53 001a 00BF     		.align	2
+  54              	.L4:
+  55 001c 00700040 		.word	1073770496
+  56              		.cfi_endproc
+  57              	.LFE123:
+  59              		.align	1
+  60              		.global	FLASH_FlashSleepModeCmd
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s 			page 4
+
+
+  65              	FLASH_FlashSleepModeCmd:
+  66              	.LVL1:
+  67              	.LFB124:
+ 111:./Library/stm32f4xx_flash_ramfunc.c **** 
+ 112:./Library/stm32f4xx_flash_ramfunc.c **** /**
+ 113:./Library/stm32f4xx_flash_ramfunc.c ****   * @brief Enable/Disable the flash sleep while System Run
+ 114:./Library/stm32f4xx_flash_ramfunc.c ****   * @note  This mode is only available for STM32F411xx devices. 
+ 115:./Library/stm32f4xx_flash_ramfunc.c ****   * @note  This mode could n't be set while executing with the flash itself. 
+ 116:./Library/stm32f4xx_flash_ramfunc.c ****   *        It should be done with specific routine executed from RAM.     
+ 117:./Library/stm32f4xx_flash_ramfunc.c ****   * @param  NewState: new state of the Smart Card mode.
+ 118:./Library/stm32f4xx_flash_ramfunc.c ****   *          This parameter can be: ENABLE or DISABLE.  
+ 119:./Library/stm32f4xx_flash_ramfunc.c ****   * @retval None
+ 120:./Library/stm32f4xx_flash_ramfunc.c ****   */
+ 121:./Library/stm32f4xx_flash_ramfunc.c **** __RAM_FUNC FLASH_FlashSleepModeCmd(FunctionalState NewState)
+ 122:./Library/stm32f4xx_flash_ramfunc.c **** {
+  68              		.loc 1 122 1 is_stmt 1 view -0
+  69              		.cfi_startproc
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72              		@ link register save eliminated.
+ 123:./Library/stm32f4xx_flash_ramfunc.c ****   if (NewState != DISABLE)
+  73              		.loc 1 123 3 view .LVU7
+  74              		.loc 1 123 6 is_stmt 0 view .LVU8
+  75 0020 28B1     		cbz	r0, .L7
+ 124:./Library/stm32f4xx_flash_ramfunc.c ****   {
+ 125:./Library/stm32f4xx_flash_ramfunc.c ****     /* Enable the flash sleep while System Run */
+ 126:./Library/stm32f4xx_flash_ramfunc.c ****     SET_BIT(PWR->CR, PWR_CR_FMSSR);
+  76              		.loc 1 126 5 is_stmt 1 view .LVU9
+  77 0022 064A     		ldr	r2, .L9
+  78 0024 1368     		ldr	r3, [r2]
+  79 0026 43F48013 		orr	r3, r3, #1048576
+  80 002a 1360     		str	r3, [r2]
+  81 002c 7047     		bx	lr
+  82              	.L7:
+ 127:./Library/stm32f4xx_flash_ramfunc.c ****   }
+ 128:./Library/stm32f4xx_flash_ramfunc.c ****   else
+ 129:./Library/stm32f4xx_flash_ramfunc.c ****   {
+ 130:./Library/stm32f4xx_flash_ramfunc.c ****     /* Disable the flash sleep while System Run */
+ 131:./Library/stm32f4xx_flash_ramfunc.c ****     CLEAR_BIT(PWR->CR, PWR_CR_FMSSR);
+  83              		.loc 1 131 5 view .LVU10
+  84 002e 034A     		ldr	r2, .L9
+  85 0030 1368     		ldr	r3, [r2]
+  86 0032 23F48013 		bic	r3, r3, #1048576
+  87 0036 1360     		str	r3, [r2]
+ 132:./Library/stm32f4xx_flash_ramfunc.c ****   }
+ 133:./Library/stm32f4xx_flash_ramfunc.c **** }
+  88              		.loc 1 133 1 is_stmt 0 view .LVU11
+  89 0038 7047     		bx	lr
+  90              	.L10:
+  91 003a 00BF     		.align	2
+  92              	.L9:
+  93 003c 00700040 		.word	1073770496
+  94              		.cfi_endproc
+  95              	.LFE124:
+  97              		.text
+  98              	.Letext0:
+  99              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s 			page 5
+
+
+ 100              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 101              		.file 4 "./CORE/stm32f4xx.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_flash_ramfunc.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s:20     .RamFunc:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s:26     .RamFunc:0000000000000000 FLASH_FlashInterfaceCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s:55     .RamFunc:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s:59     .RamFunc:0000000000000020 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s:65     .RamFunc:0000000000000020 FLASH_FlashSleepModeCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccHtui2d.s:93     .RamFunc:000000000000003c $d
+
+NO UNDEFINED SYMBOLS

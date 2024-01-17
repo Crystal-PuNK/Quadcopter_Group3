@@ -1,0 +1,495 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"PWM.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.PWM_Init,"ax",%progbits
+  20              		.align	1
+  21              		.global	PWM_Init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	PWM_Init:
+  27              	.LFB126:
+  28              		.file 1 "./Hardware/PWM.c"
+   1:./Hardware/PWM.c **** #include "PWM.h"
+   2:./Hardware/PWM.c **** 
+   3:./Hardware/PWM.c **** 
+   4:./Hardware/PWM.c **** /******************************************
+   5:./Hardware/PWM.c ****  *PWM的初始化，包括TIM3的设定与对应CH1的GPIO口设置
+   6:./Hardware/PWM.c ****  *****************************************/
+   7:./Hardware/PWM.c **** void PWM_Init()
+   8:./Hardware/PWM.c **** {
+  29              		.loc 1 8 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 40
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 24
+  36              		.cfi_offset 4, -24
+  37              		.cfi_offset 5, -20
+  38              		.cfi_offset 6, -16
+  39              		.cfi_offset 7, -12
+  40              		.cfi_offset 8, -8
+  41              		.cfi_offset 14, -4
+  42 0004 8AB0     		sub	sp, sp, #40
+  43              	.LCFI1:
+  44              		.cfi_def_cfa_offset 64
+   9:./Hardware/PWM.c **** 	//开启对应时钟
+  10:./Hardware/PWM.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,  ENABLE);
+  45              		.loc 1 10 2 view .LVU1
+  46 0006 0121     		movs	r1, #1
+  47 0008 0846     		mov	r0, r1
+  48 000a FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 2
+
+
+  49              	.LVL0:
+  11:./Hardware/PWM.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB,  ENABLE);
+  50              		.loc 1 11 2 view .LVU2
+  51 000e 0121     		movs	r1, #1
+  52 0010 0220     		movs	r0, #2
+  53 0012 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+  54              	.LVL1:
+  12:./Hardware/PWM.c **** 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,   ENABLE);
+  55              		.loc 1 12 2 view .LVU3
+  56 0016 0121     		movs	r1, #1
+  57 0018 0220     		movs	r0, #2
+  58 001a FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+  59              	.LVL2:
+  13:./Hardware/PWM.c **** 	//初始化PA6PA7
+  14:./Hardware/PWM.c **** 	GPIO_InitTypeDef GPIO_InitStructure;
+  60              		.loc 1 14 2 view .LVU4
+  15:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
+  61              		.loc 1 15 2 view .LVU5
+  62              		.loc 1 15 30 is_stmt 0 view .LVU6
+  63 001e C023     		movs	r3, #192
+  64 0020 0893     		str	r3, [sp, #32]
+  16:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  65              		.loc 1 16 2 is_stmt 1 view .LVU7
+  66              		.loc 1 16 31 is_stmt 0 view .LVU8
+  67 0022 0224     		movs	r4, #2
+  68 0024 8DF82440 		strb	r4, [sp, #36]
+  17:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  69              		.loc 1 17 2 is_stmt 1 view .LVU9
+  70              		.loc 1 17 32 is_stmt 0 view .LVU10
+  71 0028 0026     		movs	r6, #0
+  72 002a 8DF82660 		strb	r6, [sp, #38]
+  18:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  73              		.loc 1 18 2 is_stmt 1 view .LVU11
+  74              		.loc 1 18 32 is_stmt 0 view .LVU12
+  75 002e 0327     		movs	r7, #3
+  76 0030 8DF82570 		strb	r7, [sp, #37]
+  19:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  77              		.loc 1 19 2 is_stmt 1 view .LVU13
+  78              		.loc 1 19 31 is_stmt 0 view .LVU14
+  79 0034 0125     		movs	r5, #1
+  80 0036 8DF82750 		strb	r5, [sp, #39]
+  20:./Hardware/PWM.c **** 	GPIO_Init(GPIOA,&GPIO_InitStructure);
+  81              		.loc 1 20 2 is_stmt 1 view .LVU15
+  82 003a DFF8D880 		ldr	r8, .L3+8
+  83 003e 08A9     		add	r1, sp, #32
+  84 0040 4046     		mov	r0, r8
+  85 0042 FFF7FEFF 		bl	GPIO_Init
+  86              	.LVL3:
+  21:./Hardware/PWM.c **** 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource6,GPIO_AF_TIM3);
+  87              		.loc 1 21 2 view .LVU16
+  88 0046 2246     		mov	r2, r4
+  89 0048 0621     		movs	r1, #6
+  90 004a 4046     		mov	r0, r8
+  91 004c FFF7FEFF 		bl	GPIO_PinAFConfig
+  92              	.LVL4:
+  22:./Hardware/PWM.c **** 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource7,GPIO_AF_TIM3);
+  93              		.loc 1 22 2 view .LVU17
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 3
+
+
+  94 0050 2246     		mov	r2, r4
+  95 0052 0721     		movs	r1, #7
+  96 0054 4046     		mov	r0, r8
+  97 0056 FFF7FEFF 		bl	GPIO_PinAFConfig
+  98              	.LVL5:
+  23:./Hardware/PWM.c **** 	//初始化PB0PB1
+  24:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
+  99              		.loc 1 24 2 view .LVU18
+ 100              		.loc 1 24 30 is_stmt 0 view .LVU19
+ 101 005a 0897     		str	r7, [sp, #32]
+  25:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+ 102              		.loc 1 25 2 is_stmt 1 view .LVU20
+ 103              		.loc 1 25 31 is_stmt 0 view .LVU21
+ 104 005c 8DF82440 		strb	r4, [sp, #36]
+  26:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 105              		.loc 1 26 2 is_stmt 1 view .LVU22
+ 106              		.loc 1 26 32 is_stmt 0 view .LVU23
+ 107 0060 8DF82660 		strb	r6, [sp, #38]
+  27:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+ 108              		.loc 1 27 2 is_stmt 1 view .LVU24
+ 109              		.loc 1 27 32 is_stmt 0 view .LVU25
+ 110 0064 8DF82570 		strb	r7, [sp, #37]
+  28:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 111              		.loc 1 28 2 is_stmt 1 view .LVU26
+ 112              		.loc 1 28 31 is_stmt 0 view .LVU27
+ 113 0068 8DF82750 		strb	r5, [sp, #39]
+  29:./Hardware/PWM.c **** 	GPIO_Init(GPIOB,&GPIO_InitStructure);
+ 114              		.loc 1 29 2 is_stmt 1 view .LVU28
+ 115 006c 274F     		ldr	r7, .L3
+ 116 006e 08A9     		add	r1, sp, #32
+ 117 0070 3846     		mov	r0, r7
+ 118 0072 FFF7FEFF 		bl	GPIO_Init
+ 119              	.LVL6:
+  30:./Hardware/PWM.c **** 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource0,GPIO_AF_TIM3);
+ 120              		.loc 1 30 2 view .LVU29
+ 121 0076 2246     		mov	r2, r4
+ 122 0078 3146     		mov	r1, r6
+ 123 007a 3846     		mov	r0, r7
+ 124 007c FFF7FEFF 		bl	GPIO_PinAFConfig
+ 125              	.LVL7:
+  31:./Hardware/PWM.c **** 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource1,GPIO_AF_TIM3);
+ 126              		.loc 1 31 2 view .LVU30
+ 127 0080 2246     		mov	r2, r4
+ 128 0082 2946     		mov	r1, r5
+ 129 0084 3846     		mov	r0, r7
+ 130 0086 FFF7FEFF 		bl	GPIO_PinAFConfig
+ 131              	.LVL8:
+  32:./Hardware/PWM.c **** 	//初始化TIM3的时基单元,PWM周期为20ms，即50Hz频率.每0.02秒计数2000下
+  33:./Hardware/PWM.c **** 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+ 132              		.loc 1 33 2 view .LVU31
+  34:./Hardware/PWM.c **** 	TIM_TimeBaseStructure.TIM_Prescaler = 161 -1;
+ 133              		.loc 1 34 2 view .LVU32
+ 134              		.loc 1 34 38 is_stmt 0 view .LVU33
+ 135 008a A023     		movs	r3, #160
+ 136 008c ADF81430 		strh	r3, [sp, #20]	@ movhi
+  35:./Hardware/PWM.c **** 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+ 137              		.loc 1 35 2 is_stmt 1 view .LVU34
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 4
+
+
+ 138              		.loc 1 35 40 is_stmt 0 view .LVU35
+ 139 0090 ADF81660 		strh	r6, [sp, #22]	@ movhi
+  36:./Hardware/PWM.c **** 	TIM_TimeBaseStructure.TIM_Period = 2000 -1;
+ 140              		.loc 1 36 2 is_stmt 1 view .LVU36
+ 141              		.loc 1 36 35 is_stmt 0 view .LVU37
+ 142 0094 40F2CF73 		movw	r3, #1999
+ 143 0098 0693     		str	r3, [sp, #24]
+  37:./Hardware/PWM.c **** 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+ 144              		.loc 1 37 2 is_stmt 1 view .LVU38
+ 145              		.loc 1 37 42 is_stmt 0 view .LVU39
+ 146 009a ADF81C60 		strh	r6, [sp, #28]	@ movhi
+  38:./Hardware/PWM.c **** 	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);
+ 147              		.loc 1 38 2 is_stmt 1 view .LVU40
+ 148 009e 1C4C     		ldr	r4, .L3+4
+ 149 00a0 05A9     		add	r1, sp, #20
+ 150 00a2 2046     		mov	r0, r4
+ 151 00a4 FFF7FEFF 		bl	TIM_TimeBaseInit
+ 152              	.LVL9:
+  39:./Hardware/PWM.c **** 	//初始化TIM3CH1~4的PWM输出模式
+  40:./Hardware/PWM.c **** 	TIM_OCInitTypeDef TIM_OCInitStructure;
+ 153              		.loc 1 40 2 view .LVU41
+  41:./Hardware/PWM.c **** 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+ 154              		.loc 1 41 2 view .LVU42
+ 155              		.loc 1 41 33 is_stmt 0 view .LVU43
+ 156 00a8 6023     		movs	r3, #96
+ 157 00aa ADF80030 		strh	r3, [sp]	@ movhi
+  42:./Hardware/PWM.c **** 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+ 158              		.loc 1 42 2 is_stmt 1 view .LVU44
+ 159              		.loc 1 42 38 is_stmt 0 view .LVU45
+ 160 00ae ADF80250 		strh	r5, [sp, #2]	@ movhi
+  43:./Hardware/PWM.c **** 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+ 161              		.loc 1 43 2 is_stmt 1 view .LVU46
+ 162              		.loc 1 43 37 is_stmt 0 view .LVU47
+ 163 00b2 ADF80C60 		strh	r6, [sp, #12]	@ movhi
+  44:./Hardware/PWM.c **** 	TIM_OC1Init(TIM3,&TIM_OCInitStructure);
+ 164              		.loc 1 44 2 is_stmt 1 view .LVU48
+ 165 00b6 6946     		mov	r1, sp
+ 166 00b8 2046     		mov	r0, r4
+ 167 00ba FFF7FEFF 		bl	TIM_OC1Init
+ 168              	.LVL10:
+  45:./Hardware/PWM.c **** 	TIM_OC2Init(TIM3,&TIM_OCInitStructure);
+ 169              		.loc 1 45 2 view .LVU49
+ 170 00be 6946     		mov	r1, sp
+ 171 00c0 2046     		mov	r0, r4
+ 172 00c2 FFF7FEFF 		bl	TIM_OC2Init
+ 173              	.LVL11:
+  46:./Hardware/PWM.c **** 	TIM_OC3Init(TIM3,&TIM_OCInitStructure);
+ 174              		.loc 1 46 2 view .LVU50
+ 175 00c6 6946     		mov	r1, sp
+ 176 00c8 2046     		mov	r0, r4
+ 177 00ca FFF7FEFF 		bl	TIM_OC3Init
+ 178              	.LVL12:
+  47:./Hardware/PWM.c **** 	TIM_OC4Init(TIM3,&TIM_OCInitStructure);
+ 179              		.loc 1 47 2 view .LVU51
+ 180 00ce 6946     		mov	r1, sp
+ 181 00d0 2046     		mov	r0, r4
+ 182 00d2 FFF7FEFF 		bl	TIM_OC4Init
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 5
+
+
+ 183              	.LVL13:
+  48:./Hardware/PWM.c **** 	//使能预装载器
+  49:./Hardware/PWM.c **** 	TIM_OC1PreloadConfig(TIM3,TIM_OCPreload_Enable);
+ 184              		.loc 1 49 2 view .LVU52
+ 185 00d6 0821     		movs	r1, #8
+ 186 00d8 2046     		mov	r0, r4
+ 187 00da FFF7FEFF 		bl	TIM_OC1PreloadConfig
+ 188              	.LVL14:
+  50:./Hardware/PWM.c **** 	TIM_OC2PreloadConfig(TIM3,TIM_OCPreload_Enable);
+ 189              		.loc 1 50 2 view .LVU53
+ 190 00de 0821     		movs	r1, #8
+ 191 00e0 2046     		mov	r0, r4
+ 192 00e2 FFF7FEFF 		bl	TIM_OC2PreloadConfig
+ 193              	.LVL15:
+  51:./Hardware/PWM.c **** 	TIM_OC3PreloadConfig(TIM3,TIM_OCPreload_Enable);
+ 194              		.loc 1 51 2 view .LVU54
+ 195 00e6 0821     		movs	r1, #8
+ 196 00e8 2046     		mov	r0, r4
+ 197 00ea FFF7FEFF 		bl	TIM_OC3PreloadConfig
+ 198              	.LVL16:
+  52:./Hardware/PWM.c **** 	TIM_OC4PreloadConfig(TIM3,TIM_OCPreload_Enable);
+ 199              		.loc 1 52 2 view .LVU55
+ 200 00ee 0821     		movs	r1, #8
+ 201 00f0 2046     		mov	r0, r4
+ 202 00f2 FFF7FEFF 		bl	TIM_OC4PreloadConfig
+ 203              	.LVL17:
+  53:./Hardware/PWM.c **** 	TIM_ARRPreloadConfig(TIM3,ENABLE);
+ 204              		.loc 1 53 2 view .LVU56
+ 205 00f6 2946     		mov	r1, r5
+ 206 00f8 2046     		mov	r0, r4
+ 207 00fa FFF7FEFF 		bl	TIM_ARRPreloadConfig
+ 208              	.LVL18:
+  54:./Hardware/PWM.c **** 	
+  55:./Hardware/PWM.c **** 	TIM_Cmd(TIM3,ENABLE);
+ 209              		.loc 1 55 2 view .LVU57
+ 210 00fe 2946     		mov	r1, r5
+ 211 0100 2046     		mov	r0, r4
+ 212 0102 FFF7FEFF 		bl	TIM_Cmd
+ 213              	.LVL19:
+  56:./Hardware/PWM.c **** 
+  57:./Hardware/PWM.c **** }
+ 214              		.loc 1 57 1 is_stmt 0 view .LVU58
+ 215 0106 0AB0     		add	sp, sp, #40
+ 216              	.LCFI2:
+ 217              		.cfi_def_cfa_offset 24
+ 218              		@ sp needed
+ 219 0108 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 220              	.L4:
+ 221              		.align	2
+ 222              	.L3:
+ 223 010c 00040240 		.word	1073873920
+ 224 0110 00040040 		.word	1073742848
+ 225 0114 00000240 		.word	1073872896
+ 226              		.cfi_endproc
+ 227              	.LFE126:
+ 229              		.section	.text.PWM_SetCompareAll,"ax",%progbits
+ 230              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 6
+
+
+ 231              		.global	PWM_SetCompareAll
+ 232              		.syntax unified
+ 233              		.thumb
+ 234              		.thumb_func
+ 236              	PWM_SetCompareAll:
+ 237              	.LVL20:
+ 238              	.LFB127:
+  58:./Hardware/PWM.c **** 
+  59:./Hardware/PWM.c **** void PWM_SetCompareAll(uint16_t Compare)
+  60:./Hardware/PWM.c **** {
+ 239              		.loc 1 60 1 is_stmt 1 view -0
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 0
+ 242              		@ frame_needed = 0, uses_anonymous_args = 0
+ 243              		.loc 1 60 1 is_stmt 0 view .LVU60
+ 244 0000 38B5     		push	{r3, r4, r5, lr}
+ 245              	.LCFI3:
+ 246              		.cfi_def_cfa_offset 16
+ 247              		.cfi_offset 3, -16
+ 248              		.cfi_offset 4, -12
+ 249              		.cfi_offset 5, -8
+ 250              		.cfi_offset 14, -4
+ 251 0002 0446     		mov	r4, r0
+  61:./Hardware/PWM.c **** 	TIM_SetCompare1(TIM3, Compare);
+ 252              		.loc 1 61 2 is_stmt 1 view .LVU61
+ 253 0004 084D     		ldr	r5, .L7
+ 254 0006 0146     		mov	r1, r0
+ 255 0008 2846     		mov	r0, r5
+ 256              	.LVL21:
+ 257              		.loc 1 61 2 is_stmt 0 view .LVU62
+ 258 000a FFF7FEFF 		bl	TIM_SetCompare1
+ 259              	.LVL22:
+  62:./Hardware/PWM.c **** 	TIM_SetCompare2(TIM3, Compare);
+ 260              		.loc 1 62 2 is_stmt 1 view .LVU63
+ 261 000e 2146     		mov	r1, r4
+ 262 0010 2846     		mov	r0, r5
+ 263 0012 FFF7FEFF 		bl	TIM_SetCompare2
+ 264              	.LVL23:
+  63:./Hardware/PWM.c **** 	TIM_SetCompare3(TIM3, Compare);
+ 265              		.loc 1 63 2 view .LVU64
+ 266 0016 2146     		mov	r1, r4
+ 267 0018 2846     		mov	r0, r5
+ 268 001a FFF7FEFF 		bl	TIM_SetCompare3
+ 269              	.LVL24:
+  64:./Hardware/PWM.c **** 	TIM_SetCompare4(TIM3, Compare);
+ 270              		.loc 1 64 2 view .LVU65
+ 271 001e 2146     		mov	r1, r4
+ 272 0020 2846     		mov	r0, r5
+ 273 0022 FFF7FEFF 		bl	TIM_SetCompare4
+ 274              	.LVL25:
+  65:./Hardware/PWM.c **** }
+ 275              		.loc 1 65 1 is_stmt 0 view .LVU66
+ 276 0026 38BD     		pop	{r3, r4, r5, pc}
+ 277              	.L8:
+ 278              		.align	2
+ 279              	.L7:
+ 280 0028 00040040 		.word	1073742848
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 7
+
+
+ 281              		.cfi_endproc
+ 282              	.LFE127:
+ 284              		.section	.text.Motor_Init,"ax",%progbits
+ 285              		.align	1
+ 286              		.global	Motor_Init
+ 287              		.syntax unified
+ 288              		.thumb
+ 289              		.thumb_func
+ 291              	Motor_Init:
+ 292              	.LFB128:
+  66:./Hardware/PWM.c **** 
+  67:./Hardware/PWM.c **** 
+  68:./Hardware/PWM.c **** void Motor_Init()
+  69:./Hardware/PWM.c **** {
+ 293              		.loc 1 69 1 is_stmt 1 view -0
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 0
+ 296              		@ frame_needed = 0, uses_anonymous_args = 0
+ 297 0000 08B5     		push	{r3, lr}
+ 298              	.LCFI4:
+ 299              		.cfi_def_cfa_offset 8
+ 300              		.cfi_offset 3, -8
+ 301              		.cfi_offset 14, -4
+  70:./Hardware/PWM.c **** 	PWM_Init();
+ 302              		.loc 1 70 2 view .LVU68
+ 303 0002 FFF7FEFF 		bl	PWM_Init
+ 304              	.LVL26:
+  71:./Hardware/PWM.c **** }
+ 305              		.loc 1 71 1 is_stmt 0 view .LVU69
+ 306 0006 08BD     		pop	{r3, pc}
+ 307              		.cfi_endproc
+ 308              	.LFE128:
+ 310              		.section	.text.Motor_SetSpeed_All,"ax",%progbits
+ 311              		.align	1
+ 312              		.global	Motor_SetSpeed_All
+ 313              		.syntax unified
+ 314              		.thumb
+ 315              		.thumb_func
+ 317              	Motor_SetSpeed_All:
+ 318              	.LVL27:
+ 319              	.LFB129:
+  72:./Hardware/PWM.c **** 
+  73:./Hardware/PWM.c **** void Motor_SetSpeed_All(int8_t speed)
+  74:./Hardware/PWM.c **** {
+ 320              		.loc 1 74 1 is_stmt 1 view -0
+ 321              		.cfi_startproc
+ 322              		@ args = 0, pretend = 0, frame = 0
+ 323              		@ frame_needed = 0, uses_anonymous_args = 0
+ 324              		.loc 1 74 1 is_stmt 0 view .LVU71
+ 325 0000 08B5     		push	{r3, lr}
+ 326              	.LCFI5:
+ 327              		.cfi_def_cfa_offset 8
+ 328              		.cfi_offset 3, -8
+ 329              		.cfi_offset 14, -4
+  75:./Hardware/PWM.c **** 	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
+ 330              		.loc 1 75 2 is_stmt 1 view .LVU72
+ 331              		.loc 1 75 8 is_stmt 0 view .LVU73
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 8
+
+
+ 332 0002 6328     		cmp	r0, #99
+ 333 0004 06DC     		bgt	.L13
+ 334              		.loc 1 75 8 discriminator 1 view .LVU74
+ 335 0006 20EAE070 		bic	r0, r0, r0, asr #31
+ 336              	.LVL28:
+ 337              	.L12:
+  76:./Hardware/PWM.c **** 	PWM_SetCompareAll(speed+100);
+ 338              		.loc 1 76 2 is_stmt 1 discriminator 4 view .LVU75
+ 339 000a 6430     		adds	r0, r0, #100
+ 340              	.LVL29:
+ 341              		.loc 1 76 2 is_stmt 0 discriminator 4 view .LVU76
+ 342 000c 80B2     		uxth	r0, r0
+ 343 000e FFF7FEFF 		bl	PWM_SetCompareAll
+ 344              	.LVL30:
+  77:./Hardware/PWM.c **** }	
+ 345              		.loc 1 77 1 discriminator 4 view .LVU77
+ 346 0012 08BD     		pop	{r3, pc}
+ 347              	.LVL31:
+ 348              	.L13:
+  75:./Hardware/PWM.c **** 	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
+ 349              		.loc 1 75 8 view .LVU78
+ 350 0014 6420     		movs	r0, #100
+ 351              	.LVL32:
+  75:./Hardware/PWM.c **** 	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
+ 352              		.loc 1 75 8 view .LVU79
+ 353 0016 F8E7     		b	.L12
+ 354              		.cfi_endproc
+ 355              	.LFE129:
+ 357              		.text
+ 358              	.Letext0:
+ 359              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 360              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 361              		.file 4 "./CORE/stm32f4xx.h"
+ 362              		.file 5 "./Library/stm32f4xx_gpio.h"
+ 363              		.file 6 "./Library/stm32f4xx_tim.h"
+ 364              		.file 7 "./Library/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 PWM.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:20     .text.PWM_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:26     .text.PWM_Init:0000000000000000 PWM_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:223    .text.PWM_Init:000000000000010c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:230    .text.PWM_SetCompareAll:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:236    .text.PWM_SetCompareAll:0000000000000000 PWM_SetCompareAll
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:280    .text.PWM_SetCompareAll:0000000000000028 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:285    .text.Motor_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:291    .text.Motor_Init:0000000000000000 Motor_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:311    .text.Motor_SetSpeed_All:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQnZLit.s:317    .text.Motor_SetSpeed_All:0000000000000000 Motor_SetSpeed_All
+
+UNDEFINED SYMBOLS
+RCC_AHB1PeriphClockCmd
+RCC_APB1PeriphClockCmd
+GPIO_Init
+GPIO_PinAFConfig
+TIM_TimeBaseInit
+TIM_OC1Init
+TIM_OC2Init
+TIM_OC3Init
+TIM_OC4Init
+TIM_OC1PreloadConfig
+TIM_OC2PreloadConfig
+TIM_OC3PreloadConfig
+TIM_OC4PreloadConfig
+TIM_ARRPreloadConfig
+TIM_Cmd
+TIM_SetCompare1
+TIM_SetCompare2
+TIM_SetCompare3
+TIM_SetCompare4

@@ -1,0 +1,762 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"ATKBLE01.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.BLE_Init,"ax",%progbits
+  20              		.align	1
+  21              		.global	BLE_Init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	BLE_Init:
+  27              	.LFB126:
+  28              		.file 1 "./Hardware/ATKBLE01.c"
+   1:./Hardware/ATKBLE01.c **** #include "ATKBLE01.h"
+   2:./Hardware/ATKBLE01.c **** 
+   3:./Hardware/ATKBLE01.c **** /* Private Functions -------------------------------------------------------------------*/
+   4:./Hardware/ATKBLE01.c **** void USART1_SendByte(uint8_t Byte);
+   5:./Hardware/ATKBLE01.c **** 
+   6:./Hardware/ATKBLE01.c **** 
+   7:./Hardware/ATKBLE01.c **** //
+   8:./Hardware/ATKBLE01.c **** /*********************************************************************************
+   9:./Hardware/ATKBLE01.c ****  *USART的初始化，包括
+  10:./Hardware/ATKBLE01.c ****  * -GPIO和USART时钟源
+  11:./Hardware/ATKBLE01.c ****  * -GPIO初始化
+  12:./Hardware/ATKBLE01.c ****  *    -PA9(TX) PC7(3.3v)
+  13:./Hardware/ATKBLE01.c ****  *    -复用功能
+  14:./Hardware/ATKBLE01.c ****  *    -复用推挽输出
+  15:./Hardware/ATKBLE01.c ****  *    -默认上拉
+  16:./Hardware/ATKBLE01.c ****  * -AFIO复用功能初始化
+  17:./Hardware/ATKBLE01.c ****  * -USART初始化
+  18:./Hardware/ATKBLE01.c ****  *   -波特率115200
+  19:./Hardware/ATKBLE01.c ****  *   -数据位长度8bit
+  20:./Hardware/ATKBLE01.c ****  *   -一个停止位
+  21:./Hardware/ATKBLE01.c ****  *   -无校验位
+  22:./Hardware/ATKBLE01.c ****  *   -无硬件流控制
+  23:./Hardware/ATKBLE01.c ****  *   -发送模式
+  24:./Hardware/ATKBLE01.c ****  * -使能USART
+  25:./Hardware/ATKBLE01.c ****  ********************************************************************************/ 
+  26:./Hardware/ATKBLE01.c **** void BLE_Init(void)
+  27:./Hardware/ATKBLE01.c ****  {
+  29              		.loc 1 27 2 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 24
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 2
+
+
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 20
+  36              		.cfi_offset 4, -20
+  37              		.cfi_offset 5, -16
+  38              		.cfi_offset 6, -12
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 87B0     		sub	sp, sp, #28
+  42              	.LCFI1:
+  43              		.cfi_def_cfa_offset 48
+  28:./Hardware/ATKBLE01.c **** 	 RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,  ENABLE);
+  44              		.loc 1 28 3 view .LVU1
+  45 0004 0121     		movs	r1, #1
+  46 0006 0846     		mov	r0, r1
+  47 0008 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+  48              	.LVL0:
+  29:./Hardware/ATKBLE01.c **** 	 RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,  ENABLE);
+  49              		.loc 1 29 3 view .LVU2
+  50 000c 0121     		movs	r1, #1
+  51 000e 0420     		movs	r0, #4
+  52 0010 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+  53              	.LVL1:
+  30:./Hardware/ATKBLE01.c **** 	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+  54              		.loc 1 30 3 view .LVU3
+  55 0014 0121     		movs	r1, #1
+  56 0016 1020     		movs	r0, #16
+  57 0018 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  58              	.LVL2:
+  31:./Hardware/ATKBLE01.c **** 	 
+  32:./Hardware/ATKBLE01.c **** 	 GPIO_InitTypeDef GPIO_InitStructure;
+  59              		.loc 1 32 3 view .LVU4
+  33:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+  60              		.loc 1 33 3 view .LVU5
+  61              		.loc 1 33 31 is_stmt 0 view .LVU6
+  62 001c 4FF40073 		mov	r3, #512
+  63 0020 0493     		str	r3, [sp, #16]
+  34:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  64              		.loc 1 34 3 is_stmt 1 view .LVU7
+  65              		.loc 1 34 32 is_stmt 0 view .LVU8
+  66 0022 0226     		movs	r6, #2
+  67 0024 8DF81460 		strb	r6, [sp, #20]
+  35:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  68              		.loc 1 35 3 is_stmt 1 view .LVU9
+  69              		.loc 1 35 33 is_stmt 0 view .LVU10
+  70 0028 0024     		movs	r4, #0
+  71 002a 8DF81640 		strb	r4, [sp, #22]
+  36:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  72              		.loc 1 36 3 is_stmt 1 view .LVU11
+  73              		.loc 1 36 33 is_stmt 0 view .LVU12
+  74 002e 8DF81560 		strb	r6, [sp, #21]
+  37:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  75              		.loc 1 37 3 is_stmt 1 view .LVU13
+  76              		.loc 1 37 32 is_stmt 0 view .LVU14
+  77 0032 0125     		movs	r5, #1
+  78 0034 8DF81750 		strb	r5, [sp, #23]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 3
+
+
+  38:./Hardware/ATKBLE01.c **** 	 GPIO_Init(GPIOA,&GPIO_InitStructure);
+  79              		.loc 1 38 3 is_stmt 1 view .LVU15
+  80 0038 1C4F     		ldr	r7, .L3
+  81 003a 04A9     		add	r1, sp, #16
+  82 003c 3846     		mov	r0, r7
+  83 003e FFF7FEFF 		bl	GPIO_Init
+  84              	.LVL3:
+  39:./Hardware/ATKBLE01.c **** 	 GPIO_PinAFConfig(GPIOA,GPIO_PinSource9,GPIO_AF_USART1);
+  85              		.loc 1 39 3 view .LVU16
+  86 0042 0722     		movs	r2, #7
+  87 0044 0921     		movs	r1, #9
+  88 0046 3846     		mov	r0, r7
+  89 0048 FFF7FEFF 		bl	GPIO_PinAFConfig
+  90              	.LVL4:
+  40:./Hardware/ATKBLE01.c **** 	 
+  41:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+  91              		.loc 1 41 3 view .LVU17
+  92              		.loc 1 41 31 is_stmt 0 view .LVU18
+  93 004c 8027     		movs	r7, #128
+  94 004e 0497     		str	r7, [sp, #16]
+  42:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  95              		.loc 1 42 3 is_stmt 1 view .LVU19
+  96              		.loc 1 42 32 is_stmt 0 view .LVU20
+  97 0050 8DF81450 		strb	r5, [sp, #20]
+  43:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  98              		.loc 1 43 3 is_stmt 1 view .LVU21
+  99              		.loc 1 43 33 is_stmt 0 view .LVU22
+ 100 0054 8DF81640 		strb	r4, [sp, #22]
+  44:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 101              		.loc 1 44 3 is_stmt 1 view .LVU23
+ 102              		.loc 1 44 33 is_stmt 0 view .LVU24
+ 103 0058 8DF81560 		strb	r6, [sp, #21]
+  45:./Hardware/ATKBLE01.c **** 	 GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 104              		.loc 1 45 3 is_stmt 1 view .LVU25
+ 105              		.loc 1 45 32 is_stmt 0 view .LVU26
+ 106 005c 8DF81750 		strb	r5, [sp, #23]
+  46:./Hardware/ATKBLE01.c **** 	 GPIO_Init(GPIOC,&GPIO_InitStructure);
+ 107              		.loc 1 46 3 is_stmt 1 view .LVU27
+ 108 0060 134E     		ldr	r6, .L3+4
+ 109 0062 04A9     		add	r1, sp, #16
+ 110 0064 3046     		mov	r0, r6
+ 111 0066 FFF7FEFF 		bl	GPIO_Init
+ 112              	.LVL5:
+  47:./Hardware/ATKBLE01.c **** 	 GPIO_SetBits(GPIOC,GPIO_Pin_7);
+ 113              		.loc 1 47 3 view .LVU28
+ 114 006a 3946     		mov	r1, r7
+ 115 006c 3046     		mov	r0, r6
+ 116 006e FFF7FEFF 		bl	GPIO_SetBits
+ 117              	.LVL6:
+  48:./Hardware/ATKBLE01.c **** 
+  49:./Hardware/ATKBLE01.c **** 	 
+  50:./Hardware/ATKBLE01.c **** 	 USART_InitTypeDef USART_InitStructure;
+ 118              		.loc 1 50 3 view .LVU29
+  51:./Hardware/ATKBLE01.c **** 	 USART_InitStructure.USART_BaudRate = 115200;
+ 119              		.loc 1 51 3 view .LVU30
+ 120              		.loc 1 51 38 is_stmt 0 view .LVU31
+ 121 0072 4FF4E133 		mov	r3, #115200
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 4
+
+
+ 122 0076 0093     		str	r3, [sp]
+  52:./Hardware/ATKBLE01.c **** 	 USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+ 123              		.loc 1 52 3 is_stmt 1 view .LVU32
+ 124              		.loc 1 52 40 is_stmt 0 view .LVU33
+ 125 0078 ADF80440 		strh	r4, [sp, #4]	@ movhi
+  53:./Hardware/ATKBLE01.c **** 	 USART_InitStructure.USART_StopBits = USART_StopBits_1;
+ 126              		.loc 1 53 3 is_stmt 1 view .LVU34
+ 127              		.loc 1 53 38 is_stmt 0 view .LVU35
+ 128 007c ADF80640 		strh	r4, [sp, #6]	@ movhi
+  54:./Hardware/ATKBLE01.c **** 	 USART_InitStructure.USART_Parity = USART_Parity_No;
+ 129              		.loc 1 54 3 is_stmt 1 view .LVU36
+ 130              		.loc 1 54 36 is_stmt 0 view .LVU37
+ 131 0080 ADF80840 		strh	r4, [sp, #8]	@ movhi
+  55:./Hardware/ATKBLE01.c **** 	 USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+ 132              		.loc 1 55 3 is_stmt 1 view .LVU38
+ 133              		.loc 1 55 49 is_stmt 0 view .LVU39
+ 134 0084 ADF80C40 		strh	r4, [sp, #12]	@ movhi
+  56:./Hardware/ATKBLE01.c **** 	 USART_InitStructure.USART_Mode = USART_Mode_Tx;
+ 135              		.loc 1 56 3 is_stmt 1 view .LVU40
+ 136              		.loc 1 56 34 is_stmt 0 view .LVU41
+ 137 0088 0823     		movs	r3, #8
+ 138 008a ADF80A30 		strh	r3, [sp, #10]	@ movhi
+  57:./Hardware/ATKBLE01.c **** 	 USART_Init(USART1,&USART_InitStructure);
+ 139              		.loc 1 57 3 is_stmt 1 view .LVU42
+ 140 008e 04F18044 		add	r4, r4, #1073741824
+ 141 0092 04F58834 		add	r4, r4, #69632
+ 142 0096 6946     		mov	r1, sp
+ 143 0098 2046     		mov	r0, r4
+ 144 009a FFF7FEFF 		bl	USART_Init
+ 145              	.LVL7:
+  58:./Hardware/ATKBLE01.c **** 	 USART_Cmd(USART1,ENABLE);
+ 146              		.loc 1 58 3 view .LVU43
+ 147 009e 2946     		mov	r1, r5
+ 148 00a0 2046     		mov	r0, r4
+ 149 00a2 FFF7FEFF 		bl	USART_Cmd
+ 150              	.LVL8:
+  59:./Hardware/ATKBLE01.c **** 	 	 
+  60:./Hardware/ATKBLE01.c ****  }
+ 151              		.loc 1 60 2 is_stmt 0 view .LVU44
+ 152 00a6 07B0     		add	sp, sp, #28
+ 153              	.LCFI2:
+ 154              		.cfi_def_cfa_offset 20
+ 155              		@ sp needed
+ 156 00a8 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 157              	.L4:
+ 158 00aa 00BF     		.align	2
+ 159              	.L3:
+ 160 00ac 00000240 		.word	1073872896
+ 161 00b0 00080240 		.word	1073874944
+ 162              		.cfi_endproc
+ 163              	.LFE126:
+ 165              		.section	.text.USART1_SendByte,"ax",%progbits
+ 166              		.align	1
+ 167              		.global	USART1_SendByte
+ 168              		.syntax unified
+ 169              		.thumb
+ 170              		.thumb_func
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 5
+
+
+ 172              	USART1_SendByte:
+ 173              	.LVL9:
+ 174              	.LFB127:
+  61:./Hardware/ATKBLE01.c **** 
+  62:./Hardware/ATKBLE01.c **** 
+  63:./Hardware/ATKBLE01.c ****  
+  64:./Hardware/ATKBLE01.c **** void USART1_SendByte(uint8_t Byte)
+  65:./Hardware/ATKBLE01.c **** {
+ 175              		.loc 1 65 1 is_stmt 1 view -0
+ 176              		.cfi_startproc
+ 177              		@ args = 0, pretend = 0, frame = 0
+ 178              		@ frame_needed = 0, uses_anonymous_args = 0
+ 179              		.loc 1 65 1 is_stmt 0 view .LVU46
+ 180 0000 08B5     		push	{r3, lr}
+ 181              	.LCFI3:
+ 182              		.cfi_def_cfa_offset 8
+ 183              		.cfi_offset 3, -8
+ 184              		.cfi_offset 14, -4
+ 185 0002 0146     		mov	r1, r0
+  66:./Hardware/ATKBLE01.c **** 	USART_SendData(USART1, Byte);
+ 186              		.loc 1 66 2 is_stmt 1 view .LVU47
+ 187 0004 0448     		ldr	r0, .L8
+ 188              	.LVL10:
+ 189              		.loc 1 66 2 is_stmt 0 view .LVU48
+ 190 0006 FFF7FEFF 		bl	USART_SendData
+ 191              	.LVL11:
+  67:./Hardware/ATKBLE01.c **** 	while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET); //等待TDR中的数据完全移到移位寄存器
+ 192              		.loc 1 67 2 is_stmt 1 view .LVU49
+ 193              	.L6:
+ 194              		.loc 1 67 62 discriminator 1 view .LVU50
+ 195              		.loc 1 67 8 discriminator 1 view .LVU51
+ 196              		.loc 1 67 9 is_stmt 0 discriminator 1 view .LVU52
+ 197 000a 8021     		movs	r1, #128
+ 198 000c 0248     		ldr	r0, .L8
+ 199 000e FFF7FEFF 		bl	USART_GetFlagStatus
+ 200              	.LVL12:
+ 201              		.loc 1 67 8 discriminator 1 view .LVU53
+ 202 0012 0028     		cmp	r0, #0
+ 203 0014 F9D0     		beq	.L6
+  68:./Hardware/ATKBLE01.c **** }
+ 204              		.loc 1 68 1 view .LVU54
+ 205 0016 08BD     		pop	{r3, pc}
+ 206              	.L9:
+ 207              		.align	2
+ 208              	.L8:
+ 209 0018 00100140 		.word	1073811456
+ 210              		.cfi_endproc
+ 211              	.LFE127:
+ 213              		.section	.text.BLE_SendArray,"ax",%progbits
+ 214              		.align	1
+ 215              		.global	BLE_SendArray
+ 216              		.syntax unified
+ 217              		.thumb
+ 218              		.thumb_func
+ 220              	BLE_SendArray:
+ 221              	.LVL13:
+ 222              	.LFB128:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 6
+
+
+  69:./Hardware/ATKBLE01.c **** 
+  70:./Hardware/ATKBLE01.c **** void BLE_SendArray(uint8_t *Array, uint16_t Length)
+  71:./Hardware/ATKBLE01.c **** {
+ 223              		.loc 1 71 1 is_stmt 1 view -0
+ 224              		.cfi_startproc
+ 225              		@ args = 0, pretend = 0, frame = 0
+ 226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 227              		.loc 1 71 1 is_stmt 0 view .LVU56
+ 228 0000 70B5     		push	{r4, r5, r6, lr}
+ 229              	.LCFI4:
+ 230              		.cfi_def_cfa_offset 16
+ 231              		.cfi_offset 4, -16
+ 232              		.cfi_offset 5, -12
+ 233              		.cfi_offset 6, -8
+ 234              		.cfi_offset 14, -4
+ 235 0002 0646     		mov	r6, r0
+ 236 0004 0D46     		mov	r5, r1
+  72:./Hardware/ATKBLE01.c **** 	uint16_t i;
+ 237              		.loc 1 72 2 is_stmt 1 view .LVU57
+  73:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 238              		.loc 1 73 2 view .LVU58
+ 239              	.LVL14:
+ 240              		.loc 1 73 9 is_stmt 0 view .LVU59
+ 241 0006 0024     		movs	r4, #0
+ 242              		.loc 1 73 2 view .LVU60
+ 243 0008 04E0     		b	.L11
+ 244              	.LVL15:
+ 245              	.L12:
+  74:./Hardware/ATKBLE01.c **** 	{
+  75:./Hardware/ATKBLE01.c **** 		USART1_SendByte(Array[i]);
+ 246              		.loc 1 75 3 is_stmt 1 discriminator 3 view .LVU61
+ 247 000a 305D     		ldrb	r0, [r6, r4]	@ zero_extendqisi2
+ 248 000c FFF7FEFF 		bl	USART1_SendByte
+ 249              	.LVL16:
+  73:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 250              		.loc 1 73 26 discriminator 3 view .LVU62
+  73:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 251              		.loc 1 73 28 is_stmt 0 discriminator 3 view .LVU63
+ 252 0010 0134     		adds	r4, r4, #1
+ 253              	.LVL17:
+  73:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 254              		.loc 1 73 28 discriminator 3 view .LVU64
+ 255 0012 A4B2     		uxth	r4, r4
+ 256              	.LVL18:
+ 257              	.L11:
+  73:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 258              		.loc 1 73 14 is_stmt 1 discriminator 1 view .LVU65
+  73:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 259              		.loc 1 73 2 is_stmt 0 discriminator 1 view .LVU66
+ 260 0014 AC42     		cmp	r4, r5
+ 261 0016 F8D3     		bcc	.L12
+  76:./Hardware/ATKBLE01.c **** 	}
+  77:./Hardware/ATKBLE01.c **** }
+ 262              		.loc 1 77 1 view .LVU67
+ 263 0018 70BD     		pop	{r4, r5, r6, pc}
+ 264              		.loc 1 77 1 view .LVU68
+ 265              		.cfi_endproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 7
+
+
+ 266              	.LFE128:
+ 268              		.section	.text.BLE_SendString,"ax",%progbits
+ 269              		.align	1
+ 270              		.global	BLE_SendString
+ 271              		.syntax unified
+ 272              		.thumb
+ 273              		.thumb_func
+ 275              	BLE_SendString:
+ 276              	.LVL19:
+ 277              	.LFB129:
+  78:./Hardware/ATKBLE01.c **** 
+  79:./Hardware/ATKBLE01.c **** void BLE_SendString(char *String)
+  80:./Hardware/ATKBLE01.c **** {
+ 278              		.loc 1 80 1 is_stmt 1 view -0
+ 279              		.cfi_startproc
+ 280              		@ args = 0, pretend = 0, frame = 0
+ 281              		@ frame_needed = 0, uses_anonymous_args = 0
+ 282              		.loc 1 80 1 is_stmt 0 view .LVU70
+ 283 0000 38B5     		push	{r3, r4, r5, lr}
+ 284              	.LCFI5:
+ 285              		.cfi_def_cfa_offset 16
+ 286              		.cfi_offset 3, -16
+ 287              		.cfi_offset 4, -12
+ 288              		.cfi_offset 5, -8
+ 289              		.cfi_offset 14, -4
+ 290 0002 0546     		mov	r5, r0
+  81:./Hardware/ATKBLE01.c **** 	uint8_t i;
+ 291              		.loc 1 81 2 is_stmt 1 view .LVU71
+  82:./Hardware/ATKBLE01.c **** 	for (i = 0; String[i] != '\0'; i ++)
+ 292              		.loc 1 82 2 view .LVU72
+ 293              	.LVL20:
+ 294              		.loc 1 82 9 is_stmt 0 view .LVU73
+ 295 0004 0024     		movs	r4, #0
+ 296              		.loc 1 82 2 view .LVU74
+ 297 0006 03E0     		b	.L15
+ 298              	.LVL21:
+ 299              	.L16:
+  83:./Hardware/ATKBLE01.c **** 	{
+  84:./Hardware/ATKBLE01.c **** 		USART1_SendByte(String[i]);
+ 300              		.loc 1 84 3 is_stmt 1 discriminator 3 view .LVU75
+ 301 0008 FFF7FEFF 		bl	USART1_SendByte
+ 302              	.LVL22:
+  82:./Hardware/ATKBLE01.c **** 	for (i = 0; String[i] != '\0'; i ++)
+ 303              		.loc 1 82 33 discriminator 3 view .LVU76
+  82:./Hardware/ATKBLE01.c **** 	for (i = 0; String[i] != '\0'; i ++)
+ 304              		.loc 1 82 35 is_stmt 0 discriminator 3 view .LVU77
+ 305 000c 0134     		adds	r4, r4, #1
+ 306              	.LVL23:
+  82:./Hardware/ATKBLE01.c **** 	for (i = 0; String[i] != '\0'; i ++)
+ 307              		.loc 1 82 35 discriminator 3 view .LVU78
+ 308 000e E4B2     		uxtb	r4, r4
+ 309              	.LVL24:
+ 310              	.L15:
+  82:./Hardware/ATKBLE01.c **** 	for (i = 0; String[i] != '\0'; i ++)
+ 311              		.loc 1 82 14 is_stmt 1 discriminator 1 view .LVU79
+  82:./Hardware/ATKBLE01.c **** 	for (i = 0; String[i] != '\0'; i ++)
+ 312              		.loc 1 82 20 is_stmt 0 discriminator 1 view .LVU80
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 8
+
+
+ 313 0010 285D     		ldrb	r0, [r5, r4]	@ zero_extendqisi2
+  82:./Hardware/ATKBLE01.c **** 	for (i = 0; String[i] != '\0'; i ++)
+ 314              		.loc 1 82 2 discriminator 1 view .LVU81
+ 315 0012 0028     		cmp	r0, #0
+ 316 0014 F8D1     		bne	.L16
+  85:./Hardware/ATKBLE01.c **** 	}
+  86:./Hardware/ATKBLE01.c **** }
+ 317              		.loc 1 86 1 view .LVU82
+ 318 0016 38BD     		pop	{r3, r4, r5, pc}
+ 319              		.loc 1 86 1 view .LVU83
+ 320              		.cfi_endproc
+ 321              	.LFE129:
+ 323              		.section	.text.BLE_Pow,"ax",%progbits
+ 324              		.align	1
+ 325              		.global	BLE_Pow
+ 326              		.syntax unified
+ 327              		.thumb
+ 328              		.thumb_func
+ 330              	BLE_Pow:
+ 331              	.LVL25:
+ 332              	.LFB130:
+  87:./Hardware/ATKBLE01.c **** 
+  88:./Hardware/ATKBLE01.c **** uint32_t BLE_Pow(uint32_t X, uint32_t Y)
+  89:./Hardware/ATKBLE01.c **** {
+ 333              		.loc 1 89 1 is_stmt 1 view -0
+ 334              		.cfi_startproc
+ 335              		@ args = 0, pretend = 0, frame = 0
+ 336              		@ frame_needed = 0, uses_anonymous_args = 0
+ 337              		@ link register save eliminated.
+ 338              		.loc 1 89 1 is_stmt 0 view .LVU85
+ 339 0000 0246     		mov	r2, r0
+  90:./Hardware/ATKBLE01.c **** 	uint32_t Result = 1;
+ 340              		.loc 1 90 2 is_stmt 1 view .LVU86
+ 341              	.LVL26:
+  91:./Hardware/ATKBLE01.c **** 	while (Y --)
+ 342              		.loc 1 91 2 view .LVU87
+  90:./Hardware/ATKBLE01.c **** 	uint32_t Result = 1;
+ 343              		.loc 1 90 11 is_stmt 0 view .LVU88
+ 344 0002 0120     		movs	r0, #1
+ 345              	.LVL27:
+ 346              		.loc 1 91 8 view .LVU89
+ 347 0004 02E0     		b	.L19
+ 348              	.LVL28:
+ 349              	.L20:
+  92:./Hardware/ATKBLE01.c **** 	{
+  93:./Hardware/ATKBLE01.c **** 		Result *= X;
+ 350              		.loc 1 93 3 is_stmt 1 view .LVU90
+ 351              		.loc 1 93 10 is_stmt 0 view .LVU91
+ 352 0006 02FB00F0 		mul	r0, r2, r0
+ 353              	.LVL29:
+  91:./Hardware/ATKBLE01.c **** 	while (Y --)
+ 354              		.loc 1 91 11 view .LVU92
+ 355 000a 1946     		mov	r1, r3
+ 356              	.LVL30:
+ 357              	.L19:
+  91:./Hardware/ATKBLE01.c **** 	while (Y --)
+ 358              		.loc 1 91 8 is_stmt 1 view .LVU93
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 9
+
+
+  91:./Hardware/ATKBLE01.c **** 	while (Y --)
+ 359              		.loc 1 91 11 is_stmt 0 view .LVU94
+ 360 000c 4B1E     		subs	r3, r1, #1
+ 361              	.LVL31:
+  91:./Hardware/ATKBLE01.c **** 	while (Y --)
+ 362              		.loc 1 91 8 view .LVU95
+ 363 000e 0029     		cmp	r1, #0
+ 364 0010 F9D1     		bne	.L20
+  94:./Hardware/ATKBLE01.c **** 	}
+  95:./Hardware/ATKBLE01.c **** 	return Result;
+ 365              		.loc 1 95 2 is_stmt 1 view .LVU96
+  96:./Hardware/ATKBLE01.c **** }
+ 366              		.loc 1 96 1 is_stmt 0 view .LVU97
+ 367 0012 7047     		bx	lr
+ 368              		.cfi_endproc
+ 369              	.LFE130:
+ 371              		.section	.text.BLE_SendNumber,"ax",%progbits
+ 372              		.align	1
+ 373              		.global	BLE_SendNumber
+ 374              		.syntax unified
+ 375              		.thumb
+ 376              		.thumb_func
+ 378              	BLE_SendNumber:
+ 379              	.LVL32:
+ 380              	.LFB131:
+  97:./Hardware/ATKBLE01.c **** 
+  98:./Hardware/ATKBLE01.c **** void BLE_SendNumber(uint32_t Number, uint8_t Length)
+  99:./Hardware/ATKBLE01.c **** {
+ 381              		.loc 1 99 1 is_stmt 1 view -0
+ 382              		.cfi_startproc
+ 383              		@ args = 0, pretend = 0, frame = 0
+ 384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385              		.loc 1 99 1 is_stmt 0 view .LVU99
+ 386 0000 70B5     		push	{r4, r5, r6, lr}
+ 387              	.LCFI6:
+ 388              		.cfi_def_cfa_offset 16
+ 389              		.cfi_offset 4, -16
+ 390              		.cfi_offset 5, -12
+ 391              		.cfi_offset 6, -8
+ 392              		.cfi_offset 14, -4
+ 393 0002 0646     		mov	r6, r0
+ 394 0004 0D46     		mov	r5, r1
+ 100:./Hardware/ATKBLE01.c **** 	uint8_t i;
+ 395              		.loc 1 100 2 is_stmt 1 view .LVU100
+ 101:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 396              		.loc 1 101 2 view .LVU101
+ 397              	.LVL33:
+ 398              		.loc 1 101 9 is_stmt 0 view .LVU102
+ 399 0006 0024     		movs	r4, #0
+ 400              		.loc 1 101 2 view .LVU103
+ 401 0008 14E0     		b	.L22
+ 402              	.LVL34:
+ 403              	.L23:
+ 102:./Hardware/ATKBLE01.c **** 	{
+ 103:./Hardware/ATKBLE01.c **** 		USART1_SendByte(Number / BLE_Pow(10, Length - i - 1) % 10 + '0');
+ 404              		.loc 1 103 3 is_stmt 1 discriminator 3 view .LVU104
+ 405              		.loc 1 103 47 is_stmt 0 discriminator 3 view .LVU105
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 10
+
+
+ 406 000a 291B     		subs	r1, r5, r4
+ 407              		.loc 1 103 28 discriminator 3 view .LVU106
+ 408 000c 0139     		subs	r1, r1, #1
+ 409 000e 0A20     		movs	r0, #10
+ 410 0010 FFF7FEFF 		bl	BLE_Pow
+ 411              	.LVL35:
+ 412              		.loc 1 103 26 discriminator 3 view .LVU107
+ 413 0014 B6FBF0F0 		udiv	r0, r6, r0
+ 414              		.loc 1 103 56 discriminator 3 view .LVU108
+ 415 0018 084B     		ldr	r3, .L25
+ 416 001a A3FB0023 		umull	r2, r3, r3, r0
+ 417 001e DB08     		lsrs	r3, r3, #3
+ 418 0020 03EB8303 		add	r3, r3, r3, lsl #2
+ 419 0024 A0EB4303 		sub	r3, r0, r3, lsl #1
+ 420              		.loc 1 103 3 discriminator 3 view .LVU109
+ 421 0028 3033     		adds	r3, r3, #48
+ 422 002a D8B2     		uxtb	r0, r3
+ 423 002c FFF7FEFF 		bl	USART1_SendByte
+ 424              	.LVL36:
+ 101:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 425              		.loc 1 101 26 is_stmt 1 discriminator 3 view .LVU110
+ 101:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 426              		.loc 1 101 28 is_stmt 0 discriminator 3 view .LVU111
+ 427 0030 0134     		adds	r4, r4, #1
+ 428              	.LVL37:
+ 101:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 429              		.loc 1 101 28 discriminator 3 view .LVU112
+ 430 0032 E4B2     		uxtb	r4, r4
+ 431              	.LVL38:
+ 432              	.L22:
+ 101:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 433              		.loc 1 101 14 is_stmt 1 discriminator 1 view .LVU113
+ 101:./Hardware/ATKBLE01.c **** 	for (i = 0; i < Length; i ++)
+ 434              		.loc 1 101 2 is_stmt 0 discriminator 1 view .LVU114
+ 435 0034 AC42     		cmp	r4, r5
+ 436 0036 E8D3     		bcc	.L23
+ 104:./Hardware/ATKBLE01.c **** 	}
+ 105:./Hardware/ATKBLE01.c **** }
+ 437              		.loc 1 105 1 view .LVU115
+ 438 0038 70BD     		pop	{r4, r5, r6, pc}
+ 439              	.LVL39:
+ 440              	.L26:
+ 441              		.loc 1 105 1 view .LVU116
+ 442 003a 00BF     		.align	2
+ 443              	.L25:
+ 444 003c CDCCCCCC 		.word	-858993459
+ 445              		.cfi_endproc
+ 446              	.LFE131:
+ 448              		.section	.text.fputc,"ax",%progbits
+ 449              		.align	1
+ 450              		.global	fputc
+ 451              		.syntax unified
+ 452              		.thumb
+ 453              		.thumb_func
+ 455              	fputc:
+ 456              	.LVL40:
+ 457              	.LFB132:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 11
+
+
+ 106:./Hardware/ATKBLE01.c **** 
+ 107:./Hardware/ATKBLE01.c **** int fputc(int ch, FILE *f)
+ 108:./Hardware/ATKBLE01.c **** {
+ 458              		.loc 1 108 1 is_stmt 1 view -0
+ 459              		.cfi_startproc
+ 460              		@ args = 0, pretend = 0, frame = 0
+ 461              		@ frame_needed = 0, uses_anonymous_args = 0
+ 462              		.loc 1 108 1 is_stmt 0 view .LVU118
+ 463 0000 10B5     		push	{r4, lr}
+ 464              	.LCFI7:
+ 465              		.cfi_def_cfa_offset 8
+ 466              		.cfi_offset 4, -8
+ 467              		.cfi_offset 14, -4
+ 468 0002 0446     		mov	r4, r0
+ 109:./Hardware/ATKBLE01.c **** 	USART1_SendByte(ch);
+ 469              		.loc 1 109 2 is_stmt 1 view .LVU119
+ 470 0004 C0B2     		uxtb	r0, r0
+ 471              	.LVL41:
+ 472              		.loc 1 109 2 is_stmt 0 view .LVU120
+ 473 0006 FFF7FEFF 		bl	USART1_SendByte
+ 474              	.LVL42:
+ 110:./Hardware/ATKBLE01.c **** 	return ch;
+ 475              		.loc 1 110 2 is_stmt 1 view .LVU121
+ 111:./Hardware/ATKBLE01.c **** }
+ 476              		.loc 1 111 1 is_stmt 0 view .LVU122
+ 477 000a 2046     		mov	r0, r4
+ 478 000c 10BD     		pop	{r4, pc}
+ 479              		.loc 1 111 1 view .LVU123
+ 480              		.cfi_endproc
+ 481              	.LFE132:
+ 483              		.section	.text.BLE_Printf,"ax",%progbits
+ 484              		.align	1
+ 485              		.global	BLE_Printf
+ 486              		.syntax unified
+ 487              		.thumb
+ 488              		.thumb_func
+ 490              	BLE_Printf:
+ 491              	.LVL43:
+ 492              	.LFB133:
+ 112:./Hardware/ATKBLE01.c **** 
+ 113:./Hardware/ATKBLE01.c **** void BLE_Printf(char *format, ...)
+ 114:./Hardware/ATKBLE01.c **** {
+ 493              		.loc 1 114 1 is_stmt 1 view -0
+ 494              		.cfi_startproc
+ 495              		@ args = 4, pretend = 16, frame = 104
+ 496              		@ frame_needed = 0, uses_anonymous_args = 1
+ 497              		.loc 1 114 1 is_stmt 0 view .LVU125
+ 498 0000 0FB4     		push	{r0, r1, r2, r3}
+ 499              	.LCFI8:
+ 500              		.cfi_def_cfa_offset 16
+ 501              		.cfi_offset 0, -16
+ 502              		.cfi_offset 1, -12
+ 503              		.cfi_offset 2, -8
+ 504              		.cfi_offset 3, -4
+ 505 0002 00B5     		push	{lr}
+ 506              	.LCFI9:
+ 507              		.cfi_def_cfa_offset 20
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 12
+
+
+ 508              		.cfi_offset 14, -20
+ 509 0004 9BB0     		sub	sp, sp, #108
+ 510              	.LCFI10:
+ 511              		.cfi_def_cfa_offset 128
+ 512 0006 1CAA     		add	r2, sp, #112
+ 513 0008 52F8041B 		ldr	r1, [r2], #4
+ 115:./Hardware/ATKBLE01.c **** 	char String[100];
+ 514              		.loc 1 115 2 is_stmt 1 view .LVU126
+ 116:./Hardware/ATKBLE01.c **** 	va_list arg;
+ 515              		.loc 1 116 2 view .LVU127
+ 117:./Hardware/ATKBLE01.c **** 	va_start(arg, format);
+ 516              		.loc 1 117 2 view .LVU128
+ 517 000c 0092     		str	r2, [sp]
+ 118:./Hardware/ATKBLE01.c **** 	vsprintf(String, format, arg);
+ 518              		.loc 1 118 2 view .LVU129
+ 519 000e 01A8     		add	r0, sp, #4
+ 520 0010 FFF7FEFF 		bl	vsprintf
+ 521              	.LVL44:
+ 119:./Hardware/ATKBLE01.c **** 	va_end(arg);
+ 522              		.loc 1 119 2 view .LVU130
+ 120:./Hardware/ATKBLE01.c **** 	BLE_SendString(String);
+ 523              		.loc 1 120 2 view .LVU131
+ 524 0014 01A8     		add	r0, sp, #4
+ 525 0016 FFF7FEFF 		bl	BLE_SendString
+ 526              	.LVL45:
+ 121:./Hardware/ATKBLE01.c **** }
+ 527              		.loc 1 121 1 is_stmt 0 view .LVU132
+ 528 001a 1BB0     		add	sp, sp, #108
+ 529              	.LCFI11:
+ 530              		.cfi_def_cfa_offset 20
+ 531              		@ sp needed
+ 532 001c 5DF804EB 		ldr	lr, [sp], #4
+ 533              	.LCFI12:
+ 534              		.cfi_restore 14
+ 535              		.cfi_def_cfa_offset 16
+ 536 0020 04B0     		add	sp, sp, #16
+ 537              	.LCFI13:
+ 538              		.cfi_restore 3
+ 539              		.cfi_restore 2
+ 540              		.cfi_restore 1
+ 541              		.cfi_restore 0
+ 542              		.cfi_def_cfa_offset 0
+ 543 0022 7047     		bx	lr
+ 544              		.cfi_endproc
+ 545              	.LFE133:
+ 547              		.text
+ 548              	.Letext0:
+ 549              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 550              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 551              		.file 4 "./CORE/stm32f4xx.h"
+ 552              		.file 5 "./Library/stm32f4xx_gpio.h"
+ 553              		.file 6 "./Library/stm32f4xx_usart.h"
+ 554              		.file 7 "/Applications/ARM/lib/gcc/arm-none-eabi/10.3.1/include/stdarg.h"
+ 555              		.file 8 "/Applications/ARM/arm-none-eabi/include/stdio.h"
+ 556              		.file 9 "/Applications/ARM/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 557              		.file 10 "/Applications/ARM/arm-none-eabi/include/sys/_types.h"
+ 558              		.file 11 "/Applications/ARM/arm-none-eabi/include/sys/reent.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 13
+
+
+ 559              		.file 12 "/Applications/ARM/arm-none-eabi/include/sys/lock.h"
+ 560              		.file 13 "./Library/stm32f4xx_rcc.h"
+ 561              		.file 14 "<built-in>"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 ATKBLE01.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:20     .text.BLE_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:26     .text.BLE_Init:0000000000000000 BLE_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:160    .text.BLE_Init:00000000000000ac $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:166    .text.USART1_SendByte:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:172    .text.USART1_SendByte:0000000000000000 USART1_SendByte
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:209    .text.USART1_SendByte:0000000000000018 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:214    .text.BLE_SendArray:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:220    .text.BLE_SendArray:0000000000000000 BLE_SendArray
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:269    .text.BLE_SendString:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:275    .text.BLE_SendString:0000000000000000 BLE_SendString
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:324    .text.BLE_Pow:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:330    .text.BLE_Pow:0000000000000000 BLE_Pow
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:372    .text.BLE_SendNumber:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:378    .text.BLE_SendNumber:0000000000000000 BLE_SendNumber
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:444    .text.BLE_SendNumber:000000000000003c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:449    .text.fputc:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:455    .text.fputc:0000000000000000 fputc
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:484    .text.BLE_Printf:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccFLNqLv.s:490    .text.BLE_Printf:0000000000000000 BLE_Printf
+
+UNDEFINED SYMBOLS
+RCC_AHB1PeriphClockCmd
+RCC_APB2PeriphClockCmd
+GPIO_Init
+GPIO_PinAFConfig
+GPIO_SetBits
+USART_Init
+USART_Cmd
+USART_SendData
+USART_GetFlagStatus
+vsprintf

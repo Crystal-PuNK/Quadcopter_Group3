@@ -1,0 +1,1488 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"stm32f4xx_cryp_des.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.CRYP_DES_ECB,"ax",%progbits
+  20              		.align	1
+  21              		.global	CRYP_DES_ECB
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	CRYP_DES_ECB:
+  27              	.LVL0:
+  28              	.LFB123:
+  29              		.file 1 "./Library/stm32f4xx_cryp_des.c"
+   1:./Library/stm32f4xx_cryp_des.c **** /**
+   2:./Library/stm32f4xx_cryp_des.c ****   ******************************************************************************
+   3:./Library/stm32f4xx_cryp_des.c ****   * @file    stm32f4xx_cryp_des.c
+   4:./Library/stm32f4xx_cryp_des.c ****   * @author  MCD Application Team
+   5:./Library/stm32f4xx_cryp_des.c ****   * @version V1.8.1
+   6:./Library/stm32f4xx_cryp_des.c ****   * @date    27-January-2022
+   7:./Library/stm32f4xx_cryp_des.c ****   * @brief   This file provides high level functions to encrypt and decrypt an 
+   8:./Library/stm32f4xx_cryp_des.c ****   *          input message using DES in ECB/CBC modes.
+   9:./Library/stm32f4xx_cryp_des.c ****   *          It uses the stm32f4xx_cryp.c/.h drivers to access the STM32F4xx CRYP
+  10:./Library/stm32f4xx_cryp_des.c ****   *          peripheral.
+  11:./Library/stm32f4xx_cryp_des.c ****   *
+  12:./Library/stm32f4xx_cryp_des.c **** @verbatim
+  13:./Library/stm32f4xx_cryp_des.c ****   
+  14:./Library/stm32f4xx_cryp_des.c ****  ===================================================================
+  15:./Library/stm32f4xx_cryp_des.c ****                   ##### How to use this driver #####
+  16:./Library/stm32f4xx_cryp_des.c ****  ===================================================================
+  17:./Library/stm32f4xx_cryp_des.c ****  [..] 
+  18:./Library/stm32f4xx_cryp_des.c ****    (#) Enable The CRYP controller clock using 
+  19:./Library/stm32f4xx_cryp_des.c ****        RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_CRYP, ENABLE); function.
+  20:./Library/stm32f4xx_cryp_des.c ****   
+  21:./Library/stm32f4xx_cryp_des.c ****    (#) Encrypt and decrypt using DES in ECB Mode using CRYP_DES_ECB() function.
+  22:./Library/stm32f4xx_cryp_des.c ****   
+  23:./Library/stm32f4xx_cryp_des.c ****    (#) Encrypt and decrypt using DES in CBC Mode using CRYP_DES_CBC() function.
+  24:./Library/stm32f4xx_cryp_des.c ****   
+  25:./Library/stm32f4xx_cryp_des.c **** @endverbatim
+  26:./Library/stm32f4xx_cryp_des.c ****   *
+  27:./Library/stm32f4xx_cryp_des.c ****   ******************************************************************************
+  28:./Library/stm32f4xx_cryp_des.c ****   * @attention
+  29:./Library/stm32f4xx_cryp_des.c ****   *
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 2
+
+
+  30:./Library/stm32f4xx_cryp_des.c ****   * Copyright (c) 2016 STMicroelectronics.
+  31:./Library/stm32f4xx_cryp_des.c ****   * All rights reserved.
+  32:./Library/stm32f4xx_cryp_des.c ****   *
+  33:./Library/stm32f4xx_cryp_des.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  34:./Library/stm32f4xx_cryp_des.c ****   * in the root directory of this software component.
+  35:./Library/stm32f4xx_cryp_des.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  36:./Library/stm32f4xx_cryp_des.c ****   *
+  37:./Library/stm32f4xx_cryp_des.c ****   ******************************************************************************
+  38:./Library/stm32f4xx_cryp_des.c ****   */
+  39:./Library/stm32f4xx_cryp_des.c **** 
+  40:./Library/stm32f4xx_cryp_des.c **** /* Includes ------------------------------------------------------------------*/
+  41:./Library/stm32f4xx_cryp_des.c **** #include "stm32f4xx_cryp.h"
+  42:./Library/stm32f4xx_cryp_des.c **** 
+  43:./Library/stm32f4xx_cryp_des.c **** 
+  44:./Library/stm32f4xx_cryp_des.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  45:./Library/stm32f4xx_cryp_des.c ****   * @{
+  46:./Library/stm32f4xx_cryp_des.c ****   */
+  47:./Library/stm32f4xx_cryp_des.c **** 
+  48:./Library/stm32f4xx_cryp_des.c **** /** @defgroup CRYP 
+  49:./Library/stm32f4xx_cryp_des.c ****   * @brief CRYP driver modules
+  50:./Library/stm32f4xx_cryp_des.c ****   * @{
+  51:./Library/stm32f4xx_cryp_des.c ****   */
+  52:./Library/stm32f4xx_cryp_des.c **** 
+  53:./Library/stm32f4xx_cryp_des.c **** /* Private typedef -----------------------------------------------------------*/
+  54:./Library/stm32f4xx_cryp_des.c **** /* Private define ------------------------------------------------------------*/
+  55:./Library/stm32f4xx_cryp_des.c **** #define DESBUSY_TIMEOUT    ((uint32_t) 0x00010000)
+  56:./Library/stm32f4xx_cryp_des.c **** 
+  57:./Library/stm32f4xx_cryp_des.c **** /* Private macro -------------------------------------------------------------*/
+  58:./Library/stm32f4xx_cryp_des.c **** /* Private variables ---------------------------------------------------------*/
+  59:./Library/stm32f4xx_cryp_des.c **** /* Private function prototypes -----------------------------------------------*/
+  60:./Library/stm32f4xx_cryp_des.c **** /* Private functions ---------------------------------------------------------*/
+  61:./Library/stm32f4xx_cryp_des.c **** 
+  62:./Library/stm32f4xx_cryp_des.c **** 
+  63:./Library/stm32f4xx_cryp_des.c **** /** @defgroup CRYP_Private_Functions
+  64:./Library/stm32f4xx_cryp_des.c ****   * @{
+  65:./Library/stm32f4xx_cryp_des.c ****   */ 
+  66:./Library/stm32f4xx_cryp_des.c **** 
+  67:./Library/stm32f4xx_cryp_des.c **** /** @defgroup CRYP_Group8 High Level DES functions
+  68:./Library/stm32f4xx_cryp_des.c ****  *  @brief   High Level DES functions 
+  69:./Library/stm32f4xx_cryp_des.c ****  *
+  70:./Library/stm32f4xx_cryp_des.c **** @verbatim   
+  71:./Library/stm32f4xx_cryp_des.c ****  ===============================================================================
+  72:./Library/stm32f4xx_cryp_des.c ****                        ##### High Level DES functions #####
+  73:./Library/stm32f4xx_cryp_des.c ****  ===============================================================================
+  74:./Library/stm32f4xx_cryp_des.c **** @endverbatim
+  75:./Library/stm32f4xx_cryp_des.c ****   * @{
+  76:./Library/stm32f4xx_cryp_des.c ****   */
+  77:./Library/stm32f4xx_cryp_des.c **** 
+  78:./Library/stm32f4xx_cryp_des.c **** /**
+  79:./Library/stm32f4xx_cryp_des.c ****   * @brief  Encrypt and decrypt using DES in ECB Mode
+  80:./Library/stm32f4xx_cryp_des.c ****   * @param  Mode: encryption or decryption Mode.
+  81:./Library/stm32f4xx_cryp_des.c ****   *           This parameter can be one of the following values:
+  82:./Library/stm32f4xx_cryp_des.c ****   *            @arg MODE_ENCRYPT: Encryption
+  83:./Library/stm32f4xx_cryp_des.c ****   *            @arg MODE_DECRYPT: Decryption
+  84:./Library/stm32f4xx_cryp_des.c ****   * @param  Key: Key used for DES algorithm.
+  85:./Library/stm32f4xx_cryp_des.c ****   * @param  Ilength: length of the Input buffer, must be a multiple of 8.
+  86:./Library/stm32f4xx_cryp_des.c ****   * @param  Input: pointer to the Input buffer.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 3
+
+
+  87:./Library/stm32f4xx_cryp_des.c ****   * @param  Output: pointer to the returned buffer.
+  88:./Library/stm32f4xx_cryp_des.c ****   * @retval An ErrorStatus enumeration value:
+  89:./Library/stm32f4xx_cryp_des.c ****   *          - SUCCESS: Operation done
+  90:./Library/stm32f4xx_cryp_des.c ****   *          - ERROR: Operation failed
+  91:./Library/stm32f4xx_cryp_des.c ****   */
+  92:./Library/stm32f4xx_cryp_des.c **** ErrorStatus CRYP_DES_ECB(uint8_t Mode, uint8_t Key[8], uint8_t *Input, 
+  93:./Library/stm32f4xx_cryp_des.c ****                          uint32_t Ilength, uint8_t *Output)
+  94:./Library/stm32f4xx_cryp_des.c **** {
+  30              		.loc 1 94 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 4, pretend = 0, frame = 56
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 94 1 is_stmt 0 view .LVU1
+  35 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 24
+  38              		.cfi_offset 4, -24
+  39              		.cfi_offset 5, -20
+  40              		.cfi_offset 6, -16
+  41              		.cfi_offset 7, -12
+  42              		.cfi_offset 8, -8
+  43              		.cfi_offset 14, -4
+  44 0004 8EB0     		sub	sp, sp, #56
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 80
+  47 0006 0646     		mov	r6, r0
+  48 0008 0D46     		mov	r5, r1
+  49 000a 1F46     		mov	r7, r3
+  95:./Library/stm32f4xx_cryp_des.c ****   CRYP_InitTypeDef DES_CRYP_InitStructure;
+  50              		.loc 1 95 3 is_stmt 1 view .LVU2
+  96:./Library/stm32f4xx_cryp_des.c ****   CRYP_KeyInitTypeDef DES_CRYP_KeyInitStructure;
+  51              		.loc 1 96 3 view .LVU3
+  97:./Library/stm32f4xx_cryp_des.c ****   __IO uint32_t counter = 0;
+  52              		.loc 1 97 3 view .LVU4
+  53              		.loc 1 97 17 is_stmt 0 view .LVU5
+  54 000c 0023     		movs	r3, #0
+  55              	.LVL1:
+  56              		.loc 1 97 17 view .LVU6
+  57 000e 0193     		str	r3, [sp, #4]
+  98:./Library/stm32f4xx_cryp_des.c ****   uint32_t busystatus = 0;
+  58              		.loc 1 98 3 is_stmt 1 view .LVU7
+  59              	.LVL2:
+  99:./Library/stm32f4xx_cryp_des.c ****   ErrorStatus status = SUCCESS;
+  60              		.loc 1 99 3 view .LVU8
+ 100:./Library/stm32f4xx_cryp_des.c ****   uint32_t keyaddr    = (uint32_t)Key;
+  61              		.loc 1 100 3 view .LVU9
+ 101:./Library/stm32f4xx_cryp_des.c ****   uint32_t inputaddr  = (uint32_t)Input;
+  62              		.loc 1 101 3 view .LVU10
+  63              		.loc 1 101 12 is_stmt 0 view .LVU11
+  64 0010 1446     		mov	r4, r2
+  65              	.LVL3:
+ 102:./Library/stm32f4xx_cryp_des.c ****   uint32_t outputaddr = (uint32_t)Output;
+  66              		.loc 1 102 3 is_stmt 1 view .LVU12
+  67              		.loc 1 102 12 is_stmt 0 view .LVU13
+  68 0012 DDF85080 		ldr	r8, [sp, #80]
+  69              	.LVL4:
+ 103:./Library/stm32f4xx_cryp_des.c ****   uint32_t i = 0;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 4
+
+
+  70              		.loc 1 103 3 is_stmt 1 view .LVU14
+ 104:./Library/stm32f4xx_cryp_des.c **** 
+ 105:./Library/stm32f4xx_cryp_des.c ****   /* Crypto structures initialisation*/
+ 106:./Library/stm32f4xx_cryp_des.c ****   CRYP_KeyStructInit(&DES_CRYP_KeyInitStructure);
+  71              		.loc 1 106 3 view .LVU15
+  72 0016 02A8     		add	r0, sp, #8
+  73              	.LVL5:
+  74              		.loc 1 106 3 is_stmt 0 view .LVU16
+  75 0018 FFF7FEFF 		bl	CRYP_KeyStructInit
+  76              	.LVL6:
+ 107:./Library/stm32f4xx_cryp_des.c **** 
+ 108:./Library/stm32f4xx_cryp_des.c ****   /* Crypto Init for Encryption process */
+ 109:./Library/stm32f4xx_cryp_des.c ****   if( Mode == MODE_ENCRYPT ) /* DES encryption */
+  77              		.loc 1 109 3 is_stmt 1 view .LVU17
+  78              		.loc 1 109 5 is_stmt 0 view .LVU18
+  79 001c 012E     		cmp	r6, #1
+  80 001e 1DD0     		beq	.L13
+ 110:./Library/stm32f4xx_cryp_des.c ****   {
+ 111:./Library/stm32f4xx_cryp_des.c ****      DES_CRYP_InitStructure.CRYP_AlgoDir  = CRYP_AlgoDir_Encrypt;
+ 112:./Library/stm32f4xx_cryp_des.c ****   }
+ 113:./Library/stm32f4xx_cryp_des.c ****   else/* if( Mode == MODE_DECRYPT )*/ /* DES decryption */
+ 114:./Library/stm32f4xx_cryp_des.c ****   {      
+ 115:./Library/stm32f4xx_cryp_des.c ****      DES_CRYP_InitStructure.CRYP_AlgoDir  = CRYP_AlgoDir_Decrypt;
+  81              		.loc 1 115 6 is_stmt 1 view .LVU19
+  82              		.loc 1 115 43 is_stmt 0 view .LVU20
+  83 0020 0423     		movs	r3, #4
+  84 0022 0A93     		str	r3, [sp, #40]
+  85              	.L3:
+ 116:./Library/stm32f4xx_cryp_des.c ****   }
+ 117:./Library/stm32f4xx_cryp_des.c **** 
+ 118:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_InitStructure.CRYP_AlgoMode = CRYP_AlgoMode_DES_ECB;
+  86              		.loc 1 118 3 is_stmt 1 view .LVU21
+  87              		.loc 1 118 40 is_stmt 0 view .LVU22
+  88 0024 1023     		movs	r3, #16
+  89 0026 0B93     		str	r3, [sp, #44]
+ 119:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_InitStructure.CRYP_DataType = CRYP_DataType_8b;
+  90              		.loc 1 119 3 is_stmt 1 view .LVU23
+  91              		.loc 1 119 40 is_stmt 0 view .LVU24
+  92 0028 8023     		movs	r3, #128
+  93 002a 0C93     		str	r3, [sp, #48]
+ 120:./Library/stm32f4xx_cryp_des.c ****   CRYP_Init(&DES_CRYP_InitStructure);
+  94              		.loc 1 120 3 is_stmt 1 view .LVU25
+  95 002c 0AA8     		add	r0, sp, #40
+  96 002e FFF7FEFF 		bl	CRYP_Init
+  97              	.LVL7:
+ 121:./Library/stm32f4xx_cryp_des.c **** 
+ 122:./Library/stm32f4xx_cryp_des.c ****   /* Key Initialisation */
+ 123:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_KeyInitStructure.CRYP_Key1Left = __REV(*(uint32_t*)(keyaddr));
+  98              		.loc 1 123 3 view .LVU26
+  99              		.loc 1 123 45 is_stmt 0 view .LVU27
+ 100 0032 2B68     		ldr	r3, [r5]
+ 101              	.LVL8:
+ 102              	.LBB14:
+ 103              	.LBI14:
+ 104              		.file 2 "./CORE/core_cmInstr.h"
+   1:./CORE/core_cmInstr.h **** /**************************************************************************//**
+   2:./CORE/core_cmInstr.h ****  * @file     core_cmInstr.h
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 5
+
+
+   3:./CORE/core_cmInstr.h ****  * @brief    CMSIS Cortex-M Core Instruction Access Header File
+   4:./CORE/core_cmInstr.h ****  * @version  V4.10
+   5:./CORE/core_cmInstr.h ****  * @date     18. March 2015
+   6:./CORE/core_cmInstr.h ****  *
+   7:./CORE/core_cmInstr.h ****  * @note
+   8:./CORE/core_cmInstr.h ****  *
+   9:./CORE/core_cmInstr.h ****  ******************************************************************************/
+  10:./CORE/core_cmInstr.h **** /* Copyright (c) 2009 - 2014 ARM LIMITED
+  11:./CORE/core_cmInstr.h **** 
+  12:./CORE/core_cmInstr.h ****    All rights reserved.
+  13:./CORE/core_cmInstr.h ****    Redistribution and use in source and binary forms, with or without
+  14:./CORE/core_cmInstr.h ****    modification, are permitted provided that the following conditions are met:
+  15:./CORE/core_cmInstr.h ****    - Redistributions of source code must retain the above copyright
+  16:./CORE/core_cmInstr.h ****      notice, this list of conditions and the following disclaimer.
+  17:./CORE/core_cmInstr.h ****    - Redistributions in binary form must reproduce the above copyright
+  18:./CORE/core_cmInstr.h ****      notice, this list of conditions and the following disclaimer in the
+  19:./CORE/core_cmInstr.h ****      documentation and/or other materials provided with the distribution.
+  20:./CORE/core_cmInstr.h ****    - Neither the name of ARM nor the names of its contributors may be used
+  21:./CORE/core_cmInstr.h ****      to endorse or promote products derived from this software without
+  22:./CORE/core_cmInstr.h ****      specific prior written permission.
+  23:./CORE/core_cmInstr.h ****    *
+  24:./CORE/core_cmInstr.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  25:./CORE/core_cmInstr.h ****    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  26:./CORE/core_cmInstr.h ****    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  27:./CORE/core_cmInstr.h ****    ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+  28:./CORE/core_cmInstr.h ****    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  29:./CORE/core_cmInstr.h ****    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  30:./CORE/core_cmInstr.h ****    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  31:./CORE/core_cmInstr.h ****    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  32:./CORE/core_cmInstr.h ****    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  33:./CORE/core_cmInstr.h ****    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  34:./CORE/core_cmInstr.h ****    POSSIBILITY OF SUCH DAMAGE.
+  35:./CORE/core_cmInstr.h ****    ---------------------------------------------------------------------------*/
+  36:./CORE/core_cmInstr.h **** 
+  37:./CORE/core_cmInstr.h **** 
+  38:./CORE/core_cmInstr.h **** #ifndef __CORE_CMINSTR_H
+  39:./CORE/core_cmInstr.h **** #define __CORE_CMINSTR_H
+  40:./CORE/core_cmInstr.h **** 
+  41:./CORE/core_cmInstr.h **** 
+  42:./CORE/core_cmInstr.h **** /* ##########################  Core Instruction Access  ######################### */
+  43:./CORE/core_cmInstr.h **** /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
+  44:./CORE/core_cmInstr.h ****   Access to dedicated instructions
+  45:./CORE/core_cmInstr.h ****   @{
+  46:./CORE/core_cmInstr.h **** */
+  47:./CORE/core_cmInstr.h **** 
+  48:./CORE/core_cmInstr.h **** #if   defined ( __CC_ARM ) /*------------------RealView Compiler -----------------*/
+  49:./CORE/core_cmInstr.h **** /* ARM armcc specific functions */
+  50:./CORE/core_cmInstr.h **** 
+  51:./CORE/core_cmInstr.h **** #if (__ARMCC_VERSION < 400677)
+  52:./CORE/core_cmInstr.h ****   #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
+  53:./CORE/core_cmInstr.h **** #endif
+  54:./CORE/core_cmInstr.h **** 
+  55:./CORE/core_cmInstr.h **** 
+  56:./CORE/core_cmInstr.h **** /** \brief  No Operation
+  57:./CORE/core_cmInstr.h **** 
+  58:./CORE/core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+  59:./CORE/core_cmInstr.h ****  */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 6
+
+
+  60:./CORE/core_cmInstr.h **** #define __NOP                             __nop
+  61:./CORE/core_cmInstr.h **** 
+  62:./CORE/core_cmInstr.h **** 
+  63:./CORE/core_cmInstr.h **** /** \brief  Wait For Interrupt
+  64:./CORE/core_cmInstr.h **** 
+  65:./CORE/core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+  66:./CORE/core_cmInstr.h ****     until one of a number of events occurs.
+  67:./CORE/core_cmInstr.h ****  */
+  68:./CORE/core_cmInstr.h **** #define __WFI                             __wfi
+  69:./CORE/core_cmInstr.h **** 
+  70:./CORE/core_cmInstr.h **** 
+  71:./CORE/core_cmInstr.h **** /** \brief  Wait For Event
+  72:./CORE/core_cmInstr.h **** 
+  73:./CORE/core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+  74:./CORE/core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+  75:./CORE/core_cmInstr.h ****  */
+  76:./CORE/core_cmInstr.h **** #define __WFE                             __wfe
+  77:./CORE/core_cmInstr.h **** 
+  78:./CORE/core_cmInstr.h **** 
+  79:./CORE/core_cmInstr.h **** /** \brief  Send Event
+  80:./CORE/core_cmInstr.h **** 
+  81:./CORE/core_cmInstr.h ****     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+  82:./CORE/core_cmInstr.h ****  */
+  83:./CORE/core_cmInstr.h **** #define __SEV                             __sev
+  84:./CORE/core_cmInstr.h **** 
+  85:./CORE/core_cmInstr.h **** 
+  86:./CORE/core_cmInstr.h **** /** \brief  Instruction Synchronization Barrier
+  87:./CORE/core_cmInstr.h **** 
+  88:./CORE/core_cmInstr.h ****     Instruction Synchronization Barrier flushes the pipeline in the processor,
+  89:./CORE/core_cmInstr.h ****     so that all instructions following the ISB are fetched from cache or
+  90:./CORE/core_cmInstr.h ****     memory, after the instruction has been completed.
+  91:./CORE/core_cmInstr.h ****  */
+  92:./CORE/core_cmInstr.h **** #define __ISB() do {\
+  93:./CORE/core_cmInstr.h ****                    __schedule_barrier();\
+  94:./CORE/core_cmInstr.h ****                    __isb(0xF);\
+  95:./CORE/core_cmInstr.h ****                    __schedule_barrier();\
+  96:./CORE/core_cmInstr.h ****                 } while (0)
+  97:./CORE/core_cmInstr.h **** 
+  98:./CORE/core_cmInstr.h **** /** \brief  Data Synchronization Barrier
+  99:./CORE/core_cmInstr.h **** 
+ 100:./CORE/core_cmInstr.h ****     This function acts as a special kind of Data Memory Barrier.
+ 101:./CORE/core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
+ 102:./CORE/core_cmInstr.h ****  */
+ 103:./CORE/core_cmInstr.h **** #define __DSB() do {\
+ 104:./CORE/core_cmInstr.h ****                    __schedule_barrier();\
+ 105:./CORE/core_cmInstr.h ****                    __dsb(0xF);\
+ 106:./CORE/core_cmInstr.h ****                    __schedule_barrier();\
+ 107:./CORE/core_cmInstr.h ****                 } while (0)
+ 108:./CORE/core_cmInstr.h **** 
+ 109:./CORE/core_cmInstr.h **** /** \brief  Data Memory Barrier
+ 110:./CORE/core_cmInstr.h **** 
+ 111:./CORE/core_cmInstr.h ****     This function ensures the apparent order of the explicit memory operations before
+ 112:./CORE/core_cmInstr.h ****     and after the instruction, without ensuring their completion.
+ 113:./CORE/core_cmInstr.h ****  */
+ 114:./CORE/core_cmInstr.h **** #define __DMB() do {\
+ 115:./CORE/core_cmInstr.h ****                    __schedule_barrier();\
+ 116:./CORE/core_cmInstr.h ****                    __dmb(0xF);\
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 7
+
+
+ 117:./CORE/core_cmInstr.h ****                    __schedule_barrier();\
+ 118:./CORE/core_cmInstr.h ****                 } while (0)
+ 119:./CORE/core_cmInstr.h **** 
+ 120:./CORE/core_cmInstr.h **** /** \brief  Reverse byte order (32 bit)
+ 121:./CORE/core_cmInstr.h **** 
+ 122:./CORE/core_cmInstr.h ****     This function reverses the byte order in integer value.
+ 123:./CORE/core_cmInstr.h **** 
+ 124:./CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 125:./CORE/core_cmInstr.h ****     \return               Reversed value
+ 126:./CORE/core_cmInstr.h ****  */
+ 127:./CORE/core_cmInstr.h **** #define __REV                             __rev
+ 128:./CORE/core_cmInstr.h **** 
+ 129:./CORE/core_cmInstr.h **** 
+ 130:./CORE/core_cmInstr.h **** /** \brief  Reverse byte order (16 bit)
+ 131:./CORE/core_cmInstr.h **** 
+ 132:./CORE/core_cmInstr.h ****     This function reverses the byte order in two unsigned short values.
+ 133:./CORE/core_cmInstr.h **** 
+ 134:./CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 135:./CORE/core_cmInstr.h ****     \return               Reversed value
+ 136:./CORE/core_cmInstr.h ****  */
+ 137:./CORE/core_cmInstr.h **** #ifndef __NO_EMBEDDED_ASM
+ 138:./CORE/core_cmInstr.h **** __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
+ 139:./CORE/core_cmInstr.h **** {
+ 140:./CORE/core_cmInstr.h ****   rev16 r0, r0
+ 141:./CORE/core_cmInstr.h ****   bx lr
+ 142:./CORE/core_cmInstr.h **** }
+ 143:./CORE/core_cmInstr.h **** #endif
+ 144:./CORE/core_cmInstr.h **** 
+ 145:./CORE/core_cmInstr.h **** /** \brief  Reverse byte order in signed short value
+ 146:./CORE/core_cmInstr.h **** 
+ 147:./CORE/core_cmInstr.h ****     This function reverses the byte order in a signed short value with sign extension to integer.
+ 148:./CORE/core_cmInstr.h **** 
+ 149:./CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 150:./CORE/core_cmInstr.h ****     \return               Reversed value
+ 151:./CORE/core_cmInstr.h ****  */
+ 152:./CORE/core_cmInstr.h **** #ifndef __NO_EMBEDDED_ASM
+ 153:./CORE/core_cmInstr.h **** __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
+ 154:./CORE/core_cmInstr.h **** {
+ 155:./CORE/core_cmInstr.h ****   revsh r0, r0
+ 156:./CORE/core_cmInstr.h ****   bx lr
+ 157:./CORE/core_cmInstr.h **** }
+ 158:./CORE/core_cmInstr.h **** #endif
+ 159:./CORE/core_cmInstr.h **** 
+ 160:./CORE/core_cmInstr.h **** 
+ 161:./CORE/core_cmInstr.h **** /** \brief  Rotate Right in unsigned value (32 bit)
+ 162:./CORE/core_cmInstr.h **** 
+ 163:./CORE/core_cmInstr.h ****     This function Rotate Right (immediate) provides the value of the contents of a register rotated
+ 164:./CORE/core_cmInstr.h **** 
+ 165:./CORE/core_cmInstr.h ****     \param [in]    value  Value to rotate
+ 166:./CORE/core_cmInstr.h ****     \param [in]    value  Number of Bits to rotate
+ 167:./CORE/core_cmInstr.h ****     \return               Rotated value
+ 168:./CORE/core_cmInstr.h ****  */
+ 169:./CORE/core_cmInstr.h **** #define __ROR                             __ror
+ 170:./CORE/core_cmInstr.h **** 
+ 171:./CORE/core_cmInstr.h **** 
+ 172:./CORE/core_cmInstr.h **** /** \brief  Breakpoint
+ 173:./CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 8
+
+
+ 174:./CORE/core_cmInstr.h ****     This function causes the processor to enter Debug state.
+ 175:./CORE/core_cmInstr.h ****     Debug tools can use this to investigate system state when the instruction at a particular addre
+ 176:./CORE/core_cmInstr.h **** 
+ 177:./CORE/core_cmInstr.h ****     \param [in]    value  is ignored by the processor.
+ 178:./CORE/core_cmInstr.h ****                    If required, a debugger can use it to store additional information about the bre
+ 179:./CORE/core_cmInstr.h ****  */
+ 180:./CORE/core_cmInstr.h **** #define __BKPT(value)                       __breakpoint(value)
+ 181:./CORE/core_cmInstr.h **** 
+ 182:./CORE/core_cmInstr.h **** 
+ 183:./CORE/core_cmInstr.h **** /** \brief  Reverse bit order of value
+ 184:./CORE/core_cmInstr.h **** 
+ 185:./CORE/core_cmInstr.h ****     This function reverses the bit order of the given value.
+ 186:./CORE/core_cmInstr.h **** 
+ 187:./CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 188:./CORE/core_cmInstr.h ****     \return               Reversed value
+ 189:./CORE/core_cmInstr.h ****  */
+ 190:./CORE/core_cmInstr.h **** #if       (__CORTEX_M >= 0x03) || (__CORTEX_SC >= 300)
+ 191:./CORE/core_cmInstr.h ****   #define __RBIT                          __rbit
+ 192:./CORE/core_cmInstr.h **** #else
+ 193:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE uint32_t __RBIT(uint32_t value)
+ 194:./CORE/core_cmInstr.h **** {
+ 195:./CORE/core_cmInstr.h ****   uint32_t result;
+ 196:./CORE/core_cmInstr.h ****   int32_t s = 4 /*sizeof(v)*/ * 8 - 1; // extra shift needed at end
+ 197:./CORE/core_cmInstr.h **** 
+ 198:./CORE/core_cmInstr.h ****   result = value;                      // r will be reversed bits of v; first get LSB of v
+ 199:./CORE/core_cmInstr.h ****   for (value >>= 1; value; value >>= 1)
+ 200:./CORE/core_cmInstr.h ****   {
+ 201:./CORE/core_cmInstr.h ****     result <<= 1;
+ 202:./CORE/core_cmInstr.h ****     result |= value & 1;
+ 203:./CORE/core_cmInstr.h ****     s--;
+ 204:./CORE/core_cmInstr.h ****   }
+ 205:./CORE/core_cmInstr.h ****   result <<= s;                       // shift when v's highest bits are zero
+ 206:./CORE/core_cmInstr.h ****   return(result);
+ 207:./CORE/core_cmInstr.h **** }
+ 208:./CORE/core_cmInstr.h **** #endif
+ 209:./CORE/core_cmInstr.h **** 
+ 210:./CORE/core_cmInstr.h **** 
+ 211:./CORE/core_cmInstr.h **** /** \brief  Count leading zeros
+ 212:./CORE/core_cmInstr.h **** 
+ 213:./CORE/core_cmInstr.h ****     This function counts the number of leading zeros of a data value.
+ 214:./CORE/core_cmInstr.h **** 
+ 215:./CORE/core_cmInstr.h ****     \param [in]  value  Value to count the leading zeros
+ 216:./CORE/core_cmInstr.h ****     \return             number of leading zeros in value
+ 217:./CORE/core_cmInstr.h ****  */
+ 218:./CORE/core_cmInstr.h **** #define __CLZ                             __clz
+ 219:./CORE/core_cmInstr.h **** 
+ 220:./CORE/core_cmInstr.h **** 
+ 221:./CORE/core_cmInstr.h **** #if       (__CORTEX_M >= 0x03) || (__CORTEX_SC >= 300)
+ 222:./CORE/core_cmInstr.h **** 
+ 223:./CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (8 bit)
+ 224:./CORE/core_cmInstr.h **** 
+ 225:./CORE/core_cmInstr.h ****     This function executes a exclusive LDR instruction for 8 bit value.
+ 226:./CORE/core_cmInstr.h **** 
+ 227:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 228:./CORE/core_cmInstr.h ****     \return             value of type uint8_t at (*ptr)
+ 229:./CORE/core_cmInstr.h ****  */
+ 230:./CORE/core_cmInstr.h **** #define __LDREXB(ptr)                     ((uint8_t ) __ldrex(ptr))
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 9
+
+
+ 231:./CORE/core_cmInstr.h **** 
+ 232:./CORE/core_cmInstr.h **** 
+ 233:./CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (16 bit)
+ 234:./CORE/core_cmInstr.h **** 
+ 235:./CORE/core_cmInstr.h ****     This function executes a exclusive LDR instruction for 16 bit values.
+ 236:./CORE/core_cmInstr.h **** 
+ 237:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 238:./CORE/core_cmInstr.h ****     \return        value of type uint16_t at (*ptr)
+ 239:./CORE/core_cmInstr.h ****  */
+ 240:./CORE/core_cmInstr.h **** #define __LDREXH(ptr)                     ((uint16_t) __ldrex(ptr))
+ 241:./CORE/core_cmInstr.h **** 
+ 242:./CORE/core_cmInstr.h **** 
+ 243:./CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (32 bit)
+ 244:./CORE/core_cmInstr.h **** 
+ 245:./CORE/core_cmInstr.h ****     This function executes a exclusive LDR instruction for 32 bit values.
+ 246:./CORE/core_cmInstr.h **** 
+ 247:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 248:./CORE/core_cmInstr.h ****     \return        value of type uint32_t at (*ptr)
+ 249:./CORE/core_cmInstr.h ****  */
+ 250:./CORE/core_cmInstr.h **** #define __LDREXW(ptr)                     ((uint32_t ) __ldrex(ptr))
+ 251:./CORE/core_cmInstr.h **** 
+ 252:./CORE/core_cmInstr.h **** 
+ 253:./CORE/core_cmInstr.h **** /** \brief  STR Exclusive (8 bit)
+ 254:./CORE/core_cmInstr.h **** 
+ 255:./CORE/core_cmInstr.h ****     This function executes a exclusive STR instruction for 8 bit values.
+ 256:./CORE/core_cmInstr.h **** 
+ 257:./CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 258:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 259:./CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 260:./CORE/core_cmInstr.h ****     \return          1  Function failed
+ 261:./CORE/core_cmInstr.h ****  */
+ 262:./CORE/core_cmInstr.h **** #define __STREXB(value, ptr)              __strex(value, ptr)
+ 263:./CORE/core_cmInstr.h **** 
+ 264:./CORE/core_cmInstr.h **** 
+ 265:./CORE/core_cmInstr.h **** /** \brief  STR Exclusive (16 bit)
+ 266:./CORE/core_cmInstr.h **** 
+ 267:./CORE/core_cmInstr.h ****     This function executes a exclusive STR instruction for 16 bit values.
+ 268:./CORE/core_cmInstr.h **** 
+ 269:./CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 270:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 271:./CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 272:./CORE/core_cmInstr.h ****     \return          1  Function failed
+ 273:./CORE/core_cmInstr.h ****  */
+ 274:./CORE/core_cmInstr.h **** #define __STREXH(value, ptr)              __strex(value, ptr)
+ 275:./CORE/core_cmInstr.h **** 
+ 276:./CORE/core_cmInstr.h **** 
+ 277:./CORE/core_cmInstr.h **** /** \brief  STR Exclusive (32 bit)
+ 278:./CORE/core_cmInstr.h **** 
+ 279:./CORE/core_cmInstr.h ****     This function executes a exclusive STR instruction for 32 bit values.
+ 280:./CORE/core_cmInstr.h **** 
+ 281:./CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 282:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 283:./CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 284:./CORE/core_cmInstr.h ****     \return          1  Function failed
+ 285:./CORE/core_cmInstr.h ****  */
+ 286:./CORE/core_cmInstr.h **** #define __STREXW(value, ptr)              __strex(value, ptr)
+ 287:./CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 10
+
+
+ 288:./CORE/core_cmInstr.h **** 
+ 289:./CORE/core_cmInstr.h **** /** \brief  Remove the exclusive lock
+ 290:./CORE/core_cmInstr.h **** 
+ 291:./CORE/core_cmInstr.h ****     This function removes the exclusive lock which is created by LDREX.
+ 292:./CORE/core_cmInstr.h **** 
+ 293:./CORE/core_cmInstr.h ****  */
+ 294:./CORE/core_cmInstr.h **** #define __CLREX                           __clrex
+ 295:./CORE/core_cmInstr.h **** 
+ 296:./CORE/core_cmInstr.h **** 
+ 297:./CORE/core_cmInstr.h **** /** \brief  Signed Saturate
+ 298:./CORE/core_cmInstr.h **** 
+ 299:./CORE/core_cmInstr.h ****     This function saturates a signed value.
+ 300:./CORE/core_cmInstr.h **** 
+ 301:./CORE/core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 302:./CORE/core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (1..32)
+ 303:./CORE/core_cmInstr.h ****     \return             Saturated value
+ 304:./CORE/core_cmInstr.h ****  */
+ 305:./CORE/core_cmInstr.h **** #define __SSAT                            __ssat
+ 306:./CORE/core_cmInstr.h **** 
+ 307:./CORE/core_cmInstr.h **** 
+ 308:./CORE/core_cmInstr.h **** /** \brief  Unsigned Saturate
+ 309:./CORE/core_cmInstr.h **** 
+ 310:./CORE/core_cmInstr.h ****     This function saturates an unsigned value.
+ 311:./CORE/core_cmInstr.h **** 
+ 312:./CORE/core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 313:./CORE/core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (0..31)
+ 314:./CORE/core_cmInstr.h ****     \return             Saturated value
+ 315:./CORE/core_cmInstr.h ****  */
+ 316:./CORE/core_cmInstr.h **** #define __USAT                            __usat
+ 317:./CORE/core_cmInstr.h **** 
+ 318:./CORE/core_cmInstr.h **** 
+ 319:./CORE/core_cmInstr.h **** /** \brief  Rotate Right with Extend (32 bit)
+ 320:./CORE/core_cmInstr.h **** 
+ 321:./CORE/core_cmInstr.h ****     This function moves each bit of a bitstring right by one bit.
+ 322:./CORE/core_cmInstr.h ****     The carry input is shifted in at the left end of the bitstring.
+ 323:./CORE/core_cmInstr.h **** 
+ 324:./CORE/core_cmInstr.h ****     \param [in]    value  Value to rotate
+ 325:./CORE/core_cmInstr.h ****     \return               Rotated value
+ 326:./CORE/core_cmInstr.h ****  */
+ 327:./CORE/core_cmInstr.h **** #ifndef __NO_EMBEDDED_ASM
+ 328:./CORE/core_cmInstr.h **** __attribute__((section(".rrx_text"))) __STATIC_INLINE __ASM uint32_t __RRX(uint32_t value)
+ 329:./CORE/core_cmInstr.h **** {
+ 330:./CORE/core_cmInstr.h ****   rrx r0, r0
+ 331:./CORE/core_cmInstr.h ****   bx lr
+ 332:./CORE/core_cmInstr.h **** }
+ 333:./CORE/core_cmInstr.h **** #endif
+ 334:./CORE/core_cmInstr.h **** 
+ 335:./CORE/core_cmInstr.h **** 
+ 336:./CORE/core_cmInstr.h **** /** \brief  LDRT Unprivileged (8 bit)
+ 337:./CORE/core_cmInstr.h **** 
+ 338:./CORE/core_cmInstr.h ****     This function executes a Unprivileged LDRT instruction for 8 bit value.
+ 339:./CORE/core_cmInstr.h **** 
+ 340:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 341:./CORE/core_cmInstr.h ****     \return             value of type uint8_t at (*ptr)
+ 342:./CORE/core_cmInstr.h ****  */
+ 343:./CORE/core_cmInstr.h **** #define __LDRBT(ptr)                      ((uint8_t )  __ldrt(ptr))
+ 344:./CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 11
+
+
+ 345:./CORE/core_cmInstr.h **** 
+ 346:./CORE/core_cmInstr.h **** /** \brief  LDRT Unprivileged (16 bit)
+ 347:./CORE/core_cmInstr.h **** 
+ 348:./CORE/core_cmInstr.h ****     This function executes a Unprivileged LDRT instruction for 16 bit values.
+ 349:./CORE/core_cmInstr.h **** 
+ 350:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 351:./CORE/core_cmInstr.h ****     \return        value of type uint16_t at (*ptr)
+ 352:./CORE/core_cmInstr.h ****  */
+ 353:./CORE/core_cmInstr.h **** #define __LDRHT(ptr)                      ((uint16_t)  __ldrt(ptr))
+ 354:./CORE/core_cmInstr.h **** 
+ 355:./CORE/core_cmInstr.h **** 
+ 356:./CORE/core_cmInstr.h **** /** \brief  LDRT Unprivileged (32 bit)
+ 357:./CORE/core_cmInstr.h **** 
+ 358:./CORE/core_cmInstr.h ****     This function executes a Unprivileged LDRT instruction for 32 bit values.
+ 359:./CORE/core_cmInstr.h **** 
+ 360:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 361:./CORE/core_cmInstr.h ****     \return        value of type uint32_t at (*ptr)
+ 362:./CORE/core_cmInstr.h ****  */
+ 363:./CORE/core_cmInstr.h **** #define __LDRT(ptr)                       ((uint32_t ) __ldrt(ptr))
+ 364:./CORE/core_cmInstr.h **** 
+ 365:./CORE/core_cmInstr.h **** 
+ 366:./CORE/core_cmInstr.h **** /** \brief  STRT Unprivileged (8 bit)
+ 367:./CORE/core_cmInstr.h **** 
+ 368:./CORE/core_cmInstr.h ****     This function executes a Unprivileged STRT instruction for 8 bit values.
+ 369:./CORE/core_cmInstr.h **** 
+ 370:./CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 371:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 372:./CORE/core_cmInstr.h ****  */
+ 373:./CORE/core_cmInstr.h **** #define __STRBT(value, ptr)               __strt(value, ptr)
+ 374:./CORE/core_cmInstr.h **** 
+ 375:./CORE/core_cmInstr.h **** 
+ 376:./CORE/core_cmInstr.h **** /** \brief  STRT Unprivileged (16 bit)
+ 377:./CORE/core_cmInstr.h **** 
+ 378:./CORE/core_cmInstr.h ****     This function executes a Unprivileged STRT instruction for 16 bit values.
+ 379:./CORE/core_cmInstr.h **** 
+ 380:./CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 381:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 382:./CORE/core_cmInstr.h ****  */
+ 383:./CORE/core_cmInstr.h **** #define __STRHT(value, ptr)               __strt(value, ptr)
+ 384:./CORE/core_cmInstr.h **** 
+ 385:./CORE/core_cmInstr.h **** 
+ 386:./CORE/core_cmInstr.h **** /** \brief  STRT Unprivileged (32 bit)
+ 387:./CORE/core_cmInstr.h **** 
+ 388:./CORE/core_cmInstr.h ****     This function executes a Unprivileged STRT instruction for 32 bit values.
+ 389:./CORE/core_cmInstr.h **** 
+ 390:./CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 391:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 392:./CORE/core_cmInstr.h ****  */
+ 393:./CORE/core_cmInstr.h **** #define __STRT(value, ptr)                __strt(value, ptr)
+ 394:./CORE/core_cmInstr.h **** 
+ 395:./CORE/core_cmInstr.h **** #endif /* (__CORTEX_M >= 0x03) || (__CORTEX_SC >= 300) */
+ 396:./CORE/core_cmInstr.h **** 
+ 397:./CORE/core_cmInstr.h **** 
+ 398:./CORE/core_cmInstr.h **** #elif defined ( __GNUC__ ) /*------------------ GNU Compiler ---------------------*/
+ 399:./CORE/core_cmInstr.h **** /* GNU gcc specific functions */
+ 400:./CORE/core_cmInstr.h **** 
+ 401:./CORE/core_cmInstr.h **** /* Define macros for porting to both thumb1 and thumb2.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 12
+
+
+ 402:./CORE/core_cmInstr.h ****  * For thumb1, use low register (r0-r7), specified by constrant "l"
+ 403:./CORE/core_cmInstr.h ****  * Otherwise, use general registers, specified by constrant "r" */
+ 404:./CORE/core_cmInstr.h **** #if defined (__thumb__) && !defined (__thumb2__)
+ 405:./CORE/core_cmInstr.h **** #define __CMSIS_GCC_OUT_REG(r) "=l" (r)
+ 406:./CORE/core_cmInstr.h **** #define __CMSIS_GCC_USE_REG(r) "l" (r)
+ 407:./CORE/core_cmInstr.h **** #else
+ 408:./CORE/core_cmInstr.h **** #define __CMSIS_GCC_OUT_REG(r) "=r" (r)
+ 409:./CORE/core_cmInstr.h **** #define __CMSIS_GCC_USE_REG(r) "r" (r)
+ 410:./CORE/core_cmInstr.h **** #endif
+ 411:./CORE/core_cmInstr.h **** 
+ 412:./CORE/core_cmInstr.h **** /** \brief  No Operation
+ 413:./CORE/core_cmInstr.h **** 
+ 414:./CORE/core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+ 415:./CORE/core_cmInstr.h ****  */
+ 416:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __NOP(void)
+ 417:./CORE/core_cmInstr.h **** {
+ 418:./CORE/core_cmInstr.h ****   __ASM volatile ("nop");
+ 419:./CORE/core_cmInstr.h **** }
+ 420:./CORE/core_cmInstr.h **** 
+ 421:./CORE/core_cmInstr.h **** 
+ 422:./CORE/core_cmInstr.h **** /** \brief  Wait For Interrupt
+ 423:./CORE/core_cmInstr.h **** 
+ 424:./CORE/core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+ 425:./CORE/core_cmInstr.h ****     until one of a number of events occurs.
+ 426:./CORE/core_cmInstr.h ****  */
+ 427:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __WFI(void)
+ 428:./CORE/core_cmInstr.h **** {
+ 429:./CORE/core_cmInstr.h ****   __ASM volatile ("wfi");
+ 430:./CORE/core_cmInstr.h **** }
+ 431:./CORE/core_cmInstr.h **** 
+ 432:./CORE/core_cmInstr.h **** 
+ 433:./CORE/core_cmInstr.h **** /** \brief  Wait For Event
+ 434:./CORE/core_cmInstr.h **** 
+ 435:./CORE/core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+ 436:./CORE/core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+ 437:./CORE/core_cmInstr.h ****  */
+ 438:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __WFE(void)
+ 439:./CORE/core_cmInstr.h **** {
+ 440:./CORE/core_cmInstr.h ****   __ASM volatile ("wfe");
+ 441:./CORE/core_cmInstr.h **** }
+ 442:./CORE/core_cmInstr.h **** 
+ 443:./CORE/core_cmInstr.h **** 
+ 444:./CORE/core_cmInstr.h **** /** \brief  Send Event
+ 445:./CORE/core_cmInstr.h **** 
+ 446:./CORE/core_cmInstr.h ****     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+ 447:./CORE/core_cmInstr.h ****  */
+ 448:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __SEV(void)
+ 449:./CORE/core_cmInstr.h **** {
+ 450:./CORE/core_cmInstr.h ****   __ASM volatile ("sev");
+ 451:./CORE/core_cmInstr.h **** }
+ 452:./CORE/core_cmInstr.h **** 
+ 453:./CORE/core_cmInstr.h **** 
+ 454:./CORE/core_cmInstr.h **** /** \brief  Instruction Synchronization Barrier
+ 455:./CORE/core_cmInstr.h **** 
+ 456:./CORE/core_cmInstr.h ****     Instruction Synchronization Barrier flushes the pipeline in the processor,
+ 457:./CORE/core_cmInstr.h ****     so that all instructions following the ISB are fetched from cache or
+ 458:./CORE/core_cmInstr.h ****     memory, after the instruction has been completed.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 13
+
+
+ 459:./CORE/core_cmInstr.h ****  */
+ 460:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __ISB(void)
+ 461:./CORE/core_cmInstr.h **** {
+ 462:./CORE/core_cmInstr.h ****   __ASM volatile ("isb 0xF":::"memory");
+ 463:./CORE/core_cmInstr.h **** }
+ 464:./CORE/core_cmInstr.h **** 
+ 465:./CORE/core_cmInstr.h **** 
+ 466:./CORE/core_cmInstr.h **** /** \brief  Data Synchronization Barrier
+ 467:./CORE/core_cmInstr.h **** 
+ 468:./CORE/core_cmInstr.h ****     This function acts as a special kind of Data Memory Barrier.
+ 469:./CORE/core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
+ 470:./CORE/core_cmInstr.h ****  */
+ 471:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __DSB(void)
+ 472:./CORE/core_cmInstr.h **** {
+ 473:./CORE/core_cmInstr.h ****   __ASM volatile ("dsb 0xF":::"memory");
+ 474:./CORE/core_cmInstr.h **** }
+ 475:./CORE/core_cmInstr.h **** 
+ 476:./CORE/core_cmInstr.h **** 
+ 477:./CORE/core_cmInstr.h **** /** \brief  Data Memory Barrier
+ 478:./CORE/core_cmInstr.h **** 
+ 479:./CORE/core_cmInstr.h ****     This function ensures the apparent order of the explicit memory operations before
+ 480:./CORE/core_cmInstr.h ****     and after the instruction, without ensuring their completion.
+ 481:./CORE/core_cmInstr.h ****  */
+ 482:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __DMB(void)
+ 483:./CORE/core_cmInstr.h **** {
+ 484:./CORE/core_cmInstr.h ****   __ASM volatile ("dmb 0xF":::"memory");
+ 485:./CORE/core_cmInstr.h **** }
+ 486:./CORE/core_cmInstr.h **** 
+ 487:./CORE/core_cmInstr.h **** 
+ 488:./CORE/core_cmInstr.h **** /** \brief  Reverse byte order (32 bit)
+ 489:./CORE/core_cmInstr.h **** 
+ 490:./CORE/core_cmInstr.h ****     This function reverses the byte order in integer value.
+ 491:./CORE/core_cmInstr.h **** 
+ 492:./CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 493:./CORE/core_cmInstr.h ****     \return               Reversed value
+ 494:./CORE/core_cmInstr.h ****  */
+ 495:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE uint32_t __REV(uint32_t value)
+ 105              		.loc 2 495 57 is_stmt 1 view .LVU28
+ 106              	.LBB15:
+ 496:./CORE/core_cmInstr.h **** {
+ 497:./CORE/core_cmInstr.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+ 498:./CORE/core_cmInstr.h ****   return __builtin_bswap32(value);
+ 107              		.loc 2 498 3 view .LVU29
+ 108              		.loc 2 498 10 is_stmt 0 view .LVU30
+ 109 0034 1BBA     		rev	r3, r3
+ 110              	.LVL9:
+ 111              		.loc 2 498 10 view .LVU31
+ 112              	.LBE15:
+ 113              	.LBE14:
+ 114              		.loc 1 123 43 view .LVU32
+ 115 0036 0493     		str	r3, [sp, #16]
+ 124:./Library/stm32f4xx_cryp_des.c ****   keyaddr+=4;
+ 116              		.loc 1 124 3 is_stmt 1 view .LVU33
+ 117              	.LVL10:
+ 125:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_KeyInitStructure.CRYP_Key1Right= __REV(*(uint32_t*)(keyaddr));
+ 118              		.loc 1 125 3 view .LVU34
+ 119              		.loc 1 125 45 is_stmt 0 view .LVU35
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 14
+
+
+ 120 0038 6B68     		ldr	r3, [r5, #4]
+ 121              	.LVL11:
+ 122              	.LBB16:
+ 123              	.LBI16:
+ 495:./CORE/core_cmInstr.h **** {
+ 124              		.loc 2 495 57 is_stmt 1 view .LVU36
+ 125              	.LBB17:
+ 126              		.loc 2 498 3 view .LVU37
+ 127              		.loc 2 498 10 is_stmt 0 view .LVU38
+ 128 003a 1BBA     		rev	r3, r3
+ 129              	.LVL12:
+ 130              		.loc 2 498 10 view .LVU39
+ 131              	.LBE17:
+ 132              	.LBE16:
+ 133              		.loc 1 125 43 view .LVU40
+ 134 003c 0593     		str	r3, [sp, #20]
+ 126:./Library/stm32f4xx_cryp_des.c ****   CRYP_KeyInit(& DES_CRYP_KeyInitStructure);
+ 135              		.loc 1 126 3 is_stmt 1 view .LVU41
+ 136 003e 02A8     		add	r0, sp, #8
+ 137 0040 FFF7FEFF 		bl	CRYP_KeyInit
+ 138              	.LVL13:
+ 127:./Library/stm32f4xx_cryp_des.c **** 
+ 128:./Library/stm32f4xx_cryp_des.c ****   /* Flush IN/OUT FIFO */
+ 129:./Library/stm32f4xx_cryp_des.c ****   CRYP_FIFOFlush();
+ 139              		.loc 1 129 3 view .LVU42
+ 140 0044 FFF7FEFF 		bl	CRYP_FIFOFlush
+ 141              	.LVL14:
+ 130:./Library/stm32f4xx_cryp_des.c **** 
+ 131:./Library/stm32f4xx_cryp_des.c ****   /* Enable Crypto processor */
+ 132:./Library/stm32f4xx_cryp_des.c ****   CRYP_Cmd(ENABLE);
+ 142              		.loc 1 132 3 view .LVU43
+ 143 0048 0120     		movs	r0, #1
+ 144 004a FFF7FEFF 		bl	CRYP_Cmd
+ 145              	.LVL15:
+ 133:./Library/stm32f4xx_cryp_des.c **** 
+ 134:./Library/stm32f4xx_cryp_des.c ****   if(CRYP_GetCmdStatus() == DISABLE)
+ 146              		.loc 1 134 3 view .LVU44
+ 147              		.loc 1 134 6 is_stmt 0 view .LVU45
+ 148 004e FFF7FEFF 		bl	CRYP_GetCmdStatus
+ 149              	.LVL16:
+ 150              		.loc 1 134 5 view .LVU46
+ 151 0052 0646     		mov	r6, r0
+ 152 0054 78B3     		cbz	r0, .L4
+ 135:./Library/stm32f4xx_cryp_des.c ****   {
+ 136:./Library/stm32f4xx_cryp_des.c ****     /* The CRYP peripheral clock is not enabled or the device doesn't embed 
+ 137:./Library/stm32f4xx_cryp_des.c ****     the CRYP peripheral (please check the device sales type. */
+ 138:./Library/stm32f4xx_cryp_des.c ****     status = ERROR;
+ 139:./Library/stm32f4xx_cryp_des.c ****   }
+ 140:./Library/stm32f4xx_cryp_des.c ****   else
+ 141:./Library/stm32f4xx_cryp_des.c ****   {
+ 142:./Library/stm32f4xx_cryp_des.c ****     for(i=0; ((i<Ilength) && (status != ERROR)); i+=8)
+ 153              		.loc 1 142 10 view .LVU47
+ 154 0056 0025     		movs	r5, #0
+ 155              	.LVL17:
+  99:./Library/stm32f4xx_cryp_des.c ****   uint32_t keyaddr    = (uint32_t)Key;
+ 156              		.loc 1 99 15 view .LVU48
+ 157 0058 0126     		movs	r6, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 15
+
+
+ 158 005a 05E0     		b	.L5
+ 159              	.LVL18:
+ 160              	.L13:
+ 111:./Library/stm32f4xx_cryp_des.c ****   }
+ 161              		.loc 1 111 6 is_stmt 1 view .LVU49
+ 111:./Library/stm32f4xx_cryp_des.c ****   }
+ 162              		.loc 1 111 43 is_stmt 0 view .LVU50
+ 163 005c 0023     		movs	r3, #0
+ 164 005e 0A93     		str	r3, [sp, #40]
+ 165 0060 E0E7     		b	.L3
+ 166              	.LVL19:
+ 167              	.L6:
+ 143:./Library/stm32f4xx_cryp_des.c ****     {
+ 144:./Library/stm32f4xx_cryp_des.c ****       
+ 145:./Library/stm32f4xx_cryp_des.c ****       /* Write the Input block in the Input FIFO */
+ 146:./Library/stm32f4xx_cryp_des.c ****       CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 147:./Library/stm32f4xx_cryp_des.c ****       inputaddr+=4;
+ 148:./Library/stm32f4xx_cryp_des.c ****       CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 149:./Library/stm32f4xx_cryp_des.c ****       inputaddr+=4;
+ 150:./Library/stm32f4xx_cryp_des.c ****       
+ 151:./Library/stm32f4xx_cryp_des.c ****       /* Wait until the complete message has been processed */
+ 152:./Library/stm32f4xx_cryp_des.c ****       counter = 0;
+ 153:./Library/stm32f4xx_cryp_des.c ****       do
+ 154:./Library/stm32f4xx_cryp_des.c ****       {
+ 155:./Library/stm32f4xx_cryp_des.c ****         busystatus = CRYP_GetFlagStatus(CRYP_FLAG_BUSY);
+ 156:./Library/stm32f4xx_cryp_des.c ****         counter++;
+ 157:./Library/stm32f4xx_cryp_des.c ****       }while ((counter != DESBUSY_TIMEOUT) && (busystatus != RESET));
+ 158:./Library/stm32f4xx_cryp_des.c ****       
+ 159:./Library/stm32f4xx_cryp_des.c ****       if (busystatus != RESET)
+ 168              		.loc 1 159 7 is_stmt 1 view .LVU51
+ 169              		.loc 1 159 10 is_stmt 0 view .LVU52
+ 170 0062 D0B1     		cbz	r0, .L14
+ 160:./Library/stm32f4xx_cryp_des.c ****       {
+ 161:./Library/stm32f4xx_cryp_des.c ****         status = ERROR;
+ 171              		.loc 1 161 16 view .LVU53
+ 172 0064 0026     		movs	r6, #0
+ 173              	.LVL20:
+ 174              	.L8:
+ 142:./Library/stm32f4xx_cryp_des.c ****     {
+ 175              		.loc 1 142 50 is_stmt 1 discriminator 2 view .LVU54
+ 142:./Library/stm32f4xx_cryp_des.c ****     {
+ 176              		.loc 1 142 51 is_stmt 0 discriminator 2 view .LVU55
+ 177 0066 0835     		adds	r5, r5, #8
+ 178              	.LVL21:
+ 179              	.L5:
+ 142:./Library/stm32f4xx_cryp_des.c ****     {
+ 180              		.loc 1 142 14 is_stmt 1 discriminator 1 view .LVU56
+ 142:./Library/stm32f4xx_cryp_des.c ****     {
+ 181              		.loc 1 142 5 is_stmt 0 discriminator 1 view .LVU57
+ 182 0068 BD42     		cmp	r5, r7
+ 183 006a 21D2     		bcs	.L9
+ 142:./Library/stm32f4xx_cryp_des.c ****     {
+ 184              		.loc 1 142 27 discriminator 3 view .LVU58
+ 185 006c 06B3     		cbz	r6, .L9
+ 146:./Library/stm32f4xx_cryp_des.c ****       inputaddr+=4;
+ 186              		.loc 1 146 7 is_stmt 1 view .LVU59
+ 187 006e 2068     		ldr	r0, [r4]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 16
+
+
+ 188 0070 FFF7FEFF 		bl	CRYP_DataIn
+ 189              	.LVL22:
+ 147:./Library/stm32f4xx_cryp_des.c ****       CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 190              		.loc 1 147 7 view .LVU60
+ 148:./Library/stm32f4xx_cryp_des.c ****       inputaddr+=4;
+ 191              		.loc 1 148 7 view .LVU61
+ 192 0074 6068     		ldr	r0, [r4, #4]
+ 193 0076 FFF7FEFF 		bl	CRYP_DataIn
+ 194              	.LVL23:
+ 149:./Library/stm32f4xx_cryp_des.c ****       
+ 195              		.loc 1 149 7 view .LVU62
+ 149:./Library/stm32f4xx_cryp_des.c ****       
+ 196              		.loc 1 149 16 is_stmt 0 view .LVU63
+ 197 007a 0834     		adds	r4, r4, #8
+ 198              	.LVL24:
+ 152:./Library/stm32f4xx_cryp_des.c ****       do
+ 199              		.loc 1 152 7 is_stmt 1 view .LVU64
+ 152:./Library/stm32f4xx_cryp_des.c ****       do
+ 200              		.loc 1 152 15 is_stmt 0 view .LVU65
+ 201 007c 0023     		movs	r3, #0
+ 202 007e 0193     		str	r3, [sp, #4]
+ 203              	.L7:
+ 153:./Library/stm32f4xx_cryp_des.c ****       {
+ 204              		.loc 1 153 7 is_stmt 1 discriminator 2 view .LVU66
+ 155:./Library/stm32f4xx_cryp_des.c ****         counter++;
+ 205              		.loc 1 155 9 discriminator 2 view .LVU67
+ 155:./Library/stm32f4xx_cryp_des.c ****         counter++;
+ 206              		.loc 1 155 22 is_stmt 0 discriminator 2 view .LVU68
+ 207 0080 1020     		movs	r0, #16
+ 208 0082 FFF7FEFF 		bl	CRYP_GetFlagStatus
+ 209              	.LVL25:
+ 156:./Library/stm32f4xx_cryp_des.c ****       }while ((counter != DESBUSY_TIMEOUT) && (busystatus != RESET));
+ 210              		.loc 1 156 9 is_stmt 1 discriminator 2 view .LVU69
+ 156:./Library/stm32f4xx_cryp_des.c ****       }while ((counter != DESBUSY_TIMEOUT) && (busystatus != RESET));
+ 211              		.loc 1 156 16 is_stmt 0 discriminator 2 view .LVU70
+ 212 0086 0199     		ldr	r1, [sp, #4]
+ 213 0088 0131     		adds	r1, r1, #1
+ 214 008a 0191     		str	r1, [sp, #4]
+ 157:./Library/stm32f4xx_cryp_des.c ****       
+ 215              		.loc 1 157 14 is_stmt 1 discriminator 2 view .LVU71
+ 157:./Library/stm32f4xx_cryp_des.c ****       
+ 216              		.loc 1 157 24 is_stmt 0 discriminator 2 view .LVU72
+ 217 008c 019B     		ldr	r3, [sp, #4]
+ 157:./Library/stm32f4xx_cryp_des.c ****       
+ 218              		.loc 1 157 7 discriminator 2 view .LVU73
+ 219 008e B3F5803F 		cmp	r3, #65536
+ 220 0092 E6D0     		beq	.L6
+ 157:./Library/stm32f4xx_cryp_des.c ****       
+ 221              		.loc 1 157 44 discriminator 1 view .LVU74
+ 222 0094 0028     		cmp	r0, #0
+ 223 0096 F3D1     		bne	.L7
+ 224 0098 E3E7     		b	.L6
+ 225              	.L14:
+ 162:./Library/stm32f4xx_cryp_des.c ****       }
+ 163:./Library/stm32f4xx_cryp_des.c ****       else
+ 164:./Library/stm32f4xx_cryp_des.c ****       {
+ 165:./Library/stm32f4xx_cryp_des.c ****         
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 17
+
+
+ 166:./Library/stm32f4xx_cryp_des.c ****         /* Read the Output block from the Output FIFO */
+ 167:./Library/stm32f4xx_cryp_des.c ****         *(uint32_t*)(outputaddr) = CRYP_DataOut();
+ 226              		.loc 1 167 9 is_stmt 1 view .LVU75
+ 227              		.loc 1 167 36 is_stmt 0 view .LVU76
+ 228 009a FFF7FEFF 		bl	CRYP_DataOut
+ 229              	.LVL26:
+ 230              		.loc 1 167 34 view .LVU77
+ 231 009e C8F80000 		str	r0, [r8]
+ 168:./Library/stm32f4xx_cryp_des.c ****         outputaddr+=4;
+ 232              		.loc 1 168 9 is_stmt 1 view .LVU78
+ 233              	.LVL27:
+ 169:./Library/stm32f4xx_cryp_des.c ****         *(uint32_t*)(outputaddr) = CRYP_DataOut();
+ 234              		.loc 1 169 9 view .LVU79
+ 235              		.loc 1 169 36 is_stmt 0 view .LVU80
+ 236 00a2 FFF7FEFF 		bl	CRYP_DataOut
+ 237              	.LVL28:
+ 238              		.loc 1 169 34 view .LVU81
+ 239 00a6 C8F80400 		str	r0, [r8, #4]
+ 170:./Library/stm32f4xx_cryp_des.c ****         outputaddr+=4;
+ 240              		.loc 1 170 9 is_stmt 1 view .LVU82
+ 241              		.loc 1 170 19 is_stmt 0 view .LVU83
+ 242 00aa 08F10808 		add	r8, r8, #8
+ 243              	.LVL29:
+ 244              		.loc 1 170 19 view .LVU84
+ 245 00ae DAE7     		b	.L8
+ 246              	.L9:
+ 171:./Library/stm32f4xx_cryp_des.c ****       }
+ 172:./Library/stm32f4xx_cryp_des.c ****     }
+ 173:./Library/stm32f4xx_cryp_des.c ****     
+ 174:./Library/stm32f4xx_cryp_des.c ****     /* Disable Crypto */
+ 175:./Library/stm32f4xx_cryp_des.c ****     CRYP_Cmd(DISABLE);
+ 247              		.loc 1 175 5 is_stmt 1 view .LVU85
+ 248 00b0 0020     		movs	r0, #0
+ 249 00b2 FFF7FEFF 		bl	CRYP_Cmd
+ 250              	.LVL30:
+ 251              	.L4:
+ 176:./Library/stm32f4xx_cryp_des.c ****   }
+ 177:./Library/stm32f4xx_cryp_des.c ****   return status; 
+ 252              		.loc 1 177 3 view .LVU86
+ 178:./Library/stm32f4xx_cryp_des.c **** }
+ 253              		.loc 1 178 1 is_stmt 0 view .LVU87
+ 254 00b6 3046     		mov	r0, r6
+ 255 00b8 0EB0     		add	sp, sp, #56
+ 256              	.LCFI2:
+ 257              		.cfi_def_cfa_offset 24
+ 258              		@ sp needed
+ 259 00ba BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 260              		.loc 1 178 1 view .LVU88
+ 261              		.cfi_endproc
+ 262              	.LFE123:
+ 264              		.section	.text.CRYP_DES_CBC,"ax",%progbits
+ 265              		.align	1
+ 266              		.global	CRYP_DES_CBC
+ 267              		.syntax unified
+ 268              		.thumb
+ 269              		.thumb_func
+ 271              	CRYP_DES_CBC:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 18
+
+
+ 272              	.LVL31:
+ 273              	.LFB124:
+ 179:./Library/stm32f4xx_cryp_des.c **** 
+ 180:./Library/stm32f4xx_cryp_des.c **** /**
+ 181:./Library/stm32f4xx_cryp_des.c ****   * @brief  Encrypt and decrypt using DES in CBC Mode
+ 182:./Library/stm32f4xx_cryp_des.c ****   * @param  Mode: encryption or decryption Mode.
+ 183:./Library/stm32f4xx_cryp_des.c ****   *          This parameter can be one of the following values:
+ 184:./Library/stm32f4xx_cryp_des.c ****   *            @arg MODE_ENCRYPT: Encryption
+ 185:./Library/stm32f4xx_cryp_des.c ****   *            @arg MODE_DECRYPT: Decryption
+ 186:./Library/stm32f4xx_cryp_des.c ****   * @param  Key: Key used for DES algorithm.
+ 187:./Library/stm32f4xx_cryp_des.c ****   * @param  InitVectors: Initialisation Vectors used for DES algorithm.
+ 188:./Library/stm32f4xx_cryp_des.c ****   * @param  Ilength: length of the Input buffer, must be a multiple of 8.
+ 189:./Library/stm32f4xx_cryp_des.c ****   * @param  Input: pointer to the Input buffer.
+ 190:./Library/stm32f4xx_cryp_des.c ****   * @param  Output: pointer to the returned buffer.
+ 191:./Library/stm32f4xx_cryp_des.c ****   * @retval An ErrorStatus enumeration value:
+ 192:./Library/stm32f4xx_cryp_des.c ****   *          - SUCCESS: Operation done
+ 193:./Library/stm32f4xx_cryp_des.c ****   *          - ERROR: Operation failed
+ 194:./Library/stm32f4xx_cryp_des.c ****   */
+ 195:./Library/stm32f4xx_cryp_des.c **** ErrorStatus CRYP_DES_CBC(uint8_t Mode, uint8_t Key[8], uint8_t InitVectors[8],
+ 196:./Library/stm32f4xx_cryp_des.c ****                          uint8_t *Input, uint32_t Ilength, uint8_t *Output)
+ 197:./Library/stm32f4xx_cryp_des.c **** {
+ 274              		.loc 1 197 1 is_stmt 1 view -0
+ 275              		.cfi_startproc
+ 276              		@ args = 8, pretend = 0, frame = 72
+ 277              		@ frame_needed = 0, uses_anonymous_args = 0
+ 278              		.loc 1 197 1 is_stmt 0 view .LVU90
+ 279 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 280              	.LCFI3:
+ 281              		.cfi_def_cfa_offset 28
+ 282              		.cfi_offset 4, -28
+ 283              		.cfi_offset 5, -24
+ 284              		.cfi_offset 6, -20
+ 285              		.cfi_offset 7, -16
+ 286              		.cfi_offset 8, -12
+ 287              		.cfi_offset 9, -8
+ 288              		.cfi_offset 14, -4
+ 289 0004 93B0     		sub	sp, sp, #76
+ 290              	.LCFI4:
+ 291              		.cfi_def_cfa_offset 104
+ 292 0006 8146     		mov	r9, r0
+ 293 0008 0E46     		mov	r6, r1
+ 294 000a 1546     		mov	r5, r2
+ 295 000c DDF86880 		ldr	r8, [sp, #104]
+ 198:./Library/stm32f4xx_cryp_des.c ****   CRYP_InitTypeDef DES_CRYP_InitStructure;
+ 296              		.loc 1 198 3 is_stmt 1 view .LVU91
+ 199:./Library/stm32f4xx_cryp_des.c ****   CRYP_KeyInitTypeDef DES_CRYP_KeyInitStructure;
+ 297              		.loc 1 199 3 view .LVU92
+ 200:./Library/stm32f4xx_cryp_des.c ****   CRYP_IVInitTypeDef DES_CRYP_IVInitStructure;
+ 298              		.loc 1 200 3 view .LVU93
+ 201:./Library/stm32f4xx_cryp_des.c ****   __IO uint32_t counter = 0;
+ 299              		.loc 1 201 3 view .LVU94
+ 300              		.loc 1 201 17 is_stmt 0 view .LVU95
+ 301 0010 0022     		movs	r2, #0
+ 302              	.LVL32:
+ 303              		.loc 1 201 17 view .LVU96
+ 304 0012 0192     		str	r2, [sp, #4]
+ 202:./Library/stm32f4xx_cryp_des.c ****   uint32_t busystatus = 0;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 19
+
+
+ 305              		.loc 1 202 3 is_stmt 1 view .LVU97
+ 306              	.LVL33:
+ 203:./Library/stm32f4xx_cryp_des.c ****   ErrorStatus status = SUCCESS;
+ 307              		.loc 1 203 3 view .LVU98
+ 204:./Library/stm32f4xx_cryp_des.c ****   uint32_t keyaddr    = (uint32_t)Key;
+ 308              		.loc 1 204 3 view .LVU99
+ 205:./Library/stm32f4xx_cryp_des.c ****   uint32_t inputaddr  = (uint32_t)Input;
+ 309              		.loc 1 205 3 view .LVU100
+ 310              		.loc 1 205 12 is_stmt 0 view .LVU101
+ 311 0014 1C46     		mov	r4, r3
+ 312              	.LVL34:
+ 206:./Library/stm32f4xx_cryp_des.c ****   uint32_t outputaddr = (uint32_t)Output;
+ 313              		.loc 1 206 3 is_stmt 1 view .LVU102
+ 314              		.loc 1 206 12 is_stmt 0 view .LVU103
+ 315 0016 1B9F     		ldr	r7, [sp, #108]
+ 316              	.LVL35:
+ 207:./Library/stm32f4xx_cryp_des.c ****   uint32_t ivaddr     = (uint32_t)InitVectors;
+ 317              		.loc 1 207 3 is_stmt 1 view .LVU104
+ 208:./Library/stm32f4xx_cryp_des.c ****   uint32_t i = 0;
+ 318              		.loc 1 208 3 view .LVU105
+ 209:./Library/stm32f4xx_cryp_des.c **** 
+ 210:./Library/stm32f4xx_cryp_des.c ****   /* Crypto structures initialisation*/
+ 211:./Library/stm32f4xx_cryp_des.c ****   CRYP_KeyStructInit(&DES_CRYP_KeyInitStructure);
+ 319              		.loc 1 211 3 view .LVU106
+ 320 0018 06A8     		add	r0, sp, #24
+ 321              	.LVL36:
+ 322              		.loc 1 211 3 is_stmt 0 view .LVU107
+ 323 001a FFF7FEFF 		bl	CRYP_KeyStructInit
+ 324              	.LVL37:
+ 212:./Library/stm32f4xx_cryp_des.c **** 
+ 213:./Library/stm32f4xx_cryp_des.c ****   /* Crypto Init for Encryption process */
+ 214:./Library/stm32f4xx_cryp_des.c ****   if(Mode == MODE_ENCRYPT) /* DES encryption */
+ 325              		.loc 1 214 3 is_stmt 1 view .LVU108
+ 326              		.loc 1 214 5 is_stmt 0 view .LVU109
+ 327 001e B9F1010F 		cmp	r9, #1
+ 328 0022 26D0     		beq	.L27
+ 215:./Library/stm32f4xx_cryp_des.c ****   {
+ 216:./Library/stm32f4xx_cryp_des.c ****      DES_CRYP_InitStructure.CRYP_AlgoDir  = CRYP_AlgoDir_Encrypt;
+ 217:./Library/stm32f4xx_cryp_des.c ****   }
+ 218:./Library/stm32f4xx_cryp_des.c ****   else /*if(Mode == MODE_DECRYPT)*/ /* DES decryption */
+ 219:./Library/stm32f4xx_cryp_des.c ****   {
+ 220:./Library/stm32f4xx_cryp_des.c ****      DES_CRYP_InitStructure.CRYP_AlgoDir  = CRYP_AlgoDir_Decrypt;
+ 329              		.loc 1 220 6 is_stmt 1 view .LVU110
+ 330              		.loc 1 220 43 is_stmt 0 view .LVU111
+ 331 0024 0423     		movs	r3, #4
+ 332 0026 0E93     		str	r3, [sp, #56]
+ 333              	.L17:
+ 221:./Library/stm32f4xx_cryp_des.c ****   }
+ 222:./Library/stm32f4xx_cryp_des.c **** 
+ 223:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_InitStructure.CRYP_AlgoMode = CRYP_AlgoMode_DES_CBC;
+ 334              		.loc 1 223 3 is_stmt 1 view .LVU112
+ 335              		.loc 1 223 40 is_stmt 0 view .LVU113
+ 336 0028 1823     		movs	r3, #24
+ 337 002a 0F93     		str	r3, [sp, #60]
+ 224:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_InitStructure.CRYP_DataType = CRYP_DataType_8b;
+ 338              		.loc 1 224 3 is_stmt 1 view .LVU114
+ 339              		.loc 1 224 40 is_stmt 0 view .LVU115
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 20
+
+
+ 340 002c 8023     		movs	r3, #128
+ 341 002e 1093     		str	r3, [sp, #64]
+ 225:./Library/stm32f4xx_cryp_des.c ****   CRYP_Init(&DES_CRYP_InitStructure);
+ 342              		.loc 1 225 3 is_stmt 1 view .LVU116
+ 343 0030 0EA8     		add	r0, sp, #56
+ 344 0032 FFF7FEFF 		bl	CRYP_Init
+ 345              	.LVL38:
+ 226:./Library/stm32f4xx_cryp_des.c **** 
+ 227:./Library/stm32f4xx_cryp_des.c ****   /* Key Initialisation */
+ 228:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_KeyInitStructure.CRYP_Key1Left = __REV(*(uint32_t*)(keyaddr));
+ 346              		.loc 1 228 3 view .LVU117
+ 347              		.loc 1 228 45 is_stmt 0 view .LVU118
+ 348 0036 3368     		ldr	r3, [r6]
+ 349              	.LVL39:
+ 350              	.LBB18:
+ 351              	.LBI18:
+ 495:./CORE/core_cmInstr.h **** {
+ 352              		.loc 2 495 57 is_stmt 1 view .LVU119
+ 353              	.LBB19:
+ 354              		.loc 2 498 3 view .LVU120
+ 355              		.loc 2 498 10 is_stmt 0 view .LVU121
+ 356 0038 1BBA     		rev	r3, r3
+ 357              	.LVL40:
+ 358              		.loc 2 498 10 view .LVU122
+ 359              	.LBE19:
+ 360              	.LBE18:
+ 361              		.loc 1 228 43 view .LVU123
+ 362 003a 0893     		str	r3, [sp, #32]
+ 229:./Library/stm32f4xx_cryp_des.c ****   keyaddr+=4;
+ 363              		.loc 1 229 3 is_stmt 1 view .LVU124
+ 364              	.LVL41:
+ 230:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_KeyInitStructure.CRYP_Key1Right= __REV(*(uint32_t*)(keyaddr));
+ 365              		.loc 1 230 3 view .LVU125
+ 366              		.loc 1 230 45 is_stmt 0 view .LVU126
+ 367 003c 7368     		ldr	r3, [r6, #4]
+ 368              	.LVL42:
+ 369              	.LBB20:
+ 370              	.LBI20:
+ 495:./CORE/core_cmInstr.h **** {
+ 371              		.loc 2 495 57 is_stmt 1 view .LVU127
+ 372              	.LBB21:
+ 373              		.loc 2 498 3 view .LVU128
+ 374              		.loc 2 498 10 is_stmt 0 view .LVU129
+ 375 003e 1BBA     		rev	r3, r3
+ 376              	.LVL43:
+ 377              		.loc 2 498 10 view .LVU130
+ 378              	.LBE21:
+ 379              	.LBE20:
+ 380              		.loc 1 230 43 view .LVU131
+ 381 0040 0993     		str	r3, [sp, #36]
+ 231:./Library/stm32f4xx_cryp_des.c ****   CRYP_KeyInit(& DES_CRYP_KeyInitStructure);
+ 382              		.loc 1 231 3 is_stmt 1 view .LVU132
+ 383 0042 06A8     		add	r0, sp, #24
+ 384 0044 FFF7FEFF 		bl	CRYP_KeyInit
+ 385              	.LVL44:
+ 232:./Library/stm32f4xx_cryp_des.c **** 
+ 233:./Library/stm32f4xx_cryp_des.c ****   /* Initialization Vectors */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 21
+
+
+ 234:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_IVInitStructure.CRYP_IV0Left = __REV(*(uint32_t*)(ivaddr));
+ 386              		.loc 1 234 3 view .LVU133
+ 387              		.loc 1 234 43 is_stmt 0 view .LVU134
+ 388 0048 2B68     		ldr	r3, [r5]
+ 389              	.LVL45:
+ 390              	.LBB22:
+ 391              	.LBI22:
+ 495:./CORE/core_cmInstr.h **** {
+ 392              		.loc 2 495 57 is_stmt 1 view .LVU135
+ 393              	.LBB23:
+ 394              		.loc 2 498 3 view .LVU136
+ 395              		.loc 2 498 10 is_stmt 0 view .LVU137
+ 396 004a 1BBA     		rev	r3, r3
+ 397              	.LVL46:
+ 398              		.loc 2 498 10 view .LVU138
+ 399              	.LBE23:
+ 400              	.LBE22:
+ 401              		.loc 1 234 41 view .LVU139
+ 402 004c 0293     		str	r3, [sp, #8]
+ 235:./Library/stm32f4xx_cryp_des.c ****   ivaddr+=4;
+ 403              		.loc 1 235 3 is_stmt 1 view .LVU140
+ 404              	.LVL47:
+ 236:./Library/stm32f4xx_cryp_des.c ****   DES_CRYP_IVInitStructure.CRYP_IV0Right= __REV(*(uint32_t*)(ivaddr));
+ 405              		.loc 1 236 3 view .LVU141
+ 406              		.loc 1 236 43 is_stmt 0 view .LVU142
+ 407 004e 6B68     		ldr	r3, [r5, #4]
+ 408              	.LVL48:
+ 409              	.LBB24:
+ 410              	.LBI24:
+ 495:./CORE/core_cmInstr.h **** {
+ 411              		.loc 2 495 57 is_stmt 1 view .LVU143
+ 412              	.LBB25:
+ 413              		.loc 2 498 3 view .LVU144
+ 414              		.loc 2 498 10 is_stmt 0 view .LVU145
+ 415 0050 1BBA     		rev	r3, r3
+ 416              	.LVL49:
+ 417              		.loc 2 498 10 view .LVU146
+ 418              	.LBE25:
+ 419              	.LBE24:
+ 420              		.loc 1 236 41 view .LVU147
+ 421 0052 0393     		str	r3, [sp, #12]
+ 237:./Library/stm32f4xx_cryp_des.c ****   CRYP_IVInit(&DES_CRYP_IVInitStructure);
+ 422              		.loc 1 237 3 is_stmt 1 view .LVU148
+ 423 0054 02A8     		add	r0, sp, #8
+ 424 0056 FFF7FEFF 		bl	CRYP_IVInit
+ 425              	.LVL50:
+ 238:./Library/stm32f4xx_cryp_des.c **** 
+ 239:./Library/stm32f4xx_cryp_des.c ****   /* Flush IN/OUT FIFO */
+ 240:./Library/stm32f4xx_cryp_des.c ****   CRYP_FIFOFlush();
+ 426              		.loc 1 240 3 view .LVU149
+ 427 005a FFF7FEFF 		bl	CRYP_FIFOFlush
+ 428              	.LVL51:
+ 241:./Library/stm32f4xx_cryp_des.c ****   
+ 242:./Library/stm32f4xx_cryp_des.c ****   /* Enable Crypto processor */
+ 243:./Library/stm32f4xx_cryp_des.c ****   CRYP_Cmd(ENABLE);
+ 429              		.loc 1 243 3 view .LVU150
+ 430 005e 0120     		movs	r0, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 22
+
+
+ 431 0060 FFF7FEFF 		bl	CRYP_Cmd
+ 432              	.LVL52:
+ 244:./Library/stm32f4xx_cryp_des.c **** 
+ 245:./Library/stm32f4xx_cryp_des.c ****   if(CRYP_GetCmdStatus() == DISABLE)
+ 433              		.loc 1 245 3 view .LVU151
+ 434              		.loc 1 245 6 is_stmt 0 view .LVU152
+ 435 0064 FFF7FEFF 		bl	CRYP_GetCmdStatus
+ 436              	.LVL53:
+ 437              		.loc 1 245 5 view .LVU153
+ 438 0068 0646     		mov	r6, r0
+ 439              	.LVL54:
+ 440              		.loc 1 245 5 view .LVU154
+ 441 006a 60B3     		cbz	r0, .L18
+ 246:./Library/stm32f4xx_cryp_des.c ****   {
+ 247:./Library/stm32f4xx_cryp_des.c ****     /* The CRYP peripheral clock is not enabled or the device doesn't embed 
+ 248:./Library/stm32f4xx_cryp_des.c ****     the CRYP peripheral (please check the device sales type. */
+ 249:./Library/stm32f4xx_cryp_des.c ****     status = ERROR;
+ 250:./Library/stm32f4xx_cryp_des.c ****   }
+ 251:./Library/stm32f4xx_cryp_des.c ****   else
+ 252:./Library/stm32f4xx_cryp_des.c ****   {
+ 253:./Library/stm32f4xx_cryp_des.c ****     for(i=0; ((i<Ilength) && (status != ERROR)); i+=8)
+ 442              		.loc 1 253 10 view .LVU155
+ 443 006c 0025     		movs	r5, #0
+ 444              	.LVL55:
+ 203:./Library/stm32f4xx_cryp_des.c ****   uint32_t keyaddr    = (uint32_t)Key;
+ 445              		.loc 1 203 15 view .LVU156
+ 446 006e 0126     		movs	r6, #1
+ 447 0070 05E0     		b	.L19
+ 448              	.LVL56:
+ 449              	.L27:
+ 216:./Library/stm32f4xx_cryp_des.c ****   }
+ 450              		.loc 1 216 6 is_stmt 1 view .LVU157
+ 216:./Library/stm32f4xx_cryp_des.c ****   }
+ 451              		.loc 1 216 43 is_stmt 0 view .LVU158
+ 452 0072 0023     		movs	r3, #0
+ 453 0074 0E93     		str	r3, [sp, #56]
+ 454 0076 D7E7     		b	.L17
+ 455              	.LVL57:
+ 456              	.L20:
+ 254:./Library/stm32f4xx_cryp_des.c ****     {
+ 255:./Library/stm32f4xx_cryp_des.c ****       /* Write the Input block in the Input FIFO */
+ 256:./Library/stm32f4xx_cryp_des.c ****       CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 257:./Library/stm32f4xx_cryp_des.c ****       inputaddr+=4;
+ 258:./Library/stm32f4xx_cryp_des.c ****       CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 259:./Library/stm32f4xx_cryp_des.c ****       inputaddr+=4;
+ 260:./Library/stm32f4xx_cryp_des.c ****       
+ 261:./Library/stm32f4xx_cryp_des.c ****       /* Wait until the complete message has been processed */
+ 262:./Library/stm32f4xx_cryp_des.c ****       counter = 0;
+ 263:./Library/stm32f4xx_cryp_des.c ****       do
+ 264:./Library/stm32f4xx_cryp_des.c ****       {
+ 265:./Library/stm32f4xx_cryp_des.c ****         busystatus = CRYP_GetFlagStatus(CRYP_FLAG_BUSY);
+ 266:./Library/stm32f4xx_cryp_des.c ****         counter++;
+ 267:./Library/stm32f4xx_cryp_des.c ****       }while ((counter != DESBUSY_TIMEOUT) && (busystatus != RESET));
+ 268:./Library/stm32f4xx_cryp_des.c ****       
+ 269:./Library/stm32f4xx_cryp_des.c ****       if (busystatus != RESET)
+ 457              		.loc 1 269 7 is_stmt 1 view .LVU159
+ 458              		.loc 1 269 10 is_stmt 0 view .LVU160
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 23
+
+
+ 459 0078 D0B1     		cbz	r0, .L28
+ 270:./Library/stm32f4xx_cryp_des.c ****       {
+ 271:./Library/stm32f4xx_cryp_des.c ****         status = ERROR;
+ 460              		.loc 1 271 16 view .LVU161
+ 461 007a 0026     		movs	r6, #0
+ 462              	.LVL58:
+ 463              	.L22:
+ 253:./Library/stm32f4xx_cryp_des.c ****     {
+ 464              		.loc 1 253 50 is_stmt 1 discriminator 2 view .LVU162
+ 253:./Library/stm32f4xx_cryp_des.c ****     {
+ 465              		.loc 1 253 51 is_stmt 0 discriminator 2 view .LVU163
+ 466 007c 0835     		adds	r5, r5, #8
+ 467              	.LVL59:
+ 468              	.L19:
+ 253:./Library/stm32f4xx_cryp_des.c ****     {
+ 469              		.loc 1 253 14 is_stmt 1 discriminator 1 view .LVU164
+ 253:./Library/stm32f4xx_cryp_des.c ****     {
+ 470              		.loc 1 253 5 is_stmt 0 discriminator 1 view .LVU165
+ 471 007e 4545     		cmp	r5, r8
+ 472 0080 1ED2     		bcs	.L23
+ 253:./Library/stm32f4xx_cryp_des.c ****     {
+ 473              		.loc 1 253 27 discriminator 3 view .LVU166
+ 474 0082 EEB1     		cbz	r6, .L23
+ 256:./Library/stm32f4xx_cryp_des.c ****       inputaddr+=4;
+ 475              		.loc 1 256 7 is_stmt 1 view .LVU167
+ 476 0084 2068     		ldr	r0, [r4]
+ 477 0086 FFF7FEFF 		bl	CRYP_DataIn
+ 478              	.LVL60:
+ 257:./Library/stm32f4xx_cryp_des.c ****       CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 479              		.loc 1 257 7 view .LVU168
+ 258:./Library/stm32f4xx_cryp_des.c ****       inputaddr+=4;
+ 480              		.loc 1 258 7 view .LVU169
+ 481 008a 6068     		ldr	r0, [r4, #4]
+ 482 008c FFF7FEFF 		bl	CRYP_DataIn
+ 483              	.LVL61:
+ 259:./Library/stm32f4xx_cryp_des.c ****       
+ 484              		.loc 1 259 7 view .LVU170
+ 259:./Library/stm32f4xx_cryp_des.c ****       
+ 485              		.loc 1 259 16 is_stmt 0 view .LVU171
+ 486 0090 0834     		adds	r4, r4, #8
+ 487              	.LVL62:
+ 262:./Library/stm32f4xx_cryp_des.c ****       do
+ 488              		.loc 1 262 7 is_stmt 1 view .LVU172
+ 262:./Library/stm32f4xx_cryp_des.c ****       do
+ 489              		.loc 1 262 15 is_stmt 0 view .LVU173
+ 490 0092 0023     		movs	r3, #0
+ 491 0094 0193     		str	r3, [sp, #4]
+ 492              	.L21:
+ 263:./Library/stm32f4xx_cryp_des.c ****       {
+ 493              		.loc 1 263 7 is_stmt 1 discriminator 2 view .LVU174
+ 265:./Library/stm32f4xx_cryp_des.c ****         counter++;
+ 494              		.loc 1 265 9 discriminator 2 view .LVU175
+ 265:./Library/stm32f4xx_cryp_des.c ****         counter++;
+ 495              		.loc 1 265 22 is_stmt 0 discriminator 2 view .LVU176
+ 496 0096 1020     		movs	r0, #16
+ 497 0098 FFF7FEFF 		bl	CRYP_GetFlagStatus
+ 498              	.LVL63:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 24
+
+
+ 266:./Library/stm32f4xx_cryp_des.c ****       }while ((counter != DESBUSY_TIMEOUT) && (busystatus != RESET));
+ 499              		.loc 1 266 9 is_stmt 1 discriminator 2 view .LVU177
+ 266:./Library/stm32f4xx_cryp_des.c ****       }while ((counter != DESBUSY_TIMEOUT) && (busystatus != RESET));
+ 500              		.loc 1 266 16 is_stmt 0 discriminator 2 view .LVU178
+ 501 009c 019A     		ldr	r2, [sp, #4]
+ 502 009e 0132     		adds	r2, r2, #1
+ 503 00a0 0192     		str	r2, [sp, #4]
+ 267:./Library/stm32f4xx_cryp_des.c ****       
+ 504              		.loc 1 267 14 is_stmt 1 discriminator 2 view .LVU179
+ 267:./Library/stm32f4xx_cryp_des.c ****       
+ 505              		.loc 1 267 24 is_stmt 0 discriminator 2 view .LVU180
+ 506 00a2 019B     		ldr	r3, [sp, #4]
+ 267:./Library/stm32f4xx_cryp_des.c ****       
+ 507              		.loc 1 267 7 discriminator 2 view .LVU181
+ 508 00a4 B3F5803F 		cmp	r3, #65536
+ 509 00a8 E6D0     		beq	.L20
+ 267:./Library/stm32f4xx_cryp_des.c ****       
+ 510              		.loc 1 267 44 discriminator 1 view .LVU182
+ 511 00aa 0028     		cmp	r0, #0
+ 512 00ac F3D1     		bne	.L21
+ 513 00ae E3E7     		b	.L20
+ 514              	.L28:
+ 272:./Library/stm32f4xx_cryp_des.c ****       }
+ 273:./Library/stm32f4xx_cryp_des.c ****       else
+ 274:./Library/stm32f4xx_cryp_des.c ****       {
+ 275:./Library/stm32f4xx_cryp_des.c ****         /* Read the Output block from the Output FIFO */
+ 276:./Library/stm32f4xx_cryp_des.c ****         *(uint32_t*)(outputaddr) = CRYP_DataOut();
+ 515              		.loc 1 276 9 is_stmt 1 view .LVU183
+ 516              		.loc 1 276 36 is_stmt 0 view .LVU184
+ 517 00b0 FFF7FEFF 		bl	CRYP_DataOut
+ 518              	.LVL64:
+ 519              		.loc 1 276 34 view .LVU185
+ 520 00b4 3860     		str	r0, [r7]
+ 277:./Library/stm32f4xx_cryp_des.c ****         outputaddr+=4;
+ 521              		.loc 1 277 9 is_stmt 1 view .LVU186
+ 522              	.LVL65:
+ 278:./Library/stm32f4xx_cryp_des.c ****         *(uint32_t*)(outputaddr) = CRYP_DataOut();
+ 523              		.loc 1 278 9 view .LVU187
+ 524              		.loc 1 278 36 is_stmt 0 view .LVU188
+ 525 00b6 FFF7FEFF 		bl	CRYP_DataOut
+ 526              	.LVL66:
+ 527              		.loc 1 278 34 view .LVU189
+ 528 00ba 7860     		str	r0, [r7, #4]
+ 279:./Library/stm32f4xx_cryp_des.c ****         outputaddr+=4;
+ 529              		.loc 1 279 9 is_stmt 1 view .LVU190
+ 530              		.loc 1 279 19 is_stmt 0 view .LVU191
+ 531 00bc 0837     		adds	r7, r7, #8
+ 532              	.LVL67:
+ 533              		.loc 1 279 19 view .LVU192
+ 534 00be DDE7     		b	.L22
+ 535              	.L23:
+ 280:./Library/stm32f4xx_cryp_des.c ****       }
+ 281:./Library/stm32f4xx_cryp_des.c ****     }
+ 282:./Library/stm32f4xx_cryp_des.c ****     
+ 283:./Library/stm32f4xx_cryp_des.c ****     /* Disable Crypto */
+ 284:./Library/stm32f4xx_cryp_des.c ****     CRYP_Cmd(DISABLE);
+ 536              		.loc 1 284 5 is_stmt 1 view .LVU193
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 25
+
+
+ 537 00c0 0020     		movs	r0, #0
+ 538 00c2 FFF7FEFF 		bl	CRYP_Cmd
+ 539              	.LVL68:
+ 540              	.L18:
+ 285:./Library/stm32f4xx_cryp_des.c ****   }
+ 286:./Library/stm32f4xx_cryp_des.c ****   return status; 
+ 541              		.loc 1 286 3 view .LVU194
+ 287:./Library/stm32f4xx_cryp_des.c **** }
+ 542              		.loc 1 287 1 is_stmt 0 view .LVU195
+ 543 00c6 3046     		mov	r0, r6
+ 544 00c8 13B0     		add	sp, sp, #76
+ 545              	.LCFI5:
+ 546              		.cfi_def_cfa_offset 28
+ 547              		@ sp needed
+ 548 00ca BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 549              		.loc 1 287 1 view .LVU196
+ 550              		.cfi_endproc
+ 551              	.LFE124:
+ 553              		.text
+ 554              	.Letext0:
+ 555              		.file 3 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 556              		.file 4 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 557              		.file 5 "./CORE/stm32f4xx.h"
+ 558              		.file 6 "./Library/stm32f4xx_cryp.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_cryp_des.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s:20     .text.CRYP_DES_ECB:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s:26     .text.CRYP_DES_ECB:0000000000000000 CRYP_DES_ECB
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s:265    .text.CRYP_DES_CBC:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccIYzpGs.s:271    .text.CRYP_DES_CBC:0000000000000000 CRYP_DES_CBC
+
+UNDEFINED SYMBOLS
+CRYP_KeyStructInit
+CRYP_Init
+CRYP_KeyInit
+CRYP_FIFOFlush
+CRYP_Cmd
+CRYP_GetCmdStatus
+CRYP_DataIn
+CRYP_GetFlagStatus
+CRYP_DataOut
+CRYP_IVInit
