@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"stm32f4xx_dcmi.c"
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
   28:./Library/stm32f4xx_dcmi.c ****   
   29:./Library/stm32f4xx_dcmi.c ****       (#) DCMI pins configuration 
   30:./Library/stm32f4xx_dcmi.c ****         (++) Connect the involved DCMI pins to AF13 using the following function 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 2
 
 
   31:./Library/stm32f4xx_dcmi.c ****             GPIO_PinAFConfig(GPIOx, GPIO_PinSourcex, GPIO_AF_DCMI); 
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
   85:./Library/stm32f4xx_dcmi.c **** 
   86:./Library/stm32f4xx_dcmi.c **** /** @defgroup DCMI 
   87:./Library/stm32f4xx_dcmi.c ****   * @brief DCMI driver modules
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 3
 
 
   88:./Library/stm32f4xx_dcmi.c ****   * @{
@@ -154,64 +154,93 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  118:./Library/stm32f4xx_dcmi.c ****   */
  119:./Library/stm32f4xx_dcmi.c **** void DCMI_DeInit(void)
  120:./Library/stm32f4xx_dcmi.c **** {
-  29              		.loc 1 120 1 view -0
+  29              		.loc 1 120 1
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
   33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 00AF     		add	r7, sp, #0
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_register 7
  121:./Library/stm32f4xx_dcmi.c ****   DCMI->CR = 0x0;
-  34              		.loc 1 121 3 view .LVU1
-  35              		.loc 1 121 12 is_stmt 0 view .LVU2
-  36 0000 054B     		ldr	r3, .L2
-  37 0002 0022     		movs	r2, #0
-  38 0004 1A60     		str	r2, [r3]
+  41              		.loc 1 121 7
+  42 0004 0C4B     		ldr	r3, .L2
+  43              		.loc 1 121 12
+  44 0006 0022     		movs	r2, #0
+  45 0008 1A60     		str	r2, [r3]
  122:./Library/stm32f4xx_dcmi.c ****   DCMI->IER = 0x0;
-  39              		.loc 1 122 3 is_stmt 1 view .LVU3
-  40              		.loc 1 122 13 is_stmt 0 view .LVU4
-  41 0006 DA60     		str	r2, [r3, #12]
+  46              		.loc 1 122 7
+  47 000a 0B4B     		ldr	r3, .L2
+  48              		.loc 1 122 13
+  49 000c 0022     		movs	r2, #0
+  50 000e DA60     		str	r2, [r3, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 4
+
+
  123:./Library/stm32f4xx_dcmi.c ****   DCMI->ICR = 0x1F;
-  42              		.loc 1 123 3 is_stmt 1 view .LVU5
-  43              		.loc 1 123 13 is_stmt 0 view .LVU6
-  44 0008 1F21     		movs	r1, #31
-  45 000a 5961     		str	r1, [r3, #20]
+  51              		.loc 1 123 7
+  52 0010 094B     		ldr	r3, .L2
+  53              		.loc 1 123 13
+  54 0012 1F22     		movs	r2, #31
+  55 0014 5A61     		str	r2, [r3, #20]
  124:./Library/stm32f4xx_dcmi.c ****   DCMI->ESCR = 0x0;
-  46              		.loc 1 124 3 is_stmt 1 view .LVU7
-  47              		.loc 1 124 14 is_stmt 0 view .LVU8
-  48 000c 9A61     		str	r2, [r3, #24]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 4
-
-
+  56              		.loc 1 124 7
+  57 0016 084B     		ldr	r3, .L2
+  58              		.loc 1 124 14
+  59 0018 0022     		movs	r2, #0
+  60 001a 9A61     		str	r2, [r3, #24]
  125:./Library/stm32f4xx_dcmi.c ****   DCMI->ESUR = 0x0;
-  49              		.loc 1 125 3 is_stmt 1 view .LVU9
-  50              		.loc 1 125 14 is_stmt 0 view .LVU10
-  51 000e DA61     		str	r2, [r3, #28]
+  61              		.loc 1 125 7
+  62 001c 064B     		ldr	r3, .L2
+  63              		.loc 1 125 14
+  64 001e 0022     		movs	r2, #0
+  65 0020 DA61     		str	r2, [r3, #28]
  126:./Library/stm32f4xx_dcmi.c ****   DCMI->CWSTRTR = 0x0;
-  52              		.loc 1 126 3 is_stmt 1 view .LVU11
-  53              		.loc 1 126 17 is_stmt 0 view .LVU12
-  54 0010 1A62     		str	r2, [r3, #32]
+  66              		.loc 1 126 7
+  67 0022 054B     		ldr	r3, .L2
+  68              		.loc 1 126 17
+  69 0024 0022     		movs	r2, #0
+  70 0026 1A62     		str	r2, [r3, #32]
  127:./Library/stm32f4xx_dcmi.c ****   DCMI->CWSIZER = 0x0;
-  55              		.loc 1 127 3 is_stmt 1 view .LVU13
-  56              		.loc 1 127 17 is_stmt 0 view .LVU14
-  57 0012 5A62     		str	r2, [r3, #36]
+  71              		.loc 1 127 7
+  72 0028 034B     		ldr	r3, .L2
+  73              		.loc 1 127 17
+  74 002a 0022     		movs	r2, #0
+  75 002c 5A62     		str	r2, [r3, #36]
  128:./Library/stm32f4xx_dcmi.c **** }
-  58              		.loc 1 128 1 view .LVU15
-  59 0014 7047     		bx	lr
-  60              	.L3:
-  61 0016 00BF     		.align	2
-  62              	.L2:
-  63 0018 00000550 		.word	1342504960
-  64              		.cfi_endproc
-  65              	.LFE123:
-  67              		.section	.text.DCMI_Init,"ax",%progbits
-  68              		.align	1
-  69              		.global	DCMI_Init
-  70              		.syntax unified
-  71              		.thumb
-  72              		.thumb_func
-  74              	DCMI_Init:
-  75              	.LVL0:
-  76              	.LFB124:
+  76              		.loc 1 128 1
+  77 002e 00BF     		nop
+  78 0030 BD46     		mov	sp, r7
+  79              	.LCFI2:
+  80              		.cfi_def_cfa_register 13
+  81              		@ sp needed
+  82 0032 5DF8047B 		ldr	r7, [sp], #4
+  83              	.LCFI3:
+  84              		.cfi_restore 7
+  85              		.cfi_def_cfa_offset 0
+  86 0036 7047     		bx	lr
+  87              	.L3:
+  88              		.align	2
+  89              	.L2:
+  90 0038 00000550 		.word	1342504960
+  91              		.cfi_endproc
+  92              	.LFE123:
+  94              		.section	.text.DCMI_Init,"ax",%progbits
+  95              		.align	1
+  96              		.global	DCMI_Init
+  97              		.syntax unified
+  98              		.thumb
+  99              		.thumb_func
+ 101              	DCMI_Init:
+ 102              	.LFB124:
  129:./Library/stm32f4xx_dcmi.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 5
+
+
  130:./Library/stm32f4xx_dcmi.c **** /**
  131:./Library/stm32f4xx_dcmi.c ****   * @brief  Initializes the DCMI according to the specified parameters in the DCMI_InitStruct.
  132:./Library/stm32f4xx_dcmi.c ****   * @param  DCMI_InitStruct: pointer to a DCMI_InitTypeDef structure that contains 
@@ -220,135 +249,163 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  135:./Library/stm32f4xx_dcmi.c ****   */
  136:./Library/stm32f4xx_dcmi.c **** void DCMI_Init(DCMI_InitTypeDef* DCMI_InitStruct)
  137:./Library/stm32f4xx_dcmi.c **** {
-  77              		.loc 1 137 1 is_stmt 1 view -0
-  78              		.cfi_startproc
-  79              		@ args = 0, pretend = 0, frame = 0
-  80              		@ frame_needed = 0, uses_anonymous_args = 0
-  81              		.loc 1 137 1 is_stmt 0 view .LVU17
-  82 0000 F0B5     		push	{r4, r5, r6, r7, lr}
-  83              	.LCFI0:
-  84              		.cfi_def_cfa_offset 20
-  85              		.cfi_offset 4, -20
-  86              		.cfi_offset 5, -16
-  87              		.cfi_offset 6, -12
-  88              		.cfi_offset 7, -8
-  89              		.cfi_offset 14, -4
+ 103              		.loc 1 137 1
+ 104              		.cfi_startproc
+ 105              		@ args = 0, pretend = 0, frame = 16
+ 106              		@ frame_needed = 1, uses_anonymous_args = 0
+ 107              		@ link register save eliminated.
+ 108 0000 80B4     		push	{r7}
+ 109              	.LCFI4:
+ 110              		.cfi_def_cfa_offset 4
+ 111              		.cfi_offset 7, -4
+ 112 0002 85B0     		sub	sp, sp, #20
+ 113              	.LCFI5:
+ 114              		.cfi_def_cfa_offset 24
+ 115 0004 00AF     		add	r7, sp, #0
+ 116              	.LCFI6:
+ 117              		.cfi_def_cfa_register 7
+ 118 0006 7860     		str	r0, [r7, #4]
  138:./Library/stm32f4xx_dcmi.c ****   uint32_t temp = 0x0;
-  90              		.loc 1 138 3 is_stmt 1 view .LVU18
-  91              	.LVL1:
+ 119              		.loc 1 138 12
+ 120 0008 0023     		movs	r3, #0
+ 121 000a FB60     		str	r3, [r7, #12]
  139:./Library/stm32f4xx_dcmi.c ****   
  140:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 5
-
-
  141:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_CAPTURE_MODE(DCMI_InitStruct->DCMI_CaptureMode));
-  92              		.loc 1 141 3 view .LVU19
  142:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_SYNCHRO(DCMI_InitStruct->DCMI_SynchroMode));
-  93              		.loc 1 142 3 view .LVU20
  143:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_PCKPOLARITY(DCMI_InitStruct->DCMI_PCKPolarity));
-  94              		.loc 1 143 3 view .LVU21
  144:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_VSPOLARITY(DCMI_InitStruct->DCMI_VSPolarity));
-  95              		.loc 1 144 3 view .LVU22
  145:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_HSPOLARITY(DCMI_InitStruct->DCMI_HSPolarity));
-  96              		.loc 1 145 3 view .LVU23
  146:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_CAPTURE_RATE(DCMI_InitStruct->DCMI_CaptureRate));
-  97              		.loc 1 146 3 view .LVU24
  147:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_EXTENDED_DATA(DCMI_InitStruct->DCMI_ExtendedDataMode));
-  98              		.loc 1 147 3 view .LVU25
  148:./Library/stm32f4xx_dcmi.c **** 
  149:./Library/stm32f4xx_dcmi.c ****   /* The DCMI configuration registers should be programmed correctly before 
  150:./Library/stm32f4xx_dcmi.c ****   enabling the CR_ENABLE Bit and the CR_CAPTURE Bit */
  151:./Library/stm32f4xx_dcmi.c ****   DCMI->CR &= ~(DCMI_CR_ENABLE | DCMI_CR_CAPTURE);
-  99              		.loc 1 151 3 view .LVU26
- 100              		.loc 1 151 12 is_stmt 0 view .LVU27
- 101 0002 1049     		ldr	r1, .L6
- 102 0004 0B68     		ldr	r3, [r1]
- 103 0006 23F48043 		bic	r3, r3, #16384
- 104 000a 23F00103 		bic	r3, r3, #1
- 105 000e 0B60     		str	r3, [r1]
+ 122              		.loc 1 151 12
+ 123 000c 1B4B     		ldr	r3, .L5
+ 124 000e 1B68     		ldr	r3, [r3]
+ 125 0010 1A4A     		ldr	r2, .L5
+ 126 0012 23F48043 		bic	r3, r3, #16384
+ 127 0016 23F00103 		bic	r3, r3, #1
+ 128 001a 1360     		str	r3, [r2]
  152:./Library/stm32f4xx_dcmi.c ****    
  153:./Library/stm32f4xx_dcmi.c ****   /* Reset the old DCMI configuration */
  154:./Library/stm32f4xx_dcmi.c ****   temp = DCMI->CR;
- 106              		.loc 1 154 3 is_stmt 1 view .LVU28
- 107              		.loc 1 154 8 is_stmt 0 view .LVU29
- 108 0010 0A68     		ldr	r2, [r1]
- 109              	.LVL2:
+ 129              		.loc 1 154 14
+ 130 001c 174B     		ldr	r3, .L5
+ 131              		.loc 1 154 8
+ 132 001e 1B68     		ldr	r3, [r3]
+ 133 0020 FB60     		str	r3, [r7, #12]
  155:./Library/stm32f4xx_dcmi.c ****   
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 6
+
+
  156:./Library/stm32f4xx_dcmi.c ****   temp &= ~((uint32_t)DCMI_CR_CM     | DCMI_CR_ESS   | DCMI_CR_PCKPOL |
- 110              		.loc 1 156 3 is_stmt 1 view .LVU30
- 111              		.loc 1 156 8 is_stmt 0 view .LVU31
- 112 0012 22F47F62 		bic	r2, r2, #4080
- 113              	.LVL3:
- 114              		.loc 1 156 8 view .LVU32
- 115 0016 22F00202 		bic	r2, r2, #2
- 116              	.LVL4:
+ 134              		.loc 1 156 8
+ 135 0022 FB68     		ldr	r3, [r7, #12]
+ 136 0024 23F47F63 		bic	r3, r3, #4080
+ 137 0028 23F00203 		bic	r3, r3, #2
+ 138 002c FB60     		str	r3, [r7, #12]
  157:./Library/stm32f4xx_dcmi.c ****                       DCMI_CR_HSPOL  | DCMI_CR_VSPOL | DCMI_CR_FCRC_0 | 
  158:./Library/stm32f4xx_dcmi.c ****                       DCMI_CR_FCRC_1 | DCMI_CR_EDM_0 | DCMI_CR_EDM_1); 
  159:./Library/stm32f4xx_dcmi.c ****                   
  160:./Library/stm32f4xx_dcmi.c ****   /* Sets the new configuration of the DCMI peripheral */
  161:./Library/stm32f4xx_dcmi.c ****   temp |= ((uint32_t)DCMI_InitStruct->DCMI_CaptureMode |
- 117              		.loc 1 161 3 is_stmt 1 view .LVU33
- 118              		.loc 1 161 37 is_stmt 0 view .LVU34
- 119 001a 0688     		ldrh	r6, [r0]
+ 139              		.loc 1 161 37
+ 140 002e 7B68     		ldr	r3, [r7, #4]
+ 141 0030 1A88     		ldrh	r2, [r3]
  162:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_SynchroMode |
- 120              		.loc 1 162 37 view .LVU35
- 121 001c 4788     		ldrh	r7, [r0, #2]
+ 142              		.loc 1 162 37
+ 143 0032 7B68     		ldr	r3, [r7, #4]
+ 144 0034 5B88     		ldrh	r3, [r3, #2]
  163:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_PCKPolarity |
- 122              		.loc 1 163 37 view .LVU36
- 123 001e 8588     		ldrh	r5, [r0, #4]
  164:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_VSPolarity |
- 124              		.loc 1 164 37 view .LVU37
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 6
-
-
- 125 0020 C488     		ldrh	r4, [r0, #6]
  165:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_HSPolarity |
- 126              		.loc 1 165 37 view .LVU38
- 127 0022 B0F808E0 		ldrh	lr, [r0, #8]
  166:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_CaptureRate |
- 128              		.loc 1 166 37 view .LVU39
- 129 0026 B0F80AC0 		ldrh	ip, [r0, #10]
+ 145              		.loc 1 166 56
+ 146 0036 1343     		orrs	r3, r3, r2
+ 147 0038 9AB2     		uxth	r2, r3
+ 163:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_PCKPolarity |
+ 148              		.loc 1 163 37
+ 149 003a 7B68     		ldr	r3, [r7, #4]
+ 150 003c 9B88     		ldrh	r3, [r3, #4]
+ 151              		.loc 1 166 56
+ 152 003e 1343     		orrs	r3, r3, r2
+ 153 0040 9AB2     		uxth	r2, r3
+ 164:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_HSPolarity |
+ 154              		.loc 1 164 37
+ 155 0042 7B68     		ldr	r3, [r7, #4]
+ 156 0044 DB88     		ldrh	r3, [r3, #6]
+ 157              		.loc 1 166 56
+ 158 0046 1343     		orrs	r3, r3, r2
+ 159 0048 9AB2     		uxth	r2, r3
+ 165:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_CaptureRate |
+ 160              		.loc 1 165 37
+ 161 004a 7B68     		ldr	r3, [r7, #4]
+ 162 004c 1B89     		ldrh	r3, [r3, #8]
+ 163              		.loc 1 166 56
+ 164 004e 1343     		orrs	r3, r3, r2
+ 165 0050 9AB2     		uxth	r2, r3
+ 166              		.loc 1 166 37
+ 167 0052 7B68     		ldr	r3, [r7, #4]
+ 168 0054 5B89     		ldrh	r3, [r3, #10]
+ 169              		.loc 1 166 56
+ 170 0056 1343     		orrs	r3, r3, r2
+ 171 0058 9AB2     		uxth	r2, r3
  167:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_ExtendedDataMode);
- 130              		.loc 1 167 37 view .LVU40
- 131 002a 8389     		ldrh	r3, [r0, #12]
- 166:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_CaptureRate |
- 132              		.loc 1 166 56 view .LVU41
- 133 002c 46EA0700 		orr	r0, r6, r7
- 134              	.LVL5:
- 166:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_CaptureRate |
- 135              		.loc 1 166 56 view .LVU42
- 136 0030 2843     		orrs	r0, r0, r5
- 137 0032 2043     		orrs	r0, r0, r4
- 138 0034 4EEA0000 		orr	r0, lr, r0
- 139 0038 4CEA0000 		orr	r0, ip, r0
- 140 003c 0343     		orrs	r3, r3, r0
+ 172              		.loc 1 167 37
+ 173 005a 7B68     		ldr	r3, [r7, #4]
+ 174 005c 9B89     		ldrh	r3, [r3, #12]
+ 166:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_ExtendedDataMode);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 7
+
+
+ 175              		.loc 1 166 56
+ 176 005e 1343     		orrs	r3, r3, r2
+ 177 0060 9BB2     		uxth	r3, r3
+ 178 0062 1A46     		mov	r2, r3
  161:./Library/stm32f4xx_dcmi.c ****                      DCMI_InitStruct->DCMI_SynchroMode |
- 141              		.loc 1 161 8 view .LVU43
- 142 003e 1343     		orrs	r3, r3, r2
- 143              	.LVL6:
+ 179              		.loc 1 161 8
+ 180 0064 FB68     		ldr	r3, [r7, #12]
+ 181 0066 1343     		orrs	r3, r3, r2
+ 182 0068 FB60     		str	r3, [r7, #12]
  168:./Library/stm32f4xx_dcmi.c **** 
  169:./Library/stm32f4xx_dcmi.c ****   DCMI->CR = temp;                              
- 144              		.loc 1 169 3 is_stmt 1 view .LVU44
- 145              		.loc 1 169 12 is_stmt 0 view .LVU45
- 146 0040 0B60     		str	r3, [r1]
+ 183              		.loc 1 169 7
+ 184 006a 044A     		ldr	r2, .L5
+ 185              		.loc 1 169 12
+ 186 006c FB68     		ldr	r3, [r7, #12]
+ 187 006e 1360     		str	r3, [r2]
  170:./Library/stm32f4xx_dcmi.c **** }
- 147              		.loc 1 170 1 view .LVU46
- 148 0042 F0BD     		pop	{r4, r5, r6, r7, pc}
- 149              	.L7:
- 150              		.align	2
- 151              	.L6:
- 152 0044 00000550 		.word	1342504960
- 153              		.cfi_endproc
- 154              	.LFE124:
- 156              		.section	.text.DCMI_StructInit,"ax",%progbits
- 157              		.align	1
- 158              		.global	DCMI_StructInit
- 159              		.syntax unified
- 160              		.thumb
- 161              		.thumb_func
- 163              	DCMI_StructInit:
- 164              	.LVL7:
- 165              	.LFB125:
+ 188              		.loc 1 170 1
+ 189 0070 00BF     		nop
+ 190 0072 1437     		adds	r7, r7, #20
+ 191              	.LCFI7:
+ 192              		.cfi_def_cfa_offset 4
+ 193 0074 BD46     		mov	sp, r7
+ 194              	.LCFI8:
+ 195              		.cfi_def_cfa_register 13
+ 196              		@ sp needed
+ 197 0076 5DF8047B 		ldr	r7, [sp], #4
+ 198              	.LCFI9:
+ 199              		.cfi_restore 7
+ 200              		.cfi_def_cfa_offset 0
+ 201 007a 7047     		bx	lr
+ 202              	.L6:
+ 203              		.align	2
+ 204              	.L5:
+ 205 007c 00000550 		.word	1342504960
+ 206              		.cfi_endproc
+ 207              	.LFE124:
+ 209              		.section	.text.DCMI_StructInit,"ax",%progbits
+ 210              		.align	1
+ 211              		.global	DCMI_StructInit
+ 212              		.syntax unified
+ 213              		.thumb
+ 214              		.thumb_func
+ 216              	DCMI_StructInit:
+ 217              	.LFB125:
  171:./Library/stm32f4xx_dcmi.c **** 
  172:./Library/stm32f4xx_dcmi.c **** /**
  173:./Library/stm32f4xx_dcmi.c ****   * @brief  Fills each DCMI_InitStruct member with its default value.
@@ -358,58 +415,89 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  177:./Library/stm32f4xx_dcmi.c ****   */
  178:./Library/stm32f4xx_dcmi.c **** void DCMI_StructInit(DCMI_InitTypeDef* DCMI_InitStruct)
  179:./Library/stm32f4xx_dcmi.c **** {
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 7
+ 218              		.loc 1 179 1
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 8
 
 
- 166              		.loc 1 179 1 is_stmt 1 view -0
- 167              		.cfi_startproc
- 168              		@ args = 0, pretend = 0, frame = 0
- 169              		@ frame_needed = 0, uses_anonymous_args = 0
- 170              		@ link register save eliminated.
+ 221              		@ frame_needed = 1, uses_anonymous_args = 0
+ 222              		@ link register save eliminated.
+ 223 0000 80B4     		push	{r7}
+ 224              	.LCFI10:
+ 225              		.cfi_def_cfa_offset 4
+ 226              		.cfi_offset 7, -4
+ 227 0002 83B0     		sub	sp, sp, #12
+ 228              	.LCFI11:
+ 229              		.cfi_def_cfa_offset 16
+ 230 0004 00AF     		add	r7, sp, #0
+ 231              	.LCFI12:
+ 232              		.cfi_def_cfa_register 7
+ 233 0006 7860     		str	r0, [r7, #4]
  180:./Library/stm32f4xx_dcmi.c ****   /* Set the default configuration */
  181:./Library/stm32f4xx_dcmi.c ****   DCMI_InitStruct->DCMI_CaptureMode = DCMI_CaptureMode_Continuous;
- 171              		.loc 1 181 3 view .LVU48
- 172              		.loc 1 181 37 is_stmt 0 view .LVU49
- 173 0000 0023     		movs	r3, #0
- 174 0002 0380     		strh	r3, [r0]	@ movhi
+ 234              		.loc 1 181 37
+ 235 0008 7B68     		ldr	r3, [r7, #4]
+ 236 000a 0022     		movs	r2, #0
+ 237 000c 1A80     		strh	r2, [r3]	@ movhi
  182:./Library/stm32f4xx_dcmi.c ****   DCMI_InitStruct->DCMI_SynchroMode = DCMI_SynchroMode_Hardware;
- 175              		.loc 1 182 3 is_stmt 1 view .LVU50
- 176              		.loc 1 182 37 is_stmt 0 view .LVU51
- 177 0004 4380     		strh	r3, [r0, #2]	@ movhi
+ 238              		.loc 1 182 37
+ 239 000e 7B68     		ldr	r3, [r7, #4]
+ 240 0010 0022     		movs	r2, #0
+ 241 0012 5A80     		strh	r2, [r3, #2]	@ movhi
  183:./Library/stm32f4xx_dcmi.c ****   DCMI_InitStruct->DCMI_PCKPolarity = DCMI_PCKPolarity_Falling;
- 178              		.loc 1 183 3 is_stmt 1 view .LVU52
- 179              		.loc 1 183 37 is_stmt 0 view .LVU53
- 180 0006 8380     		strh	r3, [r0, #4]	@ movhi
+ 242              		.loc 1 183 37
+ 243 0014 7B68     		ldr	r3, [r7, #4]
+ 244 0016 0022     		movs	r2, #0
+ 245 0018 9A80     		strh	r2, [r3, #4]	@ movhi
  184:./Library/stm32f4xx_dcmi.c ****   DCMI_InitStruct->DCMI_VSPolarity = DCMI_VSPolarity_Low;
- 181              		.loc 1 184 3 is_stmt 1 view .LVU54
- 182              		.loc 1 184 36 is_stmt 0 view .LVU55
- 183 0008 C380     		strh	r3, [r0, #6]	@ movhi
+ 246              		.loc 1 184 36
+ 247 001a 7B68     		ldr	r3, [r7, #4]
+ 248 001c 0022     		movs	r2, #0
+ 249 001e DA80     		strh	r2, [r3, #6]	@ movhi
  185:./Library/stm32f4xx_dcmi.c ****   DCMI_InitStruct->DCMI_HSPolarity = DCMI_HSPolarity_Low;
- 184              		.loc 1 185 3 is_stmt 1 view .LVU56
- 185              		.loc 1 185 36 is_stmt 0 view .LVU57
- 186 000a 0381     		strh	r3, [r0, #8]	@ movhi
+ 250              		.loc 1 185 36
+ 251 0020 7B68     		ldr	r3, [r7, #4]
+ 252 0022 0022     		movs	r2, #0
+ 253 0024 1A81     		strh	r2, [r3, #8]	@ movhi
  186:./Library/stm32f4xx_dcmi.c ****   DCMI_InitStruct->DCMI_CaptureRate = DCMI_CaptureRate_All_Frame;
- 187              		.loc 1 186 3 is_stmt 1 view .LVU58
- 188              		.loc 1 186 37 is_stmt 0 view .LVU59
- 189 000c 4381     		strh	r3, [r0, #10]	@ movhi
+ 254              		.loc 1 186 37
+ 255 0026 7B68     		ldr	r3, [r7, #4]
+ 256 0028 0022     		movs	r2, #0
+ 257 002a 5A81     		strh	r2, [r3, #10]	@ movhi
  187:./Library/stm32f4xx_dcmi.c ****   DCMI_InitStruct->DCMI_ExtendedDataMode = DCMI_ExtendedDataMode_8b;
- 190              		.loc 1 187 3 is_stmt 1 view .LVU60
- 191              		.loc 1 187 42 is_stmt 0 view .LVU61
- 192 000e 8381     		strh	r3, [r0, #12]	@ movhi
+ 258              		.loc 1 187 42
+ 259 002c 7B68     		ldr	r3, [r7, #4]
+ 260 002e 0022     		movs	r2, #0
+ 261 0030 9A81     		strh	r2, [r3, #12]	@ movhi
  188:./Library/stm32f4xx_dcmi.c **** }
- 193              		.loc 1 188 1 view .LVU62
- 194 0010 7047     		bx	lr
- 195              		.cfi_endproc
- 196              	.LFE125:
- 198              		.section	.text.DCMI_CROPConfig,"ax",%progbits
- 199              		.align	1
- 200              		.global	DCMI_CROPConfig
- 201              		.syntax unified
- 202              		.thumb
- 203              		.thumb_func
- 205              	DCMI_CROPConfig:
- 206              	.LVL8:
- 207              	.LFB126:
+ 262              		.loc 1 188 1
+ 263 0032 00BF     		nop
+ 264 0034 0C37     		adds	r7, r7, #12
+ 265              	.LCFI13:
+ 266              		.cfi_def_cfa_offset 4
+ 267 0036 BD46     		mov	sp, r7
+ 268              	.LCFI14:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 9
+
+
+ 269              		.cfi_def_cfa_register 13
+ 270              		@ sp needed
+ 271 0038 5DF8047B 		ldr	r7, [sp], #4
+ 272              	.LCFI15:
+ 273              		.cfi_restore 7
+ 274              		.cfi_def_cfa_offset 0
+ 275 003c 7047     		bx	lr
+ 276              		.cfi_endproc
+ 277              	.LFE125:
+ 279              		.section	.text.DCMI_CROPConfig,"ax",%progbits
+ 280              		.align	1
+ 281              		.global	DCMI_CROPConfig
+ 282              		.syntax unified
+ 283              		.thumb
+ 284              		.thumb_func
+ 286              	DCMI_CROPConfig:
+ 287              	.LFB126:
  189:./Library/stm32f4xx_dcmi.c **** 
  190:./Library/stm32f4xx_dcmi.c **** /**
  191:./Library/stm32f4xx_dcmi.c ****   * @brief  Initializes the DCMI peripheral CROP mode according to the specified
@@ -418,69 +506,105 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  194:./Library/stm32f4xx_dcmi.c ****   * @param  DCMI_CROPInitStruct:  pointer to a DCMI_CROPInitTypeDef structure that 
  195:./Library/stm32f4xx_dcmi.c ****   *         contains the configuration information for the DCMI peripheral CROP mode.
  196:./Library/stm32f4xx_dcmi.c ****   * @retval None
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 8
-
-
  197:./Library/stm32f4xx_dcmi.c ****   */
  198:./Library/stm32f4xx_dcmi.c **** void DCMI_CROPConfig(DCMI_CROPInitTypeDef* DCMI_CROPInitStruct)
  199:./Library/stm32f4xx_dcmi.c **** {  
- 208              		.loc 1 199 1 is_stmt 1 view -0
- 209              		.cfi_startproc
- 210              		@ args = 0, pretend = 0, frame = 0
- 211              		@ frame_needed = 0, uses_anonymous_args = 0
- 212              		@ link register save eliminated.
+ 288              		.loc 1 199 1
+ 289              		.cfi_startproc
+ 290              		@ args = 0, pretend = 0, frame = 8
+ 291              		@ frame_needed = 1, uses_anonymous_args = 0
+ 292              		@ link register save eliminated.
+ 293 0000 80B4     		push	{r7}
+ 294              	.LCFI16:
+ 295              		.cfi_def_cfa_offset 4
+ 296              		.cfi_offset 7, -4
+ 297 0002 83B0     		sub	sp, sp, #12
+ 298              	.LCFI17:
+ 299              		.cfi_def_cfa_offset 16
+ 300 0004 00AF     		add	r7, sp, #0
+ 301              	.LCFI18:
+ 302              		.cfi_def_cfa_register 7
+ 303 0006 7860     		str	r0, [r7, #4]
  200:./Library/stm32f4xx_dcmi.c ****   /* Sets the CROP window coordinates */
  201:./Library/stm32f4xx_dcmi.c ****   DCMI->CWSTRTR = (uint32_t)((uint32_t)DCMI_CROPInitStruct->DCMI_HorizontalOffsetCount |
- 213              		.loc 1 201 3 view .LVU64
- 214              		.loc 1 201 59 is_stmt 0 view .LVU65
- 215 0000 4388     		ldrh	r3, [r0, #2]
+ 304              		.loc 1 201 59
+ 305 0008 7B68     		ldr	r3, [r7, #4]
+ 306 000a 5B88     		ldrh	r3, [r3, #2]
+ 307              		.loc 1 201 30
+ 308 000c 1946     		mov	r1, r3
  202:./Library/stm32f4xx_dcmi.c ****                   ((uint32_t)DCMI_CROPInitStruct->DCMI_VerticalStartLine << 16));
- 216              		.loc 1 202 49 view .LVU66
- 217 0002 0288     		ldrh	r2, [r0]
+ 309              		.loc 1 202 49
+ 310 000e 7B68     		ldr	r3, [r7, #4]
+ 311 0010 1B88     		ldrh	r3, [r3]
+ 312              		.loc 1 202 74
+ 313 0012 1B04     		lsls	r3, r3, #16
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 10
+
+
  201:./Library/stm32f4xx_dcmi.c ****                   ((uint32_t)DCMI_CROPInitStruct->DCMI_VerticalStartLine << 16));
- 218              		.loc 1 201 19 view .LVU67
- 219 0004 43EA0243 		orr	r3, r3, r2, lsl #16
+ 314              		.loc 1 201 7
+ 315 0014 084A     		ldr	r2, .L9
  201:./Library/stm32f4xx_dcmi.c ****                   ((uint32_t)DCMI_CROPInitStruct->DCMI_VerticalStartLine << 16));
- 220              		.loc 1 201 17 view .LVU68
- 221 0008 034A     		ldr	r2, .L10
- 222 000a 1362     		str	r3, [r2, #32]
+ 316              		.loc 1 201 19
+ 317 0016 0B43     		orrs	r3, r3, r1
+ 201:./Library/stm32f4xx_dcmi.c ****                   ((uint32_t)DCMI_CROPInitStruct->DCMI_VerticalStartLine << 16));
+ 318              		.loc 1 201 17
+ 319 0018 1362     		str	r3, [r2, #32]
  203:./Library/stm32f4xx_dcmi.c **** 
  204:./Library/stm32f4xx_dcmi.c ****   /* Sets the CROP window size */
  205:./Library/stm32f4xx_dcmi.c ****   DCMI->CWSIZER = (uint32_t)(DCMI_CROPInitStruct->DCMI_CaptureCount |
- 223              		.loc 1 205 3 is_stmt 1 view .LVU69
- 224              		.loc 1 205 49 is_stmt 0 view .LVU70
- 225 000c C388     		ldrh	r3, [r0, #6]
+ 320              		.loc 1 205 49
+ 321 001a 7B68     		ldr	r3, [r7, #4]
+ 322 001c DB88     		ldrh	r3, [r3, #6]
+ 323 001e 1946     		mov	r1, r3
  206:./Library/stm32f4xx_dcmi.c ****                   ((uint32_t)DCMI_CROPInitStruct->DCMI_VerticalLineCount << 16));
- 226              		.loc 1 206 49 view .LVU71
- 227 000e 8188     		ldrh	r1, [r0, #4]
+ 324              		.loc 1 206 49
+ 325 0020 7B68     		ldr	r3, [r7, #4]
+ 326 0022 9B88     		ldrh	r3, [r3, #4]
+ 327              		.loc 1 206 74
+ 328 0024 1B04     		lsls	r3, r3, #16
  205:./Library/stm32f4xx_dcmi.c ****                   ((uint32_t)DCMI_CROPInitStruct->DCMI_VerticalLineCount << 16));
- 228              		.loc 1 205 19 view .LVU72
- 229 0010 43EA0143 		orr	r3, r3, r1, lsl #16
+ 329              		.loc 1 205 7
+ 330 0026 044A     		ldr	r2, .L9
  205:./Library/stm32f4xx_dcmi.c ****                   ((uint32_t)DCMI_CROPInitStruct->DCMI_VerticalLineCount << 16));
- 230              		.loc 1 205 17 view .LVU73
- 231 0014 5362     		str	r3, [r2, #36]
+ 331              		.loc 1 205 19
+ 332 0028 0B43     		orrs	r3, r3, r1
+ 205:./Library/stm32f4xx_dcmi.c ****                   ((uint32_t)DCMI_CROPInitStruct->DCMI_VerticalLineCount << 16));
+ 333              		.loc 1 205 17
+ 334 002a 5362     		str	r3, [r2, #36]
  207:./Library/stm32f4xx_dcmi.c **** }
- 232              		.loc 1 207 1 view .LVU74
- 233 0016 7047     		bx	lr
- 234              	.L11:
- 235              		.align	2
- 236              	.L10:
- 237 0018 00000550 		.word	1342504960
- 238              		.cfi_endproc
- 239              	.LFE126:
- 241              		.section	.text.DCMI_CROPCmd,"ax",%progbits
- 242              		.align	1
- 243              		.global	DCMI_CROPCmd
- 244              		.syntax unified
- 245              		.thumb
- 246              		.thumb_func
- 248              	DCMI_CROPCmd:
- 249              	.LVL9:
- 250              	.LFB127:
+ 335              		.loc 1 207 1
+ 336 002c 00BF     		nop
+ 337 002e 0C37     		adds	r7, r7, #12
+ 338              	.LCFI19:
+ 339              		.cfi_def_cfa_offset 4
+ 340 0030 BD46     		mov	sp, r7
+ 341              	.LCFI20:
+ 342              		.cfi_def_cfa_register 13
+ 343              		@ sp needed
+ 344 0032 5DF8047B 		ldr	r7, [sp], #4
+ 345              	.LCFI21:
+ 346              		.cfi_restore 7
+ 347              		.cfi_def_cfa_offset 0
+ 348 0036 7047     		bx	lr
+ 349              	.L10:
+ 350              		.align	2
+ 351              	.L9:
+ 352 0038 00000550 		.word	1342504960
+ 353              		.cfi_endproc
+ 354              	.LFE126:
+ 356              		.section	.text.DCMI_CROPCmd,"ax",%progbits
+ 357              		.align	1
+ 358              		.global	DCMI_CROPCmd
+ 359              		.syntax unified
+ 360              		.thumb
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 11
+
+
+ 361              		.thumb_func
+ 363              	DCMI_CROPCmd:
+ 364              	.LFB127:
  208:./Library/stm32f4xx_dcmi.c **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 9
-
-
  209:./Library/stm32f4xx_dcmi.c **** /**
  210:./Library/stm32f4xx_dcmi.c ****   * @brief  Enables or disables the DCMI Crop feature.
  211:./Library/stm32f4xx_dcmi.c ****   * @note   This function should be called before to enable and start the DCMI interface.
@@ -490,63 +614,89 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  215:./Library/stm32f4xx_dcmi.c ****   */
  216:./Library/stm32f4xx_dcmi.c **** void DCMI_CROPCmd(FunctionalState NewState)
  217:./Library/stm32f4xx_dcmi.c **** {
- 251              		.loc 1 217 1 is_stmt 1 view -0
- 252              		.cfi_startproc
- 253              		@ args = 0, pretend = 0, frame = 0
- 254              		@ frame_needed = 0, uses_anonymous_args = 0
- 255              		@ link register save eliminated.
+ 365              		.loc 1 217 1
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 8
+ 368              		@ frame_needed = 1, uses_anonymous_args = 0
+ 369              		@ link register save eliminated.
+ 370 0000 80B4     		push	{r7}
+ 371              	.LCFI22:
+ 372              		.cfi_def_cfa_offset 4
+ 373              		.cfi_offset 7, -4
+ 374 0002 83B0     		sub	sp, sp, #12
+ 375              	.LCFI23:
+ 376              		.cfi_def_cfa_offset 16
+ 377 0004 00AF     		add	r7, sp, #0
+ 378              	.LCFI24:
+ 379              		.cfi_def_cfa_register 7
+ 380 0006 0346     		mov	r3, r0
+ 381 0008 FB71     		strb	r3, [r7, #7]
  218:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
  219:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 256              		.loc 1 219 3 view .LVU76
  220:./Library/stm32f4xx_dcmi.c ****     
  221:./Library/stm32f4xx_dcmi.c ****   if (NewState != DISABLE)
- 257              		.loc 1 221 3 view .LVU77
- 258              		.loc 1 221 6 is_stmt 0 view .LVU78
- 259 0000 28B1     		cbz	r0, .L13
+ 382              		.loc 1 221 6
+ 383 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 384 000c 002B     		cmp	r3, #0
+ 385 000e 06D0     		beq	.L12
  222:./Library/stm32f4xx_dcmi.c ****   {
  223:./Library/stm32f4xx_dcmi.c ****     /* Enable the DCMI Crop feature */
  224:./Library/stm32f4xx_dcmi.c ****     DCMI->CR |= (uint32_t)DCMI_CR_CROP;
- 260              		.loc 1 224 5 is_stmt 1 view .LVU79
- 261              		.loc 1 224 14 is_stmt 0 view .LVU80
- 262 0002 064A     		ldr	r2, .L15
- 263 0004 1368     		ldr	r3, [r2]
- 264 0006 43F00403 		orr	r3, r3, #4
- 265 000a 1360     		str	r3, [r2]
- 266 000c 7047     		bx	lr
- 267              	.L13:
+ 386              		.loc 1 224 14
+ 387 0010 094B     		ldr	r3, .L15
+ 388 0012 1B68     		ldr	r3, [r3]
+ 389 0014 084A     		ldr	r2, .L15
+ 390 0016 43F00403 		orr	r3, r3, #4
+ 391 001a 1360     		str	r3, [r2]
  225:./Library/stm32f4xx_dcmi.c ****   }
  226:./Library/stm32f4xx_dcmi.c ****   else
  227:./Library/stm32f4xx_dcmi.c ****   {
  228:./Library/stm32f4xx_dcmi.c ****     /* Disable the DCMI Crop feature */
  229:./Library/stm32f4xx_dcmi.c ****     DCMI->CR &= ~(uint32_t)DCMI_CR_CROP;
- 268              		.loc 1 229 5 is_stmt 1 view .LVU81
- 269              		.loc 1 229 14 is_stmt 0 view .LVU82
- 270 000e 034A     		ldr	r2, .L15
- 271 0010 1368     		ldr	r3, [r2]
- 272 0012 23F00403 		bic	r3, r3, #4
- 273 0016 1360     		str	r3, [r2]
  230:./Library/stm32f4xx_dcmi.c ****   }
  231:./Library/stm32f4xx_dcmi.c **** }
- 274              		.loc 1 231 1 view .LVU83
- 275 0018 7047     		bx	lr
- 276              	.L16:
- 277 001a 00BF     		.align	2
- 278              	.L15:
- 279 001c 00000550 		.word	1342504960
- 280              		.cfi_endproc
- 281              	.LFE127:
- 283              		.section	.text.DCMI_SetEmbeddedSynchroCodes,"ax",%progbits
- 284              		.align	1
- 285              		.global	DCMI_SetEmbeddedSynchroCodes
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 10
+ 392              		.loc 1 231 1
+ 393 001c 05E0     		b	.L14
+ 394              	.L12:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 12
 
 
- 286              		.syntax unified
- 287              		.thumb
- 288              		.thumb_func
- 290              	DCMI_SetEmbeddedSynchroCodes:
- 291              	.LVL10:
- 292              	.LFB128:
+ 229:./Library/stm32f4xx_dcmi.c ****   }
+ 395              		.loc 1 229 14
+ 396 001e 064B     		ldr	r3, .L15
+ 397 0020 1B68     		ldr	r3, [r3]
+ 398 0022 054A     		ldr	r2, .L15
+ 399 0024 23F00403 		bic	r3, r3, #4
+ 400 0028 1360     		str	r3, [r2]
+ 401              	.L14:
+ 402              		.loc 1 231 1
+ 403 002a 00BF     		nop
+ 404 002c 0C37     		adds	r7, r7, #12
+ 405              	.LCFI25:
+ 406              		.cfi_def_cfa_offset 4
+ 407 002e BD46     		mov	sp, r7
+ 408              	.LCFI26:
+ 409              		.cfi_def_cfa_register 13
+ 410              		@ sp needed
+ 411 0030 5DF8047B 		ldr	r7, [sp], #4
+ 412              	.LCFI27:
+ 413              		.cfi_restore 7
+ 414              		.cfi_def_cfa_offset 0
+ 415 0034 7047     		bx	lr
+ 416              	.L16:
+ 417 0036 00BF     		.align	2
+ 418              	.L15:
+ 419 0038 00000550 		.word	1342504960
+ 420              		.cfi_endproc
+ 421              	.LFE127:
+ 423              		.section	.text.DCMI_SetEmbeddedSynchroCodes,"ax",%progbits
+ 424              		.align	1
+ 425              		.global	DCMI_SetEmbeddedSynchroCodes
+ 426              		.syntax unified
+ 427              		.thumb
+ 428              		.thumb_func
+ 430              	DCMI_SetEmbeddedSynchroCodes:
+ 431              	.LFB128:
  232:./Library/stm32f4xx_dcmi.c **** 
  233:./Library/stm32f4xx_dcmi.c **** /**
  234:./Library/stm32f4xx_dcmi.c ****   * @brief  Sets the embedded synchronization codes
@@ -556,58 +706,95 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  238:./Library/stm32f4xx_dcmi.c ****   */
  239:./Library/stm32f4xx_dcmi.c **** void DCMI_SetEmbeddedSynchroCodes(DCMI_CodesInitTypeDef* DCMI_CodesInitStruct)
  240:./Library/stm32f4xx_dcmi.c **** {
- 293              		.loc 1 240 1 is_stmt 1 view -0
- 294              		.cfi_startproc
- 295              		@ args = 0, pretend = 0, frame = 0
- 296              		@ frame_needed = 0, uses_anonymous_args = 0
- 297              		@ link register save eliminated.
+ 432              		.loc 1 240 1
+ 433              		.cfi_startproc
+ 434              		@ args = 0, pretend = 0, frame = 8
+ 435              		@ frame_needed = 1, uses_anonymous_args = 0
+ 436              		@ link register save eliminated.
+ 437 0000 80B4     		push	{r7}
+ 438              	.LCFI28:
+ 439              		.cfi_def_cfa_offset 4
+ 440              		.cfi_offset 7, -4
+ 441 0002 83B0     		sub	sp, sp, #12
+ 442              	.LCFI29:
+ 443              		.cfi_def_cfa_offset 16
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 13
+
+
+ 444 0004 00AF     		add	r7, sp, #0
+ 445              	.LCFI30:
+ 446              		.cfi_def_cfa_register 7
+ 447 0006 7860     		str	r0, [r7, #4]
  241:./Library/stm32f4xx_dcmi.c ****   DCMI->ESCR = (uint32_t)(DCMI_CodesInitStruct->DCMI_FrameStartCode |
- 298              		.loc 1 241 3 view .LVU85
- 299              		.loc 1 241 47 is_stmt 0 view .LVU86
- 300 0000 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 448              		.loc 1 241 47
+ 449 0008 7B68     		ldr	r3, [r7, #4]
+ 450 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 451 000c 1A46     		mov	r2, r3
  242:./Library/stm32f4xx_dcmi.c ****                           ((uint32_t)DCMI_CodesInitStruct->DCMI_LineStartCode << 8)|
- 301              		.loc 1 242 58 view .LVU87
- 302 0002 4278     		ldrb	r2, [r0, #1]	@ zero_extendqisi2
+ 452              		.loc 1 242 58
+ 453 000e 7B68     		ldr	r3, [r7, #4]
+ 454 0010 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 455              		.loc 1 242 79
+ 456 0012 1B02     		lsls	r3, r3, #8
  241:./Library/stm32f4xx_dcmi.c ****   DCMI->ESCR = (uint32_t)(DCMI_CodesInitStruct->DCMI_FrameStartCode |
- 303              		.loc 1 241 69 view .LVU88
- 304 0004 43EA0223 		orr	r3, r3, r2, lsl #8
+ 457              		.loc 1 241 69
+ 458 0014 1A43     		orrs	r2, r2, r3
  243:./Library/stm32f4xx_dcmi.c ****                           ((uint32_t)DCMI_CodesInitStruct->DCMI_LineEndCode << 16)|
- 305              		.loc 1 243 58 view .LVU89
- 306 0008 8278     		ldrb	r2, [r0, #2]	@ zero_extendqisi2
+ 459              		.loc 1 243 58
+ 460 0016 7B68     		ldr	r3, [r7, #4]
+ 461 0018 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 462              		.loc 1 243 77
+ 463 001a 1B04     		lsls	r3, r3, #16
  242:./Library/stm32f4xx_dcmi.c ****                           ((uint32_t)DCMI_CodesInitStruct->DCMI_LineStartCode << 8)|
- 307              		.loc 1 242 84 view .LVU90
- 308 000a 43EA0243 		orr	r3, r3, r2, lsl #16
+ 464              		.loc 1 242 84
+ 465 001c 1A43     		orrs	r2, r2, r3
  244:./Library/stm32f4xx_dcmi.c ****                           ((uint32_t)DCMI_CodesInitStruct->DCMI_FrameEndCode << 24));
- 309              		.loc 1 244 58 view .LVU91
- 310 000e C278     		ldrb	r2, [r0, #3]	@ zero_extendqisi2
+ 466              		.loc 1 244 58
+ 467 001e 7B68     		ldr	r3, [r7, #4]
+ 468 0020 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 469              		.loc 1 244 78
+ 470 0022 1B06     		lsls	r3, r3, #24
  241:./Library/stm32f4xx_dcmi.c ****                           ((uint32_t)DCMI_CodesInitStruct->DCMI_LineStartCode << 8)|
- 311              		.loc 1 241 16 view .LVU92
- 312 0010 43EA0263 		orr	r3, r3, r2, lsl #24
+ 471              		.loc 1 241 7
+ 472 0024 0449     		ldr	r1, .L18
  241:./Library/stm32f4xx_dcmi.c ****                           ((uint32_t)DCMI_CodesInitStruct->DCMI_LineStartCode << 8)|
- 313              		.loc 1 241 14 view .LVU93
- 314 0014 014A     		ldr	r2, .L18
- 315 0016 9361     		str	r3, [r2, #24]
+ 473              		.loc 1 241 16
+ 474 0026 1343     		orrs	r3, r3, r2
+ 241:./Library/stm32f4xx_dcmi.c ****                           ((uint32_t)DCMI_CodesInitStruct->DCMI_LineStartCode << 8)|
+ 475              		.loc 1 241 14
+ 476 0028 8B61     		str	r3, [r1, #24]
  245:./Library/stm32f4xx_dcmi.c **** }
- 316              		.loc 1 245 1 view .LVU94
- 317 0018 7047     		bx	lr
- 318              	.L19:
- 319 001a 00BF     		.align	2
- 320              	.L18:
- 321 001c 00000550 		.word	1342504960
- 322              		.cfi_endproc
- 323              	.LFE128:
- 325              		.section	.text.DCMI_JPEGCmd,"ax",%progbits
- 326              		.align	1
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 11
+ 477              		.loc 1 245 1
+ 478 002a 00BF     		nop
+ 479 002c 0C37     		adds	r7, r7, #12
+ 480              	.LCFI31:
+ 481              		.cfi_def_cfa_offset 4
+ 482 002e BD46     		mov	sp, r7
+ 483              	.LCFI32:
+ 484              		.cfi_def_cfa_register 13
+ 485              		@ sp needed
+ 486 0030 5DF8047B 		ldr	r7, [sp], #4
+ 487              	.LCFI33:
+ 488              		.cfi_restore 7
+ 489              		.cfi_def_cfa_offset 0
+ 490 0034 7047     		bx	lr
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 14
 
 
- 327              		.global	DCMI_JPEGCmd
- 328              		.syntax unified
- 329              		.thumb
- 330              		.thumb_func
- 332              	DCMI_JPEGCmd:
- 333              	.LVL11:
- 334              	.LFB129:
+ 491              	.L19:
+ 492 0036 00BF     		.align	2
+ 493              	.L18:
+ 494 0038 00000550 		.word	1342504960
+ 495              		.cfi_endproc
+ 496              	.LFE128:
+ 498              		.section	.text.DCMI_JPEGCmd,"ax",%progbits
+ 499              		.align	1
+ 500              		.global	DCMI_JPEGCmd
+ 501              		.syntax unified
+ 502              		.thumb
+ 503              		.thumb_func
+ 505              	DCMI_JPEGCmd:
+ 506              	.LFB129:
  246:./Library/stm32f4xx_dcmi.c **** 
  247:./Library/stm32f4xx_dcmi.c **** /**
  248:./Library/stm32f4xx_dcmi.c ****   * @brief  Enables or disables the DCMI JPEG format.
@@ -618,63 +805,89 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  253:./Library/stm32f4xx_dcmi.c ****   */
  254:./Library/stm32f4xx_dcmi.c **** void DCMI_JPEGCmd(FunctionalState NewState)
  255:./Library/stm32f4xx_dcmi.c **** {
- 335              		.loc 1 255 1 is_stmt 1 view -0
- 336              		.cfi_startproc
- 337              		@ args = 0, pretend = 0, frame = 0
- 338              		@ frame_needed = 0, uses_anonymous_args = 0
- 339              		@ link register save eliminated.
+ 507              		.loc 1 255 1
+ 508              		.cfi_startproc
+ 509              		@ args = 0, pretend = 0, frame = 8
+ 510              		@ frame_needed = 1, uses_anonymous_args = 0
+ 511              		@ link register save eliminated.
+ 512 0000 80B4     		push	{r7}
+ 513              	.LCFI34:
+ 514              		.cfi_def_cfa_offset 4
+ 515              		.cfi_offset 7, -4
+ 516 0002 83B0     		sub	sp, sp, #12
+ 517              	.LCFI35:
+ 518              		.cfi_def_cfa_offset 16
+ 519 0004 00AF     		add	r7, sp, #0
+ 520              	.LCFI36:
+ 521              		.cfi_def_cfa_register 7
+ 522 0006 0346     		mov	r3, r0
+ 523 0008 FB71     		strb	r3, [r7, #7]
  256:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
  257:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 340              		.loc 1 257 3 view .LVU96
  258:./Library/stm32f4xx_dcmi.c ****  
  259:./Library/stm32f4xx_dcmi.c ****   if (NewState != DISABLE)
- 341              		.loc 1 259 3 view .LVU97
- 342              		.loc 1 259 6 is_stmt 0 view .LVU98
- 343 0000 28B1     		cbz	r0, .L21
+ 524              		.loc 1 259 6
+ 525 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 526 000c 002B     		cmp	r3, #0
+ 527 000e 06D0     		beq	.L21
  260:./Library/stm32f4xx_dcmi.c ****   {
  261:./Library/stm32f4xx_dcmi.c ****     /* Enable the DCMI JPEG format */
  262:./Library/stm32f4xx_dcmi.c ****     DCMI->CR |= (uint32_t)DCMI_CR_JPEG;
- 344              		.loc 1 262 5 is_stmt 1 view .LVU99
- 345              		.loc 1 262 14 is_stmt 0 view .LVU100
- 346 0002 064A     		ldr	r2, .L23
- 347 0004 1368     		ldr	r3, [r2]
- 348 0006 43F00803 		orr	r3, r3, #8
- 349 000a 1360     		str	r3, [r2]
- 350 000c 7047     		bx	lr
- 351              	.L21:
+ 528              		.loc 1 262 14
+ 529 0010 094B     		ldr	r3, .L24
+ 530 0012 1B68     		ldr	r3, [r3]
+ 531 0014 084A     		ldr	r2, .L24
+ 532 0016 43F00803 		orr	r3, r3, #8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 15
+
+
+ 533 001a 1360     		str	r3, [r2]
  263:./Library/stm32f4xx_dcmi.c ****   }
  264:./Library/stm32f4xx_dcmi.c ****   else
  265:./Library/stm32f4xx_dcmi.c ****   {
  266:./Library/stm32f4xx_dcmi.c ****     /* Disable the DCMI JPEG format */
  267:./Library/stm32f4xx_dcmi.c ****     DCMI->CR &= ~(uint32_t)DCMI_CR_JPEG;
- 352              		.loc 1 267 5 is_stmt 1 view .LVU101
- 353              		.loc 1 267 14 is_stmt 0 view .LVU102
- 354 000e 034A     		ldr	r2, .L23
- 355 0010 1368     		ldr	r3, [r2]
- 356 0012 23F00803 		bic	r3, r3, #8
- 357 0016 1360     		str	r3, [r2]
  268:./Library/stm32f4xx_dcmi.c ****   }
  269:./Library/stm32f4xx_dcmi.c **** }
- 358              		.loc 1 269 1 view .LVU103
- 359 0018 7047     		bx	lr
- 360              	.L24:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 12
-
-
- 361 001a 00BF     		.align	2
- 362              	.L23:
- 363 001c 00000550 		.word	1342504960
- 364              		.cfi_endproc
- 365              	.LFE129:
- 367              		.section	.text.DCMI_Cmd,"ax",%progbits
- 368              		.align	1
- 369              		.global	DCMI_Cmd
- 370              		.syntax unified
- 371              		.thumb
- 372              		.thumb_func
- 374              	DCMI_Cmd:
- 375              	.LVL12:
- 376              	.LFB130:
+ 534              		.loc 1 269 1
+ 535 001c 05E0     		b	.L23
+ 536              	.L21:
+ 267:./Library/stm32f4xx_dcmi.c ****   }
+ 537              		.loc 1 267 14
+ 538 001e 064B     		ldr	r3, .L24
+ 539 0020 1B68     		ldr	r3, [r3]
+ 540 0022 054A     		ldr	r2, .L24
+ 541 0024 23F00803 		bic	r3, r3, #8
+ 542 0028 1360     		str	r3, [r2]
+ 543              	.L23:
+ 544              		.loc 1 269 1
+ 545 002a 00BF     		nop
+ 546 002c 0C37     		adds	r7, r7, #12
+ 547              	.LCFI37:
+ 548              		.cfi_def_cfa_offset 4
+ 549 002e BD46     		mov	sp, r7
+ 550              	.LCFI38:
+ 551              		.cfi_def_cfa_register 13
+ 552              		@ sp needed
+ 553 0030 5DF8047B 		ldr	r7, [sp], #4
+ 554              	.LCFI39:
+ 555              		.cfi_restore 7
+ 556              		.cfi_def_cfa_offset 0
+ 557 0034 7047     		bx	lr
+ 558              	.L25:
+ 559 0036 00BF     		.align	2
+ 560              	.L24:
+ 561 0038 00000550 		.word	1342504960
+ 562              		.cfi_endproc
+ 563              	.LFE129:
+ 565              		.section	.text.DCMI_Cmd,"ax",%progbits
+ 566              		.align	1
+ 567              		.global	DCMI_Cmd
+ 568              		.syntax unified
+ 569              		.thumb
+ 570              		.thumb_func
+ 572              	DCMI_Cmd:
+ 573              	.LFB130:
  270:./Library/stm32f4xx_dcmi.c **** /**
  271:./Library/stm32f4xx_dcmi.c ****   * @}
  272:./Library/stm32f4xx_dcmi.c ****   */
@@ -685,6 +898,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  277:./Library/stm32f4xx_dcmi.c **** @verbatim   
  278:./Library/stm32f4xx_dcmi.c ****  ===============================================================================
  279:./Library/stm32f4xx_dcmi.c ****                     ##### Image capture functions #####
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 16
+
+
  280:./Library/stm32f4xx_dcmi.c ****  ===============================================================================  
  281:./Library/stm32f4xx_dcmi.c **** 
  282:./Library/stm32f4xx_dcmi.c **** @endverbatim
@@ -699,63 +915,89 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  291:./Library/stm32f4xx_dcmi.c ****   */
  292:./Library/stm32f4xx_dcmi.c **** void DCMI_Cmd(FunctionalState NewState)
  293:./Library/stm32f4xx_dcmi.c **** {
- 377              		.loc 1 293 1 is_stmt 1 view -0
- 378              		.cfi_startproc
- 379              		@ args = 0, pretend = 0, frame = 0
- 380              		@ frame_needed = 0, uses_anonymous_args = 0
- 381              		@ link register save eliminated.
+ 574              		.loc 1 293 1
+ 575              		.cfi_startproc
+ 576              		@ args = 0, pretend = 0, frame = 8
+ 577              		@ frame_needed = 1, uses_anonymous_args = 0
+ 578              		@ link register save eliminated.
+ 579 0000 80B4     		push	{r7}
+ 580              	.LCFI40:
+ 581              		.cfi_def_cfa_offset 4
+ 582              		.cfi_offset 7, -4
+ 583 0002 83B0     		sub	sp, sp, #12
+ 584              	.LCFI41:
+ 585              		.cfi_def_cfa_offset 16
+ 586 0004 00AF     		add	r7, sp, #0
+ 587              	.LCFI42:
+ 588              		.cfi_def_cfa_register 7
+ 589 0006 0346     		mov	r3, r0
+ 590 0008 FB71     		strb	r3, [r7, #7]
  294:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
  295:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 382              		.loc 1 295 3 view .LVU105
  296:./Library/stm32f4xx_dcmi.c ****   
  297:./Library/stm32f4xx_dcmi.c ****   if (NewState != DISABLE)
- 383              		.loc 1 297 3 view .LVU106
- 384              		.loc 1 297 6 is_stmt 0 view .LVU107
- 385 0000 28B1     		cbz	r0, .L26
+ 591              		.loc 1 297 6
+ 592 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 593 000c 002B     		cmp	r3, #0
+ 594 000e 06D0     		beq	.L27
  298:./Library/stm32f4xx_dcmi.c ****   {
  299:./Library/stm32f4xx_dcmi.c ****     /* Enable the DCMI by setting ENABLE bit */
  300:./Library/stm32f4xx_dcmi.c ****     DCMI->CR |= (uint32_t)DCMI_CR_ENABLE;
- 386              		.loc 1 300 5 is_stmt 1 view .LVU108
- 387              		.loc 1 300 14 is_stmt 0 view .LVU109
- 388 0002 064A     		ldr	r2, .L28
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 13
-
-
- 389 0004 1368     		ldr	r3, [r2]
- 390 0006 43F48043 		orr	r3, r3, #16384
- 391 000a 1360     		str	r3, [r2]
- 392 000c 7047     		bx	lr
- 393              	.L26:
+ 595              		.loc 1 300 14
+ 596 0010 094B     		ldr	r3, .L30
+ 597 0012 1B68     		ldr	r3, [r3]
+ 598 0014 084A     		ldr	r2, .L30
+ 599 0016 43F48043 		orr	r3, r3, #16384
+ 600 001a 1360     		str	r3, [r2]
  301:./Library/stm32f4xx_dcmi.c ****   }
  302:./Library/stm32f4xx_dcmi.c ****   else
  303:./Library/stm32f4xx_dcmi.c ****   {
  304:./Library/stm32f4xx_dcmi.c ****     /* Disable the DCMI by clearing ENABLE bit */
  305:./Library/stm32f4xx_dcmi.c ****     DCMI->CR &= ~(uint32_t)DCMI_CR_ENABLE;
- 394              		.loc 1 305 5 is_stmt 1 view .LVU110
- 395              		.loc 1 305 14 is_stmt 0 view .LVU111
- 396 000e 034A     		ldr	r2, .L28
- 397 0010 1368     		ldr	r3, [r2]
- 398 0012 23F48043 		bic	r3, r3, #16384
- 399 0016 1360     		str	r3, [r2]
  306:./Library/stm32f4xx_dcmi.c ****   }
  307:./Library/stm32f4xx_dcmi.c **** }
- 400              		.loc 1 307 1 view .LVU112
- 401 0018 7047     		bx	lr
- 402              	.L29:
- 403 001a 00BF     		.align	2
- 404              	.L28:
- 405 001c 00000550 		.word	1342504960
- 406              		.cfi_endproc
- 407              	.LFE130:
- 409              		.section	.text.DCMI_CaptureCmd,"ax",%progbits
- 410              		.align	1
- 411              		.global	DCMI_CaptureCmd
- 412              		.syntax unified
- 413              		.thumb
- 414              		.thumb_func
- 416              	DCMI_CaptureCmd:
- 417              	.LVL13:
- 418              	.LFB131:
+ 601              		.loc 1 307 1
+ 602 001c 05E0     		b	.L29
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 17
+
+
+ 603              	.L27:
+ 305:./Library/stm32f4xx_dcmi.c ****   }
+ 604              		.loc 1 305 14
+ 605 001e 064B     		ldr	r3, .L30
+ 606 0020 1B68     		ldr	r3, [r3]
+ 607 0022 054A     		ldr	r2, .L30
+ 608 0024 23F48043 		bic	r3, r3, #16384
+ 609 0028 1360     		str	r3, [r2]
+ 610              	.L29:
+ 611              		.loc 1 307 1
+ 612 002a 00BF     		nop
+ 613 002c 0C37     		adds	r7, r7, #12
+ 614              	.LCFI43:
+ 615              		.cfi_def_cfa_offset 4
+ 616 002e BD46     		mov	sp, r7
+ 617              	.LCFI44:
+ 618              		.cfi_def_cfa_register 13
+ 619              		@ sp needed
+ 620 0030 5DF8047B 		ldr	r7, [sp], #4
+ 621              	.LCFI45:
+ 622              		.cfi_restore 7
+ 623              		.cfi_def_cfa_offset 0
+ 624 0034 7047     		bx	lr
+ 625              	.L31:
+ 626 0036 00BF     		.align	2
+ 627              	.L30:
+ 628 0038 00000550 		.word	1342504960
+ 629              		.cfi_endproc
+ 630              	.LFE130:
+ 632              		.section	.text.DCMI_CaptureCmd,"ax",%progbits
+ 633              		.align	1
+ 634              		.global	DCMI_CaptureCmd
+ 635              		.syntax unified
+ 636              		.thumb
+ 637              		.thumb_func
+ 639              	DCMI_CaptureCmd:
+ 640              	.LFB131:
  308:./Library/stm32f4xx_dcmi.c **** 
  309:./Library/stm32f4xx_dcmi.c **** /**
  310:./Library/stm32f4xx_dcmi.c ****   * @brief  Enables or disables the DCMI Capture.
@@ -765,62 +1007,92 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  314:./Library/stm32f4xx_dcmi.c ****   */
  315:./Library/stm32f4xx_dcmi.c **** void DCMI_CaptureCmd(FunctionalState NewState)
  316:./Library/stm32f4xx_dcmi.c **** {
- 419              		.loc 1 316 1 is_stmt 1 view -0
- 420              		.cfi_startproc
- 421              		@ args = 0, pretend = 0, frame = 0
- 422              		@ frame_needed = 0, uses_anonymous_args = 0
- 423              		@ link register save eliminated.
+ 641              		.loc 1 316 1
+ 642              		.cfi_startproc
+ 643              		@ args = 0, pretend = 0, frame = 8
+ 644              		@ frame_needed = 1, uses_anonymous_args = 0
+ 645              		@ link register save eliminated.
+ 646 0000 80B4     		push	{r7}
+ 647              	.LCFI46:
+ 648              		.cfi_def_cfa_offset 4
+ 649              		.cfi_offset 7, -4
+ 650 0002 83B0     		sub	sp, sp, #12
+ 651              	.LCFI47:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 18
+
+
+ 652              		.cfi_def_cfa_offset 16
+ 653 0004 00AF     		add	r7, sp, #0
+ 654              	.LCFI48:
+ 655              		.cfi_def_cfa_register 7
+ 656 0006 0346     		mov	r3, r0
+ 657 0008 FB71     		strb	r3, [r7, #7]
  317:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
  318:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 424              		.loc 1 318 3 view .LVU114
  319:./Library/stm32f4xx_dcmi.c ****     
  320:./Library/stm32f4xx_dcmi.c ****   if (NewState != DISABLE)
- 425              		.loc 1 320 3 view .LVU115
- 426              		.loc 1 320 6 is_stmt 0 view .LVU116
- 427 0000 28B1     		cbz	r0, .L31
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 14
-
-
+ 658              		.loc 1 320 6
+ 659 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 660 000c 002B     		cmp	r3, #0
+ 661 000e 06D0     		beq	.L33
  321:./Library/stm32f4xx_dcmi.c ****   {
  322:./Library/stm32f4xx_dcmi.c ****     /* Enable the DCMI Capture */
  323:./Library/stm32f4xx_dcmi.c ****     DCMI->CR |= (uint32_t)DCMI_CR_CAPTURE;
- 428              		.loc 1 323 5 is_stmt 1 view .LVU117
- 429              		.loc 1 323 14 is_stmt 0 view .LVU118
- 430 0002 064A     		ldr	r2, .L33
- 431 0004 1368     		ldr	r3, [r2]
- 432 0006 43F00103 		orr	r3, r3, #1
- 433 000a 1360     		str	r3, [r2]
- 434 000c 7047     		bx	lr
- 435              	.L31:
+ 662              		.loc 1 323 14
+ 663 0010 094B     		ldr	r3, .L36
+ 664 0012 1B68     		ldr	r3, [r3]
+ 665 0014 084A     		ldr	r2, .L36
+ 666 0016 43F00103 		orr	r3, r3, #1
+ 667 001a 1360     		str	r3, [r2]
  324:./Library/stm32f4xx_dcmi.c ****   }
  325:./Library/stm32f4xx_dcmi.c ****   else
  326:./Library/stm32f4xx_dcmi.c ****   {
  327:./Library/stm32f4xx_dcmi.c ****     /* Disable the DCMI Capture */
  328:./Library/stm32f4xx_dcmi.c ****     DCMI->CR &= ~(uint32_t)DCMI_CR_CAPTURE;
- 436              		.loc 1 328 5 is_stmt 1 view .LVU119
- 437              		.loc 1 328 14 is_stmt 0 view .LVU120
- 438 000e 034A     		ldr	r2, .L33
- 439 0010 1368     		ldr	r3, [r2]
- 440 0012 23F00103 		bic	r3, r3, #1
- 441 0016 1360     		str	r3, [r2]
  329:./Library/stm32f4xx_dcmi.c ****   }
  330:./Library/stm32f4xx_dcmi.c **** }
- 442              		.loc 1 330 1 view .LVU121
- 443 0018 7047     		bx	lr
- 444              	.L34:
- 445 001a 00BF     		.align	2
- 446              	.L33:
- 447 001c 00000550 		.word	1342504960
- 448              		.cfi_endproc
- 449              	.LFE131:
- 451              		.section	.text.DCMI_ReadData,"ax",%progbits
- 452              		.align	1
- 453              		.global	DCMI_ReadData
- 454              		.syntax unified
- 455              		.thumb
- 456              		.thumb_func
- 458              	DCMI_ReadData:
- 459              	.LFB132:
+ 668              		.loc 1 330 1
+ 669 001c 05E0     		b	.L35
+ 670              	.L33:
+ 328:./Library/stm32f4xx_dcmi.c ****   }
+ 671              		.loc 1 328 14
+ 672 001e 064B     		ldr	r3, .L36
+ 673 0020 1B68     		ldr	r3, [r3]
+ 674 0022 054A     		ldr	r2, .L36
+ 675 0024 23F00103 		bic	r3, r3, #1
+ 676 0028 1360     		str	r3, [r2]
+ 677              	.L35:
+ 678              		.loc 1 330 1
+ 679 002a 00BF     		nop
+ 680 002c 0C37     		adds	r7, r7, #12
+ 681              	.LCFI49:
+ 682              		.cfi_def_cfa_offset 4
+ 683 002e BD46     		mov	sp, r7
+ 684              	.LCFI50:
+ 685              		.cfi_def_cfa_register 13
+ 686              		@ sp needed
+ 687 0030 5DF8047B 		ldr	r7, [sp], #4
+ 688              	.LCFI51:
+ 689              		.cfi_restore 7
+ 690              		.cfi_def_cfa_offset 0
+ 691 0034 7047     		bx	lr
+ 692              	.L37:
+ 693 0036 00BF     		.align	2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 19
+
+
+ 694              	.L36:
+ 695 0038 00000550 		.word	1342504960
+ 696              		.cfi_endproc
+ 697              	.LFE131:
+ 699              		.section	.text.DCMI_ReadData,"ax",%progbits
+ 700              		.align	1
+ 701              		.global	DCMI_ReadData
+ 702              		.syntax unified
+ 703              		.thumb
+ 704              		.thumb_func
+ 706              	DCMI_ReadData:
+ 707              	.LFB132:
  331:./Library/stm32f4xx_dcmi.c **** 
  332:./Library/stm32f4xx_dcmi.c **** /**
  333:./Library/stm32f4xx_dcmi.c ****   * @brief  Reads the data stored in the DR register.
@@ -829,37 +1101,51 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  336:./Library/stm32f4xx_dcmi.c ****   */
  337:./Library/stm32f4xx_dcmi.c **** uint32_t DCMI_ReadData(void)
  338:./Library/stm32f4xx_dcmi.c **** {
- 460              		.loc 1 338 1 is_stmt 1 view -0
- 461              		.cfi_startproc
- 462              		@ args = 0, pretend = 0, frame = 0
- 463              		@ frame_needed = 0, uses_anonymous_args = 0
- 464              		@ link register save eliminated.
+ 708              		.loc 1 338 1
+ 709              		.cfi_startproc
+ 710              		@ args = 0, pretend = 0, frame = 0
+ 711              		@ frame_needed = 1, uses_anonymous_args = 0
+ 712              		@ link register save eliminated.
+ 713 0000 80B4     		push	{r7}
+ 714              	.LCFI52:
+ 715              		.cfi_def_cfa_offset 4
+ 716              		.cfi_offset 7, -4
+ 717 0002 00AF     		add	r7, sp, #0
+ 718              	.LCFI53:
+ 719              		.cfi_def_cfa_register 7
  339:./Library/stm32f4xx_dcmi.c ****   return DCMI->DR;
- 465              		.loc 1 339 3 view .LVU123
- 466              		.loc 1 339 14 is_stmt 0 view .LVU124
- 467 0000 014B     		ldr	r3, .L36
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 15
-
-
- 468 0002 986A     		ldr	r0, [r3, #40]
+ 720              		.loc 1 339 14
+ 721 0004 034B     		ldr	r3, .L40
+ 722 0006 9B6A     		ldr	r3, [r3, #40]
  340:./Library/stm32f4xx_dcmi.c **** }
- 469              		.loc 1 340 1 view .LVU125
- 470 0004 7047     		bx	lr
- 471              	.L37:
- 472 0006 00BF     		.align	2
- 473              	.L36:
- 474 0008 00000550 		.word	1342504960
- 475              		.cfi_endproc
- 476              	.LFE132:
- 478              		.section	.text.DCMI_ITConfig,"ax",%progbits
- 479              		.align	1
- 480              		.global	DCMI_ITConfig
- 481              		.syntax unified
- 482              		.thumb
- 483              		.thumb_func
- 485              	DCMI_ITConfig:
- 486              	.LVL14:
- 487              	.LFB133:
+ 723              		.loc 1 340 1
+ 724 0008 1846     		mov	r0, r3
+ 725 000a BD46     		mov	sp, r7
+ 726              	.LCFI54:
+ 727              		.cfi_def_cfa_register 13
+ 728              		@ sp needed
+ 729 000c 5DF8047B 		ldr	r7, [sp], #4
+ 730              	.LCFI55:
+ 731              		.cfi_restore 7
+ 732              		.cfi_def_cfa_offset 0
+ 733 0010 7047     		bx	lr
+ 734              	.L41:
+ 735 0012 00BF     		.align	2
+ 736              	.L40:
+ 737 0014 00000550 		.word	1342504960
+ 738              		.cfi_endproc
+ 739              	.LFE132:
+ 741              		.section	.text.DCMI_ITConfig,"ax",%progbits
+ 742              		.align	1
+ 743              		.global	DCMI_ITConfig
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 20
+
+
+ 744              		.syntax unified
+ 745              		.thumb
+ 746              		.thumb_func
+ 748              	DCMI_ITConfig:
+ 749              	.LFB133:
  341:./Library/stm32f4xx_dcmi.c **** /**
  342:./Library/stm32f4xx_dcmi.c ****   * @}
  343:./Library/stm32f4xx_dcmi.c ****   */
@@ -891,77 +1177,105 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  369:./Library/stm32f4xx_dcmi.c ****   */
  370:./Library/stm32f4xx_dcmi.c **** void DCMI_ITConfig(uint16_t DCMI_IT, FunctionalState NewState)
  371:./Library/stm32f4xx_dcmi.c **** {
- 488              		.loc 1 371 1 is_stmt 1 view -0
- 489              		.cfi_startproc
- 490              		@ args = 0, pretend = 0, frame = 0
- 491              		@ frame_needed = 0, uses_anonymous_args = 0
- 492              		@ link register save eliminated.
+ 750              		.loc 1 371 1
+ 751              		.cfi_startproc
+ 752              		@ args = 0, pretend = 0, frame = 8
+ 753              		@ frame_needed = 1, uses_anonymous_args = 0
+ 754              		@ link register save eliminated.
+ 755 0000 80B4     		push	{r7}
+ 756              	.LCFI56:
+ 757              		.cfi_def_cfa_offset 4
+ 758              		.cfi_offset 7, -4
+ 759 0002 83B0     		sub	sp, sp, #12
+ 760              	.LCFI57:
+ 761              		.cfi_def_cfa_offset 16
+ 762 0004 00AF     		add	r7, sp, #0
+ 763              	.LCFI58:
+ 764              		.cfi_def_cfa_register 7
+ 765 0006 0346     		mov	r3, r0
+ 766 0008 0A46     		mov	r2, r1
+ 767 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ 768 000c 1346     		mov	r3, r2
+ 769 000e 7B71     		strb	r3, [r7, #5]
  372:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 21
+
+
  373:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_CONFIG_IT(DCMI_IT));
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 16
-
-
- 493              		.loc 1 373 3 view .LVU127
  374:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 494              		.loc 1 374 3 view .LVU128
  375:./Library/stm32f4xx_dcmi.c ****   
  376:./Library/stm32f4xx_dcmi.c ****   if (NewState != DISABLE)
- 495              		.loc 1 376 3 view .LVU129
- 496              		.loc 1 376 6 is_stmt 0 view .LVU130
- 497 0000 21B1     		cbz	r1, .L39
+ 770              		.loc 1 376 6
+ 771 0010 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 772 0012 002B     		cmp	r3, #0
+ 773 0014 06D0     		beq	.L43
  377:./Library/stm32f4xx_dcmi.c ****   {
  378:./Library/stm32f4xx_dcmi.c ****     /* Enable the Interrupt sources */
  379:./Library/stm32f4xx_dcmi.c ****     DCMI->IER |= DCMI_IT;
- 498              		.loc 1 379 5 is_stmt 1 view .LVU131
- 499              		.loc 1 379 15 is_stmt 0 view .LVU132
- 500 0002 064B     		ldr	r3, .L41
- 501 0004 DA68     		ldr	r2, [r3, #12]
- 502 0006 1043     		orrs	r0, r0, r2
- 503              	.LVL15:
- 504              		.loc 1 379 15 view .LVU133
- 505 0008 D860     		str	r0, [r3, #12]
- 506 000a 7047     		bx	lr
- 507              	.LVL16:
- 508              	.L39:
+ 774              		.loc 1 379 15
+ 775 0016 0B4B     		ldr	r3, .L46
+ 776 0018 DA68     		ldr	r2, [r3, #12]
+ 777 001a FB88     		ldrh	r3, [r7, #6]
+ 778 001c 0949     		ldr	r1, .L46
+ 779 001e 1343     		orrs	r3, r3, r2
+ 780 0020 CB60     		str	r3, [r1, #12]
  380:./Library/stm32f4xx_dcmi.c ****   }
  381:./Library/stm32f4xx_dcmi.c ****   else
  382:./Library/stm32f4xx_dcmi.c ****   {
  383:./Library/stm32f4xx_dcmi.c ****     /* Disable the Interrupt sources */
  384:./Library/stm32f4xx_dcmi.c ****     DCMI->IER &= (uint16_t)(~DCMI_IT);
- 509              		.loc 1 384 5 is_stmt 1 view .LVU134
- 510              		.loc 1 384 15 is_stmt 0 view .LVU135
- 511 000c 034A     		ldr	r2, .L41
- 512 000e D368     		ldr	r3, [r2, #12]
- 513              		.loc 1 384 18 view .LVU136
- 514 0010 C043     		mvns	r0, r0
- 515              	.LVL17:
- 516              		.loc 1 384 18 view .LVU137
- 517 0012 80B2     		uxth	r0, r0
- 518              		.loc 1 384 15 view .LVU138
- 519 0014 1840     		ands	r0, r0, r3
- 520 0016 D060     		str	r0, [r2, #12]
  385:./Library/stm32f4xx_dcmi.c ****   }  
  386:./Library/stm32f4xx_dcmi.c **** }
- 521              		.loc 1 386 1 view .LVU139
- 522 0018 7047     		bx	lr
- 523              	.L42:
- 524 001a 00BF     		.align	2
- 525              	.L41:
- 526 001c 00000550 		.word	1342504960
- 527              		.cfi_endproc
- 528              	.LFE133:
- 530              		.section	.text.DCMI_GetFlagStatus,"ax",%progbits
- 531              		.align	1
- 532              		.global	DCMI_GetFlagStatus
- 533              		.syntax unified
- 534              		.thumb
- 535              		.thumb_func
- 537              	DCMI_GetFlagStatus:
- 538              	.LVL18:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 17
+ 781              		.loc 1 386 1
+ 782 0022 08E0     		b	.L45
+ 783              	.L43:
+ 384:./Library/stm32f4xx_dcmi.c ****   }  
+ 784              		.loc 1 384 15
+ 785 0024 074B     		ldr	r3, .L46
+ 786 0026 DB68     		ldr	r3, [r3, #12]
+ 384:./Library/stm32f4xx_dcmi.c ****   }  
+ 787              		.loc 1 384 18
+ 788 0028 FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 789 002a D243     		mvns	r2, r2
+ 790 002c 92B2     		uxth	r2, r2
+ 791 002e 1146     		mov	r1, r2
+ 384:./Library/stm32f4xx_dcmi.c ****   }  
+ 792              		.loc 1 384 15
+ 793 0030 044A     		ldr	r2, .L46
+ 794 0032 0B40     		ands	r3, r3, r1
+ 795 0034 D360     		str	r3, [r2, #12]
+ 796              	.L45:
+ 797              		.loc 1 386 1
+ 798 0036 00BF     		nop
+ 799 0038 0C37     		adds	r7, r7, #12
+ 800              	.LCFI59:
+ 801              		.cfi_def_cfa_offset 4
+ 802 003a BD46     		mov	sp, r7
+ 803              	.LCFI60:
+ 804              		.cfi_def_cfa_register 13
+ 805              		@ sp needed
+ 806 003c 5DF8047B 		ldr	r7, [sp], #4
+ 807              	.LCFI61:
+ 808              		.cfi_restore 7
+ 809              		.cfi_def_cfa_offset 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 22
 
 
- 539              	.LFB134:
+ 810 0040 7047     		bx	lr
+ 811              	.L47:
+ 812 0042 00BF     		.align	2
+ 813              	.L46:
+ 814 0044 00000550 		.word	1342504960
+ 815              		.cfi_endproc
+ 816              	.LFE133:
+ 818              		.section	.text.DCMI_GetFlagStatus,"ax",%progbits
+ 819              		.align	1
+ 820              		.global	DCMI_GetFlagStatus
+ 821              		.syntax unified
+ 822              		.thumb
+ 823              		.thumb_func
+ 825              	DCMI_GetFlagStatus:
+ 826              	.LFB134:
  387:./Library/stm32f4xx_dcmi.c **** 
  388:./Library/stm32f4xx_dcmi.c **** /**
  389:./Library/stm32f4xx_dcmi.c ****   * @brief  Checks whether the  DCMI interface flag is set or not.
@@ -984,135 +1298,151 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  406:./Library/stm32f4xx_dcmi.c ****   */
  407:./Library/stm32f4xx_dcmi.c **** FlagStatus DCMI_GetFlagStatus(uint16_t DCMI_FLAG)
  408:./Library/stm32f4xx_dcmi.c **** {
- 540              		.loc 1 408 1 is_stmt 1 view -0
- 541              		.cfi_startproc
- 542              		@ args = 0, pretend = 0, frame = 0
- 543              		@ frame_needed = 0, uses_anonymous_args = 0
- 544              		@ link register save eliminated.
+ 827              		.loc 1 408 1
+ 828              		.cfi_startproc
+ 829              		@ args = 0, pretend = 0, frame = 24
+ 830              		@ frame_needed = 1, uses_anonymous_args = 0
+ 831              		@ link register save eliminated.
+ 832 0000 80B4     		push	{r7}
+ 833              	.LCFI62:
+ 834              		.cfi_def_cfa_offset 4
+ 835              		.cfi_offset 7, -4
+ 836 0002 87B0     		sub	sp, sp, #28
+ 837              	.LCFI63:
+ 838              		.cfi_def_cfa_offset 32
+ 839 0004 00AF     		add	r7, sp, #0
+ 840              	.LCFI64:
+ 841              		.cfi_def_cfa_register 7
+ 842 0006 0346     		mov	r3, r0
+ 843 0008 FB80     		strh	r3, [r7, #6]	@ movhi
  409:./Library/stm32f4xx_dcmi.c ****   FlagStatus bitstatus = RESET;
- 545              		.loc 1 409 3 view .LVU141
+ 844              		.loc 1 409 14
+ 845 000a 0023     		movs	r3, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 23
+
+
+ 846 000c FB75     		strb	r3, [r7, #23]
  410:./Library/stm32f4xx_dcmi.c ****   uint32_t dcmireg, tempreg = 0;
- 546              		.loc 1 410 3 view .LVU142
+ 847              		.loc 1 410 21
+ 848 000e 0023     		movs	r3, #0
+ 849 0010 3B61     		str	r3, [r7, #16]
  411:./Library/stm32f4xx_dcmi.c **** 
  412:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
  413:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_GET_FLAG(DCMI_FLAG));
- 547              		.loc 1 413 3 view .LVU143
  414:./Library/stm32f4xx_dcmi.c ****   
  415:./Library/stm32f4xx_dcmi.c ****   /* Get the DCMI register index */
  416:./Library/stm32f4xx_dcmi.c ****   dcmireg = (((uint16_t)DCMI_FLAG) >> 12);
- 548              		.loc 1 416 3 view .LVU144
+ 850              		.loc 1 416 36
+ 851 0012 FB88     		ldrh	r3, [r7, #6]
+ 852 0014 1B0B     		lsrs	r3, r3, #12
+ 853 0016 9BB2     		uxth	r3, r3
+ 854              		.loc 1 416 11
+ 855 0018 FB60     		str	r3, [r7, #12]
  417:./Library/stm32f4xx_dcmi.c ****   
  418:./Library/stm32f4xx_dcmi.c ****   if (dcmireg == 0x00) /* The FLAG is in RISR register */
- 549              		.loc 1 418 3 view .LVU145
- 550              		.loc 1 418 6 is_stmt 0 view .LVU146
- 551 0000 030B     		lsrs	r3, r0, #12
- 552              	.LVL19:
- 553              		.loc 1 418 6 view .LVU147
- 554 0002 05D1     		bne	.L44
+ 856              		.loc 1 418 6
+ 857 001a FB68     		ldr	r3, [r7, #12]
+ 858 001c 002B     		cmp	r3, #0
+ 859 001e 03D1     		bne	.L49
  419:./Library/stm32f4xx_dcmi.c ****   {
  420:./Library/stm32f4xx_dcmi.c ****     tempreg= DCMI->RISR;
- 555              		.loc 1 420 5 is_stmt 1 view .LVU148
- 556              		.loc 1 420 12 is_stmt 0 view .LVU149
- 557 0004 074B     		ldr	r3, .L50
- 558              	.LVL20:
- 559              		.loc 1 420 12 view .LVU150
- 560 0006 9B68     		ldr	r3, [r3, #8]
- 561              	.LVL21:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 18
-
-
- 562              	.L45:
+ 860              		.loc 1 420 18
+ 861 0020 0F4B     		ldr	r3, .L55
+ 862              		.loc 1 420 12
+ 863 0022 9B68     		ldr	r3, [r3, #8]
+ 864 0024 3B61     		str	r3, [r7, #16]
+ 865 0026 09E0     		b	.L50
+ 866              	.L49:
  421:./Library/stm32f4xx_dcmi.c ****   }
  422:./Library/stm32f4xx_dcmi.c ****   else if (dcmireg == 0x02) /* The FLAG is in SR register */
+ 867              		.loc 1 422 11
+ 868 0028 FB68     		ldr	r3, [r7, #12]
+ 869 002a 022B     		cmp	r3, #2
+ 870 002c 03D1     		bne	.L51
  423:./Library/stm32f4xx_dcmi.c ****   {
  424:./Library/stm32f4xx_dcmi.c ****     tempreg = DCMI->SR;
+ 871              		.loc 1 424 19
+ 872 002e 0C4B     		ldr	r3, .L55
+ 873              		.loc 1 424 13
+ 874 0030 5B68     		ldr	r3, [r3, #4]
+ 875 0032 3B61     		str	r3, [r7, #16]
+ 876 0034 02E0     		b	.L50
+ 877              	.L51:
  425:./Library/stm32f4xx_dcmi.c ****   }
  426:./Library/stm32f4xx_dcmi.c ****   else /* The FLAG is in MISR register */
  427:./Library/stm32f4xx_dcmi.c ****   {
  428:./Library/stm32f4xx_dcmi.c ****     tempreg = DCMI->MISR;
+ 878              		.loc 1 428 19
+ 879 0036 0A4B     		ldr	r3, .L55
+ 880              		.loc 1 428 13
+ 881 0038 1B69     		ldr	r3, [r3, #16]
+ 882 003a 3B61     		str	r3, [r7, #16]
+ 883              	.L50:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 24
+
+
  429:./Library/stm32f4xx_dcmi.c ****   }
  430:./Library/stm32f4xx_dcmi.c ****   
  431:./Library/stm32f4xx_dcmi.c ****   if ((tempreg & DCMI_FLAG) != (uint16_t)RESET )
- 563              		.loc 1 431 3 is_stmt 1 view .LVU151
- 564              		.loc 1 431 6 is_stmt 0 view .LVU152
- 565 0008 1842     		tst	r0, r3
- 566 000a 09D0     		beq	.L48
+ 884              		.loc 1 431 16
+ 885 003c FA88     		ldrh	r2, [r7, #6]
+ 886 003e 3B69     		ldr	r3, [r7, #16]
+ 887 0040 1340     		ands	r3, r3, r2
+ 888              		.loc 1 431 6
+ 889 0042 002B     		cmp	r3, #0
+ 890 0044 02D0     		beq	.L52
  432:./Library/stm32f4xx_dcmi.c ****   {
  433:./Library/stm32f4xx_dcmi.c ****     bitstatus = SET;
- 567              		.loc 1 433 15 view .LVU153
- 568 000c 0120     		movs	r0, #1
- 569              	.LVL22:
- 570              		.loc 1 433 15 view .LVU154
- 571 000e 7047     		bx	lr
- 572              	.LVL23:
- 573              	.L44:
- 422:./Library/stm32f4xx_dcmi.c ****   {
- 574              		.loc 1 422 8 is_stmt 1 view .LVU155
- 422:./Library/stm32f4xx_dcmi.c ****   {
- 575              		.loc 1 422 11 is_stmt 0 view .LVU156
- 576 0010 022B     		cmp	r3, #2
- 577 0012 02D0     		beq	.L49
- 428:./Library/stm32f4xx_dcmi.c ****   }
- 578              		.loc 1 428 5 is_stmt 1 view .LVU157
- 428:./Library/stm32f4xx_dcmi.c ****   }
- 579              		.loc 1 428 13 is_stmt 0 view .LVU158
- 580 0014 034B     		ldr	r3, .L50
- 581              	.LVL24:
- 428:./Library/stm32f4xx_dcmi.c ****   }
- 582              		.loc 1 428 13 view .LVU159
- 583 0016 1B69     		ldr	r3, [r3, #16]
- 584              	.LVL25:
- 428:./Library/stm32f4xx_dcmi.c ****   }
- 585              		.loc 1 428 13 view .LVU160
- 586 0018 F6E7     		b	.L45
- 587              	.LVL26:
- 588              	.L49:
- 424:./Library/stm32f4xx_dcmi.c ****   }
- 589              		.loc 1 424 5 is_stmt 1 view .LVU161
- 424:./Library/stm32f4xx_dcmi.c ****   }
- 590              		.loc 1 424 13 is_stmt 0 view .LVU162
- 591 001a 024B     		ldr	r3, .L50
- 592              	.LVL27:
- 424:./Library/stm32f4xx_dcmi.c ****   }
- 593              		.loc 1 424 13 view .LVU163
- 594 001c 5B68     		ldr	r3, [r3, #4]
- 595              	.LVL28:
- 424:./Library/stm32f4xx_dcmi.c ****   }
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 19
-
-
- 596              		.loc 1 424 13 view .LVU164
- 597 001e F3E7     		b	.L45
- 598              	.L48:
+ 891              		.loc 1 433 15
+ 892 0046 0123     		movs	r3, #1
+ 893 0048 FB75     		strb	r3, [r7, #23]
+ 894 004a 01E0     		b	.L53
+ 895              	.L52:
  434:./Library/stm32f4xx_dcmi.c ****   }
  435:./Library/stm32f4xx_dcmi.c ****   else
  436:./Library/stm32f4xx_dcmi.c ****   {
  437:./Library/stm32f4xx_dcmi.c ****     bitstatus = RESET;
- 599              		.loc 1 437 15 view .LVU165
- 600 0020 0020     		movs	r0, #0
- 601              	.LVL29:
+ 896              		.loc 1 437 15
+ 897 004c 0023     		movs	r3, #0
+ 898 004e FB75     		strb	r3, [r7, #23]
+ 899              	.L53:
  438:./Library/stm32f4xx_dcmi.c ****   }
  439:./Library/stm32f4xx_dcmi.c ****   /* Return the DCMI_FLAG status */
  440:./Library/stm32f4xx_dcmi.c ****   return  bitstatus;
- 602              		.loc 1 440 3 is_stmt 1 view .LVU166
+ 900              		.loc 1 440 11
+ 901 0050 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
  441:./Library/stm32f4xx_dcmi.c **** }
- 603              		.loc 1 441 1 is_stmt 0 view .LVU167
- 604 0022 7047     		bx	lr
- 605              	.L51:
- 606              		.align	2
- 607              	.L50:
- 608 0024 00000550 		.word	1342504960
- 609              		.cfi_endproc
- 610              	.LFE134:
- 612              		.section	.text.DCMI_ClearFlag,"ax",%progbits
- 613              		.align	1
- 614              		.global	DCMI_ClearFlag
- 615              		.syntax unified
- 616              		.thumb
- 617              		.thumb_func
- 619              	DCMI_ClearFlag:
- 620              	.LVL30:
- 621              	.LFB135:
+ 902              		.loc 1 441 1
+ 903 0052 1846     		mov	r0, r3
+ 904 0054 1C37     		adds	r7, r7, #28
+ 905              	.LCFI65:
+ 906              		.cfi_def_cfa_offset 4
+ 907 0056 BD46     		mov	sp, r7
+ 908              	.LCFI66:
+ 909              		.cfi_def_cfa_register 13
+ 910              		@ sp needed
+ 911 0058 5DF8047B 		ldr	r7, [sp], #4
+ 912              	.LCFI67:
+ 913              		.cfi_restore 7
+ 914              		.cfi_def_cfa_offset 0
+ 915 005c 7047     		bx	lr
+ 916              	.L56:
+ 917 005e 00BF     		.align	2
+ 918              	.L55:
+ 919 0060 00000550 		.word	1342504960
+ 920              		.cfi_endproc
+ 921              	.LFE134:
+ 923              		.section	.text.DCMI_ClearFlag,"ax",%progbits
+ 924              		.align	1
+ 925              		.global	DCMI_ClearFlag
+ 926              		.syntax unified
+ 927              		.thumb
+ 928              		.thumb_func
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 25
+
+
+ 930              	DCMI_ClearFlag:
+ 931              	.LFB135:
  442:./Library/stm32f4xx_dcmi.c **** 
  443:./Library/stm32f4xx_dcmi.c **** /**
  444:./Library/stm32f4xx_dcmi.c ****   * @brief  Clears the DCMI's pending flags.
@@ -1127,44 +1457,67 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  453:./Library/stm32f4xx_dcmi.c ****   */
  454:./Library/stm32f4xx_dcmi.c **** void DCMI_ClearFlag(uint16_t DCMI_FLAG)
  455:./Library/stm32f4xx_dcmi.c **** {
- 622              		.loc 1 455 1 is_stmt 1 view -0
- 623              		.cfi_startproc
- 624              		@ args = 0, pretend = 0, frame = 0
- 625              		@ frame_needed = 0, uses_anonymous_args = 0
- 626              		@ link register save eliminated.
+ 932              		.loc 1 455 1
+ 933              		.cfi_startproc
+ 934              		@ args = 0, pretend = 0, frame = 8
+ 935              		@ frame_needed = 1, uses_anonymous_args = 0
+ 936              		@ link register save eliminated.
+ 937 0000 80B4     		push	{r7}
+ 938              	.LCFI68:
+ 939              		.cfi_def_cfa_offset 4
+ 940              		.cfi_offset 7, -4
+ 941 0002 83B0     		sub	sp, sp, #12
+ 942              	.LCFI69:
+ 943              		.cfi_def_cfa_offset 16
+ 944 0004 00AF     		add	r7, sp, #0
+ 945              	.LCFI70:
+ 946              		.cfi_def_cfa_register 7
+ 947 0006 0346     		mov	r3, r0
+ 948 0008 FB80     		strh	r3, [r7, #6]	@ movhi
  456:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
  457:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_CLEAR_FLAG(DCMI_FLAG));
- 627              		.loc 1 457 3 view .LVU169
  458:./Library/stm32f4xx_dcmi.c ****   
  459:./Library/stm32f4xx_dcmi.c ****   /* Clear the flag by writing in the ICR register 1 in the corresponding 
  460:./Library/stm32f4xx_dcmi.c ****   Flag position*/
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 20
-
-
  461:./Library/stm32f4xx_dcmi.c ****   
  462:./Library/stm32f4xx_dcmi.c ****   DCMI->ICR = DCMI_FLAG;
- 628              		.loc 1 462 3 view .LVU170
- 629              		.loc 1 462 13 is_stmt 0 view .LVU171
- 630 0000 014B     		ldr	r3, .L53
- 631 0002 5861     		str	r0, [r3, #20]
+ 949              		.loc 1 462 7
+ 950 000a 044A     		ldr	r2, .L58
+ 951              		.loc 1 462 13
+ 952 000c FB88     		ldrh	r3, [r7, #6]
+ 953 000e 5361     		str	r3, [r2, #20]
  463:./Library/stm32f4xx_dcmi.c **** }
- 632              		.loc 1 463 1 view .LVU172
- 633 0004 7047     		bx	lr
- 634              	.L54:
- 635 0006 00BF     		.align	2
- 636              	.L53:
- 637 0008 00000550 		.word	1342504960
- 638              		.cfi_endproc
- 639              	.LFE135:
- 641              		.section	.text.DCMI_GetITStatus,"ax",%progbits
- 642              		.align	1
- 643              		.global	DCMI_GetITStatus
- 644              		.syntax unified
- 645              		.thumb
- 646              		.thumb_func
- 648              	DCMI_GetITStatus:
- 649              	.LVL31:
- 650              	.LFB136:
+ 954              		.loc 1 463 1
+ 955 0010 00BF     		nop
+ 956 0012 0C37     		adds	r7, r7, #12
+ 957              	.LCFI71:
+ 958              		.cfi_def_cfa_offset 4
+ 959 0014 BD46     		mov	sp, r7
+ 960              	.LCFI72:
+ 961              		.cfi_def_cfa_register 13
+ 962              		@ sp needed
+ 963 0016 5DF8047B 		ldr	r7, [sp], #4
+ 964              	.LCFI73:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 26
+
+
+ 965              		.cfi_restore 7
+ 966              		.cfi_def_cfa_offset 0
+ 967 001a 7047     		bx	lr
+ 968              	.L59:
+ 969              		.align	2
+ 970              	.L58:
+ 971 001c 00000550 		.word	1342504960
+ 972              		.cfi_endproc
+ 973              	.LFE135:
+ 975              		.section	.text.DCMI_GetITStatus,"ax",%progbits
+ 976              		.align	1
+ 977              		.global	DCMI_GetITStatus
+ 978              		.syntax unified
+ 979              		.thumb
+ 980              		.thumb_func
+ 982              	DCMI_GetITStatus:
+ 983              	.LFB136:
  464:./Library/stm32f4xx_dcmi.c **** 
  465:./Library/stm32f4xx_dcmi.c **** /**
  466:./Library/stm32f4xx_dcmi.c ****   * @brief  Checks whether the DCMI interrupt has occurred or not.
@@ -1179,72 +1532,104 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  475:./Library/stm32f4xx_dcmi.c ****   */
  476:./Library/stm32f4xx_dcmi.c **** ITStatus DCMI_GetITStatus(uint16_t DCMI_IT)
  477:./Library/stm32f4xx_dcmi.c **** {
- 651              		.loc 1 477 1 is_stmt 1 view -0
- 652              		.cfi_startproc
- 653              		@ args = 0, pretend = 0, frame = 0
- 654              		@ frame_needed = 0, uses_anonymous_args = 0
- 655              		@ link register save eliminated.
+ 984              		.loc 1 477 1
+ 985              		.cfi_startproc
+ 986              		@ args = 0, pretend = 0, frame = 16
+ 987              		@ frame_needed = 1, uses_anonymous_args = 0
+ 988              		@ link register save eliminated.
+ 989 0000 80B4     		push	{r7}
+ 990              	.LCFI74:
+ 991              		.cfi_def_cfa_offset 4
+ 992              		.cfi_offset 7, -4
+ 993 0002 85B0     		sub	sp, sp, #20
+ 994              	.LCFI75:
+ 995              		.cfi_def_cfa_offset 24
+ 996 0004 00AF     		add	r7, sp, #0
+ 997              	.LCFI76:
+ 998              		.cfi_def_cfa_register 7
+ 999 0006 0346     		mov	r3, r0
+ 1000 0008 FB80     		strh	r3, [r7, #6]	@ movhi
  478:./Library/stm32f4xx_dcmi.c ****   ITStatus bitstatus = RESET;
- 656              		.loc 1 478 3 view .LVU174
+ 1001              		.loc 1 478 12
+ 1002 000a 0023     		movs	r3, #0
+ 1003 000c FB73     		strb	r3, [r7, #15]
  479:./Library/stm32f4xx_dcmi.c ****   uint32_t itstatus = 0;
- 657              		.loc 1 479 3 view .LVU175
+ 1004              		.loc 1 479 12
+ 1005 000e 0023     		movs	r3, #0
+ 1006 0010 BB60     		str	r3, [r7, #8]
  480:./Library/stm32f4xx_dcmi.c ****   
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 27
+
+
  481:./Library/stm32f4xx_dcmi.c ****   /* Check the parameters */
  482:./Library/stm32f4xx_dcmi.c ****   assert_param(IS_DCMI_GET_IT(DCMI_IT));
- 658              		.loc 1 482 3 view .LVU176
  483:./Library/stm32f4xx_dcmi.c ****   
  484:./Library/stm32f4xx_dcmi.c ****   itstatus = DCMI->MISR & DCMI_IT; /* Only masked interrupts are checked */
- 659              		.loc 1 484 3 view .LVU177
- 660              		.loc 1 484 18 is_stmt 0 view .LVU178
- 661 0000 034B     		ldr	r3, .L58
- 662 0002 1B69     		ldr	r3, [r3, #16]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 21
-
-
- 663              	.LVL32:
+ 1007              		.loc 1 484 18
+ 1008 0012 0A4B     		ldr	r3, .L64
+ 1009 0014 1A69     		ldr	r2, [r3, #16]
+ 1010              		.loc 1 484 25
+ 1011 0016 FB88     		ldrh	r3, [r7, #6]
+ 1012              		.loc 1 484 12
+ 1013 0018 1340     		ands	r3, r3, r2
+ 1014 001a BB60     		str	r3, [r7, #8]
  485:./Library/stm32f4xx_dcmi.c ****   
  486:./Library/stm32f4xx_dcmi.c ****   if ((itstatus != (uint16_t)RESET))
- 664              		.loc 1 486 3 is_stmt 1 view .LVU179
- 665              		.loc 1 486 6 is_stmt 0 view .LVU180
- 666 0004 0342     		tst	r3, r0
- 667 0006 01D0     		beq	.L57
+ 1015              		.loc 1 486 6
+ 1016 001c BB68     		ldr	r3, [r7, #8]
+ 1017 001e 002B     		cmp	r3, #0
+ 1018 0020 02D0     		beq	.L61
  487:./Library/stm32f4xx_dcmi.c ****   {
  488:./Library/stm32f4xx_dcmi.c ****     bitstatus = SET;
- 668              		.loc 1 488 15 view .LVU181
- 669 0008 0120     		movs	r0, #1
- 670              	.LVL33:
- 671              		.loc 1 488 15 view .LVU182
- 672 000a 7047     		bx	lr
- 673              	.LVL34:
- 674              	.L57:
+ 1019              		.loc 1 488 15
+ 1020 0022 0123     		movs	r3, #1
+ 1021 0024 FB73     		strb	r3, [r7, #15]
+ 1022 0026 01E0     		b	.L62
+ 1023              	.L61:
  489:./Library/stm32f4xx_dcmi.c ****   }
  490:./Library/stm32f4xx_dcmi.c ****   else
  491:./Library/stm32f4xx_dcmi.c ****   {
  492:./Library/stm32f4xx_dcmi.c ****     bitstatus = RESET;
- 675              		.loc 1 492 15 view .LVU183
- 676 000c 0020     		movs	r0, #0
- 677              	.LVL35:
+ 1024              		.loc 1 492 15
+ 1025 0028 0023     		movs	r3, #0
+ 1026 002a FB73     		strb	r3, [r7, #15]
+ 1027              	.L62:
  493:./Library/stm32f4xx_dcmi.c ****   }
  494:./Library/stm32f4xx_dcmi.c ****   return bitstatus;
- 678              		.loc 1 494 3 is_stmt 1 view .LVU184
+ 1028              		.loc 1 494 10
+ 1029 002c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
  495:./Library/stm32f4xx_dcmi.c **** }
- 679              		.loc 1 495 1 is_stmt 0 view .LVU185
- 680 000e 7047     		bx	lr
- 681              	.L59:
- 682              		.align	2
- 683              	.L58:
- 684 0010 00000550 		.word	1342504960
- 685              		.cfi_endproc
- 686              	.LFE136:
- 688              		.section	.text.DCMI_ClearITPendingBit,"ax",%progbits
- 689              		.align	1
- 690              		.global	DCMI_ClearITPendingBit
- 691              		.syntax unified
- 692              		.thumb
- 693              		.thumb_func
- 695              	DCMI_ClearITPendingBit:
- 696              	.LVL36:
- 697              	.LFB137:
+ 1030              		.loc 1 495 1
+ 1031 002e 1846     		mov	r0, r3
+ 1032 0030 1437     		adds	r7, r7, #20
+ 1033              	.LCFI77:
+ 1034              		.cfi_def_cfa_offset 4
+ 1035 0032 BD46     		mov	sp, r7
+ 1036              	.LCFI78:
+ 1037              		.cfi_def_cfa_register 13
+ 1038              		@ sp needed
+ 1039 0034 5DF8047B 		ldr	r7, [sp], #4
+ 1040              	.LCFI79:
+ 1041              		.cfi_restore 7
+ 1042              		.cfi_def_cfa_offset 0
+ 1043 0038 7047     		bx	lr
+ 1044              	.L65:
+ 1045 003a 00BF     		.align	2
+ 1046              	.L64:
+ 1047 003c 00000550 		.word	1342504960
+ 1048              		.cfi_endproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 28
+
+
+ 1049              	.LFE136:
+ 1051              		.section	.text.DCMI_ClearITPendingBit,"ax",%progbits
+ 1052              		.align	1
+ 1053              		.global	DCMI_ClearITPendingBit
+ 1054              		.syntax unified
+ 1055              		.thumb
+ 1056              		.thumb_func
+ 1058              	DCMI_ClearITPendingBit:
+ 1059              	.LFB137:
  496:./Library/stm32f4xx_dcmi.c **** 
  497:./Library/stm32f4xx_dcmi.c **** /**
  498:./Library/stm32f4xx_dcmi.c ****   * @brief  Clears the DCMI's interrupt pending bits.
@@ -1258,86 +1643,111 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 1
  506:./Library/stm32f4xx_dcmi.c ****   * @retval None
  507:./Library/stm32f4xx_dcmi.c ****   */
  508:./Library/stm32f4xx_dcmi.c **** void DCMI_ClearITPendingBit(uint16_t DCMI_IT)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 22
-
-
  509:./Library/stm32f4xx_dcmi.c **** {
- 698              		.loc 1 509 1 is_stmt 1 view -0
- 699              		.cfi_startproc
- 700              		@ args = 0, pretend = 0, frame = 0
- 701              		@ frame_needed = 0, uses_anonymous_args = 0
- 702              		@ link register save eliminated.
+ 1060              		.loc 1 509 1
+ 1061              		.cfi_startproc
+ 1062              		@ args = 0, pretend = 0, frame = 8
+ 1063              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1064              		@ link register save eliminated.
+ 1065 0000 80B4     		push	{r7}
+ 1066              	.LCFI80:
+ 1067              		.cfi_def_cfa_offset 4
+ 1068              		.cfi_offset 7, -4
+ 1069 0002 83B0     		sub	sp, sp, #12
+ 1070              	.LCFI81:
+ 1071              		.cfi_def_cfa_offset 16
+ 1072 0004 00AF     		add	r7, sp, #0
+ 1073              	.LCFI82:
+ 1074              		.cfi_def_cfa_register 7
+ 1075 0006 0346     		mov	r3, r0
+ 1076 0008 FB80     		strh	r3, [r7, #6]	@ movhi
  510:./Library/stm32f4xx_dcmi.c ****   /* Clear the interrupt pending Bit by writing in the ICR register 1 in the 
  511:./Library/stm32f4xx_dcmi.c ****   corresponding pending Bit position*/
  512:./Library/stm32f4xx_dcmi.c ****   
  513:./Library/stm32f4xx_dcmi.c ****   DCMI->ICR = DCMI_IT;
- 703              		.loc 1 513 3 view .LVU187
- 704              		.loc 1 513 13 is_stmt 0 view .LVU188
- 705 0000 014B     		ldr	r3, .L61
- 706 0002 5861     		str	r0, [r3, #20]
+ 1077              		.loc 1 513 7
+ 1078 000a 044A     		ldr	r2, .L67
+ 1079              		.loc 1 513 13
+ 1080 000c FB88     		ldrh	r3, [r7, #6]
+ 1081 000e 5361     		str	r3, [r2, #20]
  514:./Library/stm32f4xx_dcmi.c **** }
- 707              		.loc 1 514 1 view .LVU189
- 708 0004 7047     		bx	lr
- 709              	.L62:
- 710 0006 00BF     		.align	2
- 711              	.L61:
- 712 0008 00000550 		.word	1342504960
- 713              		.cfi_endproc
- 714              	.LFE137:
- 716              		.text
- 717              	.Letext0:
- 718              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 719              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 720              		.file 4 "./CORE/stm32f4xx.h"
- 721              		.file 5 "./Library/stm32f4xx_dcmi.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s 			page 23
+ 1082              		.loc 1 514 1
+ 1083 0010 00BF     		nop
+ 1084 0012 0C37     		adds	r7, r7, #12
+ 1085              	.LCFI83:
+ 1086              		.cfi_def_cfa_offset 4
+ 1087 0014 BD46     		mov	sp, r7
+ 1088              	.LCFI84:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 29
+
+
+ 1089              		.cfi_def_cfa_register 13
+ 1090              		@ sp needed
+ 1091 0016 5DF8047B 		ldr	r7, [sp], #4
+ 1092              	.LCFI85:
+ 1093              		.cfi_restore 7
+ 1094              		.cfi_def_cfa_offset 0
+ 1095 001a 7047     		bx	lr
+ 1096              	.L68:
+ 1097              		.align	2
+ 1098              	.L67:
+ 1099 001c 00000550 		.word	1342504960
+ 1100              		.cfi_endproc
+ 1101              	.LFE137:
+ 1103              		.text
+ 1104              	.Letext0:
+ 1105              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1106              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 1107              		.file 4 "./CORE/stm32f4xx.h"
+ 1108              		.file 5 "./Library/stm32f4xx_dcmi.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s 			page 30
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f4xx_dcmi.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:20     .text.DCMI_DeInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:26     .text.DCMI_DeInit:0000000000000000 DCMI_DeInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:63     .text.DCMI_DeInit:0000000000000018 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:68     .text.DCMI_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:74     .text.DCMI_Init:0000000000000000 DCMI_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:152    .text.DCMI_Init:0000000000000044 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:157    .text.DCMI_StructInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:163    .text.DCMI_StructInit:0000000000000000 DCMI_StructInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:199    .text.DCMI_CROPConfig:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:205    .text.DCMI_CROPConfig:0000000000000000 DCMI_CROPConfig
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:237    .text.DCMI_CROPConfig:0000000000000018 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:242    .text.DCMI_CROPCmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:248    .text.DCMI_CROPCmd:0000000000000000 DCMI_CROPCmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:279    .text.DCMI_CROPCmd:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:284    .text.DCMI_SetEmbeddedSynchroCodes:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:290    .text.DCMI_SetEmbeddedSynchroCodes:0000000000000000 DCMI_SetEmbeddedSynchroCodes
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:321    .text.DCMI_SetEmbeddedSynchroCodes:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:326    .text.DCMI_JPEGCmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:332    .text.DCMI_JPEGCmd:0000000000000000 DCMI_JPEGCmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:363    .text.DCMI_JPEGCmd:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:368    .text.DCMI_Cmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:374    .text.DCMI_Cmd:0000000000000000 DCMI_Cmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:405    .text.DCMI_Cmd:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:410    .text.DCMI_CaptureCmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:416    .text.DCMI_CaptureCmd:0000000000000000 DCMI_CaptureCmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:447    .text.DCMI_CaptureCmd:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:452    .text.DCMI_ReadData:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:458    .text.DCMI_ReadData:0000000000000000 DCMI_ReadData
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:474    .text.DCMI_ReadData:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:479    .text.DCMI_ITConfig:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:485    .text.DCMI_ITConfig:0000000000000000 DCMI_ITConfig
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:526    .text.DCMI_ITConfig:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:531    .text.DCMI_GetFlagStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:537    .text.DCMI_GetFlagStatus:0000000000000000 DCMI_GetFlagStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:608    .text.DCMI_GetFlagStatus:0000000000000024 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:613    .text.DCMI_ClearFlag:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:619    .text.DCMI_ClearFlag:0000000000000000 DCMI_ClearFlag
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:637    .text.DCMI_ClearFlag:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:642    .text.DCMI_GetITStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:648    .text.DCMI_GetITStatus:0000000000000000 DCMI_GetITStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:684    .text.DCMI_GetITStatus:0000000000000010 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:689    .text.DCMI_ClearITPendingBit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:695    .text.DCMI_ClearITPendingBit:0000000000000000 DCMI_ClearITPendingBit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccT9EZov.s:712    .text.DCMI_ClearITPendingBit:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:20     .text.DCMI_DeInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:26     .text.DCMI_DeInit:0000000000000000 DCMI_DeInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:90     .text.DCMI_DeInit:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:95     .text.DCMI_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:101    .text.DCMI_Init:0000000000000000 DCMI_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:205    .text.DCMI_Init:000000000000007c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:210    .text.DCMI_StructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:216    .text.DCMI_StructInit:0000000000000000 DCMI_StructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:280    .text.DCMI_CROPConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:286    .text.DCMI_CROPConfig:0000000000000000 DCMI_CROPConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:352    .text.DCMI_CROPConfig:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:357    .text.DCMI_CROPCmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:363    .text.DCMI_CROPCmd:0000000000000000 DCMI_CROPCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:419    .text.DCMI_CROPCmd:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:424    .text.DCMI_SetEmbeddedSynchroCodes:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:430    .text.DCMI_SetEmbeddedSynchroCodes:0000000000000000 DCMI_SetEmbeddedSynchroCodes
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:494    .text.DCMI_SetEmbeddedSynchroCodes:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:499    .text.DCMI_JPEGCmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:505    .text.DCMI_JPEGCmd:0000000000000000 DCMI_JPEGCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:561    .text.DCMI_JPEGCmd:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:566    .text.DCMI_Cmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:572    .text.DCMI_Cmd:0000000000000000 DCMI_Cmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:628    .text.DCMI_Cmd:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:633    .text.DCMI_CaptureCmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:639    .text.DCMI_CaptureCmd:0000000000000000 DCMI_CaptureCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:695    .text.DCMI_CaptureCmd:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:700    .text.DCMI_ReadData:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:706    .text.DCMI_ReadData:0000000000000000 DCMI_ReadData
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:737    .text.DCMI_ReadData:0000000000000014 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:742    .text.DCMI_ITConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:748    .text.DCMI_ITConfig:0000000000000000 DCMI_ITConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:814    .text.DCMI_ITConfig:0000000000000044 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:819    .text.DCMI_GetFlagStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:825    .text.DCMI_GetFlagStatus:0000000000000000 DCMI_GetFlagStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:919    .text.DCMI_GetFlagStatus:0000000000000060 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:924    .text.DCMI_ClearFlag:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:930    .text.DCMI_ClearFlag:0000000000000000 DCMI_ClearFlag
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:971    .text.DCMI_ClearFlag:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:976    .text.DCMI_GetITStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:982    .text.DCMI_GetITStatus:0000000000000000 DCMI_GetITStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:1047   .text.DCMI_GetITStatus:000000000000003c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:1052   .text.DCMI_ClearITPendingBit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:1058   .text.DCMI_ClearITPendingBit:0000000000000000 DCMI_ClearITPendingBit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccuhZ0Pj.s:1099   .text.DCMI_ClearITPendingBit:000000000000001c $d
 
 NO UNDEFINED SYMBOLS

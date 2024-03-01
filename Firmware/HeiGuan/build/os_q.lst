@@ -1,0 +1,3056 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"os_q.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.OSQAccept,"ax",%progbits
+  20              		.align	1
+  21              		.global	OSQAccept
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	OSQAccept:
+  27              	.LFB3:
+  28              		.file 1 "./ucOSII/Core/os_q.c"
+   1:./ucOSII/Core/os_q.c **** /*
+   2:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+   3:./ucOSII/Core/os_q.c **** *                                              uC/OS-II
+   4:./ucOSII/Core/os_q.c **** *                                        The Real-Time Kernel
+   5:./ucOSII/Core/os_q.c **** *
+   6:./ucOSII/Core/os_q.c **** *                    Copyright 1992-2021 Silicon Laboratories Inc. www.silabs.com
+   7:./ucOSII/Core/os_q.c **** *
+   8:./ucOSII/Core/os_q.c **** *                                 SPDX-License-Identifier: APACHE-2.0
+   9:./ucOSII/Core/os_q.c **** *
+  10:./ucOSII/Core/os_q.c **** *               This software is subject to an open source license and is distributed by
+  11:./ucOSII/Core/os_q.c **** *                Silicon Laboratories Inc. pursuant to the terms of the Apache License,
+  12:./ucOSII/Core/os_q.c **** *                    Version 2.0 available at www.apache.org/licenses/LICENSE-2.0.
+  13:./ucOSII/Core/os_q.c **** *
+  14:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+  15:./ucOSII/Core/os_q.c **** */
+  16:./ucOSII/Core/os_q.c **** 
+  17:./ucOSII/Core/os_q.c **** 
+  18:./ucOSII/Core/os_q.c **** /*
+  19:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+  20:./ucOSII/Core/os_q.c **** *
+  21:./ucOSII/Core/os_q.c **** *                                       MESSAGE QUEUE MANAGEMENT
+  22:./ucOSII/Core/os_q.c **** *
+  23:./ucOSII/Core/os_q.c **** * Filename : os_q.c
+  24:./ucOSII/Core/os_q.c **** * Version  : V2.93.01
+  25:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+  26:./ucOSII/Core/os_q.c **** */
+  27:./ucOSII/Core/os_q.c **** 
+  28:./ucOSII/Core/os_q.c **** #ifndef  OS_Q_C
+  29:./ucOSII/Core/os_q.c **** #define  OS_Q_C
+  30:./ucOSII/Core/os_q.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 2
+
+
+  31:./ucOSII/Core/os_q.c **** #define  MICRIUM_SOURCE
+  32:./ucOSII/Core/os_q.c **** 
+  33:./ucOSII/Core/os_q.c **** #ifndef  OS_MASTER_FILE
+  34:./ucOSII/Core/os_q.c **** #include <ucos_ii.h>
+  35:./ucOSII/Core/os_q.c **** #endif
+  36:./ucOSII/Core/os_q.c **** 
+  37:./ucOSII/Core/os_q.c **** #if (OS_Q_EN > 0u) && (OS_MAX_QS > 0u)
+  38:./ucOSII/Core/os_q.c **** /*
+  39:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+  40:./ucOSII/Core/os_q.c **** *                                      ACCEPT MESSAGE FROM QUEUE
+  41:./ucOSII/Core/os_q.c **** *
+  42:./ucOSII/Core/os_q.c **** * Description: This function checks the queue to see if a message is available.  Unlike OSQPend(),
+  43:./ucOSII/Core/os_q.c **** *              OSQAccept() does not suspend the calling task if a message is not available.
+  44:./ucOSII/Core/os_q.c **** *
+  45:./ucOSII/Core/os_q.c **** * Arguments  : pevent        is a pointer to the event control block
+  46:./ucOSII/Core/os_q.c **** *
+  47:./ucOSII/Core/os_q.c **** *              perr          is a pointer to where an error message will be deposited.  Possible er
+  48:./ucOSII/Core/os_q.c **** *                            messages are:
+  49:./ucOSII/Core/os_q.c **** *
+  50:./ucOSII/Core/os_q.c **** *                            OS_ERR_NONE         The call was successful and your task received a
+  51:./ucOSII/Core/os_q.c **** *                                                message.
+  52:./ucOSII/Core/os_q.c **** *                            OS_ERR_EVENT_TYPE   You didn't pass a pointer to a queue
+  53:./ucOSII/Core/os_q.c **** *                            OS_ERR_PEVENT_NULL  If 'pevent' is a NULL pointer
+  54:./ucOSII/Core/os_q.c **** *                            OS_ERR_Q_EMPTY      The queue did not contain any messages
+  55:./ucOSII/Core/os_q.c **** *
+  56:./ucOSII/Core/os_q.c **** * Returns    : != (void *)0  is the message in the queue if one is available.  The message is remov
+  57:./ucOSII/Core/os_q.c **** *                            from the so the next time OSQAccept() is called, the queue will contai
+  58:./ucOSII/Core/os_q.c **** *                            one less entry.
+  59:./ucOSII/Core/os_q.c **** *              == (void *)0  if you received a NULL pointer message
+  60:./ucOSII/Core/os_q.c **** *                            if the queue is empty or,
+  61:./ucOSII/Core/os_q.c **** *                            if 'pevent' is a NULL pointer or,
+  62:./ucOSII/Core/os_q.c **** *                            if you passed an invalid event type
+  63:./ucOSII/Core/os_q.c **** *
+  64:./ucOSII/Core/os_q.c **** * Note(s)    : As of V2.60, you can now pass NULL pointers through queues.  Because of this, the ar
+  65:./ucOSII/Core/os_q.c **** *              'perr' has been added to the API to tell you about the outcome of the call.
+  66:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+  67:./ucOSII/Core/os_q.c **** */
+  68:./ucOSII/Core/os_q.c **** 
+  69:./ucOSII/Core/os_q.c **** #if OS_Q_ACCEPT_EN > 0u
+  70:./ucOSII/Core/os_q.c **** void  *OSQAccept (OS_EVENT  *pevent,
+  71:./ucOSII/Core/os_q.c ****                   INT8U     *perr)
+  72:./ucOSII/Core/os_q.c **** {
+  29              		.loc 1 72 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 24
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 7, -8
+  37              		.cfi_offset 14, -4
+  38 0002 86B0     		sub	sp, sp, #24
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 32
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 3
+
+
+  44 0006 7860     		str	r0, [r7, #4]
+  45 0008 3960     		str	r1, [r7]
+  73:./ucOSII/Core/os_q.c ****     void      *pmsg;
+  74:./ucOSII/Core/os_q.c ****     OS_Q      *pq;
+  75:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                     /* Allocate storage for CPU status register       
+  76:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+  46              		.loc 1 76 16
+  47 000a 0023     		movs	r3, #0
+  48 000c 3B61     		str	r3, [r7, #16]
+  77:./ucOSII/Core/os_q.c **** #endif
+  78:./ucOSII/Core/os_q.c **** 
+  79:./ucOSII/Core/os_q.c **** 
+  80:./ucOSII/Core/os_q.c **** 
+  81:./ucOSII/Core/os_q.c **** #ifdef OS_SAFETY_CRITICAL
+  82:./ucOSII/Core/os_q.c ****     if (perr == (INT8U *)0) {
+  83:./ucOSII/Core/os_q.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+  84:./ucOSII/Core/os_q.c ****         return ((void *)0);
+  85:./ucOSII/Core/os_q.c ****     }
+  86:./ucOSII/Core/os_q.c **** #endif
+  87:./ucOSII/Core/os_q.c **** 
+  88:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+  89:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {               /* Validate 'pevent'                              
+  49              		.loc 1 89 8
+  50 000e 7B68     		ldr	r3, [r7, #4]
+  51 0010 002B     		cmp	r3, #0
+  52 0012 04D1     		bne	.L2
+  90:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_PEVENT_NULL;
+  53              		.loc 1 90 15
+  54 0014 3B68     		ldr	r3, [r7]
+  55 0016 0422     		movs	r2, #4
+  56 0018 1A70     		strb	r2, [r3]
+  91:./ucOSII/Core/os_q.c ****         return ((void *)0);
+  57              		.loc 1 91 16
+  58 001a 0023     		movs	r3, #0
+  59 001c 37E0     		b	.L3
+  60              	.L2:
+  92:./ucOSII/Core/os_q.c ****     }
+  93:./ucOSII/Core/os_q.c **** #endif
+  94:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {/* Validate event block type                      
+  61              		.loc 1 94 15
+  62 001e 7B68     		ldr	r3, [r7, #4]
+  63 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  64              		.loc 1 94 8
+  65 0022 022B     		cmp	r3, #2
+  66 0024 04D0     		beq	.L4
+  95:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_EVENT_TYPE;
+  67              		.loc 1 95 15
+  68 0026 3B68     		ldr	r3, [r7]
+  69 0028 0122     		movs	r2, #1
+  70 002a 1A70     		strb	r2, [r3]
+  96:./ucOSII/Core/os_q.c ****         return ((void *)0);
+  71              		.loc 1 96 16
+  72 002c 0023     		movs	r3, #0
+  73 002e 2EE0     		b	.L3
+  74              	.L4:
+  97:./ucOSII/Core/os_q.c ****     }
+  98:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 4
+
+
+  75              		.loc 1 98 5
+  76 0030 4020     		movs	r0, #64
+  77 0032 FFF7FEFF 		bl	OS_CPU_SR_Save
+  78 0036 3861     		str	r0, [r7, #16]
+  99:./ucOSII/Core/os_q.c ****     pq = (OS_Q *)pevent->OSEventPtr;             /* Point at queue control block                   
+  79              		.loc 1 99 8
+  80 0038 7B68     		ldr	r3, [r7, #4]
+  81 003a 5B68     		ldr	r3, [r3, #4]
+  82 003c FB60     		str	r3, [r7, #12]
+ 100:./ucOSII/Core/os_q.c ****     if (pq->OSQEntries > 0u) {                   /* See if any messages in the queue               
+  83              		.loc 1 100 11
+  84 003e FB68     		ldr	r3, [r7, #12]
+  85 0040 DB8A     		ldrh	r3, [r3, #22]
+  86              		.loc 1 100 8
+  87 0042 002B     		cmp	r3, #0
+  88 0044 1AD0     		beq	.L5
+ 101:./ucOSII/Core/os_q.c ****         pmsg = *pq->OSQOut++;                    /* Yes, extract oldest message from the queue     
+  89              		.loc 1 101 19
+  90 0046 FB68     		ldr	r3, [r7, #12]
+  91 0048 1B69     		ldr	r3, [r3, #16]
+  92              		.loc 1 101 27
+  93 004a 191D     		adds	r1, r3, #4
+  94 004c FA68     		ldr	r2, [r7, #12]
+  95 004e 1161     		str	r1, [r2, #16]
+  96              		.loc 1 101 14
+  97 0050 1B68     		ldr	r3, [r3]
+  98 0052 7B61     		str	r3, [r7, #20]
+ 102:./ucOSII/Core/os_q.c ****         pq->OSQEntries--;                        /* Update the number of entries in the queue      
+  99              		.loc 1 102 11
+ 100 0054 FB68     		ldr	r3, [r7, #12]
+ 101 0056 DB8A     		ldrh	r3, [r3, #22]
+ 102              		.loc 1 102 23
+ 103 0058 013B     		subs	r3, r3, #1
+ 104 005a 9AB2     		uxth	r2, r3
+ 105 005c FB68     		ldr	r3, [r7, #12]
+ 106 005e DA82     		strh	r2, [r3, #22]	@ movhi
+ 103:./ucOSII/Core/os_q.c ****         if (pq->OSQOut == pq->OSQEnd) {          /* Wrap OUT pointer if we are at the end of the qu
+ 107              		.loc 1 103 15
+ 108 0060 FB68     		ldr	r3, [r7, #12]
+ 109 0062 1A69     		ldr	r2, [r3, #16]
+ 110              		.loc 1 103 29
+ 111 0064 FB68     		ldr	r3, [r7, #12]
+ 112 0066 9B68     		ldr	r3, [r3, #8]
+ 113              		.loc 1 103 12
+ 114 0068 9A42     		cmp	r2, r3
+ 115 006a 03D1     		bne	.L6
+ 104:./ucOSII/Core/os_q.c ****             pq->OSQOut = pq->OSQStart;
+ 116              		.loc 1 104 28
+ 117 006c FB68     		ldr	r3, [r7, #12]
+ 118 006e 5A68     		ldr	r2, [r3, #4]
+ 119              		.loc 1 104 24
+ 120 0070 FB68     		ldr	r3, [r7, #12]
+ 121 0072 1A61     		str	r2, [r3, #16]
+ 122              	.L6:
+ 105:./ucOSII/Core/os_q.c ****         }
+ 106:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_NONE;
+ 123              		.loc 1 106 15
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 5
+
+
+ 124 0074 3B68     		ldr	r3, [r7]
+ 125 0076 0022     		movs	r2, #0
+ 126 0078 1A70     		strb	r2, [r3]
+ 127 007a 04E0     		b	.L7
+ 128              	.L5:
+ 107:./ucOSII/Core/os_q.c ****     } else {
+ 108:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_Q_EMPTY;
+ 129              		.loc 1 108 15
+ 130 007c 3B68     		ldr	r3, [r7]
+ 131 007e 1F22     		movs	r2, #31
+ 132 0080 1A70     		strb	r2, [r3]
+ 109:./ucOSII/Core/os_q.c ****         pmsg  = (void *)0;                       /* Queue is empty                                 
+ 133              		.loc 1 109 15
+ 134 0082 0023     		movs	r3, #0
+ 135 0084 7B61     		str	r3, [r7, #20]
+ 136              	.L7:
+ 110:./ucOSII/Core/os_q.c ****     }
+ 111:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 137              		.loc 1 111 5
+ 138 0086 3869     		ldr	r0, [r7, #16]
+ 139 0088 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 112:./ucOSII/Core/os_q.c ****     return (pmsg);                               /* Return message received (or NULL)              
+ 140              		.loc 1 112 12
+ 141 008c 7B69     		ldr	r3, [r7, #20]
+ 142              	.L3:
+ 113:./ucOSII/Core/os_q.c **** }
+ 143              		.loc 1 113 1
+ 144 008e 1846     		mov	r0, r3
+ 145 0090 1837     		adds	r7, r7, #24
+ 146              	.LCFI3:
+ 147              		.cfi_def_cfa_offset 8
+ 148 0092 BD46     		mov	sp, r7
+ 149              	.LCFI4:
+ 150              		.cfi_def_cfa_register 13
+ 151              		@ sp needed
+ 152 0094 80BD     		pop	{r7, pc}
+ 153              		.cfi_endproc
+ 154              	.LFE3:
+ 156              		.section	.rodata
+ 157              		.align	2
+ 158              	.LC0:
+ 159 0000 3F00     		.ascii	"?\000"
+ 160              		.section	.text.OSQCreate,"ax",%progbits
+ 161              		.align	1
+ 162              		.global	OSQCreate
+ 163              		.syntax unified
+ 164              		.thumb
+ 165              		.thumb_func
+ 167              	OSQCreate:
+ 168              	.LFB4:
+ 114:./ucOSII/Core/os_q.c **** #endif
+ 115:./ucOSII/Core/os_q.c **** 
+ 116:./ucOSII/Core/os_q.c **** 
+ 117:./ucOSII/Core/os_q.c **** /*
+ 118:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 119:./ucOSII/Core/os_q.c **** *                                       CREATE A MESSAGE QUEUE
+ 120:./ucOSII/Core/os_q.c **** *
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 6
+
+
+ 121:./ucOSII/Core/os_q.c **** * Description: This function creates a message queue if free event control blocks are available.
+ 122:./ucOSII/Core/os_q.c **** *
+ 123:./ucOSII/Core/os_q.c **** * Arguments  : start         is a pointer to the base address of the message queue storage area.  T
+ 124:./ucOSII/Core/os_q.c **** *                            storage area MUST be declared as an array of pointers to 'void' as fol
+ 125:./ucOSII/Core/os_q.c **** *
+ 126:./ucOSII/Core/os_q.c **** *                            void *MessageStorage[size]
+ 127:./ucOSII/Core/os_q.c **** *
+ 128:./ucOSII/Core/os_q.c **** *              size          is the number of elements in the storage area
+ 129:./ucOSII/Core/os_q.c **** *
+ 130:./ucOSII/Core/os_q.c **** * Returns    : != (OS_EVENT *)0  is a pointer to the event control clock (OS_EVENT) associated with
+ 131:./ucOSII/Core/os_q.c **** *                                created queue
+ 132:./ucOSII/Core/os_q.c **** *              == (OS_EVENT *)0  if no event control blocks were available or an error was detected
+ 133:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 134:./ucOSII/Core/os_q.c **** */
+ 135:./ucOSII/Core/os_q.c **** 
+ 136:./ucOSII/Core/os_q.c **** OS_EVENT  *OSQCreate (void    **start,
+ 137:./ucOSII/Core/os_q.c ****                       INT16U    size)
+ 138:./ucOSII/Core/os_q.c **** {
+ 169              		.loc 1 138 1
+ 170              		.cfi_startproc
+ 171              		@ args = 0, pretend = 0, frame = 24
+ 172              		@ frame_needed = 1, uses_anonymous_args = 0
+ 173 0000 80B5     		push	{r7, lr}
+ 174              	.LCFI5:
+ 175              		.cfi_def_cfa_offset 8
+ 176              		.cfi_offset 7, -8
+ 177              		.cfi_offset 14, -4
+ 178 0002 86B0     		sub	sp, sp, #24
+ 179              	.LCFI6:
+ 180              		.cfi_def_cfa_offset 32
+ 181 0004 00AF     		add	r7, sp, #0
+ 182              	.LCFI7:
+ 183              		.cfi_def_cfa_register 7
+ 184 0006 7860     		str	r0, [r7, #4]
+ 185 0008 0B46     		mov	r3, r1
+ 186 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 139:./ucOSII/Core/os_q.c ****     OS_EVENT  *pevent;
+ 140:./ucOSII/Core/os_q.c ****     OS_Q      *pq;
+ 141:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                     /* Allocate storage for CPU status register       
+ 142:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+ 187              		.loc 1 142 16
+ 188 000c 0023     		movs	r3, #0
+ 189 000e 3B61     		str	r3, [r7, #16]
+ 143:./ucOSII/Core/os_q.c **** #endif
+ 144:./ucOSII/Core/os_q.c **** 
+ 145:./ucOSII/Core/os_q.c **** 
+ 146:./ucOSII/Core/os_q.c **** 
+ 147:./ucOSII/Core/os_q.c **** #ifdef OS_SAFETY_CRITICAL_IEC61508
+ 148:./ucOSII/Core/os_q.c ****     if (OSSafetyCriticalStartFlag == OS_TRUE) {
+ 149:./ucOSII/Core/os_q.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 150:./ucOSII/Core/os_q.c ****         return ((OS_EVENT *)0);
+ 151:./ucOSII/Core/os_q.c ****     }
+ 152:./ucOSII/Core/os_q.c **** #endif
+ 153:./ucOSII/Core/os_q.c **** 
+ 154:./ucOSII/Core/os_q.c ****     if (OSIntNesting > 0u) {                     /* See if called from ISR ...                     
+ 190              		.loc 1 154 22
+ 191 0010 314B     		ldr	r3, .L14
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 7
+
+
+ 192 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 193              		.loc 1 154 8
+ 194 0014 002B     		cmp	r3, #0
+ 195 0016 01D0     		beq	.L9
+ 155:./ucOSII/Core/os_q.c ****         return ((OS_EVENT *)0);                  /* ... can't CREATE from an ISR                   
+ 196              		.loc 1 155 16
+ 197 0018 0023     		movs	r3, #0
+ 198 001a 59E0     		b	.L10
+ 199              	.L9:
+ 156:./ucOSII/Core/os_q.c ****     }
+ 157:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 200              		.loc 1 157 5
+ 201 001c 4020     		movs	r0, #64
+ 202 001e FFF7FEFF 		bl	OS_CPU_SR_Save
+ 203 0022 3861     		str	r0, [r7, #16]
+ 158:./ucOSII/Core/os_q.c ****     pevent = OSEventFreeList;                    /* Get next free event control block              
+ 204              		.loc 1 158 12
+ 205 0024 2D4B     		ldr	r3, .L14+4
+ 206 0026 1B68     		ldr	r3, [r3]
+ 207 0028 7B61     		str	r3, [r7, #20]
+ 159:./ucOSII/Core/os_q.c ****     if (OSEventFreeList != (OS_EVENT *)0) {      /* See if pool of free ECB pool was empty         
+ 208              		.loc 1 159 25
+ 209 002a 2C4B     		ldr	r3, .L14+4
+ 210 002c 1B68     		ldr	r3, [r3]
+ 211              		.loc 1 159 8
+ 212 002e 002B     		cmp	r3, #0
+ 213 0030 04D0     		beq	.L11
+ 160:./ucOSII/Core/os_q.c ****         OSEventFreeList = (OS_EVENT *)OSEventFreeList->OSEventPtr;
+ 214              		.loc 1 160 54
+ 215 0032 2A4B     		ldr	r3, .L14+4
+ 216 0034 1B68     		ldr	r3, [r3]
+ 217 0036 5B68     		ldr	r3, [r3, #4]
+ 218              		.loc 1 160 25
+ 219 0038 284A     		ldr	r2, .L14+4
+ 220 003a 1360     		str	r3, [r2]
+ 221              	.L11:
+ 161:./ucOSII/Core/os_q.c ****     }
+ 162:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 222              		.loc 1 162 5
+ 223 003c 3869     		ldr	r0, [r7, #16]
+ 224 003e FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 163:./ucOSII/Core/os_q.c ****     if (pevent != (OS_EVENT *)0) {               /* See if we have an event control block          
+ 225              		.loc 1 163 8
+ 226 0042 7B69     		ldr	r3, [r7, #20]
+ 227 0044 002B     		cmp	r3, #0
+ 228 0046 42D0     		beq	.L12
+ 164:./ucOSII/Core/os_q.c ****         OS_ENTER_CRITICAL();
+ 229              		.loc 1 164 9
+ 230 0048 4020     		movs	r0, #64
+ 231 004a FFF7FEFF 		bl	OS_CPU_SR_Save
+ 232 004e 3861     		str	r0, [r7, #16]
+ 165:./ucOSII/Core/os_q.c ****         pq = OSQFreeList;                        /* Get a free queue control block                 
+ 233              		.loc 1 165 12
+ 234 0050 234B     		ldr	r3, .L14+8
+ 235 0052 1B68     		ldr	r3, [r3]
+ 236 0054 FB60     		str	r3, [r7, #12]
+ 166:./ucOSII/Core/os_q.c ****         if (pq != (OS_Q *)0) {                   /* Were we able to get a queue control block ?    
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 8
+
+
+ 237              		.loc 1 166 12
+ 238 0056 FB68     		ldr	r3, [r7, #12]
+ 239 0058 002B     		cmp	r3, #0
+ 240 005a 2CD0     		beq	.L13
+ 167:./ucOSII/Core/os_q.c ****             OSQFreeList            = OSQFreeList->OSQPtr; /* Yes, Adjust free list pointer to next 
+ 241              		.loc 1 167 49
+ 242 005c 204B     		ldr	r3, .L14+8
+ 243 005e 1B68     		ldr	r3, [r3]
+ 244 0060 1B68     		ldr	r3, [r3]
+ 245              		.loc 1 167 36
+ 246 0062 1F4A     		ldr	r2, .L14+8
+ 247 0064 1360     		str	r3, [r2]
+ 168:./ucOSII/Core/os_q.c ****             OS_EXIT_CRITICAL();
+ 248              		.loc 1 168 13
+ 249 0066 3869     		ldr	r0, [r7, #16]
+ 250 0068 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 169:./ucOSII/Core/os_q.c ****             pq->OSQStart           = start;               /*      Initialize the queue             
+ 251              		.loc 1 169 36
+ 252 006c FB68     		ldr	r3, [r7, #12]
+ 253 006e 7A68     		ldr	r2, [r7, #4]
+ 254 0070 5A60     		str	r2, [r3, #4]
+ 170:./ucOSII/Core/os_q.c ****             pq->OSQEnd             = &start[size];
+ 255              		.loc 1 170 44
+ 256 0072 7B88     		ldrh	r3, [r7, #2]
+ 257 0074 9B00     		lsls	r3, r3, #2
+ 258              		.loc 1 170 38
+ 259 0076 7A68     		ldr	r2, [r7, #4]
+ 260 0078 1A44     		add	r2, r2, r3
+ 261              		.loc 1 170 36
+ 262 007a FB68     		ldr	r3, [r7, #12]
+ 263 007c 9A60     		str	r2, [r3, #8]
+ 171:./ucOSII/Core/os_q.c ****             pq->OSQIn              = start;
+ 264              		.loc 1 171 36
+ 265 007e FB68     		ldr	r3, [r7, #12]
+ 266 0080 7A68     		ldr	r2, [r7, #4]
+ 267 0082 DA60     		str	r2, [r3, #12]
+ 172:./ucOSII/Core/os_q.c ****             pq->OSQOut             = start;
+ 268              		.loc 1 172 36
+ 269 0084 FB68     		ldr	r3, [r7, #12]
+ 270 0086 7A68     		ldr	r2, [r7, #4]
+ 271 0088 1A61     		str	r2, [r3, #16]
+ 173:./ucOSII/Core/os_q.c ****             pq->OSQSize            = size;
+ 272              		.loc 1 173 36
+ 273 008a FB68     		ldr	r3, [r7, #12]
+ 274 008c 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 275 008e 9A82     		strh	r2, [r3, #20]	@ movhi
+ 174:./ucOSII/Core/os_q.c ****             pq->OSQEntries         = 0u;
+ 276              		.loc 1 174 36
+ 277 0090 FB68     		ldr	r3, [r7, #12]
+ 278 0092 0022     		movs	r2, #0
+ 279 0094 DA82     		strh	r2, [r3, #22]	@ movhi
+ 175:./ucOSII/Core/os_q.c ****             pevent->OSEventType    = OS_EVENT_TYPE_Q;
+ 280              		.loc 1 175 36
+ 281 0096 7B69     		ldr	r3, [r7, #20]
+ 282 0098 0222     		movs	r2, #2
+ 283 009a 1A70     		strb	r2, [r3]
+ 176:./ucOSII/Core/os_q.c ****             pevent->OSEventCnt     = 0u;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 9
+
+
+ 284              		.loc 1 176 36
+ 285 009c 7B69     		ldr	r3, [r7, #20]
+ 286 009e 0022     		movs	r2, #0
+ 287 00a0 1A81     		strh	r2, [r3, #8]	@ movhi
+ 177:./ucOSII/Core/os_q.c ****             pevent->OSEventPtr     = pq;
+ 288              		.loc 1 177 36
+ 289 00a2 7B69     		ldr	r3, [r7, #20]
+ 290 00a4 FA68     		ldr	r2, [r7, #12]
+ 291 00a6 5A60     		str	r2, [r3, #4]
+ 178:./ucOSII/Core/os_q.c **** #if OS_EVENT_NAME_EN > 0u
+ 179:./ucOSII/Core/os_q.c ****             pevent->OSEventName    = (INT8U *)(void *)"?";
+ 292              		.loc 1 179 36
+ 293 00a8 7B69     		ldr	r3, [r7, #20]
+ 294 00aa 0E4A     		ldr	r2, .L14+12
+ 295 00ac 5A61     		str	r2, [r3, #20]
+ 180:./ucOSII/Core/os_q.c **** #endif
+ 181:./ucOSII/Core/os_q.c ****             OS_EventWaitListInit(pevent);                 /*      Initialize the wait list         
+ 296              		.loc 1 181 13
+ 297 00ae 7869     		ldr	r0, [r7, #20]
+ 298 00b0 FFF7FEFF 		bl	OS_EventWaitListInit
+ 299 00b4 0BE0     		b	.L12
+ 300              	.L13:
+ 182:./ucOSII/Core/os_q.c **** 
+ 183:./ucOSII/Core/os_q.c ****             OS_TRACE_Q_CREATE(pevent, pevent->OSEventName);
+ 184:./ucOSII/Core/os_q.c ****         } else {
+ 185:./ucOSII/Core/os_q.c ****             pevent->OSEventPtr = (void *)OSEventFreeList; /* No,  Return event control block on err
+ 301              		.loc 1 185 32
+ 302 00b6 094B     		ldr	r3, .L14+4
+ 303 00b8 1A68     		ldr	r2, [r3]
+ 304 00ba 7B69     		ldr	r3, [r7, #20]
+ 305 00bc 5A60     		str	r2, [r3, #4]
+ 186:./ucOSII/Core/os_q.c ****             OSEventFreeList    = pevent;
+ 306              		.loc 1 186 32
+ 307 00be 074A     		ldr	r2, .L14+4
+ 308 00c0 7B69     		ldr	r3, [r7, #20]
+ 309 00c2 1360     		str	r3, [r2]
+ 187:./ucOSII/Core/os_q.c ****             OS_EXIT_CRITICAL();
+ 310              		.loc 1 187 13
+ 311 00c4 3869     		ldr	r0, [r7, #16]
+ 312 00c6 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 188:./ucOSII/Core/os_q.c ****             pevent = (OS_EVENT *)0;
+ 313              		.loc 1 188 20
+ 314 00ca 0023     		movs	r3, #0
+ 315 00cc 7B61     		str	r3, [r7, #20]
+ 316              	.L12:
+ 189:./ucOSII/Core/os_q.c ****         }
+ 190:./ucOSII/Core/os_q.c ****     }
+ 191:./ucOSII/Core/os_q.c ****     return (pevent);
+ 317              		.loc 1 191 12
+ 318 00ce 7B69     		ldr	r3, [r7, #20]
+ 319              	.L10:
+ 192:./ucOSII/Core/os_q.c **** }
+ 320              		.loc 1 192 1
+ 321 00d0 1846     		mov	r0, r3
+ 322 00d2 1837     		adds	r7, r7, #24
+ 323              	.LCFI8:
+ 324              		.cfi_def_cfa_offset 8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 10
+
+
+ 325 00d4 BD46     		mov	sp, r7
+ 326              	.LCFI9:
+ 327              		.cfi_def_cfa_register 13
+ 328              		@ sp needed
+ 329 00d6 80BD     		pop	{r7, pc}
+ 330              	.L15:
+ 331              		.align	2
+ 332              	.L14:
+ 333 00d8 00000000 		.word	OSIntNesting
+ 334 00dc 00000000 		.word	OSEventFreeList
+ 335 00e0 00000000 		.word	OSQFreeList
+ 336 00e4 00000000 		.word	.LC0
+ 337              		.cfi_endproc
+ 338              	.LFE4:
+ 340              		.section	.text.OSQDel,"ax",%progbits
+ 341              		.align	1
+ 342              		.global	OSQDel
+ 343              		.syntax unified
+ 344              		.thumb
+ 345              		.thumb_func
+ 347              	OSQDel:
+ 348              	.LFB5:
+ 193:./ucOSII/Core/os_q.c **** 
+ 194:./ucOSII/Core/os_q.c **** 
+ 195:./ucOSII/Core/os_q.c **** /*
+ 196:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 197:./ucOSII/Core/os_q.c **** *                                       DELETE A MESSAGE QUEUE
+ 198:./ucOSII/Core/os_q.c **** *
+ 199:./ucOSII/Core/os_q.c **** * Description: This function deletes a message queue and readies all tasks pending on the queue.
+ 200:./ucOSII/Core/os_q.c **** *
+ 201:./ucOSII/Core/os_q.c **** * Arguments  : pevent        is a pointer to the event control block associated with the desired
+ 202:./ucOSII/Core/os_q.c **** *                            queue.
+ 203:./ucOSII/Core/os_q.c **** *
+ 204:./ucOSII/Core/os_q.c **** *              opt           determines delete options as follows:
+ 205:./ucOSII/Core/os_q.c **** *                            opt == OS_DEL_NO_PEND   Delete the queue ONLY if no task pending
+ 206:./ucOSII/Core/os_q.c **** *                            opt == OS_DEL_ALWAYS    Deletes the queue even if tasks are waiting.
+ 207:./ucOSII/Core/os_q.c **** *                                                    In this case, all the tasks pending will be re
+ 208:./ucOSII/Core/os_q.c **** *
+ 209:./ucOSII/Core/os_q.c **** *              perr          is a pointer to an error code that can contain one of the following va
+ 210:./ucOSII/Core/os_q.c **** *                            OS_ERR_NONE                  The call was successful and the queue was
+ 211:./ucOSII/Core/os_q.c **** *                            OS_ERR_DEL_ISR               If you tried to delete the queue from an 
+ 212:./ucOSII/Core/os_q.c **** *                            OS_ERR_ILLEGAL_DEL_RUN_TIME  If you tried to delete the queue after sa
+ 213:./ucOSII/Core/os_q.c **** *                                                         critical operation started.
+ 214:./ucOSII/Core/os_q.c **** *                            OS_ERR_INVALID_OPT           An invalid option was specified
+ 215:./ucOSII/Core/os_q.c **** *                            OS_ERR_TASK_WAITING          One or more tasks were waiting on the que
+ 216:./ucOSII/Core/os_q.c **** *                            OS_ERR_EVENT_TYPE            If you didn't pass a pointer to a queue
+ 217:./ucOSII/Core/os_q.c **** *                            OS_ERR_PEVENT_NULL           If 'pevent' is a NULL pointer.
+ 218:./ucOSII/Core/os_q.c **** *
+ 219:./ucOSII/Core/os_q.c **** * Returns    : pevent        upon error
+ 220:./ucOSII/Core/os_q.c **** *              (OS_EVENT *)0 if the queue was successfully deleted.
+ 221:./ucOSII/Core/os_q.c **** *
+ 222:./ucOSII/Core/os_q.c **** * Note(s)    : 1) This function must be used with care.  Tasks that would normally expect the prese
+ 223:./ucOSII/Core/os_q.c **** *                 the queue MUST check the return code of OSQPend().
+ 224:./ucOSII/Core/os_q.c **** *              2) OSQAccept() callers will not know that the intended queue has been deleted unless
+ 225:./ucOSII/Core/os_q.c **** *                 they check 'pevent' to see that it's a NULL pointer.
+ 226:./ucOSII/Core/os_q.c **** *              3) This call can potentially disable interrupts for a long time.  The interrupt disa
+ 227:./ucOSII/Core/os_q.c **** *                 time is directly proportional to the number of tasks waiting on the queue.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 11
+
+
+ 228:./ucOSII/Core/os_q.c **** *              4) Because ALL tasks pending on the queue will be readied, you MUST be careful in
+ 229:./ucOSII/Core/os_q.c **** *                 applications where the queue is used for mutual exclusion because the resource(s)
+ 230:./ucOSII/Core/os_q.c **** *                 will no longer be guarded by the queue.
+ 231:./ucOSII/Core/os_q.c **** *              5) If the storage for the message queue was allocated dynamically (i.e. using a mall
+ 232:./ucOSII/Core/os_q.c **** *                 type call) then your application MUST release the memory storage by call the coun
+ 233:./ucOSII/Core/os_q.c **** *                 call of the dynamic allocation scheme used.  If the queue storage was created sta
+ 234:./ucOSII/Core/os_q.c **** *                 then, the storage can be reused.
+ 235:./ucOSII/Core/os_q.c **** *              6) All tasks that were waiting for the queue will be readied and returned an
+ 236:./ucOSII/Core/os_q.c **** *                 OS_ERR_PEND_ABORT if OSQDel() was called with OS_DEL_ALWAYS
+ 237:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 238:./ucOSII/Core/os_q.c **** */
+ 239:./ucOSII/Core/os_q.c **** 
+ 240:./ucOSII/Core/os_q.c **** #if OS_Q_DEL_EN > 0u
+ 241:./ucOSII/Core/os_q.c **** OS_EVENT  *OSQDel (OS_EVENT  *pevent,
+ 242:./ucOSII/Core/os_q.c ****                    INT8U      opt,
+ 243:./ucOSII/Core/os_q.c ****                    INT8U     *perr)
+ 244:./ucOSII/Core/os_q.c **** {
+ 349              		.loc 1 244 1
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 32
+ 352              		@ frame_needed = 1, uses_anonymous_args = 0
+ 353 0000 80B5     		push	{r7, lr}
+ 354              	.LCFI10:
+ 355              		.cfi_def_cfa_offset 8
+ 356              		.cfi_offset 7, -8
+ 357              		.cfi_offset 14, -4
+ 358 0002 88B0     		sub	sp, sp, #32
+ 359              	.LCFI11:
+ 360              		.cfi_def_cfa_offset 40
+ 361 0004 00AF     		add	r7, sp, #0
+ 362              	.LCFI12:
+ 363              		.cfi_def_cfa_register 7
+ 364 0006 F860     		str	r0, [r7, #12]
+ 365 0008 0B46     		mov	r3, r1
+ 366 000a 7A60     		str	r2, [r7, #4]
+ 367 000c FB72     		strb	r3, [r7, #11]
+ 245:./ucOSII/Core/os_q.c ****     BOOLEAN    tasks_waiting;
+ 246:./ucOSII/Core/os_q.c ****     OS_EVENT  *pevent_return;
+ 247:./ucOSII/Core/os_q.c ****     OS_Q      *pq;
+ 248:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                               /* Allocate storage for CPU status regis
+ 249:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+ 368              		.loc 1 249 16
+ 369 000e 0023     		movs	r3, #0
+ 370 0010 7B61     		str	r3, [r7, #20]
+ 250:./ucOSII/Core/os_q.c **** #endif
+ 251:./ucOSII/Core/os_q.c **** 
+ 252:./ucOSII/Core/os_q.c **** 
+ 253:./ucOSII/Core/os_q.c **** #ifdef OS_SAFETY_CRITICAL
+ 254:./ucOSII/Core/os_q.c ****     if (perr == (INT8U *)0) {
+ 255:./ucOSII/Core/os_q.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 256:./ucOSII/Core/os_q.c ****         return ((OS_EVENT *)0);
+ 257:./ucOSII/Core/os_q.c ****     }
+ 258:./ucOSII/Core/os_q.c **** #endif
+ 259:./ucOSII/Core/os_q.c **** 
+ 260:./ucOSII/Core/os_q.c **** #ifdef OS_SAFETY_CRITICAL_IEC61508
+ 261:./ucOSII/Core/os_q.c ****     if (OSSafetyCriticalStartFlag == OS_TRUE) {
+ 262:./ucOSII/Core/os_q.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 12
+
+
+ 263:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_ILLEGAL_DEL_RUN_TIME;
+ 264:./ucOSII/Core/os_q.c ****         return ((OS_EVENT *)0);
+ 265:./ucOSII/Core/os_q.c ****     }
+ 266:./ucOSII/Core/os_q.c **** #endif
+ 267:./ucOSII/Core/os_q.c **** 
+ 268:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+ 269:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {                         /* Validate 'pevent'                    
+ 371              		.loc 1 269 8
+ 372 0012 FB68     		ldr	r3, [r7, #12]
+ 373 0014 002B     		cmp	r3, #0
+ 374 0016 04D1     		bne	.L17
+ 270:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_PEVENT_NULL;
+ 375              		.loc 1 270 15
+ 376 0018 7B68     		ldr	r3, [r7, #4]
+ 377 001a 0422     		movs	r2, #4
+ 378 001c 1A70     		strb	r2, [r3]
+ 271:./ucOSII/Core/os_q.c ****         return (pevent);
+ 379              		.loc 1 271 16
+ 380 001e FB68     		ldr	r3, [r7, #12]
+ 381 0020 8FE0     		b	.L18
+ 382              	.L17:
+ 272:./ucOSII/Core/os_q.c ****     }
+ 273:./ucOSII/Core/os_q.c **** #endif
+ 274:./ucOSII/Core/os_q.c **** 
+ 275:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_DEL_ENTER(pevent, opt);
+ 276:./ucOSII/Core/os_q.c **** 
+ 277:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {          /* Validate event block type            
+ 383              		.loc 1 277 15
+ 384 0022 FB68     		ldr	r3, [r7, #12]
+ 385 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 386              		.loc 1 277 8
+ 387 0026 022B     		cmp	r3, #2
+ 388 0028 04D0     		beq	.L19
+ 278:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_EVENT_TYPE;
+ 389              		.loc 1 278 15
+ 390 002a 7B68     		ldr	r3, [r7, #4]
+ 391 002c 0122     		movs	r2, #1
+ 392 002e 1A70     		strb	r2, [r3]
+ 279:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_DEL_EXIT(*perr);
+ 280:./ucOSII/Core/os_q.c ****         return (pevent);
+ 393              		.loc 1 280 16
+ 394 0030 FB68     		ldr	r3, [r7, #12]
+ 395 0032 86E0     		b	.L18
+ 396              	.L19:
+ 281:./ucOSII/Core/os_q.c ****     }
+ 282:./ucOSII/Core/os_q.c ****     if (OSIntNesting > 0u) {                               /* See if called from ISR ...           
+ 397              		.loc 1 282 22
+ 398 0034 454B     		ldr	r3, .L33
+ 399 0036 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 400              		.loc 1 282 8
+ 401 0038 002B     		cmp	r3, #0
+ 402 003a 04D0     		beq	.L20
+ 283:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_DEL_ISR;                            /* ... can't DELETE from an ISR         
+ 403              		.loc 1 283 15
+ 404 003c 7B68     		ldr	r3, [r7, #4]
+ 405 003e 0F22     		movs	r2, #15
+ 406 0040 1A70     		strb	r2, [r3]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 13
+
+
+ 284:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_DEL_EXIT(*perr);
+ 285:./ucOSII/Core/os_q.c ****         return (pevent);
+ 407              		.loc 1 285 16
+ 408 0042 FB68     		ldr	r3, [r7, #12]
+ 409 0044 7DE0     		b	.L18
+ 410              	.L20:
+ 286:./ucOSII/Core/os_q.c ****     }
+ 287:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 411              		.loc 1 287 5
+ 412 0046 4020     		movs	r0, #64
+ 413 0048 FFF7FEFF 		bl	OS_CPU_SR_Save
+ 414 004c 7861     		str	r0, [r7, #20]
+ 288:./ucOSII/Core/os_q.c ****     if (pevent->OSEventGrp != 0u) {                        /* See if any tasks waiting on queue    
+ 415              		.loc 1 288 15
+ 416 004e FB68     		ldr	r3, [r7, #12]
+ 417 0050 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 418              		.loc 1 288 8
+ 419 0052 002B     		cmp	r3, #0
+ 420 0054 02D0     		beq	.L21
+ 289:./ucOSII/Core/os_q.c ****         tasks_waiting = OS_TRUE;                           /* Yes                                  
+ 421              		.loc 1 289 23
+ 422 0056 0123     		movs	r3, #1
+ 423 0058 FB77     		strb	r3, [r7, #31]
+ 424 005a 01E0     		b	.L22
+ 425              	.L21:
+ 290:./ucOSII/Core/os_q.c ****     } else {
+ 291:./ucOSII/Core/os_q.c ****         tasks_waiting = OS_FALSE;                          /* No                                   
+ 426              		.loc 1 291 23
+ 427 005c 0023     		movs	r3, #0
+ 428 005e FB77     		strb	r3, [r7, #31]
+ 429              	.L22:
+ 292:./ucOSII/Core/os_q.c ****     }
+ 293:./ucOSII/Core/os_q.c ****     switch (opt) {
+ 430              		.loc 1 293 5
+ 431 0060 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 432 0062 002B     		cmp	r3, #0
+ 433 0064 02D0     		beq	.L23
+ 434 0066 012B     		cmp	r3, #1
+ 435 0068 35D0     		beq	.L29
+ 436 006a 60E0     		b	.L32
+ 437              	.L23:
+ 294:./ucOSII/Core/os_q.c ****         case OS_DEL_NO_PEND:                               /* Delete queue only if no task waiting 
+ 295:./ucOSII/Core/os_q.c ****              if (tasks_waiting == OS_FALSE) {
+ 438              		.loc 1 295 17
+ 439 006c FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 440 006e 002B     		cmp	r3, #0
+ 441 0070 22D1     		bne	.L26
+ 296:./ucOSII/Core/os_q.c **** #if OS_EVENT_NAME_EN > 0u
+ 297:./ucOSII/Core/os_q.c ****                  pevent->OSEventName    = (INT8U *)(void *)"?";
+ 442              		.loc 1 297 41
+ 443 0072 FB68     		ldr	r3, [r7, #12]
+ 444 0074 364A     		ldr	r2, .L33+4
+ 445 0076 5A61     		str	r2, [r3, #20]
+ 298:./ucOSII/Core/os_q.c **** #endif
+ 299:./ucOSII/Core/os_q.c ****                  pq                     = (OS_Q *)pevent->OSEventPtr;  /* Return OS_Q to free list 
+ 446              		.loc 1 299 41
+ 447 0078 FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 14
+
+
+ 448 007a 5B68     		ldr	r3, [r3, #4]
+ 449 007c 3B61     		str	r3, [r7, #16]
+ 300:./ucOSII/Core/os_q.c ****                  pq->OSQPtr             = OSQFreeList;
+ 450              		.loc 1 300 41
+ 451 007e 354B     		ldr	r3, .L33+8
+ 452 0080 1A68     		ldr	r2, [r3]
+ 453 0082 3B69     		ldr	r3, [r7, #16]
+ 454 0084 1A60     		str	r2, [r3]
+ 301:./ucOSII/Core/os_q.c ****                  OSQFreeList            = pq;
+ 455              		.loc 1 301 41
+ 456 0086 334A     		ldr	r2, .L33+8
+ 457 0088 3B69     		ldr	r3, [r7, #16]
+ 458 008a 1360     		str	r3, [r2]
+ 302:./ucOSII/Core/os_q.c ****                  pevent->OSEventType    = OS_EVENT_TYPE_UNUSED;
+ 459              		.loc 1 302 41
+ 460 008c FB68     		ldr	r3, [r7, #12]
+ 461 008e 0022     		movs	r2, #0
+ 462 0090 1A70     		strb	r2, [r3]
+ 303:./ucOSII/Core/os_q.c ****                  pevent->OSEventPtr     = OSEventFreeList; /* Return Event Control Block to free li
+ 463              		.loc 1 303 41
+ 464 0092 314B     		ldr	r3, .L33+12
+ 465 0094 1A68     		ldr	r2, [r3]
+ 466 0096 FB68     		ldr	r3, [r7, #12]
+ 467 0098 5A60     		str	r2, [r3, #4]
+ 304:./ucOSII/Core/os_q.c ****                  pevent->OSEventCnt     = 0u;
+ 468              		.loc 1 304 41
+ 469 009a FB68     		ldr	r3, [r7, #12]
+ 470 009c 0022     		movs	r2, #0
+ 471 009e 1A81     		strh	r2, [r3, #8]	@ movhi
+ 305:./ucOSII/Core/os_q.c ****                  OSEventFreeList        = pevent;          /* Get next free event control block    
+ 472              		.loc 1 305 41
+ 473 00a0 2D4A     		ldr	r2, .L33+12
+ 474 00a2 FB68     		ldr	r3, [r7, #12]
+ 475 00a4 1360     		str	r3, [r2]
+ 306:./ucOSII/Core/os_q.c ****                  OS_EXIT_CRITICAL();
+ 476              		.loc 1 306 18
+ 477 00a6 7869     		ldr	r0, [r7, #20]
+ 478 00a8 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 307:./ucOSII/Core/os_q.c ****                  *perr                  = OS_ERR_NONE;
+ 479              		.loc 1 307 41
+ 480 00ac 7B68     		ldr	r3, [r7, #4]
+ 481 00ae 0022     		movs	r2, #0
+ 482 00b0 1A70     		strb	r2, [r3]
+ 308:./ucOSII/Core/os_q.c ****                  pevent_return          = (OS_EVENT *)0;   /* Queue has been deleted               
+ 483              		.loc 1 308 41
+ 484 00b2 0023     		movs	r3, #0
+ 485 00b4 BB61     		str	r3, [r7, #24]
+ 309:./ucOSII/Core/os_q.c ****              } else {
+ 310:./ucOSII/Core/os_q.c ****                  OS_EXIT_CRITICAL();
+ 311:./ucOSII/Core/os_q.c ****                  *perr                  = OS_ERR_TASK_WAITING;
+ 312:./ucOSII/Core/os_q.c ****                  pevent_return          = pevent;
+ 313:./ucOSII/Core/os_q.c ****              }
+ 314:./ucOSII/Core/os_q.c ****              break;
+ 486              		.loc 1 314 14
+ 487 00b6 43E0     		b	.L28
+ 488              	.L26:
+ 310:./ucOSII/Core/os_q.c ****                  *perr                  = OS_ERR_TASK_WAITING;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 15
+
+
+ 489              		.loc 1 310 18
+ 490 00b8 7869     		ldr	r0, [r7, #20]
+ 491 00ba FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 311:./ucOSII/Core/os_q.c ****                  pevent_return          = pevent;
+ 492              		.loc 1 311 41
+ 493 00be 7B68     		ldr	r3, [r7, #4]
+ 494 00c0 4922     		movs	r2, #73
+ 495 00c2 1A70     		strb	r2, [r3]
+ 312:./ucOSII/Core/os_q.c ****              }
+ 496              		.loc 1 312 41
+ 497 00c4 FB68     		ldr	r3, [r7, #12]
+ 498 00c6 BB61     		str	r3, [r7, #24]
+ 499              		.loc 1 314 14
+ 500 00c8 3AE0     		b	.L28
+ 501              	.L30:
+ 315:./ucOSII/Core/os_q.c **** 
+ 316:./ucOSII/Core/os_q.c ****         case OS_DEL_ALWAYS:                                /* Always delete the queue              
+ 317:./ucOSII/Core/os_q.c ****              while (pevent->OSEventGrp != 0u) {            /* Ready ALL tasks waiting for queue    
+ 318:./ucOSII/Core/os_q.c ****                  (void)OS_EventTaskRdy(pevent, (void *)0, OS_STAT_Q, OS_STAT_PEND_ABORT);
+ 502              		.loc 1 318 24
+ 503 00ca 0223     		movs	r3, #2
+ 504 00cc 0422     		movs	r2, #4
+ 505 00ce 0021     		movs	r1, #0
+ 506 00d0 F868     		ldr	r0, [r7, #12]
+ 507 00d2 FFF7FEFF 		bl	OS_EventTaskRdy
+ 508              	.L29:
+ 317:./ucOSII/Core/os_q.c ****                  (void)OS_EventTaskRdy(pevent, (void *)0, OS_STAT_Q, OS_STAT_PEND_ABORT);
+ 509              		.loc 1 317 27
+ 510 00d6 FB68     		ldr	r3, [r7, #12]
+ 511 00d8 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 317:./ucOSII/Core/os_q.c ****                  (void)OS_EventTaskRdy(pevent, (void *)0, OS_STAT_Q, OS_STAT_PEND_ABORT);
+ 512              		.loc 1 317 20
+ 513 00da 002B     		cmp	r3, #0
+ 514 00dc F5D1     		bne	.L30
+ 319:./ucOSII/Core/os_q.c ****              }
+ 320:./ucOSII/Core/os_q.c **** #if OS_EVENT_NAME_EN > 0u
+ 321:./ucOSII/Core/os_q.c ****              pevent->OSEventName    = (INT8U *)(void *)"?";
+ 515              		.loc 1 321 37
+ 516 00de FB68     		ldr	r3, [r7, #12]
+ 517 00e0 1B4A     		ldr	r2, .L33+4
+ 518 00e2 5A61     		str	r2, [r3, #20]
+ 322:./ucOSII/Core/os_q.c **** #endif
+ 323:./ucOSII/Core/os_q.c ****              pq                     = (OS_Q *)pevent->OSEventPtr;   /* Return OS_Q to free list    
+ 519              		.loc 1 323 37
+ 520 00e4 FB68     		ldr	r3, [r7, #12]
+ 521 00e6 5B68     		ldr	r3, [r3, #4]
+ 522 00e8 3B61     		str	r3, [r7, #16]
+ 324:./ucOSII/Core/os_q.c ****              pq->OSQPtr             = OSQFreeList;
+ 523              		.loc 1 324 37
+ 524 00ea 1A4B     		ldr	r3, .L33+8
+ 525 00ec 1A68     		ldr	r2, [r3]
+ 526 00ee 3B69     		ldr	r3, [r7, #16]
+ 527 00f0 1A60     		str	r2, [r3]
+ 325:./ucOSII/Core/os_q.c ****              OSQFreeList            = pq;
+ 528              		.loc 1 325 37
+ 529 00f2 184A     		ldr	r2, .L33+8
+ 530 00f4 3B69     		ldr	r3, [r7, #16]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 16
+
+
+ 531 00f6 1360     		str	r3, [r2]
+ 326:./ucOSII/Core/os_q.c ****              pevent->OSEventType    = OS_EVENT_TYPE_UNUSED;
+ 532              		.loc 1 326 37
+ 533 00f8 FB68     		ldr	r3, [r7, #12]
+ 534 00fa 0022     		movs	r2, #0
+ 535 00fc 1A70     		strb	r2, [r3]
+ 327:./ucOSII/Core/os_q.c ****              pevent->OSEventPtr     = OSEventFreeList;     /* Return Event Control Block to free li
+ 536              		.loc 1 327 37
+ 537 00fe 164B     		ldr	r3, .L33+12
+ 538 0100 1A68     		ldr	r2, [r3]
+ 539 0102 FB68     		ldr	r3, [r7, #12]
+ 540 0104 5A60     		str	r2, [r3, #4]
+ 328:./ucOSII/Core/os_q.c ****              pevent->OSEventCnt     = 0u;
+ 541              		.loc 1 328 37
+ 542 0106 FB68     		ldr	r3, [r7, #12]
+ 543 0108 0022     		movs	r2, #0
+ 544 010a 1A81     		strh	r2, [r3, #8]	@ movhi
+ 329:./ucOSII/Core/os_q.c ****              OSEventFreeList        = pevent;              /* Get next free event control block    
+ 545              		.loc 1 329 37
+ 546 010c 124A     		ldr	r2, .L33+12
+ 547 010e FB68     		ldr	r3, [r7, #12]
+ 548 0110 1360     		str	r3, [r2]
+ 330:./ucOSII/Core/os_q.c ****              OS_EXIT_CRITICAL();
+ 549              		.loc 1 330 14
+ 550 0112 7869     		ldr	r0, [r7, #20]
+ 551 0114 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 331:./ucOSII/Core/os_q.c ****              if (tasks_waiting == OS_TRUE) {               /* Reschedule only if task(s) were waiti
+ 552              		.loc 1 331 17
+ 553 0118 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 554 011a 012B     		cmp	r3, #1
+ 555 011c 01D1     		bne	.L31
+ 332:./ucOSII/Core/os_q.c ****                  OS_Sched();                               /* Find highest priority task ready to r
+ 556              		.loc 1 332 18
+ 557 011e FFF7FEFF 		bl	OS_Sched
+ 558              	.L31:
+ 333:./ucOSII/Core/os_q.c ****              }
+ 334:./ucOSII/Core/os_q.c ****              *perr                  = OS_ERR_NONE;
+ 559              		.loc 1 334 37
+ 560 0122 7B68     		ldr	r3, [r7, #4]
+ 561 0124 0022     		movs	r2, #0
+ 562 0126 1A70     		strb	r2, [r3]
+ 335:./ucOSII/Core/os_q.c ****              pevent_return          = (OS_EVENT *)0;       /* Queue has been deleted               
+ 563              		.loc 1 335 37
+ 564 0128 0023     		movs	r3, #0
+ 565 012a BB61     		str	r3, [r7, #24]
+ 336:./ucOSII/Core/os_q.c ****              break;
+ 566              		.loc 1 336 14
+ 567 012c 08E0     		b	.L28
+ 568              	.L32:
+ 337:./ucOSII/Core/os_q.c **** 
+ 338:./ucOSII/Core/os_q.c ****         default:
+ 339:./ucOSII/Core/os_q.c ****              OS_EXIT_CRITICAL();
+ 569              		.loc 1 339 14
+ 570 012e 7869     		ldr	r0, [r7, #20]
+ 571 0130 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 340:./ucOSII/Core/os_q.c ****              *perr                  = OS_ERR_INVALID_OPT;
+ 572              		.loc 1 340 37
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 17
+
+
+ 573 0134 7B68     		ldr	r3, [r7, #4]
+ 574 0136 0722     		movs	r2, #7
+ 575 0138 1A70     		strb	r2, [r3]
+ 341:./ucOSII/Core/os_q.c ****              pevent_return          = pevent;
+ 576              		.loc 1 341 37
+ 577 013a FB68     		ldr	r3, [r7, #12]
+ 578 013c BB61     		str	r3, [r7, #24]
+ 342:./ucOSII/Core/os_q.c ****              break;
+ 579              		.loc 1 342 14
+ 580 013e 00BF     		nop
+ 581              	.L28:
+ 343:./ucOSII/Core/os_q.c ****     }
+ 344:./ucOSII/Core/os_q.c **** 
+ 345:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_DEL_EXIT(*perr);
+ 346:./ucOSII/Core/os_q.c **** 
+ 347:./ucOSII/Core/os_q.c ****     return (pevent_return);
+ 582              		.loc 1 347 12
+ 583 0140 BB69     		ldr	r3, [r7, #24]
+ 584              	.L18:
+ 348:./ucOSII/Core/os_q.c **** }
+ 585              		.loc 1 348 1
+ 586 0142 1846     		mov	r0, r3
+ 587 0144 2037     		adds	r7, r7, #32
+ 588              	.LCFI13:
+ 589              		.cfi_def_cfa_offset 8
+ 590 0146 BD46     		mov	sp, r7
+ 591              	.LCFI14:
+ 592              		.cfi_def_cfa_register 13
+ 593              		@ sp needed
+ 594 0148 80BD     		pop	{r7, pc}
+ 595              	.L34:
+ 596 014a 00BF     		.align	2
+ 597              	.L33:
+ 598 014c 00000000 		.word	OSIntNesting
+ 599 0150 00000000 		.word	.LC0
+ 600 0154 00000000 		.word	OSQFreeList
+ 601 0158 00000000 		.word	OSEventFreeList
+ 602              		.cfi_endproc
+ 603              	.LFE5:
+ 605              		.section	.text.OSQFlush,"ax",%progbits
+ 606              		.align	1
+ 607              		.global	OSQFlush
+ 608              		.syntax unified
+ 609              		.thumb
+ 610              		.thumb_func
+ 612              	OSQFlush:
+ 613              	.LFB6:
+ 349:./ucOSII/Core/os_q.c **** #endif
+ 350:./ucOSII/Core/os_q.c **** 
+ 351:./ucOSII/Core/os_q.c **** 
+ 352:./ucOSII/Core/os_q.c **** /*
+ 353:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 354:./ucOSII/Core/os_q.c **** *                                             FLUSH QUEUE
+ 355:./ucOSII/Core/os_q.c **** *
+ 356:./ucOSII/Core/os_q.c **** * Description : This function is used to flush the contents of the message queue.
+ 357:./ucOSII/Core/os_q.c **** *
+ 358:./ucOSII/Core/os_q.c **** * Arguments   : none
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 18
+
+
+ 359:./ucOSII/Core/os_q.c **** *
+ 360:./ucOSII/Core/os_q.c **** * Returns     : OS_ERR_NONE         upon success
+ 361:./ucOSII/Core/os_q.c **** *               OS_ERR_EVENT_TYPE   If you didn't pass a pointer to a queue
+ 362:./ucOSII/Core/os_q.c **** *               OS_ERR_PEVENT_NULL  If 'pevent' is a NULL pointer
+ 363:./ucOSII/Core/os_q.c **** *
+ 364:./ucOSII/Core/os_q.c **** * WARNING     : You should use this function with great care because, when to flush the queue, you 
+ 365:./ucOSII/Core/os_q.c **** *               the references to what the queue entries are pointing to and thus, you could cause
+ 366:./ucOSII/Core/os_q.c **** *               'memory leaks'.  In other words, the data you are pointing to that's being referenc
+ 367:./ucOSII/Core/os_q.c **** *               by the queue entries should, most likely, need to be de-allocated (i.e. freed).
+ 368:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 369:./ucOSII/Core/os_q.c **** */
+ 370:./ucOSII/Core/os_q.c **** 
+ 371:./ucOSII/Core/os_q.c **** #if OS_Q_FLUSH_EN > 0u
+ 372:./ucOSII/Core/os_q.c **** INT8U  OSQFlush (OS_EVENT *pevent)
+ 373:./ucOSII/Core/os_q.c **** {
+ 614              		.loc 1 373 1
+ 615              		.cfi_startproc
+ 616              		@ args = 0, pretend = 0, frame = 16
+ 617              		@ frame_needed = 1, uses_anonymous_args = 0
+ 618 0000 80B5     		push	{r7, lr}
+ 619              	.LCFI15:
+ 620              		.cfi_def_cfa_offset 8
+ 621              		.cfi_offset 7, -8
+ 622              		.cfi_offset 14, -4
+ 623 0002 84B0     		sub	sp, sp, #16
+ 624              	.LCFI16:
+ 625              		.cfi_def_cfa_offset 24
+ 626 0004 00AF     		add	r7, sp, #0
+ 627              	.LCFI17:
+ 628              		.cfi_def_cfa_register 7
+ 629 0006 7860     		str	r0, [r7, #4]
+ 374:./ucOSII/Core/os_q.c ****     OS_Q      *pq;
+ 375:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                          /* Allocate storage for CPU status register  
+ 376:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+ 630              		.loc 1 376 16
+ 631 0008 0023     		movs	r3, #0
+ 632 000a FB60     		str	r3, [r7, #12]
+ 377:./ucOSII/Core/os_q.c **** #endif
+ 378:./ucOSII/Core/os_q.c **** 
+ 379:./ucOSII/Core/os_q.c **** 
+ 380:./ucOSII/Core/os_q.c **** 
+ 381:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+ 382:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {                    /* Validate 'pevent'                         
+ 633              		.loc 1 382 8
+ 634 000c 7B68     		ldr	r3, [r7, #4]
+ 635 000e 002B     		cmp	r3, #0
+ 636 0010 01D1     		bne	.L36
+ 383:./ucOSII/Core/os_q.c ****         return (OS_ERR_PEVENT_NULL);
+ 637              		.loc 1 383 16
+ 638 0012 0423     		movs	r3, #4
+ 639 0014 1BE0     		b	.L37
+ 640              	.L36:
+ 384:./ucOSII/Core/os_q.c ****     }
+ 385:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {     /* Validate event block type                 
+ 641              		.loc 1 385 15
+ 642 0016 7B68     		ldr	r3, [r7, #4]
+ 643 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 19
+
+
+ 644              		.loc 1 385 8
+ 645 001a 022B     		cmp	r3, #2
+ 646 001c 01D0     		beq	.L38
+ 386:./ucOSII/Core/os_q.c ****         return (OS_ERR_EVENT_TYPE);
+ 647              		.loc 1 386 16
+ 648 001e 0123     		movs	r3, #1
+ 649 0020 15E0     		b	.L37
+ 650              	.L38:
+ 387:./ucOSII/Core/os_q.c ****     }
+ 388:./ucOSII/Core/os_q.c **** #endif
+ 389:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 651              		.loc 1 389 5
+ 652 0022 4020     		movs	r0, #64
+ 653 0024 FFF7FEFF 		bl	OS_CPU_SR_Save
+ 654 0028 F860     		str	r0, [r7, #12]
+ 390:./ucOSII/Core/os_q.c ****     pq             = (OS_Q *)pevent->OSEventPtr;      /* Point to queue storage structure          
+ 655              		.loc 1 390 20
+ 656 002a 7B68     		ldr	r3, [r7, #4]
+ 657 002c 5B68     		ldr	r3, [r3, #4]
+ 658 002e BB60     		str	r3, [r7, #8]
+ 391:./ucOSII/Core/os_q.c ****     pq->OSQIn      = pq->OSQStart;
+ 659              		.loc 1 391 24
+ 660 0030 BB68     		ldr	r3, [r7, #8]
+ 661 0032 5A68     		ldr	r2, [r3, #4]
+ 662              		.loc 1 391 20
+ 663 0034 BB68     		ldr	r3, [r7, #8]
+ 664 0036 DA60     		str	r2, [r3, #12]
+ 392:./ucOSII/Core/os_q.c ****     pq->OSQOut     = pq->OSQStart;
+ 665              		.loc 1 392 24
+ 666 0038 BB68     		ldr	r3, [r7, #8]
+ 667 003a 5A68     		ldr	r2, [r3, #4]
+ 668              		.loc 1 392 20
+ 669 003c BB68     		ldr	r3, [r7, #8]
+ 670 003e 1A61     		str	r2, [r3, #16]
+ 393:./ucOSII/Core/os_q.c ****     pq->OSQEntries = 0u;
+ 671              		.loc 1 393 20
+ 672 0040 BB68     		ldr	r3, [r7, #8]
+ 673 0042 0022     		movs	r2, #0
+ 674 0044 DA82     		strh	r2, [r3, #22]	@ movhi
+ 394:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 675              		.loc 1 394 5
+ 676 0046 F868     		ldr	r0, [r7, #12]
+ 677 0048 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 395:./ucOSII/Core/os_q.c ****     return (OS_ERR_NONE);
+ 678              		.loc 1 395 12
+ 679 004c 0023     		movs	r3, #0
+ 680              	.L37:
+ 396:./ucOSII/Core/os_q.c **** }
+ 681              		.loc 1 396 1
+ 682 004e 1846     		mov	r0, r3
+ 683 0050 1037     		adds	r7, r7, #16
+ 684              	.LCFI18:
+ 685              		.cfi_def_cfa_offset 8
+ 686 0052 BD46     		mov	sp, r7
+ 687              	.LCFI19:
+ 688              		.cfi_def_cfa_register 13
+ 689              		@ sp needed
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 20
+
+
+ 690 0054 80BD     		pop	{r7, pc}
+ 691              		.cfi_endproc
+ 692              	.LFE6:
+ 694              		.section	.text.OSQPend,"ax",%progbits
+ 695              		.align	1
+ 696              		.global	OSQPend
+ 697              		.syntax unified
+ 698              		.thumb
+ 699              		.thumb_func
+ 701              	OSQPend:
+ 702              	.LFB7:
+ 397:./ucOSII/Core/os_q.c **** #endif
+ 398:./ucOSII/Core/os_q.c **** 
+ 399:./ucOSII/Core/os_q.c **** 
+ 400:./ucOSII/Core/os_q.c **** /*
+ 401:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 402:./ucOSII/Core/os_q.c **** *                                    PEND ON A QUEUE FOR A MESSAGE
+ 403:./ucOSII/Core/os_q.c **** *
+ 404:./ucOSII/Core/os_q.c **** * Description: This function waits for a message to be sent to a queue
+ 405:./ucOSII/Core/os_q.c **** *
+ 406:./ucOSII/Core/os_q.c **** * Arguments  : pevent        is a pointer to the event control block associated with the desired qu
+ 407:./ucOSII/Core/os_q.c **** *
+ 408:./ucOSII/Core/os_q.c **** *              timeout       is an optional timeout period (in clock ticks).  If non-zero, your tas
+ 409:./ucOSII/Core/os_q.c **** *                            wait for a message to arrive at the queue up to the amount of time
+ 410:./ucOSII/Core/os_q.c **** *                            specified by this argument.  If you specify 0, however, your task will
+ 411:./ucOSII/Core/os_q.c **** *                            forever at the specified queue or, until a message arrives.
+ 412:./ucOSII/Core/os_q.c **** *
+ 413:./ucOSII/Core/os_q.c **** *              perr          is a pointer to where an error message will be deposited.  Possible er
+ 414:./ucOSII/Core/os_q.c **** *                            messages are:
+ 415:./ucOSII/Core/os_q.c **** *
+ 416:./ucOSII/Core/os_q.c **** *                            OS_ERR_NONE         The call was successful and your task received a
+ 417:./ucOSII/Core/os_q.c **** *                                                message.
+ 418:./ucOSII/Core/os_q.c **** *                            OS_ERR_TIMEOUT      A message was not received within the specified 't
+ 419:./ucOSII/Core/os_q.c **** *                            OS_ERR_PEND_ABORT   The wait on the queue was aborted.
+ 420:./ucOSII/Core/os_q.c **** *                            OS_ERR_EVENT_TYPE   You didn't pass a pointer to a queue
+ 421:./ucOSII/Core/os_q.c **** *                            OS_ERR_PEVENT_NULL  If 'pevent' is a NULL pointer
+ 422:./ucOSII/Core/os_q.c **** *                            OS_ERR_PEND_ISR     If you called this function from an ISR and the re
+ 423:./ucOSII/Core/os_q.c **** *                                                would lead to a suspension.
+ 424:./ucOSII/Core/os_q.c **** *                            OS_ERR_PEND_LOCKED  If you called this function with the scheduler is 
+ 425:./ucOSII/Core/os_q.c **** *
+ 426:./ucOSII/Core/os_q.c **** * Returns    : != (void *)0  is a pointer to the message received
+ 427:./ucOSII/Core/os_q.c **** *              == (void *)0  if you received a NULL pointer message or,
+ 428:./ucOSII/Core/os_q.c **** *                            if no message was received or,
+ 429:./ucOSII/Core/os_q.c **** *                            if 'pevent' is a NULL pointer or,
+ 430:./ucOSII/Core/os_q.c **** *                            if you didn't pass a pointer to a queue.
+ 431:./ucOSII/Core/os_q.c **** *
+ 432:./ucOSII/Core/os_q.c **** * Note(s)    : As of V2.60, this function allows you to receive NULL pointer messages.
+ 433:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 434:./ucOSII/Core/os_q.c **** */
+ 435:./ucOSII/Core/os_q.c **** 
+ 436:./ucOSII/Core/os_q.c **** void  *OSQPend (OS_EVENT  *pevent,
+ 437:./ucOSII/Core/os_q.c ****                 INT32U     timeout,
+ 438:./ucOSII/Core/os_q.c ****                 INT8U     *perr)
+ 439:./ucOSII/Core/os_q.c **** {
+ 703              		.loc 1 439 1
+ 704              		.cfi_startproc
+ 705              		@ args = 0, pretend = 0, frame = 32
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 21
+
+
+ 706              		@ frame_needed = 1, uses_anonymous_args = 0
+ 707 0000 80B5     		push	{r7, lr}
+ 708              	.LCFI20:
+ 709              		.cfi_def_cfa_offset 8
+ 710              		.cfi_offset 7, -8
+ 711              		.cfi_offset 14, -4
+ 712 0002 88B0     		sub	sp, sp, #32
+ 713              	.LCFI21:
+ 714              		.cfi_def_cfa_offset 40
+ 715 0004 00AF     		add	r7, sp, #0
+ 716              	.LCFI22:
+ 717              		.cfi_def_cfa_register 7
+ 718 0006 F860     		str	r0, [r7, #12]
+ 719 0008 B960     		str	r1, [r7, #8]
+ 720 000a 7A60     		str	r2, [r7, #4]
+ 440:./ucOSII/Core/os_q.c ****     void      *pmsg;
+ 441:./ucOSII/Core/os_q.c ****     OS_Q      *pq;
+ 442:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                     /* Allocate storage for CPU status register       
+ 443:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+ 721              		.loc 1 443 16
+ 722 000c 0023     		movs	r3, #0
+ 723 000e BB61     		str	r3, [r7, #24]
+ 444:./ucOSII/Core/os_q.c **** #endif
+ 445:./ucOSII/Core/os_q.c **** 
+ 446:./ucOSII/Core/os_q.c **** 
+ 447:./ucOSII/Core/os_q.c **** #ifdef OS_SAFETY_CRITICAL
+ 448:./ucOSII/Core/os_q.c ****     if (perr == (INT8U *)0) {
+ 449:./ucOSII/Core/os_q.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 450:./ucOSII/Core/os_q.c ****         return ((void *)0);
+ 451:./ucOSII/Core/os_q.c ****     }
+ 452:./ucOSII/Core/os_q.c **** #endif
+ 453:./ucOSII/Core/os_q.c **** 
+ 454:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+ 455:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {               /* Validate 'pevent'                              
+ 724              		.loc 1 455 8
+ 725 0010 FB68     		ldr	r3, [r7, #12]
+ 726 0012 002B     		cmp	r3, #0
+ 727 0014 04D1     		bne	.L40
+ 456:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_PEVENT_NULL;
+ 728              		.loc 1 456 15
+ 729 0016 7B68     		ldr	r3, [r7, #4]
+ 730 0018 0422     		movs	r2, #4
+ 731 001a 1A70     		strb	r2, [r3]
+ 457:./ucOSII/Core/os_q.c ****         return ((void *)0);
+ 732              		.loc 1 457 16
+ 733 001c 0023     		movs	r3, #0
+ 734 001e A5E0     		b	.L41
+ 735              	.L40:
+ 458:./ucOSII/Core/os_q.c ****     }
+ 459:./ucOSII/Core/os_q.c **** #endif
+ 460:./ucOSII/Core/os_q.c **** 
+ 461:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_PEND_ENTER(pevent, timeout);
+ 462:./ucOSII/Core/os_q.c **** 
+ 463:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {/* Validate event block type                      
+ 736              		.loc 1 463 15
+ 737 0020 FB68     		ldr	r3, [r7, #12]
+ 738 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 22
+
+
+ 739              		.loc 1 463 8
+ 740 0024 022B     		cmp	r3, #2
+ 741 0026 04D0     		beq	.L42
+ 464:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_EVENT_TYPE;
+ 742              		.loc 1 464 15
+ 743 0028 7B68     		ldr	r3, [r7, #4]
+ 744 002a 0122     		movs	r2, #1
+ 745 002c 1A70     		strb	r2, [r3]
+ 465:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_PEND_EXIT(*perr);
+ 466:./ucOSII/Core/os_q.c ****         return ((void *)0);
+ 746              		.loc 1 466 16
+ 747 002e 0023     		movs	r3, #0
+ 748 0030 9CE0     		b	.L41
+ 749              	.L42:
+ 467:./ucOSII/Core/os_q.c ****     }
+ 468:./ucOSII/Core/os_q.c ****     if (OSIntNesting > 0u) {                     /* See if called from ISR ...                     
+ 750              		.loc 1 468 22
+ 751 0032 504B     		ldr	r3, .L52
+ 752 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 753              		.loc 1 468 8
+ 754 0036 002B     		cmp	r3, #0
+ 755 0038 04D0     		beq	.L43
+ 469:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_PEND_ISR;                 /* ... can't PEND from an ISR                     
+ 756              		.loc 1 469 15
+ 757 003a 7B68     		ldr	r3, [r7, #4]
+ 758 003c 0222     		movs	r2, #2
+ 759 003e 1A70     		strb	r2, [r3]
+ 470:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_PEND_EXIT(*perr);
+ 471:./ucOSII/Core/os_q.c ****         return ((void *)0);
+ 760              		.loc 1 471 16
+ 761 0040 0023     		movs	r3, #0
+ 762 0042 93E0     		b	.L41
+ 763              	.L43:
+ 472:./ucOSII/Core/os_q.c ****     }
+ 473:./ucOSII/Core/os_q.c ****     if (OSLockNesting > 0u) {                    /* See if called with scheduler locked ...        
+ 764              		.loc 1 473 23
+ 765 0044 4C4B     		ldr	r3, .L52+4
+ 766 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 767              		.loc 1 473 8
+ 768 0048 002B     		cmp	r3, #0
+ 769 004a 04D0     		beq	.L44
+ 474:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_PEND_LOCKED;              /* ... can't PEND when locked                     
+ 770              		.loc 1 474 15
+ 771 004c 7B68     		ldr	r3, [r7, #4]
+ 772 004e 0D22     		movs	r2, #13
+ 773 0050 1A70     		strb	r2, [r3]
+ 475:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_PEND_EXIT(*perr);
+ 476:./ucOSII/Core/os_q.c ****         return ((void *)0);
+ 774              		.loc 1 476 16
+ 775 0052 0023     		movs	r3, #0
+ 776 0054 8AE0     		b	.L41
+ 777              	.L44:
+ 477:./ucOSII/Core/os_q.c ****     }
+ 478:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 778              		.loc 1 478 5
+ 779 0056 4020     		movs	r0, #64
+ 780 0058 FFF7FEFF 		bl	OS_CPU_SR_Save
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 23
+
+
+ 781 005c B861     		str	r0, [r7, #24]
+ 479:./ucOSII/Core/os_q.c ****     pq = (OS_Q *)pevent->OSEventPtr;             /* Point at queue control block                   
+ 782              		.loc 1 479 8
+ 783 005e FB68     		ldr	r3, [r7, #12]
+ 784 0060 5B68     		ldr	r3, [r3, #4]
+ 785 0062 7B61     		str	r3, [r7, #20]
+ 480:./ucOSII/Core/os_q.c ****     if (pq->OSQEntries > 0u) {                   /* See if any messages in the queue               
+ 786              		.loc 1 480 11
+ 787 0064 7B69     		ldr	r3, [r7, #20]
+ 788 0066 DB8A     		ldrh	r3, [r3, #22]
+ 789              		.loc 1 480 8
+ 790 0068 002B     		cmp	r3, #0
+ 791 006a 1ED0     		beq	.L45
+ 481:./ucOSII/Core/os_q.c ****         pmsg = *pq->OSQOut++;                    /* Yes, extract oldest message from the queue     
+ 792              		.loc 1 481 19
+ 793 006c 7B69     		ldr	r3, [r7, #20]
+ 794 006e 1B69     		ldr	r3, [r3, #16]
+ 795              		.loc 1 481 27
+ 796 0070 191D     		adds	r1, r3, #4
+ 797 0072 7A69     		ldr	r2, [r7, #20]
+ 798 0074 1161     		str	r1, [r2, #16]
+ 799              		.loc 1 481 14
+ 800 0076 1B68     		ldr	r3, [r3]
+ 801 0078 FB61     		str	r3, [r7, #28]
+ 482:./ucOSII/Core/os_q.c ****         pq->OSQEntries--;                        /* Update the number of entries in the queue      
+ 802              		.loc 1 482 11
+ 803 007a 7B69     		ldr	r3, [r7, #20]
+ 804 007c DB8A     		ldrh	r3, [r3, #22]
+ 805              		.loc 1 482 23
+ 806 007e 013B     		subs	r3, r3, #1
+ 807 0080 9AB2     		uxth	r2, r3
+ 808 0082 7B69     		ldr	r3, [r7, #20]
+ 809 0084 DA82     		strh	r2, [r3, #22]	@ movhi
+ 483:./ucOSII/Core/os_q.c ****         if (pq->OSQOut == pq->OSQEnd) {          /* Wrap OUT pointer if we are at the end of the qu
+ 810              		.loc 1 483 15
+ 811 0086 7B69     		ldr	r3, [r7, #20]
+ 812 0088 1A69     		ldr	r2, [r3, #16]
+ 813              		.loc 1 483 29
+ 814 008a 7B69     		ldr	r3, [r7, #20]
+ 815 008c 9B68     		ldr	r3, [r3, #8]
+ 816              		.loc 1 483 12
+ 817 008e 9A42     		cmp	r2, r3
+ 818 0090 03D1     		bne	.L46
+ 484:./ucOSII/Core/os_q.c ****             pq->OSQOut = pq->OSQStart;
+ 819              		.loc 1 484 28
+ 820 0092 7B69     		ldr	r3, [r7, #20]
+ 821 0094 5A68     		ldr	r2, [r3, #4]
+ 822              		.loc 1 484 24
+ 823 0096 7B69     		ldr	r3, [r7, #20]
+ 824 0098 1A61     		str	r2, [r3, #16]
+ 825              	.L46:
+ 485:./ucOSII/Core/os_q.c ****         }
+ 486:./ucOSII/Core/os_q.c ****         OS_EXIT_CRITICAL();
+ 826              		.loc 1 486 9
+ 827 009a B869     		ldr	r0, [r7, #24]
+ 828 009c FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 487:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_NONE;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 24
+
+
+ 829              		.loc 1 487 15
+ 830 00a0 7B68     		ldr	r3, [r7, #4]
+ 831 00a2 0022     		movs	r2, #0
+ 832 00a4 1A70     		strb	r2, [r3]
+ 488:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_PEND_EXIT(*perr);
+ 489:./ucOSII/Core/os_q.c ****         return (pmsg);                           /* Return message received                        
+ 833              		.loc 1 489 16
+ 834 00a6 FB69     		ldr	r3, [r7, #28]
+ 835 00a8 60E0     		b	.L41
+ 836              	.L45:
+ 490:./ucOSII/Core/os_q.c ****     }
+ 491:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBStat     |= OS_STAT_Q;        /* Task will have to pend for a message to be post
+ 837              		.loc 1 491 29
+ 838 00aa 344B     		ldr	r3, .L52+8
+ 839 00ac 1B68     		ldr	r3, [r3]
+ 840 00ae 93F83820 		ldrb	r2, [r3, #56]	@ zero_extendqisi2
+ 841 00b2 324B     		ldr	r3, .L52+8
+ 842 00b4 1B68     		ldr	r3, [r3]
+ 843 00b6 42F00402 		orr	r2, r2, #4
+ 844 00ba D2B2     		uxtb	r2, r2
+ 845 00bc 83F83820 		strb	r2, [r3, #56]
+ 492:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBStatPend  = OS_STAT_PEND_OK;
+ 846              		.loc 1 492 13
+ 847 00c0 2E4B     		ldr	r3, .L52+8
+ 848 00c2 1B68     		ldr	r3, [r3]
+ 849              		.loc 1 492 30
+ 850 00c4 0022     		movs	r2, #0
+ 851 00c6 83F83920 		strb	r2, [r3, #57]
+ 493:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBDly       = timeout;          /* Load timeout into TCB                          
+ 852              		.loc 1 493 13
+ 853 00ca 2C4B     		ldr	r3, .L52+8
+ 854 00cc 1B68     		ldr	r3, [r3]
+ 855              		.loc 1 493 30
+ 856 00ce BA68     		ldr	r2, [r7, #8]
+ 857 00d0 5A63     		str	r2, [r3, #52]
+ 494:./ucOSII/Core/os_q.c ****     OS_EventTaskWait(pevent);                    /* Suspend task until event or timeout occurs     
+ 858              		.loc 1 494 5
+ 859 00d2 F868     		ldr	r0, [r7, #12]
+ 860 00d4 FFF7FEFF 		bl	OS_EventTaskWait
+ 495:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 861              		.loc 1 495 5
+ 862 00d8 B869     		ldr	r0, [r7, #24]
+ 863 00da FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 496:./ucOSII/Core/os_q.c ****     OS_Sched();                                  /* Find next highest priority task ready to run   
+ 864              		.loc 1 496 5
+ 865 00de FFF7FEFF 		bl	OS_Sched
+ 497:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 866              		.loc 1 497 5
+ 867 00e2 4020     		movs	r0, #64
+ 868 00e4 FFF7FEFF 		bl	OS_CPU_SR_Save
+ 869 00e8 B861     		str	r0, [r7, #24]
+ 498:./ucOSII/Core/os_q.c ****     switch (OSTCBCur->OSTCBStatPend) {                /* See if we timed-out or aborted            
+ 870              		.loc 1 498 21
+ 871 00ea 244B     		ldr	r3, .L52+8
+ 872 00ec 1B68     		ldr	r3, [r3]
+ 873 00ee 93F83930 		ldrb	r3, [r3, #57]	@ zero_extendqisi2
+ 874              		.loc 1 498 5
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 25
+
+
+ 875 00f2 002B     		cmp	r3, #0
+ 876 00f4 02D0     		beq	.L47
+ 877 00f6 022B     		cmp	r3, #2
+ 878 00f8 08D0     		beq	.L48
+ 879 00fa 0DE0     		b	.L51
+ 880              	.L47:
+ 499:./ucOSII/Core/os_q.c ****         case OS_STAT_PEND_OK:                         /* Extract message from TCB (Put there by QPo
+ 500:./ucOSII/Core/os_q.c ****              pmsg =  OSTCBCur->OSTCBMsg;
+ 881              		.loc 1 500 30
+ 882 00fc 1F4B     		ldr	r3, .L52+8
+ 883 00fe 1B68     		ldr	r3, [r3]
+ 884              		.loc 1 500 19
+ 885 0100 9B6A     		ldr	r3, [r3, #40]
+ 886 0102 FB61     		str	r3, [r7, #28]
+ 501:./ucOSII/Core/os_q.c ****             *perr =  OS_ERR_NONE;
+ 887              		.loc 1 501 19
+ 888 0104 7B68     		ldr	r3, [r7, #4]
+ 889 0106 0022     		movs	r2, #0
+ 890 0108 1A70     		strb	r2, [r3]
+ 502:./ucOSII/Core/os_q.c ****              break;
+ 891              		.loc 1 502 14
+ 892 010a 11E0     		b	.L50
+ 893              	.L48:
+ 503:./ucOSII/Core/os_q.c **** 
+ 504:./ucOSII/Core/os_q.c ****         case OS_STAT_PEND_ABORT:
+ 505:./ucOSII/Core/os_q.c ****              pmsg = (void *)0;
+ 894              		.loc 1 505 19
+ 895 010c 0023     		movs	r3, #0
+ 896 010e FB61     		str	r3, [r7, #28]
+ 506:./ucOSII/Core/os_q.c ****             *perr =  OS_ERR_PEND_ABORT;               /* Indicate that we aborted                  
+ 897              		.loc 1 506 19
+ 898 0110 7B68     		ldr	r3, [r7, #4]
+ 899 0112 0E22     		movs	r2, #14
+ 900 0114 1A70     		strb	r2, [r3]
+ 507:./ucOSII/Core/os_q.c ****              break;
+ 901              		.loc 1 507 14
+ 902 0116 0BE0     		b	.L50
+ 903              	.L51:
+ 508:./ucOSII/Core/os_q.c **** 
+ 509:./ucOSII/Core/os_q.c ****         case OS_STAT_PEND_TO:
+ 510:./ucOSII/Core/os_q.c ****         default:
+ 511:./ucOSII/Core/os_q.c ****              OS_EventTaskRemove(OSTCBCur, pevent);
+ 904              		.loc 1 511 14
+ 905 0118 184B     		ldr	r3, .L52+8
+ 906 011a 1B68     		ldr	r3, [r3]
+ 907 011c F968     		ldr	r1, [r7, #12]
+ 908 011e 1846     		mov	r0, r3
+ 909 0120 FFF7FEFF 		bl	OS_EventTaskRemove
+ 512:./ucOSII/Core/os_q.c ****              pmsg = (void *)0;
+ 910              		.loc 1 512 19
+ 911 0124 0023     		movs	r3, #0
+ 912 0126 FB61     		str	r3, [r7, #28]
+ 513:./ucOSII/Core/os_q.c ****             *perr =  OS_ERR_TIMEOUT;                  /* Indicate that we didn't get event within T
+ 913              		.loc 1 513 19
+ 914 0128 7B68     		ldr	r3, [r7, #4]
+ 915 012a 0A22     		movs	r2, #10
+ 916 012c 1A70     		strb	r2, [r3]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 26
+
+
+ 514:./ucOSII/Core/os_q.c ****              break;
+ 917              		.loc 1 514 14
+ 918 012e 00BF     		nop
+ 919              	.L50:
+ 515:./ucOSII/Core/os_q.c ****     }
+ 516:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBStat          =  OS_STAT_RDY;      /* Set   task  status to ready               
+ 920              		.loc 1 516 13
+ 921 0130 124B     		ldr	r3, .L52+8
+ 922 0132 1B68     		ldr	r3, [r3]
+ 923              		.loc 1 516 34
+ 924 0134 0022     		movs	r2, #0
+ 925 0136 83F83820 		strb	r2, [r3, #56]
+ 517:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBStatPend      =  OS_STAT_PEND_OK;  /* Clear pend  status                        
+ 926              		.loc 1 517 13
+ 927 013a 104B     		ldr	r3, .L52+8
+ 928 013c 1B68     		ldr	r3, [r3]
+ 929              		.loc 1 517 34
+ 930 013e 0022     		movs	r2, #0
+ 931 0140 83F83920 		strb	r2, [r3, #57]
+ 518:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBEventPtr      = (OS_EVENT  *)0;    /* Clear event pointers                      
+ 932              		.loc 1 518 13
+ 933 0144 0D4B     		ldr	r3, .L52+8
+ 934 0146 1B68     		ldr	r3, [r3]
+ 935              		.loc 1 518 34
+ 936 0148 0022     		movs	r2, #0
+ 937 014a DA61     		str	r2, [r3, #28]
+ 519:./ucOSII/Core/os_q.c **** #if (OS_EVENT_MULTI_EN > 0u)
+ 520:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBEventMultiPtr = (OS_EVENT **)0;
+ 938              		.loc 1 520 13
+ 939 014c 0B4B     		ldr	r3, .L52+8
+ 940 014e 1B68     		ldr	r3, [r3]
+ 941              		.loc 1 520 34
+ 942 0150 0022     		movs	r2, #0
+ 943 0152 1A62     		str	r2, [r3, #32]
+ 521:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBEventMultiRdy = (OS_EVENT  *)0;
+ 944              		.loc 1 521 13
+ 945 0154 094B     		ldr	r3, .L52+8
+ 946 0156 1B68     		ldr	r3, [r3]
+ 947              		.loc 1 521 34
+ 948 0158 0022     		movs	r2, #0
+ 949 015a 5A62     		str	r2, [r3, #36]
+ 522:./ucOSII/Core/os_q.c **** #endif
+ 523:./ucOSII/Core/os_q.c ****     OSTCBCur->OSTCBMsg           = (void      *)0;    /* Clear  received message                   
+ 950              		.loc 1 523 13
+ 951 015c 074B     		ldr	r3, .L52+8
+ 952 015e 1B68     		ldr	r3, [r3]
+ 953              		.loc 1 523 34
+ 954 0160 0022     		movs	r2, #0
+ 955 0162 9A62     		str	r2, [r3, #40]
+ 524:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 956              		.loc 1 524 5
+ 957 0164 B869     		ldr	r0, [r7, #24]
+ 958 0166 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 525:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_PEND_EXIT(*perr);
+ 526:./ucOSII/Core/os_q.c **** 
+ 527:./ucOSII/Core/os_q.c ****     return (pmsg);                                    /* Return received message                   
+ 959              		.loc 1 527 12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 27
+
+
+ 960 016a FB69     		ldr	r3, [r7, #28]
+ 961              	.L41:
+ 528:./ucOSII/Core/os_q.c **** }
+ 962              		.loc 1 528 1
+ 963 016c 1846     		mov	r0, r3
+ 964 016e 2037     		adds	r7, r7, #32
+ 965              	.LCFI23:
+ 966              		.cfi_def_cfa_offset 8
+ 967 0170 BD46     		mov	sp, r7
+ 968              	.LCFI24:
+ 969              		.cfi_def_cfa_register 13
+ 970              		@ sp needed
+ 971 0172 80BD     		pop	{r7, pc}
+ 972              	.L53:
+ 973              		.align	2
+ 974              	.L52:
+ 975 0174 00000000 		.word	OSIntNesting
+ 976 0178 00000000 		.word	OSLockNesting
+ 977 017c 00000000 		.word	OSTCBCur
+ 978              		.cfi_endproc
+ 979              	.LFE7:
+ 981              		.section	.text.OSQPendAbort,"ax",%progbits
+ 982              		.align	1
+ 983              		.global	OSQPendAbort
+ 984              		.syntax unified
+ 985              		.thumb
+ 986              		.thumb_func
+ 988              	OSQPendAbort:
+ 989              	.LFB8:
+ 529:./ucOSII/Core/os_q.c **** 
+ 530:./ucOSII/Core/os_q.c **** 
+ 531:./ucOSII/Core/os_q.c **** /*
+ 532:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 533:./ucOSII/Core/os_q.c **** *                                  ABORT WAITING ON A MESSAGE QUEUE
+ 534:./ucOSII/Core/os_q.c **** *
+ 535:./ucOSII/Core/os_q.c **** * Description: This function aborts & readies any tasks currently waiting on a queue.  This functio
+ 536:./ucOSII/Core/os_q.c **** *              should be used to fault-abort the wait on the queue, rather than to normally signal
+ 537:./ucOSII/Core/os_q.c **** *              the queue via OSQPost(), OSQPostFront() or OSQPostOpt().
+ 538:./ucOSII/Core/os_q.c **** *
+ 539:./ucOSII/Core/os_q.c **** * Arguments  : pevent        is a pointer to the event control block associated with the desired qu
+ 540:./ucOSII/Core/os_q.c **** *
+ 541:./ucOSII/Core/os_q.c **** *              opt           determines the type of ABORT performed:
+ 542:./ucOSII/Core/os_q.c **** *                            OS_PEND_OPT_NONE         ABORT wait for a single task (HPT) waiting on
+ 543:./ucOSII/Core/os_q.c **** *                                                     queue
+ 544:./ucOSII/Core/os_q.c **** *                            OS_PEND_OPT_BROADCAST    ABORT wait for ALL tasks that are  waiting on
+ 545:./ucOSII/Core/os_q.c **** *                                                     queue
+ 546:./ucOSII/Core/os_q.c **** *
+ 547:./ucOSII/Core/os_q.c **** *              perr          is a pointer to where an error message will be deposited.  Possible er
+ 548:./ucOSII/Core/os_q.c **** *                            messages are:
+ 549:./ucOSII/Core/os_q.c **** *
+ 550:./ucOSII/Core/os_q.c **** *                            OS_ERR_NONE         No tasks were     waiting on the queue.
+ 551:./ucOSII/Core/os_q.c **** *                            OS_ERR_PEND_ABORT   At least one task waiting on the queue was readied
+ 552:./ucOSII/Core/os_q.c **** *                                                and informed of the aborted wait; check return val
+ 553:./ucOSII/Core/os_q.c **** *                                                for the number of tasks whose wait on the queue
+ 554:./ucOSII/Core/os_q.c **** *                                                was aborted.
+ 555:./ucOSII/Core/os_q.c **** *                            OS_ERR_EVENT_TYPE   If you didn't pass a pointer to a queue.
+ 556:./ucOSII/Core/os_q.c **** *                            OS_ERR_PEVENT_NULL  If 'pevent' is a NULL pointer.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 28
+
+
+ 557:./ucOSII/Core/os_q.c **** *
+ 558:./ucOSII/Core/os_q.c **** * Returns    : == 0          if no tasks were waiting on the queue, or upon error.
+ 559:./ucOSII/Core/os_q.c **** *              >  0          if one or more tasks waiting on the queue are now readied and informed
+ 560:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 561:./ucOSII/Core/os_q.c **** */
+ 562:./ucOSII/Core/os_q.c **** 
+ 563:./ucOSII/Core/os_q.c **** #if OS_Q_PEND_ABORT_EN > 0u
+ 564:./ucOSII/Core/os_q.c **** INT8U  OSQPendAbort (OS_EVENT  *pevent,
+ 565:./ucOSII/Core/os_q.c ****                      INT8U      opt,
+ 566:./ucOSII/Core/os_q.c ****                      INT8U     *perr)
+ 567:./ucOSII/Core/os_q.c **** {
+ 990              		.loc 1 567 1
+ 991              		.cfi_startproc
+ 992              		@ args = 0, pretend = 0, frame = 24
+ 993              		@ frame_needed = 1, uses_anonymous_args = 0
+ 994 0000 80B5     		push	{r7, lr}
+ 995              	.LCFI25:
+ 996              		.cfi_def_cfa_offset 8
+ 997              		.cfi_offset 7, -8
+ 998              		.cfi_offset 14, -4
+ 999 0002 86B0     		sub	sp, sp, #24
+ 1000              	.LCFI26:
+ 1001              		.cfi_def_cfa_offset 32
+ 1002 0004 00AF     		add	r7, sp, #0
+ 1003              	.LCFI27:
+ 1004              		.cfi_def_cfa_register 7
+ 1005 0006 F860     		str	r0, [r7, #12]
+ 1006 0008 0B46     		mov	r3, r1
+ 1007 000a 7A60     		str	r2, [r7, #4]
+ 1008 000c FB72     		strb	r3, [r7, #11]
+ 568:./ucOSII/Core/os_q.c ****     INT8U      nbr_tasks;
+ 569:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                               /* Allocate storage for CPU status regis
+ 570:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+ 1009              		.loc 1 570 16
+ 1010 000e 0023     		movs	r3, #0
+ 1011 0010 3B61     		str	r3, [r7, #16]
+ 571:./ucOSII/Core/os_q.c **** #endif
+ 572:./ucOSII/Core/os_q.c **** 
+ 573:./ucOSII/Core/os_q.c **** 
+ 574:./ucOSII/Core/os_q.c **** 
+ 575:./ucOSII/Core/os_q.c **** #ifdef OS_SAFETY_CRITICAL
+ 576:./ucOSII/Core/os_q.c ****     if (perr == (INT8U *)0) {
+ 577:./ucOSII/Core/os_q.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 578:./ucOSII/Core/os_q.c ****         return (0u);
+ 579:./ucOSII/Core/os_q.c ****     }
+ 580:./ucOSII/Core/os_q.c **** #endif
+ 581:./ucOSII/Core/os_q.c **** 
+ 582:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+ 583:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {                         /* Validate 'pevent'                    
+ 1012              		.loc 1 583 8
+ 1013 0012 FB68     		ldr	r3, [r7, #12]
+ 1014 0014 002B     		cmp	r3, #0
+ 1015 0016 04D1     		bne	.L55
+ 584:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_PEVENT_NULL;
+ 1016              		.loc 1 584 15
+ 1017 0018 7B68     		ldr	r3, [r7, #4]
+ 1018 001a 0422     		movs	r2, #4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 29
+
+
+ 1019 001c 1A70     		strb	r2, [r3]
+ 585:./ucOSII/Core/os_q.c ****         return (0u);
+ 1020              		.loc 1 585 16
+ 1021 001e 0023     		movs	r3, #0
+ 1022 0020 3FE0     		b	.L56
+ 1023              	.L55:
+ 586:./ucOSII/Core/os_q.c ****     }
+ 587:./ucOSII/Core/os_q.c **** #endif
+ 588:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {          /* Validate event block type            
+ 1024              		.loc 1 588 15
+ 1025 0022 FB68     		ldr	r3, [r7, #12]
+ 1026 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1027              		.loc 1 588 8
+ 1028 0026 022B     		cmp	r3, #2
+ 1029 0028 04D0     		beq	.L57
+ 589:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_EVENT_TYPE;
+ 1030              		.loc 1 589 15
+ 1031 002a 7B68     		ldr	r3, [r7, #4]
+ 1032 002c 0122     		movs	r2, #1
+ 1033 002e 1A70     		strb	r2, [r3]
+ 590:./ucOSII/Core/os_q.c ****         return (0u);
+ 1034              		.loc 1 590 16
+ 1035 0030 0023     		movs	r3, #0
+ 1036 0032 36E0     		b	.L56
+ 1037              	.L57:
+ 591:./ucOSII/Core/os_q.c ****     }
+ 592:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 1038              		.loc 1 592 5
+ 1039 0034 4020     		movs	r0, #64
+ 1040 0036 FFF7FEFF 		bl	OS_CPU_SR_Save
+ 1041 003a 3861     		str	r0, [r7, #16]
+ 593:./ucOSII/Core/os_q.c ****     if (pevent->OSEventGrp != 0u) {                        /* See if any task waiting on queue?    
+ 1042              		.loc 1 593 15
+ 1043 003c FB68     		ldr	r3, [r7, #12]
+ 1044 003e 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 1045              		.loc 1 593 8
+ 1046 0040 002B     		cmp	r3, #0
+ 1047 0042 27D0     		beq	.L58
+ 594:./ucOSII/Core/os_q.c ****         nbr_tasks = 0u;
+ 1048              		.loc 1 594 19
+ 1049 0044 0023     		movs	r3, #0
+ 1050 0046 FB75     		strb	r3, [r7, #23]
+ 595:./ucOSII/Core/os_q.c ****         switch (opt) {
+ 1051              		.loc 1 595 9
+ 1052 0048 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1053 004a 012B     		cmp	r3, #1
+ 1054 004c 0ED1     		bne	.L59
+ 596:./ucOSII/Core/os_q.c ****             case OS_PEND_OPT_BROADCAST:                    /* Do we need to abort ALL waiting tasks
+ 597:./ucOSII/Core/os_q.c ****                  while (pevent->OSEventGrp != 0u) {        /* Yes, ready ALL tasks waiting on queue
+ 1055              		.loc 1 597 24
+ 1056 004e 08E0     		b	.L60
+ 1057              	.L61:
+ 598:./ucOSII/Core/os_q.c ****                      (void)OS_EventTaskRdy(pevent, (void *)0, OS_STAT_Q, OS_STAT_PEND_ABORT);
+ 1058              		.loc 1 598 28
+ 1059 0050 0223     		movs	r3, #2
+ 1060 0052 0422     		movs	r2, #4
+ 1061 0054 0021     		movs	r1, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 30
+
+
+ 1062 0056 F868     		ldr	r0, [r7, #12]
+ 1063 0058 FFF7FEFF 		bl	OS_EventTaskRdy
+ 599:./ucOSII/Core/os_q.c ****                      nbr_tasks++;
+ 1064              		.loc 1 599 31
+ 1065 005c FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 1066 005e 0133     		adds	r3, r3, #1
+ 1067 0060 FB75     		strb	r3, [r7, #23]
+ 1068              	.L60:
+ 597:./ucOSII/Core/os_q.c ****                      (void)OS_EventTaskRdy(pevent, (void *)0, OS_STAT_Q, OS_STAT_PEND_ABORT);
+ 1069              		.loc 1 597 31
+ 1070 0062 FB68     		ldr	r3, [r7, #12]
+ 1071 0064 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 597:./ucOSII/Core/os_q.c ****                      (void)OS_EventTaskRdy(pevent, (void *)0, OS_STAT_Q, OS_STAT_PEND_ABORT);
+ 1072              		.loc 1 597 24
+ 1073 0066 002B     		cmp	r3, #0
+ 1074 0068 F2D1     		bne	.L61
+ 600:./ucOSII/Core/os_q.c ****                  }
+ 601:./ucOSII/Core/os_q.c ****                  break;
+ 1075              		.loc 1 601 18
+ 1076 006a 09E0     		b	.L62
+ 1077              	.L59:
+ 602:./ucOSII/Core/os_q.c **** 
+ 603:./ucOSII/Core/os_q.c ****             case OS_PEND_OPT_NONE:
+ 604:./ucOSII/Core/os_q.c ****             default:                                       /* No,  ready HPT       waiting on queue
+ 605:./ucOSII/Core/os_q.c ****                  (void)OS_EventTaskRdy(pevent, (void *)0, OS_STAT_Q, OS_STAT_PEND_ABORT);
+ 1078              		.loc 1 605 24
+ 1079 006c 0223     		movs	r3, #2
+ 1080 006e 0422     		movs	r2, #4
+ 1081 0070 0021     		movs	r1, #0
+ 1082 0072 F868     		ldr	r0, [r7, #12]
+ 1083 0074 FFF7FEFF 		bl	OS_EventTaskRdy
+ 606:./ucOSII/Core/os_q.c ****                  nbr_tasks++;
+ 1084              		.loc 1 606 27
+ 1085 0078 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 1086 007a 0133     		adds	r3, r3, #1
+ 1087 007c FB75     		strb	r3, [r7, #23]
+ 607:./ucOSII/Core/os_q.c ****                  break;
+ 1088              		.loc 1 607 18
+ 1089 007e 00BF     		nop
+ 1090              	.L62:
+ 608:./ucOSII/Core/os_q.c ****         }
+ 609:./ucOSII/Core/os_q.c ****         OS_EXIT_CRITICAL();
+ 1091              		.loc 1 609 9
+ 1092 0080 3869     		ldr	r0, [r7, #16]
+ 1093 0082 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 610:./ucOSII/Core/os_q.c ****         OS_Sched();                                        /* Find HPT ready to run                
+ 1094              		.loc 1 610 9
+ 1095 0086 FFF7FEFF 		bl	OS_Sched
+ 611:./ucOSII/Core/os_q.c ****         *perr = OS_ERR_PEND_ABORT;
+ 1096              		.loc 1 611 15
+ 1097 008a 7B68     		ldr	r3, [r7, #4]
+ 1098 008c 0E22     		movs	r2, #14
+ 1099 008e 1A70     		strb	r2, [r3]
+ 612:./ucOSII/Core/os_q.c ****         return (nbr_tasks);
+ 1100              		.loc 1 612 16
+ 1101 0090 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 1102 0092 06E0     		b	.L56
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 31
+
+
+ 1103              	.L58:
+ 613:./ucOSII/Core/os_q.c ****     }
+ 614:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 1104              		.loc 1 614 5
+ 1105 0094 3869     		ldr	r0, [r7, #16]
+ 1106 0096 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 615:./ucOSII/Core/os_q.c ****     *perr = OS_ERR_NONE;
+ 1107              		.loc 1 615 11
+ 1108 009a 7B68     		ldr	r3, [r7, #4]
+ 1109 009c 0022     		movs	r2, #0
+ 1110 009e 1A70     		strb	r2, [r3]
+ 616:./ucOSII/Core/os_q.c ****     return (0u);                                           /* No tasks waiting on queue            
+ 1111              		.loc 1 616 12
+ 1112 00a0 0023     		movs	r3, #0
+ 1113              	.L56:
+ 617:./ucOSII/Core/os_q.c **** }
+ 1114              		.loc 1 617 1
+ 1115 00a2 1846     		mov	r0, r3
+ 1116 00a4 1837     		adds	r7, r7, #24
+ 1117              	.LCFI28:
+ 1118              		.cfi_def_cfa_offset 8
+ 1119 00a6 BD46     		mov	sp, r7
+ 1120              	.LCFI29:
+ 1121              		.cfi_def_cfa_register 13
+ 1122              		@ sp needed
+ 1123 00a8 80BD     		pop	{r7, pc}
+ 1124              		.cfi_endproc
+ 1125              	.LFE8:
+ 1127              		.section	.text.OSQPost,"ax",%progbits
+ 1128              		.align	1
+ 1129              		.global	OSQPost
+ 1130              		.syntax unified
+ 1131              		.thumb
+ 1132              		.thumb_func
+ 1134              	OSQPost:
+ 1135              	.LFB9:
+ 618:./ucOSII/Core/os_q.c **** #endif
+ 619:./ucOSII/Core/os_q.c **** 
+ 620:./ucOSII/Core/os_q.c **** 
+ 621:./ucOSII/Core/os_q.c **** /*
+ 622:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 623:./ucOSII/Core/os_q.c **** *                                       POST MESSAGE TO A QUEUE
+ 624:./ucOSII/Core/os_q.c **** *
+ 625:./ucOSII/Core/os_q.c **** * Description: This function sends a message to a queue
+ 626:./ucOSII/Core/os_q.c **** *
+ 627:./ucOSII/Core/os_q.c **** * Arguments  : pevent        is a pointer to the event control block associated with the desired qu
+ 628:./ucOSII/Core/os_q.c **** *
+ 629:./ucOSII/Core/os_q.c **** *              pmsg          is a pointer to the message to send.
+ 630:./ucOSII/Core/os_q.c **** *
+ 631:./ucOSII/Core/os_q.c **** * Returns    : OS_ERR_NONE           The call was successful and the message was sent
+ 632:./ucOSII/Core/os_q.c **** *              OS_ERR_Q_FULL         If the queue cannot accept any more messages because it is ful
+ 633:./ucOSII/Core/os_q.c **** *              OS_ERR_EVENT_TYPE     If you didn't pass a pointer to a queue.
+ 634:./ucOSII/Core/os_q.c **** *              OS_ERR_PEVENT_NULL    If 'pevent' is a NULL pointer
+ 635:./ucOSII/Core/os_q.c **** *
+ 636:./ucOSII/Core/os_q.c **** * Note(s)    : As of V2.60, this function allows you to send NULL pointer messages.
+ 637:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 638:./ucOSII/Core/os_q.c **** */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 32
+
+
+ 639:./ucOSII/Core/os_q.c **** 
+ 640:./ucOSII/Core/os_q.c **** #if OS_Q_POST_EN > 0u
+ 641:./ucOSII/Core/os_q.c **** INT8U  OSQPost (OS_EVENT  *pevent,
+ 642:./ucOSII/Core/os_q.c ****                 void      *pmsg)
+ 643:./ucOSII/Core/os_q.c **** {
+ 1136              		.loc 1 643 1
+ 1137              		.cfi_startproc
+ 1138              		@ args = 0, pretend = 0, frame = 16
+ 1139              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1140 0000 80B5     		push	{r7, lr}
+ 1141              	.LCFI30:
+ 1142              		.cfi_def_cfa_offset 8
+ 1143              		.cfi_offset 7, -8
+ 1144              		.cfi_offset 14, -4
+ 1145 0002 84B0     		sub	sp, sp, #16
+ 1146              	.LCFI31:
+ 1147              		.cfi_def_cfa_offset 24
+ 1148 0004 00AF     		add	r7, sp, #0
+ 1149              	.LCFI32:
+ 1150              		.cfi_def_cfa_register 7
+ 1151 0006 7860     		str	r0, [r7, #4]
+ 1152 0008 3960     		str	r1, [r7]
+ 644:./ucOSII/Core/os_q.c ****     OS_Q      *pq;
+ 645:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                           /* Allocate storage for CPU status register 
+ 646:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+ 1153              		.loc 1 646 16
+ 1154 000a 0023     		movs	r3, #0
+ 1155 000c FB60     		str	r3, [r7, #12]
+ 647:./ucOSII/Core/os_q.c **** #endif
+ 648:./ucOSII/Core/os_q.c **** 
+ 649:./ucOSII/Core/os_q.c **** 
+ 650:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+ 651:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {                     /* Validate 'pevent'                        
+ 1156              		.loc 1 651 8
+ 1157 000e 7B68     		ldr	r3, [r7, #4]
+ 1158 0010 002B     		cmp	r3, #0
+ 1159 0012 01D1     		bne	.L64
+ 652:./ucOSII/Core/os_q.c ****         return (OS_ERR_PEVENT_NULL);
+ 1160              		.loc 1 652 16
+ 1161 0014 0423     		movs	r3, #4
+ 1162 0016 43E0     		b	.L65
+ 1163              	.L64:
+ 653:./ucOSII/Core/os_q.c ****     }
+ 654:./ucOSII/Core/os_q.c **** #endif
+ 655:./ucOSII/Core/os_q.c **** 
+ 656:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_POST_ENTER(pevent);
+ 657:./ucOSII/Core/os_q.c **** 
+ 658:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {      /* Validate event block type                
+ 1164              		.loc 1 658 15
+ 1165 0018 7B68     		ldr	r3, [r7, #4]
+ 1166 001a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1167              		.loc 1 658 8
+ 1168 001c 022B     		cmp	r3, #2
+ 1169 001e 01D0     		beq	.L66
+ 659:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_EXIT(OS_ERR_EVENT_TYPE);
+ 660:./ucOSII/Core/os_q.c ****         return (OS_ERR_EVENT_TYPE);
+ 1170              		.loc 1 660 16
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 33
+
+
+ 1171 0020 0123     		movs	r3, #1
+ 1172 0022 3DE0     		b	.L65
+ 1173              	.L66:
+ 661:./ucOSII/Core/os_q.c ****     }
+ 662:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 1174              		.loc 1 662 5
+ 1175 0024 4020     		movs	r0, #64
+ 1176 0026 FFF7FEFF 		bl	OS_CPU_SR_Save
+ 1177 002a F860     		str	r0, [r7, #12]
+ 663:./ucOSII/Core/os_q.c ****     if (pevent->OSEventGrp != 0u) {                    /* See if any task pending on queue         
+ 1178              		.loc 1 663 15
+ 1179 002c 7B68     		ldr	r3, [r7, #4]
+ 1180 002e 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 1181              		.loc 1 663 8
+ 1182 0030 002B     		cmp	r3, #0
+ 1183 0032 0CD0     		beq	.L67
+ 664:./ucOSII/Core/os_q.c ****                                                        /* Ready highest priority task waiting on ev
+ 665:./ucOSII/Core/os_q.c ****         (void)OS_EventTaskRdy(pevent, pmsg, OS_STAT_Q, OS_STAT_PEND_OK);
+ 1184              		.loc 1 665 15
+ 1185 0034 0023     		movs	r3, #0
+ 1186 0036 0422     		movs	r2, #4
+ 1187 0038 3968     		ldr	r1, [r7]
+ 1188 003a 7868     		ldr	r0, [r7, #4]
+ 1189 003c FFF7FEFF 		bl	OS_EventTaskRdy
+ 666:./ucOSII/Core/os_q.c ****         OS_EXIT_CRITICAL();
+ 1190              		.loc 1 666 9
+ 1191 0040 F868     		ldr	r0, [r7, #12]
+ 1192 0042 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 667:./ucOSII/Core/os_q.c ****         OS_Sched();                                    /* Find highest priority task ready to run  
+ 1193              		.loc 1 667 9
+ 1194 0046 FFF7FEFF 		bl	OS_Sched
+ 668:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_EXIT(OS_ERR_NONE);
+ 669:./ucOSII/Core/os_q.c ****         return (OS_ERR_NONE);
+ 1195              		.loc 1 669 16
+ 1196 004a 0023     		movs	r3, #0
+ 1197 004c 28E0     		b	.L65
+ 1198              	.L67:
+ 670:./ucOSII/Core/os_q.c ****     }
+ 671:./ucOSII/Core/os_q.c ****     pq = (OS_Q *)pevent->OSEventPtr;                   /* Point to queue control block             
+ 1199              		.loc 1 671 8
+ 1200 004e 7B68     		ldr	r3, [r7, #4]
+ 1201 0050 5B68     		ldr	r3, [r3, #4]
+ 1202 0052 BB60     		str	r3, [r7, #8]
+ 672:./ucOSII/Core/os_q.c ****     if (pq->OSQEntries >= pq->OSQSize) {               /* Make sure queue is not full              
+ 1203              		.loc 1 672 11
+ 1204 0054 BB68     		ldr	r3, [r7, #8]
+ 1205 0056 DA8A     		ldrh	r2, [r3, #22]
+ 1206              		.loc 1 672 29
+ 1207 0058 BB68     		ldr	r3, [r7, #8]
+ 1208 005a 9B8A     		ldrh	r3, [r3, #20]
+ 1209              		.loc 1 672 8
+ 1210 005c 9A42     		cmp	r2, r3
+ 1211 005e 04D3     		bcc	.L68
+ 673:./ucOSII/Core/os_q.c ****         OS_EXIT_CRITICAL();
+ 1212              		.loc 1 673 9
+ 1213 0060 F868     		ldr	r0, [r7, #12]
+ 1214 0062 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 34
+
+
+ 674:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_EXIT(OS_ERR_Q_FULL);
+ 675:./ucOSII/Core/os_q.c ****         return (OS_ERR_Q_FULL);
+ 1215              		.loc 1 675 16
+ 1216 0066 1E23     		movs	r3, #30
+ 1217 0068 1AE0     		b	.L65
+ 1218              	.L68:
+ 676:./ucOSII/Core/os_q.c ****     }
+ 677:./ucOSII/Core/os_q.c ****     *pq->OSQIn++ = pmsg;                               /* Insert message into queue                
+ 1219              		.loc 1 677 8
+ 1220 006a BB68     		ldr	r3, [r7, #8]
+ 1221 006c DB68     		ldr	r3, [r3, #12]
+ 1222              		.loc 1 677 15
+ 1223 006e 191D     		adds	r1, r3, #4
+ 1224 0070 BA68     		ldr	r2, [r7, #8]
+ 1225 0072 D160     		str	r1, [r2, #12]
+ 1226              		.loc 1 677 18
+ 1227 0074 3A68     		ldr	r2, [r7]
+ 1228 0076 1A60     		str	r2, [r3]
+ 678:./ucOSII/Core/os_q.c ****     pq->OSQEntries++;                                  /* Update the nbr of entries in the queue   
+ 1229              		.loc 1 678 7
+ 1230 0078 BB68     		ldr	r3, [r7, #8]
+ 1231 007a DB8A     		ldrh	r3, [r3, #22]
+ 1232              		.loc 1 678 19
+ 1233 007c 0133     		adds	r3, r3, #1
+ 1234 007e 9AB2     		uxth	r2, r3
+ 1235 0080 BB68     		ldr	r3, [r7, #8]
+ 1236 0082 DA82     		strh	r2, [r3, #22]	@ movhi
+ 679:./ucOSII/Core/os_q.c ****     if (pq->OSQIn == pq->OSQEnd) {                     /* Wrap IN ptr if we are at end of queue    
+ 1237              		.loc 1 679 11
+ 1238 0084 BB68     		ldr	r3, [r7, #8]
+ 1239 0086 DA68     		ldr	r2, [r3, #12]
+ 1240              		.loc 1 679 24
+ 1241 0088 BB68     		ldr	r3, [r7, #8]
+ 1242 008a 9B68     		ldr	r3, [r3, #8]
+ 1243              		.loc 1 679 8
+ 1244 008c 9A42     		cmp	r2, r3
+ 1245 008e 03D1     		bne	.L69
+ 680:./ucOSII/Core/os_q.c ****         pq->OSQIn = pq->OSQStart;
+ 1246              		.loc 1 680 23
+ 1247 0090 BB68     		ldr	r3, [r7, #8]
+ 1248 0092 5A68     		ldr	r2, [r3, #4]
+ 1249              		.loc 1 680 19
+ 1250 0094 BB68     		ldr	r3, [r7, #8]
+ 1251 0096 DA60     		str	r2, [r3, #12]
+ 1252              	.L69:
+ 681:./ucOSII/Core/os_q.c ****     }
+ 682:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 1253              		.loc 1 682 5
+ 1254 0098 F868     		ldr	r0, [r7, #12]
+ 1255 009a FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 683:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_POST_EXIT(OS_ERR_NONE);
+ 684:./ucOSII/Core/os_q.c **** 
+ 685:./ucOSII/Core/os_q.c ****     return (OS_ERR_NONE);
+ 1256              		.loc 1 685 12
+ 1257 009e 0023     		movs	r3, #0
+ 1258              	.L65:
+ 686:./ucOSII/Core/os_q.c **** }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 35
+
+
+ 1259              		.loc 1 686 1
+ 1260 00a0 1846     		mov	r0, r3
+ 1261 00a2 1037     		adds	r7, r7, #16
+ 1262              	.LCFI33:
+ 1263              		.cfi_def_cfa_offset 8
+ 1264 00a4 BD46     		mov	sp, r7
+ 1265              	.LCFI34:
+ 1266              		.cfi_def_cfa_register 13
+ 1267              		@ sp needed
+ 1268 00a6 80BD     		pop	{r7, pc}
+ 1269              		.cfi_endproc
+ 1270              	.LFE9:
+ 1272              		.section	.text.OSQPostFront,"ax",%progbits
+ 1273              		.align	1
+ 1274              		.global	OSQPostFront
+ 1275              		.syntax unified
+ 1276              		.thumb
+ 1277              		.thumb_func
+ 1279              	OSQPostFront:
+ 1280              	.LFB10:
+ 687:./ucOSII/Core/os_q.c **** #endif
+ 688:./ucOSII/Core/os_q.c **** 
+ 689:./ucOSII/Core/os_q.c **** 
+ 690:./ucOSII/Core/os_q.c **** /*
+ 691:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 692:./ucOSII/Core/os_q.c **** *                                POST MESSAGE TO THE FRONT OF A QUEUE
+ 693:./ucOSII/Core/os_q.c **** *
+ 694:./ucOSII/Core/os_q.c **** * Description: This function sends a message to a queue but unlike OSQPost(), the message is posted
+ 695:./ucOSII/Core/os_q.c **** *              the front instead of the end of the queue.  Using OSQPostFront() allows you to send
+ 696:./ucOSII/Core/os_q.c **** *              'priority' messages.
+ 697:./ucOSII/Core/os_q.c **** *
+ 698:./ucOSII/Core/os_q.c **** * Arguments  : pevent        is a pointer to the event control block associated with the desired qu
+ 699:./ucOSII/Core/os_q.c **** *
+ 700:./ucOSII/Core/os_q.c **** *              pmsg          is a pointer to the message to send.
+ 701:./ucOSII/Core/os_q.c **** *
+ 702:./ucOSII/Core/os_q.c **** * Returns    : OS_ERR_NONE           The call was successful and the message was sent
+ 703:./ucOSII/Core/os_q.c **** *              OS_ERR_Q_FULL         If the queue cannot accept any more messages because it is ful
+ 704:./ucOSII/Core/os_q.c **** *              OS_ERR_EVENT_TYPE     If you didn't pass a pointer to a queue.
+ 705:./ucOSII/Core/os_q.c **** *              OS_ERR_PEVENT_NULL    If 'pevent' is a NULL pointer
+ 706:./ucOSII/Core/os_q.c **** *
+ 707:./ucOSII/Core/os_q.c **** * Note(s)    : As of V2.60, this function allows you to send NULL pointer messages.
+ 708:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 709:./ucOSII/Core/os_q.c **** */
+ 710:./ucOSII/Core/os_q.c **** 
+ 711:./ucOSII/Core/os_q.c **** #if OS_Q_POST_FRONT_EN > 0u
+ 712:./ucOSII/Core/os_q.c **** INT8U  OSQPostFront (OS_EVENT  *pevent,
+ 713:./ucOSII/Core/os_q.c ****                      void      *pmsg)
+ 714:./ucOSII/Core/os_q.c **** {
+ 1281              		.loc 1 714 1
+ 1282              		.cfi_startproc
+ 1283              		@ args = 0, pretend = 0, frame = 16
+ 1284              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1285 0000 80B5     		push	{r7, lr}
+ 1286              	.LCFI35:
+ 1287              		.cfi_def_cfa_offset 8
+ 1288              		.cfi_offset 7, -8
+ 1289              		.cfi_offset 14, -4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 36
+
+
+ 1290 0002 84B0     		sub	sp, sp, #16
+ 1291              	.LCFI36:
+ 1292              		.cfi_def_cfa_offset 24
+ 1293 0004 00AF     		add	r7, sp, #0
+ 1294              	.LCFI37:
+ 1295              		.cfi_def_cfa_register 7
+ 1296 0006 7860     		str	r0, [r7, #4]
+ 1297 0008 3960     		str	r1, [r7]
+ 715:./ucOSII/Core/os_q.c ****     OS_Q      *pq;
+ 716:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                          /* Allocate storage for CPU status register  
+ 717:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+ 1298              		.loc 1 717 16
+ 1299 000a 0023     		movs	r3, #0
+ 1300 000c FB60     		str	r3, [r7, #12]
+ 718:./ucOSII/Core/os_q.c **** #endif
+ 719:./ucOSII/Core/os_q.c **** 
+ 720:./ucOSII/Core/os_q.c **** 
+ 721:./ucOSII/Core/os_q.c **** 
+ 722:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+ 723:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {                    /* Validate 'pevent'                         
+ 1301              		.loc 1 723 8
+ 1302 000e 7B68     		ldr	r3, [r7, #4]
+ 1303 0010 002B     		cmp	r3, #0
+ 1304 0012 01D1     		bne	.L71
+ 724:./ucOSII/Core/os_q.c ****         return (OS_ERR_PEVENT_NULL);
+ 1305              		.loc 1 724 16
+ 1306 0014 0423     		movs	r3, #4
+ 1307 0016 45E0     		b	.L72
+ 1308              	.L71:
+ 725:./ucOSII/Core/os_q.c ****     }
+ 726:./ucOSII/Core/os_q.c **** #endif
+ 727:./ucOSII/Core/os_q.c **** 
+ 728:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_POST_FRONT_ENTER(pevent);
+ 729:./ucOSII/Core/os_q.c **** 
+ 730:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {     /* Validate event block type                 
+ 1309              		.loc 1 730 15
+ 1310 0018 7B68     		ldr	r3, [r7, #4]
+ 1311 001a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1312              		.loc 1 730 8
+ 1313 001c 022B     		cmp	r3, #2
+ 1314 001e 01D0     		beq	.L73
+ 731:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_FRONT_EXIT(OS_ERR_EVENT_TYPE);
+ 732:./ucOSII/Core/os_q.c ****         return (OS_ERR_EVENT_TYPE);
+ 1315              		.loc 1 732 16
+ 1316 0020 0123     		movs	r3, #1
+ 1317 0022 3FE0     		b	.L72
+ 1318              	.L73:
+ 733:./ucOSII/Core/os_q.c ****     }
+ 734:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 1319              		.loc 1 734 5
+ 1320 0024 4020     		movs	r0, #64
+ 1321 0026 FFF7FEFF 		bl	OS_CPU_SR_Save
+ 1322 002a F860     		str	r0, [r7, #12]
+ 735:./ucOSII/Core/os_q.c ****     if (pevent->OSEventGrp != 0u) {                   /* See if any task pending on queue          
+ 1323              		.loc 1 735 15
+ 1324 002c 7B68     		ldr	r3, [r7, #4]
+ 1325 002e 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 37
+
+
+ 1326              		.loc 1 735 8
+ 1327 0030 002B     		cmp	r3, #0
+ 1328 0032 0CD0     		beq	.L74
+ 736:./ucOSII/Core/os_q.c ****                                                       /* Ready highest priority task waiting on eve
+ 737:./ucOSII/Core/os_q.c ****         (void)OS_EventTaskRdy(pevent, pmsg, OS_STAT_Q, OS_STAT_PEND_OK);
+ 1329              		.loc 1 737 15
+ 1330 0034 0023     		movs	r3, #0
+ 1331 0036 0422     		movs	r2, #4
+ 1332 0038 3968     		ldr	r1, [r7]
+ 1333 003a 7868     		ldr	r0, [r7, #4]
+ 1334 003c FFF7FEFF 		bl	OS_EventTaskRdy
+ 738:./ucOSII/Core/os_q.c ****         OS_EXIT_CRITICAL();
+ 1335              		.loc 1 738 9
+ 1336 0040 F868     		ldr	r0, [r7, #12]
+ 1337 0042 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 739:./ucOSII/Core/os_q.c ****         OS_Sched();                                   /* Find highest priority task ready to run   
+ 1338              		.loc 1 739 9
+ 1339 0046 FFF7FEFF 		bl	OS_Sched
+ 740:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_FRONT_EXIT(OS_ERR_NONE);
+ 741:./ucOSII/Core/os_q.c ****         return (OS_ERR_NONE);
+ 1340              		.loc 1 741 16
+ 1341 004a 0023     		movs	r3, #0
+ 1342 004c 2AE0     		b	.L72
+ 1343              	.L74:
+ 742:./ucOSII/Core/os_q.c ****     }
+ 743:./ucOSII/Core/os_q.c ****     pq = (OS_Q *)pevent->OSEventPtr;                  /* Point to queue control block              
+ 1344              		.loc 1 743 8
+ 1345 004e 7B68     		ldr	r3, [r7, #4]
+ 1346 0050 5B68     		ldr	r3, [r3, #4]
+ 1347 0052 BB60     		str	r3, [r7, #8]
+ 744:./ucOSII/Core/os_q.c ****     if (pq->OSQEntries >= pq->OSQSize) {              /* Make sure queue is not full               
+ 1348              		.loc 1 744 11
+ 1349 0054 BB68     		ldr	r3, [r7, #8]
+ 1350 0056 DA8A     		ldrh	r2, [r3, #22]
+ 1351              		.loc 1 744 29
+ 1352 0058 BB68     		ldr	r3, [r7, #8]
+ 1353 005a 9B8A     		ldrh	r3, [r3, #20]
+ 1354              		.loc 1 744 8
+ 1355 005c 9A42     		cmp	r2, r3
+ 1356 005e 04D3     		bcc	.L75
+ 745:./ucOSII/Core/os_q.c ****         OS_EXIT_CRITICAL();
+ 1357              		.loc 1 745 9
+ 1358 0060 F868     		ldr	r0, [r7, #12]
+ 1359 0062 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 746:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_FRONT_EXIT(OS_ERR_Q_FULL);
+ 747:./ucOSII/Core/os_q.c ****         return (OS_ERR_Q_FULL);
+ 1360              		.loc 1 747 16
+ 1361 0066 1E23     		movs	r3, #30
+ 1362 0068 1CE0     		b	.L72
+ 1363              	.L75:
+ 748:./ucOSII/Core/os_q.c ****     }
+ 749:./ucOSII/Core/os_q.c ****     if (pq->OSQOut == pq->OSQStart) {                 /* Wrap OUT ptr if we are at the 1st queue en
+ 1364              		.loc 1 749 11
+ 1365 006a BB68     		ldr	r3, [r7, #8]
+ 1366 006c 1A69     		ldr	r2, [r3, #16]
+ 1367              		.loc 1 749 25
+ 1368 006e BB68     		ldr	r3, [r7, #8]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 38
+
+
+ 1369 0070 5B68     		ldr	r3, [r3, #4]
+ 1370              		.loc 1 749 8
+ 1371 0072 9A42     		cmp	r2, r3
+ 1372 0074 03D1     		bne	.L76
+ 750:./ucOSII/Core/os_q.c ****         pq->OSQOut = pq->OSQEnd;
+ 1373              		.loc 1 750 24
+ 1374 0076 BB68     		ldr	r3, [r7, #8]
+ 1375 0078 9A68     		ldr	r2, [r3, #8]
+ 1376              		.loc 1 750 20
+ 1377 007a BB68     		ldr	r3, [r7, #8]
+ 1378 007c 1A61     		str	r2, [r3, #16]
+ 1379              	.L76:
+ 751:./ucOSII/Core/os_q.c ****     }
+ 752:./ucOSII/Core/os_q.c ****     pq->OSQOut--;
+ 1380              		.loc 1 752 7
+ 1381 007e BB68     		ldr	r3, [r7, #8]
+ 1382 0080 1B69     		ldr	r3, [r3, #16]
+ 1383              		.loc 1 752 15
+ 1384 0082 1A1F     		subs	r2, r3, #4
+ 1385 0084 BB68     		ldr	r3, [r7, #8]
+ 1386 0086 1A61     		str	r2, [r3, #16]
+ 753:./ucOSII/Core/os_q.c ****     *pq->OSQOut = pmsg;                               /* Insert message into queue                 
+ 1387              		.loc 1 753 8
+ 1388 0088 BB68     		ldr	r3, [r7, #8]
+ 1389 008a 1B69     		ldr	r3, [r3, #16]
+ 1390              		.loc 1 753 17
+ 1391 008c 3A68     		ldr	r2, [r7]
+ 1392 008e 1A60     		str	r2, [r3]
+ 754:./ucOSII/Core/os_q.c ****     pq->OSQEntries++;                                 /* Update the nbr of entries in the queue    
+ 1393              		.loc 1 754 7
+ 1394 0090 BB68     		ldr	r3, [r7, #8]
+ 1395 0092 DB8A     		ldrh	r3, [r3, #22]
+ 1396              		.loc 1 754 19
+ 1397 0094 0133     		adds	r3, r3, #1
+ 1398 0096 9AB2     		uxth	r2, r3
+ 1399 0098 BB68     		ldr	r3, [r7, #8]
+ 1400 009a DA82     		strh	r2, [r3, #22]	@ movhi
+ 755:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 1401              		.loc 1 755 5
+ 1402 009c F868     		ldr	r0, [r7, #12]
+ 1403 009e FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 756:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_POST_FRONT_EXIT(OS_ERR_NONE);
+ 757:./ucOSII/Core/os_q.c ****     return (OS_ERR_NONE);
+ 1404              		.loc 1 757 12
+ 1405 00a2 0023     		movs	r3, #0
+ 1406              	.L72:
+ 758:./ucOSII/Core/os_q.c **** }
+ 1407              		.loc 1 758 1
+ 1408 00a4 1846     		mov	r0, r3
+ 1409 00a6 1037     		adds	r7, r7, #16
+ 1410              	.LCFI38:
+ 1411              		.cfi_def_cfa_offset 8
+ 1412 00a8 BD46     		mov	sp, r7
+ 1413              	.LCFI39:
+ 1414              		.cfi_def_cfa_register 13
+ 1415              		@ sp needed
+ 1416 00aa 80BD     		pop	{r7, pc}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 39
+
+
+ 1417              		.cfi_endproc
+ 1418              	.LFE10:
+ 1420              		.section	.text.OSQPostOpt,"ax",%progbits
+ 1421              		.align	1
+ 1422              		.global	OSQPostOpt
+ 1423              		.syntax unified
+ 1424              		.thumb
+ 1425              		.thumb_func
+ 1427              	OSQPostOpt:
+ 1428              	.LFB11:
+ 759:./ucOSII/Core/os_q.c **** #endif
+ 760:./ucOSII/Core/os_q.c **** 
+ 761:./ucOSII/Core/os_q.c **** 
+ 762:./ucOSII/Core/os_q.c **** /*
+ 763:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 764:./ucOSII/Core/os_q.c **** *                                       POST MESSAGE TO A QUEUE
+ 765:./ucOSII/Core/os_q.c **** *
+ 766:./ucOSII/Core/os_q.c **** * Description: This function sends a message to a queue.  This call has been added to reduce code s
+ 767:./ucOSII/Core/os_q.c **** *              since it can replace both OSQPost() and OSQPostFront().  Also, this function adds th
+ 768:./ucOSII/Core/os_q.c **** *              capability to broadcast a message to ALL tasks waiting on the message queue.
+ 769:./ucOSII/Core/os_q.c **** *
+ 770:./ucOSII/Core/os_q.c **** * Arguments  : pevent        is a pointer to the event control block associated with the desired qu
+ 771:./ucOSII/Core/os_q.c **** *
+ 772:./ucOSII/Core/os_q.c **** *              pmsg          is a pointer to the message to send.
+ 773:./ucOSII/Core/os_q.c **** *
+ 774:./ucOSII/Core/os_q.c **** *              opt           determines the type of POST performed:
+ 775:./ucOSII/Core/os_q.c **** *                            OS_POST_OPT_NONE         POST to a single waiting task
+ 776:./ucOSII/Core/os_q.c **** *                                                     (Identical to OSQPost())
+ 777:./ucOSII/Core/os_q.c **** *                            OS_POST_OPT_BROADCAST    POST to ALL tasks that are waiting on the que
+ 778:./ucOSII/Core/os_q.c **** *                            OS_POST_OPT_FRONT        POST as LIFO (Simulates OSQPostFront())
+ 779:./ucOSII/Core/os_q.c **** *                            OS_POST_OPT_NO_SCHED     Indicates that the scheduler will NOT be invo
+ 780:./ucOSII/Core/os_q.c **** *
+ 781:./ucOSII/Core/os_q.c **** * Returns    : OS_ERR_NONE           The call was successful and the message was sent
+ 782:./ucOSII/Core/os_q.c **** *              OS_ERR_Q_FULL         If the queue cannot accept any more messages because it is ful
+ 783:./ucOSII/Core/os_q.c **** *              OS_ERR_EVENT_TYPE     If you didn't pass a pointer to a queue.
+ 784:./ucOSII/Core/os_q.c **** *              OS_ERR_PEVENT_NULL    If 'pevent' is a NULL pointer
+ 785:./ucOSII/Core/os_q.c **** *
+ 786:./ucOSII/Core/os_q.c **** * Warning    : Interrupts can be disabled for a long time if you do a 'broadcast'.  In fact, the
+ 787:./ucOSII/Core/os_q.c **** *              interrupt disable time is proportional to the number of tasks waiting on the queue.
+ 788:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 789:./ucOSII/Core/os_q.c **** */
+ 790:./ucOSII/Core/os_q.c **** 
+ 791:./ucOSII/Core/os_q.c **** #if OS_Q_POST_OPT_EN > 0u
+ 792:./ucOSII/Core/os_q.c **** INT8U  OSQPostOpt (OS_EVENT  *pevent,
+ 793:./ucOSII/Core/os_q.c ****                    void      *pmsg,
+ 794:./ucOSII/Core/os_q.c ****                    INT8U      opt)
+ 795:./ucOSII/Core/os_q.c **** {
+ 1429              		.loc 1 795 1
+ 1430              		.cfi_startproc
+ 1431              		@ args = 0, pretend = 0, frame = 24
+ 1432              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1433 0000 80B5     		push	{r7, lr}
+ 1434              	.LCFI40:
+ 1435              		.cfi_def_cfa_offset 8
+ 1436              		.cfi_offset 7, -8
+ 1437              		.cfi_offset 14, -4
+ 1438 0002 86B0     		sub	sp, sp, #24
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 40
+
+
+ 1439              	.LCFI41:
+ 1440              		.cfi_def_cfa_offset 32
+ 1441 0004 00AF     		add	r7, sp, #0
+ 1442              	.LCFI42:
+ 1443              		.cfi_def_cfa_register 7
+ 1444 0006 F860     		str	r0, [r7, #12]
+ 1445 0008 B960     		str	r1, [r7, #8]
+ 1446 000a 1346     		mov	r3, r2
+ 1447 000c FB71     		strb	r3, [r7, #7]
+ 796:./ucOSII/Core/os_q.c ****     OS_Q      *pq;
+ 797:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                          /* Allocate storage for CPU status register  
+ 798:./ucOSII/Core/os_q.c ****     OS_CPU_SR  cpu_sr = 0u;
+ 1448              		.loc 1 798 16
+ 1449 000e 0023     		movs	r3, #0
+ 1450 0010 7B61     		str	r3, [r7, #20]
+ 799:./ucOSII/Core/os_q.c **** #endif
+ 800:./ucOSII/Core/os_q.c **** 
+ 801:./ucOSII/Core/os_q.c **** 
+ 802:./ucOSII/Core/os_q.c **** 
+ 803:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+ 804:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {                    /* Validate 'pevent'                         
+ 1451              		.loc 1 804 8
+ 1452 0012 FB68     		ldr	r3, [r7, #12]
+ 1453 0014 002B     		cmp	r3, #0
+ 1454 0016 01D1     		bne	.L78
+ 805:./ucOSII/Core/os_q.c ****         return (OS_ERR_PEVENT_NULL);
+ 1455              		.loc 1 805 16
+ 1456 0018 0423     		movs	r3, #4
+ 1457 001a 72E0     		b	.L79
+ 1458              	.L78:
+ 806:./ucOSII/Core/os_q.c ****     }
+ 807:./ucOSII/Core/os_q.c **** #endif
+ 808:./ucOSII/Core/os_q.c **** 
+ 809:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_POST_OPT_ENTER(pevent, opt);
+ 810:./ucOSII/Core/os_q.c **** 
+ 811:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {     /* Validate event block type                 
+ 1459              		.loc 1 811 15
+ 1460 001c FB68     		ldr	r3, [r7, #12]
+ 1461 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1462              		.loc 1 811 8
+ 1463 0020 022B     		cmp	r3, #2
+ 1464 0022 01D0     		beq	.L80
+ 812:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_OPT_EXIT(OS_ERR_EVENT_TYPE);
+ 813:./ucOSII/Core/os_q.c ****         return (OS_ERR_EVENT_TYPE);
+ 1465              		.loc 1 813 16
+ 1466 0024 0123     		movs	r3, #1
+ 1467 0026 6CE0     		b	.L79
+ 1468              	.L80:
+ 814:./ucOSII/Core/os_q.c ****     }
+ 815:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 1469              		.loc 1 815 5
+ 1470 0028 4020     		movs	r0, #64
+ 1471 002a FFF7FEFF 		bl	OS_CPU_SR_Save
+ 1472 002e 7861     		str	r0, [r7, #20]
+ 816:./ucOSII/Core/os_q.c ****     if (pevent->OSEventGrp != 0x00u) {                /* See if any task pending on queue          
+ 1473              		.loc 1 816 15
+ 1474 0030 FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 41
+
+
+ 1475 0032 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 1476              		.loc 1 816 8
+ 1477 0034 002B     		cmp	r3, #0
+ 1478 0036 22D0     		beq	.L81
+ 817:./ucOSII/Core/os_q.c ****         if ((opt & OS_POST_OPT_BROADCAST) != 0x00u) { /* Do we need to post msg to ALL waiting task
+ 1479              		.loc 1 817 18
+ 1480 0038 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1481 003a 03F00103 		and	r3, r3, #1
+ 1482              		.loc 1 817 12
+ 1483 003e 002B     		cmp	r3, #0
+ 1484 0040 0BD0     		beq	.L82
+ 818:./ucOSII/Core/os_q.c ****             while (pevent->OSEventGrp != 0u) {        /* Yes, Post to ALL tasks waiting on queue   
+ 1485              		.loc 1 818 19
+ 1486 0042 05E0     		b	.L83
+ 1487              	.L84:
+ 819:./ucOSII/Core/os_q.c ****                 (void)OS_EventTaskRdy(pevent, pmsg, OS_STAT_Q, OS_STAT_PEND_OK);
+ 1488              		.loc 1 819 23
+ 1489 0044 0023     		movs	r3, #0
+ 1490 0046 0422     		movs	r2, #4
+ 1491 0048 B968     		ldr	r1, [r7, #8]
+ 1492 004a F868     		ldr	r0, [r7, #12]
+ 1493 004c FFF7FEFF 		bl	OS_EventTaskRdy
+ 1494              	.L83:
+ 818:./ucOSII/Core/os_q.c ****             while (pevent->OSEventGrp != 0u) {        /* Yes, Post to ALL tasks waiting on queue   
+ 1495              		.loc 1 818 26
+ 1496 0050 FB68     		ldr	r3, [r7, #12]
+ 1497 0052 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 818:./ucOSII/Core/os_q.c ****             while (pevent->OSEventGrp != 0u) {        /* Yes, Post to ALL tasks waiting on queue   
+ 1498              		.loc 1 818 19
+ 1499 0054 002B     		cmp	r3, #0
+ 1500 0056 F5D1     		bne	.L84
+ 1501 0058 05E0     		b	.L85
+ 1502              	.L82:
+ 820:./ucOSII/Core/os_q.c ****             }
+ 821:./ucOSII/Core/os_q.c ****         } else {                                      /* No,  Post to HPT waiting on queue         
+ 822:./ucOSII/Core/os_q.c ****             (void)OS_EventTaskRdy(pevent, pmsg, OS_STAT_Q, OS_STAT_PEND_OK);
+ 1503              		.loc 1 822 19
+ 1504 005a 0023     		movs	r3, #0
+ 1505 005c 0422     		movs	r2, #4
+ 1506 005e B968     		ldr	r1, [r7, #8]
+ 1507 0060 F868     		ldr	r0, [r7, #12]
+ 1508 0062 FFF7FEFF 		bl	OS_EventTaskRdy
+ 1509              	.L85:
+ 823:./ucOSII/Core/os_q.c ****         }
+ 824:./ucOSII/Core/os_q.c ****         OS_EXIT_CRITICAL();
+ 1510              		.loc 1 824 9
+ 1511 0066 7869     		ldr	r0, [r7, #20]
+ 1512 0068 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 825:./ucOSII/Core/os_q.c ****         if ((opt & OS_POST_OPT_NO_SCHED) == 0u) {     /* See if scheduler needs to be invoked      
+ 1513              		.loc 1 825 18
+ 1514 006c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1515 006e 03F00403 		and	r3, r3, #4
+ 1516              		.loc 1 825 12
+ 1517 0072 002B     		cmp	r3, #0
+ 1518 0074 01D1     		bne	.L86
+ 826:./ucOSII/Core/os_q.c ****             OS_Sched();                               /* Find highest priority task ready to run   
+ 1519              		.loc 1 826 13
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 42
+
+
+ 1520 0076 FFF7FEFF 		bl	OS_Sched
+ 1521              	.L86:
+ 827:./ucOSII/Core/os_q.c ****         }
+ 828:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_OPT_EXIT(OS_ERR_NONE);
+ 829:./ucOSII/Core/os_q.c ****         return (OS_ERR_NONE);
+ 1522              		.loc 1 829 16
+ 1523 007a 0023     		movs	r3, #0
+ 1524 007c 41E0     		b	.L79
+ 1525              	.L81:
+ 830:./ucOSII/Core/os_q.c ****     }
+ 831:./ucOSII/Core/os_q.c ****     pq = (OS_Q *)pevent->OSEventPtr;                  /* Point to queue control block              
+ 1526              		.loc 1 831 8
+ 1527 007e FB68     		ldr	r3, [r7, #12]
+ 1528 0080 5B68     		ldr	r3, [r3, #4]
+ 1529 0082 3B61     		str	r3, [r7, #16]
+ 832:./ucOSII/Core/os_q.c ****     if (pq->OSQEntries >= pq->OSQSize) {              /* Make sure queue is not full               
+ 1530              		.loc 1 832 11
+ 1531 0084 3B69     		ldr	r3, [r7, #16]
+ 1532 0086 DA8A     		ldrh	r2, [r3, #22]
+ 1533              		.loc 1 832 29
+ 1534 0088 3B69     		ldr	r3, [r7, #16]
+ 1535 008a 9B8A     		ldrh	r3, [r3, #20]
+ 1536              		.loc 1 832 8
+ 1537 008c 9A42     		cmp	r2, r3
+ 1538 008e 04D3     		bcc	.L87
+ 833:./ucOSII/Core/os_q.c ****         OS_EXIT_CRITICAL();
+ 1539              		.loc 1 833 9
+ 1540 0090 7869     		ldr	r0, [r7, #20]
+ 1541 0092 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 834:./ucOSII/Core/os_q.c ****         OS_TRACE_Q_POST_OPT_EXIT(OS_ERR_Q_FULL);
+ 835:./ucOSII/Core/os_q.c ****         return (OS_ERR_Q_FULL);
+ 1542              		.loc 1 835 16
+ 1543 0096 1E23     		movs	r3, #30
+ 1544 0098 33E0     		b	.L79
+ 1545              	.L87:
+ 836:./ucOSII/Core/os_q.c ****     }
+ 837:./ucOSII/Core/os_q.c ****     if ((opt & OS_POST_OPT_FRONT) != 0x00u) {         /* Do we post to the FRONT of the queue?     
+ 1546              		.loc 1 837 14
+ 1547 009a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1548 009c 03F00203 		and	r3, r3, #2
+ 1549              		.loc 1 837 8
+ 1550 00a0 002B     		cmp	r3, #0
+ 1551 00a2 13D0     		beq	.L88
+ 838:./ucOSII/Core/os_q.c ****         if (pq->OSQOut == pq->OSQStart) {             /* Yes, Post as LIFO, Wrap OUT pointer if we 
+ 1552              		.loc 1 838 15
+ 1553 00a4 3B69     		ldr	r3, [r7, #16]
+ 1554 00a6 1A69     		ldr	r2, [r3, #16]
+ 1555              		.loc 1 838 29
+ 1556 00a8 3B69     		ldr	r3, [r7, #16]
+ 1557 00aa 5B68     		ldr	r3, [r3, #4]
+ 1558              		.loc 1 838 12
+ 1559 00ac 9A42     		cmp	r2, r3
+ 1560 00ae 03D1     		bne	.L89
+ 839:./ucOSII/Core/os_q.c ****             pq->OSQOut = pq->OSQEnd;                  /*      ... are at the 1st queue entry       
+ 1561              		.loc 1 839 28
+ 1562 00b0 3B69     		ldr	r3, [r7, #16]
+ 1563 00b2 9A68     		ldr	r2, [r3, #8]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 43
+
+
+ 1564              		.loc 1 839 24
+ 1565 00b4 3B69     		ldr	r3, [r7, #16]
+ 1566 00b6 1A61     		str	r2, [r3, #16]
+ 1567              	.L89:
+ 840:./ucOSII/Core/os_q.c ****         }
+ 841:./ucOSII/Core/os_q.c ****         pq->OSQOut--;
+ 1568              		.loc 1 841 11
+ 1569 00b8 3B69     		ldr	r3, [r7, #16]
+ 1570 00ba 1B69     		ldr	r3, [r3, #16]
+ 1571              		.loc 1 841 19
+ 1572 00bc 1A1F     		subs	r2, r3, #4
+ 1573 00be 3B69     		ldr	r3, [r7, #16]
+ 1574 00c0 1A61     		str	r2, [r3, #16]
+ 842:./ucOSII/Core/os_q.c ****         *pq->OSQOut = pmsg;                           /*      Insert message into queue            
+ 1575              		.loc 1 842 12
+ 1576 00c2 3B69     		ldr	r3, [r7, #16]
+ 1577 00c4 1B69     		ldr	r3, [r3, #16]
+ 1578              		.loc 1 842 21
+ 1579 00c6 BA68     		ldr	r2, [r7, #8]
+ 1580 00c8 1A60     		str	r2, [r3]
+ 1581 00ca 10E0     		b	.L90
+ 1582              	.L88:
+ 843:./ucOSII/Core/os_q.c ****     } else {                                          /* No,  Post as FIFO                         
+ 844:./ucOSII/Core/os_q.c ****         *pq->OSQIn++ = pmsg;                          /*      Insert message into queue            
+ 1583              		.loc 1 844 12
+ 1584 00cc 3B69     		ldr	r3, [r7, #16]
+ 1585 00ce DB68     		ldr	r3, [r3, #12]
+ 1586              		.loc 1 844 19
+ 1587 00d0 191D     		adds	r1, r3, #4
+ 1588 00d2 3A69     		ldr	r2, [r7, #16]
+ 1589 00d4 D160     		str	r1, [r2, #12]
+ 1590              		.loc 1 844 22
+ 1591 00d6 BA68     		ldr	r2, [r7, #8]
+ 1592 00d8 1A60     		str	r2, [r3]
+ 845:./ucOSII/Core/os_q.c ****         if (pq->OSQIn == pq->OSQEnd) {                /*      Wrap IN ptr if we are at end of queue
+ 1593              		.loc 1 845 15
+ 1594 00da 3B69     		ldr	r3, [r7, #16]
+ 1595 00dc DA68     		ldr	r2, [r3, #12]
+ 1596              		.loc 1 845 28
+ 1597 00de 3B69     		ldr	r3, [r7, #16]
+ 1598 00e0 9B68     		ldr	r3, [r3, #8]
+ 1599              		.loc 1 845 12
+ 1600 00e2 9A42     		cmp	r2, r3
+ 1601 00e4 03D1     		bne	.L90
+ 846:./ucOSII/Core/os_q.c ****             pq->OSQIn = pq->OSQStart;
+ 1602              		.loc 1 846 27
+ 1603 00e6 3B69     		ldr	r3, [r7, #16]
+ 1604 00e8 5A68     		ldr	r2, [r3, #4]
+ 1605              		.loc 1 846 23
+ 1606 00ea 3B69     		ldr	r3, [r7, #16]
+ 1607 00ec DA60     		str	r2, [r3, #12]
+ 1608              	.L90:
+ 847:./ucOSII/Core/os_q.c ****         }
+ 848:./ucOSII/Core/os_q.c ****     }
+ 849:./ucOSII/Core/os_q.c ****     pq->OSQEntries++;                                 /* Update the nbr of entries in the queue    
+ 1609              		.loc 1 849 7
+ 1610 00ee 3B69     		ldr	r3, [r7, #16]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 44
+
+
+ 1611 00f0 DB8A     		ldrh	r3, [r3, #22]
+ 1612              		.loc 1 849 19
+ 1613 00f2 0133     		adds	r3, r3, #1
+ 1614 00f4 9AB2     		uxth	r2, r3
+ 1615 00f6 3B69     		ldr	r3, [r7, #16]
+ 1616 00f8 DA82     		strh	r2, [r3, #22]	@ movhi
+ 850:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ 1617              		.loc 1 850 5
+ 1618 00fa 7869     		ldr	r0, [r7, #20]
+ 1619 00fc FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 851:./ucOSII/Core/os_q.c ****     OS_TRACE_Q_POST_OPT_EXIT(OS_ERR_NONE);
+ 852:./ucOSII/Core/os_q.c ****     return (OS_ERR_NONE);
+ 1620              		.loc 1 852 12
+ 1621 0100 0023     		movs	r3, #0
+ 1622              	.L79:
+ 853:./ucOSII/Core/os_q.c **** }
+ 1623              		.loc 1 853 1
+ 1624 0102 1846     		mov	r0, r3
+ 1625 0104 1837     		adds	r7, r7, #24
+ 1626              	.LCFI43:
+ 1627              		.cfi_def_cfa_offset 8
+ 1628 0106 BD46     		mov	sp, r7
+ 1629              	.LCFI44:
+ 1630              		.cfi_def_cfa_register 13
+ 1631              		@ sp needed
+ 1632 0108 80BD     		pop	{r7, pc}
+ 1633              		.cfi_endproc
+ 1634              	.LFE11:
+ 1636              		.section	.text.OSQQuery,"ax",%progbits
+ 1637              		.align	1
+ 1638              		.global	OSQQuery
+ 1639              		.syntax unified
+ 1640              		.thumb
+ 1641              		.thumb_func
+ 1643              	OSQQuery:
+ 1644              	.LFB12:
+ 854:./ucOSII/Core/os_q.c **** #endif
+ 855:./ucOSII/Core/os_q.c **** 
+ 856:./ucOSII/Core/os_q.c **** 
+ 857:./ucOSII/Core/os_q.c **** /*
+ 858:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 859:./ucOSII/Core/os_q.c **** *                                        QUERY A MESSAGE QUEUE
+ 860:./ucOSII/Core/os_q.c **** *
+ 861:./ucOSII/Core/os_q.c **** * Description: This function obtains information about a message queue.
+ 862:./ucOSII/Core/os_q.c **** *
+ 863:./ucOSII/Core/os_q.c **** * Arguments  : pevent        is a pointer to the event control block associated with the desired qu
+ 864:./ucOSII/Core/os_q.c **** *
+ 865:./ucOSII/Core/os_q.c **** *              p_q_data      is a pointer to a structure that will contain information about the me
+ 866:./ucOSII/Core/os_q.c **** *                            queue.
+ 867:./ucOSII/Core/os_q.c **** *
+ 868:./ucOSII/Core/os_q.c **** * Returns    : OS_ERR_NONE         The call was successful and the message was sent
+ 869:./ucOSII/Core/os_q.c **** *              OS_ERR_EVENT_TYPE   If you are attempting to obtain data from a non queue.
+ 870:./ucOSII/Core/os_q.c **** *              OS_ERR_PEVENT_NULL  If 'pevent'   is a NULL pointer
+ 871:./ucOSII/Core/os_q.c **** *              OS_ERR_PDATA_NULL   If 'p_q_data' is a NULL pointer
+ 872:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 873:./ucOSII/Core/os_q.c **** */
+ 874:./ucOSII/Core/os_q.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 45
+
+
+ 875:./ucOSII/Core/os_q.c **** #if OS_Q_QUERY_EN > 0u
+ 876:./ucOSII/Core/os_q.c **** INT8U  OSQQuery (OS_EVENT  *pevent,
+ 877:./ucOSII/Core/os_q.c ****                  OS_Q_DATA *p_q_data)
+ 878:./ucOSII/Core/os_q.c **** {
+ 1645              		.loc 1 878 1
+ 1646              		.cfi_startproc
+ 1647              		@ args = 0, pretend = 0, frame = 32
+ 1648              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1649 0000 80B5     		push	{r7, lr}
+ 1650              	.LCFI45:
+ 1651              		.cfi_def_cfa_offset 8
+ 1652              		.cfi_offset 7, -8
+ 1653              		.cfi_offset 14, -4
+ 1654 0002 88B0     		sub	sp, sp, #32
+ 1655              	.LCFI46:
+ 1656              		.cfi_def_cfa_offset 40
+ 1657 0004 00AF     		add	r7, sp, #0
+ 1658              	.LCFI47:
+ 1659              		.cfi_def_cfa_register 7
+ 1660 0006 7860     		str	r0, [r7, #4]
+ 1661 0008 3960     		str	r1, [r7]
+ 879:./ucOSII/Core/os_q.c ****     OS_Q       *pq;
+ 880:./ucOSII/Core/os_q.c ****     INT8U       i;
+ 881:./ucOSII/Core/os_q.c ****     OS_PRIO    *psrc;
+ 882:./ucOSII/Core/os_q.c ****     OS_PRIO    *pdest;
+ 883:./ucOSII/Core/os_q.c **** #if OS_CRITICAL_METHOD == 3u                           /* Allocate storage for CPU status register 
+ 884:./ucOSII/Core/os_q.c ****     OS_CPU_SR   cpu_sr = 0u;
+ 1662              		.loc 1 884 17
+ 1663 000a 0023     		movs	r3, #0
+ 1664 000c 3B61     		str	r3, [r7, #16]
+ 885:./ucOSII/Core/os_q.c **** #endif
+ 886:./ucOSII/Core/os_q.c **** 
+ 887:./ucOSII/Core/os_q.c **** 
+ 888:./ucOSII/Core/os_q.c **** 
+ 889:./ucOSII/Core/os_q.c **** #if OS_ARG_CHK_EN > 0u
+ 890:./ucOSII/Core/os_q.c ****     if (pevent == (OS_EVENT *)0) {                     /* Validate 'pevent'                        
+ 1665              		.loc 1 890 8
+ 1666 000e 7B68     		ldr	r3, [r7, #4]
+ 1667 0010 002B     		cmp	r3, #0
+ 1668 0012 01D1     		bne	.L92
+ 891:./ucOSII/Core/os_q.c ****         return (OS_ERR_PEVENT_NULL);
+ 1669              		.loc 1 891 16
+ 1670 0014 0423     		movs	r3, #4
+ 1671 0016 45E0     		b	.L93
+ 1672              	.L92:
+ 892:./ucOSII/Core/os_q.c ****     }
+ 893:./ucOSII/Core/os_q.c ****     if (p_q_data == (OS_Q_DATA *)0) {                  /* Validate 'p_q_data'                      
+ 1673              		.loc 1 893 8
+ 1674 0018 3B68     		ldr	r3, [r7]
+ 1675 001a 002B     		cmp	r3, #0
+ 1676 001c 01D1     		bne	.L94
+ 894:./ucOSII/Core/os_q.c ****         return (OS_ERR_PDATA_NULL);
+ 1677              		.loc 1 894 16
+ 1678 001e 0923     		movs	r3, #9
+ 1679 0020 40E0     		b	.L93
+ 1680              	.L94:
+ 895:./ucOSII/Core/os_q.c ****     }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 46
+
+
+ 896:./ucOSII/Core/os_q.c **** #endif
+ 897:./ucOSII/Core/os_q.c ****     if (pevent->OSEventType != OS_EVENT_TYPE_Q) {      /* Validate event block type                
+ 1681              		.loc 1 897 15
+ 1682 0022 7B68     		ldr	r3, [r7, #4]
+ 1683 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1684              		.loc 1 897 8
+ 1685 0026 022B     		cmp	r3, #2
+ 1686 0028 01D0     		beq	.L95
+ 898:./ucOSII/Core/os_q.c ****         return (OS_ERR_EVENT_TYPE);
+ 1687              		.loc 1 898 16
+ 1688 002a 0123     		movs	r3, #1
+ 1689 002c 3AE0     		b	.L93
+ 1690              	.L95:
+ 899:./ucOSII/Core/os_q.c ****     }
+ 900:./ucOSII/Core/os_q.c ****     OS_ENTER_CRITICAL();
+ 1691              		.loc 1 900 5
+ 1692 002e 4020     		movs	r0, #64
+ 1693 0030 FFF7FEFF 		bl	OS_CPU_SR_Save
+ 1694 0034 3861     		str	r0, [r7, #16]
+ 901:./ucOSII/Core/os_q.c ****     p_q_data->OSEventGrp = pevent->OSEventGrp;         /* Copy message queue wait list             
+ 1695              		.loc 1 901 34
+ 1696 0036 7B68     		ldr	r3, [r7, #4]
+ 1697 0038 9A7A     		ldrb	r2, [r3, #10]	@ zero_extendqisi2
+ 1698              		.loc 1 901 26
+ 1699 003a 3B68     		ldr	r3, [r7]
+ 1700 003c 1A74     		strb	r2, [r3, #16]
+ 902:./ucOSII/Core/os_q.c ****     psrc                 = &pevent->OSEventTbl[0];
+ 1701              		.loc 1 902 26
+ 1702 003e 7B68     		ldr	r3, [r7, #4]
+ 1703 0040 0B33     		adds	r3, r3, #11
+ 1704 0042 BB61     		str	r3, [r7, #24]
+ 903:./ucOSII/Core/os_q.c ****     pdest                = &p_q_data->OSEventTbl[0];
+ 1705              		.loc 1 903 26
+ 1706 0044 3B68     		ldr	r3, [r7]
+ 1707 0046 0833     		adds	r3, r3, #8
+ 1708 0048 7B61     		str	r3, [r7, #20]
+ 904:./ucOSII/Core/os_q.c ****     for (i = 0u; i < OS_EVENT_TBL_SIZE; i++) {
+ 1709              		.loc 1 904 12
+ 1710 004a 0023     		movs	r3, #0
+ 1711 004c FB77     		strb	r3, [r7, #31]
+ 1712              		.loc 1 904 5
+ 1713 004e 0AE0     		b	.L96
+ 1714              	.L97:
+ 905:./ucOSII/Core/os_q.c ****         *pdest++ = *psrc++;
+ 1715              		.loc 1 905 25 discriminator 3
+ 1716 0050 BA69     		ldr	r2, [r7, #24]
+ 1717 0052 531C     		adds	r3, r2, #1
+ 1718 0054 BB61     		str	r3, [r7, #24]
+ 1719              		.loc 1 905 15 discriminator 3
+ 1720 0056 7B69     		ldr	r3, [r7, #20]
+ 1721 0058 591C     		adds	r1, r3, #1
+ 1722 005a 7961     		str	r1, [r7, #20]
+ 1723              		.loc 1 905 20 discriminator 3
+ 1724 005c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 1725              		.loc 1 905 18 discriminator 3
+ 1726 005e 1A70     		strb	r2, [r3]
+ 904:./ucOSII/Core/os_q.c ****     for (i = 0u; i < OS_EVENT_TBL_SIZE; i++) {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 47
+
+
+ 1727              		.loc 1 904 42 discriminator 3
+ 1728 0060 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 1729 0062 0133     		adds	r3, r3, #1
+ 1730 0064 FB77     		strb	r3, [r7, #31]
+ 1731              	.L96:
+ 904:./ucOSII/Core/os_q.c ****     for (i = 0u; i < OS_EVENT_TBL_SIZE; i++) {
+ 1732              		.loc 1 904 5 discriminator 1
+ 1733 0066 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 1734 0068 072B     		cmp	r3, #7
+ 1735 006a F1D9     		bls	.L97
+ 906:./ucOSII/Core/os_q.c ****     }
+ 907:./ucOSII/Core/os_q.c ****     pq = (OS_Q *)pevent->OSEventPtr;
+ 1736              		.loc 1 907 8
+ 1737 006c 7B68     		ldr	r3, [r7, #4]
+ 1738 006e 5B68     		ldr	r3, [r3, #4]
+ 1739 0070 FB60     		str	r3, [r7, #12]
+ 908:./ucOSII/Core/os_q.c ****     if (pq->OSQEntries > 0u) {
+ 1740              		.loc 1 908 11
+ 1741 0072 FB68     		ldr	r3, [r7, #12]
+ 1742 0074 DB8A     		ldrh	r3, [r3, #22]
+ 1743              		.loc 1 908 8
+ 1744 0076 002B     		cmp	r3, #0
+ 1745 0078 05D0     		beq	.L98
+ 909:./ucOSII/Core/os_q.c ****         p_q_data->OSMsg = *pq->OSQOut;                 /* Get next message to return if available  
+ 1746              		.loc 1 909 30
+ 1747 007a FB68     		ldr	r3, [r7, #12]
+ 1748 007c 1B69     		ldr	r3, [r3, #16]
+ 1749              		.loc 1 909 27
+ 1750 007e 1A68     		ldr	r2, [r3]
+ 1751              		.loc 1 909 25
+ 1752 0080 3B68     		ldr	r3, [r7]
+ 1753 0082 1A60     		str	r2, [r3]
+ 1754 0084 02E0     		b	.L99
+ 1755              	.L98:
+ 910:./ucOSII/Core/os_q.c ****     } else {
+ 911:./ucOSII/Core/os_q.c ****         p_q_data->OSMsg = (void *)0;
+ 1756              		.loc 1 911 25
+ 1757 0086 3B68     		ldr	r3, [r7]
+ 1758 0088 0022     		movs	r2, #0
+ 1759 008a 1A60     		str	r2, [r3]
+ 1760              	.L99:
+ 912:./ucOSII/Core/os_q.c ****     }
+ 913:./ucOSII/Core/os_q.c ****     p_q_data->OSNMsgs = pq->OSQEntries;
+ 1761              		.loc 1 913 27
+ 1762 008c FB68     		ldr	r3, [r7, #12]
+ 1763 008e DA8A     		ldrh	r2, [r3, #22]
+ 1764              		.loc 1 913 23
+ 1765 0090 3B68     		ldr	r3, [r7]
+ 1766 0092 9A80     		strh	r2, [r3, #4]	@ movhi
+ 914:./ucOSII/Core/os_q.c ****     p_q_data->OSQSize = pq->OSQSize;
+ 1767              		.loc 1 914 27
+ 1768 0094 FB68     		ldr	r3, [r7, #12]
+ 1769 0096 9A8A     		ldrh	r2, [r3, #20]
+ 1770              		.loc 1 914 23
+ 1771 0098 3B68     		ldr	r3, [r7]
+ 1772 009a DA80     		strh	r2, [r3, #6]	@ movhi
+ 915:./ucOSII/Core/os_q.c ****     OS_EXIT_CRITICAL();
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 48
+
+
+ 1773              		.loc 1 915 5
+ 1774 009c 3869     		ldr	r0, [r7, #16]
+ 1775 009e FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 916:./ucOSII/Core/os_q.c ****     return (OS_ERR_NONE);
+ 1776              		.loc 1 916 12
+ 1777 00a2 0023     		movs	r3, #0
+ 1778              	.L93:
+ 917:./ucOSII/Core/os_q.c **** }
+ 1779              		.loc 1 917 1
+ 1780 00a4 1846     		mov	r0, r3
+ 1781 00a6 2037     		adds	r7, r7, #32
+ 1782              	.LCFI48:
+ 1783              		.cfi_def_cfa_offset 8
+ 1784 00a8 BD46     		mov	sp, r7
+ 1785              	.LCFI49:
+ 1786              		.cfi_def_cfa_register 13
+ 1787              		@ sp needed
+ 1788 00aa 80BD     		pop	{r7, pc}
+ 1789              		.cfi_endproc
+ 1790              	.LFE12:
+ 1792              		.section	.text.OS_QInit,"ax",%progbits
+ 1793              		.align	1
+ 1794              		.global	OS_QInit
+ 1795              		.syntax unified
+ 1796              		.thumb
+ 1797              		.thumb_func
+ 1799              	OS_QInit:
+ 1800              	.LFB13:
+ 918:./ucOSII/Core/os_q.c **** #endif                                                 /* OS_Q_QUERY_EN                            
+ 919:./ucOSII/Core/os_q.c **** 
+ 920:./ucOSII/Core/os_q.c **** 
+ 921:./ucOSII/Core/os_q.c **** /*
+ 922:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 923:./ucOSII/Core/os_q.c **** *                                     QUEUE MODULE INITIALIZATION
+ 924:./ucOSII/Core/os_q.c **** *
+ 925:./ucOSII/Core/os_q.c **** * Description : This function is called by uC/OS-II to initialize the message queue module.  Your
+ 926:./ucOSII/Core/os_q.c **** *               application MUST NOT call this function.
+ 927:./ucOSII/Core/os_q.c **** *
+ 928:./ucOSII/Core/os_q.c **** * Arguments   :  none
+ 929:./ucOSII/Core/os_q.c **** *
+ 930:./ucOSII/Core/os_q.c **** * Returns     : none
+ 931:./ucOSII/Core/os_q.c **** *
+ 932:./ucOSII/Core/os_q.c **** * Note(s)    : This function is INTERNAL to uC/OS-II and your application should not call it.
+ 933:./ucOSII/Core/os_q.c **** ***************************************************************************************************
+ 934:./ucOSII/Core/os_q.c **** */
+ 935:./ucOSII/Core/os_q.c **** 
+ 936:./ucOSII/Core/os_q.c **** void  OS_QInit (void)
+ 937:./ucOSII/Core/os_q.c **** {
+ 1801              		.loc 1 937 1
+ 1802              		.cfi_startproc
+ 1803              		@ args = 0, pretend = 0, frame = 16
+ 1804              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1805 0000 80B5     		push	{r7, lr}
+ 1806              	.LCFI50:
+ 1807              		.cfi_def_cfa_offset 8
+ 1808              		.cfi_offset 7, -8
+ 1809              		.cfi_offset 14, -4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 49
+
+
+ 1810 0002 84B0     		sub	sp, sp, #16
+ 1811              	.LCFI51:
+ 1812              		.cfi_def_cfa_offset 24
+ 1813 0004 00AF     		add	r7, sp, #0
+ 1814              	.LCFI52:
+ 1815              		.cfi_def_cfa_register 7
+ 938:./ucOSII/Core/os_q.c **** #if OS_MAX_QS == 1u
+ 939:./ucOSII/Core/os_q.c ****     OSQFreeList         = &OSQTbl[0];                /* Only ONE queue!                            
+ 940:./ucOSII/Core/os_q.c ****     OSQFreeList->OSQPtr = (OS_Q *)0;
+ 941:./ucOSII/Core/os_q.c **** #endif
+ 942:./ucOSII/Core/os_q.c **** 
+ 943:./ucOSII/Core/os_q.c **** #if OS_MAX_QS >= 2u
+ 944:./ucOSII/Core/os_q.c ****     INT16U   ix;
+ 945:./ucOSII/Core/os_q.c ****     INT16U   ix_next;
+ 946:./ucOSII/Core/os_q.c ****     OS_Q    *pq1;
+ 947:./ucOSII/Core/os_q.c ****     OS_Q    *pq2;
+ 948:./ucOSII/Core/os_q.c **** 
+ 949:./ucOSII/Core/os_q.c **** 
+ 950:./ucOSII/Core/os_q.c **** 
+ 951:./ucOSII/Core/os_q.c ****     OS_MemClr((INT8U *)&OSQTbl[0], sizeof(OSQTbl));  /* Clear the queue table                      
+ 1816              		.loc 1 951 5
+ 1817 0006 6021     		movs	r1, #96
+ 1818 0008 1948     		ldr	r0, .L103
+ 1819 000a FFF7FEFF 		bl	OS_MemClr
+ 952:./ucOSII/Core/os_q.c ****     for (ix = 0u; ix < (OS_MAX_QS - 1u); ix++) {     /* Init. list of free QUEUE control blocks    
+ 1820              		.loc 1 952 13
+ 1821 000e 0023     		movs	r3, #0
+ 1822 0010 FB81     		strh	r3, [r7, #14]	@ movhi
+ 1823              		.loc 1 952 5
+ 1824 0012 18E0     		b	.L101
+ 1825              	.L102:
+ 953:./ucOSII/Core/os_q.c ****         ix_next = ix + 1u;
+ 1826              		.loc 1 953 17 discriminator 3
+ 1827 0014 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 1828 0016 0133     		adds	r3, r3, #1
+ 1829 0018 FB80     		strh	r3, [r7, #6]	@ movhi
+ 954:./ucOSII/Core/os_q.c ****         pq1 = &OSQTbl[ix];
+ 1830              		.loc 1 954 22 discriminator 3
+ 1831 001a FA89     		ldrh	r2, [r7, #14]
+ 1832              		.loc 1 954 13 discriminator 3
+ 1833 001c 1346     		mov	r3, r2
+ 1834 001e 5B00     		lsls	r3, r3, #1
+ 1835 0020 1344     		add	r3, r3, r2
+ 1836 0022 DB00     		lsls	r3, r3, #3
+ 1837 0024 124A     		ldr	r2, .L103
+ 1838 0026 1344     		add	r3, r3, r2
+ 1839 0028 BB60     		str	r3, [r7, #8]
+ 955:./ucOSII/Core/os_q.c ****         pq2 = &OSQTbl[ix_next];
+ 1840              		.loc 1 955 22 discriminator 3
+ 1841 002a FA88     		ldrh	r2, [r7, #6]
+ 1842              		.loc 1 955 13 discriminator 3
+ 1843 002c 1346     		mov	r3, r2
+ 1844 002e 5B00     		lsls	r3, r3, #1
+ 1845 0030 1344     		add	r3, r3, r2
+ 1846 0032 DB00     		lsls	r3, r3, #3
+ 1847 0034 0E4A     		ldr	r2, .L103
+ 1848 0036 1344     		add	r3, r3, r2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 50
+
+
+ 1849 0038 3B60     		str	r3, [r7]
+ 956:./ucOSII/Core/os_q.c ****         pq1->OSQPtr = pq2;
+ 1850              		.loc 1 956 21 discriminator 3
+ 1851 003a BB68     		ldr	r3, [r7, #8]
+ 1852 003c 3A68     		ldr	r2, [r7]
+ 1853 003e 1A60     		str	r2, [r3]
+ 952:./ucOSII/Core/os_q.c ****         ix_next = ix + 1u;
+ 1854              		.loc 1 952 44 discriminator 3
+ 1855 0040 FB89     		ldrh	r3, [r7, #14]
+ 1856 0042 0133     		adds	r3, r3, #1
+ 1857 0044 FB81     		strh	r3, [r7, #14]	@ movhi
+ 1858              	.L101:
+ 952:./ucOSII/Core/os_q.c ****         ix_next = ix + 1u;
+ 1859              		.loc 1 952 5 discriminator 1
+ 1860 0046 FB89     		ldrh	r3, [r7, #14]
+ 1861 0048 022B     		cmp	r3, #2
+ 1862 004a E3D9     		bls	.L102
+ 957:./ucOSII/Core/os_q.c ****     }
+ 958:./ucOSII/Core/os_q.c ****     pq1         = &OSQTbl[ix];
+ 1863              		.loc 1 958 26
+ 1864 004c FA89     		ldrh	r2, [r7, #14]
+ 1865              		.loc 1 958 17
+ 1866 004e 1346     		mov	r3, r2
+ 1867 0050 5B00     		lsls	r3, r3, #1
+ 1868 0052 1344     		add	r3, r3, r2
+ 1869 0054 DB00     		lsls	r3, r3, #3
+ 1870 0056 064A     		ldr	r2, .L103
+ 1871 0058 1344     		add	r3, r3, r2
+ 1872 005a BB60     		str	r3, [r7, #8]
+ 959:./ucOSII/Core/os_q.c ****     pq1->OSQPtr = (OS_Q *)0;
+ 1873              		.loc 1 959 17
+ 1874 005c BB68     		ldr	r3, [r7, #8]
+ 1875 005e 0022     		movs	r2, #0
+ 1876 0060 1A60     		str	r2, [r3]
+ 960:./ucOSII/Core/os_q.c ****     OSQFreeList = &OSQTbl[0];
+ 1877              		.loc 1 960 17
+ 1878 0062 044B     		ldr	r3, .L103+4
+ 1879 0064 024A     		ldr	r2, .L103
+ 1880 0066 1A60     		str	r2, [r3]
+ 961:./ucOSII/Core/os_q.c **** #endif
+ 962:./ucOSII/Core/os_q.c **** }
+ 1881              		.loc 1 962 1
+ 1882 0068 00BF     		nop
+ 1883 006a 1037     		adds	r7, r7, #16
+ 1884              	.LCFI53:
+ 1885              		.cfi_def_cfa_offset 8
+ 1886 006c BD46     		mov	sp, r7
+ 1887              	.LCFI54:
+ 1888              		.cfi_def_cfa_register 13
+ 1889              		@ sp needed
+ 1890 006e 80BD     		pop	{r7, pc}
+ 1891              	.L104:
+ 1892              		.align	2
+ 1893              	.L103:
+ 1894 0070 00000000 		.word	OSQTbl
+ 1895 0074 00000000 		.word	OSQFreeList
+ 1896              		.cfi_endproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 51
+
+
+ 1897              	.LFE13:
+ 1899              		.text
+ 1900              	.Letext0:
+ 1901              		.file 2 "./ucOSII/Port/os_cpu.h"
+ 1902              		.file 3 "./ucOSII/Core/ucos_ii.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s 			page 52
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 os_q.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:20     .text.OSQAccept:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:26     .text.OSQAccept:0000000000000000 OSQAccept
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:157    .rodata:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:161    .text.OSQCreate:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:167    .text.OSQCreate:0000000000000000 OSQCreate
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:333    .text.OSQCreate:00000000000000d8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:341    .text.OSQDel:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:347    .text.OSQDel:0000000000000000 OSQDel
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:598    .text.OSQDel:000000000000014c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:606    .text.OSQFlush:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:612    .text.OSQFlush:0000000000000000 OSQFlush
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:695    .text.OSQPend:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:701    .text.OSQPend:0000000000000000 OSQPend
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:975    .text.OSQPend:0000000000000174 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:982    .text.OSQPendAbort:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:988    .text.OSQPendAbort:0000000000000000 OSQPendAbort
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1128   .text.OSQPost:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1134   .text.OSQPost:0000000000000000 OSQPost
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1273   .text.OSQPostFront:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1279   .text.OSQPostFront:0000000000000000 OSQPostFront
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1421   .text.OSQPostOpt:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1427   .text.OSQPostOpt:0000000000000000 OSQPostOpt
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1637   .text.OSQQuery:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1643   .text.OSQQuery:0000000000000000 OSQQuery
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1793   .text.OS_QInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1799   .text.OS_QInit:0000000000000000 OS_QInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cclCwYI7.s:1894   .text.OS_QInit:0000000000000070 $d
+
+UNDEFINED SYMBOLS
+OS_CPU_SR_Save
+OS_CPU_SR_Restore
+OS_EventWaitListInit
+OSIntNesting
+OSEventFreeList
+OSQFreeList
+OS_EventTaskRdy
+OS_Sched
+OS_EventTaskWait
+OS_EventTaskRemove
+OSLockNesting
+OSTCBCur
+OS_MemClr
+OSQTbl

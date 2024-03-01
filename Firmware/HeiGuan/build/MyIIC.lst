@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"MyIIC.c"
@@ -50,90 +50,88 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 1
   20:./Hardware/MyIIC.c ****  ********************************************************************************/
   21:./Hardware/MyIIC.c **** void MyIIC_Init(void)
   22:./Hardware/MyIIC.c **** {
-  29              		.loc 1 22 1 view -0
+  29              		.loc 1 22 1
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 8
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 30B5     		push	{r4, r5, lr}
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
   34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 12
-  36              		.cfi_offset 4, -12
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 2
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 7, -8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 2
 
 
-  37              		.cfi_offset 5, -8
-  38              		.cfi_offset 14, -4
-  39 0002 83B0     		sub	sp, sp, #12
-  40              	.LCFI1:
-  41              		.cfi_def_cfa_offset 24
+  37              		.cfi_offset 14, -4
+  38 0002 82B0     		sub	sp, sp, #8
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 16
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
   23:./Hardware/MyIIC.c **** 	//³õÊ¼»¯PB8ºÍPB9×÷ÎªÄ£ÄâSCLÓëSDA
   24:./Hardware/MyIIC.c **** 	GPIO_InitTypeDef GPIO_InitStructure;
-  42              		.loc 1 24 2 view .LVU1
   25:./Hardware/MyIIC.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
-  43              		.loc 1 25 2 view .LVU2
-  44 0004 0121     		movs	r1, #1
-  45 0006 0220     		movs	r0, #2
-  46 0008 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
-  47              	.LVL0:
+  44              		.loc 1 25 2
+  45 0006 0121     		movs	r1, #1
+  46 0008 0220     		movs	r0, #2
+  47 000a FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
   26:./Hardware/MyIIC.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
-  48              		.loc 1 26 2 view .LVU3
-  49              		.loc 1 26 30 is_stmt 0 view .LVU4
-  50 000c 4FF44075 		mov	r5, #768
-  51 0010 0095     		str	r5, [sp]
+  48              		.loc 1 26 30
+  49 000e 4FF44073 		mov	r3, #768
+  50 0012 3B60     		str	r3, [r7]
   27:./Hardware/MyIIC.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  52              		.loc 1 27 2 is_stmt 1 view .LVU5
-  53              		.loc 1 27 32 is_stmt 0 view .LVU6
-  54 0012 0323     		movs	r3, #3
-  55 0014 8DF80530 		strb	r3, [sp, #5]
+  51              		.loc 1 27 32
+  52 0014 0323     		movs	r3, #3
+  53 0016 7B71     		strb	r3, [r7, #5]
   28:./Hardware/MyIIC.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  56              		.loc 1 28 2 is_stmt 1 view .LVU7
-  57              		.loc 1 28 31 is_stmt 0 view .LVU8
-  58 0018 0123     		movs	r3, #1
-  59 001a 8DF80430 		strb	r3, [sp, #4]
+  54              		.loc 1 28 31
+  55 0018 0123     		movs	r3, #1
+  56 001a 3B71     		strb	r3, [r7, #4]
   29:./Hardware/MyIIC.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  60              		.loc 1 29 2 is_stmt 1 view .LVU9
-  61              		.loc 1 29 32 is_stmt 0 view .LVU10
-  62 001e 8DF80630 		strb	r3, [sp, #6]
+  57              		.loc 1 29 32
+  58 001c 0123     		movs	r3, #1
+  59 001e BB71     		strb	r3, [r7, #6]
   30:./Hardware/MyIIC.c **** 	GPIO_Init(GPIOB, &GPIO_InitStructure);
-  63              		.loc 1 30 2 is_stmt 1 view .LVU11
-  64 0022 054C     		ldr	r4, .L3
-  65 0024 6946     		mov	r1, sp
-  66 0026 2046     		mov	r0, r4
-  67 0028 FFF7FEFF 		bl	GPIO_Init
-  68              	.LVL1:
+  60              		.loc 1 30 2
+  61 0020 3B46     		mov	r3, r7
+  62 0022 1946     		mov	r1, r3
+  63 0024 0548     		ldr	r0, .L2
+  64 0026 FFF7FEFF 		bl	GPIO_Init
   31:./Hardware/MyIIC.c **** 
   32:./Hardware/MyIIC.c **** 	GPIO_SetBits(GPIOB,GPIO_Pin_8 | GPIO_Pin_9);
-  69              		.loc 1 32 2 view .LVU12
-  70 002c 2946     		mov	r1, r5
-  71 002e 2046     		mov	r0, r4
-  72 0030 FFF7FEFF 		bl	GPIO_SetBits
-  73              	.LVL2:
+  65              		.loc 1 32 2
+  66 002a 4FF44071 		mov	r1, #768
+  67 002e 0348     		ldr	r0, .L2
+  68 0030 FFF7FEFF 		bl	GPIO_SetBits
   33:./Hardware/MyIIC.c **** 	
   34:./Hardware/MyIIC.c **** }
-  74              		.loc 1 34 1 is_stmt 0 view .LVU13
-  75 0034 03B0     		add	sp, sp, #12
-  76              	.LCFI2:
-  77              		.cfi_def_cfa_offset 12
-  78              		@ sp needed
-  79 0036 30BD     		pop	{r4, r5, pc}
-  80              	.L4:
-  81              		.align	2
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 3
+  69              		.loc 1 34 1
+  70 0034 00BF     		nop
+  71 0036 0837     		adds	r7, r7, #8
+  72              	.LCFI3:
+  73              		.cfi_def_cfa_offset 8
+  74 0038 BD46     		mov	sp, r7
+  75              	.LCFI4:
+  76              		.cfi_def_cfa_register 13
+  77              		@ sp needed
+  78 003a 80BD     		pop	{r7, pc}
+  79              	.L3:
+  80              		.align	2
+  81              	.L2:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 3
 
 
-  82              	.L3:
-  83 0038 00040240 		.word	1073873920
-  84              		.cfi_endproc
-  85              	.LFE123:
-  87              		.section	.text.MyIIC_W_SCL,"ax",%progbits
-  88              		.align	1
-  89              		.global	MyIIC_W_SCL
-  90              		.syntax unified
-  91              		.thumb
-  92              		.thumb_func
-  94              	MyIIC_W_SCL:
-  95              	.LVL3:
-  96              	.LFB124:
+  82 003c 00040240 		.word	1073873920
+  83              		.cfi_endproc
+  84              	.LFE123:
+  86              		.section	.text.MyIIC_W_SCL,"ax",%progbits
+  87              		.align	1
+  88              		.global	MyIIC_W_SCL
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	MyIIC_W_SCL:
+  94              	.LFB124:
   35:./Hardware/MyIIC.c **** 
   36:./Hardware/MyIIC.c **** /*********************************************************************************
   37:./Hardware/MyIIC.c ****  * SCL ºÍ SDA µÄÐ´º¯Êý
@@ -141,208 +139,250 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 1
   39:./Hardware/MyIIC.c ****  ********************************************************************************/
   40:./Hardware/MyIIC.c **** void MyIIC_W_SCL(uint8_t BitValue)
   41:./Hardware/MyIIC.c **** {
-  97              		.loc 1 41 1 is_stmt 1 view -0
-  98              		.cfi_startproc
-  99              		@ args = 0, pretend = 0, frame = 0
- 100              		@ frame_needed = 0, uses_anonymous_args = 0
- 101              		.loc 1 41 1 is_stmt 0 view .LVU15
- 102 0000 08B5     		push	{r3, lr}
- 103              	.LCFI3:
- 104              		.cfi_def_cfa_offset 8
- 105              		.cfi_offset 3, -8
- 106              		.cfi_offset 14, -4
- 107 0002 0246     		mov	r2, r0
+  95              		.loc 1 41 1
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 8
+  98              		@ frame_needed = 1, uses_anonymous_args = 0
+  99 0000 80B5     		push	{r7, lr}
+ 100              	.LCFI5:
+ 101              		.cfi_def_cfa_offset 8
+ 102              		.cfi_offset 7, -8
+ 103              		.cfi_offset 14, -4
+ 104 0002 82B0     		sub	sp, sp, #8
+ 105              	.LCFI6:
+ 106              		.cfi_def_cfa_offset 16
+ 107 0004 00AF     		add	r7, sp, #0
+ 108              	.LCFI7:
+ 109              		.cfi_def_cfa_register 7
+ 110 0006 0346     		mov	r3, r0
+ 111 0008 FB71     		strb	r3, [r7, #7]
   42:./Hardware/MyIIC.c **** 	GPIO_WriteBit(SCL_PORT,SCL_PIN,(BitAction)BitValue);
- 108              		.loc 1 42 2 is_stmt 1 view .LVU16
- 109 0004 4FF48071 		mov	r1, #256
- 110 0008 0348     		ldr	r0, .L7
- 111              	.LVL4:
- 112              		.loc 1 42 2 is_stmt 0 view .LVU17
- 113 000a FFF7FEFF 		bl	GPIO_WriteBit
- 114              	.LVL5:
+ 112              		.loc 1 42 2
+ 113 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 114 000c 1A46     		mov	r2, r3
+ 115 000e 4FF48071 		mov	r1, #256
+ 116 0012 0648     		ldr	r0, .L5
+ 117 0014 FFF7FEFF 		bl	GPIO_WriteBit
   43:./Hardware/MyIIC.c **** 	Delay_us(10);
- 115              		.loc 1 43 2 is_stmt 1 view .LVU18
- 116 000e 0A20     		movs	r0, #10
- 117 0010 0021     		movs	r1, #0
- 118 0012 FFF7FEFF 		bl	Delay_us
- 119              	.LVL6:
+ 118              		.loc 1 43 2
+ 119 0018 4FF00A00 		mov	r0, #10
+ 120 001c 4FF00001 		mov	r1, #0
+ 121 0020 FFF7FEFF 		bl	Delay_us
   44:./Hardware/MyIIC.c **** }
- 120              		.loc 1 44 1 is_stmt 0 view .LVU19
- 121 0016 08BD     		pop	{r3, pc}
- 122              	.L8:
- 123              		.align	2
- 124              	.L7:
- 125 0018 00040240 		.word	1073873920
- 126              		.cfi_endproc
- 127              	.LFE124:
- 129              		.section	.text.MyIIC_W_SDA,"ax",%progbits
- 130              		.align	1
- 131              		.global	MyIIC_W_SDA
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 4
+ 122              		.loc 1 44 1
+ 123 0024 00BF     		nop
+ 124 0026 0837     		adds	r7, r7, #8
+ 125              	.LCFI8:
+ 126              		.cfi_def_cfa_offset 8
+ 127 0028 BD46     		mov	sp, r7
+ 128              	.LCFI9:
+ 129              		.cfi_def_cfa_register 13
+ 130              		@ sp needed
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 4
 
 
- 132              		.syntax unified
- 133              		.thumb
- 134              		.thumb_func
- 136              	MyIIC_W_SDA:
- 137              	.LVL7:
- 138              	.LFB125:
+ 131 002a 80BD     		pop	{r7, pc}
+ 132              	.L6:
+ 133              		.align	2
+ 134              	.L5:
+ 135 002c 00040240 		.word	1073873920
+ 136              		.cfi_endproc
+ 137              	.LFE124:
+ 139              		.section	.text.MyIIC_W_SDA,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	MyIIC_W_SDA
+ 142              		.syntax unified
+ 143              		.thumb
+ 144              		.thumb_func
+ 146              	MyIIC_W_SDA:
+ 147              	.LFB125:
   45:./Hardware/MyIIC.c **** 
   46:./Hardware/MyIIC.c **** void MyIIC_W_SDA(uint8_t BitValue)
   47:./Hardware/MyIIC.c **** {
- 139              		.loc 1 47 1 is_stmt 1 view -0
- 140              		.cfi_startproc
- 141              		@ args = 0, pretend = 0, frame = 0
- 142              		@ frame_needed = 0, uses_anonymous_args = 0
- 143              		.loc 1 47 1 is_stmt 0 view .LVU21
- 144 0000 08B5     		push	{r3, lr}
- 145              	.LCFI4:
- 146              		.cfi_def_cfa_offset 8
- 147              		.cfi_offset 3, -8
- 148              		.cfi_offset 14, -4
- 149 0002 0246     		mov	r2, r0
+ 148              		.loc 1 47 1
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 8
+ 151              		@ frame_needed = 1, uses_anonymous_args = 0
+ 152 0000 80B5     		push	{r7, lr}
+ 153              	.LCFI10:
+ 154              		.cfi_def_cfa_offset 8
+ 155              		.cfi_offset 7, -8
+ 156              		.cfi_offset 14, -4
+ 157 0002 82B0     		sub	sp, sp, #8
+ 158              	.LCFI11:
+ 159              		.cfi_def_cfa_offset 16
+ 160 0004 00AF     		add	r7, sp, #0
+ 161              	.LCFI12:
+ 162              		.cfi_def_cfa_register 7
+ 163 0006 0346     		mov	r3, r0
+ 164 0008 FB71     		strb	r3, [r7, #7]
   48:./Hardware/MyIIC.c **** 	GPIO_WriteBit(SDA_PORT,SDA_PIN,(BitAction)BitValue);
- 150              		.loc 1 48 2 is_stmt 1 view .LVU22
- 151 0004 4FF40071 		mov	r1, #512
- 152 0008 0348     		ldr	r0, .L11
- 153              	.LVL8:
- 154              		.loc 1 48 2 is_stmt 0 view .LVU23
- 155 000a FFF7FEFF 		bl	GPIO_WriteBit
- 156              	.LVL9:
+ 165              		.loc 1 48 2
+ 166 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 167 000c 1A46     		mov	r2, r3
+ 168 000e 4FF40071 		mov	r1, #512
+ 169 0012 0648     		ldr	r0, .L8
+ 170 0014 FFF7FEFF 		bl	GPIO_WriteBit
   49:./Hardware/MyIIC.c **** 	Delay_us(10);
- 157              		.loc 1 49 2 is_stmt 1 view .LVU24
- 158 000e 0A20     		movs	r0, #10
- 159 0010 0021     		movs	r1, #0
- 160 0012 FFF7FEFF 		bl	Delay_us
- 161              	.LVL10:
+ 171              		.loc 1 49 2
+ 172 0018 4FF00A00 		mov	r0, #10
+ 173 001c 4FF00001 		mov	r1, #0
+ 174 0020 FFF7FEFF 		bl	Delay_us
   50:./Hardware/MyIIC.c **** }
- 162              		.loc 1 50 1 is_stmt 0 view .LVU25
- 163 0016 08BD     		pop	{r3, pc}
- 164              	.L12:
- 165              		.align	2
- 166              	.L11:
- 167 0018 00040240 		.word	1073873920
- 168              		.cfi_endproc
- 169              	.LFE125:
- 171              		.section	.text.MyIIC_R_SCL,"ax",%progbits
- 172              		.align	1
- 173              		.global	MyIIC_R_SCL
- 174              		.syntax unified
- 175              		.thumb
- 176              		.thumb_func
- 178              	MyIIC_R_SCL:
- 179              	.LFB126:
+ 175              		.loc 1 50 1
+ 176 0024 00BF     		nop
+ 177 0026 0837     		adds	r7, r7, #8
+ 178              	.LCFI13:
+ 179              		.cfi_def_cfa_offset 8
+ 180 0028 BD46     		mov	sp, r7
+ 181              	.LCFI14:
+ 182              		.cfi_def_cfa_register 13
+ 183              		@ sp needed
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 5
+
+
+ 184 002a 80BD     		pop	{r7, pc}
+ 185              	.L9:
+ 186              		.align	2
+ 187              	.L8:
+ 188 002c 00040240 		.word	1073873920
+ 189              		.cfi_endproc
+ 190              	.LFE125:
+ 192              		.section	.text.MyIIC_R_SCL,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	MyIIC_R_SCL
+ 195              		.syntax unified
+ 196              		.thumb
+ 197              		.thumb_func
+ 199              	MyIIC_R_SCL:
+ 200              	.LFB126:
   51:./Hardware/MyIIC.c **** 
   52:./Hardware/MyIIC.c **** /*********************************************************************************
   53:./Hardware/MyIIC.c ****  * SCL ºÍ SDA µÄ¶Áº¯Êý
   54:./Hardware/MyIIC.c ****  * DelayµÄÊ±³£ÓÐ´ýÉÌÈ¶
   55:./Hardware/MyIIC.c ****  ********************************************************************************/
   56:./Hardware/MyIIC.c **** uint8_t MyIIC_R_SCL(void)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 5
-
-
   57:./Hardware/MyIIC.c **** {
- 180              		.loc 1 57 1 is_stmt 1 view -0
- 181              		.cfi_startproc
- 182              		@ args = 0, pretend = 0, frame = 0
- 183              		@ frame_needed = 0, uses_anonymous_args = 0
- 184 0000 10B5     		push	{r4, lr}
- 185              	.LCFI5:
- 186              		.cfi_def_cfa_offset 8
- 187              		.cfi_offset 4, -8
- 188              		.cfi_offset 14, -4
+ 201              		.loc 1 57 1
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 8
+ 204              		@ frame_needed = 1, uses_anonymous_args = 0
+ 205 0000 80B5     		push	{r7, lr}
+ 206              	.LCFI15:
+ 207              		.cfi_def_cfa_offset 8
+ 208              		.cfi_offset 7, -8
+ 209              		.cfi_offset 14, -4
+ 210 0002 82B0     		sub	sp, sp, #8
+ 211              	.LCFI16:
+ 212              		.cfi_def_cfa_offset 16
+ 213 0004 00AF     		add	r7, sp, #0
+ 214              	.LCFI17:
+ 215              		.cfi_def_cfa_register 7
   58:./Hardware/MyIIC.c **** 	uint8_t BitValue;
- 189              		.loc 1 58 2 view .LVU27
   59:./Hardware/MyIIC.c **** 	BitValue = GPIO_ReadInputDataBit(SCL_PORT,SCL_PIN);
- 190              		.loc 1 59 2 view .LVU28
- 191              		.loc 1 59 13 is_stmt 0 view .LVU29
- 192 0002 4FF48071 		mov	r1, #256
- 193 0006 0548     		ldr	r0, .L15
- 194 0008 FFF7FEFF 		bl	GPIO_ReadInputDataBit
- 195              	.LVL11:
- 196 000c 0446     		mov	r4, r0
- 197              	.LVL12:
+ 216              		.loc 1 59 13
+ 217 0006 4FF48071 		mov	r1, #256
+ 218 000a 0848     		ldr	r0, .L12
+ 219 000c FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 220 0010 0346     		mov	r3, r0
+ 221 0012 FB71     		strb	r3, [r7, #7]
   60:./Hardware/MyIIC.c **** 	Delay_us(10);
- 198              		.loc 1 60 2 is_stmt 1 view .LVU30
- 199 000e 0A20     		movs	r0, #10
- 200 0010 0021     		movs	r1, #0
- 201 0012 FFF7FEFF 		bl	Delay_us
- 202              	.LVL13:
+ 222              		.loc 1 60 2
+ 223 0014 4FF00A00 		mov	r0, #10
+ 224 0018 4FF00001 		mov	r1, #0
+ 225 001c FFF7FEFF 		bl	Delay_us
   61:./Hardware/MyIIC.c **** 	return BitValue;
- 203              		.loc 1 61 2 view .LVU31
+ 226              		.loc 1 61 9
+ 227 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
   62:./Hardware/MyIIC.c **** }
- 204              		.loc 1 62 1 is_stmt 0 view .LVU32
- 205 0016 2046     		mov	r0, r4
- 206 0018 10BD     		pop	{r4, pc}
- 207              	.LVL14:
- 208              	.L16:
- 209              		.loc 1 62 1 view .LVU33
- 210 001a 00BF     		.align	2
- 211              	.L15:
- 212 001c 00040240 		.word	1073873920
- 213              		.cfi_endproc
- 214              	.LFE126:
- 216              		.section	.text.MyIIC_R_SDA,"ax",%progbits
- 217              		.align	1
- 218              		.global	MyIIC_R_SDA
- 219              		.syntax unified
- 220              		.thumb
- 221              		.thumb_func
- 223              	MyIIC_R_SDA:
- 224              	.LFB127:
+ 228              		.loc 1 62 1
+ 229 0022 1846     		mov	r0, r3
+ 230 0024 0837     		adds	r7, r7, #8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 6
+
+
+ 231              	.LCFI18:
+ 232              		.cfi_def_cfa_offset 8
+ 233 0026 BD46     		mov	sp, r7
+ 234              	.LCFI19:
+ 235              		.cfi_def_cfa_register 13
+ 236              		@ sp needed
+ 237 0028 80BD     		pop	{r7, pc}
+ 238              	.L13:
+ 239 002a 00BF     		.align	2
+ 240              	.L12:
+ 241 002c 00040240 		.word	1073873920
+ 242              		.cfi_endproc
+ 243              	.LFE126:
+ 245              		.section	.text.MyIIC_R_SDA,"ax",%progbits
+ 246              		.align	1
+ 247              		.global	MyIIC_R_SDA
+ 248              		.syntax unified
+ 249              		.thumb
+ 250              		.thumb_func
+ 252              	MyIIC_R_SDA:
+ 253              	.LFB127:
   63:./Hardware/MyIIC.c **** uint8_t MyIIC_R_SDA(void)
   64:./Hardware/MyIIC.c **** {
- 225              		.loc 1 64 1 is_stmt 1 view -0
- 226              		.cfi_startproc
- 227              		@ args = 0, pretend = 0, frame = 0
- 228              		@ frame_needed = 0, uses_anonymous_args = 0
- 229 0000 10B5     		push	{r4, lr}
- 230              	.LCFI6:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 6
-
-
- 231              		.cfi_def_cfa_offset 8
- 232              		.cfi_offset 4, -8
- 233              		.cfi_offset 14, -4
+ 254              		.loc 1 64 1
+ 255              		.cfi_startproc
+ 256              		@ args = 0, pretend = 0, frame = 8
+ 257              		@ frame_needed = 1, uses_anonymous_args = 0
+ 258 0000 80B5     		push	{r7, lr}
+ 259              	.LCFI20:
+ 260              		.cfi_def_cfa_offset 8
+ 261              		.cfi_offset 7, -8
+ 262              		.cfi_offset 14, -4
+ 263 0002 82B0     		sub	sp, sp, #8
+ 264              	.LCFI21:
+ 265              		.cfi_def_cfa_offset 16
+ 266 0004 00AF     		add	r7, sp, #0
+ 267              	.LCFI22:
+ 268              		.cfi_def_cfa_register 7
   65:./Hardware/MyIIC.c **** 	uint8_t BitValue;
- 234              		.loc 1 65 2 view .LVU35
   66:./Hardware/MyIIC.c **** 	BitValue = GPIO_ReadInputDataBit(SDA_PORT,SDA_PIN);
- 235              		.loc 1 66 2 view .LVU36
- 236              		.loc 1 66 13 is_stmt 0 view .LVU37
- 237 0002 4FF40071 		mov	r1, #512
- 238 0006 0548     		ldr	r0, .L19
- 239 0008 FFF7FEFF 		bl	GPIO_ReadInputDataBit
- 240              	.LVL15:
- 241 000c 0446     		mov	r4, r0
- 242              	.LVL16:
+ 269              		.loc 1 66 13
+ 270 0006 4FF40071 		mov	r1, #512
+ 271 000a 0848     		ldr	r0, .L16
+ 272 000c FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 273 0010 0346     		mov	r3, r0
+ 274 0012 FB71     		strb	r3, [r7, #7]
   67:./Hardware/MyIIC.c **** 	Delay_us(10);
- 243              		.loc 1 67 2 is_stmt 1 view .LVU38
- 244 000e 0A20     		movs	r0, #10
- 245 0010 0021     		movs	r1, #0
- 246 0012 FFF7FEFF 		bl	Delay_us
- 247              	.LVL17:
+ 275              		.loc 1 67 2
+ 276 0014 4FF00A00 		mov	r0, #10
+ 277 0018 4FF00001 		mov	r1, #0
+ 278 001c FFF7FEFF 		bl	Delay_us
   68:./Hardware/MyIIC.c **** 	return BitValue;
- 248              		.loc 1 68 2 view .LVU39
+ 279              		.loc 1 68 9
+ 280 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
   69:./Hardware/MyIIC.c **** }
- 249              		.loc 1 69 1 is_stmt 0 view .LVU40
- 250 0016 2046     		mov	r0, r4
- 251 0018 10BD     		pop	{r4, pc}
- 252              	.LVL18:
- 253              	.L20:
- 254              		.loc 1 69 1 view .LVU41
- 255 001a 00BF     		.align	2
- 256              	.L19:
- 257 001c 00040240 		.word	1073873920
- 258              		.cfi_endproc
- 259              	.LFE127:
- 261              		.section	.text.MyIIC_Start,"ax",%progbits
- 262              		.align	1
- 263              		.global	MyIIC_Start
- 264              		.syntax unified
- 265              		.thumb
- 266              		.thumb_func
- 268              	MyIIC_Start:
- 269              	.LFB128:
+ 281              		.loc 1 69 1
+ 282 0022 1846     		mov	r0, r3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 7
+
+
+ 283 0024 0837     		adds	r7, r7, #8
+ 284              	.LCFI23:
+ 285              		.cfi_def_cfa_offset 8
+ 286 0026 BD46     		mov	sp, r7
+ 287              	.LCFI24:
+ 288              		.cfi_def_cfa_register 13
+ 289              		@ sp needed
+ 290 0028 80BD     		pop	{r7, pc}
+ 291              	.L17:
+ 292 002a 00BF     		.align	2
+ 293              	.L16:
+ 294 002c 00040240 		.word	1073873920
+ 295              		.cfi_endproc
+ 296              	.LFE127:
+ 298              		.section	.text.MyIIC_Start,"ax",%progbits
+ 299              		.align	1
+ 300              		.global	MyIIC_Start
+ 301              		.syntax unified
+ 302              		.thumb
+ 303              		.thumb_func
+ 305              	MyIIC_Start:
+ 306              	.LFB128:
   70:./Hardware/MyIIC.c **** 
   71:./Hardware/MyIIC.c **** 
   72:./Hardware/MyIIC.c **** /*********************************************************************************
@@ -350,97 +390,97 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 1
   74:./Hardware/MyIIC.c ****  ********************************************************************************/
   75:./Hardware/MyIIC.c **** void MyIIC_Start(void)
   76:./Hardware/MyIIC.c **** {
- 270              		.loc 1 76 1 is_stmt 1 view -0
- 271              		.cfi_startproc
- 272              		@ args = 0, pretend = 0, frame = 0
- 273              		@ frame_needed = 0, uses_anonymous_args = 0
- 274 0000 08B5     		push	{r3, lr}
- 275              	.LCFI7:
- 276              		.cfi_def_cfa_offset 8
- 277              		.cfi_offset 3, -8
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 7
-
-
- 278              		.cfi_offset 14, -4
+ 307              		.loc 1 76 1
+ 308              		.cfi_startproc
+ 309              		@ args = 0, pretend = 0, frame = 0
+ 310              		@ frame_needed = 1, uses_anonymous_args = 0
+ 311 0000 80B5     		push	{r7, lr}
+ 312              	.LCFI25:
+ 313              		.cfi_def_cfa_offset 8
+ 314              		.cfi_offset 7, -8
+ 315              		.cfi_offset 14, -4
+ 316 0002 00AF     		add	r7, sp, #0
+ 317              	.LCFI26:
+ 318              		.cfi_def_cfa_register 7
   77:./Hardware/MyIIC.c **** 	//×¢Òâ£¬´Ë´¦ÐèÒªÏÈÊÍ·ÅSDA¡£¿¼ÂÇµ½ÖØ¸´ÆðÊ¼Ìõ¼þSr£¬Èç¹ûÏÈÊÍ·ÅSCL»áÒýÆðÆçÒå£¨ÒòÎªSCLÆðÊ¼ÊÇµÍµçÆ½£¬¿ÉÄ
   78:./Hardware/MyIIC.c **** 	MyIIC_W_SDA(1);
- 279              		.loc 1 78 2 view .LVU43
- 280 0002 0120     		movs	r0, #1
- 281 0004 FFF7FEFF 		bl	MyIIC_W_SDA
- 282              	.LVL19:
+ 319              		.loc 1 78 2
+ 320 0004 0120     		movs	r0, #1
+ 321 0006 FFF7FEFF 		bl	MyIIC_W_SDA
   79:./Hardware/MyIIC.c **** 	MyIIC_W_SCL(1);
- 283              		.loc 1 79 2 view .LVU44
- 284 0008 0120     		movs	r0, #1
- 285 000a FFF7FEFF 		bl	MyIIC_W_SCL
- 286              	.LVL20:
+ 322              		.loc 1 79 2
+ 323 000a 0120     		movs	r0, #1
+ 324 000c FFF7FEFF 		bl	MyIIC_W_SCL
   80:./Hardware/MyIIC.c **** 	MyIIC_W_SDA(0);
- 287              		.loc 1 80 2 view .LVU45
- 288 000e 0020     		movs	r0, #0
- 289 0010 FFF7FEFF 		bl	MyIIC_W_SDA
- 290              	.LVL21:
+ 325              		.loc 1 80 2
+ 326 0010 0020     		movs	r0, #0
+ 327 0012 FFF7FEFF 		bl	MyIIC_W_SDA
   81:./Hardware/MyIIC.c **** 	MyIIC_W_SCL(0);
- 291              		.loc 1 81 2 view .LVU46
- 292 0014 0020     		movs	r0, #0
- 293 0016 FFF7FEFF 		bl	MyIIC_W_SCL
- 294              	.LVL22:
+ 328              		.loc 1 81 2
+ 329 0016 0020     		movs	r0, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 8
+
+
+ 330 0018 FFF7FEFF 		bl	MyIIC_W_SCL
   82:./Hardware/MyIIC.c **** }	
- 295              		.loc 1 82 1 is_stmt 0 view .LVU47
- 296 001a 08BD     		pop	{r3, pc}
- 297              		.cfi_endproc
- 298              	.LFE128:
- 300              		.section	.text.MyIIC_Stop,"ax",%progbits
- 301              		.align	1
- 302              		.global	MyIIC_Stop
- 303              		.syntax unified
- 304              		.thumb
- 305              		.thumb_func
- 307              	MyIIC_Stop:
- 308              	.LFB129:
+ 331              		.loc 1 82 1
+ 332 001c 00BF     		nop
+ 333 001e 80BD     		pop	{r7, pc}
+ 334              		.cfi_endproc
+ 335              	.LFE128:
+ 337              		.section	.text.MyIIC_Stop,"ax",%progbits
+ 338              		.align	1
+ 339              		.global	MyIIC_Stop
+ 340              		.syntax unified
+ 341              		.thumb
+ 342              		.thumb_func
+ 344              	MyIIC_Stop:
+ 345              	.LFB129:
   83:./Hardware/MyIIC.c **** 
   84:./Hardware/MyIIC.c **** void MyIIC_Stop(void)
   85:./Hardware/MyIIC.c **** {
- 309              		.loc 1 85 1 is_stmt 1 view -0
- 310              		.cfi_startproc
- 311              		@ args = 0, pretend = 0, frame = 0
- 312              		@ frame_needed = 0, uses_anonymous_args = 0
- 313 0000 08B5     		push	{r3, lr}
- 314              	.LCFI8:
- 315              		.cfi_def_cfa_offset 8
- 316              		.cfi_offset 3, -8
- 317              		.cfi_offset 14, -4
+ 346              		.loc 1 85 1
+ 347              		.cfi_startproc
+ 348              		@ args = 0, pretend = 0, frame = 0
+ 349              		@ frame_needed = 1, uses_anonymous_args = 0
+ 350 0000 80B5     		push	{r7, lr}
+ 351              	.LCFI27:
+ 352              		.cfi_def_cfa_offset 8
+ 353              		.cfi_offset 7, -8
+ 354              		.cfi_offset 14, -4
+ 355 0002 00AF     		add	r7, sp, #0
+ 356              	.LCFI28:
+ 357              		.cfi_def_cfa_register 7
   86:./Hardware/MyIIC.c **** 	//ÏÈÀ­µÍSDA±£Ö¤ÎªµÍµçÆ½
   87:./Hardware/MyIIC.c **** 	MyIIC_W_SDA(0);
- 318              		.loc 1 87 2 view .LVU49
- 319 0002 0020     		movs	r0, #0
- 320 0004 FFF7FEFF 		bl	MyIIC_W_SDA
- 321              	.LVL23:
+ 358              		.loc 1 87 2
+ 359 0004 0020     		movs	r0, #0
+ 360 0006 FFF7FEFF 		bl	MyIIC_W_SDA
   88:./Hardware/MyIIC.c **** 	MyIIC_W_SCL(1);
- 322              		.loc 1 88 2 view .LVU50
- 323 0008 0120     		movs	r0, #1
- 324 000a FFF7FEFF 		bl	MyIIC_W_SCL
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 8
-
-
- 325              	.LVL24:
+ 361              		.loc 1 88 2
+ 362 000a 0120     		movs	r0, #1
+ 363 000c FFF7FEFF 		bl	MyIIC_W_SCL
   89:./Hardware/MyIIC.c **** 	MyIIC_W_SDA(1);
- 326              		.loc 1 89 2 view .LVU51
- 327 000e 0120     		movs	r0, #1
- 328 0010 FFF7FEFF 		bl	MyIIC_W_SDA
- 329              	.LVL25:
+ 364              		.loc 1 89 2
+ 365 0010 0120     		movs	r0, #1
+ 366 0012 FFF7FEFF 		bl	MyIIC_W_SDA
   90:./Hardware/MyIIC.c **** }
- 330              		.loc 1 90 1 is_stmt 0 view .LVU52
- 331 0014 08BD     		pop	{r3, pc}
- 332              		.cfi_endproc
- 333              	.LFE129:
- 335              		.section	.text.MyIIC_SendByte,"ax",%progbits
- 336              		.align	1
- 337              		.global	MyIIC_SendByte
- 338              		.syntax unified
- 339              		.thumb
- 340              		.thumb_func
- 342              	MyIIC_SendByte:
- 343              	.LVL26:
- 344              	.LFB130:
+ 367              		.loc 1 90 1
+ 368 0016 00BF     		nop
+ 369 0018 80BD     		pop	{r7, pc}
+ 370              		.cfi_endproc
+ 371              	.LFE129:
+ 373              		.section	.text.MyIIC_SendByte,"ax",%progbits
+ 374              		.align	1
+ 375              		.global	MyIIC_SendByte
+ 376              		.syntax unified
+ 377              		.thumb
+ 378              		.thumb_func
+ 380              	MyIIC_SendByte:
+ 381              	.LFB130:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 9
+
+
   91:./Hardware/MyIIC.c **** 
   92:./Hardware/MyIIC.c **** /*********************************************************************************
   93:./Hardware/MyIIC.c ****  * IIC Ê±Ðò ·¢ËÍ/½ÓÊÜ×Ö½Ú
@@ -448,219 +488,203 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 1
   95:./Hardware/MyIIC.c ****  ********************************************************************************/
   96:./Hardware/MyIIC.c **** void MyIIC_SendByte(uint8_t Byte)
   97:./Hardware/MyIIC.c **** {
- 345              		.loc 1 97 1 is_stmt 1 view -0
- 346              		.cfi_startproc
- 347              		@ args = 0, pretend = 0, frame = 0
- 348              		@ frame_needed = 0, uses_anonymous_args = 0
- 349              		.loc 1 97 1 is_stmt 0 view .LVU54
- 350 0000 38B5     		push	{r3, r4, r5, lr}
- 351              	.LCFI9:
- 352              		.cfi_def_cfa_offset 16
- 353              		.cfi_offset 3, -16
- 354              		.cfi_offset 4, -12
- 355              		.cfi_offset 5, -8
- 356              		.cfi_offset 14, -4
- 357 0002 0546     		mov	r5, r0
+ 382              		.loc 1 97 1
+ 383              		.cfi_startproc
+ 384              		@ args = 0, pretend = 0, frame = 16
+ 385              		@ frame_needed = 1, uses_anonymous_args = 0
+ 386 0000 80B5     		push	{r7, lr}
+ 387              	.LCFI29:
+ 388              		.cfi_def_cfa_offset 8
+ 389              		.cfi_offset 7, -8
+ 390              		.cfi_offset 14, -4
+ 391 0002 84B0     		sub	sp, sp, #16
+ 392              	.LCFI30:
+ 393              		.cfi_def_cfa_offset 24
+ 394 0004 00AF     		add	r7, sp, #0
+ 395              	.LCFI31:
+ 396              		.cfi_def_cfa_register 7
+ 397 0006 0346     		mov	r3, r0
+ 398 0008 FB71     		strb	r3, [r7, #7]
+ 399              	.LBB2:
   98:./Hardware/MyIIC.c **** 	//´Ó¸ßµ½µÍ·¢ËÍByteµ½SDAÏßÀÂÉÏ
   99:./Hardware/MyIIC.c **** 	//È¡³ö×î¸ßÎ»£¨´Ó×óµ½ÓÒÊýµÚÒ»¸öÊý×Ö£©
  100:./Hardware/MyIIC.c **** 	for(uint8_t i=0; i<8; i++)
- 358              		.loc 1 100 2 is_stmt 1 view .LVU55
- 359              	.LBB2:
- 360              		.loc 1 100 6 view .LVU56
- 361              	.LVL27:
- 362              		.loc 1 100 14 is_stmt 0 view .LVU57
- 363 0004 0024     		movs	r4, #0
- 364              		.loc 1 100 2 view .LVU58
- 365 0006 0CE0     		b	.L26
- 366              	.LVL28:
- 367              	.L27:
+ 400              		.loc 1 100 14
+ 401 000a 0023     		movs	r3, #0
+ 402 000c FB73     		strb	r3, [r7, #15]
+ 403              		.loc 1 100 2
+ 404 000e 15E0     		b	.L21
+ 405              	.L22:
  101:./Hardware/MyIIC.c **** 	{
  102:./Hardware/MyIIC.c **** 		MyIIC_W_SDA(Byte & (0x80 >> i)); //¾­µä²Ù×÷£¬Ò²¿ÉÒÔÊ¹ÓÃByte>>7
- 368              		.loc 1 102 3 is_stmt 1 discriminator 3 view .LVU59
- 369              		.loc 1 102 28 is_stmt 0 discriminator 3 view .LVU60
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 9
-
-
- 370 0008 8020     		movs	r0, #128
- 371 000a 2041     		asrs	r0, r0, r4
- 372              		.loc 1 102 3 discriminator 3 view .LVU61
- 373 000c 2840     		ands	r0, r0, r5
- 374 000e FFF7FEFF 		bl	MyIIC_W_SDA
- 375              	.LVL29:
+ 406              		.loc 1 102 28 discriminator 3
+ 407 0010 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 408 0012 8022     		movs	r2, #128
+ 409 0014 42FA03F3 		asr	r3, r2, r3
+ 410              		.loc 1 102 20 discriminator 3
+ 411 0018 5AB2     		sxtb	r2, r3
+ 412 001a 97F90730 		ldrsb	r3, [r7, #7]
+ 413 001e 1340     		ands	r3, r3, r2
+ 414 0020 5BB2     		sxtb	r3, r3
+ 415              		.loc 1 102 3 discriminator 3
+ 416 0022 DBB2     		uxtb	r3, r3
+ 417 0024 1846     		mov	r0, r3
+ 418 0026 FFF7FEFF 		bl	MyIIC_W_SDA
  103:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(1);
- 376              		.loc 1 103 3 is_stmt 1 discriminator 3 view .LVU62
- 377 0012 0120     		movs	r0, #1
- 378 0014 FFF7FEFF 		bl	MyIIC_W_SCL
- 379              	.LVL30:
+ 419              		.loc 1 103 3 discriminator 3
+ 420 002a 0120     		movs	r0, #1
+ 421 002c FFF7FEFF 		bl	MyIIC_W_SCL
  104:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 380              		.loc 1 104 3 discriminator 3 view .LVU63
- 381 0018 0020     		movs	r0, #0
- 382 001a FFF7FEFF 		bl	MyIIC_W_SCL
- 383              	.LVL31:
+ 422              		.loc 1 104 3 discriminator 3
+ 423 0030 0020     		movs	r0, #0
+ 424 0032 FFF7FEFF 		bl	MyIIC_W_SCL
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 10
+
+
  100:./Hardware/MyIIC.c **** 	{
- 384              		.loc 1 100 24 discriminator 3 view .LVU64
+ 425              		.loc 1 100 25 discriminator 3
+ 426 0036 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 427 0038 0133     		adds	r3, r3, #1
+ 428 003a FB73     		strb	r3, [r7, #15]
+ 429              	.L21:
  100:./Hardware/MyIIC.c **** 	{
- 385              		.loc 1 100 25 is_stmt 0 discriminator 3 view .LVU65
- 386 001e 0134     		adds	r4, r4, #1
- 387              	.LVL32:
- 100:./Hardware/MyIIC.c **** 	{
- 388              		.loc 1 100 25 discriminator 3 view .LVU66
- 389 0020 E4B2     		uxtb	r4, r4
- 390              	.LVL33:
- 391              	.L26:
- 100:./Hardware/MyIIC.c **** 	{
- 392              		.loc 1 100 19 is_stmt 1 discriminator 1 view .LVU67
- 100:./Hardware/MyIIC.c **** 	{
- 393              		.loc 1 100 2 is_stmt 0 discriminator 1 view .LVU68
- 394 0022 072C     		cmp	r4, #7
- 395 0024 F0D9     		bls	.L27
- 396              	.LBE2:
+ 430              		.loc 1 100 2 discriminator 1
+ 431 003c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 432 003e 072B     		cmp	r3, #7
+ 433 0040 E6D9     		bls	.L22
+ 434              	.LBE2:
  105:./Hardware/MyIIC.c **** 	}
  106:./Hardware/MyIIC.c **** 	
  107:./Hardware/MyIIC.c **** }
- 397              		.loc 1 107 1 view .LVU69
- 398 0026 38BD     		pop	{r3, r4, r5, pc}
- 399              		.loc 1 107 1 view .LVU70
- 400              		.cfi_endproc
- 401              	.LFE130:
- 403              		.section	.text.MyIIC_ReceiveByte,"ax",%progbits
- 404              		.align	1
- 405              		.global	MyIIC_ReceiveByte
- 406              		.syntax unified
- 407              		.thumb
- 408              		.thumb_func
- 410              	MyIIC_ReceiveByte:
- 411              	.LFB131:
+ 435              		.loc 1 107 1
+ 436 0042 00BF     		nop
+ 437 0044 00BF     		nop
+ 438 0046 1037     		adds	r7, r7, #16
+ 439              	.LCFI32:
+ 440              		.cfi_def_cfa_offset 8
+ 441 0048 BD46     		mov	sp, r7
+ 442              	.LCFI33:
+ 443              		.cfi_def_cfa_register 13
+ 444              		@ sp needed
+ 445 004a 80BD     		pop	{r7, pc}
+ 446              		.cfi_endproc
+ 447              	.LFE130:
+ 449              		.section	.text.MyIIC_ReceiveByte,"ax",%progbits
+ 450              		.align	1
+ 451              		.global	MyIIC_ReceiveByte
+ 452              		.syntax unified
+ 453              		.thumb
+ 454              		.thumb_func
+ 456              	MyIIC_ReceiveByte:
+ 457              	.LFB131:
  108:./Hardware/MyIIC.c **** 
  109:./Hardware/MyIIC.c **** uint8_t MyIIC_ReceiveByte(void)
  110:./Hardware/MyIIC.c **** {
- 412              		.loc 1 110 1 is_stmt 1 view -0
- 413              		.cfi_startproc
- 414              		@ args = 0, pretend = 0, frame = 0
- 415              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 10
-
-
- 416 0000 38B5     		push	{r3, r4, r5, lr}
- 417              	.LCFI10:
- 418              		.cfi_def_cfa_offset 16
- 419              		.cfi_offset 3, -16
- 420              		.cfi_offset 4, -12
- 421              		.cfi_offset 5, -8
- 422              		.cfi_offset 14, -4
+ 458              		.loc 1 110 1
+ 459              		.cfi_startproc
+ 460              		@ args = 0, pretend = 0, frame = 8
+ 461              		@ frame_needed = 1, uses_anonymous_args = 0
+ 462 0000 80B5     		push	{r7, lr}
+ 463              	.LCFI34:
+ 464              		.cfi_def_cfa_offset 8
+ 465              		.cfi_offset 7, -8
+ 466              		.cfi_offset 14, -4
+ 467 0002 82B0     		sub	sp, sp, #8
+ 468              	.LCFI35:
+ 469              		.cfi_def_cfa_offset 16
+ 470 0004 00AF     		add	r7, sp, #0
+ 471              	.LCFI36:
+ 472              		.cfi_def_cfa_register 7
  111:./Hardware/MyIIC.c **** 	uint8_t Byte = 0x00;
- 423              		.loc 1 111 2 view .LVU72
- 424              	.LVL34:
+ 473              		.loc 1 111 10
+ 474 0006 0023     		movs	r3, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 11
+
+
+ 475 0008 FB71     		strb	r3, [r7, #7]
  112:./Hardware/MyIIC.c **** 	//Ö÷»úÊÍ·ÅSDA£¬½»ÓÉ´Ó»ú¿ØÖÆ
  113:./Hardware/MyIIC.c **** 	MyIIC_W_SDA(1);
- 425              		.loc 1 113 2 view .LVU73
- 426 0002 0120     		movs	r0, #1
- 427 0004 FFF7FEFF 		bl	MyIIC_W_SDA
- 428              	.LVL35:
+ 476              		.loc 1 113 2
+ 477 000a 0120     		movs	r0, #1
+ 478 000c FFF7FEFF 		bl	MyIIC_W_SDA
+ 479              	.LBB3:
  114:./Hardware/MyIIC.c **** 	//ÊÍ·ÅSDAºó¿ÉÒÔ¼ÓÒ»¸öÑÓÊ±£¬·ÀÖ¹SCLÊÍ·Åºó´Ó»ú»¹Ã»·¢³öÊý¾Ý
  115:./Hardware/MyIIC.c **** 	
  116:./Hardware/MyIIC.c **** 	for(uint8_t i = 0; i <8; i++)
- 429              		.loc 1 116 2 view .LVU74
- 430              	.LBB3:
- 431              		.loc 1 116 6 view .LVU75
- 432              		.loc 1 116 14 is_stmt 0 view .LVU76
- 433 0008 0024     		movs	r4, #0
- 434              	.LBE3:
- 111:./Hardware/MyIIC.c **** 	//Ö÷»úÊÍ·ÅSDA£¬½»ÓÉ´Ó»ú¿ØÖÆ
- 435              		.loc 1 111 10 view .LVU77
- 436 000a 2546     		mov	r5, r4
- 437              	.LBB4:
- 438              		.loc 1 116 2 view .LVU78
- 439 000c 04E0     		b	.L30
- 440              	.LVL36:
- 441              	.L31:
+ 480              		.loc 1 116 14
+ 481 0010 0023     		movs	r3, #0
+ 482 0012 BB71     		strb	r3, [r7, #6]
+ 483              		.loc 1 116 2
+ 484 0014 17E0     		b	.L24
+ 485              	.L26:
  117:./Hardware/MyIIC.c **** 	{
  118:./Hardware/MyIIC.c **** 		//À­¸ßSCL£¬ÔÚSCL¸ßµçÆ½ÆÚ¼ä¶ÁÐ´
  119:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(1);
+ 486              		.loc 1 119 3
+ 487 0016 0120     		movs	r0, #1
+ 488 0018 FFF7FEFF 		bl	MyIIC_W_SCL
  120:./Hardware/MyIIC.c **** 		if(MyIIC_R_SDA()==1) {Byte|=(0x80 >> i);}
+ 489              		.loc 1 120 6
+ 490 001c FFF7FEFF 		bl	MyIIC_R_SDA
+ 491 0020 0346     		mov	r3, r0
+ 492              		.loc 1 120 5
+ 493 0022 012B     		cmp	r3, #1
+ 494 0024 09D1     		bne	.L25
+ 495              		.loc 1 120 37 discriminator 1
+ 496 0026 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 497 0028 8022     		movs	r2, #128
+ 498 002a 42FA03F3 		asr	r3, r2, r3
+ 499              		.loc 1 120 29 discriminator 1
+ 500 002e 5AB2     		sxtb	r2, r3
+ 501 0030 97F90730 		ldrsb	r3, [r7, #7]
+ 502 0034 1343     		orrs	r3, r3, r2
+ 503 0036 5BB2     		sxtb	r3, r3
+ 504 0038 FB71     		strb	r3, [r7, #7]
+ 505              	.L25:
  121:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 442              		.loc 1 121 3 is_stmt 1 discriminator 2 view .LVU79
- 443 000e 0020     		movs	r0, #0
- 444 0010 FFF7FEFF 		bl	MyIIC_W_SCL
- 445              	.LVL37:
+ 506              		.loc 1 121 3 discriminator 2
+ 507 003a 0020     		movs	r0, #0
+ 508 003c FFF7FEFF 		bl	MyIIC_W_SCL
  116:./Hardware/MyIIC.c **** 	{
- 446              		.loc 1 116 27 discriminator 2 view .LVU80
+ 509              		.loc 1 116 28 discriminator 2
+ 510 0040 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 511 0042 0133     		adds	r3, r3, #1
+ 512 0044 BB71     		strb	r3, [r7, #6]
+ 513              	.L24:
  116:./Hardware/MyIIC.c **** 	{
- 447              		.loc 1 116 28 is_stmt 0 discriminator 2 view .LVU81
- 448 0014 0134     		adds	r4, r4, #1
- 449              	.LVL38:
- 116:./Hardware/MyIIC.c **** 	{
- 450              		.loc 1 116 28 discriminator 2 view .LVU82
- 451 0016 E4B2     		uxtb	r4, r4
- 452              	.LVL39:
- 453              	.L30:
- 116:./Hardware/MyIIC.c **** 	{
- 454              		.loc 1 116 21 is_stmt 1 discriminator 1 view .LVU83
- 116:./Hardware/MyIIC.c **** 	{
- 455              		.loc 1 116 2 is_stmt 0 discriminator 1 view .LVU84
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 11
-
-
- 456 0018 072C     		cmp	r4, #7
- 457 001a 0BD8     		bhi	.L34
- 119:./Hardware/MyIIC.c **** 		if(MyIIC_R_SDA()==1) {Byte|=(0x80 >> i);}
- 458              		.loc 1 119 3 is_stmt 1 view .LVU85
- 459 001c 0120     		movs	r0, #1
- 460 001e FFF7FEFF 		bl	MyIIC_W_SCL
- 461              	.LVL40:
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 462              		.loc 1 120 3 view .LVU86
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 463              		.loc 1 120 6 is_stmt 0 view .LVU87
- 464 0022 FFF7FEFF 		bl	MyIIC_R_SDA
- 465              	.LVL41:
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 466              		.loc 1 120 5 view .LVU88
- 467 0026 0128     		cmp	r0, #1
- 468 0028 F1D1     		bne	.L31
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 469              		.loc 1 120 25 is_stmt 1 discriminator 1 view .LVU89
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 470              		.loc 1 120 37 is_stmt 0 discriminator 1 view .LVU90
- 471 002a 8023     		movs	r3, #128
- 472 002c 2341     		asrs	r3, r3, r4
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 473              		.loc 1 120 29 discriminator 1 view .LVU91
- 474 002e 1D43     		orrs	r5, r5, r3
- 475              	.LVL42:
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 476              		.loc 1 120 29 discriminator 1 view .LVU92
- 477 0030 EDB2     		uxtb	r5, r5
- 478              	.LVL43:
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 479              		.loc 1 120 29 discriminator 1 view .LVU93
- 480 0032 ECE7     		b	.L31
- 481              	.L34:
- 120:./Hardware/MyIIC.c **** 		MyIIC_W_SCL(0);
- 482              		.loc 1 120 29 discriminator 1 view .LVU94
- 483              	.LBE4:
+ 514              		.loc 1 116 2 discriminator 1
+ 515 0046 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 516 0048 072B     		cmp	r3, #7
+ 517 004a E4D9     		bls	.L26
+ 518              	.LBE3:
  122:./Hardware/MyIIC.c **** 	}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 12
+
+
  123:./Hardware/MyIIC.c **** 	return Byte; 
- 484              		.loc 1 123 2 is_stmt 1 view .LVU95
+ 519              		.loc 1 123 9
+ 520 004c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
  124:./Hardware/MyIIC.c **** }
- 485              		.loc 1 124 1 is_stmt 0 view .LVU96
- 486 0034 2846     		mov	r0, r5
- 487 0036 38BD     		pop	{r3, r4, r5, pc}
- 488              		.loc 1 124 1 view .LVU97
- 489              		.cfi_endproc
- 490              	.LFE131:
- 492              		.section	.text.MyIIC_SendACK,"ax",%progbits
- 493              		.align	1
- 494              		.global	MyIIC_SendACK
- 495              		.syntax unified
- 496              		.thumb
- 497              		.thumb_func
- 499              	MyIIC_SendACK:
- 500              	.LVL44:
- 501              	.LFB132:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 12
-
-
+ 521              		.loc 1 124 1
+ 522 004e 1846     		mov	r0, r3
+ 523 0050 0837     		adds	r7, r7, #8
+ 524              	.LCFI37:
+ 525              		.cfi_def_cfa_offset 8
+ 526 0052 BD46     		mov	sp, r7
+ 527              	.LCFI38:
+ 528              		.cfi_def_cfa_register 13
+ 529              		@ sp needed
+ 530 0054 80BD     		pop	{r7, pc}
+ 531              		.cfi_endproc
+ 532              	.LFE131:
+ 534              		.section	.text.MyIIC_SendACK,"ax",%progbits
+ 535              		.align	1
+ 536              		.global	MyIIC_SendACK
+ 537              		.syntax unified
+ 538              		.thumb
+ 539              		.thumb_func
+ 541              	MyIIC_SendACK:
+ 542              	.LFB132:
  125:./Hardware/MyIIC.c **** 
  126:./Hardware/MyIIC.c **** /*********************************************************************************
  127:./Hardware/MyIIC.c ****  * IIC Ê±Ðò ·¢ËÍ/½ÓÊÜÓ¦´ð
@@ -669,132 +693,154 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 1
  130:./Hardware/MyIIC.c **** 
  131:./Hardware/MyIIC.c **** void MyIIC_SendACK(uint8_t AckBit)
  132:./Hardware/MyIIC.c **** {
- 502              		.loc 1 132 1 is_stmt 1 view -0
- 503              		.cfi_startproc
- 504              		@ args = 0, pretend = 0, frame = 0
- 505              		@ frame_needed = 0, uses_anonymous_args = 0
- 506              		.loc 1 132 1 is_stmt 0 view .LVU99
- 507 0000 08B5     		push	{r3, lr}
- 508              	.LCFI11:
- 509              		.cfi_def_cfa_offset 8
- 510              		.cfi_offset 3, -8
- 511              		.cfi_offset 14, -4
+ 543              		.loc 1 132 1
+ 544              		.cfi_startproc
+ 545              		@ args = 0, pretend = 0, frame = 8
+ 546              		@ frame_needed = 1, uses_anonymous_args = 0
+ 547 0000 80B5     		push	{r7, lr}
+ 548              	.LCFI39:
+ 549              		.cfi_def_cfa_offset 8
+ 550              		.cfi_offset 7, -8
+ 551              		.cfi_offset 14, -4
+ 552 0002 82B0     		sub	sp, sp, #8
+ 553              	.LCFI40:
+ 554              		.cfi_def_cfa_offset 16
+ 555 0004 00AF     		add	r7, sp, #0
+ 556              	.LCFI41:
+ 557              		.cfi_def_cfa_register 7
+ 558 0006 0346     		mov	r3, r0
+ 559 0008 FB71     		strb	r3, [r7, #7]
  133:./Hardware/MyIIC.c **** 	MyIIC_W_SDA(AckBit); //¾­µä²Ù×÷£¬Ò²¿ÉÒÔÊ¹ÓÃByte>>7
- 512              		.loc 1 133 2 is_stmt 1 view .LVU100
- 513 0002 FFF7FEFF 		bl	MyIIC_W_SDA
- 514              	.LVL45:
+ 560              		.loc 1 133 2
+ 561 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 562 000c 1846     		mov	r0, r3
+ 563 000e FFF7FEFF 		bl	MyIIC_W_SDA
  134:./Hardware/MyIIC.c **** 	MyIIC_W_SCL(1);
- 515              		.loc 1 134 2 view .LVU101
- 516 0006 0120     		movs	r0, #1
- 517 0008 FFF7FEFF 		bl	MyIIC_W_SCL
- 518              	.LVL46:
+ 564              		.loc 1 134 2
+ 565 0012 0120     		movs	r0, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 13
+
+
+ 566 0014 FFF7FEFF 		bl	MyIIC_W_SCL
  135:./Hardware/MyIIC.c **** 	MyIIC_W_SCL(0);
- 519              		.loc 1 135 2 view .LVU102
- 520 000c 0020     		movs	r0, #0
- 521 000e FFF7FEFF 		bl	MyIIC_W_SCL
- 522              	.LVL47:
+ 567              		.loc 1 135 2
+ 568 0018 0020     		movs	r0, #0
+ 569 001a FFF7FEFF 		bl	MyIIC_W_SCL
  136:./Hardware/MyIIC.c **** }
- 523              		.loc 1 136 1 is_stmt 0 view .LVU103
- 524 0012 08BD     		pop	{r3, pc}
- 525              		.cfi_endproc
- 526              	.LFE132:
- 528              		.section	.text.MyIIC_ReceiveACK,"ax",%progbits
- 529              		.align	1
- 530              		.global	MyIIC_ReceiveACK
- 531              		.syntax unified
- 532              		.thumb
- 533              		.thumb_func
- 535              	MyIIC_ReceiveACK:
- 536              	.LFB133:
+ 570              		.loc 1 136 1
+ 571 001e 00BF     		nop
+ 572 0020 0837     		adds	r7, r7, #8
+ 573              	.LCFI42:
+ 574              		.cfi_def_cfa_offset 8
+ 575 0022 BD46     		mov	sp, r7
+ 576              	.LCFI43:
+ 577              		.cfi_def_cfa_register 13
+ 578              		@ sp needed
+ 579 0024 80BD     		pop	{r7, pc}
+ 580              		.cfi_endproc
+ 581              	.LFE132:
+ 583              		.section	.text.MyIIC_ReceiveACK,"ax",%progbits
+ 584              		.align	1
+ 585              		.global	MyIIC_ReceiveACK
+ 586              		.syntax unified
+ 587              		.thumb
+ 588              		.thumb_func
+ 590              	MyIIC_ReceiveACK:
+ 591              	.LFB133:
  137:./Hardware/MyIIC.c **** 
  138:./Hardware/MyIIC.c **** uint8_t MyIIC_ReceiveACK(void)
  139:./Hardware/MyIIC.c **** {
- 537              		.loc 1 139 1 is_stmt 1 view -0
- 538              		.cfi_startproc
- 539              		@ args = 0, pretend = 0, frame = 0
- 540              		@ frame_needed = 0, uses_anonymous_args = 0
- 541 0000 10B5     		push	{r4, lr}
- 542              	.LCFI12:
- 543              		.cfi_def_cfa_offset 8
- 544              		.cfi_offset 4, -8
- 545              		.cfi_offset 14, -4
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 13
-
-
+ 592              		.loc 1 139 1
+ 593              		.cfi_startproc
+ 594              		@ args = 0, pretend = 0, frame = 8
+ 595              		@ frame_needed = 1, uses_anonymous_args = 0
+ 596 0000 80B5     		push	{r7, lr}
+ 597              	.LCFI44:
+ 598              		.cfi_def_cfa_offset 8
+ 599              		.cfi_offset 7, -8
+ 600              		.cfi_offset 14, -4
+ 601 0002 82B0     		sub	sp, sp, #8
+ 602              	.LCFI45:
+ 603              		.cfi_def_cfa_offset 16
+ 604 0004 00AF     		add	r7, sp, #0
+ 605              	.LCFI46:
+ 606              		.cfi_def_cfa_register 7
  140:./Hardware/MyIIC.c **** 	uint8_t AckBit;
- 546              		.loc 1 140 2 view .LVU105
  141:./Hardware/MyIIC.c **** 	MyIIC_W_SDA(1);
- 547              		.loc 1 141 2 view .LVU106
- 548 0002 0120     		movs	r0, #1
- 549 0004 FFF7FEFF 		bl	MyIIC_W_SDA
- 550              	.LVL48:
+ 607              		.loc 1 141 2
+ 608 0006 0120     		movs	r0, #1
+ 609 0008 FFF7FEFF 		bl	MyIIC_W_SDA
  142:./Hardware/MyIIC.c **** 	MyIIC_W_SCL(1);
- 551              		.loc 1 142 2 view .LVU107
- 552 0008 0120     		movs	r0, #1
- 553 000a FFF7FEFF 		bl	MyIIC_W_SCL
- 554              	.LVL49:
+ 610              		.loc 1 142 2
+ 611 000c 0120     		movs	r0, #1
+ 612 000e FFF7FEFF 		bl	MyIIC_W_SCL
  143:./Hardware/MyIIC.c **** 	AckBit = MyIIC_R_SDA();
- 555              		.loc 1 143 2 view .LVU108
- 556              		.loc 1 143 11 is_stmt 0 view .LVU109
- 557 000e FFF7FEFF 		bl	MyIIC_R_SDA
- 558              	.LVL50:
- 559 0012 0446     		mov	r4, r0
- 560              	.LVL51:
+ 613              		.loc 1 143 11
+ 614 0012 FFF7FEFF 		bl	MyIIC_R_SDA
+ 615 0016 0346     		mov	r3, r0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 14
+
+
+ 616 0018 FB71     		strb	r3, [r7, #7]
  144:./Hardware/MyIIC.c **** 	MyIIC_W_SCL(0);
- 561              		.loc 1 144 2 is_stmt 1 view .LVU110
- 562 0014 0020     		movs	r0, #0
- 563 0016 FFF7FEFF 		bl	MyIIC_W_SCL
- 564              	.LVL52:
+ 617              		.loc 1 144 2
+ 618 001a 0020     		movs	r0, #0
+ 619 001c FFF7FEFF 		bl	MyIIC_W_SCL
  145:./Hardware/MyIIC.c **** 		
  146:./Hardware/MyIIC.c **** 	return AckBit;
- 565              		.loc 1 146 2 view .LVU111
+ 620              		.loc 1 146 9
+ 621 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
  147:./Hardware/MyIIC.c **** }
- 566              		.loc 1 147 1 is_stmt 0 view .LVU112
- 567 001a 2046     		mov	r0, r4
- 568 001c 10BD     		pop	{r4, pc}
- 569              		.loc 1 147 1 view .LVU113
- 570              		.cfi_endproc
- 571              	.LFE133:
- 573              		.text
- 574              	.Letext0:
- 575              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 576              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 577              		.file 4 "./CORE/stm32f4xx.h"
- 578              		.file 5 "./Library/stm32f4xx_gpio.h"
- 579              		.file 6 "./User/Delay.h"
- 580              		.file 7 "./Library/stm32f4xx_rcc.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s 			page 14
+ 622              		.loc 1 147 1
+ 623 0022 1846     		mov	r0, r3
+ 624 0024 0837     		adds	r7, r7, #8
+ 625              	.LCFI47:
+ 626              		.cfi_def_cfa_offset 8
+ 627 0026 BD46     		mov	sp, r7
+ 628              	.LCFI48:
+ 629              		.cfi_def_cfa_register 13
+ 630              		@ sp needed
+ 631 0028 80BD     		pop	{r7, pc}
+ 632              		.cfi_endproc
+ 633              	.LFE133:
+ 635              		.text
+ 636              	.Letext0:
+ 637              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 638              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 639              		.file 4 "./CORE/stm32f4xx.h"
+ 640              		.file 5 "./Library/stm32f4xx_gpio.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s 			page 15
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 MyIIC.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:20     .text.MyIIC_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:26     .text.MyIIC_Init:0000000000000000 MyIIC_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:83     .text.MyIIC_Init:0000000000000038 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:88     .text.MyIIC_W_SCL:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:94     .text.MyIIC_W_SCL:0000000000000000 MyIIC_W_SCL
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:125    .text.MyIIC_W_SCL:0000000000000018 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:130    .text.MyIIC_W_SDA:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:136    .text.MyIIC_W_SDA:0000000000000000 MyIIC_W_SDA
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:167    .text.MyIIC_W_SDA:0000000000000018 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:172    .text.MyIIC_R_SCL:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:178    .text.MyIIC_R_SCL:0000000000000000 MyIIC_R_SCL
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:212    .text.MyIIC_R_SCL:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:217    .text.MyIIC_R_SDA:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:223    .text.MyIIC_R_SDA:0000000000000000 MyIIC_R_SDA
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:257    .text.MyIIC_R_SDA:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:262    .text.MyIIC_Start:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:268    .text.MyIIC_Start:0000000000000000 MyIIC_Start
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:301    .text.MyIIC_Stop:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:307    .text.MyIIC_Stop:0000000000000000 MyIIC_Stop
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:336    .text.MyIIC_SendByte:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:342    .text.MyIIC_SendByte:0000000000000000 MyIIC_SendByte
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:404    .text.MyIIC_ReceiveByte:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:410    .text.MyIIC_ReceiveByte:0000000000000000 MyIIC_ReceiveByte
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:493    .text.MyIIC_SendACK:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:499    .text.MyIIC_SendACK:0000000000000000 MyIIC_SendACK
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:529    .text.MyIIC_ReceiveACK:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccYnuCwS.s:535    .text.MyIIC_ReceiveACK:0000000000000000 MyIIC_ReceiveACK
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:20     .text.MyIIC_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:26     .text.MyIIC_Init:0000000000000000 MyIIC_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:82     .text.MyIIC_Init:000000000000003c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:87     .text.MyIIC_W_SCL:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:93     .text.MyIIC_W_SCL:0000000000000000 MyIIC_W_SCL
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:135    .text.MyIIC_W_SCL:000000000000002c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:140    .text.MyIIC_W_SDA:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:146    .text.MyIIC_W_SDA:0000000000000000 MyIIC_W_SDA
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:188    .text.MyIIC_W_SDA:000000000000002c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:193    .text.MyIIC_R_SCL:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:199    .text.MyIIC_R_SCL:0000000000000000 MyIIC_R_SCL
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:241    .text.MyIIC_R_SCL:000000000000002c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:246    .text.MyIIC_R_SDA:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:252    .text.MyIIC_R_SDA:0000000000000000 MyIIC_R_SDA
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:294    .text.MyIIC_R_SDA:000000000000002c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:299    .text.MyIIC_Start:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:305    .text.MyIIC_Start:0000000000000000 MyIIC_Start
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:338    .text.MyIIC_Stop:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:344    .text.MyIIC_Stop:0000000000000000 MyIIC_Stop
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:374    .text.MyIIC_SendByte:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:380    .text.MyIIC_SendByte:0000000000000000 MyIIC_SendByte
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:450    .text.MyIIC_ReceiveByte:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:456    .text.MyIIC_ReceiveByte:0000000000000000 MyIIC_ReceiveByte
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:535    .text.MyIIC_SendACK:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:541    .text.MyIIC_SendACK:0000000000000000 MyIIC_SendACK
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:584    .text.MyIIC_ReceiveACK:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccAL7vTP.s:590    .text.MyIIC_ReceiveACK:0000000000000000 MyIIC_ReceiveACK
 
 UNDEFINED SYMBOLS
 RCC_AHB1PeriphClockCmd

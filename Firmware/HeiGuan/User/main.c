@@ -72,117 +72,41 @@ int main(void)
 	
 	
 /* Initials -------------------------------------------------------------------*/ 
-	LD2_init();
-	GY86_init();
-	OLED_Init();
-	OLED2_Init();
-	BLE_Init();
-	REC_Init2();
-	
-/* IIC_test-----SUCCESS--------------------------------------------------------------*/ 	
-
-//	MyIIC_Start();
-//	MyIIC_SendByte(0xD2);  //1101 000 0
-//	uint8_t Ack = MyIIC_ReceiveACK();
-//	MyIIC_Stop();
-//	OLED_ShowString(1,1,"MPU6050");
-//	OLED_ShowString(2,1,"ACK:");
-//	OLED_ShowNum(2,5,Ack,1);
-
-
-/* MPU6050_test-----SUCCESS--------------------------------------------------------------*/ 
-//	uint8_t ID_MPU6050 = MPU6050_ReadRegister(0x75);
-//	OLED_ShowString(1,1,"MPU6050_ID");
-//	OLED_ShowHexNum(2,1,ID_MPU6050,2);
-
-/* USART_test-----SUCCESS--------------------------------------------------------------*/ 
-
-
-
-/* GY-86 TEST--------------------SUCCESS------------------------------------------------*/ 
-/*	
-  while (1)0
-  {
-	GY86_GetData();
-	LD2_ON();
-//	  
-//	 
-//	OLED_ShowString(1,1,"Acc");	
-//	OLED_ShowString(1,8,"Gyro");
-//	OLED_ShowSignedNum(2,1,GY86DataList.AX,5);
-//	OLED_ShowSignedNum(3,1,GY86DataList.AY,5);
-//	OLED_ShowSignedNum(4,1,GY86DataList.AZ,5);
-//	OLED_ShowSignedNum(2,8,GY86DataList.GX,5);
-//	OLED_ShowSignedNum(3,8,GY86DataList.GY,5);
-//	OLED_ShowSignedNum(4,8,GY86DataList.GZ,5);
-
-//	Delay_ms(1000);
-//	OLED_Clear();
-//	
-	OLED_ShowString(1,1,"Temperature");
-	OLED_ShowSignedNum(2,1,GY86DataList.CORE_Temperature,5);
-	OLED_ShowString(3,1,"Pressure");
-	OLED_ShowSignedNum(4,1,GY86DataList.Height,5);
-	Delay_ms(100);
-//	OLED_Clear();
-//	
-//	OLED_ShowString(1,1,"Gauss");
-//	OLED_ShowSignedNum(2,1,GY86DataList.GaX,5);
-//	OLED_ShowSignedNum(3,1,GY86DataList.GaY,5);
-//	OLED_ShowSignedNum(4,1,GY86DataList.GaZ,5);
-//	
-//	Delay_ms(1000);
-//	OLED_Clear();
-	
-	LD2_OFF();
-//	Delay_ms(2000);
-  }
-	
-*/
-
-
-/* PWM TEST -------------SUCCESS-------------------------------------------------*/ 
-
-
-//½âËøµçµ÷
-//2ms(2000= 1s)
-	Motor_Init();
-	LD2_ON();
+  LD2_init();
+  LD2_ON();
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+  GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+  int counter = 0;
 	while(1)
 	{
-		GY86_GetData();
-		OLED_ShowSignedNum(1,1,GY86DataList.AX,5);
-		OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
-		OLED_ShowSignedNum(3,1,GY86DataList.AZ,5);
-		OLED_ShowSignedNum(1,8,GY86DataList.GX,5);
-		OLED_ShowSignedNum(2,8,GY86DataList.GY,5);
-		OLED_ShowSignedNum(3,8,GY86DataList.GZ,5);
-		
-		OLED_ShowSignedNum(4,1,GY86DataList.GaX,5);
-		OLED_ShowSignedNum(4,8,GY86DataList.GaY,5);
-		
-		OLED2_ShowString(1,1,"Group3 LCCZD");
-		
-		OLED2_ShowNum(2,1,CH2[1],5);
-		OLED2_ShowNum(2,8,CH2[2],5);
-		
-		OLED2_ShowNum(3,1,CH2[3],5);
-		OLED2_ShowNum(3,8,CH2[4],5);
-		
-		OLED2_ShowNum(4,1,CH2[5],5);
-		OLED2_ShowNum(4,8,CH2[6],5);
-		
-		BLE_Printf("Acc:%d-%d-%d\n",GY86DataList.AX,GY86DataList.AY,GY86DataList.AZ);
-		BLE_Printf("G:%d-%d-%d\n",GY86DataList.GX,GY86DataList.GY,GY86DataList.GZ);
+    counter ++;
+    GPIO_SetBits(GPIOA,GPIO_Pin_1);
 
-//		BLE_Printf("CH[1]:%d  CH[2]:%d\n",CH2[1],CH2[2]);
-//		BLE_Printf("CH[3]:%d  CH[4]:%d\n",CH2[3],CH2[4]);
-//		BLE_Printf("CH[5]:%d  CH[6]:%d\n",CH2[5],CH2[6]);
-//		BLE_Printf("CH[7]:%d  CH[8]:%d\n",CH2[7],CH2[8]);
+    if (counter == 71 || counter ==76|| counter ==77|| counter ==82|| counter ==83)
+    { 
+      GPIO_ResetBits(GPIOA,GPIO_Pin_2);
+      LD2_OFF();
+    }
+    else 
+    {
+      GPIO_SetBits(GPIOA,GPIO_Pin_2);
+      LD2_ON();
+    }
 
-		Motor_SetSpeed_All((CH2[3]/10)-100);
-		
+    Delay_ms(10);
+
+
+
+    GPIO_ResetBits(GPIOA,GPIO_Pin_1);
+    Delay_ms(10);
+
 	}
+
 
 //	LD2_OFF();
 //	PWM_SetCompare1(140-1);

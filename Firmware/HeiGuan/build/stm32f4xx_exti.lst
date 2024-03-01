@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"stm32f4xx_exti.c"
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
   28:./Library/stm32f4xx_exti.c ****    (#) EXTI line 23 is connected to the LPTIM Wakeup event 
   29:./Library/stm32f4xx_exti.c **** 
   30:./Library/stm32f4xx_exti.c ****                        ##### How to use this driver #####
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 2
 
 
   31:./Library/stm32f4xx_exti.c ****  ===============================================================================
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
   85:./Library/stm32f4xx_exti.c **** 
   86:./Library/stm32f4xx_exti.c **** /** @defgroup EXTI_Group1 Initialization and Configuration functions
   87:./Library/stm32f4xx_exti.c ****  *  @brief   Initialization and Configuration functions 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 3
 
 
   88:./Library/stm32f4xx_exti.c ****  *
@@ -138,56 +138,78 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  102:./Library/stm32f4xx_exti.c ****   */
  103:./Library/stm32f4xx_exti.c **** void EXTI_DeInit(void)
  104:./Library/stm32f4xx_exti.c **** {
-  29              		.loc 1 104 1 view -0
+  29              		.loc 1 104 1
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
   33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 00AF     		add	r7, sp, #0
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_register 7
  105:./Library/stm32f4xx_exti.c ****   EXTI->IMR = 0x00000000;
-  34              		.loc 1 105 3 view .LVU1
-  35              		.loc 1 105 13 is_stmt 0 view .LVU2
-  36 0000 044B     		ldr	r3, .L2
-  37 0002 0022     		movs	r2, #0
-  38 0004 1A60     		str	r2, [r3]
+  41              		.loc 1 105 7
+  42 0004 094B     		ldr	r3, .L2
+  43              		.loc 1 105 13
+  44 0006 0022     		movs	r2, #0
+  45 0008 1A60     		str	r2, [r3]
  106:./Library/stm32f4xx_exti.c ****   EXTI->EMR = 0x00000000;
-  39              		.loc 1 106 3 is_stmt 1 view .LVU3
-  40              		.loc 1 106 13 is_stmt 0 view .LVU4
-  41 0006 5A60     		str	r2, [r3, #4]
+  46              		.loc 1 106 7
+  47 000a 084B     		ldr	r3, .L2
+  48              		.loc 1 106 13
+  49 000c 0022     		movs	r2, #0
+  50 000e 5A60     		str	r2, [r3, #4]
  107:./Library/stm32f4xx_exti.c ****   EXTI->RTSR = 0x00000000;
-  42              		.loc 1 107 3 is_stmt 1 view .LVU5
-  43              		.loc 1 107 14 is_stmt 0 view .LVU6
-  44 0008 9A60     		str	r2, [r3, #8]
+  51              		.loc 1 107 7
+  52 0010 064B     		ldr	r3, .L2
+  53              		.loc 1 107 14
+  54 0012 0022     		movs	r2, #0
+  55 0014 9A60     		str	r2, [r3, #8]
  108:./Library/stm32f4xx_exti.c ****   EXTI->FTSR = 0x00000000;
-  45              		.loc 1 108 3 is_stmt 1 view .LVU7
-  46              		.loc 1 108 14 is_stmt 0 view .LVU8
-  47 000a DA60     		str	r2, [r3, #12]
+  56              		.loc 1 108 7
+  57 0016 054B     		ldr	r3, .L2
+  58              		.loc 1 108 14
+  59 0018 0022     		movs	r2, #0
+  60 001a DA60     		str	r2, [r3, #12]
  109:./Library/stm32f4xx_exti.c ****   EXTI->PR = 0x007FFFFF;
-  48              		.loc 1 109 3 is_stmt 1 view .LVU9
-  49              		.loc 1 109 12 is_stmt 0 view .LVU10
-  50 000c 024A     		ldr	r2, .L2+4
-  51 000e 5A61     		str	r2, [r3, #20]
+  61              		.loc 1 109 7
+  62 001c 034B     		ldr	r3, .L2
+  63              		.loc 1 109 12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 4
+
+
+  64 001e 044A     		ldr	r2, .L2+4
+  65 0020 5A61     		str	r2, [r3, #20]
  110:./Library/stm32f4xx_exti.c **** }
-  52              		.loc 1 110 1 view .LVU11
-  53 0010 7047     		bx	lr
-  54              	.L3:
-  55 0012 00BF     		.align	2
-  56              	.L2:
-  57 0014 003C0140 		.word	1073822720
-  58 0018 FFFF7F00 		.word	8388607
-  59              		.cfi_endproc
-  60              	.LFE123:
-  62              		.section	.text.EXTI_Init,"ax",%progbits
-  63              		.align	1
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 4
-
-
-  64              		.global	EXTI_Init
-  65              		.syntax unified
-  66              		.thumb
-  67              		.thumb_func
-  69              	EXTI_Init:
-  70              	.LVL0:
-  71              	.LFB124:
+  66              		.loc 1 110 1
+  67 0022 00BF     		nop
+  68 0024 BD46     		mov	sp, r7
+  69              	.LCFI2:
+  70              		.cfi_def_cfa_register 13
+  71              		@ sp needed
+  72 0026 5DF8047B 		ldr	r7, [sp], #4
+  73              	.LCFI3:
+  74              		.cfi_restore 7
+  75              		.cfi_def_cfa_offset 0
+  76 002a 7047     		bx	lr
+  77              	.L3:
+  78              		.align	2
+  79              	.L2:
+  80 002c 003C0140 		.word	1073822720
+  81 0030 FFFF7F00 		.word	8388607
+  82              		.cfi_endproc
+  83              	.LFE123:
+  85              		.section	.text.EXTI_Init,"ax",%progbits
+  86              		.align	1
+  87              		.global	EXTI_Init
+  88              		.syntax unified
+  89              		.thumb
+  90              		.thumb_func
+  92              	EXTI_Init:
+  93              	.LFB124:
  111:./Library/stm32f4xx_exti.c **** 
  112:./Library/stm32f4xx_exti.c **** /**
  113:./Library/stm32f4xx_exti.c ****   * @brief  Initializes the EXTI peripheral according to the specified
@@ -198,142 +220,172 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  118:./Library/stm32f4xx_exti.c ****   */
  119:./Library/stm32f4xx_exti.c **** void EXTI_Init(EXTI_InitTypeDef* EXTI_InitStruct)
  120:./Library/stm32f4xx_exti.c **** {
-  72              		.loc 1 120 1 is_stmt 1 view -0
-  73              		.cfi_startproc
-  74              		@ args = 0, pretend = 0, frame = 0
-  75              		@ frame_needed = 0, uses_anonymous_args = 0
-  76              		@ link register save eliminated.
+  94              		.loc 1 120 1
+  95              		.cfi_startproc
+  96              		@ args = 0, pretend = 0, frame = 16
+  97              		@ frame_needed = 1, uses_anonymous_args = 0
+  98              		@ link register save eliminated.
+  99 0000 80B4     		push	{r7}
+ 100              	.LCFI4:
+ 101              		.cfi_def_cfa_offset 4
+ 102              		.cfi_offset 7, -4
+ 103 0002 85B0     		sub	sp, sp, #20
+ 104              	.LCFI5:
+ 105              		.cfi_def_cfa_offset 24
+ 106 0004 00AF     		add	r7, sp, #0
+ 107              	.LCFI6:
+ 108              		.cfi_def_cfa_register 7
+ 109 0006 7860     		str	r0, [r7, #4]
  121:./Library/stm32f4xx_exti.c ****   uint32_t tmp = 0;
-  77              		.loc 1 121 3 view .LVU13
+ 110              		.loc 1 121 12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 5
+
+
+ 111 0008 0023     		movs	r3, #0
+ 112 000a FB60     		str	r3, [r7, #12]
  122:./Library/stm32f4xx_exti.c **** 
  123:./Library/stm32f4xx_exti.c ****   /* Check the parameters */
  124:./Library/stm32f4xx_exti.c ****   assert_param(IS_EXTI_MODE(EXTI_InitStruct->EXTI_Mode));
-  78              		.loc 1 124 3 view .LVU14
  125:./Library/stm32f4xx_exti.c ****   assert_param(IS_EXTI_TRIGGER(EXTI_InitStruct->EXTI_Trigger));
-  79              		.loc 1 125 3 view .LVU15
  126:./Library/stm32f4xx_exti.c ****   assert_param(IS_EXTI_LINE(EXTI_InitStruct->EXTI_Line));  
-  80              		.loc 1 126 3 view .LVU16
  127:./Library/stm32f4xx_exti.c ****   assert_param(IS_FUNCTIONAL_STATE(EXTI_InitStruct->EXTI_LineCmd));
-  81              		.loc 1 127 3 view .LVU17
  128:./Library/stm32f4xx_exti.c **** 
  129:./Library/stm32f4xx_exti.c ****   tmp = (uint32_t)EXTI_BASE;
-  82              		.loc 1 129 3 view .LVU18
+ 113              		.loc 1 129 7
+ 114 000c 344B     		ldr	r3, .L9
+ 115 000e FB60     		str	r3, [r7, #12]
  130:./Library/stm32f4xx_exti.c ****      
  131:./Library/stm32f4xx_exti.c ****   if (EXTI_InitStruct->EXTI_LineCmd != DISABLE)
-  83              		.loc 1 131 3 view .LVU19
-  84              		.loc 1 131 22 is_stmt 0 view .LVU20
-  85 0000 8379     		ldrb	r3, [r0, #6]	@ zero_extendqisi2
-  86              		.loc 1 131 6 view .LVU21
-  87 0002 002B     		cmp	r3, #0
-  88 0004 36D0     		beq	.L5
- 120:./Library/stm32f4xx_exti.c ****   uint32_t tmp = 0;
-  89              		.loc 1 120 1 view .LVU22
-  90 0006 10B4     		push	{r4}
-  91              	.LCFI0:
-  92              		.cfi_def_cfa_offset 4
-  93              		.cfi_offset 4, -4
+ 116              		.loc 1 131 22
+ 117 0010 7B68     		ldr	r3, [r7, #4]
+ 118 0012 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 119              		.loc 1 131 6
+ 120 0014 002B     		cmp	r3, #0
+ 121 0016 4FD0     		beq	.L5
  132:./Library/stm32f4xx_exti.c ****   {
  133:./Library/stm32f4xx_exti.c ****     /* Clear EXTI line configuration */
  134:./Library/stm32f4xx_exti.c ****     EXTI->IMR &= ~EXTI_InitStruct->EXTI_Line;
-  94              		.loc 1 134 5 is_stmt 1 view .LVU23
-  95              		.loc 1 134 15 is_stmt 0 view .LVU24
-  96 0008 204B     		ldr	r3, .L13
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 5
-
-
-  97 000a 1A68     		ldr	r2, [r3]
-  98              		.loc 1 134 34 view .LVU25
-  99 000c 0168     		ldr	r1, [r0]
- 100              		.loc 1 134 15 view .LVU26
- 101 000e 22EA0102 		bic	r2, r2, r1
- 102 0012 1A60     		str	r2, [r3]
+ 122              		.loc 1 134 15
+ 123 0018 314B     		ldr	r3, .L9
+ 124 001a 1A68     		ldr	r2, [r3]
+ 125              		.loc 1 134 34
+ 126 001c 7B68     		ldr	r3, [r7, #4]
+ 127 001e 1B68     		ldr	r3, [r3]
+ 128              		.loc 1 134 18
+ 129 0020 DB43     		mvns	r3, r3
+ 130              		.loc 1 134 15
+ 131 0022 2F49     		ldr	r1, .L9
+ 132 0024 1340     		ands	r3, r3, r2
+ 133 0026 0B60     		str	r3, [r1]
  135:./Library/stm32f4xx_exti.c ****     EXTI->EMR &= ~EXTI_InitStruct->EXTI_Line;
- 103              		.loc 1 135 5 is_stmt 1 view .LVU27
- 104              		.loc 1 135 15 is_stmt 0 view .LVU28
- 105 0014 5A68     		ldr	r2, [r3, #4]
- 106              		.loc 1 135 34 view .LVU29
- 107 0016 0168     		ldr	r1, [r0]
- 108              		.loc 1 135 15 view .LVU30
- 109 0018 22EA0102 		bic	r2, r2, r1
- 110 001c 5A60     		str	r2, [r3, #4]
+ 134              		.loc 1 135 15
+ 135 0028 2D4B     		ldr	r3, .L9
+ 136 002a 5A68     		ldr	r2, [r3, #4]
+ 137              		.loc 1 135 34
+ 138 002c 7B68     		ldr	r3, [r7, #4]
+ 139 002e 1B68     		ldr	r3, [r3]
+ 140              		.loc 1 135 18
+ 141 0030 DB43     		mvns	r3, r3
+ 142              		.loc 1 135 15
+ 143 0032 2B49     		ldr	r1, .L9
+ 144 0034 1340     		ands	r3, r3, r2
+ 145 0036 4B60     		str	r3, [r1, #4]
  136:./Library/stm32f4xx_exti.c ****     
  137:./Library/stm32f4xx_exti.c ****     tmp += EXTI_InitStruct->EXTI_Mode;
- 111              		.loc 1 137 5 is_stmt 1 view .LVU31
- 112              		.loc 1 137 27 is_stmt 0 view .LVU32
- 113 001e 0279     		ldrb	r2, [r0, #4]	@ zero_extendqisi2
- 114              		.loc 1 137 9 view .LVU33
- 115 0020 02F18042 		add	r2, r2, #1073741824
- 116 0024 02F59E32 		add	r2, r2, #80896
- 117              	.LVL1:
+ 146              		.loc 1 137 27
+ 147 0038 7B68     		ldr	r3, [r7, #4]
+ 148 003a 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 149 003c 1A46     		mov	r2, r3
+ 150              		.loc 1 137 9
+ 151 003e FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 6
+
+
+ 152 0040 1344     		add	r3, r3, r2
+ 153 0042 FB60     		str	r3, [r7, #12]
  138:./Library/stm32f4xx_exti.c **** 
  139:./Library/stm32f4xx_exti.c ****     *(__IO uint32_t *) tmp |= EXTI_InitStruct->EXTI_Line;
- 118              		.loc 1 139 5 is_stmt 1 view .LVU34
- 119              		.loc 1 139 28 is_stmt 0 view .LVU35
- 120 0028 1168     		ldr	r1, [r2]
- 121 002a 0468     		ldr	r4, [r0]
- 122 002c 2143     		orrs	r1, r1, r4
- 123 002e 1160     		str	r1, [r2]
+ 154              		.loc 1 139 28
+ 155 0044 FB68     		ldr	r3, [r7, #12]
+ 156 0046 1968     		ldr	r1, [r3]
+ 157              		.loc 1 139 46
+ 158 0048 7B68     		ldr	r3, [r7, #4]
+ 159 004a 1A68     		ldr	r2, [r3]
+ 160              		.loc 1 139 28
+ 161 004c FB68     		ldr	r3, [r7, #12]
+ 162 004e 0A43     		orrs	r2, r2, r1
+ 163 0050 1A60     		str	r2, [r3]
  140:./Library/stm32f4xx_exti.c **** 
  141:./Library/stm32f4xx_exti.c ****     /* Clear Rising Falling edge configuration */
  142:./Library/stm32f4xx_exti.c ****     EXTI->RTSR &= ~EXTI_InitStruct->EXTI_Line;
- 124              		.loc 1 142 5 is_stmt 1 view .LVU36
- 125              		.loc 1 142 16 is_stmt 0 view .LVU37
- 126 0030 9A68     		ldr	r2, [r3, #8]
- 127              	.LVL2:
- 128              		.loc 1 142 35 view .LVU38
- 129 0032 0168     		ldr	r1, [r0]
- 130              		.loc 1 142 16 view .LVU39
- 131 0034 22EA0102 		bic	r2, r2, r1
- 132 0038 9A60     		str	r2, [r3, #8]
+ 164              		.loc 1 142 16
+ 165 0052 234B     		ldr	r3, .L9
+ 166 0054 9A68     		ldr	r2, [r3, #8]
+ 167              		.loc 1 142 35
+ 168 0056 7B68     		ldr	r3, [r7, #4]
+ 169 0058 1B68     		ldr	r3, [r3]
+ 170              		.loc 1 142 19
+ 171 005a DB43     		mvns	r3, r3
+ 172              		.loc 1 142 16
+ 173 005c 2049     		ldr	r1, .L9
+ 174 005e 1340     		ands	r3, r3, r2
+ 175 0060 8B60     		str	r3, [r1, #8]
  143:./Library/stm32f4xx_exti.c ****     EXTI->FTSR &= ~EXTI_InitStruct->EXTI_Line;
- 133              		.loc 1 143 5 is_stmt 1 view .LVU40
- 134              		.loc 1 143 16 is_stmt 0 view .LVU41
- 135 003a DA68     		ldr	r2, [r3, #12]
- 136              		.loc 1 143 35 view .LVU42
- 137 003c 0168     		ldr	r1, [r0]
- 138              		.loc 1 143 16 view .LVU43
- 139 003e 22EA0102 		bic	r2, r2, r1
- 140 0042 DA60     		str	r2, [r3, #12]
+ 176              		.loc 1 143 16
+ 177 0062 1F4B     		ldr	r3, .L9
+ 178 0064 DA68     		ldr	r2, [r3, #12]
+ 179              		.loc 1 143 35
+ 180 0066 7B68     		ldr	r3, [r7, #4]
+ 181 0068 1B68     		ldr	r3, [r3]
+ 182              		.loc 1 143 19
+ 183 006a DB43     		mvns	r3, r3
+ 184              		.loc 1 143 16
+ 185 006c 1C49     		ldr	r1, .L9
+ 186 006e 1340     		ands	r3, r3, r2
+ 187 0070 CB60     		str	r3, [r1, #12]
  144:./Library/stm32f4xx_exti.c ****     
  145:./Library/stm32f4xx_exti.c ****     /* Select the trigger for the selected external interrupts */
  146:./Library/stm32f4xx_exti.c ****     if (EXTI_InitStruct->EXTI_Trigger == EXTI_Trigger_Rising_Falling)
- 141              		.loc 1 146 5 is_stmt 1 view .LVU44
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 6
-
-
- 142              		.loc 1 146 24 is_stmt 0 view .LVU45
- 143 0044 4379     		ldrb	r3, [r0, #5]	@ zero_extendqisi2
- 144              		.loc 1 146 8 view .LVU46
- 145 0046 102B     		cmp	r3, #16
- 146 0048 0AD0     		beq	.L12
+ 188              		.loc 1 146 24
+ 189 0072 7B68     		ldr	r3, [r7, #4]
+ 190 0074 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 191              		.loc 1 146 8
+ 192 0076 102B     		cmp	r3, #16
+ 193 0078 0ED1     		bne	.L6
  147:./Library/stm32f4xx_exti.c ****     {
  148:./Library/stm32f4xx_exti.c ****       /* Rising Falling edge */
  149:./Library/stm32f4xx_exti.c ****       EXTI->RTSR |= EXTI_InitStruct->EXTI_Line;
+ 194              		.loc 1 149 18
+ 195 007a 194B     		ldr	r3, .L9
+ 196 007c 9A68     		ldr	r2, [r3, #8]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 7
+
+
+ 197              		.loc 1 149 36
+ 198 007e 7B68     		ldr	r3, [r7, #4]
+ 199 0080 1B68     		ldr	r3, [r3]
+ 200              		.loc 1 149 18
+ 201 0082 1749     		ldr	r1, .L9
+ 202 0084 1343     		orrs	r3, r3, r2
+ 203 0086 8B60     		str	r3, [r1, #8]
  150:./Library/stm32f4xx_exti.c ****       EXTI->FTSR |= EXTI_InitStruct->EXTI_Line;
+ 204              		.loc 1 150 18
+ 205 0088 154B     		ldr	r3, .L9
+ 206 008a DA68     		ldr	r2, [r3, #12]
+ 207              		.loc 1 150 36
+ 208 008c 7B68     		ldr	r3, [r7, #4]
+ 209 008e 1B68     		ldr	r3, [r3]
+ 210              		.loc 1 150 18
+ 211 0090 1349     		ldr	r1, .L9
+ 212 0092 1343     		orrs	r3, r3, r2
+ 213 0094 CB60     		str	r3, [r1, #12]
  151:./Library/stm32f4xx_exti.c ****     }
  152:./Library/stm32f4xx_exti.c ****     else
  153:./Library/stm32f4xx_exti.c ****     {
  154:./Library/stm32f4xx_exti.c ****       tmp = (uint32_t)EXTI_BASE;
- 147              		.loc 1 154 7 is_stmt 1 view .LVU47
- 148              	.LVL3:
  155:./Library/stm32f4xx_exti.c ****       tmp += EXTI_InitStruct->EXTI_Trigger;
- 149              		.loc 1 155 7 view .LVU48
- 150              		.loc 1 155 11 is_stmt 0 view .LVU49
- 151 004a 03F18043 		add	r3, r3, #1073741824
- 152 004e 03F59E33 		add	r3, r3, #80896
- 153              	.LVL4:
  156:./Library/stm32f4xx_exti.c **** 
  157:./Library/stm32f4xx_exti.c ****       *(__IO uint32_t *) tmp |= EXTI_InitStruct->EXTI_Line;
- 154              		.loc 1 157 7 is_stmt 1 view .LVU50
- 155              		.loc 1 157 30 is_stmt 0 view .LVU51
- 156 0052 1A68     		ldr	r2, [r3]
- 157              		.loc 1 157 48 view .LVU52
- 158 0054 0168     		ldr	r1, [r0]
- 159              		.loc 1 157 30 view .LVU53
- 160 0056 0A43     		orrs	r2, r2, r1
- 161 0058 1A60     		str	r2, [r3]
- 162              	.LVL5:
- 163              	.L4:
  158:./Library/stm32f4xx_exti.c ****     }
  159:./Library/stm32f4xx_exti.c ****   }
  160:./Library/stm32f4xx_exti.c ****   else
@@ -344,91 +396,100 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  165:./Library/stm32f4xx_exti.c ****     *(__IO uint32_t *) tmp &= ~EXTI_InitStruct->EXTI_Line;
  166:./Library/stm32f4xx_exti.c ****   }
  167:./Library/stm32f4xx_exti.c **** }
- 164              		.loc 1 167 1 view .LVU54
- 165 005a 5DF8044B 		ldr	r4, [sp], #4
- 166              	.LCFI1:
- 167              		.cfi_remember_state
- 168              		.cfi_restore 4
- 169              		.cfi_def_cfa_offset 0
- 170 005e 7047     		bx	lr
- 171              	.L12:
- 172              	.LCFI2:
- 173              		.cfi_restore_state
- 149:./Library/stm32f4xx_exti.c ****       EXTI->FTSR |= EXTI_InitStruct->EXTI_Line;
- 174              		.loc 1 149 7 is_stmt 1 view .LVU55
- 149:./Library/stm32f4xx_exti.c ****       EXTI->FTSR |= EXTI_InitStruct->EXTI_Line;
- 175              		.loc 1 149 18 is_stmt 0 view .LVU56
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 7
+ 214              		.loc 1 167 1
+ 215 0096 1DE0     		b	.L8
+ 216              	.L6:
+ 154:./Library/stm32f4xx_exti.c ****       tmp += EXTI_InitStruct->EXTI_Trigger;
+ 217              		.loc 1 154 11
+ 218 0098 114B     		ldr	r3, .L9
+ 219 009a FB60     		str	r3, [r7, #12]
+ 155:./Library/stm32f4xx_exti.c **** 
+ 220              		.loc 1 155 29
+ 221 009c 7B68     		ldr	r3, [r7, #4]
+ 222 009e 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 223 00a0 1A46     		mov	r2, r3
+ 155:./Library/stm32f4xx_exti.c **** 
+ 224              		.loc 1 155 11
+ 225 00a2 FB68     		ldr	r3, [r7, #12]
+ 226 00a4 1344     		add	r3, r3, r2
+ 227 00a6 FB60     		str	r3, [r7, #12]
+ 157:./Library/stm32f4xx_exti.c ****     }
+ 228              		.loc 1 157 30
+ 229 00a8 FB68     		ldr	r3, [r7, #12]
+ 230 00aa 1968     		ldr	r1, [r3]
+ 157:./Library/stm32f4xx_exti.c ****     }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 8
 
 
- 176 0060 0A4B     		ldr	r3, .L13
- 177 0062 9A68     		ldr	r2, [r3, #8]
- 149:./Library/stm32f4xx_exti.c ****       EXTI->FTSR |= EXTI_InitStruct->EXTI_Line;
- 178              		.loc 1 149 36 view .LVU57
- 179 0064 0168     		ldr	r1, [r0]
- 149:./Library/stm32f4xx_exti.c ****       EXTI->FTSR |= EXTI_InitStruct->EXTI_Line;
- 180              		.loc 1 149 18 view .LVU58
- 181 0066 0A43     		orrs	r2, r2, r1
- 182 0068 9A60     		str	r2, [r3, #8]
- 150:./Library/stm32f4xx_exti.c ****     }
- 183              		.loc 1 150 7 is_stmt 1 view .LVU59
- 150:./Library/stm32f4xx_exti.c ****     }
- 184              		.loc 1 150 18 is_stmt 0 view .LVU60
- 185 006a DA68     		ldr	r2, [r3, #12]
- 150:./Library/stm32f4xx_exti.c ****     }
- 186              		.loc 1 150 36 view .LVU61
- 187 006c 0168     		ldr	r1, [r0]
- 150:./Library/stm32f4xx_exti.c ****     }
- 188              		.loc 1 150 18 view .LVU62
- 189 006e 0A43     		orrs	r2, r2, r1
- 190 0070 DA60     		str	r2, [r3, #12]
- 191 0072 F2E7     		b	.L4
- 192              	.LVL6:
- 193              	.L5:
- 194              	.LCFI3:
- 195              		.cfi_def_cfa_offset 0
- 196              		.cfi_restore 4
+ 231              		.loc 1 157 48
+ 232 00ac 7B68     		ldr	r3, [r7, #4]
+ 233 00ae 1A68     		ldr	r2, [r3]
+ 157:./Library/stm32f4xx_exti.c ****     }
+ 234              		.loc 1 157 30
+ 235 00b0 FB68     		ldr	r3, [r7, #12]
+ 236 00b2 0A43     		orrs	r2, r2, r1
+ 237 00b4 1A60     		str	r2, [r3]
+ 238              		.loc 1 167 1
+ 239 00b6 0DE0     		b	.L8
+ 240              	.L5:
  162:./Library/stm32f4xx_exti.c **** 
- 197              		.loc 1 162 5 is_stmt 1 view .LVU63
+ 241              		.loc 1 162 27
+ 242 00b8 7B68     		ldr	r3, [r7, #4]
+ 243 00ba 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 244 00bc 1A46     		mov	r2, r3
  162:./Library/stm32f4xx_exti.c **** 
- 198              		.loc 1 162 27 is_stmt 0 view .LVU64
- 199 0074 0379     		ldrb	r3, [r0, #4]	@ zero_extendqisi2
- 162:./Library/stm32f4xx_exti.c **** 
- 200              		.loc 1 162 9 view .LVU65
- 201 0076 03F18043 		add	r3, r3, #1073741824
- 202 007a 03F59E33 		add	r3, r3, #80896
- 203              	.LVL7:
+ 245              		.loc 1 162 9
+ 246 00be FB68     		ldr	r3, [r7, #12]
+ 247 00c0 1344     		add	r3, r3, r2
+ 248 00c2 FB60     		str	r3, [r7, #12]
  165:./Library/stm32f4xx_exti.c ****   }
- 204              		.loc 1 165 5 is_stmt 1 view .LVU66
+ 249              		.loc 1 165 28
+ 250 00c4 FB68     		ldr	r3, [r7, #12]
+ 251 00c6 1968     		ldr	r1, [r3]
  165:./Library/stm32f4xx_exti.c ****   }
- 205              		.loc 1 165 28 is_stmt 0 view .LVU67
- 206 007e 1A68     		ldr	r2, [r3]
+ 252              		.loc 1 165 47
+ 253 00c8 7B68     		ldr	r3, [r7, #4]
+ 254 00ca 1B68     		ldr	r3, [r3]
  165:./Library/stm32f4xx_exti.c ****   }
- 207              		.loc 1 165 47 view .LVU68
- 208 0080 0168     		ldr	r1, [r0]
+ 255              		.loc 1 165 31
+ 256 00cc DA43     		mvns	r2, r3
  165:./Library/stm32f4xx_exti.c ****   }
- 209              		.loc 1 165 28 view .LVU69
- 210 0082 22EA0102 		bic	r2, r2, r1
- 211 0086 1A60     		str	r2, [r3]
- 212 0088 7047     		bx	lr
- 213              	.L14:
- 214 008a 00BF     		.align	2
- 215              	.L13:
- 216 008c 003C0140 		.word	1073822720
- 217              		.cfi_endproc
- 218              	.LFE124:
- 220              		.section	.text.EXTI_StructInit,"ax",%progbits
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 8
+ 257              		.loc 1 165 28
+ 258 00ce FB68     		ldr	r3, [r7, #12]
+ 259 00d0 0A40     		ands	r2, r2, r1
+ 260 00d2 1A60     		str	r2, [r3]
+ 261              	.L8:
+ 262              		.loc 1 167 1
+ 263 00d4 00BF     		nop
+ 264 00d6 1437     		adds	r7, r7, #20
+ 265              	.LCFI7:
+ 266              		.cfi_def_cfa_offset 4
+ 267 00d8 BD46     		mov	sp, r7
+ 268              	.LCFI8:
+ 269              		.cfi_def_cfa_register 13
+ 270              		@ sp needed
+ 271 00da 5DF8047B 		ldr	r7, [sp], #4
+ 272              	.LCFI9:
+ 273              		.cfi_restore 7
+ 274              		.cfi_def_cfa_offset 0
+ 275 00de 7047     		bx	lr
+ 276              	.L10:
+ 277              		.align	2
+ 278              	.L9:
+ 279 00e0 003C0140 		.word	1073822720
+ 280              		.cfi_endproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 9
 
 
- 221              		.align	1
- 222              		.global	EXTI_StructInit
- 223              		.syntax unified
- 224              		.thumb
- 225              		.thumb_func
- 227              	EXTI_StructInit:
- 228              	.LVL8:
- 229              	.LFB125:
+ 281              	.LFE124:
+ 283              		.section	.text.EXTI_StructInit,"ax",%progbits
+ 284              		.align	1
+ 285              		.global	EXTI_StructInit
+ 286              		.syntax unified
+ 287              		.thumb
+ 288              		.thumb_func
+ 290              	EXTI_StructInit:
+ 291              	.LFB125:
  168:./Library/stm32f4xx_exti.c **** 
  169:./Library/stm32f4xx_exti.c **** /**
  170:./Library/stm32f4xx_exti.c ****   * @brief  Fills each EXTI_InitStruct member with its reset value.
@@ -438,49 +499,73 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  174:./Library/stm32f4xx_exti.c ****   */
  175:./Library/stm32f4xx_exti.c **** void EXTI_StructInit(EXTI_InitTypeDef* EXTI_InitStruct)
  176:./Library/stm32f4xx_exti.c **** {
- 230              		.loc 1 176 1 is_stmt 1 view -0
- 231              		.cfi_startproc
- 232              		@ args = 0, pretend = 0, frame = 0
- 233              		@ frame_needed = 0, uses_anonymous_args = 0
- 234              		@ link register save eliminated.
+ 292              		.loc 1 176 1
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 8
+ 295              		@ frame_needed = 1, uses_anonymous_args = 0
+ 296              		@ link register save eliminated.
+ 297 0000 80B4     		push	{r7}
+ 298              	.LCFI10:
+ 299              		.cfi_def_cfa_offset 4
+ 300              		.cfi_offset 7, -4
+ 301 0002 83B0     		sub	sp, sp, #12
+ 302              	.LCFI11:
+ 303              		.cfi_def_cfa_offset 16
+ 304 0004 00AF     		add	r7, sp, #0
+ 305              	.LCFI12:
+ 306              		.cfi_def_cfa_register 7
+ 307 0006 7860     		str	r0, [r7, #4]
  177:./Library/stm32f4xx_exti.c ****   EXTI_InitStruct->EXTI_Line = EXTI_LINENONE;
- 235              		.loc 1 177 3 view .LVU71
- 236              		.loc 1 177 30 is_stmt 0 view .LVU72
- 237 0000 0023     		movs	r3, #0
- 238 0002 0360     		str	r3, [r0]
+ 308              		.loc 1 177 30
+ 309 0008 7B68     		ldr	r3, [r7, #4]
+ 310 000a 0022     		movs	r2, #0
+ 311 000c 1A60     		str	r2, [r3]
  178:./Library/stm32f4xx_exti.c ****   EXTI_InitStruct->EXTI_Mode = EXTI_Mode_Interrupt;
- 239              		.loc 1 178 3 is_stmt 1 view .LVU73
- 240              		.loc 1 178 30 is_stmt 0 view .LVU74
- 241 0004 0371     		strb	r3, [r0, #4]
+ 312              		.loc 1 178 30
+ 313 000e 7B68     		ldr	r3, [r7, #4]
+ 314 0010 0022     		movs	r2, #0
+ 315 0012 1A71     		strb	r2, [r3, #4]
  179:./Library/stm32f4xx_exti.c ****   EXTI_InitStruct->EXTI_Trigger = EXTI_Trigger_Falling;
- 242              		.loc 1 179 3 is_stmt 1 view .LVU75
- 243              		.loc 1 179 33 is_stmt 0 view .LVU76
- 244 0006 0C22     		movs	r2, #12
- 245 0008 4271     		strb	r2, [r0, #5]
+ 316              		.loc 1 179 33
+ 317 0014 7B68     		ldr	r3, [r7, #4]
+ 318 0016 0C22     		movs	r2, #12
+ 319 0018 5A71     		strb	r2, [r3, #5]
  180:./Library/stm32f4xx_exti.c ****   EXTI_InitStruct->EXTI_LineCmd = DISABLE;
- 246              		.loc 1 180 3 is_stmt 1 view .LVU77
- 247              		.loc 1 180 33 is_stmt 0 view .LVU78
- 248 000a 8371     		strb	r3, [r0, #6]
+ 320              		.loc 1 180 33
+ 321 001a 7B68     		ldr	r3, [r7, #4]
+ 322 001c 0022     		movs	r2, #0
+ 323 001e 9A71     		strb	r2, [r3, #6]
  181:./Library/stm32f4xx_exti.c **** }
- 249              		.loc 1 181 1 view .LVU79
- 250 000c 7047     		bx	lr
- 251              		.cfi_endproc
- 252              	.LFE125:
- 254              		.section	.text.EXTI_GenerateSWInterrupt,"ax",%progbits
- 255              		.align	1
- 256              		.global	EXTI_GenerateSWInterrupt
- 257              		.syntax unified
- 258              		.thumb
- 259              		.thumb_func
- 261              	EXTI_GenerateSWInterrupt:
- 262              	.LVL9:
- 263              	.LFB126:
+ 324              		.loc 1 181 1
+ 325 0020 00BF     		nop
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 10
+
+
+ 326 0022 0C37     		adds	r7, r7, #12
+ 327              	.LCFI13:
+ 328              		.cfi_def_cfa_offset 4
+ 329 0024 BD46     		mov	sp, r7
+ 330              	.LCFI14:
+ 331              		.cfi_def_cfa_register 13
+ 332              		@ sp needed
+ 333 0026 5DF8047B 		ldr	r7, [sp], #4
+ 334              	.LCFI15:
+ 335              		.cfi_restore 7
+ 336              		.cfi_def_cfa_offset 0
+ 337 002a 7047     		bx	lr
+ 338              		.cfi_endproc
+ 339              	.LFE125:
+ 341              		.section	.text.EXTI_GenerateSWInterrupt,"ax",%progbits
+ 342              		.align	1
+ 343              		.global	EXTI_GenerateSWInterrupt
+ 344              		.syntax unified
+ 345              		.thumb
+ 346              		.thumb_func
+ 348              	EXTI_GenerateSWInterrupt:
+ 349              	.LFB126:
  182:./Library/stm32f4xx_exti.c **** 
  183:./Library/stm32f4xx_exti.c **** /**
  184:./Library/stm32f4xx_exti.c ****   * @brief  Generates a Software interrupt on selected EXTI line.
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 9
-
-
  185:./Library/stm32f4xx_exti.c ****   * @param  EXTI_Line: specifies the EXTI line on which the software interrupt
  186:./Library/stm32f4xx_exti.c ****   *         will be generated.
  187:./Library/stm32f4xx_exti.c ****   *         This parameter can be any combination of EXTI_Linex where x can be (0..22)
@@ -488,40 +573,65 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  189:./Library/stm32f4xx_exti.c ****   */
  190:./Library/stm32f4xx_exti.c **** void EXTI_GenerateSWInterrupt(uint32_t EXTI_Line)
  191:./Library/stm32f4xx_exti.c **** {
- 264              		.loc 1 191 1 is_stmt 1 view -0
- 265              		.cfi_startproc
- 266              		@ args = 0, pretend = 0, frame = 0
- 267              		@ frame_needed = 0, uses_anonymous_args = 0
- 268              		@ link register save eliminated.
+ 350              		.loc 1 191 1
+ 351              		.cfi_startproc
+ 352              		@ args = 0, pretend = 0, frame = 8
+ 353              		@ frame_needed = 1, uses_anonymous_args = 0
+ 354              		@ link register save eliminated.
+ 355 0000 80B4     		push	{r7}
+ 356              	.LCFI16:
+ 357              		.cfi_def_cfa_offset 4
+ 358              		.cfi_offset 7, -4
+ 359 0002 83B0     		sub	sp, sp, #12
+ 360              	.LCFI17:
+ 361              		.cfi_def_cfa_offset 16
+ 362 0004 00AF     		add	r7, sp, #0
+ 363              	.LCFI18:
+ 364              		.cfi_def_cfa_register 7
+ 365 0006 7860     		str	r0, [r7, #4]
  192:./Library/stm32f4xx_exti.c ****   /* Check the parameters */
  193:./Library/stm32f4xx_exti.c ****   assert_param(IS_EXTI_LINE(EXTI_Line));
- 269              		.loc 1 193 3 view .LVU81
  194:./Library/stm32f4xx_exti.c ****   
  195:./Library/stm32f4xx_exti.c ****   EXTI->SWIER |= EXTI_Line;
- 270              		.loc 1 195 3 view .LVU82
- 271              		.loc 1 195 15 is_stmt 0 view .LVU83
- 272 0000 024A     		ldr	r2, .L17
- 273 0002 1369     		ldr	r3, [r2, #16]
- 274 0004 0343     		orrs	r3, r3, r0
- 275 0006 1361     		str	r3, [r2, #16]
+ 366              		.loc 1 195 15
+ 367 0008 054B     		ldr	r3, .L13
+ 368 000a 1A69     		ldr	r2, [r3, #16]
+ 369 000c 0449     		ldr	r1, .L13
+ 370 000e 7B68     		ldr	r3, [r7, #4]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 11
+
+
+ 371 0010 1343     		orrs	r3, r3, r2
+ 372 0012 0B61     		str	r3, [r1, #16]
  196:./Library/stm32f4xx_exti.c **** }
- 276              		.loc 1 196 1 view .LVU84
- 277 0008 7047     		bx	lr
- 278              	.L18:
- 279 000a 00BF     		.align	2
- 280              	.L17:
- 281 000c 003C0140 		.word	1073822720
- 282              		.cfi_endproc
- 283              	.LFE126:
- 285              		.section	.text.EXTI_GetFlagStatus,"ax",%progbits
- 286              		.align	1
- 287              		.global	EXTI_GetFlagStatus
- 288              		.syntax unified
- 289              		.thumb
- 290              		.thumb_func
- 292              	EXTI_GetFlagStatus:
- 293              	.LVL10:
- 294              	.LFB127:
+ 373              		.loc 1 196 1
+ 374 0014 00BF     		nop
+ 375 0016 0C37     		adds	r7, r7, #12
+ 376              	.LCFI19:
+ 377              		.cfi_def_cfa_offset 4
+ 378 0018 BD46     		mov	sp, r7
+ 379              	.LCFI20:
+ 380              		.cfi_def_cfa_register 13
+ 381              		@ sp needed
+ 382 001a 5DF8047B 		ldr	r7, [sp], #4
+ 383              	.LCFI21:
+ 384              		.cfi_restore 7
+ 385              		.cfi_def_cfa_offset 0
+ 386 001e 7047     		bx	lr
+ 387              	.L14:
+ 388              		.align	2
+ 389              	.L13:
+ 390 0020 003C0140 		.word	1073822720
+ 391              		.cfi_endproc
+ 392              	.LFE126:
+ 394              		.section	.text.EXTI_GetFlagStatus,"ax",%progbits
+ 395              		.align	1
+ 396              		.global	EXTI_GetFlagStatus
+ 397              		.syntax unified
+ 398              		.thumb
+ 399              		.thumb_func
+ 401              	EXTI_GetFlagStatus:
+ 402              	.LFB127:
  197:./Library/stm32f4xx_exti.c **** 
  198:./Library/stm32f4xx_exti.c **** /**
  199:./Library/stm32f4xx_exti.c ****   * @}
@@ -538,9 +648,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  210:./Library/stm32f4xx_exti.c **** @endverbatim
  211:./Library/stm32f4xx_exti.c ****   * @{
  212:./Library/stm32f4xx_exti.c ****   */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 10
-
-
  213:./Library/stm32f4xx_exti.c **** 
  214:./Library/stm32f4xx_exti.c **** /**
  215:./Library/stm32f4xx_exti.c ****   * @brief  Checks whether the specified EXTI line flag is set or not.
@@ -550,65 +657,93 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  219:./Library/stm32f4xx_exti.c ****   */
  220:./Library/stm32f4xx_exti.c **** FlagStatus EXTI_GetFlagStatus(uint32_t EXTI_Line)
  221:./Library/stm32f4xx_exti.c **** {
- 295              		.loc 1 221 1 is_stmt 1 view -0
- 296              		.cfi_startproc
- 297              		@ args = 0, pretend = 0, frame = 0
- 298              		@ frame_needed = 0, uses_anonymous_args = 0
- 299              		@ link register save eliminated.
+ 403              		.loc 1 221 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 12
+
+
+ 404              		.cfi_startproc
+ 405              		@ args = 0, pretend = 0, frame = 16
+ 406              		@ frame_needed = 1, uses_anonymous_args = 0
+ 407              		@ link register save eliminated.
+ 408 0000 80B4     		push	{r7}
+ 409              	.LCFI22:
+ 410              		.cfi_def_cfa_offset 4
+ 411              		.cfi_offset 7, -4
+ 412 0002 85B0     		sub	sp, sp, #20
+ 413              	.LCFI23:
+ 414              		.cfi_def_cfa_offset 24
+ 415 0004 00AF     		add	r7, sp, #0
+ 416              	.LCFI24:
+ 417              		.cfi_def_cfa_register 7
+ 418 0006 7860     		str	r0, [r7, #4]
  222:./Library/stm32f4xx_exti.c ****   FlagStatus bitstatus = RESET;
- 300              		.loc 1 222 3 view .LVU86
+ 419              		.loc 1 222 14
+ 420 0008 0023     		movs	r3, #0
+ 421 000a FB73     		strb	r3, [r7, #15]
  223:./Library/stm32f4xx_exti.c ****   /* Check the parameters */
  224:./Library/stm32f4xx_exti.c ****   assert_param(IS_GET_EXTI_LINE(EXTI_Line));
- 301              		.loc 1 224 3 view .LVU87
  225:./Library/stm32f4xx_exti.c ****   
  226:./Library/stm32f4xx_exti.c ****   if ((EXTI->PR & EXTI_Line) != (uint32_t)RESET)
- 302              		.loc 1 226 3 view .LVU88
- 303              		.loc 1 226 12 is_stmt 0 view .LVU89
- 304 0000 034B     		ldr	r3, .L22
- 305 0002 5B69     		ldr	r3, [r3, #20]
- 306              		.loc 1 226 6 view .LVU90
- 307 0004 0342     		tst	r3, r0
- 308 0006 01D0     		beq	.L21
+ 422              		.loc 1 226 12
+ 423 000c 084B     		ldr	r3, .L19
+ 424 000e 5A69     		ldr	r2, [r3, #20]
+ 425              		.loc 1 226 17
+ 426 0010 7B68     		ldr	r3, [r7, #4]
+ 427 0012 1340     		ands	r3, r3, r2
+ 428              		.loc 1 226 6
+ 429 0014 002B     		cmp	r3, #0
+ 430 0016 02D0     		beq	.L16
  227:./Library/stm32f4xx_exti.c ****   {
  228:./Library/stm32f4xx_exti.c ****     bitstatus = SET;
- 309              		.loc 1 228 15 view .LVU91
- 310 0008 0120     		movs	r0, #1
- 311              	.LVL11:
- 312              		.loc 1 228 15 view .LVU92
- 313 000a 7047     		bx	lr
- 314              	.LVL12:
- 315              	.L21:
+ 431              		.loc 1 228 15
+ 432 0018 0123     		movs	r3, #1
+ 433 001a FB73     		strb	r3, [r7, #15]
+ 434 001c 01E0     		b	.L17
+ 435              	.L16:
  229:./Library/stm32f4xx_exti.c ****   }
  230:./Library/stm32f4xx_exti.c ****   else
  231:./Library/stm32f4xx_exti.c ****   {
  232:./Library/stm32f4xx_exti.c ****     bitstatus = RESET;
- 316              		.loc 1 232 15 view .LVU93
- 317 000c 0020     		movs	r0, #0
- 318              	.LVL13:
+ 436              		.loc 1 232 15
+ 437 001e 0023     		movs	r3, #0
+ 438 0020 FB73     		strb	r3, [r7, #15]
+ 439              	.L17:
  233:./Library/stm32f4xx_exti.c ****   }
  234:./Library/stm32f4xx_exti.c ****   return bitstatus;
- 319              		.loc 1 234 3 is_stmt 1 view .LVU94
+ 440              		.loc 1 234 10
+ 441 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
  235:./Library/stm32f4xx_exti.c **** }
- 320              		.loc 1 235 1 is_stmt 0 view .LVU95
- 321 000e 7047     		bx	lr
- 322              	.L23:
- 323              		.align	2
- 324              	.L22:
- 325 0010 003C0140 		.word	1073822720
- 326              		.cfi_endproc
- 327              	.LFE127:
- 329              		.section	.text.EXTI_ClearFlag,"ax",%progbits
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 11
+ 442              		.loc 1 235 1
+ 443 0024 1846     		mov	r0, r3
+ 444 0026 1437     		adds	r7, r7, #20
+ 445              	.LCFI25:
+ 446              		.cfi_def_cfa_offset 4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 13
 
 
- 330              		.align	1
- 331              		.global	EXTI_ClearFlag
- 332              		.syntax unified
- 333              		.thumb
- 334              		.thumb_func
- 336              	EXTI_ClearFlag:
- 337              	.LVL14:
- 338              	.LFB128:
+ 447 0028 BD46     		mov	sp, r7
+ 448              	.LCFI26:
+ 449              		.cfi_def_cfa_register 13
+ 450              		@ sp needed
+ 451 002a 5DF8047B 		ldr	r7, [sp], #4
+ 452              	.LCFI27:
+ 453              		.cfi_restore 7
+ 454              		.cfi_def_cfa_offset 0
+ 455 002e 7047     		bx	lr
+ 456              	.L20:
+ 457              		.align	2
+ 458              	.L19:
+ 459 0030 003C0140 		.word	1073822720
+ 460              		.cfi_endproc
+ 461              	.LFE127:
+ 463              		.section	.text.EXTI_ClearFlag,"ax",%progbits
+ 464              		.align	1
+ 465              		.global	EXTI_ClearFlag
+ 466              		.syntax unified
+ 467              		.thumb
+ 468              		.thumb_func
+ 470              	EXTI_ClearFlag:
+ 471              	.LFB128:
  236:./Library/stm32f4xx_exti.c **** 
  237:./Library/stm32f4xx_exti.c **** /**
  238:./Library/stm32f4xx_exti.c ****   * @brief  Clears the EXTI's line pending flags.
@@ -618,38 +753,63 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  242:./Library/stm32f4xx_exti.c ****   */
  243:./Library/stm32f4xx_exti.c **** void EXTI_ClearFlag(uint32_t EXTI_Line)
  244:./Library/stm32f4xx_exti.c **** {
- 339              		.loc 1 244 1 is_stmt 1 view -0
- 340              		.cfi_startproc
- 341              		@ args = 0, pretend = 0, frame = 0
- 342              		@ frame_needed = 0, uses_anonymous_args = 0
- 343              		@ link register save eliminated.
+ 472              		.loc 1 244 1
+ 473              		.cfi_startproc
+ 474              		@ args = 0, pretend = 0, frame = 8
+ 475              		@ frame_needed = 1, uses_anonymous_args = 0
+ 476              		@ link register save eliminated.
+ 477 0000 80B4     		push	{r7}
+ 478              	.LCFI28:
+ 479              		.cfi_def_cfa_offset 4
+ 480              		.cfi_offset 7, -4
+ 481 0002 83B0     		sub	sp, sp, #12
+ 482              	.LCFI29:
+ 483              		.cfi_def_cfa_offset 16
+ 484 0004 00AF     		add	r7, sp, #0
+ 485              	.LCFI30:
+ 486              		.cfi_def_cfa_register 7
+ 487 0006 7860     		str	r0, [r7, #4]
  245:./Library/stm32f4xx_exti.c ****   /* Check the parameters */
  246:./Library/stm32f4xx_exti.c ****   assert_param(IS_EXTI_LINE(EXTI_Line));
- 344              		.loc 1 246 3 view .LVU97
  247:./Library/stm32f4xx_exti.c ****   
  248:./Library/stm32f4xx_exti.c ****   EXTI->PR = EXTI_Line;
- 345              		.loc 1 248 3 view .LVU98
- 346              		.loc 1 248 12 is_stmt 0 view .LVU99
- 347 0000 014B     		ldr	r3, .L25
- 348 0002 5861     		str	r0, [r3, #20]
+ 488              		.loc 1 248 7
+ 489 0008 044A     		ldr	r2, .L22
+ 490              		.loc 1 248 12
+ 491 000a 7B68     		ldr	r3, [r7, #4]
+ 492 000c 5361     		str	r3, [r2, #20]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 14
+
+
  249:./Library/stm32f4xx_exti.c **** }
- 349              		.loc 1 249 1 view .LVU100
- 350 0004 7047     		bx	lr
- 351              	.L26:
- 352 0006 00BF     		.align	2
- 353              	.L25:
- 354 0008 003C0140 		.word	1073822720
- 355              		.cfi_endproc
- 356              	.LFE128:
- 358              		.section	.text.EXTI_GetITStatus,"ax",%progbits
- 359              		.align	1
- 360              		.global	EXTI_GetITStatus
- 361              		.syntax unified
- 362              		.thumb
- 363              		.thumb_func
- 365              	EXTI_GetITStatus:
- 366              	.LVL15:
- 367              	.LFB129:
+ 493              		.loc 1 249 1
+ 494 000e 00BF     		nop
+ 495 0010 0C37     		adds	r7, r7, #12
+ 496              	.LCFI31:
+ 497              		.cfi_def_cfa_offset 4
+ 498 0012 BD46     		mov	sp, r7
+ 499              	.LCFI32:
+ 500              		.cfi_def_cfa_register 13
+ 501              		@ sp needed
+ 502 0014 5DF8047B 		ldr	r7, [sp], #4
+ 503              	.LCFI33:
+ 504              		.cfi_restore 7
+ 505              		.cfi_def_cfa_offset 0
+ 506 0018 7047     		bx	lr
+ 507              	.L23:
+ 508 001a 00BF     		.align	2
+ 509              	.L22:
+ 510 001c 003C0140 		.word	1073822720
+ 511              		.cfi_endproc
+ 512              	.LFE128:
+ 514              		.section	.text.EXTI_GetITStatus,"ax",%progbits
+ 515              		.align	1
+ 516              		.global	EXTI_GetITStatus
+ 517              		.syntax unified
+ 518              		.thumb
+ 519              		.thumb_func
+ 521              	EXTI_GetITStatus:
+ 522              	.LFB129:
  250:./Library/stm32f4xx_exti.c **** 
  251:./Library/stm32f4xx_exti.c **** /**
  252:./Library/stm32f4xx_exti.c ****   * @brief  Checks whether the specified EXTI line is asserted or not.
@@ -658,70 +818,95 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  255:./Library/stm32f4xx_exti.c ****   * @retval The new state of EXTI_Line (SET or RESET).
  256:./Library/stm32f4xx_exti.c ****   */
  257:./Library/stm32f4xx_exti.c **** ITStatus EXTI_GetITStatus(uint32_t EXTI_Line)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 12
-
-
  258:./Library/stm32f4xx_exti.c **** {
- 368              		.loc 1 258 1 is_stmt 1 view -0
- 369              		.cfi_startproc
- 370              		@ args = 0, pretend = 0, frame = 0
- 371              		@ frame_needed = 0, uses_anonymous_args = 0
- 372              		@ link register save eliminated.
+ 523              		.loc 1 258 1
+ 524              		.cfi_startproc
+ 525              		@ args = 0, pretend = 0, frame = 16
+ 526              		@ frame_needed = 1, uses_anonymous_args = 0
+ 527              		@ link register save eliminated.
+ 528 0000 80B4     		push	{r7}
+ 529              	.LCFI34:
+ 530              		.cfi_def_cfa_offset 4
+ 531              		.cfi_offset 7, -4
+ 532 0002 85B0     		sub	sp, sp, #20
+ 533              	.LCFI35:
+ 534              		.cfi_def_cfa_offset 24
+ 535 0004 00AF     		add	r7, sp, #0
+ 536              	.LCFI36:
+ 537              		.cfi_def_cfa_register 7
+ 538 0006 7860     		str	r0, [r7, #4]
  259:./Library/stm32f4xx_exti.c ****   FlagStatus bitstatus = RESET;
- 373              		.loc 1 259 3 view .LVU102
+ 539              		.loc 1 259 14
+ 540 0008 0023     		movs	r3, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 15
+
+
+ 541 000a FB73     		strb	r3, [r7, #15]
  260:./Library/stm32f4xx_exti.c ****   /* Check the parameters */
  261:./Library/stm32f4xx_exti.c ****   assert_param(IS_GET_EXTI_LINE(EXTI_Line));
- 374              		.loc 1 261 3 view .LVU103
  262:./Library/stm32f4xx_exti.c ****   
  263:./Library/stm32f4xx_exti.c ****   if ((EXTI->PR & EXTI_Line) != (uint32_t)RESET)
- 375              		.loc 1 263 3 view .LVU104
- 376              		.loc 1 263 12 is_stmt 0 view .LVU105
- 377 0000 034B     		ldr	r3, .L30
- 378 0002 5B69     		ldr	r3, [r3, #20]
- 379              		.loc 1 263 6 view .LVU106
- 380 0004 0342     		tst	r3, r0
- 381 0006 01D0     		beq	.L29
+ 542              		.loc 1 263 12
+ 543 000c 084B     		ldr	r3, .L28
+ 544 000e 5A69     		ldr	r2, [r3, #20]
+ 545              		.loc 1 263 17
+ 546 0010 7B68     		ldr	r3, [r7, #4]
+ 547 0012 1340     		ands	r3, r3, r2
+ 548              		.loc 1 263 6
+ 549 0014 002B     		cmp	r3, #0
+ 550 0016 02D0     		beq	.L25
  264:./Library/stm32f4xx_exti.c ****   {
  265:./Library/stm32f4xx_exti.c ****     bitstatus = SET;
- 382              		.loc 1 265 15 view .LVU107
- 383 0008 0120     		movs	r0, #1
- 384              	.LVL16:
- 385              		.loc 1 265 15 view .LVU108
- 386 000a 7047     		bx	lr
- 387              	.LVL17:
- 388              	.L29:
+ 551              		.loc 1 265 15
+ 552 0018 0123     		movs	r3, #1
+ 553 001a FB73     		strb	r3, [r7, #15]
+ 554 001c 01E0     		b	.L26
+ 555              	.L25:
  266:./Library/stm32f4xx_exti.c ****   }
  267:./Library/stm32f4xx_exti.c ****   else
  268:./Library/stm32f4xx_exti.c ****   {
  269:./Library/stm32f4xx_exti.c ****     bitstatus = RESET;
- 389              		.loc 1 269 15 view .LVU109
- 390 000c 0020     		movs	r0, #0
- 391              	.LVL18:
+ 556              		.loc 1 269 15
+ 557 001e 0023     		movs	r3, #0
+ 558 0020 FB73     		strb	r3, [r7, #15]
+ 559              	.L26:
  270:./Library/stm32f4xx_exti.c ****   }
  271:./Library/stm32f4xx_exti.c ****   return bitstatus;
- 392              		.loc 1 271 3 is_stmt 1 view .LVU110
+ 560              		.loc 1 271 10
+ 561 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
  272:./Library/stm32f4xx_exti.c ****   
  273:./Library/stm32f4xx_exti.c **** }
- 393              		.loc 1 273 1 is_stmt 0 view .LVU111
- 394 000e 7047     		bx	lr
- 395              	.L31:
- 396              		.align	2
- 397              	.L30:
- 398 0010 003C0140 		.word	1073822720
- 399              		.cfi_endproc
- 400              	.LFE129:
- 402              		.section	.text.EXTI_ClearITPendingBit,"ax",%progbits
- 403              		.align	1
- 404              		.global	EXTI_ClearITPendingBit
- 405              		.syntax unified
- 406              		.thumb
- 407              		.thumb_func
- 409              	EXTI_ClearITPendingBit:
- 410              	.LVL19:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 13
+ 562              		.loc 1 273 1
+ 563 0024 1846     		mov	r0, r3
+ 564 0026 1437     		adds	r7, r7, #20
+ 565              	.LCFI37:
+ 566              		.cfi_def_cfa_offset 4
+ 567 0028 BD46     		mov	sp, r7
+ 568              	.LCFI38:
+ 569              		.cfi_def_cfa_register 13
+ 570              		@ sp needed
+ 571 002a 5DF8047B 		ldr	r7, [sp], #4
+ 572              	.LCFI39:
+ 573              		.cfi_restore 7
+ 574              		.cfi_def_cfa_offset 0
+ 575 002e 7047     		bx	lr
+ 576              	.L29:
+ 577              		.align	2
+ 578              	.L28:
+ 579 0030 003C0140 		.word	1073822720
+ 580              		.cfi_endproc
+ 581              	.LFE129:
+ 583              		.section	.text.EXTI_ClearITPendingBit,"ax",%progbits
+ 584              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 16
 
 
- 411              	.LFB130:
+ 585              		.global	EXTI_ClearITPendingBit
+ 586              		.syntax unified
+ 587              		.thumb
+ 588              		.thumb_func
+ 590              	EXTI_ClearITPendingBit:
+ 591              	.LFB130:
  274:./Library/stm32f4xx_exti.c **** 
  275:./Library/stm32f4xx_exti.c **** /**
  276:./Library/stm32f4xx_exti.c ****   * @brief  Clears the EXTI's line pending bits.
@@ -731,62 +916,88 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 1
  280:./Library/stm32f4xx_exti.c ****   */
  281:./Library/stm32f4xx_exti.c **** void EXTI_ClearITPendingBit(uint32_t EXTI_Line)
  282:./Library/stm32f4xx_exti.c **** {
- 412              		.loc 1 282 1 is_stmt 1 view -0
- 413              		.cfi_startproc
- 414              		@ args = 0, pretend = 0, frame = 0
- 415              		@ frame_needed = 0, uses_anonymous_args = 0
- 416              		@ link register save eliminated.
+ 592              		.loc 1 282 1
+ 593              		.cfi_startproc
+ 594              		@ args = 0, pretend = 0, frame = 8
+ 595              		@ frame_needed = 1, uses_anonymous_args = 0
+ 596              		@ link register save eliminated.
+ 597 0000 80B4     		push	{r7}
+ 598              	.LCFI40:
+ 599              		.cfi_def_cfa_offset 4
+ 600              		.cfi_offset 7, -4
+ 601 0002 83B0     		sub	sp, sp, #12
+ 602              	.LCFI41:
+ 603              		.cfi_def_cfa_offset 16
+ 604 0004 00AF     		add	r7, sp, #0
+ 605              	.LCFI42:
+ 606              		.cfi_def_cfa_register 7
+ 607 0006 7860     		str	r0, [r7, #4]
  283:./Library/stm32f4xx_exti.c ****   /* Check the parameters */
  284:./Library/stm32f4xx_exti.c ****   assert_param(IS_EXTI_LINE(EXTI_Line));
- 417              		.loc 1 284 3 view .LVU113
  285:./Library/stm32f4xx_exti.c ****   
  286:./Library/stm32f4xx_exti.c ****   EXTI->PR = EXTI_Line;
- 418              		.loc 1 286 3 view .LVU114
- 419              		.loc 1 286 12 is_stmt 0 view .LVU115
- 420 0000 014B     		ldr	r3, .L33
- 421 0002 5861     		str	r0, [r3, #20]
+ 608              		.loc 1 286 7
+ 609 0008 044A     		ldr	r2, .L31
+ 610              		.loc 1 286 12
+ 611 000a 7B68     		ldr	r3, [r7, #4]
+ 612 000c 5361     		str	r3, [r2, #20]
  287:./Library/stm32f4xx_exti.c **** }
- 422              		.loc 1 287 1 view .LVU116
- 423 0004 7047     		bx	lr
- 424              	.L34:
- 425 0006 00BF     		.align	2
- 426              	.L33:
- 427 0008 003C0140 		.word	1073822720
- 428              		.cfi_endproc
- 429              	.LFE130:
- 431              		.text
- 432              	.Letext0:
- 433              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 434              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 435              		.file 4 "./CORE/stm32f4xx.h"
- 436              		.file 5 "./Library/stm32f4xx_exti.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s 			page 14
+ 613              		.loc 1 287 1
+ 614 000e 00BF     		nop
+ 615 0010 0C37     		adds	r7, r7, #12
+ 616              	.LCFI43:
+ 617              		.cfi_def_cfa_offset 4
+ 618 0012 BD46     		mov	sp, r7
+ 619              	.LCFI44:
+ 620              		.cfi_def_cfa_register 13
+ 621              		@ sp needed
+ 622 0014 5DF8047B 		ldr	r7, [sp], #4
+ 623              	.LCFI45:
+ 624              		.cfi_restore 7
+ 625              		.cfi_def_cfa_offset 0
+ 626 0018 7047     		bx	lr
+ 627              	.L32:
+ 628 001a 00BF     		.align	2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 17
+
+
+ 629              	.L31:
+ 630 001c 003C0140 		.word	1073822720
+ 631              		.cfi_endproc
+ 632              	.LFE130:
+ 634              		.text
+ 635              	.Letext0:
+ 636              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 637              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 638              		.file 4 "./CORE/stm32f4xx.h"
+ 639              		.file 5 "./Library/stm32f4xx_exti.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f4xx_exti.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:20     .text.EXTI_DeInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:26     .text.EXTI_DeInit:0000000000000000 EXTI_DeInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:57     .text.EXTI_DeInit:0000000000000014 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:63     .text.EXTI_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:69     .text.EXTI_Init:0000000000000000 EXTI_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:216    .text.EXTI_Init:000000000000008c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:221    .text.EXTI_StructInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:227    .text.EXTI_StructInit:0000000000000000 EXTI_StructInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:255    .text.EXTI_GenerateSWInterrupt:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:261    .text.EXTI_GenerateSWInterrupt:0000000000000000 EXTI_GenerateSWInterrupt
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:281    .text.EXTI_GenerateSWInterrupt:000000000000000c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:286    .text.EXTI_GetFlagStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:292    .text.EXTI_GetFlagStatus:0000000000000000 EXTI_GetFlagStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:325    .text.EXTI_GetFlagStatus:0000000000000010 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:330    .text.EXTI_ClearFlag:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:336    .text.EXTI_ClearFlag:0000000000000000 EXTI_ClearFlag
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:354    .text.EXTI_ClearFlag:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:359    .text.EXTI_GetITStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:365    .text.EXTI_GetITStatus:0000000000000000 EXTI_GetITStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:398    .text.EXTI_GetITStatus:0000000000000010 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:403    .text.EXTI_ClearITPendingBit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:409    .text.EXTI_ClearITPendingBit:0000000000000000 EXTI_ClearITPendingBit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc4uEW5d.s:427    .text.EXTI_ClearITPendingBit:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:20     .text.EXTI_DeInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:26     .text.EXTI_DeInit:0000000000000000 EXTI_DeInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:80     .text.EXTI_DeInit:000000000000002c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:86     .text.EXTI_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:92     .text.EXTI_Init:0000000000000000 EXTI_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:279    .text.EXTI_Init:00000000000000e0 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:284    .text.EXTI_StructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:290    .text.EXTI_StructInit:0000000000000000 EXTI_StructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:342    .text.EXTI_GenerateSWInterrupt:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:348    .text.EXTI_GenerateSWInterrupt:0000000000000000 EXTI_GenerateSWInterrupt
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:390    .text.EXTI_GenerateSWInterrupt:0000000000000020 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:395    .text.EXTI_GetFlagStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:401    .text.EXTI_GetFlagStatus:0000000000000000 EXTI_GetFlagStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:459    .text.EXTI_GetFlagStatus:0000000000000030 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:464    .text.EXTI_ClearFlag:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:470    .text.EXTI_ClearFlag:0000000000000000 EXTI_ClearFlag
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:510    .text.EXTI_ClearFlag:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:515    .text.EXTI_GetITStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:521    .text.EXTI_GetITStatus:0000000000000000 EXTI_GetITStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:579    .text.EXTI_GetITStatus:0000000000000030 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:584    .text.EXTI_ClearITPendingBit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:590    .text.EXTI_ClearITPendingBit:0000000000000000 EXTI_ClearITPendingBit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc2lfv4q.s:630    .text.EXTI_ClearITPendingBit:000000000000001c $d
 
 NO UNDEFINED SYMBOLS

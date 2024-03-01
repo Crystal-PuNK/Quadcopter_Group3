@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"OLED.c"
@@ -38,149 +38,596 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
    8:./Hardware/OLED.c **** /*引脚初始化*/
    9:./Hardware/OLED.c **** void OLED_I2C_Init(void)
   10:./Hardware/OLED.c **** {
-  29              		.loc 1 10 1 view -0
+  29              		.loc 1 10 1
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 8
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 30B5     		push	{r4, r5, lr}
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
   34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 12
-  36              		.cfi_offset 4, -12
-  37              		.cfi_offset 5, -8
-  38              		.cfi_offset 14, -4
-  39 0002 83B0     		sub	sp, sp, #12
-  40              	.LCFI1:
-  41              		.cfi_def_cfa_offset 24
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 7, -8
+  37              		.cfi_offset 14, -4
+  38 0002 82B0     		sub	sp, sp, #8
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 16
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
   11:./Hardware/OLED.c **** 	//初始化PB6和PB7作为模拟SCL与SDA
   12:./Hardware/OLED.c **** 	GPIO_InitTypeDef GPIO_InitStructure;
-  42              		.loc 1 12 2 view .LVU1
   13:./Hardware/OLED.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
-  43              		.loc 1 13 2 view .LVU2
-  44 0004 0121     		movs	r1, #1
-  45 0006 0420     		movs	r0, #4
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 2
+  44              		.loc 1 13 2
+  45 0006 0121     		movs	r1, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 2
 
 
-  46 0008 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
-  47              	.LVL0:
+  46 0008 0420     		movs	r0, #4
+  47 000a FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
   14:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_5;
-  48              		.loc 1 14 2 view .LVU3
-  49              		.loc 1 14 30 is_stmt 0 view .LVU4
-  50 000c 6023     		movs	r3, #96
-  51 000e 0093     		str	r3, [sp]
+  48              		.loc 1 14 30
+  49 000e 6023     		movs	r3, #96
+  50 0010 3B60     		str	r3, [r7]
   15:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  52              		.loc 1 15 2 is_stmt 1 view .LVU5
-  53              		.loc 1 15 32 is_stmt 0 view .LVU6
-  54 0010 0323     		movs	r3, #3
-  55 0012 8DF80530 		strb	r3, [sp, #5]
+  51              		.loc 1 15 32
+  52 0012 0323     		movs	r3, #3
+  53 0014 7B71     		strb	r3, [r7, #5]
   16:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  56              		.loc 1 16 2 is_stmt 1 view .LVU7
-  57              		.loc 1 16 31 is_stmt 0 view .LVU8
-  58 0016 0125     		movs	r5, #1
-  59 0018 8DF80450 		strb	r5, [sp, #4]
+  54              		.loc 1 16 31
+  55 0016 0123     		movs	r3, #1
+  56 0018 3B71     		strb	r3, [r7, #4]
   17:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  60              		.loc 1 17 2 is_stmt 1 view .LVU9
-  61              		.loc 1 17 32 is_stmt 0 view .LVU10
-  62 001c 8DF80650 		strb	r5, [sp, #6]
+  57              		.loc 1 17 32
+  58 001a 0123     		movs	r3, #1
+  59 001c BB71     		strb	r3, [r7, #6]
   18:./Hardware/OLED.c **** 	GPIO_Init(GPIOC, &GPIO_InitStructure);
-  63              		.loc 1 18 2 is_stmt 1 view .LVU11
-  64 0020 154C     		ldr	r4, .L3
-  65 0022 6946     		mov	r1, sp
-  66 0024 2046     		mov	r0, r4
-  67 0026 FFF7FEFF 		bl	GPIO_Init
-  68              	.LVL1:
+  60              		.loc 1 18 2
+  61 001e 3B46     		mov	r3, r7
+  62 0020 1946     		mov	r1, r3
+  63 0022 1548     		ldr	r0, .L2
+  64 0024 FFF7FEFF 		bl	GPIO_Init
   19:./Hardware/OLED.c **** 		
   20:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
-  69              		.loc 1 20 2 view .LVU12
-  70              		.loc 1 20 30 is_stmt 0 view .LVU13
-  71 002a 4FF44073 		mov	r3, #768
-  72 002e 0093     		str	r3, [sp]
+  65              		.loc 1 20 30
+  66 0028 4FF44073 		mov	r3, #768
+  67 002c 3B60     		str	r3, [r7]
   21:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  73              		.loc 1 21 2 is_stmt 1 view .LVU14
-  74              		.loc 1 21 31 is_stmt 0 view .LVU15
-  75 0030 8DF80450 		strb	r5, [sp, #4]
+  68              		.loc 1 21 31
+  69 002e 0123     		movs	r3, #1
+  70 0030 3B71     		strb	r3, [r7, #4]
   22:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  76              		.loc 1 22 2 is_stmt 1 view .LVU16
-  77              		.loc 1 22 32 is_stmt 0 view .LVU17
-  78 0034 0023     		movs	r3, #0
-  79 0036 8DF80630 		strb	r3, [sp, #6]
+  71              		.loc 1 22 32
+  72 0032 0023     		movs	r3, #0
+  73 0034 BB71     		strb	r3, [r7, #6]
   23:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  80              		.loc 1 23 2 is_stmt 1 view .LVU18
-  81              		.loc 1 23 32 is_stmt 0 view .LVU19
-  82 003a 0223     		movs	r3, #2
-  83 003c 8DF80530 		strb	r3, [sp, #5]
+  74              		.loc 1 23 32
+  75 0036 0223     		movs	r3, #2
+  76 0038 7B71     		strb	r3, [r7, #5]
   24:./Hardware/OLED.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  84              		.loc 1 24 2 is_stmt 1 view .LVU20
-  85              		.loc 1 24 31 is_stmt 0 view .LVU21
-  86 0040 8DF80750 		strb	r5, [sp, #7]
+  77              		.loc 1 24 31
+  78 003a 0123     		movs	r3, #1
+  79 003c FB71     		strb	r3, [r7, #7]
   25:./Hardware/OLED.c **** 	GPIO_Init(GPIOC,&GPIO_InitStructure);
-  87              		.loc 1 25 2 is_stmt 1 view .LVU22
-  88 0044 6946     		mov	r1, sp
-  89 0046 2046     		mov	r0, r4
-  90 0048 FFF7FEFF 		bl	GPIO_Init
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 3
-
-
-  91              	.LVL2:
+  80              		.loc 1 25 2
+  81 003e 3B46     		mov	r3, r7
+  82 0040 1946     		mov	r1, r3
+  83 0042 0D48     		ldr	r0, .L2
+  84 0044 FFF7FEFF 		bl	GPIO_Init
   26:./Hardware/OLED.c **** 	GPIO_SetBits(GPIOC,GPIO_Pin_8);
-  92              		.loc 1 26 2 view .LVU23
-  93 004c 4FF48071 		mov	r1, #256
-  94 0050 2046     		mov	r0, r4
-  95 0052 FFF7FEFF 		bl	GPIO_SetBits
-  96              	.LVL3:
+  85              		.loc 1 26 2
+  86 0048 4FF48071 		mov	r1, #256
+  87 004c 0A48     		ldr	r0, .L2
+  88 004e FFF7FEFF 		bl	GPIO_SetBits
   27:./Hardware/OLED.c **** 	GPIO_ResetBits(GPIOC,GPIO_Pin_9);
-  97              		.loc 1 27 2 view .LVU24
-  98 0056 4FF40071 		mov	r1, #512
-  99 005a 2046     		mov	r0, r4
- 100 005c FFF7FEFF 		bl	GPIO_ResetBits
- 101              	.LVL4:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 3
+
+
+  89              		.loc 1 27 2
+  90 0052 4FF40071 		mov	r1, #512
+  91 0056 0848     		ldr	r0, .L2
+  92 0058 FFF7FEFF 		bl	GPIO_ResetBits
   28:./Hardware/OLED.c **** 	
   29:./Hardware/OLED.c **** 	
   30:./Hardware/OLED.c **** 	
   31:./Hardware/OLED.c **** 	OLED_W_SCL(1);
- 102              		.loc 1 31 2 view .LVU25
- 103 0060 2A46     		mov	r2, r5
- 104 0062 4021     		movs	r1, #64
- 105 0064 2046     		mov	r0, r4
- 106 0066 FFF7FEFF 		bl	GPIO_WriteBit
- 107              	.LVL5:
+  93              		.loc 1 31 2
+  94 005c 0122     		movs	r2, #1
+  95 005e 4021     		movs	r1, #64
+  96 0060 0548     		ldr	r0, .L2
+  97 0062 FFF7FEFF 		bl	GPIO_WriteBit
   32:./Hardware/OLED.c **** 	OLED_W_SDA(1);
- 108              		.loc 1 32 2 view .LVU26
- 109 006a 2A46     		mov	r2, r5
- 110 006c 2021     		movs	r1, #32
- 111 006e 2046     		mov	r0, r4
- 112 0070 FFF7FEFF 		bl	GPIO_WriteBit
- 113              	.LVL6:
+  98              		.loc 1 32 2
+  99 0066 0122     		movs	r2, #1
+ 100 0068 2021     		movs	r1, #32
+ 101 006a 0348     		ldr	r0, .L2
+ 102 006c FFF7FEFF 		bl	GPIO_WriteBit
   33:./Hardware/OLED.c **** }
- 114              		.loc 1 33 1 is_stmt 0 view .LVU27
- 115 0074 03B0     		add	sp, sp, #12
- 116              	.LCFI2:
- 117              		.cfi_def_cfa_offset 12
- 118              		@ sp needed
- 119 0076 30BD     		pop	{r4, r5, pc}
- 120              	.L4:
- 121              		.align	2
- 122              	.L3:
- 123 0078 00080240 		.word	1073874944
- 124              		.cfi_endproc
- 125              	.LFE123:
- 127              		.section	.text.OLED_I2C_Start,"ax",%progbits
- 128              		.align	1
- 129              		.global	OLED_I2C_Start
- 130              		.syntax unified
- 131              		.thumb
- 132              		.thumb_func
- 134              	OLED_I2C_Start:
- 135              	.LFB124:
+ 103              		.loc 1 33 1
+ 104 0070 00BF     		nop
+ 105 0072 0837     		adds	r7, r7, #8
+ 106              	.LCFI3:
+ 107              		.cfi_def_cfa_offset 8
+ 108 0074 BD46     		mov	sp, r7
+ 109              	.LCFI4:
+ 110              		.cfi_def_cfa_register 13
+ 111              		@ sp needed
+ 112 0076 80BD     		pop	{r7, pc}
+ 113              	.L3:
+ 114              		.align	2
+ 115              	.L2:
+ 116 0078 00080240 		.word	1073874944
+ 117              		.cfi_endproc
+ 118              	.LFE123:
+ 120              		.global	OLED_F08x16
+ 121              		.section	.rodata.OLED_F08x16,"a"
+ 122              		.align	2
+ 125              	OLED_F08x16:
+ 126 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 126      00000000 
+ 126      00000000 
+ 126      00
+ 127 000d 000000   		.ascii	"\000\000\000"
+ 128 0010 000000F8 		.ascii	"\000\000\000\370\000\000\000\000\000\000\00030\000\000"
+ 128      00000000 
+ 128      00000033 
+ 128      300000
+ 129 001f 00       		.ascii	"\000"
+ 130 0020 00100C06 		.ascii	"\000\020\014\006\020\014\006\000\000\000\000\000\000"
+ 130      100C0600 
+ 130      00000000 
+ 130      00
+ 131 002d 000000   		.ascii	"\000\000\000"
+ 132 0030 40C07840 		.ascii	"@\300x@\300x@\000\004?\004\004?\004\004\000"
+ 132      C0784000 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 4
+
+
+ 132      043F0404 
+ 132      3F040400 
+ 133 0040 007088FC 		.ascii	"\000p\210\374\0100\000\000\000\030 \377!\036\000\000"
+ 133      08300000 
+ 133      001820FF 
+ 133      211E0000 
+ 134 0050 F008F000 		.ascii	"\360\010\360\000\340\030\000\000\000!\034\003\036!\036"
+ 134      E0180000 
+ 134      00211C03 
+ 134      1E211E
+ 135 005f 00       		.ascii	"\000"
+ 136 0060 00F00888 		.ascii	"\000\360\010\210p\000\000\000\036!#$\031'!\020"
+ 136      70000000 
+ 136      1E212324 
+ 136      19272110 
+ 137 0070 10160E00 		.ascii	"\020\026\016\000\000\000\000\000\000\000\000\000\000"
+ 137      00000000 
+ 137      00000000 
+ 137      00
+ 138 007d 000000   		.ascii	"\000\000\000"
+ 139 0080 000000E0 		.ascii	"\000\000\000\340\030\004\002\000\000\000\000\007\030"
+ 139      18040200 
+ 139      00000007 
+ 139      18
+ 140 008d 204000   		.ascii	" @\000"
+ 141 0090 00020418 		.ascii	"\000\002\004\030\340\000\000\000\000@ \030\007\000\000"
+ 141      E0000000 
+ 141      00402018 
+ 141      070000
+ 142 009f 00       		.ascii	"\000"
+ 143 00a0 404080F0 		.ascii	"@@\200\360\200@@\000\002\002\001\017\001\002\002\000"
+ 143      80404000 
+ 143      0202010F 
+ 143      01020200 
+ 144 00b0 000000F0 		.ascii	"\000\000\000\360\000\000\000\000\001\001\001\037\001"
+ 144      00000000 
+ 144      0101011F 
+ 144      01
+ 145 00bd 010100   		.ascii	"\001\001\000"
+ 146 00c0 00000000 		.ascii	"\000\000\000\000\000\000\000\000\200\260p\000\000\000"
+ 146      00000000 
+ 146      80B07000 
+ 146      0000
+ 147 00ce 0000     		.ascii	"\000\000"
+ 148 00d0 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\001\001\001\001"
+ 148      00000000 
+ 148      00010101 
+ 148      01
+ 149 00dd 010101   		.ascii	"\001\001\001"
+ 150 00e0 00000000 		.ascii	"\000\000\000\000\000\000\000\000\00000\000\000\000\000"
+ 150      00000000 
+ 150      00303000 
+ 150      000000
+ 151 00ef 00       		.ascii	"\000"
+ 152 00f0 00000000 		.ascii	"\000\000\000\000\200`\030\004\000`\030\006\001\000\000"
+ 152      80601804 
+ 152      00601806 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 5
+
+
+ 152      010000
+ 153 00ff 00       		.ascii	"\000"
+ 154 0100 00E01008 		.ascii	"\000\340\020\010\010\020\340\000\000\017\020  \020\017"
+ 154      0810E000 
+ 154      000F1020 
+ 154      20100F
+ 155 010f 00       		.ascii	"\000"
+ 156 0110 001010F8 		.ascii	"\000\020\020\370\000\000\000\000\000  ?  \000\000"
+ 156      00000000 
+ 156      0020203F 
+ 156      20200000 
+ 157 0120 00700808 		.ascii	"\000p\010\010\010\210p\000\0000($\"!0\000"
+ 157      08887000 
+ 157      00302824 
+ 157      22213000 
+ 158 0130 00300888 		.ascii	"\0000\010\210\210H0\000\000\030   \021\016\000"
+ 158      88483000 
+ 158      00182020 
+ 158      20110E00 
+ 159 0140 0000C020 		.ascii	"\000\000\300 \020\370\000\000\000\007\004$$?$\000"
+ 159      10F80000 
+ 159      00070424 
+ 159      243F2400 
+ 160 0150 00F80888 		.ascii	"\000\370\010\210\210\010\010\000\000\031!  \021\016"
+ 160      88080800 
+ 160      00192120 
+ 160      20110E
+ 161 015f 00       		.ascii	"\000"
+ 162 0160 00E01088 		.ascii	"\000\340\020\210\210\030\000\000\000\017\021  \021\016"
+ 162      88180000 
+ 162      000F1120 
+ 162      20110E
+ 163 016f 00       		.ascii	"\000"
+ 164 0170 00380808 		.ascii	"\0008\010\010\3108\010\000\000\000\000?\000\000\000"
+ 164      C8380800 
+ 164      0000003F 
+ 164      000000
+ 165 017f 00       		.ascii	"\000"
+ 166 0180 00708808 		.ascii	"\000p\210\010\010\210p\000\000\034\"!!\"\034\000"
+ 166      08887000 
+ 166      001C2221 
+ 166      21221C00 
+ 167 0190 00E01008 		.ascii	"\000\340\020\010\010\020\340\000\000\0001\"\"\021\017"
+ 167      0810E000 
+ 167      00003122 
+ 167      22110F
+ 168 019f 00       		.ascii	"\000"
+ 169 01a0 000000C0 		.ascii	"\000\000\000\300\300\000\000\000\000\000\00000\000\000"
+ 169      C0000000 
+ 169      00000030 
+ 169      300000
+ 170 01af 00       		.ascii	"\000"
+ 171 01b0 00000080 		.ascii	"\000\000\000\200\000\000\000\000\000\000\200`\000\000"
+ 171      00000000 
+ 171      00008060 
+ 171      0000
+ 172 01be 0000     		.ascii	"\000\000"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 6
+
+
+ 173 01c0 00008040 		.ascii	"\000\000\200@ \020\010\000\000\001\002\004\010\020 "
+ 173      20100800 
+ 173      00010204 
+ 173      081020
+ 174 01cf 00       		.ascii	"\000"
+ 175 01d0 40404040 		.ascii	"@@@@@@@\000\004\004\004\004\004\004\004\000"
+ 175      40404000 
+ 175      04040404 
+ 175      04040400 
+ 176 01e0 00081020 		.ascii	"\000\010\020 @\200\000\000\000 \020\010\004\002\001"
+ 176      40800000 
+ 176      00201008 
+ 176      040201
+ 177 01ef 00       		.ascii	"\000"
+ 178 01f0 00704808 		.ascii	"\000pH\010\010\010\360\000\000\000\00006\001\000\000"
+ 178      0808F000 
+ 178      00000030 
+ 178      36010000 
+ 179 0200 C030C828 		.ascii	"\3000\310(\350\020\340\000\007\030'$#\024\013\000"
+ 179      E810E000 
+ 179      07182724 
+ 179      23140B00 
+ 180 0210 0000C038 		.ascii	"\000\000\3008\340\000\000\000 <#\002\002'8 "
+ 180      E0000000 
+ 180      203C2302 
+ 180      02273820 
+ 181 0220 08F88888 		.ascii	"\010\370\210\210\210p\000\000 ?   \021\016\000"
+ 181      88700000 
+ 181      203F2020 
+ 181      20110E00 
+ 182 0230 C0300808 		.ascii	"\3000\010\010\010\0108\000\007\030   \020\010\000"
+ 182      08083800 
+ 182      07182020 
+ 182      20100800 
+ 183 0240 08F80808 		.ascii	"\010\370\010\010\010\020\340\000 ?   \020\017\000"
+ 183      0810E000 
+ 183      203F2020 
+ 183      20100F00 
+ 184 0250 08F88888 		.ascii	"\010\370\210\210\350\010\020\000 ?  # \030\000"
+ 184      E8081000 
+ 184      203F2020 
+ 184      23201800 
+ 185 0260 08F88888 		.ascii	"\010\370\210\210\350\010\020\000 ? \000\003\000\000"
+ 185      E8081000 
+ 185      203F2000 
+ 185      030000
+ 186 026f 00       		.ascii	"\000"
+ 187 0270 C0300808 		.ascii	"\3000\010\010\0108\000\000\007\030  \"\036\002\000"
+ 187      08380000 
+ 187      07182020 
+ 187      221E0200 
+ 188 0280 08F80800 		.ascii	"\010\370\010\000\000\010\370\010 ?!\001\001!? "
+ 188      0008F808 
+ 188      203F2101 
+ 188      01213F20 
+ 189 0290 000808F8 		.ascii	"\000\010\010\370\010\010\000\000\000  ?  \000\000"
+ 189      08080000 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 7
+
+
+ 189      0020203F 
+ 189      20200000 
+ 190 02a0 00000808 		.ascii	"\000\000\010\010\370\010\010\000\300\200\200\200\177"
+ 190      F8080800 
+ 190      C0808080 
+ 190      7F
+ 191 02ad 000000   		.ascii	"\000\000\000"
+ 192 02b0 08F888C0 		.ascii	"\010\370\210\300(\030\010\000 ? \001&8 \000"
+ 192      28180800 
+ 192      203F2001 
+ 192      26382000 
+ 193 02c0 08F80800 		.ascii	"\010\370\010\000\000\000\000\000 ?    0\000"
+ 193      00000000 
+ 193      203F2020 
+ 193      20203000 
+ 194 02d0 08F8F800 		.ascii	"\010\370\370\000\370\370\010\000 ?\000?\000? \000"
+ 194      F8F80800 
+ 194      203F003F 
+ 194      003F2000 
+ 195 02e0 08F830C0 		.ascii	"\010\3700\300\000\010\370\010 ? \000\007\030?\000"
+ 195      0008F808 
+ 195      203F2000 
+ 195      07183F00 
+ 196 02f0 E0100808 		.ascii	"\340\020\010\010\010\020\340\000\017\020   \020\017"
+ 196      0810E000 
+ 196      0F102020 
+ 196      20100F
+ 197 02ff 00       		.ascii	"\000"
+ 198 0300 08F80808 		.ascii	"\010\370\010\010\010\010\360\000 ?!\001\001\001\000"
+ 198      0808F000 
+ 198      203F2101 
+ 198      010100
+ 199 030f 00       		.ascii	"\000"
+ 200 0310 E0100808 		.ascii	"\340\020\010\010\010\020\340\000\017\030$$8PO\000"
+ 200      0810E000 
+ 200      0F182424 
+ 200      38504F00 
+ 201 0320 08F88888 		.ascii	"\010\370\210\210\210\210p\000 ? \000\003\0140 "
+ 201      88887000 
+ 201      203F2000 
+ 201      030C3020 
+ 202 0330 00708808 		.ascii	"\000p\210\010\010\0108\000\0008 !!\"\034\000"
+ 202      08083800 
+ 202      00382021 
+ 202      21221C00 
+ 203 0340 180808F8 		.ascii	"\030\010\010\370\010\010\030\000\000\000 ? \000\000"
+ 203      08081800 
+ 203      0000203F 
+ 203      200000
+ 204 034f 00       		.ascii	"\000"
+ 205 0350 08F80800 		.ascii	"\010\370\010\000\000\010\370\010\000\037    \037\000"
+ 205      0008F808 
+ 205      001F2020 
+ 205      20201F00 
+ 206 0360 08788800 		.ascii	"\010x\210\000\000\3108\010\000\000\0078\016\001\000"
+ 206      00C83808 
+ 206      00000738 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 8
+
+
+ 206      0E0100
+ 207 036f 00       		.ascii	"\000"
+ 208 0370 F80800F8 		.ascii	"\370\010\000\370\000\010\370\000\003<\007\000\007<\003"
+ 208      0008F800 
+ 208      033C0700 
+ 208      073C03
+ 209 037f 00       		.ascii	"\000"
+ 210 0380 08186880 		.ascii	"\010\030h\200\200h\030\010 0,\003\003,0 "
+ 210      80681808 
+ 210      20302C03 
+ 210      032C3020 
+ 211 0390 0838C800 		.ascii	"\0108\310\000\3108\010\000\000\000 ? \000\000\000"
+ 211      C8380800 
+ 211      0000203F 
+ 211      20000000 
+ 212 03a0 10080808 		.ascii	"\020\010\010\010\3108\010\000 8&!  \030\000"
+ 212      C8380800 
+ 212      20382621 
+ 212      20201800 
+ 213 03b0 000000FE 		.ascii	"\000\000\000\376\002\002\002\000\000\000\000\177@@@"
+ 213      02020200 
+ 213      0000007F 
+ 213      404040
+ 214 03bf 00       		.ascii	"\000"
+ 215 03c0 000C30C0 		.ascii	"\000\0140\300\000\000\000\000\000\000\000\001\0068\300"
+ 215      00000000 
+ 215      00000001 
+ 215      0638C0
+ 216 03cf 00       		.ascii	"\000"
+ 217 03d0 00020202 		.ascii	"\000\002\002\002\376\000\000\000\000@@@\177\000\000"
+ 217      FE000000 
+ 217      00404040 
+ 217      7F0000
+ 218 03df 00       		.ascii	"\000"
+ 219 03e0 00000402 		.ascii	"\000\000\004\002\002\002\004\000\000\000\000\000\000"
+ 219      02020400 
+ 219      00000000 
+ 219      00
+ 220 03ed 000000   		.ascii	"\000\000\000"
+ 221 03f0 00000000 		.ascii	"\000\000\000\000\000\000\000\000\200\200\200\200\200"
+ 221      00000000 
+ 221      80808080 
+ 221      80
+ 222 03fd 808080   		.ascii	"\200\200\200"
+ 223 0400 00020204 		.ascii	"\000\002\002\004\000\000\000\000\000\000\000\000\000"
+ 223      00000000 
+ 223      00000000 
+ 223      00
+ 224 040d 000000   		.ascii	"\000\000\000"
+ 225 0410 00008080 		.ascii	"\000\000\200\200\200\200\000\000\000\031$\"\"\"? "
+ 225      80800000 
+ 225      00192422 
+ 225      22223F20 
+ 226 0420 08F80080 		.ascii	"\010\370\000\200\200\000\000\000\000?\021  \021\016"
+ 226      80000000 
+ 226      003F1120 
+ 226      20110E
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 9
+
+
+ 227 042f 00       		.ascii	"\000"
+ 228 0430 00000080 		.ascii	"\000\000\000\200\200\200\000\000\000\016\021   \021"
+ 228      80800000 
+ 228      000E1120 
+ 228      202011
+ 229 043f 00       		.ascii	"\000"
+ 230 0440 00000080 		.ascii	"\000\000\000\200\200\210\370\000\000\016\021  \020?"
+ 230      8088F800 
+ 230      000E1120 
+ 230      20103F
+ 231 044f 20       		.ascii	" "
+ 232 0450 00008080 		.ascii	"\000\000\200\200\200\200\000\000\000\037\"\"\"\"\023"
+ 232      80800000 
+ 232      001F2222 
+ 232      222213
+ 233 045f 00       		.ascii	"\000"
+ 234 0460 008080F0 		.ascii	"\000\200\200\360\210\210\210\030\000  ?  \000\000"
+ 234      88888818 
+ 234      0020203F 
+ 234      20200000 
+ 235 0470 00008080 		.ascii	"\000\000\200\200\200\200\200\000\000k\224\224\224\223"
+ 235      80808000 
+ 235      006B9494 
+ 235      9493
+ 236 047e 6000     		.ascii	"`\000"
+ 237 0480 08F80080 		.ascii	"\010\370\000\200\200\200\000\000 ?!\000\000 ? "
+ 237      80800000 
+ 237      203F2100 
+ 237      00203F20 
+ 238 0490 00809898 		.ascii	"\000\200\230\230\000\000\000\000\000  ?  \000\000"
+ 238      00000000 
+ 238      0020203F 
+ 238      20200000 
+ 239 04a0 00000080 		.ascii	"\000\000\000\200\230\230\000\000\000\300\200\200\200"
+ 239      98980000 
+ 239      00C08080 
+ 239      80
+ 240 04ad 7F0000   		.ascii	"\177\000\000"
+ 241 04b0 08F80000 		.ascii	"\010\370\000\000\200\200\200\000 ?$\002-0 \000"
+ 241      80808000 
+ 241      203F2402 
+ 241      2D302000 
+ 242 04c0 000808F8 		.ascii	"\000\010\010\370\000\000\000\000\000  ?  \000\000"
+ 242      00000000 
+ 242      0020203F 
+ 242      20200000 
+ 243 04d0 80808080 		.ascii	"\200\200\200\200\200\200\200\000 ? \000? \000?"
+ 243      80808000 
+ 243      203F2000 
+ 243      3F20003F 
+ 244 04e0 80800080 		.ascii	"\200\200\000\200\200\200\000\000 ?!\000\000 ? "
+ 244      80800000 
+ 244      203F2100 
+ 244      00203F20 
+ 245 04f0 00008080 		.ascii	"\000\000\200\200\200\200\000\000\000\037    \037\000"
+ 245      80800000 
+ 245      001F2020 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 10
+
+
+ 245      20201F00 
+ 246 0500 80800080 		.ascii	"\200\200\000\200\200\000\000\000\200\377\241  \021\016"
+ 246      80000000 
+ 246      80FFA120 
+ 246      20110E
+ 247 050f 00       		.ascii	"\000"
+ 248 0510 00000080 		.ascii	"\000\000\000\200\200\200\200\000\000\016\021  \240\377"
+ 248      80808000 
+ 248      000E1120 
+ 248      20A0FF
+ 249 051f 80       		.ascii	"\200"
+ 250 0520 80808000 		.ascii	"\200\200\200\000\200\200\200\000  ?! \000\001\000"
+ 250      80808000 
+ 250      20203F21 
+ 250      20000100 
+ 251 0530 00008080 		.ascii	"\000\000\200\200\200\200\200\000\0003$$$$\031\000"
+ 251      80808000 
+ 251      00332424 
+ 251      24241900 
+ 252 0540 008080E0 		.ascii	"\000\200\200\340\200\200\000\000\000\000\000\037  \000"
+ 252      80800000 
+ 252      0000001F 
+ 252      202000
+ 253 054f 00       		.ascii	"\000"
+ 254 0550 80800000 		.ascii	"\200\200\000\000\000\200\200\000\000\037   \020? "
+ 254      00808000 
+ 254      001F2020 
+ 254      20103F20 
+ 255 0560 80808000 		.ascii	"\200\200\200\000\000\200\200\200\000\001\0160\010\006"
+ 255      00808080 
+ 255      00010E30 
+ 255      0806
+ 256 056e 0100     		.ascii	"\001\000"
+ 257 0570 80800080 		.ascii	"\200\200\000\200\000\200\200\200\0170\014\003\0140\017"
+ 257      00808080 
+ 257      0F300C03 
+ 257      0C300F
+ 258 057f 00       		.ascii	"\000"
+ 259 0580 00808000 		.ascii	"\000\200\200\000\200\200\200\000\000 1.\0161 \000"
+ 259      80808000 
+ 259      0020312E 
+ 259      0E312000 
+ 260 0590 80808000 		.ascii	"\200\200\200\000\000\200\200\200\200\201\216p\030\006"
+ 260      00808080 
+ 260      80818E70 
+ 260      1806
+ 261 059e 0100     		.ascii	"\001\000"
+ 262 05a0 00808080 		.ascii	"\000\200\200\200\200\200\200\000\000!0,\"!0\000"
+ 262      80808000 
+ 262      0021302C 
+ 262      22213000 
+ 263 05b0 00000000 		.ascii	"\000\000\000\000\200|\002\002\000\000\000\000\000?@"
+ 263      807C0202 
+ 263      00000000 
+ 263      003F40
+ 264 05bf 40       		.ascii	"@"
+ 265 05c0 00000000 		.ascii	"\000\000\000\000\377\000\000\000\000\000\000\000\377"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 11
+
+
+ 265      FF000000 
+ 265      00000000 
+ 265      FF
+ 266 05cd 000000   		.ascii	"\000\000\000"
+ 267 05d0 0002027C 		.ascii	"\000\002\002|\200\000\000\000\000@@?\000\000\000\000"
+ 267      80000000 
+ 267      0040403F 
+ 267      00000000 
+ 268 05e0 00060101 		.ascii	"\000\006\001\001\002\002\004\004\000\000\000\000\000"
+ 268      02020404 
+ 268      00000000 
+ 268      00
+ 269 05ed 000000   		.ascii	"\000\000\000"
+ 270              		.section	.text.OLED_I2C_Start,"ax",%progbits
+ 271              		.align	1
+ 272              		.global	OLED_I2C_Start
+ 273              		.syntax unified
+ 274              		.thumb
+ 275              		.thumb_func
+ 277              	OLED_I2C_Start:
+ 278              	.LFB124:
   34:./Hardware/OLED.c **** 
   35:./Hardware/OLED.c **** 
   36:./Hardware/OLED.c **** 
   37:./Hardware/OLED.c **** /*OLED字模库，宽8像素，高16像素*/
   38:./Hardware/OLED.c **** const uint8_t OLED_F08x16[][16]=
   39:./Hardware/OLED.c **** {
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 4
-
-
   40:./Hardware/OLED.c **** 	{
   41:./Hardware/OLED.c **** 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
   42:./Hardware/OLED.c **** 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//  0
@@ -211,6 +658,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
   67:./Hardware/OLED.c **** 	},{
   68:./Hardware/OLED.c **** 	0x00,0x02,0x04,0x18,0xE0,0x00,0x00,0x00,
   69:./Hardware/OLED.c **** 	0x00,0x40,0x20,0x18,0x07,0x00,0x00,0x00,//) 9
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 12
+
+
   70:./Hardware/OLED.c **** 	},{
   71:./Hardware/OLED.c **** 	0x40,0x40,0x80,0xF0,0x80,0x40,0x40,0x00,
   72:./Hardware/OLED.c **** 	0x02,0x02,0x01,0x0F,0x01,0x02,0x02,0x00,//* 10
@@ -238,9 +688,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
   94:./Hardware/OLED.c **** 	},{
   95:./Hardware/OLED.c **** 	0x00,0x70,0x08,0x08,0x08,0x88,0x70,0x00,
   96:./Hardware/OLED.c **** 	0x00,0x30,0x28,0x24,0x22,0x21,0x30,0x00,//2 18
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 5
-
-
   97:./Hardware/OLED.c **** 	},{
   98:./Hardware/OLED.c **** 	0x00,0x30,0x08,0x88,0x88,0x48,0x30,0x00,
   99:./Hardware/OLED.c **** 	0x00,0x18,0x20,0x20,0x20,0x11,0x0E,0x00,//3 19
@@ -271,6 +718,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  124:./Hardware/OLED.c **** 	},{
  125:./Hardware/OLED.c **** 	0x00,0x00,0x80,0x40,0x20,0x10,0x08,0x00,
  126:./Hardware/OLED.c **** 	0x00,0x01,0x02,0x04,0x08,0x10,0x20,0x00,//< 28
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 13
+
+
  127:./Hardware/OLED.c **** 	},{
  128:./Hardware/OLED.c **** 	0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x00,
  129:./Hardware/OLED.c **** 	0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x00,//= 29
@@ -298,9 +748,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  151:./Hardware/OLED.c **** 	},{
  152:./Hardware/OLED.c **** 	0x08,0xF8,0x88,0x88,0xE8,0x08,0x10,0x00,
  153:./Hardware/OLED.c **** 	0x20,0x3F,0x20,0x20,0x23,0x20,0x18,0x00,//E 37
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 6
-
-
  154:./Hardware/OLED.c **** 	},{
  155:./Hardware/OLED.c **** 	0x08,0xF8,0x88,0x88,0xE8,0x08,0x10,0x00,
  156:./Hardware/OLED.c **** 	0x20,0x3F,0x20,0x00,0x03,0x00,0x00,0x00,//F 38
@@ -331,6 +778,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  181:./Hardware/OLED.c **** 	},{
  182:./Hardware/OLED.c **** 	0xE0,0x10,0x08,0x08,0x08,0x10,0xE0,0x00,
  183:./Hardware/OLED.c **** 	0x0F,0x10,0x20,0x20,0x20,0x10,0x0F,0x00,//O 47
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 14
+
+
  184:./Hardware/OLED.c **** 	},{
  185:./Hardware/OLED.c **** 	0x08,0xF8,0x08,0x08,0x08,0x08,0xF0,0x00,
  186:./Hardware/OLED.c **** 	0x20,0x3F,0x21,0x01,0x01,0x01,0x00,0x00,//P 48
@@ -358,9 +808,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  208:./Hardware/OLED.c **** 	},{
  209:./Hardware/OLED.c **** 	0x08,0x18,0x68,0x80,0x80,0x68,0x18,0x08,
  210:./Hardware/OLED.c **** 	0x20,0x30,0x2C,0x03,0x03,0x2C,0x30,0x20,//X 56
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 7
-
-
  211:./Hardware/OLED.c **** 	},{
  212:./Hardware/OLED.c **** 	0x08,0x38,0xC8,0x00,0xC8,0x38,0x08,0x00,
  213:./Hardware/OLED.c **** 	0x00,0x00,0x20,0x3F,0x20,0x00,0x00,0x00,//Y 57
@@ -391,6 +838,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  238:./Hardware/OLED.c **** 	},{
  239:./Hardware/OLED.c **** 	0x08,0xF8,0x00,0x80,0x80,0x00,0x00,0x00,
  240:./Hardware/OLED.c **** 	0x00,0x3F,0x11,0x20,0x20,0x11,0x0E,0x00,//b 66
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 15
+
+
  241:./Hardware/OLED.c **** 	},{
  242:./Hardware/OLED.c **** 	0x00,0x00,0x00,0x80,0x80,0x80,0x00,0x00,
  243:./Hardware/OLED.c **** 	0x00,0x0E,0x11,0x20,0x20,0x20,0x11,0x00,//c 67
@@ -418,9 +868,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  265:./Hardware/OLED.c **** 	},{
  266:./Hardware/OLED.c **** 	0x08,0xF8,0x00,0x00,0x80,0x80,0x80,0x00,
  267:./Hardware/OLED.c **** 	0x20,0x3F,0x24,0x02,0x2D,0x30,0x20,0x00,//k 75
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 8
-
-
  268:./Hardware/OLED.c **** 	},{
  269:./Hardware/OLED.c **** 	0x00,0x08,0x08,0xF8,0x00,0x00,0x00,0x00,
  270:./Hardware/OLED.c **** 	0x00,0x20,0x20,0x3F,0x20,0x20,0x00,0x00,//l 76
@@ -451,6 +898,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  295:./Hardware/OLED.c **** 	},{
  296:./Hardware/OLED.c **** 	0x80,0x80,0x00,0x00,0x00,0x80,0x80,0x00,
  297:./Hardware/OLED.c **** 	0x00,0x1F,0x20,0x20,0x20,0x10,0x3F,0x20,//u 85
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 16
+
+
  298:./Hardware/OLED.c **** 	},{
  299:./Hardware/OLED.c **** 	0x80,0x80,0x80,0x00,0x00,0x80,0x80,0x80,
  300:./Hardware/OLED.c **** 	0x00,0x01,0x0E,0x30,0x08,0x06,0x01,0x00,//v 86
@@ -478,9 +928,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  322:./Hardware/OLED.c **** 	},{
  323:./Hardware/OLED.c **** 	0x00,0x06,0x01,0x01,0x02,0x02,0x04,0x04,
  324:./Hardware/OLED.c **** 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//~ 94
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 9
-
-
  325:./Hardware/OLED.c **** 	},
  326:./Hardware/OLED.c **** };
  327:./Hardware/OLED.c **** 
@@ -493,64 +940,63 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  334:./Hardware/OLED.c ****   */
  335:./Hardware/OLED.c **** void OLED_I2C_Start(void)
  336:./Hardware/OLED.c **** {
- 136              		.loc 1 336 1 is_stmt 1 view -0
- 137              		.cfi_startproc
- 138              		@ args = 0, pretend = 0, frame = 0
- 139              		@ frame_needed = 0, uses_anonymous_args = 0
- 140 0000 10B5     		push	{r4, lr}
- 141              	.LCFI3:
- 142              		.cfi_def_cfa_offset 8
- 143              		.cfi_offset 4, -8
- 144              		.cfi_offset 14, -4
+ 279              		.loc 1 336 1
+ 280              		.cfi_startproc
+ 281              		@ args = 0, pretend = 0, frame = 0
+ 282              		@ frame_needed = 1, uses_anonymous_args = 0
+ 283 0000 80B5     		push	{r7, lr}
+ 284              	.LCFI5:
+ 285              		.cfi_def_cfa_offset 8
+ 286              		.cfi_offset 7, -8
+ 287              		.cfi_offset 14, -4
+ 288 0002 00AF     		add	r7, sp, #0
+ 289              	.LCFI6:
+ 290              		.cfi_def_cfa_register 7
  337:./Hardware/OLED.c **** 	OLED_W_SDA(1);
- 145              		.loc 1 337 2 view .LVU29
- 146 0002 0B4C     		ldr	r4, .L7
- 147 0004 0122     		movs	r2, #1
- 148 0006 2021     		movs	r1, #32
- 149 0008 2046     		mov	r0, r4
- 150 000a FFF7FEFF 		bl	GPIO_WriteBit
- 151              	.LVL7:
+ 291              		.loc 1 337 2
+ 292 0004 0122     		movs	r2, #1
+ 293 0006 2021     		movs	r1, #32
+ 294 0008 0948     		ldr	r0, .L5
+ 295 000a FFF7FEFF 		bl	GPIO_WriteBit
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 17
+
+
  338:./Hardware/OLED.c **** 	OLED_W_SCL(1);
- 152              		.loc 1 338 2 view .LVU30
- 153 000e 0122     		movs	r2, #1
- 154 0010 4021     		movs	r1, #64
- 155 0012 2046     		mov	r0, r4
- 156 0014 FFF7FEFF 		bl	GPIO_WriteBit
- 157              	.LVL8:
+ 296              		.loc 1 338 2
+ 297 000e 0122     		movs	r2, #1
+ 298 0010 4021     		movs	r1, #64
+ 299 0012 0748     		ldr	r0, .L5
+ 300 0014 FFF7FEFF 		bl	GPIO_WriteBit
  339:./Hardware/OLED.c **** 	OLED_W_SDA(0);
- 158              		.loc 1 339 2 view .LVU31
- 159 0018 0022     		movs	r2, #0
- 160 001a 2021     		movs	r1, #32
- 161 001c 2046     		mov	r0, r4
- 162 001e FFF7FEFF 		bl	GPIO_WriteBit
- 163              	.LVL9:
+ 301              		.loc 1 339 2
+ 302 0018 0022     		movs	r2, #0
+ 303 001a 2021     		movs	r1, #32
+ 304 001c 0448     		ldr	r0, .L5
+ 305 001e FFF7FEFF 		bl	GPIO_WriteBit
  340:./Hardware/OLED.c **** 	OLED_W_SCL(0);
- 164              		.loc 1 340 2 view .LVU32
- 165 0022 0022     		movs	r2, #0
- 166 0024 4021     		movs	r1, #64
- 167 0026 2046     		mov	r0, r4
- 168 0028 FFF7FEFF 		bl	GPIO_WriteBit
- 169              	.LVL10:
+ 306              		.loc 1 340 2
+ 307 0022 0022     		movs	r2, #0
+ 308 0024 4021     		movs	r1, #64
+ 309 0026 0248     		ldr	r0, .L5
+ 310 0028 FFF7FEFF 		bl	GPIO_WriteBit
  341:./Hardware/OLED.c **** }
- 170              		.loc 1 341 1 is_stmt 0 view .LVU33
- 171 002c 10BD     		pop	{r4, pc}
- 172              	.L8:
- 173 002e 00BF     		.align	2
- 174              	.L7:
- 175 0030 00080240 		.word	1073874944
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 10
-
-
- 176              		.cfi_endproc
- 177              	.LFE124:
- 179              		.section	.text.OLED_I2C_Stop,"ax",%progbits
- 180              		.align	1
- 181              		.global	OLED_I2C_Stop
- 182              		.syntax unified
- 183              		.thumb
- 184              		.thumb_func
- 186              	OLED_I2C_Stop:
- 187              	.LFB125:
+ 311              		.loc 1 341 1
+ 312 002c 00BF     		nop
+ 313 002e 80BD     		pop	{r7, pc}
+ 314              	.L6:
+ 315              		.align	2
+ 316              	.L5:
+ 317 0030 00080240 		.word	1073874944
+ 318              		.cfi_endproc
+ 319              	.LFE124:
+ 321              		.section	.text.OLED_I2C_Stop,"ax",%progbits
+ 322              		.align	1
+ 323              		.global	OLED_I2C_Stop
+ 324              		.syntax unified
+ 325              		.thumb
+ 326              		.thumb_func
+ 328              	OLED_I2C_Stop:
+ 329              	.LFB125:
  342:./Hardware/OLED.c **** 
  343:./Hardware/OLED.c **** /**
  344:./Hardware/OLED.c ****   * @brief  I2C停止
@@ -559,58 +1005,57 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  347:./Hardware/OLED.c ****   */
  348:./Hardware/OLED.c **** void OLED_I2C_Stop(void)
  349:./Hardware/OLED.c **** {
- 188              		.loc 1 349 1 is_stmt 1 view -0
- 189              		.cfi_startproc
- 190              		@ args = 0, pretend = 0, frame = 0
- 191              		@ frame_needed = 0, uses_anonymous_args = 0
- 192 0000 10B5     		push	{r4, lr}
- 193              	.LCFI4:
- 194              		.cfi_def_cfa_offset 8
- 195              		.cfi_offset 4, -8
- 196              		.cfi_offset 14, -4
+ 330              		.loc 1 349 1
+ 331              		.cfi_startproc
+ 332              		@ args = 0, pretend = 0, frame = 0
+ 333              		@ frame_needed = 1, uses_anonymous_args = 0
+ 334 0000 80B5     		push	{r7, lr}
+ 335              	.LCFI7:
+ 336              		.cfi_def_cfa_offset 8
+ 337              		.cfi_offset 7, -8
+ 338              		.cfi_offset 14, -4
+ 339 0002 00AF     		add	r7, sp, #0
+ 340              	.LCFI8:
+ 341              		.cfi_def_cfa_register 7
  350:./Hardware/OLED.c **** 	OLED_W_SDA(0);
- 197              		.loc 1 350 2 view .LVU35
- 198 0002 084C     		ldr	r4, .L11
- 199 0004 0022     		movs	r2, #0
- 200 0006 2021     		movs	r1, #32
- 201 0008 2046     		mov	r0, r4
- 202 000a FFF7FEFF 		bl	GPIO_WriteBit
- 203              	.LVL11:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 18
+
+
+ 342              		.loc 1 350 2
+ 343 0004 0022     		movs	r2, #0
+ 344 0006 2021     		movs	r1, #32
+ 345 0008 0748     		ldr	r0, .L8
+ 346 000a FFF7FEFF 		bl	GPIO_WriteBit
  351:./Hardware/OLED.c **** 	OLED_W_SCL(1);
- 204              		.loc 1 351 2 view .LVU36
- 205 000e 0122     		movs	r2, #1
- 206 0010 4021     		movs	r1, #64
- 207 0012 2046     		mov	r0, r4
- 208 0014 FFF7FEFF 		bl	GPIO_WriteBit
- 209              	.LVL12:
+ 347              		.loc 1 351 2
+ 348 000e 0122     		movs	r2, #1
+ 349 0010 4021     		movs	r1, #64
+ 350 0012 0548     		ldr	r0, .L8
+ 351 0014 FFF7FEFF 		bl	GPIO_WriteBit
  352:./Hardware/OLED.c **** 	OLED_W_SDA(1);
- 210              		.loc 1 352 2 view .LVU37
- 211 0018 0122     		movs	r2, #1
- 212 001a 2021     		movs	r1, #32
- 213 001c 2046     		mov	r0, r4
- 214 001e FFF7FEFF 		bl	GPIO_WriteBit
- 215              	.LVL13:
+ 352              		.loc 1 352 2
+ 353 0018 0122     		movs	r2, #1
+ 354 001a 2021     		movs	r1, #32
+ 355 001c 0248     		ldr	r0, .L8
+ 356 001e FFF7FEFF 		bl	GPIO_WriteBit
  353:./Hardware/OLED.c **** }
- 216              		.loc 1 353 1 is_stmt 0 view .LVU38
- 217 0022 10BD     		pop	{r4, pc}
- 218              	.L12:
- 219              		.align	2
- 220              	.L11:
- 221 0024 00080240 		.word	1073874944
- 222              		.cfi_endproc
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 11
-
-
- 223              	.LFE125:
- 225              		.section	.text.OLED_I2C_SendByte,"ax",%progbits
- 226              		.align	1
- 227              		.global	OLED_I2C_SendByte
- 228              		.syntax unified
- 229              		.thumb
- 230              		.thumb_func
- 232              	OLED_I2C_SendByte:
- 233              	.LVL14:
- 234              	.LFB126:
+ 357              		.loc 1 353 1
+ 358 0022 00BF     		nop
+ 359 0024 80BD     		pop	{r7, pc}
+ 360              	.L9:
+ 361 0026 00BF     		.align	2
+ 362              	.L8:
+ 363 0028 00080240 		.word	1073874944
+ 364              		.cfi_endproc
+ 365              	.LFE125:
+ 367              		.section	.text.OLED_I2C_SendByte,"ax",%progbits
+ 368              		.align	1
+ 369              		.global	OLED_I2C_SendByte
+ 370              		.syntax unified
+ 371              		.thumb
+ 372              		.thumb_func
+ 374              	OLED_I2C_SendByte:
+ 375              	.LFB126:
  354:./Hardware/OLED.c **** 
  355:./Hardware/OLED.c **** /**
  356:./Hardware/OLED.c ****   * @brief  I2C发送一个字节
@@ -619,114 +1064,113 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  359:./Hardware/OLED.c ****   */
  360:./Hardware/OLED.c **** void OLED_I2C_SendByte(uint8_t Byte)
  361:./Hardware/OLED.c **** {
- 235              		.loc 1 361 1 is_stmt 1 view -0
- 236              		.cfi_startproc
- 237              		@ args = 0, pretend = 0, frame = 0
- 238              		@ frame_needed = 0, uses_anonymous_args = 0
- 239              		.loc 1 361 1 is_stmt 0 view .LVU40
- 240 0000 70B5     		push	{r4, r5, r6, lr}
- 241              	.LCFI5:
- 242              		.cfi_def_cfa_offset 16
- 243              		.cfi_offset 4, -16
- 244              		.cfi_offset 5, -12
- 245              		.cfi_offset 6, -8
- 246              		.cfi_offset 14, -4
- 247 0002 0646     		mov	r6, r0
+ 376              		.loc 1 361 1
+ 377              		.cfi_startproc
+ 378              		@ args = 0, pretend = 0, frame = 16
+ 379              		@ frame_needed = 1, uses_anonymous_args = 0
+ 380 0000 80B5     		push	{r7, lr}
+ 381              	.LCFI9:
+ 382              		.cfi_def_cfa_offset 8
+ 383              		.cfi_offset 7, -8
+ 384              		.cfi_offset 14, -4
+ 385 0002 84B0     		sub	sp, sp, #16
+ 386              	.LCFI10:
+ 387              		.cfi_def_cfa_offset 24
+ 388 0004 00AF     		add	r7, sp, #0
+ 389              	.LCFI11:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 19
+
+
+ 390              		.cfi_def_cfa_register 7
+ 391 0006 0346     		mov	r3, r0
+ 392 0008 FB71     		strb	r3, [r7, #7]
  362:./Hardware/OLED.c **** 	uint8_t i;
- 248              		.loc 1 362 2 is_stmt 1 view .LVU41
  363:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 249              		.loc 1 363 2 view .LVU42
- 250              	.LVL15:
- 251              		.loc 1 363 9 is_stmt 0 view .LVU43
- 252 0004 0024     		movs	r4, #0
- 253              		.loc 1 363 2 view .LVU44
- 254 0006 13E0     		b	.L14
- 255              	.LVL16:
- 256              	.L15:
+ 393              		.loc 1 363 9
+ 394 000a 0023     		movs	r3, #0
+ 395 000c FB73     		strb	r3, [r7, #15]
+ 396              		.loc 1 363 2
+ 397 000e 1BE0     		b	.L11
+ 398              	.L12:
  364:./Hardware/OLED.c **** 	{
  365:./Hardware/OLED.c **** 		OLED_W_SDA(Byte & (0x80 >> i));
- 257              		.loc 1 365 3 is_stmt 1 discriminator 3 view .LVU45
- 258 0008 8022     		movs	r2, #128
- 259 000a 2241     		asrs	r2, r2, r4
- 260 000c 0F4D     		ldr	r5, .L17
- 261 000e 3240     		ands	r2, r2, r6
- 262 0010 2021     		movs	r1, #32
- 263 0012 2846     		mov	r0, r5
- 264 0014 FFF7FEFF 		bl	GPIO_WriteBit
- 265              	.LVL17:
+ 399              		.loc 1 365 3 discriminator 3
+ 400 0010 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 401 0012 8022     		movs	r2, #128
+ 402 0014 42FA03F3 		asr	r3, r2, r3
+ 403 0018 5AB2     		sxtb	r2, r3
+ 404 001a 97F90730 		ldrsb	r3, [r7, #7]
+ 405 001e 1340     		ands	r3, r3, r2
+ 406 0020 5BB2     		sxtb	r3, r3
+ 407 0022 DBB2     		uxtb	r3, r3
+ 408 0024 1A46     		mov	r2, r3
+ 409 0026 2021     		movs	r1, #32
+ 410 0028 1048     		ldr	r0, .L13
+ 411 002a FFF7FEFF 		bl	GPIO_WriteBit
  366:./Hardware/OLED.c **** 		OLED_W_SCL(1);
- 266              		.loc 1 366 3 discriminator 3 view .LVU46
- 267 0018 0122     		movs	r2, #1
- 268 001a 4021     		movs	r1, #64
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 12
-
-
- 269 001c 2846     		mov	r0, r5
- 270 001e FFF7FEFF 		bl	GPIO_WriteBit
- 271              	.LVL18:
+ 412              		.loc 1 366 3 discriminator 3
+ 413 002e 0122     		movs	r2, #1
+ 414 0030 4021     		movs	r1, #64
+ 415 0032 0E48     		ldr	r0, .L13
+ 416 0034 FFF7FEFF 		bl	GPIO_WriteBit
  367:./Hardware/OLED.c **** 		OLED_W_SCL(0);
- 272              		.loc 1 367 3 discriminator 3 view .LVU47
- 273 0022 0022     		movs	r2, #0
- 274 0024 4021     		movs	r1, #64
- 275 0026 2846     		mov	r0, r5
- 276 0028 FFF7FEFF 		bl	GPIO_WriteBit
- 277              	.LVL19:
+ 417              		.loc 1 367 3 discriminator 3
+ 418 0038 0022     		movs	r2, #0
+ 419 003a 4021     		movs	r1, #64
+ 420 003c 0B48     		ldr	r0, .L13
+ 421 003e FFF7FEFF 		bl	GPIO_WriteBit
  363:./Hardware/OLED.c **** 	{
- 278              		.loc 1 363 21 discriminator 3 view .LVU48
+ 422              		.loc 1 363 22 discriminator 3
+ 423 0042 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 424 0044 0133     		adds	r3, r3, #1
+ 425 0046 FB73     		strb	r3, [r7, #15]
+ 426              	.L11:
  363:./Hardware/OLED.c **** 	{
- 279              		.loc 1 363 22 is_stmt 0 discriminator 3 view .LVU49
- 280 002c 0134     		adds	r4, r4, #1
- 281              	.LVL20:
- 363:./Hardware/OLED.c **** 	{
- 282              		.loc 1 363 22 discriminator 3 view .LVU50
- 283 002e E4B2     		uxtb	r4, r4
- 284              	.LVL21:
- 285              	.L14:
- 363:./Hardware/OLED.c **** 	{
- 286              		.loc 1 363 14 is_stmt 1 discriminator 1 view .LVU51
- 363:./Hardware/OLED.c **** 	{
- 287              		.loc 1 363 2 is_stmt 0 discriminator 1 view .LVU52
- 288 0030 072C     		cmp	r4, #7
- 289 0032 E9D9     		bls	.L15
+ 427              		.loc 1 363 2 discriminator 1
+ 428 0048 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 429 004a 072B     		cmp	r3, #7
+ 430 004c E0D9     		bls	.L12
  368:./Hardware/OLED.c **** 	}
  369:./Hardware/OLED.c **** 	OLED_W_SCL(1);	//额外的一个时钟，不处理应答信号
- 290              		.loc 1 369 2 is_stmt 1 view .LVU53
- 291 0034 054C     		ldr	r4, .L17
- 292              	.LVL22:
- 293              		.loc 1 369 2 is_stmt 0 view .LVU54
- 294 0036 0122     		movs	r2, #1
- 295 0038 4021     		movs	r1, #64
- 296 003a 2046     		mov	r0, r4
- 297 003c FFF7FEFF 		bl	GPIO_WriteBit
- 298              	.LVL23:
+ 431              		.loc 1 369 2
+ 432 004e 0122     		movs	r2, #1
+ 433 0050 4021     		movs	r1, #64
+ 434 0052 0648     		ldr	r0, .L13
+ 435 0054 FFF7FEFF 		bl	GPIO_WriteBit
  370:./Hardware/OLED.c **** 	OLED_W_SCL(0);
- 299              		.loc 1 370 2 is_stmt 1 view .LVU55
- 300 0040 0022     		movs	r2, #0
- 301 0042 4021     		movs	r1, #64
- 302 0044 2046     		mov	r0, r4
- 303 0046 FFF7FEFF 		bl	GPIO_WriteBit
- 304              	.LVL24:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 20
+
+
+ 436              		.loc 1 370 2
+ 437 0058 0022     		movs	r2, #0
+ 438 005a 4021     		movs	r1, #64
+ 439 005c 0348     		ldr	r0, .L13
+ 440 005e FFF7FEFF 		bl	GPIO_WriteBit
  371:./Hardware/OLED.c **** }
- 305              		.loc 1 371 1 is_stmt 0 view .LVU56
- 306 004a 70BD     		pop	{r4, r5, r6, pc}
- 307              	.L18:
- 308              		.align	2
- 309              	.L17:
- 310 004c 00080240 		.word	1073874944
- 311              		.cfi_endproc
- 312              	.LFE126:
- 314              		.section	.text.OLED_WriteCommand,"ax",%progbits
- 315              		.align	1
- 316              		.global	OLED_WriteCommand
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 13
-
-
- 317              		.syntax unified
- 318              		.thumb
- 319              		.thumb_func
- 321              	OLED_WriteCommand:
- 322              	.LVL25:
- 323              	.LFB127:
+ 441              		.loc 1 371 1
+ 442 0062 00BF     		nop
+ 443 0064 1037     		adds	r7, r7, #16
+ 444              	.LCFI12:
+ 445              		.cfi_def_cfa_offset 8
+ 446 0066 BD46     		mov	sp, r7
+ 447              	.LCFI13:
+ 448              		.cfi_def_cfa_register 13
+ 449              		@ sp needed
+ 450 0068 80BD     		pop	{r7, pc}
+ 451              	.L14:
+ 452 006a 00BF     		.align	2
+ 453              	.L13:
+ 454 006c 00080240 		.word	1073874944
+ 455              		.cfi_endproc
+ 456              	.LFE126:
+ 458              		.section	.text.OLED_WriteCommand,"ax",%progbits
+ 459              		.align	1
+ 460              		.global	OLED_WriteCommand
+ 461              		.syntax unified
+ 462              		.thumb
+ 463              		.thumb_func
+ 465              	OLED_WriteCommand:
+ 466              	.LFB127:
  372:./Hardware/OLED.c **** 
  373:./Hardware/OLED.c **** /**
  374:./Hardware/OLED.c ****   * @brief  OLED写命令
@@ -735,57 +1179,66 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  377:./Hardware/OLED.c ****   */
  378:./Hardware/OLED.c **** void OLED_WriteCommand(uint8_t Command)
  379:./Hardware/OLED.c **** {
- 324              		.loc 1 379 1 is_stmt 1 view -0
- 325              		.cfi_startproc
- 326              		@ args = 0, pretend = 0, frame = 0
- 327              		@ frame_needed = 0, uses_anonymous_args = 0
- 328              		.loc 1 379 1 is_stmt 0 view .LVU58
- 329 0000 10B5     		push	{r4, lr}
- 330              	.LCFI6:
- 331              		.cfi_def_cfa_offset 8
- 332              		.cfi_offset 4, -8
- 333              		.cfi_offset 14, -4
- 334 0002 0446     		mov	r4, r0
+ 467              		.loc 1 379 1
+ 468              		.cfi_startproc
+ 469              		@ args = 0, pretend = 0, frame = 8
+ 470              		@ frame_needed = 1, uses_anonymous_args = 0
+ 471 0000 80B5     		push	{r7, lr}
+ 472              	.LCFI14:
+ 473              		.cfi_def_cfa_offset 8
+ 474              		.cfi_offset 7, -8
+ 475              		.cfi_offset 14, -4
+ 476 0002 82B0     		sub	sp, sp, #8
+ 477              	.LCFI15:
+ 478              		.cfi_def_cfa_offset 16
+ 479 0004 00AF     		add	r7, sp, #0
+ 480              	.LCFI16:
+ 481              		.cfi_def_cfa_register 7
+ 482 0006 0346     		mov	r3, r0
+ 483 0008 FB71     		strb	r3, [r7, #7]
  380:./Hardware/OLED.c **** 	OLED_I2C_Start();
- 335              		.loc 1 380 2 is_stmt 1 view .LVU59
- 336 0004 FFF7FEFF 		bl	OLED_I2C_Start
- 337              	.LVL26:
+ 484              		.loc 1 380 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 21
+
+
+ 485 000a FFF7FEFF 		bl	OLED_I2C_Start
  381:./Hardware/OLED.c **** 	OLED_I2C_SendByte(0x78);		//从机地址
- 338              		.loc 1 381 2 view .LVU60
- 339 0008 7820     		movs	r0, #120
- 340 000a FFF7FEFF 		bl	OLED_I2C_SendByte
- 341              	.LVL27:
+ 486              		.loc 1 381 2
+ 487 000e 7820     		movs	r0, #120
+ 488 0010 FFF7FEFF 		bl	OLED_I2C_SendByte
  382:./Hardware/OLED.c **** 	OLED_I2C_SendByte(0x00);		//写命令
- 342              		.loc 1 382 2 view .LVU61
- 343 000e 0020     		movs	r0, #0
- 344 0010 FFF7FEFF 		bl	OLED_I2C_SendByte
- 345              	.LVL28:
+ 489              		.loc 1 382 2
+ 490 0014 0020     		movs	r0, #0
+ 491 0016 FFF7FEFF 		bl	OLED_I2C_SendByte
  383:./Hardware/OLED.c **** 	OLED_I2C_SendByte(Command); 
- 346              		.loc 1 383 2 view .LVU62
- 347 0014 2046     		mov	r0, r4
- 348 0016 FFF7FEFF 		bl	OLED_I2C_SendByte
- 349              	.LVL29:
+ 492              		.loc 1 383 2
+ 493 001a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 494 001c 1846     		mov	r0, r3
+ 495 001e FFF7FEFF 		bl	OLED_I2C_SendByte
  384:./Hardware/OLED.c **** 	OLED_I2C_Stop();
- 350              		.loc 1 384 2 view .LVU63
- 351 001a FFF7FEFF 		bl	OLED_I2C_Stop
- 352              	.LVL30:
+ 496              		.loc 1 384 2
+ 497 0022 FFF7FEFF 		bl	OLED_I2C_Stop
  385:./Hardware/OLED.c **** }
- 353              		.loc 1 385 1 is_stmt 0 view .LVU64
- 354 001e 10BD     		pop	{r4, pc}
- 355              		.cfi_endproc
- 356              	.LFE127:
- 358              		.section	.text.OLED_WriteData,"ax",%progbits
- 359              		.align	1
- 360              		.global	OLED_WriteData
- 361              		.syntax unified
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 14
-
-
- 362              		.thumb
- 363              		.thumb_func
- 365              	OLED_WriteData:
- 366              	.LVL31:
- 367              	.LFB128:
+ 498              		.loc 1 385 1
+ 499 0026 00BF     		nop
+ 500 0028 0837     		adds	r7, r7, #8
+ 501              	.LCFI17:
+ 502              		.cfi_def_cfa_offset 8
+ 503 002a BD46     		mov	sp, r7
+ 504              	.LCFI18:
+ 505              		.cfi_def_cfa_register 13
+ 506              		@ sp needed
+ 507 002c 80BD     		pop	{r7, pc}
+ 508              		.cfi_endproc
+ 509              	.LFE127:
+ 511              		.section	.text.OLED_WriteData,"ax",%progbits
+ 512              		.align	1
+ 513              		.global	OLED_WriteData
+ 514              		.syntax unified
+ 515              		.thumb
+ 516              		.thumb_func
+ 518              	OLED_WriteData:
+ 519              	.LFB128:
  386:./Hardware/OLED.c **** 
  387:./Hardware/OLED.c **** /**
  388:./Hardware/OLED.c ****   * @brief  OLED写数据
@@ -794,57 +1247,66 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  391:./Hardware/OLED.c ****   */
  392:./Hardware/OLED.c **** void OLED_WriteData(uint8_t Data)
  393:./Hardware/OLED.c **** {
- 368              		.loc 1 393 1 is_stmt 1 view -0
- 369              		.cfi_startproc
- 370              		@ args = 0, pretend = 0, frame = 0
- 371              		@ frame_needed = 0, uses_anonymous_args = 0
- 372              		.loc 1 393 1 is_stmt 0 view .LVU66
- 373 0000 10B5     		push	{r4, lr}
- 374              	.LCFI7:
- 375              		.cfi_def_cfa_offset 8
- 376              		.cfi_offset 4, -8
- 377              		.cfi_offset 14, -4
- 378 0002 0446     		mov	r4, r0
+ 520              		.loc 1 393 1
+ 521              		.cfi_startproc
+ 522              		@ args = 0, pretend = 0, frame = 8
+ 523              		@ frame_needed = 1, uses_anonymous_args = 0
+ 524 0000 80B5     		push	{r7, lr}
+ 525              	.LCFI19:
+ 526              		.cfi_def_cfa_offset 8
+ 527              		.cfi_offset 7, -8
+ 528              		.cfi_offset 14, -4
+ 529 0002 82B0     		sub	sp, sp, #8
+ 530              	.LCFI20:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 22
+
+
+ 531              		.cfi_def_cfa_offset 16
+ 532 0004 00AF     		add	r7, sp, #0
+ 533              	.LCFI21:
+ 534              		.cfi_def_cfa_register 7
+ 535 0006 0346     		mov	r3, r0
+ 536 0008 FB71     		strb	r3, [r7, #7]
  394:./Hardware/OLED.c **** 	OLED_I2C_Start();
- 379              		.loc 1 394 2 is_stmt 1 view .LVU67
- 380 0004 FFF7FEFF 		bl	OLED_I2C_Start
- 381              	.LVL32:
+ 537              		.loc 1 394 2
+ 538 000a FFF7FEFF 		bl	OLED_I2C_Start
  395:./Hardware/OLED.c **** 	OLED_I2C_SendByte(0x78);		//从机地址
- 382              		.loc 1 395 2 view .LVU68
- 383 0008 7820     		movs	r0, #120
- 384 000a FFF7FEFF 		bl	OLED_I2C_SendByte
- 385              	.LVL33:
+ 539              		.loc 1 395 2
+ 540 000e 7820     		movs	r0, #120
+ 541 0010 FFF7FEFF 		bl	OLED_I2C_SendByte
  396:./Hardware/OLED.c **** 	OLED_I2C_SendByte(0x40);		//写数据
- 386              		.loc 1 396 2 view .LVU69
- 387 000e 4020     		movs	r0, #64
- 388 0010 FFF7FEFF 		bl	OLED_I2C_SendByte
- 389              	.LVL34:
+ 542              		.loc 1 396 2
+ 543 0014 4020     		movs	r0, #64
+ 544 0016 FFF7FEFF 		bl	OLED_I2C_SendByte
  397:./Hardware/OLED.c **** 	OLED_I2C_SendByte(Data);
- 390              		.loc 1 397 2 view .LVU70
- 391 0014 2046     		mov	r0, r4
- 392 0016 FFF7FEFF 		bl	OLED_I2C_SendByte
- 393              	.LVL35:
+ 545              		.loc 1 397 2
+ 546 001a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 547 001c 1846     		mov	r0, r3
+ 548 001e FFF7FEFF 		bl	OLED_I2C_SendByte
  398:./Hardware/OLED.c **** 	OLED_I2C_Stop();
- 394              		.loc 1 398 2 view .LVU71
- 395 001a FFF7FEFF 		bl	OLED_I2C_Stop
- 396              	.LVL36:
+ 549              		.loc 1 398 2
+ 550 0022 FFF7FEFF 		bl	OLED_I2C_Stop
  399:./Hardware/OLED.c **** }
- 397              		.loc 1 399 1 is_stmt 0 view .LVU72
- 398 001e 10BD     		pop	{r4, pc}
- 399              		.cfi_endproc
- 400              	.LFE128:
- 402              		.section	.text.OLED_SetCursor,"ax",%progbits
- 403              		.align	1
- 404              		.global	OLED_SetCursor
- 405              		.syntax unified
- 406              		.thumb
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 15
-
-
- 407              		.thumb_func
- 409              	OLED_SetCursor:
- 410              	.LVL37:
- 411              	.LFB129:
+ 551              		.loc 1 399 1
+ 552 0026 00BF     		nop
+ 553 0028 0837     		adds	r7, r7, #8
+ 554              	.LCFI22:
+ 555              		.cfi_def_cfa_offset 8
+ 556 002a BD46     		mov	sp, r7
+ 557              	.LCFI23:
+ 558              		.cfi_def_cfa_register 13
+ 559              		@ sp needed
+ 560 002c 80BD     		pop	{r7, pc}
+ 561              		.cfi_endproc
+ 562              	.LFE128:
+ 564              		.section	.text.OLED_SetCursor,"ax",%progbits
+ 565              		.align	1
+ 566              		.global	OLED_SetCursor
+ 567              		.syntax unified
+ 568              		.thumb
+ 569              		.thumb_func
+ 571              	OLED_SetCursor:
+ 572              	.LFB129:
  400:./Hardware/OLED.c **** 
  401:./Hardware/OLED.c **** /**
  402:./Hardware/OLED.c ****   * @brief  OLED设置光标位置
@@ -854,53 +1316,77 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  406:./Hardware/OLED.c ****   */
  407:./Hardware/OLED.c **** void OLED_SetCursor(uint8_t Y, uint8_t X)
  408:./Hardware/OLED.c **** {
- 412              		.loc 1 408 1 is_stmt 1 view -0
- 413              		.cfi_startproc
- 414              		@ args = 0, pretend = 0, frame = 0
- 415              		@ frame_needed = 0, uses_anonymous_args = 0
- 416              		.loc 1 408 1 is_stmt 0 view .LVU74
- 417 0000 10B5     		push	{r4, lr}
- 418              	.LCFI8:
- 419              		.cfi_def_cfa_offset 8
- 420              		.cfi_offset 4, -8
- 421              		.cfi_offset 14, -4
- 422 0002 0C46     		mov	r4, r1
+ 573              		.loc 1 408 1
+ 574              		.cfi_startproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 23
+
+
+ 575              		@ args = 0, pretend = 0, frame = 8
+ 576              		@ frame_needed = 1, uses_anonymous_args = 0
+ 577 0000 80B5     		push	{r7, lr}
+ 578              	.LCFI24:
+ 579              		.cfi_def_cfa_offset 8
+ 580              		.cfi_offset 7, -8
+ 581              		.cfi_offset 14, -4
+ 582 0002 82B0     		sub	sp, sp, #8
+ 583              	.LCFI25:
+ 584              		.cfi_def_cfa_offset 16
+ 585 0004 00AF     		add	r7, sp, #0
+ 586              	.LCFI26:
+ 587              		.cfi_def_cfa_register 7
+ 588 0006 0346     		mov	r3, r0
+ 589 0008 0A46     		mov	r2, r1
+ 590 000a FB71     		strb	r3, [r7, #7]
+ 591 000c 1346     		mov	r3, r2
+ 592 000e BB71     		strb	r3, [r7, #6]
  409:./Hardware/OLED.c **** 	OLED_WriteCommand(0xB0 | Y);					//设置Y位置
- 423              		.loc 1 409 2 is_stmt 1 view .LVU75
- 424 0004 40F0B000 		orr	r0, r0, #176
- 425              	.LVL38:
- 426              		.loc 1 409 2 is_stmt 0 view .LVU76
- 427 0008 FFF7FEFF 		bl	OLED_WriteCommand
- 428              	.LVL39:
+ 593              		.loc 1 409 2
+ 594 0010 FB79     		ldrb	r3, [r7, #7]
+ 595 0012 63F04F03 		orn	r3, r3, #79
+ 596 0016 DBB2     		uxtb	r3, r3
+ 597 0018 1846     		mov	r0, r3
+ 598 001a FFF7FEFF 		bl	OLED_WriteCommand
  410:./Hardware/OLED.c **** 	OLED_WriteCommand(0x10 | ((X & 0xF0) >> 4));	//设置X位置高4位
- 429              		.loc 1 410 2 is_stmt 1 view .LVU77
- 430              		.loc 1 410 39 is_stmt 0 view .LVU78
- 431 000c 2009     		lsrs	r0, r4, #4
- 432              		.loc 1 410 2 view .LVU79
- 433 000e 40F01000 		orr	r0, r0, #16
- 434 0012 FFF7FEFF 		bl	OLED_WriteCommand
- 435              	.LVL40:
+ 599              		.loc 1 410 39
+ 600 001e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 601 0020 1B09     		lsrs	r3, r3, #4
+ 602 0022 DBB2     		uxtb	r3, r3
+ 603              		.loc 1 410 2
+ 604 0024 43F01003 		orr	r3, r3, #16
+ 605 0028 DBB2     		uxtb	r3, r3
+ 606 002a 1846     		mov	r0, r3
+ 607 002c FFF7FEFF 		bl	OLED_WriteCommand
  411:./Hardware/OLED.c **** 	OLED_WriteCommand(0x00 | (X & 0x0F));			//设置X位置低4位
- 436              		.loc 1 411 2 is_stmt 1 view .LVU80
- 437 0016 04F00F00 		and	r0, r4, #15
- 438 001a FFF7FEFF 		bl	OLED_WriteCommand
- 439              	.LVL41:
+ 608              		.loc 1 411 2
+ 609 0030 BB79     		ldrb	r3, [r7, #6]
+ 610 0032 03F00F03 		and	r3, r3, #15
+ 611 0036 DBB2     		uxtb	r3, r3
+ 612 0038 1846     		mov	r0, r3
+ 613 003a FFF7FEFF 		bl	OLED_WriteCommand
  412:./Hardware/OLED.c **** }
- 440              		.loc 1 412 1 is_stmt 0 view .LVU81
- 441 001e 10BD     		pop	{r4, pc}
- 442              		.cfi_endproc
- 443              	.LFE129:
- 445              		.section	.text.OLED_Clear,"ax",%progbits
- 446              		.align	1
- 447              		.global	OLED_Clear
- 448              		.syntax unified
- 449              		.thumb
- 450              		.thumb_func
- 452              	OLED_Clear:
- 453              	.LFB130:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 16
+ 614              		.loc 1 412 1
+ 615 003e 00BF     		nop
+ 616 0040 0837     		adds	r7, r7, #8
+ 617              	.LCFI27:
+ 618              		.cfi_def_cfa_offset 8
+ 619 0042 BD46     		mov	sp, r7
+ 620              	.LCFI28:
+ 621              		.cfi_def_cfa_register 13
+ 622              		@ sp needed
+ 623 0044 80BD     		pop	{r7, pc}
+ 624              		.cfi_endproc
+ 625              	.LFE129:
+ 627              		.section	.text.OLED_Clear,"ax",%progbits
+ 628              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 24
 
 
+ 629              		.global	OLED_Clear
+ 630              		.syntax unified
+ 631              		.thumb
+ 632              		.thumb_func
+ 634              	OLED_Clear:
+ 635              	.LFB130:
  413:./Hardware/OLED.c **** 
  414:./Hardware/OLED.c **** /**
  415:./Hardware/OLED.c ****   * @brief  OLED清屏
@@ -909,107 +1395,99 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  418:./Hardware/OLED.c ****   */
  419:./Hardware/OLED.c **** void OLED_Clear(void)
  420:./Hardware/OLED.c **** {  
- 454              		.loc 1 420 1 is_stmt 1 view -0
- 455              		.cfi_startproc
- 456              		@ args = 0, pretend = 0, frame = 0
- 457              		@ frame_needed = 0, uses_anonymous_args = 0
- 458 0000 38B5     		push	{r3, r4, r5, lr}
- 459              	.LCFI9:
- 460              		.cfi_def_cfa_offset 16
- 461              		.cfi_offset 3, -16
- 462              		.cfi_offset 4, -12
- 463              		.cfi_offset 5, -8
- 464              		.cfi_offset 14, -4
+ 636              		.loc 1 420 1
+ 637              		.cfi_startproc
+ 638              		@ args = 0, pretend = 0, frame = 8
+ 639              		@ frame_needed = 1, uses_anonymous_args = 0
+ 640 0000 80B5     		push	{r7, lr}
+ 641              	.LCFI29:
+ 642              		.cfi_def_cfa_offset 8
+ 643              		.cfi_offset 7, -8
+ 644              		.cfi_offset 14, -4
+ 645 0002 82B0     		sub	sp, sp, #8
+ 646              	.LCFI30:
+ 647              		.cfi_def_cfa_offset 16
+ 648 0004 00AF     		add	r7, sp, #0
+ 649              	.LCFI31:
+ 650              		.cfi_def_cfa_register 7
  421:./Hardware/OLED.c **** 	uint8_t i, j;
- 465              		.loc 1 421 2 view .LVU83
  422:./Hardware/OLED.c **** 	for (j = 0; j < 8; j++)
- 466              		.loc 1 422 2 view .LVU84
- 467              	.LVL42:
- 468              		.loc 1 422 9 is_stmt 0 view .LVU85
- 469 0002 0025     		movs	r5, #0
- 470              		.loc 1 422 2 view .LVU86
- 471 0004 09E0     		b	.L26
- 472              	.LVL43:
- 473              	.L28:
+ 651              		.loc 1 422 9
+ 652 0006 0023     		movs	r3, #0
+ 653 0008 BB71     		strb	r3, [r7, #6]
+ 654              		.loc 1 422 2
+ 655 000a 14E0     		b	.L19
+ 656              	.L22:
  423:./Hardware/OLED.c **** 	{
  424:./Hardware/OLED.c **** 		OLED_SetCursor(j, 0);
+ 657              		.loc 1 424 3
+ 658 000c BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 659 000e 0021     		movs	r1, #0
+ 660 0010 1846     		mov	r0, r3
+ 661 0012 FFF7FEFF 		bl	OLED_SetCursor
  425:./Hardware/OLED.c **** 		for(i = 0; i < 128; i++)
+ 662              		.loc 1 425 9
+ 663 0016 0023     		movs	r3, #0
+ 664 0018 FB71     		strb	r3, [r7, #7]
+ 665              		.loc 1 425 3
+ 666 001a 05E0     		b	.L20
+ 667              	.L21:
  426:./Hardware/OLED.c **** 		{
  427:./Hardware/OLED.c **** 			OLED_WriteData(0x00);
- 474              		.loc 1 427 4 is_stmt 1 discriminator 3 view .LVU87
- 475 0006 0020     		movs	r0, #0
- 476 0008 FFF7FEFF 		bl	OLED_WriteData
- 477              	.LVL44:
- 425:./Hardware/OLED.c **** 		{
- 478              		.loc 1 425 23 discriminator 3 view .LVU88
- 425:./Hardware/OLED.c **** 		{
- 479              		.loc 1 425 24 is_stmt 0 discriminator 3 view .LVU89
- 480 000c 0134     		adds	r4, r4, #1
- 481              	.LVL45:
- 425:./Hardware/OLED.c **** 		{
- 482              		.loc 1 425 24 discriminator 3 view .LVU90
- 483 000e E4B2     		uxtb	r4, r4
- 484              	.LVL46:
- 485              	.L27:
- 425:./Hardware/OLED.c **** 		{
- 486              		.loc 1 425 14 is_stmt 1 discriminator 1 view .LVU91
- 425:./Hardware/OLED.c **** 		{
- 487              		.loc 1 425 3 is_stmt 0 discriminator 1 view .LVU92
- 488 0010 14F0800F 		tst	r4, #128
- 489 0014 F7D0     		beq	.L28
- 422:./Hardware/OLED.c **** 	for (j = 0; j < 8; j++)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 17
+ 668              		.loc 1 427 4 discriminator 3
+ 669 001c 0020     		movs	r0, #0
+ 670 001e FFF7FEFF 		bl	OLED_WriteData
+ 425:./Hardware/OLED.c **** 		for(i = 0; i < 128; i++)
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 25
 
 
- 490              		.loc 1 422 21 is_stmt 1 discriminator 2 view .LVU93
- 422:./Hardware/OLED.c **** 	for (j = 0; j < 8; j++)
- 491              		.loc 1 422 22 is_stmt 0 discriminator 2 view .LVU94
- 492 0016 0135     		adds	r5, r5, #1
- 493              	.LVL47:
- 422:./Hardware/OLED.c **** 	for (j = 0; j < 8; j++)
- 494              		.loc 1 422 22 discriminator 2 view .LVU95
- 495 0018 EDB2     		uxtb	r5, r5
- 496              	.LVL48:
- 497              	.L26:
- 422:./Hardware/OLED.c **** 	for (j = 0; j < 8; j++)
- 498              		.loc 1 422 14 is_stmt 1 discriminator 1 view .LVU96
- 422:./Hardware/OLED.c **** 	for (j = 0; j < 8; j++)
- 499              		.loc 1 422 2 is_stmt 0 discriminator 1 view .LVU97
- 500 001a 072D     		cmp	r5, #7
- 501 001c 05D8     		bhi	.L31
- 424:./Hardware/OLED.c **** 		for(i = 0; i < 128; i++)
- 502              		.loc 1 424 3 is_stmt 1 view .LVU98
- 503 001e 0021     		movs	r1, #0
- 504 0020 2846     		mov	r0, r5
- 505 0022 FFF7FEFF 		bl	OLED_SetCursor
- 506              	.LVL49:
- 425:./Hardware/OLED.c **** 		{
- 507              		.loc 1 425 3 view .LVU99
- 425:./Hardware/OLED.c **** 		{
- 508              		.loc 1 425 9 is_stmt 0 view .LVU100
- 509 0026 0024     		movs	r4, #0
- 425:./Hardware/OLED.c **** 		{
- 510              		.loc 1 425 3 view .LVU101
- 511 0028 F2E7     		b	.L27
- 512              	.LVL50:
- 513              	.L31:
+ 671              		.loc 1 425 24 discriminator 3
+ 672 0022 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 673 0024 0133     		adds	r3, r3, #1
+ 674 0026 FB71     		strb	r3, [r7, #7]
+ 675              	.L20:
+ 425:./Hardware/OLED.c **** 		for(i = 0; i < 128; i++)
+ 676              		.loc 1 425 16 discriminator 1
+ 677 0028 97F90730 		ldrsb	r3, [r7, #7]
+ 425:./Hardware/OLED.c **** 		for(i = 0; i < 128; i++)
+ 678              		.loc 1 425 3 discriminator 1
+ 679 002c 002B     		cmp	r3, #0
+ 680 002e F5DA     		bge	.L21
+ 422:./Hardware/OLED.c **** 	{
+ 681              		.loc 1 422 22 discriminator 2
+ 682 0030 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 683 0032 0133     		adds	r3, r3, #1
+ 684 0034 BB71     		strb	r3, [r7, #6]
+ 685              	.L19:
+ 422:./Hardware/OLED.c **** 	{
+ 686              		.loc 1 422 2 discriminator 1
+ 687 0036 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 688 0038 072B     		cmp	r3, #7
+ 689 003a E7D9     		bls	.L22
  428:./Hardware/OLED.c **** 		}
  429:./Hardware/OLED.c **** 	}
  430:./Hardware/OLED.c **** }
- 514              		.loc 1 430 1 view .LVU102
- 515 002a 38BD     		pop	{r3, r4, r5, pc}
- 516              		.loc 1 430 1 view .LVU103
- 517              		.cfi_endproc
- 518              	.LFE130:
- 520              		.section	.text.OLED_ShowChar,"ax",%progbits
- 521              		.align	1
- 522              		.global	OLED_ShowChar
- 523              		.syntax unified
- 524              		.thumb
- 525              		.thumb_func
- 527              	OLED_ShowChar:
- 528              	.LVL51:
- 529              	.LFB131:
+ 690              		.loc 1 430 1
+ 691 003c 00BF     		nop
+ 692 003e 00BF     		nop
+ 693 0040 0837     		adds	r7, r7, #8
+ 694              	.LCFI32:
+ 695              		.cfi_def_cfa_offset 8
+ 696 0042 BD46     		mov	sp, r7
+ 697              	.LCFI33:
+ 698              		.cfi_def_cfa_register 13
+ 699              		@ sp needed
+ 700 0044 80BD     		pop	{r7, pc}
+ 701              		.cfi_endproc
+ 702              	.LFE130:
+ 704              		.section	.text.OLED_ShowChar,"ax",%progbits
+ 705              		.align	1
+ 706              		.global	OLED_ShowChar
+ 707              		.syntax unified
+ 708              		.thumb
+ 709              		.thumb_func
+ 711              	OLED_ShowChar:
+ 712              	.LFB131:
  431:./Hardware/OLED.c **** 
  432:./Hardware/OLED.c **** /**
  433:./Hardware/OLED.c ****   * @brief  OLED显示一个字符
@@ -1018,153 +1496,165 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  436:./Hardware/OLED.c ****   * @param  Char 要显示的一个字符，范围：ASCII可见字符
  437:./Hardware/OLED.c ****   * @retval 无
  438:./Hardware/OLED.c ****   */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 18
-
-
  439:./Hardware/OLED.c **** void OLED_ShowChar(uint8_t Line, uint8_t Column, char Char)
  440:./Hardware/OLED.c **** {      	
- 530              		.loc 1 440 1 is_stmt 1 view -0
- 531              		.cfi_startproc
- 532              		@ args = 0, pretend = 0, frame = 0
- 533              		@ frame_needed = 0, uses_anonymous_args = 0
- 534              		.loc 1 440 1 is_stmt 0 view .LVU105
- 535 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 536              	.LCFI10:
- 537              		.cfi_def_cfa_offset 24
- 538              		.cfi_offset 3, -24
- 539              		.cfi_offset 4, -20
- 540              		.cfi_offset 5, -16
- 541              		.cfi_offset 6, -12
- 542              		.cfi_offset 7, -8
- 543              		.cfi_offset 14, -4
- 544 0002 1546     		mov	r5, r2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 26
+
+
+ 713              		.loc 1 440 1
+ 714              		.cfi_startproc
+ 715              		@ args = 0, pretend = 0, frame = 16
+ 716              		@ frame_needed = 1, uses_anonymous_args = 0
+ 717 0000 80B5     		push	{r7, lr}
+ 718              	.LCFI34:
+ 719              		.cfi_def_cfa_offset 8
+ 720              		.cfi_offset 7, -8
+ 721              		.cfi_offset 14, -4
+ 722 0002 84B0     		sub	sp, sp, #16
+ 723              	.LCFI35:
+ 724              		.cfi_def_cfa_offset 24
+ 725 0004 00AF     		add	r7, sp, #0
+ 726              	.LCFI36:
+ 727              		.cfi_def_cfa_register 7
+ 728 0006 0346     		mov	r3, r0
+ 729 0008 FB71     		strb	r3, [r7, #7]
+ 730 000a 0B46     		mov	r3, r1
+ 731 000c BB71     		strb	r3, [r7, #6]
+ 732 000e 1346     		mov	r3, r2
+ 733 0010 7B71     		strb	r3, [r7, #5]
  441:./Hardware/OLED.c **** 	uint8_t i;
- 545              		.loc 1 441 2 is_stmt 1 view .LVU106
  442:./Hardware/OLED.c **** 	OLED_SetCursor((Line - 1) * 2, (Column - 1) * 8);		//设置光标位置在上半部分
- 546              		.loc 1 442 2 view .LVU107
- 547 0004 461E     		subs	r6, r0, #1
- 548 0006 7600     		lsls	r6, r6, #1
- 549 0008 F6B2     		uxtb	r6, r6
- 550 000a 4F1E     		subs	r7, r1, #1
- 551 000c FF00     		lsls	r7, r7, #3
- 552 000e FFB2     		uxtb	r7, r7
- 553 0010 3946     		mov	r1, r7
- 554              	.LVL52:
- 555              		.loc 1 442 2 is_stmt 0 view .LVU108
- 556 0012 3046     		mov	r0, r6
- 557              	.LVL53:
- 558              		.loc 1 442 2 view .LVU109
- 559 0014 FFF7FEFF 		bl	OLED_SetCursor
- 560              	.LVL54:
+ 734              		.loc 1 442 2
+ 735 0012 FB79     		ldrb	r3, [r7, #7]
+ 736 0014 013B     		subs	r3, r3, #1
+ 737 0016 DBB2     		uxtb	r3, r3
+ 738 0018 5B00     		lsls	r3, r3, #1
+ 739 001a DAB2     		uxtb	r2, r3
+ 740 001c BB79     		ldrb	r3, [r7, #6]
+ 741 001e 013B     		subs	r3, r3, #1
+ 742 0020 DBB2     		uxtb	r3, r3
+ 743 0022 DB00     		lsls	r3, r3, #3
+ 744 0024 DBB2     		uxtb	r3, r3
+ 745 0026 1946     		mov	r1, r3
+ 746 0028 1046     		mov	r0, r2
+ 747 002a FFF7FEFF 		bl	OLED_SetCursor
  443:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 561              		.loc 1 443 2 is_stmt 1 view .LVU110
- 562              		.loc 1 443 9 is_stmt 0 view .LVU111
- 563 0018 0024     		movs	r4, #0
- 564              		.loc 1 443 2 view .LVU112
- 565 001a 09E0     		b	.L33
- 566              	.LVL55:
- 567              	.L34:
+ 748              		.loc 1 443 9
+ 749 002e 0023     		movs	r3, #0
+ 750 0030 FB73     		strb	r3, [r7, #15]
+ 751              		.loc 1 443 2
+ 752 0032 0EE0     		b	.L24
+ 753              	.L25:
  444:./Hardware/OLED.c **** 	{
  445:./Hardware/OLED.c **** 		OLED_WriteData(OLED_F08x16[Char - ' '][i]);			//显示上半部分内容
- 568              		.loc 1 445 3 is_stmt 1 discriminator 3 view .LVU113
- 569              		.loc 1 445 35 is_stmt 0 discriminator 3 view .LVU114
- 570 001c A5F12003 		sub	r3, r5, #32
- 571              		.loc 1 445 3 discriminator 3 view .LVU115
- 572 0020 0F4A     		ldr	r2, .L38
- 573 0022 02EB0313 		add	r3, r2, r3, lsl #4
- 574 0026 185D     		ldrb	r0, [r3, r4]	@ zero_extendqisi2
- 575 0028 FFF7FEFF 		bl	OLED_WriteData
- 576              	.LVL56:
- 443:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 577              		.loc 1 443 21 is_stmt 1 discriminator 3 view .LVU116
- 443:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 19
+ 754              		.loc 1 445 35 discriminator 3
+ 755 0034 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 756 0036 A3F12002 		sub	r2, r3, #32
+ 757              		.loc 1 445 3 discriminator 3
+ 758 003a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 759 003c 1C49     		ldr	r1, .L28
+ 760 003e 1201     		lsls	r2, r2, #4
+ 761 0040 0A44     		add	r2, r2, r1
+ 762 0042 1344     		add	r3, r3, r2
+ 763 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 764 0046 1846     		mov	r0, r3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 27
 
 
- 578              		.loc 1 443 22 is_stmt 0 discriminator 3 view .LVU117
- 579 002c 0134     		adds	r4, r4, #1
- 580              	.LVL57:
+ 765 0048 FFF7FEFF 		bl	OLED_WriteData
  443:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 581              		.loc 1 443 22 discriminator 3 view .LVU118
- 582 002e E4B2     		uxtb	r4, r4
- 583              	.LVL58:
- 584              	.L33:
+ 766              		.loc 1 443 22 discriminator 3
+ 767 004c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 768 004e 0133     		adds	r3, r3, #1
+ 769 0050 FB73     		strb	r3, [r7, #15]
+ 770              	.L24:
  443:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 585              		.loc 1 443 14 is_stmt 1 discriminator 1 view .LVU119
- 443:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 586              		.loc 1 443 2 is_stmt 0 discriminator 1 view .LVU120
- 587 0030 072C     		cmp	r4, #7
- 588 0032 F3D9     		bls	.L34
+ 771              		.loc 1 443 2 discriminator 1
+ 772 0052 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 773 0054 072B     		cmp	r3, #7
+ 774 0056 EDD9     		bls	.L25
  446:./Hardware/OLED.c **** 	}
  447:./Hardware/OLED.c **** 	OLED_SetCursor((Line - 1) * 2 + 1, (Column - 1) * 8);	//设置光标位置在下半部分
- 589              		.loc 1 447 2 is_stmt 1 view .LVU121
- 590 0034 701C     		adds	r0, r6, #1
- 591 0036 3946     		mov	r1, r7
- 592 0038 C0B2     		uxtb	r0, r0
- 593 003a FFF7FEFF 		bl	OLED_SetCursor
- 594              	.LVL59:
+ 775              		.loc 1 447 2
+ 776 0058 FB79     		ldrb	r3, [r7, #7]
+ 777 005a 013B     		subs	r3, r3, #1
+ 778 005c DBB2     		uxtb	r3, r3
+ 779 005e 5B00     		lsls	r3, r3, #1
+ 780 0060 DBB2     		uxtb	r3, r3
+ 781 0062 0133     		adds	r3, r3, #1
+ 782 0064 DAB2     		uxtb	r2, r3
+ 783 0066 BB79     		ldrb	r3, [r7, #6]
+ 784 0068 013B     		subs	r3, r3, #1
+ 785 006a DBB2     		uxtb	r3, r3
+ 786 006c DB00     		lsls	r3, r3, #3
+ 787 006e DBB2     		uxtb	r3, r3
+ 788 0070 1946     		mov	r1, r3
+ 789 0072 1046     		mov	r0, r2
+ 790 0074 FFF7FEFF 		bl	OLED_SetCursor
  448:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 595              		.loc 1 448 2 view .LVU122
- 596              		.loc 1 448 9 is_stmt 0 view .LVU123
- 597 003e 0024     		movs	r4, #0
- 598              		.loc 1 448 2 view .LVU124
- 599 0040 0BE0     		b	.L35
- 600              	.LVL60:
- 601              	.L36:
+ 791              		.loc 1 448 9
+ 792 0078 0023     		movs	r3, #0
+ 793 007a FB73     		strb	r3, [r7, #15]
+ 794              		.loc 1 448 2
+ 795 007c 0FE0     		b	.L26
+ 796              	.L27:
  449:./Hardware/OLED.c **** 	{
  450:./Hardware/OLED.c **** 		OLED_WriteData(OLED_F08x16[Char - ' '][i + 8]);		//显示下半部分内容
- 602              		.loc 1 450 3 is_stmt 1 discriminator 3 view .LVU125
- 603              		.loc 1 450 35 is_stmt 0 discriminator 3 view .LVU126
- 604 0042 A5F12003 		sub	r3, r5, #32
- 605              		.loc 1 450 44 discriminator 3 view .LVU127
- 606 0046 04F10802 		add	r2, r4, #8
- 607              		.loc 1 450 3 discriminator 3 view .LVU128
- 608 004a 0549     		ldr	r1, .L38
- 609 004c 01EB0313 		add	r3, r1, r3, lsl #4
- 610 0050 985C     		ldrb	r0, [r3, r2]	@ zero_extendqisi2
- 611 0052 FFF7FEFF 		bl	OLED_WriteData
- 612              	.LVL61:
+ 797              		.loc 1 450 35 discriminator 3
+ 798 007e 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 799 0080 A3F12002 		sub	r2, r3, #32
+ 800              		.loc 1 450 44 discriminator 3
+ 801 0084 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 802 0086 0833     		adds	r3, r3, #8
+ 803              		.loc 1 450 3 discriminator 3
+ 804 0088 0949     		ldr	r1, .L28
+ 805 008a 1201     		lsls	r2, r2, #4
+ 806 008c 0A44     		add	r2, r2, r1
+ 807 008e 1344     		add	r3, r3, r2
+ 808 0090 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 809 0092 1846     		mov	r0, r3
+ 810 0094 FFF7FEFF 		bl	OLED_WriteData
  448:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 613              		.loc 1 448 21 is_stmt 1 discriminator 3 view .LVU129
- 448:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 614              		.loc 1 448 22 is_stmt 0 discriminator 3 view .LVU130
- 615 0056 0134     		adds	r4, r4, #1
- 616              	.LVL62:
- 448:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 617              		.loc 1 448 22 discriminator 3 view .LVU131
- 618 0058 E4B2     		uxtb	r4, r4
- 619              	.LVL63:
- 620              	.L35:
- 448:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
- 621              		.loc 1 448 14 is_stmt 1 discriminator 1 view .LVU132
- 448:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 20
+ 811              		.loc 1 448 22 discriminator 3
+ 812 0098 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 813 009a 0133     		adds	r3, r3, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 28
 
 
- 622              		.loc 1 448 2 is_stmt 0 discriminator 1 view .LVU133
- 623 005a 072C     		cmp	r4, #7
- 624 005c F1D9     		bls	.L36
+ 814 009c FB73     		strb	r3, [r7, #15]
+ 815              	.L26:
+ 448:./Hardware/OLED.c **** 	for (i = 0; i < 8; i++)
+ 816              		.loc 1 448 2 discriminator 1
+ 817 009e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 818 00a0 072B     		cmp	r3, #7
+ 819 00a2 ECD9     		bls	.L27
  451:./Hardware/OLED.c **** 	}
  452:./Hardware/OLED.c **** }
- 625              		.loc 1 452 1 view .LVU134
- 626 005e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 627              	.LVL64:
- 628              	.L39:
- 629              		.loc 1 452 1 view .LVU135
- 630              		.align	2
- 631              	.L38:
- 632 0060 00000000 		.word	.LANCHOR0
- 633              		.cfi_endproc
- 634              	.LFE131:
- 636              		.section	.text.OLED_ShowString,"ax",%progbits
- 637              		.align	1
- 638              		.global	OLED_ShowString
- 639              		.syntax unified
- 640              		.thumb
- 641              		.thumb_func
- 643              	OLED_ShowString:
- 644              	.LVL65:
- 645              	.LFB132:
+ 820              		.loc 1 452 1
+ 821 00a4 00BF     		nop
+ 822 00a6 00BF     		nop
+ 823 00a8 1037     		adds	r7, r7, #16
+ 824              	.LCFI37:
+ 825              		.cfi_def_cfa_offset 8
+ 826 00aa BD46     		mov	sp, r7
+ 827              	.LCFI38:
+ 828              		.cfi_def_cfa_register 13
+ 829              		@ sp needed
+ 830 00ac 80BD     		pop	{r7, pc}
+ 831              	.L29:
+ 832 00ae 00BF     		.align	2
+ 833              	.L28:
+ 834 00b0 00000000 		.word	OLED_F08x16
+ 835              		.cfi_endproc
+ 836              	.LFE131:
+ 838              		.section	.text.OLED_ShowString,"ax",%progbits
+ 839              		.align	1
+ 840              		.global	OLED_ShowString
+ 841              		.syntax unified
+ 842              		.thumb
+ 843              		.thumb_func
+ 845              	OLED_ShowString:
+ 846              	.LFB132:
  453:./Hardware/OLED.c **** 
  454:./Hardware/OLED.c **** /**
  455:./Hardware/OLED.c ****   * @brief  OLED显示字符串
@@ -1175,81 +1665,95 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  460:./Hardware/OLED.c ****   */
  461:./Hardware/OLED.c **** void OLED_ShowString(uint8_t Line, uint8_t Column, char *String)
  462:./Hardware/OLED.c **** {
- 646              		.loc 1 462 1 is_stmt 1 view -0
- 647              		.cfi_startproc
- 648              		@ args = 0, pretend = 0, frame = 0
- 649              		@ frame_needed = 0, uses_anonymous_args = 0
- 650              		.loc 1 462 1 is_stmt 0 view .LVU137
- 651 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 652              	.LCFI11:
- 653              		.cfi_def_cfa_offset 24
- 654              		.cfi_offset 3, -24
- 655              		.cfi_offset 4, -20
- 656              		.cfi_offset 5, -16
- 657              		.cfi_offset 6, -12
- 658              		.cfi_offset 7, -8
- 659              		.cfi_offset 14, -4
- 660 0002 0746     		mov	r7, r0
- 661 0004 0E46     		mov	r6, r1
- 662 0006 1546     		mov	r5, r2
+ 847              		.loc 1 462 1
+ 848              		.cfi_startproc
+ 849              		@ args = 0, pretend = 0, frame = 16
+ 850              		@ frame_needed = 1, uses_anonymous_args = 0
+ 851 0000 80B5     		push	{r7, lr}
+ 852              	.LCFI39:
+ 853              		.cfi_def_cfa_offset 8
+ 854              		.cfi_offset 7, -8
+ 855              		.cfi_offset 14, -4
+ 856 0002 84B0     		sub	sp, sp, #16
+ 857              	.LCFI40:
+ 858              		.cfi_def_cfa_offset 24
+ 859 0004 00AF     		add	r7, sp, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 29
+
+
+ 860              	.LCFI41:
+ 861              		.cfi_def_cfa_register 7
+ 862 0006 0346     		mov	r3, r0
+ 863 0008 3A60     		str	r2, [r7]
+ 864 000a FB71     		strb	r3, [r7, #7]
+ 865 000c 0B46     		mov	r3, r1
+ 866 000e BB71     		strb	r3, [r7, #6]
  463:./Hardware/OLED.c **** 	uint8_t i;
- 663              		.loc 1 463 2 is_stmt 1 view .LVU138
  464:./Hardware/OLED.c **** 	for (i = 0; String[i] != '\0'; i++)
- 664              		.loc 1 464 2 view .LVU139
- 665              	.LVL66:
- 666              		.loc 1 464 9 is_stmt 0 view .LVU140
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 21
-
-
- 667 0008 0024     		movs	r4, #0
- 668              		.loc 1 464 2 view .LVU141
- 669 000a 06E0     		b	.L41
- 670              	.LVL67:
- 671              	.L42:
+ 867              		.loc 1 464 9
+ 868 0010 0023     		movs	r3, #0
+ 869 0012 FB73     		strb	r3, [r7, #15]
+ 870              		.loc 1 464 2
+ 871 0014 0EE0     		b	.L31
+ 872              	.L32:
  465:./Hardware/OLED.c **** 	{
  466:./Hardware/OLED.c **** 		OLED_ShowChar(Line, Column + i, String[i]);
- 672              		.loc 1 466 3 is_stmt 1 discriminator 3 view .LVU142
- 673 000c A119     		adds	r1, r4, r6
- 674 000e C9B2     		uxtb	r1, r1
- 675 0010 3846     		mov	r0, r7
- 676 0012 FFF7FEFF 		bl	OLED_ShowChar
- 677              	.LVL68:
- 464:./Hardware/OLED.c **** 	for (i = 0; String[i] != '\0'; i++)
- 678              		.loc 1 464 33 discriminator 3 view .LVU143
- 464:./Hardware/OLED.c **** 	for (i = 0; String[i] != '\0'; i++)
- 679              		.loc 1 464 34 is_stmt 0 discriminator 3 view .LVU144
- 680 0016 0134     		adds	r4, r4, #1
- 681              	.LVL69:
- 464:./Hardware/OLED.c **** 	for (i = 0; String[i] != '\0'; i++)
- 682              		.loc 1 464 34 discriminator 3 view .LVU145
- 683 0018 E4B2     		uxtb	r4, r4
- 684              	.LVL70:
- 685              	.L41:
- 464:./Hardware/OLED.c **** 	for (i = 0; String[i] != '\0'; i++)
- 686              		.loc 1 464 14 is_stmt 1 discriminator 1 view .LVU146
- 464:./Hardware/OLED.c **** 	for (i = 0; String[i] != '\0'; i++)
- 687              		.loc 1 464 20 is_stmt 0 discriminator 1 view .LVU147
- 688 001a 2A5D     		ldrb	r2, [r5, r4]	@ zero_extendqisi2
- 464:./Hardware/OLED.c **** 	for (i = 0; String[i] != '\0'; i++)
- 689              		.loc 1 464 2 discriminator 1 view .LVU148
- 690 001c 002A     		cmp	r2, #0
- 691 001e F5D1     		bne	.L42
+ 873              		.loc 1 466 3 discriminator 3
+ 874 0016 BA79     		ldrb	r2, [r7, #6]
+ 875 0018 FB7B     		ldrb	r3, [r7, #15]
+ 876 001a 1344     		add	r3, r3, r2
+ 877 001c D9B2     		uxtb	r1, r3
+ 878              		.loc 1 466 41 discriminator 3
+ 879 001e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 880 0020 3A68     		ldr	r2, [r7]
+ 881 0022 1344     		add	r3, r3, r2
+ 882              		.loc 1 466 3 discriminator 3
+ 883 0024 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 884 0026 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 885 0028 1846     		mov	r0, r3
+ 886 002a FFF7FEFF 		bl	OLED_ShowChar
+ 464:./Hardware/OLED.c **** 	{
+ 887              		.loc 1 464 34 discriminator 3
+ 888 002e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 889 0030 0133     		adds	r3, r3, #1
+ 890 0032 FB73     		strb	r3, [r7, #15]
+ 891              	.L31:
+ 464:./Hardware/OLED.c **** 	{
+ 892              		.loc 1 464 20 discriminator 1
+ 893 0034 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 894 0036 3A68     		ldr	r2, [r7]
+ 895 0038 1344     		add	r3, r3, r2
+ 896 003a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 464:./Hardware/OLED.c **** 	{
+ 897              		.loc 1 464 2 discriminator 1
+ 898 003c 002B     		cmp	r3, #0
+ 899 003e EAD1     		bne	.L32
  467:./Hardware/OLED.c **** 	}
  468:./Hardware/OLED.c **** }
- 692              		.loc 1 468 1 view .LVU149
- 693 0020 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 694              		.loc 1 468 1 view .LVU150
- 695              		.cfi_endproc
- 696              	.LFE132:
- 698              		.section	.text.OLED_Pow,"ax",%progbits
- 699              		.align	1
- 700              		.global	OLED_Pow
- 701              		.syntax unified
- 702              		.thumb
- 703              		.thumb_func
- 705              	OLED_Pow:
- 706              	.LVL71:
- 707              	.LFB133:
+ 900              		.loc 1 468 1
+ 901 0040 00BF     		nop
+ 902 0042 00BF     		nop
+ 903 0044 1037     		adds	r7, r7, #16
+ 904              	.LCFI42:
+ 905              		.cfi_def_cfa_offset 8
+ 906 0046 BD46     		mov	sp, r7
+ 907              	.LCFI43:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 30
+
+
+ 908              		.cfi_def_cfa_register 13
+ 909              		@ sp needed
+ 910 0048 80BD     		pop	{r7, pc}
+ 911              		.cfi_endproc
+ 912              	.LFE132:
+ 914              		.section	.text.OLED_Pow,"ax",%progbits
+ 915              		.align	1
+ 916              		.global	OLED_Pow
+ 917              		.syntax unified
+ 918              		.thumb
+ 919              		.thumb_func
+ 921              	OLED_Pow:
+ 922              	.LFB133:
  469:./Hardware/OLED.c **** 
  470:./Hardware/OLED.c **** /**
  471:./Hardware/OLED.c ****   * @brief  OLED次方函数
@@ -1257,70 +1761,80 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  473:./Hardware/OLED.c ****   */
  474:./Hardware/OLED.c **** uint32_t OLED_Pow(uint32_t X, uint32_t Y)
  475:./Hardware/OLED.c **** {
- 708              		.loc 1 475 1 is_stmt 1 view -0
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 22
-
-
- 709              		.cfi_startproc
- 710              		@ args = 0, pretend = 0, frame = 0
- 711              		@ frame_needed = 0, uses_anonymous_args = 0
- 712              		@ link register save eliminated.
- 713              		.loc 1 475 1 is_stmt 0 view .LVU152
- 714 0000 0246     		mov	r2, r0
+ 923              		.loc 1 475 1
+ 924              		.cfi_startproc
+ 925              		@ args = 0, pretend = 0, frame = 16
+ 926              		@ frame_needed = 1, uses_anonymous_args = 0
+ 927              		@ link register save eliminated.
+ 928 0000 80B4     		push	{r7}
+ 929              	.LCFI44:
+ 930              		.cfi_def_cfa_offset 4
+ 931              		.cfi_offset 7, -4
+ 932 0002 85B0     		sub	sp, sp, #20
+ 933              	.LCFI45:
+ 934              		.cfi_def_cfa_offset 24
+ 935 0004 00AF     		add	r7, sp, #0
+ 936              	.LCFI46:
+ 937              		.cfi_def_cfa_register 7
+ 938 0006 7860     		str	r0, [r7, #4]
+ 939 0008 3960     		str	r1, [r7]
  476:./Hardware/OLED.c **** 	uint32_t Result = 1;
- 715              		.loc 1 476 2 is_stmt 1 view .LVU153
- 716              	.LVL72:
+ 940              		.loc 1 476 11
+ 941 000a 0123     		movs	r3, #1
+ 942 000c FB60     		str	r3, [r7, #12]
  477:./Hardware/OLED.c **** 	while (Y--)
- 717              		.loc 1 477 2 view .LVU154
- 476:./Hardware/OLED.c **** 	uint32_t Result = 1;
- 718              		.loc 1 476 11 is_stmt 0 view .LVU155
- 719 0002 0120     		movs	r0, #1
- 720              	.LVL73:
- 721              		.loc 1 477 8 view .LVU156
- 722 0004 02E0     		b	.L45
- 723              	.LVL74:
- 724              	.L46:
+ 943              		.loc 1 477 8
+ 944 000e 04E0     		b	.L34
+ 945              	.L35:
  478:./Hardware/OLED.c **** 	{
  479:./Hardware/OLED.c **** 		Result *= X;
- 725              		.loc 1 479 3 is_stmt 1 view .LVU157
- 726              		.loc 1 479 10 is_stmt 0 view .LVU158
- 727 0006 02FB00F0 		mul	r0, r2, r0
- 728              	.LVL75:
+ 946              		.loc 1 479 10
+ 947 0010 FB68     		ldr	r3, [r7, #12]
+ 948 0012 7A68     		ldr	r2, [r7, #4]
+ 949 0014 02FB03F3 		mul	r3, r2, r3
+ 950 0018 FB60     		str	r3, [r7, #12]
+ 951              	.L34:
  477:./Hardware/OLED.c **** 	while (Y--)
- 729              		.loc 1 477 10 view .LVU159
- 730 000a 1946     		mov	r1, r3
- 731              	.LVL76:
- 732              	.L45:
+ 952              		.loc 1 477 10
+ 953 001a 3B68     		ldr	r3, [r7]
+ 954 001c 5A1E     		subs	r2, r3, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 31
+
+
+ 955 001e 3A60     		str	r2, [r7]
  477:./Hardware/OLED.c **** 	while (Y--)
- 733              		.loc 1 477 8 is_stmt 1 view .LVU160
- 477:./Hardware/OLED.c **** 	while (Y--)
- 734              		.loc 1 477 10 is_stmt 0 view .LVU161
- 735 000c 4B1E     		subs	r3, r1, #1
- 736              	.LVL77:
- 477:./Hardware/OLED.c **** 	while (Y--)
- 737              		.loc 1 477 8 view .LVU162
- 738 000e 0029     		cmp	r1, #0
- 739 0010 F9D1     		bne	.L46
+ 956              		.loc 1 477 8
+ 957 0020 002B     		cmp	r3, #0
+ 958 0022 F5D1     		bne	.L35
  480:./Hardware/OLED.c **** 	}
  481:./Hardware/OLED.c **** 	return Result;
- 740              		.loc 1 481 2 is_stmt 1 view .LVU163
+ 959              		.loc 1 481 9
+ 960 0024 FB68     		ldr	r3, [r7, #12]
  482:./Hardware/OLED.c **** }
- 741              		.loc 1 482 1 is_stmt 0 view .LVU164
- 742 0012 7047     		bx	lr
- 743              		.cfi_endproc
- 744              	.LFE133:
- 746              		.section	.text.OLED_ShowNum,"ax",%progbits
- 747              		.align	1
- 748              		.global	OLED_ShowNum
- 749              		.syntax unified
- 750              		.thumb
- 751              		.thumb_func
- 753              	OLED_ShowNum:
- 754              	.LVL78:
- 755              	.LFB134:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 23
-
-
+ 961              		.loc 1 482 1
+ 962 0026 1846     		mov	r0, r3
+ 963 0028 1437     		adds	r7, r7, #20
+ 964              	.LCFI47:
+ 965              		.cfi_def_cfa_offset 4
+ 966 002a BD46     		mov	sp, r7
+ 967              	.LCFI48:
+ 968              		.cfi_def_cfa_register 13
+ 969              		@ sp needed
+ 970 002c 5DF8047B 		ldr	r7, [sp], #4
+ 971              	.LCFI49:
+ 972              		.cfi_restore 7
+ 973              		.cfi_def_cfa_offset 0
+ 974 0030 7047     		bx	lr
+ 975              		.cfi_endproc
+ 976              	.LFE133:
+ 978              		.section	.text.OLED_ShowNum,"ax",%progbits
+ 979              		.align	1
+ 980              		.global	OLED_ShowNum
+ 981              		.syntax unified
+ 982              		.thumb
+ 983              		.thumb_func
+ 985              	OLED_ShowNum:
+ 986              	.LFB134:
  483:./Hardware/OLED.c **** 
  484:./Hardware/OLED.c **** /**
  485:./Hardware/OLED.c ****   * @brief  OLED显示数字（十进制，正数）
@@ -1332,105 +1846,121 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  491:./Hardware/OLED.c ****   */
  492:./Hardware/OLED.c **** void OLED_ShowNum(uint8_t Line, uint8_t Column, uint32_t Number, uint8_t Length)
  493:./Hardware/OLED.c **** {
- 756              		.loc 1 493 1 is_stmt 1 view -0
- 757              		.cfi_startproc
- 758              		@ args = 0, pretend = 0, frame = 0
- 759              		@ frame_needed = 0, uses_anonymous_args = 0
- 760              		.loc 1 493 1 is_stmt 0 view .LVU166
- 761 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
- 762              	.LCFI12:
- 763              		.cfi_def_cfa_offset 32
- 764              		.cfi_offset 3, -32
- 765              		.cfi_offset 4, -28
- 766              		.cfi_offset 5, -24
- 767              		.cfi_offset 6, -20
- 768              		.cfi_offset 7, -16
- 769              		.cfi_offset 8, -12
- 770              		.cfi_offset 9, -8
- 771              		.cfi_offset 14, -4
- 772 0004 8146     		mov	r9, r0
- 773 0006 8846     		mov	r8, r1
- 774 0008 1746     		mov	r7, r2
- 775 000a 1E46     		mov	r6, r3
+ 987              		.loc 1 493 1
+ 988              		.cfi_startproc
+ 989              		@ args = 0, pretend = 0, frame = 16
+ 990              		@ frame_needed = 1, uses_anonymous_args = 0
+ 991 0000 90B5     		push	{r4, r7, lr}
+ 992              	.LCFI50:
+ 993              		.cfi_def_cfa_offset 12
+ 994              		.cfi_offset 4, -12
+ 995              		.cfi_offset 7, -8
+ 996              		.cfi_offset 14, -4
+ 997 0002 85B0     		sub	sp, sp, #20
+ 998              	.LCFI51:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 32
+
+
+ 999              		.cfi_def_cfa_offset 32
+ 1000 0004 00AF     		add	r7, sp, #0
+ 1001              	.LCFI52:
+ 1002              		.cfi_def_cfa_register 7
+ 1003 0006 3A60     		str	r2, [r7]
+ 1004 0008 1A46     		mov	r2, r3
+ 1005 000a 0346     		mov	r3, r0
+ 1006 000c FB71     		strb	r3, [r7, #7]
+ 1007 000e 0B46     		mov	r3, r1
+ 1008 0010 BB71     		strb	r3, [r7, #6]
+ 1009 0012 1346     		mov	r3, r2
+ 1010 0014 7B71     		strb	r3, [r7, #5]
  494:./Hardware/OLED.c **** 	uint8_t i;
- 776              		.loc 1 494 2 is_stmt 1 view .LVU167
  495:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 777              		.loc 1 495 2 view .LVU168
- 778              	.LVL79:
- 779              		.loc 1 495 9 is_stmt 0 view .LVU169
- 780 000c 0024     		movs	r4, #0
- 781              		.loc 1 495 2 view .LVU170
- 782 000e 19E0     		b	.L48
- 783              	.LVL80:
- 784              	.L49:
+ 1011              		.loc 1 495 9
+ 1012 0016 0023     		movs	r3, #0
+ 1013 0018 FB73     		strb	r3, [r7, #15]
+ 1014              		.loc 1 495 2
+ 1015 001a 23E0     		b	.L38
+ 1016              	.L39:
  496:./Hardware/OLED.c **** 	{
  497:./Hardware/OLED.c **** 		OLED_ShowChar(Line, Column + i, Number / OLED_Pow(10, Length - i - 1) % 10 + '0');
- 785              		.loc 1 497 3 is_stmt 1 discriminator 3 view .LVU171
- 786 0010 04EB0805 		add	r5, r4, r8
- 787 0014 EDB2     		uxtb	r5, r5
- 788              		.loc 1 497 64 is_stmt 0 discriminator 3 view .LVU172
- 789 0016 311B     		subs	r1, r6, r4
- 790              		.loc 1 497 44 discriminator 3 view .LVU173
- 791 0018 0139     		subs	r1, r1, #1
- 792 001a 0A20     		movs	r0, #10
- 793 001c FFF7FEFF 		bl	OLED_Pow
- 794              	.LVL81:
- 795              		.loc 1 497 42 discriminator 3 view .LVU174
- 796 0020 B7FBF0F0 		udiv	r0, r7, r0
- 797              		.loc 1 497 73 discriminator 3 view .LVU175
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 24
+ 1017              		.loc 1 497 3 discriminator 3
+ 1018 001c BA79     		ldrb	r2, [r7, #6]
+ 1019 001e FB7B     		ldrb	r3, [r7, #15]
+ 1020 0020 1344     		add	r3, r3, r2
+ 1021 0022 DCB2     		uxtb	r4, r3
+ 1022              		.loc 1 497 64 discriminator 3
+ 1023 0024 7A79     		ldrb	r2, [r7, #5]	@ zero_extendqisi2
+ 1024 0026 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1025 0028 D31A     		subs	r3, r2, r3
+ 1026              		.loc 1 497 68 discriminator 3
+ 1027 002a 013B     		subs	r3, r3, #1
+ 1028              		.loc 1 497 44 discriminator 3
+ 1029 002c 1946     		mov	r1, r3
+ 1030 002e 0A20     		movs	r0, #10
+ 1031 0030 FFF7FEFF 		bl	OLED_Pow
+ 1032 0034 0246     		mov	r2, r0
+ 1033              		.loc 1 497 42 discriminator 3
+ 1034 0036 3B68     		ldr	r3, [r7]
+ 1035 0038 B3FBF2F1 		udiv	r1, r3, r2
+ 1036              		.loc 1 497 73 discriminator 3
+ 1037 003c 0E4B     		ldr	r3, .L40
+ 1038 003e A3FB0123 		umull	r2, r3, r3, r1
+ 1039 0042 DA08     		lsrs	r2, r3, #3
+ 1040 0044 1346     		mov	r3, r2
+ 1041 0046 9B00     		lsls	r3, r3, #2
+ 1042 0048 1344     		add	r3, r3, r2
+ 1043 004a 5B00     		lsls	r3, r3, #1
+ 1044 004c CA1A     		subs	r2, r1, r3
+ 1045              		.loc 1 497 3 discriminator 3
+ 1046 004e D3B2     		uxtb	r3, r2
+ 1047 0050 3033     		adds	r3, r3, #48
+ 1048 0052 DAB2     		uxtb	r2, r3
+ 1049 0054 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1050 0056 2146     		mov	r1, r4
+ 1051 0058 1846     		mov	r0, r3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 33
 
 
- 798 0024 094A     		ldr	r2, .L51
- 799 0026 A2FB0032 		umull	r3, r2, r2, r0
- 800 002a D208     		lsrs	r2, r2, #3
- 801 002c 02EB8202 		add	r2, r2, r2, lsl #2
- 802 0030 A0EB4202 		sub	r2, r0, r2, lsl #1
- 803              		.loc 1 497 3 discriminator 3 view .LVU176
- 804 0034 3032     		adds	r2, r2, #48
- 805 0036 D2B2     		uxtb	r2, r2
- 806 0038 2946     		mov	r1, r5
- 807 003a 4846     		mov	r0, r9
- 808 003c FFF7FEFF 		bl	OLED_ShowChar
- 809              	.LVL82:
- 495:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 810              		.loc 1 495 26 is_stmt 1 discriminator 3 view .LVU177
- 495:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 811              		.loc 1 495 27 is_stmt 0 discriminator 3 view .LVU178
- 812 0040 0134     		adds	r4, r4, #1
- 813              	.LVL83:
- 495:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 814              		.loc 1 495 27 discriminator 3 view .LVU179
- 815 0042 E4B2     		uxtb	r4, r4
- 816              	.LVL84:
- 817              	.L48:
- 495:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 818              		.loc 1 495 14 is_stmt 1 discriminator 1 view .LVU180
- 495:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 819              		.loc 1 495 2 is_stmt 0 discriminator 1 view .LVU181
- 820 0044 B442     		cmp	r4, r6
- 821 0046 E3D3     		bcc	.L49
+ 1052 005a FFF7FEFF 		bl	OLED_ShowChar
+ 495:./Hardware/OLED.c **** 	{
+ 1053              		.loc 1 495 27 discriminator 3
+ 1054 005e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1055 0060 0133     		adds	r3, r3, #1
+ 1056 0062 FB73     		strb	r3, [r7, #15]
+ 1057              	.L38:
+ 495:./Hardware/OLED.c **** 	{
+ 1058              		.loc 1 495 2 discriminator 1
+ 1059 0064 FA7B     		ldrb	r2, [r7, #15]	@ zero_extendqisi2
+ 1060 0066 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1061 0068 9A42     		cmp	r2, r3
+ 1062 006a D7D3     		bcc	.L39
  498:./Hardware/OLED.c **** 	}
  499:./Hardware/OLED.c **** }
- 822              		.loc 1 499 1 view .LVU182
- 823 0048 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
- 824              	.LVL85:
- 825              	.L52:
- 826              		.loc 1 499 1 view .LVU183
- 827              		.align	2
- 828              	.L51:
- 829 004c CDCCCCCC 		.word	-858993459
- 830              		.cfi_endproc
- 831              	.LFE134:
- 833              		.section	.text.OLED_ShowSignedNum,"ax",%progbits
- 834              		.align	1
- 835              		.global	OLED_ShowSignedNum
- 836              		.syntax unified
- 837              		.thumb
- 838              		.thumb_func
- 840              	OLED_ShowSignedNum:
- 841              	.LVL86:
- 842              	.LFB135:
+ 1063              		.loc 1 499 1
+ 1064 006c 00BF     		nop
+ 1065 006e 00BF     		nop
+ 1066 0070 1437     		adds	r7, r7, #20
+ 1067              	.LCFI53:
+ 1068              		.cfi_def_cfa_offset 12
+ 1069 0072 BD46     		mov	sp, r7
+ 1070              	.LCFI54:
+ 1071              		.cfi_def_cfa_register 13
+ 1072              		@ sp needed
+ 1073 0074 90BD     		pop	{r4, r7, pc}
+ 1074              	.L41:
+ 1075 0076 00BF     		.align	2
+ 1076              	.L40:
+ 1077 0078 CDCCCCCC 		.word	-858993459
+ 1078              		.cfi_endproc
+ 1079              	.LFE134:
+ 1081              		.section	.text.OLED_ShowSignedNum,"ax",%progbits
+ 1082              		.align	1
+ 1083              		.global	OLED_ShowSignedNum
+ 1084              		.syntax unified
+ 1085              		.thumb
+ 1086              		.thumb_func
+ 1088              	OLED_ShowSignedNum:
+ 1089              	.LFB135:
  500:./Hardware/OLED.c **** 
  501:./Hardware/OLED.c **** /**
  502:./Hardware/OLED.c ****   * @brief  OLED显示数字（十进制，带符号数）
@@ -1438,158 +1968,169 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  504:./Hardware/OLED.c ****   * @param  Column 起始列位置，范围：1~16
  505:./Hardware/OLED.c ****   * @param  Number 要显示的数字，范围：-2147483648~2147483647
  506:./Hardware/OLED.c ****   * @param  Length 要显示数字的长度，范围：1~10
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 25
-
-
  507:./Hardware/OLED.c ****   * @retval 无
  508:./Hardware/OLED.c ****   */
  509:./Hardware/OLED.c **** void OLED_ShowSignedNum(uint8_t Line, uint8_t Column, int32_t Number, uint8_t Length)
  510:./Hardware/OLED.c **** {
- 843              		.loc 1 510 1 is_stmt 1 view -0
- 844              		.cfi_startproc
- 845              		@ args = 0, pretend = 0, frame = 0
- 846              		@ frame_needed = 0, uses_anonymous_args = 0
- 847              		.loc 1 510 1 is_stmt 0 view .LVU185
- 848 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
- 849              	.LCFI13:
- 850              		.cfi_def_cfa_offset 32
- 851              		.cfi_offset 3, -32
- 852              		.cfi_offset 4, -28
- 853              		.cfi_offset 5, -24
- 854              		.cfi_offset 6, -20
- 855              		.cfi_offset 7, -16
- 856              		.cfi_offset 8, -12
- 857              		.cfi_offset 9, -8
- 858              		.cfi_offset 14, -4
- 859 0004 8046     		mov	r8, r0
- 860 0006 8946     		mov	r9, r1
- 861 0008 1E46     		mov	r6, r3
+ 1090              		.loc 1 510 1
+ 1091              		.cfi_startproc
+ 1092              		@ args = 0, pretend = 0, frame = 16
+ 1093              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1094 0000 90B5     		push	{r4, r7, lr}
+ 1095              	.LCFI55:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 34
+
+
+ 1096              		.cfi_def_cfa_offset 12
+ 1097              		.cfi_offset 4, -12
+ 1098              		.cfi_offset 7, -8
+ 1099              		.cfi_offset 14, -4
+ 1100 0002 85B0     		sub	sp, sp, #20
+ 1101              	.LCFI56:
+ 1102              		.cfi_def_cfa_offset 32
+ 1103 0004 00AF     		add	r7, sp, #0
+ 1104              	.LCFI57:
+ 1105              		.cfi_def_cfa_register 7
+ 1106 0006 3A60     		str	r2, [r7]
+ 1107 0008 1A46     		mov	r2, r3
+ 1108 000a 0346     		mov	r3, r0
+ 1109 000c FB71     		strb	r3, [r7, #7]
+ 1110 000e 0B46     		mov	r3, r1
+ 1111 0010 BB71     		strb	r3, [r7, #6]
+ 1112 0012 1346     		mov	r3, r2
+ 1113 0014 7B71     		strb	r3, [r7, #5]
  511:./Hardware/OLED.c **** 	uint8_t i;
- 862              		.loc 1 511 2 is_stmt 1 view .LVU186
  512:./Hardware/OLED.c **** 	uint32_t Number1;
- 863              		.loc 1 512 2 view .LVU187
  513:./Hardware/OLED.c **** 	if (Number >= 0)
- 864              		.loc 1 513 2 view .LVU188
- 865              		.loc 1 513 5 is_stmt 0 view .LVU189
- 866 000a 171E     		subs	r7, r2, #0
- 867 000c 04DB     		blt	.L54
+ 1114              		.loc 1 513 5
+ 1115 0016 3B68     		ldr	r3, [r7]
+ 1116 0018 002B     		cmp	r3, #0
+ 1117 001a 08DB     		blt	.L43
  514:./Hardware/OLED.c **** 	{
  515:./Hardware/OLED.c **** 		OLED_ShowChar(Line, Column, '+');
- 868              		.loc 1 515 3 is_stmt 1 view .LVU190
- 869 000e 2B22     		movs	r2, #43
- 870              	.LVL87:
- 871              		.loc 1 515 3 is_stmt 0 view .LVU191
- 872 0010 FFF7FEFF 		bl	OLED_ShowChar
- 873              	.LVL88:
+ 1118              		.loc 1 515 3
+ 1119 001c B979     		ldrb	r1, [r7, #6]	@ zero_extendqisi2
+ 1120 001e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1121 0020 2B22     		movs	r2, #43
+ 1122 0022 1846     		mov	r0, r3
+ 1123 0024 FFF7FEFF 		bl	OLED_ShowChar
  516:./Hardware/OLED.c **** 		Number1 = Number;
- 874              		.loc 1 516 3 is_stmt 1 view .LVU192
- 875              	.L55:
+ 1124              		.loc 1 516 11
+ 1125 0028 3B68     		ldr	r3, [r7]
+ 1126 002a BB60     		str	r3, [r7, #8]
+ 1127 002c 08E0     		b	.L44
+ 1128              	.L43:
  517:./Hardware/OLED.c **** 	}
  518:./Hardware/OLED.c **** 	else
  519:./Hardware/OLED.c **** 	{
  520:./Hardware/OLED.c **** 		OLED_ShowChar(Line, Column, '-');
+ 1129              		.loc 1 520 3
+ 1130 002e B979     		ldrb	r1, [r7, #6]	@ zero_extendqisi2
+ 1131 0030 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1132 0032 2D22     		movs	r2, #45
+ 1133 0034 1846     		mov	r0, r3
+ 1134 0036 FFF7FEFF 		bl	OLED_ShowChar
  521:./Hardware/OLED.c **** 		Number1 = -Number;
+ 1135              		.loc 1 521 13
+ 1136 003a 3B68     		ldr	r3, [r7]
+ 1137 003c 5B42     		rsbs	r3, r3, #0
+ 1138              		.loc 1 521 11
+ 1139 003e BB60     		str	r3, [r7, #8]
+ 1140              	.L44:
  522:./Hardware/OLED.c **** 	}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 35
+
+
  523:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 876              		.loc 1 523 2 view .LVU193
- 877              		.loc 1 523 9 is_stmt 0 view .LVU194
- 878 0014 0024     		movs	r4, #0
- 879              		.loc 1 523 2 view .LVU195
- 880 0016 1FE0     		b	.L56
- 881              	.LVL89:
- 882              	.L54:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 26
-
-
- 520:./Hardware/OLED.c **** 		Number1 = -Number;
- 883              		.loc 1 520 3 is_stmt 1 view .LVU196
- 884 0018 2D22     		movs	r2, #45
- 885              	.LVL90:
- 520:./Hardware/OLED.c **** 		Number1 = -Number;
- 886              		.loc 1 520 3 is_stmt 0 view .LVU197
- 887 001a FFF7FEFF 		bl	OLED_ShowChar
- 888              	.LVL91:
- 521:./Hardware/OLED.c **** 	}
- 889              		.loc 1 521 3 is_stmt 1 view .LVU198
- 521:./Hardware/OLED.c **** 	}
- 890              		.loc 1 521 13 is_stmt 0 view .LVU199
- 891 001e 7F42     		rsbs	r7, r7, #0
- 892              	.LVL92:
- 521:./Hardware/OLED.c **** 	}
- 893              		.loc 1 521 13 view .LVU200
- 894 0020 F8E7     		b	.L55
- 895              	.LVL93:
- 896              	.L57:
+ 1141              		.loc 1 523 9
+ 1142 0040 0023     		movs	r3, #0
+ 1143 0042 FB73     		strb	r3, [r7, #15]
+ 1144              		.loc 1 523 2
+ 1145 0044 25E0     		b	.L45
+ 1146              	.L46:
  524:./Hardware/OLED.c **** 	{
  525:./Hardware/OLED.c **** 		OLED_ShowChar(Line, Column + i + 1, Number1 / OLED_Pow(10, Length - i - 1) % 10 + '0');
- 897              		.loc 1 525 3 is_stmt 1 discriminator 3 view .LVU201
- 898              		.loc 1 525 30 is_stmt 0 discriminator 3 view .LVU202
- 899 0022 04EB0905 		add	r5, r4, r9
- 900 0026 EDB2     		uxtb	r5, r5
- 901              		.loc 1 525 69 discriminator 3 view .LVU203
- 902 0028 311B     		subs	r1, r6, r4
- 903              		.loc 1 525 49 discriminator 3 view .LVU204
- 904 002a 0139     		subs	r1, r1, #1
- 905 002c 0A20     		movs	r0, #10
- 906 002e FFF7FEFF 		bl	OLED_Pow
- 907              	.LVL94:
- 908              		.loc 1 525 47 discriminator 3 view .LVU205
- 909 0032 B7FBF0F0 		udiv	r0, r7, r0
- 910              		.loc 1 525 78 discriminator 3 view .LVU206
- 911 0036 0A4A     		ldr	r2, .L59
- 912 0038 A2FB0032 		umull	r3, r2, r2, r0
- 913 003c D208     		lsrs	r2, r2, #3
- 914 003e 02EB8202 		add	r2, r2, r2, lsl #2
- 915 0042 A0EB4202 		sub	r2, r0, r2, lsl #1
- 916              		.loc 1 525 3 discriminator 3 view .LVU207
- 917 0046 3032     		adds	r2, r2, #48
- 918 0048 691C     		adds	r1, r5, #1
- 919 004a D2B2     		uxtb	r2, r2
- 920 004c C9B2     		uxtb	r1, r1
- 921 004e 4046     		mov	r0, r8
- 922 0050 FFF7FEFF 		bl	OLED_ShowChar
- 923              	.LVL95:
+ 1147              		.loc 1 525 30 discriminator 3
+ 1148 0046 BA79     		ldrb	r2, [r7, #6]
+ 1149 0048 FB7B     		ldrb	r3, [r7, #15]
+ 1150 004a 1344     		add	r3, r3, r2
+ 1151 004c DBB2     		uxtb	r3, r3
+ 1152              		.loc 1 525 3 discriminator 3
+ 1153 004e 0133     		adds	r3, r3, #1
+ 1154 0050 DCB2     		uxtb	r4, r3
+ 1155              		.loc 1 525 69 discriminator 3
+ 1156 0052 7A79     		ldrb	r2, [r7, #5]	@ zero_extendqisi2
+ 1157 0054 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1158 0056 D31A     		subs	r3, r2, r3
+ 1159              		.loc 1 525 73 discriminator 3
+ 1160 0058 013B     		subs	r3, r3, #1
+ 1161              		.loc 1 525 49 discriminator 3
+ 1162 005a 1946     		mov	r1, r3
+ 1163 005c 0A20     		movs	r0, #10
+ 1164 005e FFF7FEFF 		bl	OLED_Pow
+ 1165 0062 0246     		mov	r2, r0
+ 1166              		.loc 1 525 47 discriminator 3
+ 1167 0064 BB68     		ldr	r3, [r7, #8]
+ 1168 0066 B3FBF2F1 		udiv	r1, r3, r2
+ 1169              		.loc 1 525 78 discriminator 3
+ 1170 006a 0E4B     		ldr	r3, .L47
+ 1171 006c A3FB0123 		umull	r2, r3, r3, r1
+ 1172 0070 DA08     		lsrs	r2, r3, #3
+ 1173 0072 1346     		mov	r3, r2
+ 1174 0074 9B00     		lsls	r3, r3, #2
+ 1175 0076 1344     		add	r3, r3, r2
+ 1176 0078 5B00     		lsls	r3, r3, #1
+ 1177 007a CA1A     		subs	r2, r1, r3
+ 1178              		.loc 1 525 3 discriminator 3
+ 1179 007c D3B2     		uxtb	r3, r2
+ 1180 007e 3033     		adds	r3, r3, #48
+ 1181 0080 DAB2     		uxtb	r2, r3
+ 1182 0082 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1183 0084 2146     		mov	r1, r4
+ 1184 0086 1846     		mov	r0, r3
+ 1185 0088 FFF7FEFF 		bl	OLED_ShowChar
  523:./Hardware/OLED.c **** 	{
- 924              		.loc 1 523 26 is_stmt 1 discriminator 3 view .LVU208
+ 1186              		.loc 1 523 27 discriminator 3
+ 1187 008c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1188 008e 0133     		adds	r3, r3, #1
+ 1189 0090 FB73     		strb	r3, [r7, #15]
+ 1190              	.L45:
  523:./Hardware/OLED.c **** 	{
- 925              		.loc 1 523 27 is_stmt 0 discriminator 3 view .LVU209
- 926 0054 0134     		adds	r4, r4, #1
- 927              	.LVL96:
- 523:./Hardware/OLED.c **** 	{
- 928              		.loc 1 523 27 discriminator 3 view .LVU210
- 929 0056 E4B2     		uxtb	r4, r4
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 27
+ 1191              		.loc 1 523 2 discriminator 1
+ 1192 0092 FA7B     		ldrb	r2, [r7, #15]	@ zero_extendqisi2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 36
 
 
- 930              	.LVL97:
- 931              	.L56:
- 523:./Hardware/OLED.c **** 	{
- 932              		.loc 1 523 14 is_stmt 1 discriminator 1 view .LVU211
- 523:./Hardware/OLED.c **** 	{
- 933              		.loc 1 523 2 is_stmt 0 discriminator 1 view .LVU212
- 934 0058 B442     		cmp	r4, r6
- 935 005a E2D3     		bcc	.L57
+ 1193 0094 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1194 0096 9A42     		cmp	r2, r3
+ 1195 0098 D5D3     		bcc	.L46
  526:./Hardware/OLED.c **** 	}
  527:./Hardware/OLED.c **** }
- 936              		.loc 1 527 1 view .LVU213
- 937 005c BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
- 938              	.LVL98:
- 939              	.L60:
- 940              		.loc 1 527 1 view .LVU214
- 941              		.align	2
- 942              	.L59:
- 943 0060 CDCCCCCC 		.word	-858993459
- 944              		.cfi_endproc
- 945              	.LFE135:
- 947              		.section	.text.OLED_ShowHexNum,"ax",%progbits
- 948              		.align	1
- 949              		.global	OLED_ShowHexNum
- 950              		.syntax unified
- 951              		.thumb
- 952              		.thumb_func
- 954              	OLED_ShowHexNum:
- 955              	.LVL99:
- 956              	.LFB136:
+ 1196              		.loc 1 527 1
+ 1197 009a 00BF     		nop
+ 1198 009c 00BF     		nop
+ 1199 009e 1437     		adds	r7, r7, #20
+ 1200              	.LCFI58:
+ 1201              		.cfi_def_cfa_offset 12
+ 1202 00a0 BD46     		mov	sp, r7
+ 1203              	.LCFI59:
+ 1204              		.cfi_def_cfa_register 13
+ 1205              		@ sp needed
+ 1206 00a2 90BD     		pop	{r4, r7, pc}
+ 1207              	.L48:
+ 1208              		.align	2
+ 1209              	.L47:
+ 1210 00a4 CDCCCCCC 		.word	-858993459
+ 1211              		.cfi_endproc
+ 1212              	.LFE135:
+ 1214              		.section	.text.OLED_ShowHexNum,"ax",%progbits
+ 1215              		.align	1
+ 1216              		.global	OLED_ShowHexNum
+ 1217              		.syntax unified
+ 1218              		.thumb
+ 1219              		.thumb_func
+ 1221              	OLED_ShowHexNum:
+ 1222              	.LFB136:
  528:./Hardware/OLED.c **** 
  529:./Hardware/OLED.c **** /**
  530:./Hardware/OLED.c ****   * @brief  OLED显示数字（十六进制，正数）
@@ -1601,235 +2142,252 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  536:./Hardware/OLED.c ****   */
  537:./Hardware/OLED.c **** void OLED_ShowHexNum(uint8_t Line, uint8_t Column, uint32_t Number, uint8_t Length)
  538:./Hardware/OLED.c **** {
- 957              		.loc 1 538 1 is_stmt 1 view -0
- 958              		.cfi_startproc
- 959              		@ args = 0, pretend = 0, frame = 0
- 960              		@ frame_needed = 0, uses_anonymous_args = 0
- 961              		.loc 1 538 1 is_stmt 0 view .LVU216
- 962 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
- 963              	.LCFI14:
- 964              		.cfi_def_cfa_offset 24
- 965              		.cfi_offset 4, -24
- 966              		.cfi_offset 5, -20
- 967              		.cfi_offset 6, -16
- 968              		.cfi_offset 7, -12
- 969              		.cfi_offset 8, -8
- 970              		.cfi_offset 14, -4
- 971 0004 8046     		mov	r8, r0
- 972 0006 0F46     		mov	r7, r1
- 973 0008 1646     		mov	r6, r2
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 28
+ 1223              		.loc 1 538 1
+ 1224              		.cfi_startproc
+ 1225              		@ args = 0, pretend = 0, frame = 16
+ 1226              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1227 0000 80B5     		push	{r7, lr}
+ 1228              	.LCFI60:
+ 1229              		.cfi_def_cfa_offset 8
+ 1230              		.cfi_offset 7, -8
+ 1231              		.cfi_offset 14, -4
+ 1232 0002 84B0     		sub	sp, sp, #16
+ 1233              	.LCFI61:
+ 1234              		.cfi_def_cfa_offset 24
+ 1235 0004 00AF     		add	r7, sp, #0
+ 1236              	.LCFI62:
+ 1237              		.cfi_def_cfa_register 7
+ 1238 0006 3A60     		str	r2, [r7]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 37
 
 
- 974 000a 1D46     		mov	r5, r3
+ 1239 0008 1A46     		mov	r2, r3
+ 1240 000a 0346     		mov	r3, r0
+ 1241 000c FB71     		strb	r3, [r7, #7]
+ 1242 000e 0B46     		mov	r3, r1
+ 1243 0010 BB71     		strb	r3, [r7, #6]
+ 1244 0012 1346     		mov	r3, r2
+ 1245 0014 7B71     		strb	r3, [r7, #5]
  539:./Hardware/OLED.c **** 	uint8_t i, SingleNumber;
- 975              		.loc 1 539 2 is_stmt 1 view .LVU217
  540:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 976              		.loc 1 540 2 view .LVU218
- 977              	.LVL100:
- 978              		.loc 1 540 9 is_stmt 0 view .LVU219
- 979 000c 0024     		movs	r4, #0
- 980              		.loc 1 540 2 view .LVU220
- 981 000e 07E0     		b	.L62
- 982              	.LVL101:
- 983              	.L63:
+ 1246              		.loc 1 540 9
+ 1247 0016 0023     		movs	r3, #0
+ 1248 0018 FB73     		strb	r3, [r7, #15]
+ 1249              		.loc 1 540 2
+ 1250 001a 2CE0     		b	.L50
+ 1251              	.L53:
  541:./Hardware/OLED.c **** 	{
  542:./Hardware/OLED.c **** 		SingleNumber = Number / OLED_Pow(16, Length - i - 1) % 16;
+ 1252              		.loc 1 542 47
+ 1253 001c 7A79     		ldrb	r2, [r7, #5]	@ zero_extendqisi2
+ 1254 001e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1255 0020 D31A     		subs	r3, r2, r3
+ 1256              		.loc 1 542 51
+ 1257 0022 013B     		subs	r3, r3, #1
+ 1258              		.loc 1 542 27
+ 1259 0024 1946     		mov	r1, r3
+ 1260 0026 1020     		movs	r0, #16
+ 1261 0028 FFF7FEFF 		bl	OLED_Pow
+ 1262 002c 0246     		mov	r2, r0
+ 1263              		.loc 1 542 25
+ 1264 002e 3B68     		ldr	r3, [r7]
+ 1265 0030 B3FBF2F3 		udiv	r3, r3, r2
+ 1266              		.loc 1 542 56
+ 1267 0034 DBB2     		uxtb	r3, r3
+ 1268              		.loc 1 542 16
+ 1269 0036 03F00F03 		and	r3, r3, #15
+ 1270 003a BB73     		strb	r3, [r7, #14]
  543:./Hardware/OLED.c **** 		if (SingleNumber < 10)
+ 1271              		.loc 1 543 6
+ 1272 003c BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1273 003e 092B     		cmp	r3, #9
+ 1274 0040 0BD8     		bhi	.L51
  544:./Hardware/OLED.c **** 		{
  545:./Hardware/OLED.c **** 			OLED_ShowChar(Line, Column + i, SingleNumber + '0');
+ 1275              		.loc 1 545 4
+ 1276 0042 BA79     		ldrb	r2, [r7, #6]
+ 1277 0044 FB7B     		ldrb	r3, [r7, #15]
+ 1278 0046 1344     		add	r3, r3, r2
+ 1279 0048 D9B2     		uxtb	r1, r3
+ 1280 004a BB7B     		ldrb	r3, [r7, #14]
+ 1281 004c 3033     		adds	r3, r3, #48
+ 1282 004e DAB2     		uxtb	r2, r3
+ 1283 0050 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1284 0052 1846     		mov	r0, r3
+ 1285 0054 FFF7FEFF 		bl	OLED_ShowChar
+ 1286 0058 0AE0     		b	.L52
+ 1287              	.L51:
  546:./Hardware/OLED.c **** 		}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 38
+
+
  547:./Hardware/OLED.c **** 		else
  548:./Hardware/OLED.c **** 		{
  549:./Hardware/OLED.c **** 			OLED_ShowChar(Line, Column + i, SingleNumber - 10 + 'A');
- 984              		.loc 1 549 4 is_stmt 1 view .LVU221
- 985 0010 E119     		adds	r1, r4, r7
- 986 0012 3732     		adds	r2, r2, #55
- 987              	.LVL102:
- 988              		.loc 1 549 4 is_stmt 0 view .LVU222
- 989 0014 C9B2     		uxtb	r1, r1
- 990 0016 4046     		mov	r0, r8
- 991 0018 FFF7FEFF 		bl	OLED_ShowChar
- 992              	.LVL103:
- 993              	.L64:
- 540:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 994              		.loc 1 540 26 is_stmt 1 discriminator 2 view .LVU223
- 540:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 995              		.loc 1 540 27 is_stmt 0 discriminator 2 view .LVU224
- 996 001c 0134     		adds	r4, r4, #1
- 997              	.LVL104:
- 540:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 998              		.loc 1 540 27 discriminator 2 view .LVU225
- 999 001e E4B2     		uxtb	r4, r4
- 1000              	.LVL105:
- 1001              	.L62:
- 540:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 1002              		.loc 1 540 14 is_stmt 1 discriminator 1 view .LVU226
- 540:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 1003              		.loc 1 540 2 is_stmt 0 discriminator 1 view .LVU227
- 1004 0020 AC42     		cmp	r4, r5
- 1005 0022 11D2     		bcs	.L67
- 542:./Hardware/OLED.c **** 		if (SingleNumber < 10)
- 1006              		.loc 1 542 3 is_stmt 1 view .LVU228
- 542:./Hardware/OLED.c **** 		if (SingleNumber < 10)
- 1007              		.loc 1 542 47 is_stmt 0 view .LVU229
- 1008 0024 291B     		subs	r1, r5, r4
- 542:./Hardware/OLED.c **** 		if (SingleNumber < 10)
- 1009              		.loc 1 542 27 view .LVU230
- 1010 0026 0139     		subs	r1, r1, #1
- 1011 0028 1020     		movs	r0, #16
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 29
-
-
- 1012 002a FFF7FEFF 		bl	OLED_Pow
- 1013              	.LVL106:
- 542:./Hardware/OLED.c **** 		if (SingleNumber < 10)
- 1014              		.loc 1 542 25 view .LVU231
- 1015 002e B6FBF0F2 		udiv	r2, r6, r0
- 542:./Hardware/OLED.c **** 		if (SingleNumber < 10)
- 1016              		.loc 1 542 16 view .LVU232
- 1017 0032 02F00F02 		and	r2, r2, #15
- 1018              	.LVL107:
- 543:./Hardware/OLED.c **** 		{
- 1019              		.loc 1 543 3 is_stmt 1 view .LVU233
- 543:./Hardware/OLED.c **** 		{
- 1020              		.loc 1 543 6 is_stmt 0 view .LVU234
- 1021 0036 092A     		cmp	r2, #9
- 1022 0038 EAD8     		bhi	.L63
- 545:./Hardware/OLED.c **** 		}
- 1023              		.loc 1 545 4 is_stmt 1 view .LVU235
- 1024 003a E119     		adds	r1, r4, r7
- 1025 003c 3032     		adds	r2, r2, #48
- 1026              	.LVL108:
- 545:./Hardware/OLED.c **** 		}
- 1027              		.loc 1 545 4 is_stmt 0 view .LVU236
- 1028 003e C9B2     		uxtb	r1, r1
- 1029 0040 4046     		mov	r0, r8
- 1030 0042 FFF7FEFF 		bl	OLED_ShowChar
- 1031              	.LVL109:
- 545:./Hardware/OLED.c **** 		}
- 1032              		.loc 1 545 4 view .LVU237
- 1033 0046 E9E7     		b	.L64
- 1034              	.L67:
+ 1288              		.loc 1 549 4
+ 1289 005a BA79     		ldrb	r2, [r7, #6]
+ 1290 005c FB7B     		ldrb	r3, [r7, #15]
+ 1291 005e 1344     		add	r3, r3, r2
+ 1292 0060 D9B2     		uxtb	r1, r3
+ 1293 0062 BB7B     		ldrb	r3, [r7, #14]
+ 1294 0064 3733     		adds	r3, r3, #55
+ 1295 0066 DAB2     		uxtb	r2, r3
+ 1296 0068 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1297 006a 1846     		mov	r0, r3
+ 1298 006c FFF7FEFF 		bl	OLED_ShowChar
+ 1299              	.L52:
+ 540:./Hardware/OLED.c **** 	{
+ 1300              		.loc 1 540 27 discriminator 2
+ 1301 0070 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1302 0072 0133     		adds	r3, r3, #1
+ 1303 0074 FB73     		strb	r3, [r7, #15]
+ 1304              	.L50:
+ 540:./Hardware/OLED.c **** 	{
+ 1305              		.loc 1 540 2 discriminator 1
+ 1306 0076 FA7B     		ldrb	r2, [r7, #15]	@ zero_extendqisi2
+ 1307 0078 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1308 007a 9A42     		cmp	r2, r3
+ 1309 007c CED3     		bcc	.L53
  550:./Hardware/OLED.c **** 		}
  551:./Hardware/OLED.c **** 	}
  552:./Hardware/OLED.c **** }
- 1035              		.loc 1 552 1 view .LVU238
- 1036 0048 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
- 1037              		.loc 1 552 1 view .LVU239
- 1038              		.cfi_endproc
- 1039              	.LFE136:
- 1041              		.section	.text.OLED_ShowBinNum,"ax",%progbits
- 1042              		.align	1
- 1043              		.global	OLED_ShowBinNum
- 1044              		.syntax unified
- 1045              		.thumb
- 1046              		.thumb_func
- 1048              	OLED_ShowBinNum:
- 1049              	.LVL110:
- 1050              	.LFB137:
+ 1310              		.loc 1 552 1
+ 1311 007e 00BF     		nop
+ 1312 0080 00BF     		nop
+ 1313 0082 1037     		adds	r7, r7, #16
+ 1314              	.LCFI63:
+ 1315              		.cfi_def_cfa_offset 8
+ 1316 0084 BD46     		mov	sp, r7
+ 1317              	.LCFI64:
+ 1318              		.cfi_def_cfa_register 13
+ 1319              		@ sp needed
+ 1320 0086 80BD     		pop	{r7, pc}
+ 1321              		.cfi_endproc
+ 1322              	.LFE136:
+ 1324              		.section	.text.OLED_ShowBinNum,"ax",%progbits
+ 1325              		.align	1
+ 1326              		.global	OLED_ShowBinNum
+ 1327              		.syntax unified
+ 1328              		.thumb
+ 1329              		.thumb_func
+ 1331              	OLED_ShowBinNum:
+ 1332              	.LFB137:
  553:./Hardware/OLED.c **** 
  554:./Hardware/OLED.c **** /**
  555:./Hardware/OLED.c ****   * @brief  OLED显示数字（二进制，正数）
  556:./Hardware/OLED.c ****   * @param  Line 起始行位置，范围：1~4
  557:./Hardware/OLED.c ****   * @param  Column 起始列位置，范围：1~16
  558:./Hardware/OLED.c ****   * @param  Number 要显示的数字，范围：0~1111 1111 1111 1111
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 39
+
+
  559:./Hardware/OLED.c ****   * @param  Length 要显示数字的长度，范围：1~16
  560:./Hardware/OLED.c ****   * @retval 无
  561:./Hardware/OLED.c ****   */
  562:./Hardware/OLED.c **** void OLED_ShowBinNum(uint8_t Line, uint8_t Column, uint32_t Number, uint8_t Length)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 30
-
-
  563:./Hardware/OLED.c **** {
- 1051              		.loc 1 563 1 is_stmt 1 view -0
- 1052              		.cfi_startproc
- 1053              		@ args = 0, pretend = 0, frame = 0
- 1054              		@ frame_needed = 0, uses_anonymous_args = 0
- 1055              		.loc 1 563 1 is_stmt 0 view .LVU241
- 1056 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
- 1057              	.LCFI15:
- 1058              		.cfi_def_cfa_offset 32
- 1059              		.cfi_offset 3, -32
- 1060              		.cfi_offset 4, -28
- 1061              		.cfi_offset 5, -24
- 1062              		.cfi_offset 6, -20
- 1063              		.cfi_offset 7, -16
- 1064              		.cfi_offset 8, -12
- 1065              		.cfi_offset 9, -8
- 1066              		.cfi_offset 14, -4
- 1067 0004 8146     		mov	r9, r0
- 1068 0006 8846     		mov	r8, r1
- 1069 0008 1746     		mov	r7, r2
- 1070 000a 1E46     		mov	r6, r3
+ 1333              		.loc 1 563 1
+ 1334              		.cfi_startproc
+ 1335              		@ args = 0, pretend = 0, frame = 16
+ 1336              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1337 0000 90B5     		push	{r4, r7, lr}
+ 1338              	.LCFI65:
+ 1339              		.cfi_def_cfa_offset 12
+ 1340              		.cfi_offset 4, -12
+ 1341              		.cfi_offset 7, -8
+ 1342              		.cfi_offset 14, -4
+ 1343 0002 85B0     		sub	sp, sp, #20
+ 1344              	.LCFI66:
+ 1345              		.cfi_def_cfa_offset 32
+ 1346 0004 00AF     		add	r7, sp, #0
+ 1347              	.LCFI67:
+ 1348              		.cfi_def_cfa_register 7
+ 1349 0006 3A60     		str	r2, [r7]
+ 1350 0008 1A46     		mov	r2, r3
+ 1351 000a 0346     		mov	r3, r0
+ 1352 000c FB71     		strb	r3, [r7, #7]
+ 1353 000e 0B46     		mov	r3, r1
+ 1354 0010 BB71     		strb	r3, [r7, #6]
+ 1355 0012 1346     		mov	r3, r2
+ 1356 0014 7B71     		strb	r3, [r7, #5]
  564:./Hardware/OLED.c **** 	uint8_t i;
- 1071              		.loc 1 564 2 is_stmt 1 view .LVU242
  565:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 1072              		.loc 1 565 2 view .LVU243
- 1073              	.LVL111:
- 1074              		.loc 1 565 9 is_stmt 0 view .LVU244
- 1075 000c 0024     		movs	r4, #0
- 1076              		.loc 1 565 2 view .LVU245
- 1077 000e 12E0     		b	.L69
- 1078              	.LVL112:
- 1079              	.L70:
+ 1357              		.loc 1 565 9
+ 1358 0016 0023     		movs	r3, #0
+ 1359 0018 FB73     		strb	r3, [r7, #15]
+ 1360              		.loc 1 565 2
+ 1361 001a 1DE0     		b	.L55
+ 1362              	.L56:
  566:./Hardware/OLED.c **** 	{
  567:./Hardware/OLED.c **** 		OLED_ShowChar(Line, Column + i, Number / OLED_Pow(2, Length - i - 1) % 2 + '0');
- 1080              		.loc 1 567 3 is_stmt 1 discriminator 3 view .LVU246
- 1081 0010 04EB0805 		add	r5, r4, r8
- 1082 0014 EDB2     		uxtb	r5, r5
- 1083              		.loc 1 567 63 is_stmt 0 discriminator 3 view .LVU247
- 1084 0016 311B     		subs	r1, r6, r4
- 1085              		.loc 1 567 44 discriminator 3 view .LVU248
- 1086 0018 0139     		subs	r1, r1, #1
- 1087 001a 0220     		movs	r0, #2
- 1088 001c FFF7FEFF 		bl	OLED_Pow
- 1089              	.LVL113:
- 1090              		.loc 1 567 42 discriminator 3 view .LVU249
- 1091 0020 B7FBF0F2 		udiv	r2, r7, r0
- 1092              		.loc 1 567 72 discriminator 3 view .LVU250
- 1093 0024 02F00102 		and	r2, r2, #1
- 1094              		.loc 1 567 3 discriminator 3 view .LVU251
- 1095 0028 3032     		adds	r2, r2, #48
- 1096 002a 2946     		mov	r1, r5
- 1097 002c 4846     		mov	r0, r9
- 1098 002e FFF7FEFF 		bl	OLED_ShowChar
- 1099              	.LVL114:
- 565:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 1100              		.loc 1 565 26 is_stmt 1 discriminator 3 view .LVU252
- 565:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 31
+ 1363              		.loc 1 567 3 discriminator 3
+ 1364 001c BA79     		ldrb	r2, [r7, #6]
+ 1365 001e FB7B     		ldrb	r3, [r7, #15]
+ 1366 0020 1344     		add	r3, r3, r2
+ 1367 0022 DCB2     		uxtb	r4, r3
+ 1368              		.loc 1 567 63 discriminator 3
+ 1369 0024 7A79     		ldrb	r2, [r7, #5]	@ zero_extendqisi2
+ 1370 0026 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1371 0028 D31A     		subs	r3, r2, r3
+ 1372              		.loc 1 567 67 discriminator 3
+ 1373 002a 013B     		subs	r3, r3, #1
+ 1374              		.loc 1 567 44 discriminator 3
+ 1375 002c 1946     		mov	r1, r3
+ 1376 002e 0220     		movs	r0, #2
+ 1377 0030 FFF7FEFF 		bl	OLED_Pow
+ 1378 0034 0246     		mov	r2, r0
+ 1379              		.loc 1 567 42 discriminator 3
+ 1380 0036 3B68     		ldr	r3, [r7]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 40
 
 
- 1101              		.loc 1 565 27 is_stmt 0 discriminator 3 view .LVU253
- 1102 0032 0134     		adds	r4, r4, #1
- 1103              	.LVL115:
- 565:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 1104              		.loc 1 565 27 discriminator 3 view .LVU254
- 1105 0034 E4B2     		uxtb	r4, r4
- 1106              	.LVL116:
- 1107              	.L69:
- 565:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 1108              		.loc 1 565 14 is_stmt 1 discriminator 1 view .LVU255
- 565:./Hardware/OLED.c **** 	for (i = 0; i < Length; i++)							
- 1109              		.loc 1 565 2 is_stmt 0 discriminator 1 view .LVU256
- 1110 0036 B442     		cmp	r4, r6
- 1111 0038 EAD3     		bcc	.L70
+ 1381 0038 B3FBF2F3 		udiv	r3, r3, r2
+ 1382              		.loc 1 567 72 discriminator 3
+ 1383 003c DBB2     		uxtb	r3, r3
+ 1384 003e 03F00103 		and	r3, r3, #1
+ 1385 0042 DBB2     		uxtb	r3, r3
+ 1386              		.loc 1 567 3 discriminator 3
+ 1387 0044 3033     		adds	r3, r3, #48
+ 1388 0046 DAB2     		uxtb	r2, r3
+ 1389 0048 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1390 004a 2146     		mov	r1, r4
+ 1391 004c 1846     		mov	r0, r3
+ 1392 004e FFF7FEFF 		bl	OLED_ShowChar
+ 565:./Hardware/OLED.c **** 	{
+ 1393              		.loc 1 565 27 discriminator 3
+ 1394 0052 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1395 0054 0133     		adds	r3, r3, #1
+ 1396 0056 FB73     		strb	r3, [r7, #15]
+ 1397              	.L55:
+ 565:./Hardware/OLED.c **** 	{
+ 1398              		.loc 1 565 2 discriminator 1
+ 1399 0058 FA7B     		ldrb	r2, [r7, #15]	@ zero_extendqisi2
+ 1400 005a 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1401 005c 9A42     		cmp	r2, r3
+ 1402 005e DDD3     		bcc	.L56
  568:./Hardware/OLED.c **** 	}
  569:./Hardware/OLED.c **** }
- 1112              		.loc 1 569 1 view .LVU257
- 1113 003a BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
- 1114              		.loc 1 569 1 view .LVU258
- 1115              		.cfi_endproc
- 1116              	.LFE137:
- 1118              		.section	.text.OLED_Init,"ax",%progbits
- 1119              		.align	1
- 1120              		.global	OLED_Init
- 1121              		.syntax unified
- 1122              		.thumb
- 1123              		.thumb_func
- 1125              	OLED_Init:
- 1126              	.LFB138:
+ 1403              		.loc 1 569 1
+ 1404 0060 00BF     		nop
+ 1405 0062 00BF     		nop
+ 1406 0064 1437     		adds	r7, r7, #20
+ 1407              	.LCFI68:
+ 1408              		.cfi_def_cfa_offset 12
+ 1409 0066 BD46     		mov	sp, r7
+ 1410              	.LCFI69:
+ 1411              		.cfi_def_cfa_register 13
+ 1412              		@ sp needed
+ 1413 0068 90BD     		pop	{r4, r7, pc}
+ 1414              		.cfi_endproc
+ 1415              	.LFE137:
+ 1417              		.section	.text.OLED_Init,"ax",%progbits
+ 1418              		.align	1
+ 1419              		.global	OLED_Init
+ 1420              		.syntax unified
+ 1421              		.thumb
+ 1422              		.thumb_func
+ 1424              	OLED_Init:
+ 1425              	.LFB138:
  570:./Hardware/OLED.c **** 
  571:./Hardware/OLED.c **** /**
  572:./Hardware/OLED.c ****   * @brief  OLED初始化
@@ -1838,722 +2396,251 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 1
  575:./Hardware/OLED.c ****   */
  576:./Hardware/OLED.c **** void OLED_Init(void)
  577:./Hardware/OLED.c **** {
- 1127              		.loc 1 577 1 is_stmt 1 view -0
- 1128              		.cfi_startproc
- 1129              		@ args = 0, pretend = 0, frame = 0
- 1130              		@ frame_needed = 0, uses_anonymous_args = 0
- 1131 0000 08B5     		push	{r3, lr}
- 1132              	.LCFI16:
- 1133              		.cfi_def_cfa_offset 8
- 1134              		.cfi_offset 3, -8
- 1135              		.cfi_offset 14, -4
+ 1426              		.loc 1 577 1
+ 1427              		.cfi_startproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 41
+
+
+ 1428              		@ args = 0, pretend = 0, frame = 8
+ 1429              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1430 0000 80B5     		push	{r7, lr}
+ 1431              	.LCFI70:
+ 1432              		.cfi_def_cfa_offset 8
+ 1433              		.cfi_offset 7, -8
+ 1434              		.cfi_offset 14, -4
+ 1435 0002 82B0     		sub	sp, sp, #8
+ 1436              	.LCFI71:
+ 1437              		.cfi_def_cfa_offset 16
+ 1438 0004 00AF     		add	r7, sp, #0
+ 1439              	.LCFI72:
+ 1440              		.cfi_def_cfa_register 7
  578:./Hardware/OLED.c **** 	uint32_t i, j;
- 1136              		.loc 1 578 2 view .LVU260
  579:./Hardware/OLED.c **** 	
  580:./Hardware/OLED.c **** 	for (i = 0; i < 1000; i++)			//上电延时
- 1137              		.loc 1 580 2 view .LVU261
- 1138              	.LVL117:
- 1139              		.loc 1 580 9 is_stmt 0 view .LVU262
- 1140 0002 0022     		movs	r2, #0
- 1141              		.loc 1 580 2 view .LVU263
- 1142 0004 04E0     		b	.L73
- 1143              	.LVL118:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 32
-
-
- 1144              	.L74:
+ 1441              		.loc 1 580 9
+ 1442 0006 0023     		movs	r3, #0
+ 1443 0008 7B60     		str	r3, [r7, #4]
+ 1444              		.loc 1 580 2
+ 1445 000a 0CE0     		b	.L58
+ 1446              	.L61:
  581:./Hardware/OLED.c **** 	{
  582:./Hardware/OLED.c **** 		for (j = 0; j < 1000; j++);
- 1145              		.loc 1 582 29 is_stmt 1 discriminator 3 view .LVU264
- 1146              		.loc 1 582 25 discriminator 3 view .LVU265
- 1147              		.loc 1 582 26 is_stmt 0 discriminator 3 view .LVU266
- 1148 0006 0133     		adds	r3, r3, #1
- 1149              	.LVL119:
- 1150              	.L75:
- 1151              		.loc 1 582 15 is_stmt 1 discriminator 1 view .LVU267
- 1152              		.loc 1 582 3 is_stmt 0 discriminator 1 view .LVU268
- 1153 0008 B3F57A7F 		cmp	r3, #1000
- 1154 000c FBD3     		bcc	.L74
+ 1447              		.loc 1 582 10
+ 1448 000c 0023     		movs	r3, #0
+ 1449 000e 3B60     		str	r3, [r7]
+ 1450              		.loc 1 582 3
+ 1451 0010 02E0     		b	.L59
+ 1452              	.L60:
+ 1453              		.loc 1 582 26 discriminator 3
+ 1454 0012 3B68     		ldr	r3, [r7]
+ 1455 0014 0133     		adds	r3, r3, #1
+ 1456 0016 3B60     		str	r3, [r7]
+ 1457              	.L59:
+ 1458              		.loc 1 582 3 discriminator 1
+ 1459 0018 3B68     		ldr	r3, [r7]
+ 1460 001a B3F57A7F 		cmp	r3, #1000
+ 1461 001e F8D3     		bcc	.L60
  580:./Hardware/OLED.c **** 	{
- 1155              		.loc 1 580 24 is_stmt 1 discriminator 2 view .LVU269
+ 1462              		.loc 1 580 25 discriminator 2
+ 1463 0020 7B68     		ldr	r3, [r7, #4]
+ 1464 0022 0133     		adds	r3, r3, #1
+ 1465 0024 7B60     		str	r3, [r7, #4]
+ 1466              	.L58:
  580:./Hardware/OLED.c **** 	{
- 1156              		.loc 1 580 25 is_stmt 0 discriminator 2 view .LVU270
- 1157 000e 0132     		adds	r2, r2, #1
- 1158              	.LVL120:
- 1159              	.L73:
- 580:./Hardware/OLED.c **** 	{
- 1160              		.loc 1 580 14 is_stmt 1 discriminator 1 view .LVU271
- 580:./Hardware/OLED.c **** 	{
- 1161              		.loc 1 580 2 is_stmt 0 discriminator 1 view .LVU272
- 1162 0010 B2F57A7F 		cmp	r2, #1000
- 1163 0014 01D2     		bcs	.L78
- 1164              		.loc 1 582 10 view .LVU273
- 1165 0016 0023     		movs	r3, #0
- 1166 0018 F6E7     		b	.L75
- 1167              	.L78:
+ 1467              		.loc 1 580 2 discriminator 1
+ 1468 0026 7B68     		ldr	r3, [r7, #4]
+ 1469 0028 B3F57A7F 		cmp	r3, #1000
+ 1470 002c EED3     		bcc	.L61
  583:./Hardware/OLED.c **** 	}
  584:./Hardware/OLED.c **** 	
  585:./Hardware/OLED.c **** 	OLED_I2C_Init();			//端口初始化
- 1168              		.loc 1 585 2 is_stmt 1 view .LVU274
- 1169 001a FFF7FEFF 		bl	OLED_I2C_Init
- 1170              	.LVL121:
+ 1471              		.loc 1 585 2
+ 1472 002e FFF7FEFF 		bl	OLED_I2C_Init
  586:./Hardware/OLED.c **** 	
  587:./Hardware/OLED.c **** 	OLED_WriteCommand(0xAE);	//关闭显示
- 1171              		.loc 1 587 2 view .LVU275
- 1172 001e AE20     		movs	r0, #174
- 1173 0020 FFF7FEFF 		bl	OLED_WriteCommand
- 1174              	.LVL122:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 42
+
+
+ 1473              		.loc 1 587 2
+ 1474 0032 AE20     		movs	r0, #174
+ 1475 0034 FFF7FEFF 		bl	OLED_WriteCommand
  588:./Hardware/OLED.c **** 	
  589:./Hardware/OLED.c **** 	OLED_WriteCommand(0xD5);	//设置显示时钟分频比/振荡器频率
- 1175              		.loc 1 589 2 view .LVU276
- 1176 0024 D520     		movs	r0, #213
- 1177 0026 FFF7FEFF 		bl	OLED_WriteCommand
- 1178              	.LVL123:
+ 1476              		.loc 1 589 2
+ 1477 0038 D520     		movs	r0, #213
+ 1478 003a FFF7FEFF 		bl	OLED_WriteCommand
  590:./Hardware/OLED.c **** 	OLED_WriteCommand(0x80);
- 1179              		.loc 1 590 2 view .LVU277
- 1180 002a 8020     		movs	r0, #128
- 1181 002c FFF7FEFF 		bl	OLED_WriteCommand
- 1182              	.LVL124:
+ 1479              		.loc 1 590 2
+ 1480 003e 8020     		movs	r0, #128
+ 1481 0040 FFF7FEFF 		bl	OLED_WriteCommand
  591:./Hardware/OLED.c **** 	
  592:./Hardware/OLED.c **** 	OLED_WriteCommand(0xA8);	//设置多路复用率
- 1183              		.loc 1 592 2 view .LVU278
- 1184 0030 A820     		movs	r0, #168
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 33
-
-
- 1185 0032 FFF7FEFF 		bl	OLED_WriteCommand
- 1186              	.LVL125:
+ 1482              		.loc 1 592 2
+ 1483 0044 A820     		movs	r0, #168
+ 1484 0046 FFF7FEFF 		bl	OLED_WriteCommand
  593:./Hardware/OLED.c **** 	OLED_WriteCommand(0x3F);
- 1187              		.loc 1 593 2 view .LVU279
- 1188 0036 3F20     		movs	r0, #63
- 1189 0038 FFF7FEFF 		bl	OLED_WriteCommand
- 1190              	.LVL126:
+ 1485              		.loc 1 593 2
+ 1486 004a 3F20     		movs	r0, #63
+ 1487 004c FFF7FEFF 		bl	OLED_WriteCommand
  594:./Hardware/OLED.c **** 	
  595:./Hardware/OLED.c **** 	OLED_WriteCommand(0xD3);	//设置显示偏移
- 1191              		.loc 1 595 2 view .LVU280
- 1192 003c D320     		movs	r0, #211
- 1193 003e FFF7FEFF 		bl	OLED_WriteCommand
- 1194              	.LVL127:
+ 1488              		.loc 1 595 2
+ 1489 0050 D320     		movs	r0, #211
+ 1490 0052 FFF7FEFF 		bl	OLED_WriteCommand
  596:./Hardware/OLED.c **** 	OLED_WriteCommand(0x00);
- 1195              		.loc 1 596 2 view .LVU281
- 1196 0042 0020     		movs	r0, #0
- 1197 0044 FFF7FEFF 		bl	OLED_WriteCommand
- 1198              	.LVL128:
+ 1491              		.loc 1 596 2
+ 1492 0056 0020     		movs	r0, #0
+ 1493 0058 FFF7FEFF 		bl	OLED_WriteCommand
  597:./Hardware/OLED.c **** 	
  598:./Hardware/OLED.c **** 	OLED_WriteCommand(0x40);	//设置显示开始行
- 1199              		.loc 1 598 2 view .LVU282
- 1200 0048 4020     		movs	r0, #64
- 1201 004a FFF7FEFF 		bl	OLED_WriteCommand
- 1202              	.LVL129:
+ 1494              		.loc 1 598 2
+ 1495 005c 4020     		movs	r0, #64
+ 1496 005e FFF7FEFF 		bl	OLED_WriteCommand
  599:./Hardware/OLED.c **** 	
  600:./Hardware/OLED.c **** 	OLED_WriteCommand(0xA1);	//设置左右方向，0xA1正常 0xA0左右反置
- 1203              		.loc 1 600 2 view .LVU283
- 1204 004e A120     		movs	r0, #161
- 1205 0050 FFF7FEFF 		bl	OLED_WriteCommand
- 1206              	.LVL130:
+ 1497              		.loc 1 600 2
+ 1498 0062 A120     		movs	r0, #161
+ 1499 0064 FFF7FEFF 		bl	OLED_WriteCommand
  601:./Hardware/OLED.c **** 	
  602:./Hardware/OLED.c **** 	OLED_WriteCommand(0xC8);	//设置上下方向，0xC8正常 0xC0上下反置
- 1207              		.loc 1 602 2 view .LVU284
- 1208 0054 C820     		movs	r0, #200
- 1209 0056 FFF7FEFF 		bl	OLED_WriteCommand
- 1210              	.LVL131:
+ 1500              		.loc 1 602 2
+ 1501 0068 C820     		movs	r0, #200
+ 1502 006a FFF7FEFF 		bl	OLED_WriteCommand
  603:./Hardware/OLED.c **** 
  604:./Hardware/OLED.c **** 	OLED_WriteCommand(0xDA);	//设置COM引脚硬件配置
- 1211              		.loc 1 604 2 view .LVU285
- 1212 005a DA20     		movs	r0, #218
- 1213 005c FFF7FEFF 		bl	OLED_WriteCommand
- 1214              	.LVL132:
+ 1503              		.loc 1 604 2
+ 1504 006e DA20     		movs	r0, #218
+ 1505 0070 FFF7FEFF 		bl	OLED_WriteCommand
  605:./Hardware/OLED.c **** 	OLED_WriteCommand(0x12);
- 1215              		.loc 1 605 2 view .LVU286
- 1216 0060 1220     		movs	r0, #18
- 1217 0062 FFF7FEFF 		bl	OLED_WriteCommand
- 1218              	.LVL133:
+ 1506              		.loc 1 605 2
+ 1507 0074 1220     		movs	r0, #18
+ 1508 0076 FFF7FEFF 		bl	OLED_WriteCommand
  606:./Hardware/OLED.c **** 	
  607:./Hardware/OLED.c **** 	OLED_WriteCommand(0x81);	//设置对比度控制
- 1219              		.loc 1 607 2 view .LVU287
- 1220 0066 8120     		movs	r0, #129
- 1221 0068 FFF7FEFF 		bl	OLED_WriteCommand
- 1222              	.LVL134:
+ 1509              		.loc 1 607 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 43
+
+
+ 1510 007a 8120     		movs	r0, #129
+ 1511 007c FFF7FEFF 		bl	OLED_WriteCommand
  608:./Hardware/OLED.c **** 	OLED_WriteCommand(0xCF);
- 1223              		.loc 1 608 2 view .LVU288
- 1224 006c CF20     		movs	r0, #207
- 1225 006e FFF7FEFF 		bl	OLED_WriteCommand
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 34
-
-
- 1226              	.LVL135:
+ 1512              		.loc 1 608 2
+ 1513 0080 CF20     		movs	r0, #207
+ 1514 0082 FFF7FEFF 		bl	OLED_WriteCommand
  609:./Hardware/OLED.c **** 
  610:./Hardware/OLED.c **** 	OLED_WriteCommand(0xD9);	//设置预充电周期
- 1227              		.loc 1 610 2 view .LVU289
- 1228 0072 D920     		movs	r0, #217
- 1229 0074 FFF7FEFF 		bl	OLED_WriteCommand
- 1230              	.LVL136:
+ 1515              		.loc 1 610 2
+ 1516 0086 D920     		movs	r0, #217
+ 1517 0088 FFF7FEFF 		bl	OLED_WriteCommand
  611:./Hardware/OLED.c **** 	OLED_WriteCommand(0xF1);
- 1231              		.loc 1 611 2 view .LVU290
- 1232 0078 F120     		movs	r0, #241
- 1233 007a FFF7FEFF 		bl	OLED_WriteCommand
- 1234              	.LVL137:
+ 1518              		.loc 1 611 2
+ 1519 008c F120     		movs	r0, #241
+ 1520 008e FFF7FEFF 		bl	OLED_WriteCommand
  612:./Hardware/OLED.c **** 
  613:./Hardware/OLED.c **** 	OLED_WriteCommand(0xDB);	//设置VCOMH取消选择级别
- 1235              		.loc 1 613 2 view .LVU291
- 1236 007e DB20     		movs	r0, #219
- 1237 0080 FFF7FEFF 		bl	OLED_WriteCommand
- 1238              	.LVL138:
+ 1521              		.loc 1 613 2
+ 1522 0092 DB20     		movs	r0, #219
+ 1523 0094 FFF7FEFF 		bl	OLED_WriteCommand
  614:./Hardware/OLED.c **** 	OLED_WriteCommand(0x30);
- 1239              		.loc 1 614 2 view .LVU292
- 1240 0084 3020     		movs	r0, #48
- 1241 0086 FFF7FEFF 		bl	OLED_WriteCommand
- 1242              	.LVL139:
+ 1524              		.loc 1 614 2
+ 1525 0098 3020     		movs	r0, #48
+ 1526 009a FFF7FEFF 		bl	OLED_WriteCommand
  615:./Hardware/OLED.c **** 
  616:./Hardware/OLED.c **** 	OLED_WriteCommand(0xA4);	//设置整个显示打开/关闭
- 1243              		.loc 1 616 2 view .LVU293
- 1244 008a A420     		movs	r0, #164
- 1245 008c FFF7FEFF 		bl	OLED_WriteCommand
- 1246              	.LVL140:
+ 1527              		.loc 1 616 2
+ 1528 009e A420     		movs	r0, #164
+ 1529 00a0 FFF7FEFF 		bl	OLED_WriteCommand
  617:./Hardware/OLED.c **** 
  618:./Hardware/OLED.c **** 	OLED_WriteCommand(0xA6);	//设置正常/倒转显示
- 1247              		.loc 1 618 2 view .LVU294
- 1248 0090 A620     		movs	r0, #166
- 1249 0092 FFF7FEFF 		bl	OLED_WriteCommand
- 1250              	.LVL141:
+ 1530              		.loc 1 618 2
+ 1531 00a4 A620     		movs	r0, #166
+ 1532 00a6 FFF7FEFF 		bl	OLED_WriteCommand
  619:./Hardware/OLED.c **** 
  620:./Hardware/OLED.c **** 	OLED_WriteCommand(0x8D);	//设置充电泵
- 1251              		.loc 1 620 2 view .LVU295
- 1252 0096 8D20     		movs	r0, #141
- 1253 0098 FFF7FEFF 		bl	OLED_WriteCommand
- 1254              	.LVL142:
+ 1533              		.loc 1 620 2
+ 1534 00aa 8D20     		movs	r0, #141
+ 1535 00ac FFF7FEFF 		bl	OLED_WriteCommand
  621:./Hardware/OLED.c **** 	OLED_WriteCommand(0x14);
- 1255              		.loc 1 621 2 view .LVU296
- 1256 009c 1420     		movs	r0, #20
- 1257 009e FFF7FEFF 		bl	OLED_WriteCommand
- 1258              	.LVL143:
+ 1536              		.loc 1 621 2
+ 1537 00b0 1420     		movs	r0, #20
+ 1538 00b2 FFF7FEFF 		bl	OLED_WriteCommand
  622:./Hardware/OLED.c **** 
  623:./Hardware/OLED.c **** 	OLED_WriteCommand(0xAF);	//开启显示
- 1259              		.loc 1 623 2 view .LVU297
- 1260 00a2 AF20     		movs	r0, #175
- 1261 00a4 FFF7FEFF 		bl	OLED_WriteCommand
- 1262              	.LVL144:
+ 1539              		.loc 1 623 2
+ 1540 00b6 AF20     		movs	r0, #175
+ 1541 00b8 FFF7FEFF 		bl	OLED_WriteCommand
  624:./Hardware/OLED.c **** 		
  625:./Hardware/OLED.c **** 	OLED_Clear();				//OLED清屏
- 1263              		.loc 1 625 2 view .LVU298
- 1264 00a8 FFF7FEFF 		bl	OLED_Clear
- 1265              	.LVL145:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 35
-
-
+ 1542              		.loc 1 625 2
+ 1543 00bc FFF7FEFF 		bl	OLED_Clear
  626:./Hardware/OLED.c **** }
- 1266              		.loc 1 626 1 is_stmt 0 view .LVU299
- 1267 00ac 08BD     		pop	{r3, pc}
- 1268              		.cfi_endproc
- 1269              	.LFE138:
- 1271              		.global	OLED_F08x16
- 1272              		.section	.rodata.OLED_F08x16,"a"
- 1273              		.align	2
- 1274              		.set	.LANCHOR0,. + 0
- 1277              	OLED_F08x16:
- 1278 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
- 1278      00000000 
- 1278      00000000 
- 1278      00
- 1279 000d 000000   		.ascii	"\000\000\000"
- 1280 0010 000000F8 		.ascii	"\000\000\000\370\000\000\000\000\000\000\00030\000\000"
- 1280      00000000 
- 1280      00000033 
- 1280      300000
- 1281 001f 00       		.ascii	"\000"
- 1282 0020 00100C06 		.ascii	"\000\020\014\006\020\014\006\000\000\000\000\000\000"
- 1282      100C0600 
- 1282      00000000 
- 1282      00
- 1283 002d 000000   		.ascii	"\000\000\000"
- 1284 0030 40C07840 		.ascii	"@\300x@\300x@\000\004?\004\004?\004\004\000"
- 1284      C0784000 
- 1284      043F0404 
- 1284      3F040400 
- 1285 0040 007088FC 		.ascii	"\000p\210\374\0100\000\000\000\030 \377!\036\000\000"
- 1285      08300000 
- 1285      001820FF 
- 1285      211E0000 
- 1286 0050 F008F000 		.ascii	"\360\010\360\000\340\030\000\000\000!\034\003\036!\036"
- 1286      E0180000 
- 1286      00211C03 
- 1286      1E211E
- 1287 005f 00       		.ascii	"\000"
- 1288 0060 00F00888 		.ascii	"\000\360\010\210p\000\000\000\036!#$\031'!\020"
- 1288      70000000 
- 1288      1E212324 
- 1288      19272110 
- 1289 0070 10160E00 		.ascii	"\020\026\016\000\000\000\000\000\000\000\000\000\000"
- 1289      00000000 
- 1289      00000000 
- 1289      00
- 1290 007d 000000   		.ascii	"\000\000\000"
- 1291 0080 000000E0 		.ascii	"\000\000\000\340\030\004\002\000\000\000\000\007\030"
- 1291      18040200 
- 1291      00000007 
- 1291      18
- 1292 008d 204000   		.ascii	" @\000"
- 1293 0090 00020418 		.ascii	"\000\002\004\030\340\000\000\000\000@ \030\007\000\000"
- 1293      E0000000 
- 1293      00402018 
- 1293      070000
- 1294 009f 00       		.ascii	"\000"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 36
+ 1544              		.loc 1 626 1
+ 1545 00c0 00BF     		nop
+ 1546 00c2 0837     		adds	r7, r7, #8
+ 1547              	.LCFI73:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 44
 
 
- 1295 00a0 404080F0 		.ascii	"@@\200\360\200@@\000\002\002\001\017\001\002\002\000"
- 1295      80404000 
- 1295      0202010F 
- 1295      01020200 
- 1296 00b0 000000F0 		.ascii	"\000\000\000\360\000\000\000\000\001\001\001\037\001"
- 1296      00000000 
- 1296      0101011F 
- 1296      01
- 1297 00bd 010100   		.ascii	"\001\001\000"
- 1298 00c0 00000000 		.ascii	"\000\000\000\000\000\000\000\000\200\260p\000\000\000"
- 1298      00000000 
- 1298      80B07000 
- 1298      0000
- 1299 00ce 0000     		.ascii	"\000\000"
- 1300 00d0 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\001\001\001\001"
- 1300      00000000 
- 1300      00010101 
- 1300      01
- 1301 00dd 010101   		.ascii	"\001\001\001"
- 1302 00e0 00000000 		.ascii	"\000\000\000\000\000\000\000\000\00000\000\000\000\000"
- 1302      00000000 
- 1302      00303000 
- 1302      000000
- 1303 00ef 00       		.ascii	"\000"
- 1304 00f0 00000000 		.ascii	"\000\000\000\000\200`\030\004\000`\030\006\001\000\000"
- 1304      80601804 
- 1304      00601806 
- 1304      010000
- 1305 00ff 00       		.ascii	"\000"
- 1306 0100 00E01008 		.ascii	"\000\340\020\010\010\020\340\000\000\017\020  \020\017"
- 1306      0810E000 
- 1306      000F1020 
- 1306      20100F
- 1307 010f 00       		.ascii	"\000"
- 1308 0110 001010F8 		.ascii	"\000\020\020\370\000\000\000\000\000  ?  \000\000"
- 1308      00000000 
- 1308      0020203F 
- 1308      20200000 
- 1309 0120 00700808 		.ascii	"\000p\010\010\010\210p\000\0000($\"!0\000"
- 1309      08887000 
- 1309      00302824 
- 1309      22213000 
- 1310 0130 00300888 		.ascii	"\0000\010\210\210H0\000\000\030   \021\016\000"
- 1310      88483000 
- 1310      00182020 
- 1310      20110E00 
- 1311 0140 0000C020 		.ascii	"\000\000\300 \020\370\000\000\000\007\004$$?$\000"
- 1311      10F80000 
- 1311      00070424 
- 1311      243F2400 
- 1312 0150 00F80888 		.ascii	"\000\370\010\210\210\010\010\000\000\031!  \021\016"
- 1312      88080800 
- 1312      00192120 
- 1312      20110E
- 1313 015f 00       		.ascii	"\000"
- 1314 0160 00E01088 		.ascii	"\000\340\020\210\210\030\000\000\000\017\021  \021\016"
- 1314      88180000 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 37
-
-
- 1314      000F1120 
- 1314      20110E
- 1315 016f 00       		.ascii	"\000"
- 1316 0170 00380808 		.ascii	"\0008\010\010\3108\010\000\000\000\000?\000\000\000"
- 1316      C8380800 
- 1316      0000003F 
- 1316      000000
- 1317 017f 00       		.ascii	"\000"
- 1318 0180 00708808 		.ascii	"\000p\210\010\010\210p\000\000\034\"!!\"\034\000"
- 1318      08887000 
- 1318      001C2221 
- 1318      21221C00 
- 1319 0190 00E01008 		.ascii	"\000\340\020\010\010\020\340\000\000\0001\"\"\021\017"
- 1319      0810E000 
- 1319      00003122 
- 1319      22110F
- 1320 019f 00       		.ascii	"\000"
- 1321 01a0 000000C0 		.ascii	"\000\000\000\300\300\000\000\000\000\000\00000\000\000"
- 1321      C0000000 
- 1321      00000030 
- 1321      300000
- 1322 01af 00       		.ascii	"\000"
- 1323 01b0 00000080 		.ascii	"\000\000\000\200\000\000\000\000\000\000\200`\000\000"
- 1323      00000000 
- 1323      00008060 
- 1323      0000
- 1324 01be 0000     		.ascii	"\000\000"
- 1325 01c0 00008040 		.ascii	"\000\000\200@ \020\010\000\000\001\002\004\010\020 "
- 1325      20100800 
- 1325      00010204 
- 1325      081020
- 1326 01cf 00       		.ascii	"\000"
- 1327 01d0 40404040 		.ascii	"@@@@@@@\000\004\004\004\004\004\004\004\000"
- 1327      40404000 
- 1327      04040404 
- 1327      04040400 
- 1328 01e0 00081020 		.ascii	"\000\010\020 @\200\000\000\000 \020\010\004\002\001"
- 1328      40800000 
- 1328      00201008 
- 1328      040201
- 1329 01ef 00       		.ascii	"\000"
- 1330 01f0 00704808 		.ascii	"\000pH\010\010\010\360\000\000\000\00006\001\000\000"
- 1330      0808F000 
- 1330      00000030 
- 1330      36010000 
- 1331 0200 C030C828 		.ascii	"\3000\310(\350\020\340\000\007\030'$#\024\013\000"
- 1331      E810E000 
- 1331      07182724 
- 1331      23140B00 
- 1332 0210 0000C038 		.ascii	"\000\000\3008\340\000\000\000 <#\002\002'8 "
- 1332      E0000000 
- 1332      203C2302 
- 1332      02273820 
- 1333 0220 08F88888 		.ascii	"\010\370\210\210\210p\000\000 ?   \021\016\000"
- 1333      88700000 
- 1333      203F2020 
- 1333      20110E00 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 38
-
-
- 1334 0230 C0300808 		.ascii	"\3000\010\010\010\0108\000\007\030   \020\010\000"
- 1334      08083800 
- 1334      07182020 
- 1334      20100800 
- 1335 0240 08F80808 		.ascii	"\010\370\010\010\010\020\340\000 ?   \020\017\000"
- 1335      0810E000 
- 1335      203F2020 
- 1335      20100F00 
- 1336 0250 08F88888 		.ascii	"\010\370\210\210\350\010\020\000 ?  # \030\000"
- 1336      E8081000 
- 1336      203F2020 
- 1336      23201800 
- 1337 0260 08F88888 		.ascii	"\010\370\210\210\350\010\020\000 ? \000\003\000\000"
- 1337      E8081000 
- 1337      203F2000 
- 1337      030000
- 1338 026f 00       		.ascii	"\000"
- 1339 0270 C0300808 		.ascii	"\3000\010\010\0108\000\000\007\030  \"\036\002\000"
- 1339      08380000 
- 1339      07182020 
- 1339      221E0200 
- 1340 0280 08F80800 		.ascii	"\010\370\010\000\000\010\370\010 ?!\001\001!? "
- 1340      0008F808 
- 1340      203F2101 
- 1340      01213F20 
- 1341 0290 000808F8 		.ascii	"\000\010\010\370\010\010\000\000\000  ?  \000\000"
- 1341      08080000 
- 1341      0020203F 
- 1341      20200000 
- 1342 02a0 00000808 		.ascii	"\000\000\010\010\370\010\010\000\300\200\200\200\177"
- 1342      F8080800 
- 1342      C0808080 
- 1342      7F
- 1343 02ad 000000   		.ascii	"\000\000\000"
- 1344 02b0 08F888C0 		.ascii	"\010\370\210\300(\030\010\000 ? \001&8 \000"
- 1344      28180800 
- 1344      203F2001 
- 1344      26382000 
- 1345 02c0 08F80800 		.ascii	"\010\370\010\000\000\000\000\000 ?    0\000"
- 1345      00000000 
- 1345      203F2020 
- 1345      20203000 
- 1346 02d0 08F8F800 		.ascii	"\010\370\370\000\370\370\010\000 ?\000?\000? \000"
- 1346      F8F80800 
- 1346      203F003F 
- 1346      003F2000 
- 1347 02e0 08F830C0 		.ascii	"\010\3700\300\000\010\370\010 ? \000\007\030?\000"
- 1347      0008F808 
- 1347      203F2000 
- 1347      07183F00 
- 1348 02f0 E0100808 		.ascii	"\340\020\010\010\010\020\340\000\017\020   \020\017"
- 1348      0810E000 
- 1348      0F102020 
- 1348      20100F
- 1349 02ff 00       		.ascii	"\000"
- 1350 0300 08F80808 		.ascii	"\010\370\010\010\010\010\360\000 ?!\001\001\001\000"
- 1350      0808F000 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 39
-
-
- 1350      203F2101 
- 1350      010100
- 1351 030f 00       		.ascii	"\000"
- 1352 0310 E0100808 		.ascii	"\340\020\010\010\010\020\340\000\017\030$$8PO\000"
- 1352      0810E000 
- 1352      0F182424 
- 1352      38504F00 
- 1353 0320 08F88888 		.ascii	"\010\370\210\210\210\210p\000 ? \000\003\0140 "
- 1353      88887000 
- 1353      203F2000 
- 1353      030C3020 
- 1354 0330 00708808 		.ascii	"\000p\210\010\010\0108\000\0008 !!\"\034\000"
- 1354      08083800 
- 1354      00382021 
- 1354      21221C00 
- 1355 0340 180808F8 		.ascii	"\030\010\010\370\010\010\030\000\000\000 ? \000\000"
- 1355      08081800 
- 1355      0000203F 
- 1355      200000
- 1356 034f 00       		.ascii	"\000"
- 1357 0350 08F80800 		.ascii	"\010\370\010\000\000\010\370\010\000\037    \037\000"
- 1357      0008F808 
- 1357      001F2020 
- 1357      20201F00 
- 1358 0360 08788800 		.ascii	"\010x\210\000\000\3108\010\000\000\0078\016\001\000"
- 1358      00C83808 
- 1358      00000738 
- 1358      0E0100
- 1359 036f 00       		.ascii	"\000"
- 1360 0370 F80800F8 		.ascii	"\370\010\000\370\000\010\370\000\003<\007\000\007<\003"
- 1360      0008F800 
- 1360      033C0700 
- 1360      073C03
- 1361 037f 00       		.ascii	"\000"
- 1362 0380 08186880 		.ascii	"\010\030h\200\200h\030\010 0,\003\003,0 "
- 1362      80681808 
- 1362      20302C03 
- 1362      032C3020 
- 1363 0390 0838C800 		.ascii	"\0108\310\000\3108\010\000\000\000 ? \000\000\000"
- 1363      C8380800 
- 1363      0000203F 
- 1363      20000000 
- 1364 03a0 10080808 		.ascii	"\020\010\010\010\3108\010\000 8&!  \030\000"
- 1364      C8380800 
- 1364      20382621 
- 1364      20201800 
- 1365 03b0 000000FE 		.ascii	"\000\000\000\376\002\002\002\000\000\000\000\177@@@"
- 1365      02020200 
- 1365      0000007F 
- 1365      404040
- 1366 03bf 00       		.ascii	"\000"
- 1367 03c0 000C30C0 		.ascii	"\000\0140\300\000\000\000\000\000\000\000\001\0068\300"
- 1367      00000000 
- 1367      00000001 
- 1367      0638C0
- 1368 03cf 00       		.ascii	"\000"
- 1369 03d0 00020202 		.ascii	"\000\002\002\002\376\000\000\000\000@@@\177\000\000"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 40
-
-
- 1369      FE000000 
- 1369      00404040 
- 1369      7F0000
- 1370 03df 00       		.ascii	"\000"
- 1371 03e0 00000402 		.ascii	"\000\000\004\002\002\002\004\000\000\000\000\000\000"
- 1371      02020400 
- 1371      00000000 
- 1371      00
- 1372 03ed 000000   		.ascii	"\000\000\000"
- 1373 03f0 00000000 		.ascii	"\000\000\000\000\000\000\000\000\200\200\200\200\200"
- 1373      00000000 
- 1373      80808080 
- 1373      80
- 1374 03fd 808080   		.ascii	"\200\200\200"
- 1375 0400 00020204 		.ascii	"\000\002\002\004\000\000\000\000\000\000\000\000\000"
- 1375      00000000 
- 1375      00000000 
- 1375      00
- 1376 040d 000000   		.ascii	"\000\000\000"
- 1377 0410 00008080 		.ascii	"\000\000\200\200\200\200\000\000\000\031$\"\"\"? "
- 1377      80800000 
- 1377      00192422 
- 1377      22223F20 
- 1378 0420 08F80080 		.ascii	"\010\370\000\200\200\000\000\000\000?\021  \021\016"
- 1378      80000000 
- 1378      003F1120 
- 1378      20110E
- 1379 042f 00       		.ascii	"\000"
- 1380 0430 00000080 		.ascii	"\000\000\000\200\200\200\000\000\000\016\021   \021"
- 1380      80800000 
- 1380      000E1120 
- 1380      202011
- 1381 043f 00       		.ascii	"\000"
- 1382 0440 00000080 		.ascii	"\000\000\000\200\200\210\370\000\000\016\021  \020?"
- 1382      8088F800 
- 1382      000E1120 
- 1382      20103F
- 1383 044f 20       		.ascii	" "
- 1384 0450 00008080 		.ascii	"\000\000\200\200\200\200\000\000\000\037\"\"\"\"\023"
- 1384      80800000 
- 1384      001F2222 
- 1384      222213
- 1385 045f 00       		.ascii	"\000"
- 1386 0460 008080F0 		.ascii	"\000\200\200\360\210\210\210\030\000  ?  \000\000"
- 1386      88888818 
- 1386      0020203F 
- 1386      20200000 
- 1387 0470 00008080 		.ascii	"\000\000\200\200\200\200\200\000\000k\224\224\224\223"
- 1387      80808000 
- 1387      006B9494 
- 1387      9493
- 1388 047e 6000     		.ascii	"`\000"
- 1389 0480 08F80080 		.ascii	"\010\370\000\200\200\200\000\000 ?!\000\000 ? "
- 1389      80800000 
- 1389      203F2100 
- 1389      00203F20 
- 1390 0490 00809898 		.ascii	"\000\200\230\230\000\000\000\000\000  ?  \000\000"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 41
-
-
- 1390      00000000 
- 1390      0020203F 
- 1390      20200000 
- 1391 04a0 00000080 		.ascii	"\000\000\000\200\230\230\000\000\000\300\200\200\200"
- 1391      98980000 
- 1391      00C08080 
- 1391      80
- 1392 04ad 7F0000   		.ascii	"\177\000\000"
- 1393 04b0 08F80000 		.ascii	"\010\370\000\000\200\200\200\000 ?$\002-0 \000"
- 1393      80808000 
- 1393      203F2402 
- 1393      2D302000 
- 1394 04c0 000808F8 		.ascii	"\000\010\010\370\000\000\000\000\000  ?  \000\000"
- 1394      00000000 
- 1394      0020203F 
- 1394      20200000 
- 1395 04d0 80808080 		.ascii	"\200\200\200\200\200\200\200\000 ? \000? \000?"
- 1395      80808000 
- 1395      203F2000 
- 1395      3F20003F 
- 1396 04e0 80800080 		.ascii	"\200\200\000\200\200\200\000\000 ?!\000\000 ? "
- 1396      80800000 
- 1396      203F2100 
- 1396      00203F20 
- 1397 04f0 00008080 		.ascii	"\000\000\200\200\200\200\000\000\000\037    \037\000"
- 1397      80800000 
- 1397      001F2020 
- 1397      20201F00 
- 1398 0500 80800080 		.ascii	"\200\200\000\200\200\000\000\000\200\377\241  \021\016"
- 1398      80000000 
- 1398      80FFA120 
- 1398      20110E
- 1399 050f 00       		.ascii	"\000"
- 1400 0510 00000080 		.ascii	"\000\000\000\200\200\200\200\000\000\016\021  \240\377"
- 1400      80808000 
- 1400      000E1120 
- 1400      20A0FF
- 1401 051f 80       		.ascii	"\200"
- 1402 0520 80808000 		.ascii	"\200\200\200\000\200\200\200\000  ?! \000\001\000"
- 1402      80808000 
- 1402      20203F21 
- 1402      20000100 
- 1403 0530 00008080 		.ascii	"\000\000\200\200\200\200\200\000\0003$$$$\031\000"
- 1403      80808000 
- 1403      00332424 
- 1403      24241900 
- 1404 0540 008080E0 		.ascii	"\000\200\200\340\200\200\000\000\000\000\000\037  \000"
- 1404      80800000 
- 1404      0000001F 
- 1404      202000
- 1405 054f 00       		.ascii	"\000"
- 1406 0550 80800000 		.ascii	"\200\200\000\000\000\200\200\000\000\037   \020? "
- 1406      00808000 
- 1406      001F2020 
- 1406      20103F20 
- 1407 0560 80808000 		.ascii	"\200\200\200\000\000\200\200\200\000\001\0160\010\006"
- 1407      00808080 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 42
-
-
- 1407      00010E30 
- 1407      0806
- 1408 056e 0100     		.ascii	"\001\000"
- 1409 0570 80800080 		.ascii	"\200\200\000\200\000\200\200\200\0170\014\003\0140\017"
- 1409      00808080 
- 1409      0F300C03 
- 1409      0C300F
- 1410 057f 00       		.ascii	"\000"
- 1411 0580 00808000 		.ascii	"\000\200\200\000\200\200\200\000\000 1.\0161 \000"
- 1411      80808000 
- 1411      0020312E 
- 1411      0E312000 
- 1412 0590 80808000 		.ascii	"\200\200\200\000\000\200\200\200\200\201\216p\030\006"
- 1412      00808080 
- 1412      80818E70 
- 1412      1806
- 1413 059e 0100     		.ascii	"\001\000"
- 1414 05a0 00808080 		.ascii	"\000\200\200\200\200\200\200\000\000!0,\"!0\000"
- 1414      80808000 
- 1414      0021302C 
- 1414      22213000 
- 1415 05b0 00000000 		.ascii	"\000\000\000\000\200|\002\002\000\000\000\000\000?@"
- 1415      807C0202 
- 1415      00000000 
- 1415      003F40
- 1416 05bf 40       		.ascii	"@"
- 1417 05c0 00000000 		.ascii	"\000\000\000\000\377\000\000\000\000\000\000\000\377"
- 1417      FF000000 
- 1417      00000000 
- 1417      FF
- 1418 05cd 000000   		.ascii	"\000\000\000"
- 1419 05d0 0002027C 		.ascii	"\000\002\002|\200\000\000\000\000@@?\000\000\000\000"
- 1419      80000000 
- 1419      0040403F 
- 1419      00000000 
- 1420 05e0 00060101 		.ascii	"\000\006\001\001\002\002\004\004\000\000\000\000\000"
- 1420      02020404 
- 1420      00000000 
- 1420      00
- 1421 05ed 000000   		.ascii	"\000\000\000"
- 1422              		.text
- 1423              	.Letext0:
- 1424              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 1425              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 1426              		.file 4 "./CORE/stm32f4xx.h"
- 1427              		.file 5 "./Library/stm32f4xx_gpio.h"
- 1428              		.file 6 "./Library/stm32f4xx_rcc.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s 			page 43
+ 1548              		.cfi_def_cfa_offset 8
+ 1549 00c4 BD46     		mov	sp, r7
+ 1550              	.LCFI74:
+ 1551              		.cfi_def_cfa_register 13
+ 1552              		@ sp needed
+ 1553 00c6 80BD     		pop	{r7, pc}
+ 1554              		.cfi_endproc
+ 1555              	.LFE138:
+ 1557              		.text
+ 1558              	.Letext0:
+ 1559              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1560              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 1561              		.file 4 "./CORE/stm32f4xx.h"
+ 1562              		.file 5 "./Library/stm32f4xx_gpio.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s 			page 45
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 OLED.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:20     .text.OLED_I2C_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:26     .text.OLED_I2C_Init:0000000000000000 OLED_I2C_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:123    .text.OLED_I2C_Init:0000000000000078 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:128    .text.OLED_I2C_Start:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:134    .text.OLED_I2C_Start:0000000000000000 OLED_I2C_Start
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:175    .text.OLED_I2C_Start:0000000000000030 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:180    .text.OLED_I2C_Stop:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:186    .text.OLED_I2C_Stop:0000000000000000 OLED_I2C_Stop
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:221    .text.OLED_I2C_Stop:0000000000000024 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:226    .text.OLED_I2C_SendByte:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:232    .text.OLED_I2C_SendByte:0000000000000000 OLED_I2C_SendByte
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:310    .text.OLED_I2C_SendByte:000000000000004c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:315    .text.OLED_WriteCommand:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:321    .text.OLED_WriteCommand:0000000000000000 OLED_WriteCommand
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:359    .text.OLED_WriteData:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:365    .text.OLED_WriteData:0000000000000000 OLED_WriteData
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:403    .text.OLED_SetCursor:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:409    .text.OLED_SetCursor:0000000000000000 OLED_SetCursor
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:446    .text.OLED_Clear:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:452    .text.OLED_Clear:0000000000000000 OLED_Clear
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:521    .text.OLED_ShowChar:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:527    .text.OLED_ShowChar:0000000000000000 OLED_ShowChar
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:632    .text.OLED_ShowChar:0000000000000060 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:637    .text.OLED_ShowString:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:643    .text.OLED_ShowString:0000000000000000 OLED_ShowString
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:699    .text.OLED_Pow:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:705    .text.OLED_Pow:0000000000000000 OLED_Pow
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:747    .text.OLED_ShowNum:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:753    .text.OLED_ShowNum:0000000000000000 OLED_ShowNum
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:829    .text.OLED_ShowNum:000000000000004c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:834    .text.OLED_ShowSignedNum:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:840    .text.OLED_ShowSignedNum:0000000000000000 OLED_ShowSignedNum
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:943    .text.OLED_ShowSignedNum:0000000000000060 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:948    .text.OLED_ShowHexNum:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:954    .text.OLED_ShowHexNum:0000000000000000 OLED_ShowHexNum
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:1042   .text.OLED_ShowBinNum:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:1048   .text.OLED_ShowBinNum:0000000000000000 OLED_ShowBinNum
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:1119   .text.OLED_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:1125   .text.OLED_Init:0000000000000000 OLED_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:1277   .rodata.OLED_F08x16:0000000000000000 OLED_F08x16
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaHtMw8.s:1273   .rodata.OLED_F08x16:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:20     .text.OLED_I2C_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:26     .text.OLED_I2C_Init:0000000000000000 OLED_I2C_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:116    .text.OLED_I2C_Init:0000000000000078 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:125    .rodata.OLED_F08x16:0000000000000000 OLED_F08x16
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:122    .rodata.OLED_F08x16:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:271    .text.OLED_I2C_Start:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:277    .text.OLED_I2C_Start:0000000000000000 OLED_I2C_Start
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:317    .text.OLED_I2C_Start:0000000000000030 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:322    .text.OLED_I2C_Stop:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:328    .text.OLED_I2C_Stop:0000000000000000 OLED_I2C_Stop
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:363    .text.OLED_I2C_Stop:0000000000000028 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:368    .text.OLED_I2C_SendByte:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:374    .text.OLED_I2C_SendByte:0000000000000000 OLED_I2C_SendByte
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:454    .text.OLED_I2C_SendByte:000000000000006c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:459    .text.OLED_WriteCommand:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:465    .text.OLED_WriteCommand:0000000000000000 OLED_WriteCommand
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:512    .text.OLED_WriteData:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:518    .text.OLED_WriteData:0000000000000000 OLED_WriteData
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:565    .text.OLED_SetCursor:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:571    .text.OLED_SetCursor:0000000000000000 OLED_SetCursor
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:628    .text.OLED_Clear:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:634    .text.OLED_Clear:0000000000000000 OLED_Clear
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:705    .text.OLED_ShowChar:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:711    .text.OLED_ShowChar:0000000000000000 OLED_ShowChar
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:834    .text.OLED_ShowChar:00000000000000b0 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:839    .text.OLED_ShowString:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:845    .text.OLED_ShowString:0000000000000000 OLED_ShowString
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:915    .text.OLED_Pow:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:921    .text.OLED_Pow:0000000000000000 OLED_Pow
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:979    .text.OLED_ShowNum:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:985    .text.OLED_ShowNum:0000000000000000 OLED_ShowNum
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1077   .text.OLED_ShowNum:0000000000000078 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1082   .text.OLED_ShowSignedNum:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1088   .text.OLED_ShowSignedNum:0000000000000000 OLED_ShowSignedNum
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1210   .text.OLED_ShowSignedNum:00000000000000a4 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1215   .text.OLED_ShowHexNum:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1221   .text.OLED_ShowHexNum:0000000000000000 OLED_ShowHexNum
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1325   .text.OLED_ShowBinNum:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1331   .text.OLED_ShowBinNum:0000000000000000 OLED_ShowBinNum
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1418   .text.OLED_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccH75JyQ.s:1424   .text.OLED_Init:0000000000000000 OLED_Init
 
 UNDEFINED SYMBOLS
 RCC_AHB1PeriphClockCmd

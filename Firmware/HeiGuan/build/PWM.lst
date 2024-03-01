@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"PWM.c"
@@ -36,442 +36,440 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 1
    6:./Hardware/PWM.c ****  *****************************************/
    7:./Hardware/PWM.c **** void PWM_Init()
    8:./Hardware/PWM.c **** {
-  29              		.loc 1 8 1 view -0
+  29              		.loc 1 8 1
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 40
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
   34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 24
-  36              		.cfi_offset 4, -24
-  37              		.cfi_offset 5, -20
-  38              		.cfi_offset 6, -16
-  39              		.cfi_offset 7, -12
-  40              		.cfi_offset 8, -8
-  41              		.cfi_offset 14, -4
-  42 0004 8AB0     		sub	sp, sp, #40
-  43              	.LCFI1:
-  44              		.cfi_def_cfa_offset 64
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 7, -8
+  37              		.cfi_offset 14, -4
+  38 0002 8AB0     		sub	sp, sp, #40
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 48
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
    9:./Hardware/PWM.c **** 	//开启对应时钟
   10:./Hardware/PWM.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,  ENABLE);
-  45              		.loc 1 10 2 view .LVU1
-  46 0006 0121     		movs	r1, #1
-  47 0008 0846     		mov	r0, r1
-  48 000a FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 2
-
-
-  49              	.LVL0:
+  44              		.loc 1 10 2
+  45 0006 0121     		movs	r1, #1
+  46 0008 0120     		movs	r0, #1
+  47 000a FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
   11:./Hardware/PWM.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB,  ENABLE);
-  50              		.loc 1 11 2 view .LVU2
-  51 000e 0121     		movs	r1, #1
-  52 0010 0220     		movs	r0, #2
-  53 0012 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
-  54              	.LVL1:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 2
+
+
+  48              		.loc 1 11 2
+  49 000e 0121     		movs	r1, #1
+  50 0010 0220     		movs	r0, #2
+  51 0012 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
   12:./Hardware/PWM.c **** 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,   ENABLE);
-  55              		.loc 1 12 2 view .LVU3
-  56 0016 0121     		movs	r1, #1
-  57 0018 0220     		movs	r0, #2
-  58 001a FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
-  59              	.LVL2:
+  52              		.loc 1 12 2
+  53 0016 0121     		movs	r1, #1
+  54 0018 0220     		movs	r0, #2
+  55 001a FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
   13:./Hardware/PWM.c **** 	//初始化PA6PA7
   14:./Hardware/PWM.c **** 	GPIO_InitTypeDef GPIO_InitStructure;
-  60              		.loc 1 14 2 view .LVU4
   15:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
-  61              		.loc 1 15 2 view .LVU5
-  62              		.loc 1 15 30 is_stmt 0 view .LVU6
-  63 001e C023     		movs	r3, #192
-  64 0020 0893     		str	r3, [sp, #32]
+  56              		.loc 1 15 30
+  57 001e C023     		movs	r3, #192
+  58 0020 3B62     		str	r3, [r7, #32]
   16:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  65              		.loc 1 16 2 is_stmt 1 view .LVU7
-  66              		.loc 1 16 31 is_stmt 0 view .LVU8
-  67 0022 0224     		movs	r4, #2
-  68 0024 8DF82440 		strb	r4, [sp, #36]
+  59              		.loc 1 16 31
+  60 0022 0223     		movs	r3, #2
+  61 0024 87F82430 		strb	r3, [r7, #36]
   17:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  69              		.loc 1 17 2 is_stmt 1 view .LVU9
-  70              		.loc 1 17 32 is_stmt 0 view .LVU10
-  71 0028 0026     		movs	r6, #0
-  72 002a 8DF82660 		strb	r6, [sp, #38]
+  62              		.loc 1 17 32
+  63 0028 0023     		movs	r3, #0
+  64 002a 87F82630 		strb	r3, [r7, #38]
   18:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  73              		.loc 1 18 2 is_stmt 1 view .LVU11
-  74              		.loc 1 18 32 is_stmt 0 view .LVU12
-  75 002e 0327     		movs	r7, #3
-  76 0030 8DF82570 		strb	r7, [sp, #37]
+  65              		.loc 1 18 32
+  66 002e 0323     		movs	r3, #3
+  67 0030 87F82530 		strb	r3, [r7, #37]
   19:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  77              		.loc 1 19 2 is_stmt 1 view .LVU13
-  78              		.loc 1 19 31 is_stmt 0 view .LVU14
-  79 0034 0125     		movs	r5, #1
-  80 0036 8DF82750 		strb	r5, [sp, #39]
+  68              		.loc 1 19 31
+  69 0034 0123     		movs	r3, #1
+  70 0036 87F82730 		strb	r3, [r7, #39]
   20:./Hardware/PWM.c **** 	GPIO_Init(GPIOA,&GPIO_InitStructure);
-  81              		.loc 1 20 2 is_stmt 1 view .LVU15
-  82 003a DFF8D880 		ldr	r8, .L3+8
-  83 003e 08A9     		add	r1, sp, #32
-  84 0040 4046     		mov	r0, r8
-  85 0042 FFF7FEFF 		bl	GPIO_Init
-  86              	.LVL3:
+  71              		.loc 1 20 2
+  72 003a 07F12003 		add	r3, r7, #32
+  73 003e 1946     		mov	r1, r3
+  74 0040 3748     		ldr	r0, .L2
+  75 0042 FFF7FEFF 		bl	GPIO_Init
   21:./Hardware/PWM.c **** 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource6,GPIO_AF_TIM3);
-  87              		.loc 1 21 2 view .LVU16
-  88 0046 2246     		mov	r2, r4
-  89 0048 0621     		movs	r1, #6
-  90 004a 4046     		mov	r0, r8
-  91 004c FFF7FEFF 		bl	GPIO_PinAFConfig
-  92              	.LVL4:
+  76              		.loc 1 21 2
+  77 0046 0222     		movs	r2, #2
+  78 0048 0621     		movs	r1, #6
+  79 004a 3548     		ldr	r0, .L2
+  80 004c FFF7FEFF 		bl	GPIO_PinAFConfig
   22:./Hardware/PWM.c **** 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource7,GPIO_AF_TIM3);
-  93              		.loc 1 22 2 view .LVU17
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 3
-
-
-  94 0050 2246     		mov	r2, r4
-  95 0052 0721     		movs	r1, #7
-  96 0054 4046     		mov	r0, r8
-  97 0056 FFF7FEFF 		bl	GPIO_PinAFConfig
-  98              	.LVL5:
+  81              		.loc 1 22 2
+  82 0050 0222     		movs	r2, #2
+  83 0052 0721     		movs	r1, #7
+  84 0054 3248     		ldr	r0, .L2
+  85 0056 FFF7FEFF 		bl	GPIO_PinAFConfig
   23:./Hardware/PWM.c **** 	//初始化PB0PB1
   24:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
-  99              		.loc 1 24 2 view .LVU18
- 100              		.loc 1 24 30 is_stmt 0 view .LVU19
- 101 005a 0897     		str	r7, [sp, #32]
+  86              		.loc 1 24 30
+  87 005a 0323     		movs	r3, #3
+  88 005c 3B62     		str	r3, [r7, #32]
   25:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
- 102              		.loc 1 25 2 is_stmt 1 view .LVU20
- 103              		.loc 1 25 31 is_stmt 0 view .LVU21
- 104 005c 8DF82440 		strb	r4, [sp, #36]
+  89              		.loc 1 25 31
+  90 005e 0223     		movs	r3, #2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 3
+
+
+  91 0060 87F82430 		strb	r3, [r7, #36]
   26:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
- 105              		.loc 1 26 2 is_stmt 1 view .LVU22
- 106              		.loc 1 26 32 is_stmt 0 view .LVU23
- 107 0060 8DF82660 		strb	r6, [sp, #38]
+  92              		.loc 1 26 32
+  93 0064 0023     		movs	r3, #0
+  94 0066 87F82630 		strb	r3, [r7, #38]
   27:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
- 108              		.loc 1 27 2 is_stmt 1 view .LVU24
- 109              		.loc 1 27 32 is_stmt 0 view .LVU25
- 110 0064 8DF82570 		strb	r7, [sp, #37]
+  95              		.loc 1 27 32
+  96 006a 0323     		movs	r3, #3
+  97 006c 87F82530 		strb	r3, [r7, #37]
   28:./Hardware/PWM.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
- 111              		.loc 1 28 2 is_stmt 1 view .LVU26
- 112              		.loc 1 28 31 is_stmt 0 view .LVU27
- 113 0068 8DF82750 		strb	r5, [sp, #39]
+  98              		.loc 1 28 31
+  99 0070 0123     		movs	r3, #1
+ 100 0072 87F82730 		strb	r3, [r7, #39]
   29:./Hardware/PWM.c **** 	GPIO_Init(GPIOB,&GPIO_InitStructure);
- 114              		.loc 1 29 2 is_stmt 1 view .LVU28
- 115 006c 274F     		ldr	r7, .L3
- 116 006e 08A9     		add	r1, sp, #32
- 117 0070 3846     		mov	r0, r7
- 118 0072 FFF7FEFF 		bl	GPIO_Init
- 119              	.LVL6:
+ 101              		.loc 1 29 2
+ 102 0076 07F12003 		add	r3, r7, #32
+ 103 007a 1946     		mov	r1, r3
+ 104 007c 2948     		ldr	r0, .L2+4
+ 105 007e FFF7FEFF 		bl	GPIO_Init
   30:./Hardware/PWM.c **** 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource0,GPIO_AF_TIM3);
- 120              		.loc 1 30 2 view .LVU29
- 121 0076 2246     		mov	r2, r4
- 122 0078 3146     		mov	r1, r6
- 123 007a 3846     		mov	r0, r7
- 124 007c FFF7FEFF 		bl	GPIO_PinAFConfig
- 125              	.LVL7:
+ 106              		.loc 1 30 2
+ 107 0082 0222     		movs	r2, #2
+ 108 0084 0021     		movs	r1, #0
+ 109 0086 2748     		ldr	r0, .L2+4
+ 110 0088 FFF7FEFF 		bl	GPIO_PinAFConfig
   31:./Hardware/PWM.c **** 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource1,GPIO_AF_TIM3);
- 126              		.loc 1 31 2 view .LVU30
- 127 0080 2246     		mov	r2, r4
- 128 0082 2946     		mov	r1, r5
- 129 0084 3846     		mov	r0, r7
- 130 0086 FFF7FEFF 		bl	GPIO_PinAFConfig
- 131              	.LVL8:
+ 111              		.loc 1 31 2
+ 112 008c 0222     		movs	r2, #2
+ 113 008e 0121     		movs	r1, #1
+ 114 0090 2448     		ldr	r0, .L2+4
+ 115 0092 FFF7FEFF 		bl	GPIO_PinAFConfig
   32:./Hardware/PWM.c **** 	//初始化TIM3的时基单元,PWM周期为20ms，即50Hz频率.每0.02秒计数2000下
   33:./Hardware/PWM.c **** 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
- 132              		.loc 1 33 2 view .LVU31
   34:./Hardware/PWM.c **** 	TIM_TimeBaseStructure.TIM_Prescaler = 161 -1;
- 133              		.loc 1 34 2 view .LVU32
- 134              		.loc 1 34 38 is_stmt 0 view .LVU33
- 135 008a A023     		movs	r3, #160
- 136 008c ADF81430 		strh	r3, [sp, #20]	@ movhi
+ 116              		.loc 1 34 38
+ 117 0096 A023     		movs	r3, #160
+ 118 0098 BB82     		strh	r3, [r7, #20]	@ movhi
   35:./Hardware/PWM.c **** 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
- 137              		.loc 1 35 2 is_stmt 1 view .LVU34
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 4
-
-
- 138              		.loc 1 35 40 is_stmt 0 view .LVU35
- 139 0090 ADF81660 		strh	r6, [sp, #22]	@ movhi
+ 119              		.loc 1 35 40
+ 120 009a 0023     		movs	r3, #0
+ 121 009c FB82     		strh	r3, [r7, #22]	@ movhi
   36:./Hardware/PWM.c **** 	TIM_TimeBaseStructure.TIM_Period = 2000 -1;
- 140              		.loc 1 36 2 is_stmt 1 view .LVU36
- 141              		.loc 1 36 35 is_stmt 0 view .LVU37
- 142 0094 40F2CF73 		movw	r3, #1999
- 143 0098 0693     		str	r3, [sp, #24]
+ 122              		.loc 1 36 35
+ 123 009e 40F2CF73 		movw	r3, #1999
+ 124 00a2 BB61     		str	r3, [r7, #24]
   37:./Hardware/PWM.c **** 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
- 144              		.loc 1 37 2 is_stmt 1 view .LVU38
- 145              		.loc 1 37 42 is_stmt 0 view .LVU39
- 146 009a ADF81C60 		strh	r6, [sp, #28]	@ movhi
+ 125              		.loc 1 37 42
+ 126 00a4 0023     		movs	r3, #0
+ 127 00a6 BB83     		strh	r3, [r7, #28]	@ movhi
   38:./Hardware/PWM.c **** 	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);
- 147              		.loc 1 38 2 is_stmt 1 view .LVU40
- 148 009e 1C4C     		ldr	r4, .L3+4
- 149 00a0 05A9     		add	r1, sp, #20
- 150 00a2 2046     		mov	r0, r4
- 151 00a4 FFF7FEFF 		bl	TIM_TimeBaseInit
- 152              	.LVL9:
+ 128              		.loc 1 38 2
+ 129 00a8 07F11403 		add	r3, r7, #20
+ 130 00ac 1946     		mov	r1, r3
+ 131 00ae 1E48     		ldr	r0, .L2+8
+ 132 00b0 FFF7FEFF 		bl	TIM_TimeBaseInit
   39:./Hardware/PWM.c **** 	//初始化TIM3CH1~4的PWM输出模式
   40:./Hardware/PWM.c **** 	TIM_OCInitTypeDef TIM_OCInitStructure;
- 153              		.loc 1 40 2 view .LVU41
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 4
+
+
   41:./Hardware/PWM.c **** 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
- 154              		.loc 1 41 2 view .LVU42
- 155              		.loc 1 41 33 is_stmt 0 view .LVU43
- 156 00a8 6023     		movs	r3, #96
- 157 00aa ADF80030 		strh	r3, [sp]	@ movhi
+ 133              		.loc 1 41 33
+ 134 00b4 6023     		movs	r3, #96
+ 135 00b6 3B80     		strh	r3, [r7]	@ movhi
   42:./Hardware/PWM.c **** 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
- 158              		.loc 1 42 2 is_stmt 1 view .LVU44
- 159              		.loc 1 42 38 is_stmt 0 view .LVU45
- 160 00ae ADF80250 		strh	r5, [sp, #2]	@ movhi
+ 136              		.loc 1 42 38
+ 137 00b8 0123     		movs	r3, #1
+ 138 00ba 7B80     		strh	r3, [r7, #2]	@ movhi
   43:./Hardware/PWM.c **** 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
- 161              		.loc 1 43 2 is_stmt 1 view .LVU46
- 162              		.loc 1 43 37 is_stmt 0 view .LVU47
- 163 00b2 ADF80C60 		strh	r6, [sp, #12]	@ movhi
+ 139              		.loc 1 43 37
+ 140 00bc 0023     		movs	r3, #0
+ 141 00be BB81     		strh	r3, [r7, #12]	@ movhi
   44:./Hardware/PWM.c **** 	TIM_OC1Init(TIM3,&TIM_OCInitStructure);
- 164              		.loc 1 44 2 is_stmt 1 view .LVU48
- 165 00b6 6946     		mov	r1, sp
- 166 00b8 2046     		mov	r0, r4
- 167 00ba FFF7FEFF 		bl	TIM_OC1Init
- 168              	.LVL10:
+ 142              		.loc 1 44 2
+ 143 00c0 3B46     		mov	r3, r7
+ 144 00c2 1946     		mov	r1, r3
+ 145 00c4 1848     		ldr	r0, .L2+8
+ 146 00c6 FFF7FEFF 		bl	TIM_OC1Init
   45:./Hardware/PWM.c **** 	TIM_OC2Init(TIM3,&TIM_OCInitStructure);
- 169              		.loc 1 45 2 view .LVU49
- 170 00be 6946     		mov	r1, sp
- 171 00c0 2046     		mov	r0, r4
- 172 00c2 FFF7FEFF 		bl	TIM_OC2Init
- 173              	.LVL11:
+ 147              		.loc 1 45 2
+ 148 00ca 3B46     		mov	r3, r7
+ 149 00cc 1946     		mov	r1, r3
+ 150 00ce 1648     		ldr	r0, .L2+8
+ 151 00d0 FFF7FEFF 		bl	TIM_OC2Init
   46:./Hardware/PWM.c **** 	TIM_OC3Init(TIM3,&TIM_OCInitStructure);
- 174              		.loc 1 46 2 view .LVU50
- 175 00c6 6946     		mov	r1, sp
- 176 00c8 2046     		mov	r0, r4
- 177 00ca FFF7FEFF 		bl	TIM_OC3Init
- 178              	.LVL12:
+ 152              		.loc 1 46 2
+ 153 00d4 3B46     		mov	r3, r7
+ 154 00d6 1946     		mov	r1, r3
+ 155 00d8 1348     		ldr	r0, .L2+8
+ 156 00da FFF7FEFF 		bl	TIM_OC3Init
   47:./Hardware/PWM.c **** 	TIM_OC4Init(TIM3,&TIM_OCInitStructure);
- 179              		.loc 1 47 2 view .LVU51
- 180 00ce 6946     		mov	r1, sp
- 181 00d0 2046     		mov	r0, r4
- 182 00d2 FFF7FEFF 		bl	TIM_OC4Init
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 5
-
-
- 183              	.LVL13:
+ 157              		.loc 1 47 2
+ 158 00de 3B46     		mov	r3, r7
+ 159 00e0 1946     		mov	r1, r3
+ 160 00e2 1148     		ldr	r0, .L2+8
+ 161 00e4 FFF7FEFF 		bl	TIM_OC4Init
   48:./Hardware/PWM.c **** 	//使能预装载器
   49:./Hardware/PWM.c **** 	TIM_OC1PreloadConfig(TIM3,TIM_OCPreload_Enable);
- 184              		.loc 1 49 2 view .LVU52
- 185 00d6 0821     		movs	r1, #8
- 186 00d8 2046     		mov	r0, r4
- 187 00da FFF7FEFF 		bl	TIM_OC1PreloadConfig
- 188              	.LVL14:
+ 162              		.loc 1 49 2
+ 163 00e8 0821     		movs	r1, #8
+ 164 00ea 0F48     		ldr	r0, .L2+8
+ 165 00ec FFF7FEFF 		bl	TIM_OC1PreloadConfig
   50:./Hardware/PWM.c **** 	TIM_OC2PreloadConfig(TIM3,TIM_OCPreload_Enable);
- 189              		.loc 1 50 2 view .LVU53
- 190 00de 0821     		movs	r1, #8
- 191 00e0 2046     		mov	r0, r4
- 192 00e2 FFF7FEFF 		bl	TIM_OC2PreloadConfig
- 193              	.LVL15:
+ 166              		.loc 1 50 2
+ 167 00f0 0821     		movs	r1, #8
+ 168 00f2 0D48     		ldr	r0, .L2+8
+ 169 00f4 FFF7FEFF 		bl	TIM_OC2PreloadConfig
   51:./Hardware/PWM.c **** 	TIM_OC3PreloadConfig(TIM3,TIM_OCPreload_Enable);
- 194              		.loc 1 51 2 view .LVU54
- 195 00e6 0821     		movs	r1, #8
- 196 00e8 2046     		mov	r0, r4
- 197 00ea FFF7FEFF 		bl	TIM_OC3PreloadConfig
- 198              	.LVL16:
+ 170              		.loc 1 51 2
+ 171 00f8 0821     		movs	r1, #8
+ 172 00fa 0B48     		ldr	r0, .L2+8
+ 173 00fc FFF7FEFF 		bl	TIM_OC3PreloadConfig
   52:./Hardware/PWM.c **** 	TIM_OC4PreloadConfig(TIM3,TIM_OCPreload_Enable);
- 199              		.loc 1 52 2 view .LVU55
- 200 00ee 0821     		movs	r1, #8
- 201 00f0 2046     		mov	r0, r4
- 202 00f2 FFF7FEFF 		bl	TIM_OC4PreloadConfig
- 203              	.LVL17:
+ 174              		.loc 1 52 2
+ 175 0100 0821     		movs	r1, #8
+ 176 0102 0948     		ldr	r0, .L2+8
+ 177 0104 FFF7FEFF 		bl	TIM_OC4PreloadConfig
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 5
+
+
   53:./Hardware/PWM.c **** 	TIM_ARRPreloadConfig(TIM3,ENABLE);
- 204              		.loc 1 53 2 view .LVU56
- 205 00f6 2946     		mov	r1, r5
- 206 00f8 2046     		mov	r0, r4
- 207 00fa FFF7FEFF 		bl	TIM_ARRPreloadConfig
- 208              	.LVL18:
+ 178              		.loc 1 53 2
+ 179 0108 0121     		movs	r1, #1
+ 180 010a 0748     		ldr	r0, .L2+8
+ 181 010c FFF7FEFF 		bl	TIM_ARRPreloadConfig
   54:./Hardware/PWM.c **** 	
   55:./Hardware/PWM.c **** 	TIM_Cmd(TIM3,ENABLE);
- 209              		.loc 1 55 2 view .LVU57
- 210 00fe 2946     		mov	r1, r5
- 211 0100 2046     		mov	r0, r4
- 212 0102 FFF7FEFF 		bl	TIM_Cmd
- 213              	.LVL19:
+ 182              		.loc 1 55 2
+ 183 0110 0121     		movs	r1, #1
+ 184 0112 0548     		ldr	r0, .L2+8
+ 185 0114 FFF7FEFF 		bl	TIM_Cmd
   56:./Hardware/PWM.c **** 
   57:./Hardware/PWM.c **** }
- 214              		.loc 1 57 1 is_stmt 0 view .LVU58
- 215 0106 0AB0     		add	sp, sp, #40
- 216              	.LCFI2:
- 217              		.cfi_def_cfa_offset 24
- 218              		@ sp needed
- 219 0108 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
- 220              	.L4:
- 221              		.align	2
- 222              	.L3:
- 223 010c 00040240 		.word	1073873920
- 224 0110 00040040 		.word	1073742848
- 225 0114 00000240 		.word	1073872896
- 226              		.cfi_endproc
- 227              	.LFE126:
- 229              		.section	.text.PWM_SetCompareAll,"ax",%progbits
- 230              		.align	1
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 6
-
-
- 231              		.global	PWM_SetCompareAll
- 232              		.syntax unified
- 233              		.thumb
- 234              		.thumb_func
- 236              	PWM_SetCompareAll:
- 237              	.LVL20:
- 238              	.LFB127:
+ 186              		.loc 1 57 1
+ 187 0118 00BF     		nop
+ 188 011a 2837     		adds	r7, r7, #40
+ 189              	.LCFI3:
+ 190              		.cfi_def_cfa_offset 8
+ 191 011c BD46     		mov	sp, r7
+ 192              	.LCFI4:
+ 193              		.cfi_def_cfa_register 13
+ 194              		@ sp needed
+ 195 011e 80BD     		pop	{r7, pc}
+ 196              	.L3:
+ 197              		.align	2
+ 198              	.L2:
+ 199 0120 00000240 		.word	1073872896
+ 200 0124 00040240 		.word	1073873920
+ 201 0128 00040040 		.word	1073742848
+ 202              		.cfi_endproc
+ 203              	.LFE126:
+ 205              		.section	.text.PWM_SetCompareAll,"ax",%progbits
+ 206              		.align	1
+ 207              		.global	PWM_SetCompareAll
+ 208              		.syntax unified
+ 209              		.thumb
+ 210              		.thumb_func
+ 212              	PWM_SetCompareAll:
+ 213              	.LFB127:
   58:./Hardware/PWM.c **** 
   59:./Hardware/PWM.c **** void PWM_SetCompareAll(uint16_t Compare)
   60:./Hardware/PWM.c **** {
- 239              		.loc 1 60 1 is_stmt 1 view -0
- 240              		.cfi_startproc
- 241              		@ args = 0, pretend = 0, frame = 0
- 242              		@ frame_needed = 0, uses_anonymous_args = 0
- 243              		.loc 1 60 1 is_stmt 0 view .LVU60
- 244 0000 38B5     		push	{r3, r4, r5, lr}
- 245              	.LCFI3:
- 246              		.cfi_def_cfa_offset 16
- 247              		.cfi_offset 3, -16
- 248              		.cfi_offset 4, -12
- 249              		.cfi_offset 5, -8
- 250              		.cfi_offset 14, -4
- 251 0002 0446     		mov	r4, r0
+ 214              		.loc 1 60 1
+ 215              		.cfi_startproc
+ 216              		@ args = 0, pretend = 0, frame = 8
+ 217              		@ frame_needed = 1, uses_anonymous_args = 0
+ 218 0000 80B5     		push	{r7, lr}
+ 219              	.LCFI5:
+ 220              		.cfi_def_cfa_offset 8
+ 221              		.cfi_offset 7, -8
+ 222              		.cfi_offset 14, -4
+ 223 0002 82B0     		sub	sp, sp, #8
+ 224              	.LCFI6:
+ 225              		.cfi_def_cfa_offset 16
+ 226 0004 00AF     		add	r7, sp, #0
+ 227              	.LCFI7:
+ 228              		.cfi_def_cfa_register 7
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 6
+
+
+ 229 0006 0346     		mov	r3, r0
+ 230 0008 FB80     		strh	r3, [r7, #6]	@ movhi
   61:./Hardware/PWM.c **** 	TIM_SetCompare1(TIM3, Compare);
- 252              		.loc 1 61 2 is_stmt 1 view .LVU61
- 253 0004 084D     		ldr	r5, .L7
- 254 0006 0146     		mov	r1, r0
- 255 0008 2846     		mov	r0, r5
- 256              	.LVL21:
- 257              		.loc 1 61 2 is_stmt 0 view .LVU62
- 258 000a FFF7FEFF 		bl	TIM_SetCompare1
- 259              	.LVL22:
+ 231              		.loc 1 61 2
+ 232 000a FB88     		ldrh	r3, [r7, #6]
+ 233 000c 1946     		mov	r1, r3
+ 234 000e 0B48     		ldr	r0, .L5
+ 235 0010 FFF7FEFF 		bl	TIM_SetCompare1
   62:./Hardware/PWM.c **** 	TIM_SetCompare2(TIM3, Compare);
- 260              		.loc 1 62 2 is_stmt 1 view .LVU63
- 261 000e 2146     		mov	r1, r4
- 262 0010 2846     		mov	r0, r5
- 263 0012 FFF7FEFF 		bl	TIM_SetCompare2
- 264              	.LVL23:
+ 236              		.loc 1 62 2
+ 237 0014 FB88     		ldrh	r3, [r7, #6]
+ 238 0016 1946     		mov	r1, r3
+ 239 0018 0848     		ldr	r0, .L5
+ 240 001a FFF7FEFF 		bl	TIM_SetCompare2
   63:./Hardware/PWM.c **** 	TIM_SetCompare3(TIM3, Compare);
- 265              		.loc 1 63 2 view .LVU64
- 266 0016 2146     		mov	r1, r4
- 267 0018 2846     		mov	r0, r5
- 268 001a FFF7FEFF 		bl	TIM_SetCompare3
- 269              	.LVL24:
+ 241              		.loc 1 63 2
+ 242 001e FB88     		ldrh	r3, [r7, #6]
+ 243 0020 1946     		mov	r1, r3
+ 244 0022 0648     		ldr	r0, .L5
+ 245 0024 FFF7FEFF 		bl	TIM_SetCompare3
   64:./Hardware/PWM.c **** 	TIM_SetCompare4(TIM3, Compare);
- 270              		.loc 1 64 2 view .LVU65
- 271 001e 2146     		mov	r1, r4
- 272 0020 2846     		mov	r0, r5
- 273 0022 FFF7FEFF 		bl	TIM_SetCompare4
- 274              	.LVL25:
+ 246              		.loc 1 64 2
+ 247 0028 FB88     		ldrh	r3, [r7, #6]
+ 248 002a 1946     		mov	r1, r3
+ 249 002c 0348     		ldr	r0, .L5
+ 250 002e FFF7FEFF 		bl	TIM_SetCompare4
   65:./Hardware/PWM.c **** }
- 275              		.loc 1 65 1 is_stmt 0 view .LVU66
- 276 0026 38BD     		pop	{r3, r4, r5, pc}
- 277              	.L8:
- 278              		.align	2
- 279              	.L7:
- 280 0028 00040040 		.word	1073742848
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 7
-
-
- 281              		.cfi_endproc
- 282              	.LFE127:
- 284              		.section	.text.Motor_Init,"ax",%progbits
- 285              		.align	1
- 286              		.global	Motor_Init
- 287              		.syntax unified
- 288              		.thumb
- 289              		.thumb_func
- 291              	Motor_Init:
- 292              	.LFB128:
+ 251              		.loc 1 65 1
+ 252 0032 00BF     		nop
+ 253 0034 0837     		adds	r7, r7, #8
+ 254              	.LCFI8:
+ 255              		.cfi_def_cfa_offset 8
+ 256 0036 BD46     		mov	sp, r7
+ 257              	.LCFI9:
+ 258              		.cfi_def_cfa_register 13
+ 259              		@ sp needed
+ 260 0038 80BD     		pop	{r7, pc}
+ 261              	.L6:
+ 262 003a 00BF     		.align	2
+ 263              	.L5:
+ 264 003c 00040040 		.word	1073742848
+ 265              		.cfi_endproc
+ 266              	.LFE127:
+ 268              		.section	.text.Motor_Init,"ax",%progbits
+ 269              		.align	1
+ 270              		.global	Motor_Init
+ 271              		.syntax unified
+ 272              		.thumb
+ 273              		.thumb_func
+ 275              	Motor_Init:
+ 276              	.LFB128:
   66:./Hardware/PWM.c **** 
   67:./Hardware/PWM.c **** 
   68:./Hardware/PWM.c **** void Motor_Init()
   69:./Hardware/PWM.c **** {
- 293              		.loc 1 69 1 is_stmt 1 view -0
- 294              		.cfi_startproc
- 295              		@ args = 0, pretend = 0, frame = 0
- 296              		@ frame_needed = 0, uses_anonymous_args = 0
- 297 0000 08B5     		push	{r3, lr}
- 298              	.LCFI4:
- 299              		.cfi_def_cfa_offset 8
- 300              		.cfi_offset 3, -8
- 301              		.cfi_offset 14, -4
+ 277              		.loc 1 69 1
+ 278              		.cfi_startproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 7
+
+
+ 279              		@ args = 0, pretend = 0, frame = 0
+ 280              		@ frame_needed = 1, uses_anonymous_args = 0
+ 281 0000 80B5     		push	{r7, lr}
+ 282              	.LCFI10:
+ 283              		.cfi_def_cfa_offset 8
+ 284              		.cfi_offset 7, -8
+ 285              		.cfi_offset 14, -4
+ 286 0002 00AF     		add	r7, sp, #0
+ 287              	.LCFI11:
+ 288              		.cfi_def_cfa_register 7
   70:./Hardware/PWM.c **** 	PWM_Init();
- 302              		.loc 1 70 2 view .LVU68
- 303 0002 FFF7FEFF 		bl	PWM_Init
- 304              	.LVL26:
+ 289              		.loc 1 70 2
+ 290 0004 FFF7FEFF 		bl	PWM_Init
   71:./Hardware/PWM.c **** }
- 305              		.loc 1 71 1 is_stmt 0 view .LVU69
- 306 0006 08BD     		pop	{r3, pc}
- 307              		.cfi_endproc
- 308              	.LFE128:
- 310              		.section	.text.Motor_SetSpeed_All,"ax",%progbits
- 311              		.align	1
- 312              		.global	Motor_SetSpeed_All
- 313              		.syntax unified
- 314              		.thumb
- 315              		.thumb_func
- 317              	Motor_SetSpeed_All:
- 318              	.LVL27:
- 319              	.LFB129:
+ 291              		.loc 1 71 1
+ 292 0008 00BF     		nop
+ 293 000a 80BD     		pop	{r7, pc}
+ 294              		.cfi_endproc
+ 295              	.LFE128:
+ 297              		.section	.text.Motor_SetSpeed_All,"ax",%progbits
+ 298              		.align	1
+ 299              		.global	Motor_SetSpeed_All
+ 300              		.syntax unified
+ 301              		.thumb
+ 302              		.thumb_func
+ 304              	Motor_SetSpeed_All:
+ 305              	.LFB129:
   72:./Hardware/PWM.c **** 
   73:./Hardware/PWM.c **** void Motor_SetSpeed_All(int8_t speed)
   74:./Hardware/PWM.c **** {
- 320              		.loc 1 74 1 is_stmt 1 view -0
- 321              		.cfi_startproc
- 322              		@ args = 0, pretend = 0, frame = 0
- 323              		@ frame_needed = 0, uses_anonymous_args = 0
- 324              		.loc 1 74 1 is_stmt 0 view .LVU71
- 325 0000 08B5     		push	{r3, lr}
- 326              	.LCFI5:
- 327              		.cfi_def_cfa_offset 8
- 328              		.cfi_offset 3, -8
- 329              		.cfi_offset 14, -4
+ 306              		.loc 1 74 1
+ 307              		.cfi_startproc
+ 308              		@ args = 0, pretend = 0, frame = 8
+ 309              		@ frame_needed = 1, uses_anonymous_args = 0
+ 310 0000 80B5     		push	{r7, lr}
+ 311              	.LCFI12:
+ 312              		.cfi_def_cfa_offset 8
+ 313              		.cfi_offset 7, -8
+ 314              		.cfi_offset 14, -4
+ 315 0002 82B0     		sub	sp, sp, #8
+ 316              	.LCFI13:
+ 317              		.cfi_def_cfa_offset 16
+ 318 0004 00AF     		add	r7, sp, #0
+ 319              	.LCFI14:
+ 320              		.cfi_def_cfa_register 7
+ 321 0006 0346     		mov	r3, r0
+ 322 0008 FB71     		strb	r3, [r7, #7]
   75:./Hardware/PWM.c **** 	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
- 330              		.loc 1 75 2 is_stmt 1 view .LVU72
- 331              		.loc 1 75 8 is_stmt 0 view .LVU73
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 8
+ 323              		.loc 1 75 8
+ 324 000a 97F90730 		ldrsb	r3, [r7, #7]
+ 325 000e 632B     		cmp	r3, #99
+ 326 0010 05DC     		bgt	.L9
+ 327              		.loc 1 75 8 is_stmt 0 discriminator 1
+ 328 0012 97F90730 		ldrsb	r3, [r7, #7]
+ 329 0016 23EAE373 		bic	r3, r3, r3, asr #31
+ 330 001a 5BB2     		sxtb	r3, r3
+ 331 001c 00E0     		b	.L10
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 8
 
 
- 332 0002 6328     		cmp	r0, #99
- 333 0004 06DC     		bgt	.L13
- 334              		.loc 1 75 8 discriminator 1 view .LVU74
- 335 0006 20EAE070 		bic	r0, r0, r0, asr #31
- 336              	.LVL28:
- 337              	.L12:
+ 332              	.L9:
+ 333              		.loc 1 75 8 discriminator 2
+ 334 001e 6423     		movs	r3, #100
+ 335              	.L10:
+ 336              		.loc 1 75 8 discriminator 4
+ 337 0020 FB71     		strb	r3, [r7, #7]
   76:./Hardware/PWM.c **** 	PWM_SetCompareAll(speed+100);
- 338              		.loc 1 76 2 is_stmt 1 discriminator 4 view .LVU75
- 339 000a 6430     		adds	r0, r0, #100
- 340              	.LVL29:
- 341              		.loc 1 76 2 is_stmt 0 discriminator 4 view .LVU76
- 342 000c 80B2     		uxth	r0, r0
- 343 000e FFF7FEFF 		bl	PWM_SetCompareAll
- 344              	.LVL30:
+ 338              		.loc 1 76 2 is_stmt 1 discriminator 4
+ 339 0022 97F90730 		ldrsb	r3, [r7, #7]
+ 340 0026 9BB2     		uxth	r3, r3
+ 341 0028 6433     		adds	r3, r3, #100
+ 342 002a 9BB2     		uxth	r3, r3
+ 343 002c 1846     		mov	r0, r3
+ 344 002e FFF7FEFF 		bl	PWM_SetCompareAll
   77:./Hardware/PWM.c **** }	
- 345              		.loc 1 77 1 discriminator 4 view .LVU77
- 346 0012 08BD     		pop	{r3, pc}
- 347              	.LVL31:
- 348              	.L13:
-  75:./Hardware/PWM.c **** 	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
- 349              		.loc 1 75 8 view .LVU78
- 350 0014 6420     		movs	r0, #100
- 351              	.LVL32:
-  75:./Hardware/PWM.c **** 	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
- 352              		.loc 1 75 8 view .LVU79
- 353 0016 F8E7     		b	.L12
- 354              		.cfi_endproc
- 355              	.LFE129:
- 357              		.text
- 358              	.Letext0:
- 359              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 360              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 361              		.file 4 "./CORE/stm32f4xx.h"
- 362              		.file 5 "./Library/stm32f4xx_gpio.h"
- 363              		.file 6 "./Library/stm32f4xx_tim.h"
- 364              		.file 7 "./Library/stm32f4xx_rcc.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s 			page 9
+ 345              		.loc 1 77 1 discriminator 4
+ 346 0032 00BF     		nop
+ 347 0034 0837     		adds	r7, r7, #8
+ 348              	.LCFI15:
+ 349              		.cfi_def_cfa_offset 8
+ 350 0036 BD46     		mov	sp, r7
+ 351              	.LCFI16:
+ 352              		.cfi_def_cfa_register 13
+ 353              		@ sp needed
+ 354 0038 80BD     		pop	{r7, pc}
+ 355              		.cfi_endproc
+ 356              	.LFE129:
+ 358              		.text
+ 359              	.Letext0:
+ 360              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 361              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 362              		.file 4 "./CORE/stm32f4xx.h"
+ 363              		.file 5 "./Library/stm32f4xx_gpio.h"
+ 364              		.file 6 "./Library/stm32f4xx_tim.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 PWM.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:20     .text.PWM_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:26     .text.PWM_Init:0000000000000000 PWM_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:223    .text.PWM_Init:000000000000010c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:230    .text.PWM_SetCompareAll:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:236    .text.PWM_SetCompareAll:0000000000000000 PWM_SetCompareAll
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:280    .text.PWM_SetCompareAll:0000000000000028 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:285    .text.Motor_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:291    .text.Motor_Init:0000000000000000 Motor_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:311    .text.Motor_SetSpeed_All:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQwkK44.s:317    .text.Motor_SetSpeed_All:0000000000000000 Motor_SetSpeed_All
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:20     .text.PWM_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:26     .text.PWM_Init:0000000000000000 PWM_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:199    .text.PWM_Init:0000000000000120 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:206    .text.PWM_SetCompareAll:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:212    .text.PWM_SetCompareAll:0000000000000000 PWM_SetCompareAll
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:264    .text.PWM_SetCompareAll:000000000000003c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:269    .text.Motor_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:275    .text.Motor_Init:0000000000000000 Motor_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:298    .text.Motor_SetSpeed_All:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccrGDprE.s:304    .text.Motor_SetSpeed_All:0000000000000000 Motor_SetSpeed_All
 
 UNDEFINED SYMBOLS
 RCC_AHB1PeriphClockCmd

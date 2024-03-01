@@ -1,0 +1,3513 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"os_tmr.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.rodata
+  20              		.align	2
+  21              	.LC0:
+  22 0000 3F00     		.ascii	"?\000"
+  23              		.section	.text.OSTmrCreate,"ax",%progbits
+  24              		.align	1
+  25              		.global	OSTmrCreate
+  26              		.syntax unified
+  27              		.thumb
+  28              		.thumb_func
+  30              	OSTmrCreate:
+  31              	.LFB3:
+  32              		.file 1 "./ucOSII/Core/os_tmr.c"
+   1:./ucOSII/Core/os_tmr.c **** /*
+   2:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+   3:./ucOSII/Core/os_tmr.c **** *                                              uC/OS-II
+   4:./ucOSII/Core/os_tmr.c **** *                                        The Real-Time Kernel
+   5:./ucOSII/Core/os_tmr.c **** *
+   6:./ucOSII/Core/os_tmr.c **** *                    Copyright 1992-2021 Silicon Laboratories Inc. www.silabs.com
+   7:./ucOSII/Core/os_tmr.c **** *
+   8:./ucOSII/Core/os_tmr.c **** *                                 SPDX-License-Identifier: APACHE-2.0
+   9:./ucOSII/Core/os_tmr.c **** *
+  10:./ucOSII/Core/os_tmr.c **** *               This software is subject to an open source license and is distributed by
+  11:./ucOSII/Core/os_tmr.c **** *                Silicon Laboratories Inc. pursuant to the terms of the Apache License,
+  12:./ucOSII/Core/os_tmr.c **** *                    Version 2.0 available at www.apache.org/licenses/LICENSE-2.0.
+  13:./ucOSII/Core/os_tmr.c **** *
+  14:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  15:./ucOSII/Core/os_tmr.c **** */
+  16:./ucOSII/Core/os_tmr.c **** 
+  17:./ucOSII/Core/os_tmr.c **** 
+  18:./ucOSII/Core/os_tmr.c **** /*
+  19:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  20:./ucOSII/Core/os_tmr.c **** *
+  21:./ucOSII/Core/os_tmr.c **** *                                           TIMER MANAGEMENT
+  22:./ucOSII/Core/os_tmr.c **** *
+  23:./ucOSII/Core/os_tmr.c **** * Filename : os_tmr.c
+  24:./ucOSII/Core/os_tmr.c **** * Version  : V2.93.01
+  25:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  26:./ucOSII/Core/os_tmr.c **** */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 2
+
+
+  27:./ucOSII/Core/os_tmr.c **** 
+  28:./ucOSII/Core/os_tmr.c **** #ifndef  OS_TMR_C
+  29:./ucOSII/Core/os_tmr.c **** #define  OS_TMR_C
+  30:./ucOSII/Core/os_tmr.c **** 
+  31:./ucOSII/Core/os_tmr.c **** #define  MICRIUM_SOURCE
+  32:./ucOSII/Core/os_tmr.c **** 
+  33:./ucOSII/Core/os_tmr.c **** #ifndef  OS_MASTER_FILE
+  34:./ucOSII/Core/os_tmr.c **** #include <ucos_ii.h>
+  35:./ucOSII/Core/os_tmr.c **** #endif
+  36:./ucOSII/Core/os_tmr.c **** 
+  37:./ucOSII/Core/os_tmr.c **** /*
+  38:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  39:./ucOSII/Core/os_tmr.c **** *                                                        NOTES
+  40:./ucOSII/Core/os_tmr.c **** *
+  41:./ucOSII/Core/os_tmr.c **** * 1) Your application MUST define the following #define constants:
+  42:./ucOSII/Core/os_tmr.c **** *
+  43:./ucOSII/Core/os_tmr.c **** *    OS_TASK_TMR_PRIO          The priority of the Timer management task
+  44:./ucOSII/Core/os_tmr.c **** *    OS_TASK_TMR_STK_SIZE      The size     of the Timer management task's stack
+  45:./ucOSII/Core/os_tmr.c **** *
+  46:./ucOSII/Core/os_tmr.c **** * 2) You must call OSTmrSignal() to notify the Timer management task that it's time to update the t
+  47:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  48:./ucOSII/Core/os_tmr.c **** */
+  49:./ucOSII/Core/os_tmr.c **** 
+  50:./ucOSII/Core/os_tmr.c **** /*
+  51:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  52:./ucOSII/Core/os_tmr.c **** *                                              CONSTANTS
+  53:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  54:./ucOSII/Core/os_tmr.c **** */
+  55:./ucOSII/Core/os_tmr.c **** 
+  56:./ucOSII/Core/os_tmr.c **** #define  OS_TMR_LINK_DLY       0u
+  57:./ucOSII/Core/os_tmr.c **** #define  OS_TMR_LINK_PERIODIC  1u
+  58:./ucOSII/Core/os_tmr.c **** 
+  59:./ucOSII/Core/os_tmr.c **** /*
+  60:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  61:./ucOSII/Core/os_tmr.c **** *                                          LOCAL PROTOTYPES
+  62:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  63:./ucOSII/Core/os_tmr.c **** */
+  64:./ucOSII/Core/os_tmr.c **** 
+  65:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+  66:./ucOSII/Core/os_tmr.c **** static  OS_TMR  *OSTmr_Alloc         (void);
+  67:./ucOSII/Core/os_tmr.c **** static  void     OSTmr_Free          (OS_TMR *ptmr);
+  68:./ucOSII/Core/os_tmr.c **** static  void     OSTmr_InitTask      (void);
+  69:./ucOSII/Core/os_tmr.c **** static  void     OSTmr_Link          (OS_TMR *ptmr, INT8U type);
+  70:./ucOSII/Core/os_tmr.c **** static  void     OSTmr_Unlink        (OS_TMR *ptmr);
+  71:./ucOSII/Core/os_tmr.c **** static  void     OSTmr_Task          (void   *p_arg);
+  72:./ucOSII/Core/os_tmr.c **** #endif
+  73:./ucOSII/Core/os_tmr.c **** 
+  74:./ucOSII/Core/os_tmr.c **** 
+  75:./ucOSII/Core/os_tmr.c **** /*
+  76:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+  77:./ucOSII/Core/os_tmr.c **** *                                           CREATE A TIMER
+  78:./ucOSII/Core/os_tmr.c **** *
+  79:./ucOSII/Core/os_tmr.c **** * Description: This function is called by your application code to create a timer.
+  80:./ucOSII/Core/os_tmr.c **** *
+  81:./ucOSII/Core/os_tmr.c **** * Arguments  : dly           Initial delay.
+  82:./ucOSII/Core/os_tmr.c **** *                            If the timer is configured for ONE-SHOT mode, this is the timeout used
+  83:./ucOSII/Core/os_tmr.c **** *                            If the timer is configured for PERIODIC mode, this is the first timeou
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 3
+
+
+  84:./ucOSII/Core/os_tmr.c **** *                               wait for before the timer starts entering periodic mode.
+  85:./ucOSII/Core/os_tmr.c **** *
+  86:./ucOSII/Core/os_tmr.c **** *              period        The 'period' being repeated for the timer.
+  87:./ucOSII/Core/os_tmr.c **** *                               If you specified 'OS_TMR_OPT_PERIODIC' as an option, when the timer
+  88:./ucOSII/Core/os_tmr.c **** *                               expires, it will automatically restart with the same period.
+  89:./ucOSII/Core/os_tmr.c **** *
+  90:./ucOSII/Core/os_tmr.c **** *              opt           Specifies either:
+  91:./ucOSII/Core/os_tmr.c **** *                               OS_TMR_OPT_ONE_SHOT       The timer counts down only once
+  92:./ucOSII/Core/os_tmr.c **** *                               OS_TMR_OPT_PERIODIC       The timer counts down and then reloads it
+  93:./ucOSII/Core/os_tmr.c **** *
+  94:./ucOSII/Core/os_tmr.c **** *              callback      Is a pointer to a callback function that will be called when the timer
+  95:./ucOSII/Core/os_tmr.c **** *                               The callback function must be declared as follows:
+  96:./ucOSII/Core/os_tmr.c **** *
+  97:./ucOSII/Core/os_tmr.c **** *                               void MyCallback (OS_TMR *ptmr, void *p_arg);
+  98:./ucOSII/Core/os_tmr.c **** *
+  99:./ucOSII/Core/os_tmr.c **** *              callback_arg  Is an argument (a pointer) that is passed to the callback function whe
+ 100:./ucOSII/Core/os_tmr.c **** *
+ 101:./ucOSII/Core/os_tmr.c **** *              pname         Is a pointer to an ASCII string that is used to name the timer.  Names
+ 102:./ucOSII/Core/os_tmr.c **** *                               useful for debugging.
+ 103:./ucOSII/Core/os_tmr.c **** *
+ 104:./ucOSII/Core/os_tmr.c **** *              perr          Is a pointer to an error code.  '*perr' will contain one of the follow
+ 105:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_NONE                     the call was successful and the tim
+ 106:./ucOSII/Core/os_tmr.c **** *                                                               was created.
+ 107:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_ILLEGAL_CREATE_RUN_TIME  if you tried to create a timer afte
+ 108:./ucOSII/Core/os_tmr.c **** *                                                               safety critical operation started.
+ 109:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_DLY          you specified an invalid delay
+ 110:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_PERIOD       you specified an invalid period
+ 111:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_OPT          you specified an invalid option
+ 112:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_ISR                  if the call was made from an ISR
+ 113:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_NON_AVAIL            if there are no free timers from th
+ 114:./ucOSII/Core/os_tmr.c **** *
+ 115:./ucOSII/Core/os_tmr.c **** * Returns    : A pointer to an OS_TMR data structure.
+ 116:./ucOSII/Core/os_tmr.c **** *              This is the 'handle' that your application will use to reference the timer created.
+ 117:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 118:./ucOSII/Core/os_tmr.c **** */
+ 119:./ucOSII/Core/os_tmr.c **** 
+ 120:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 121:./ucOSII/Core/os_tmr.c **** OS_TMR  *OSTmrCreate (INT32U           dly,
+ 122:./ucOSII/Core/os_tmr.c ****                       INT32U           period,
+ 123:./ucOSII/Core/os_tmr.c ****                       INT8U            opt,
+ 124:./ucOSII/Core/os_tmr.c ****                       OS_TMR_CALLBACK  callback,
+ 125:./ucOSII/Core/os_tmr.c ****                       void            *callback_arg,
+ 126:./ucOSII/Core/os_tmr.c ****                       INT8U           *pname,
+ 127:./ucOSII/Core/os_tmr.c ****                       INT8U           *perr)
+ 128:./ucOSII/Core/os_tmr.c **** {
+  33              		.loc 1 128 1
+  34              		.cfi_startproc
+  35              		@ args = 12, pretend = 0, frame = 24
+  36              		@ frame_needed = 1, uses_anonymous_args = 0
+  37 0000 80B5     		push	{r7, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 7, -8
+  41              		.cfi_offset 14, -4
+  42 0002 86B0     		sub	sp, sp, #24
+  43              	.LCFI1:
+  44              		.cfi_def_cfa_offset 32
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 4
+
+
+  45 0004 00AF     		add	r7, sp, #0
+  46              	.LCFI2:
+  47              		.cfi_def_cfa_register 7
+  48 0006 F860     		str	r0, [r7, #12]
+  49 0008 B960     		str	r1, [r7, #8]
+  50 000a 3B60     		str	r3, [r7]
+  51 000c 1346     		mov	r3, r2
+  52 000e FB71     		strb	r3, [r7, #7]
+ 129:./ucOSII/Core/os_tmr.c ****     OS_TMR   *ptmr;
+ 130:./ucOSII/Core/os_tmr.c **** 
+ 131:./ucOSII/Core/os_tmr.c **** 
+ 132:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL
+ 133:./ucOSII/Core/os_tmr.c ****     if (perr == (INT8U *)0) {
+ 134:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 135:./ucOSII/Core/os_tmr.c ****         return ((OS_TMR *)0);
+ 136:./ucOSII/Core/os_tmr.c ****     }
+ 137:./ucOSII/Core/os_tmr.c **** #endif
+ 138:./ucOSII/Core/os_tmr.c **** 
+ 139:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL_IEC61508
+ 140:./ucOSII/Core/os_tmr.c ****     if (OSSafetyCriticalStartFlag == OS_TRUE) {
+ 141:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 142:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_ILLEGAL_CREATE_RUN_TIME;
+ 143:./ucOSII/Core/os_tmr.c ****         return ((OS_TMR *)0);
+ 144:./ucOSII/Core/os_tmr.c ****     }
+ 145:./ucOSII/Core/os_tmr.c **** #endif
+ 146:./ucOSII/Core/os_tmr.c **** 
+ 147:./ucOSII/Core/os_tmr.c **** #if OS_ARG_CHK_EN > 0u
+ 148:./ucOSII/Core/os_tmr.c ****     switch (opt) {                                          /* Validate arguments                  
+  53              		.loc 1 148 5
+  54 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  55 0012 012B     		cmp	r3, #1
+  56 0014 09D0     		beq	.L2
+  57 0016 022B     		cmp	r3, #2
+  58 0018 0FD1     		bne	.L3
+ 149:./ucOSII/Core/os_tmr.c ****         case OS_TMR_OPT_PERIODIC:
+ 150:./ucOSII/Core/os_tmr.c ****              if (period == 0u) {
+  59              		.loc 1 150 17
+  60 001a BB68     		ldr	r3, [r7, #8]
+  61 001c 002B     		cmp	r3, #0
+  62 001e 11D1     		bne	.L12
+ 151:./ucOSII/Core/os_tmr.c ****                  *perr = OS_ERR_TMR_INVALID_PERIOD;
+  63              		.loc 1 151 24
+  64 0020 BB6A     		ldr	r3, [r7, #40]
+  65 0022 8322     		movs	r2, #131
+  66 0024 1A70     		strb	r2, [r3]
+ 152:./ucOSII/Core/os_tmr.c ****                  return ((OS_TMR *)0);
+  67              		.loc 1 152 25
+  68 0026 0023     		movs	r3, #0
+  69 0028 4BE0     		b	.L5
+  70              	.L2:
+ 153:./ucOSII/Core/os_tmr.c ****              }
+ 154:./ucOSII/Core/os_tmr.c ****              break;
+ 155:./ucOSII/Core/os_tmr.c **** 
+ 156:./ucOSII/Core/os_tmr.c ****         case OS_TMR_OPT_ONE_SHOT:
+ 157:./ucOSII/Core/os_tmr.c ****              if (dly == 0u) {
+  71              		.loc 1 157 17
+  72 002a FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 5
+
+
+  73 002c 002B     		cmp	r3, #0
+  74 002e 0BD1     		bne	.L13
+ 158:./ucOSII/Core/os_tmr.c ****                  *perr = OS_ERR_TMR_INVALID_DLY;
+  75              		.loc 1 158 24
+  76 0030 BB6A     		ldr	r3, [r7, #40]
+  77 0032 8222     		movs	r2, #130
+  78 0034 1A70     		strb	r2, [r3]
+ 159:./ucOSII/Core/os_tmr.c ****                  return ((OS_TMR *)0);
+  79              		.loc 1 159 25
+  80 0036 0023     		movs	r3, #0
+  81 0038 43E0     		b	.L5
+  82              	.L3:
+ 160:./ucOSII/Core/os_tmr.c ****              }
+ 161:./ucOSII/Core/os_tmr.c ****              break;
+ 162:./ucOSII/Core/os_tmr.c **** 
+ 163:./ucOSII/Core/os_tmr.c ****         default:
+ 164:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INVALID_OPT;
+  83              		.loc 1 164 20
+  84 003a BB6A     		ldr	r3, [r7, #40]
+  85 003c 8422     		movs	r2, #132
+  86 003e 1A70     		strb	r2, [r3]
+ 165:./ucOSII/Core/os_tmr.c ****              return ((OS_TMR *)0);
+  87              		.loc 1 165 21
+  88 0040 0023     		movs	r3, #0
+  89 0042 3EE0     		b	.L5
+  90              	.L12:
+ 154:./ucOSII/Core/os_tmr.c **** 
+  91              		.loc 1 154 14
+  92 0044 00BF     		nop
+  93 0046 00E0     		b	.L6
+  94              	.L13:
+ 161:./ucOSII/Core/os_tmr.c **** 
+  95              		.loc 1 161 14
+  96 0048 00BF     		nop
+  97              	.L6:
+ 166:./ucOSII/Core/os_tmr.c ****     }
+ 167:./ucOSII/Core/os_tmr.c **** #endif
+ 168:./ucOSII/Core/os_tmr.c ****     if (OSIntNesting > 0u) {                                /* See if trying to call from an ISR   
+  98              		.loc 1 168 22
+  99 004a 204B     		ldr	r3, .L14
+ 100 004c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 101              		.loc 1 168 8
+ 102 004e 002B     		cmp	r3, #0
+ 103 0050 04D0     		beq	.L8
+ 169:./ucOSII/Core/os_tmr.c ****         *perr  = OS_ERR_TMR_ISR;
+ 104              		.loc 1 169 16
+ 105 0052 BB6A     		ldr	r3, [r7, #40]
+ 106 0054 8B22     		movs	r2, #139
+ 107 0056 1A70     		strb	r2, [r3]
+ 170:./ucOSII/Core/os_tmr.c ****         return ((OS_TMR *)0);
+ 108              		.loc 1 170 16
+ 109 0058 0023     		movs	r3, #0
+ 110 005a 32E0     		b	.L5
+ 111              	.L8:
+ 171:./ucOSII/Core/os_tmr.c ****     }
+ 172:./ucOSII/Core/os_tmr.c ****     OSSchedLock();
+ 112              		.loc 1 172 5
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 6
+
+
+ 113 005c FFF7FEFF 		bl	OSSchedLock
+ 173:./ucOSII/Core/os_tmr.c ****     ptmr = OSTmr_Alloc();                                   /* Obtain a timer from the free pool   
+ 114              		.loc 1 173 12
+ 115 0060 FFF7FEFF 		bl	OSTmr_Alloc
+ 116 0064 7861     		str	r0, [r7, #20]
+ 174:./ucOSII/Core/os_tmr.c ****     if (ptmr == (OS_TMR *)0) {
+ 117              		.loc 1 174 8
+ 118 0066 7B69     		ldr	r3, [r7, #20]
+ 119 0068 002B     		cmp	r3, #0
+ 120 006a 06D1     		bne	.L9
+ 175:./ucOSII/Core/os_tmr.c ****         OSSchedUnlock();
+ 121              		.loc 1 175 9
+ 122 006c FFF7FEFF 		bl	OSSchedUnlock
+ 176:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_NON_AVAIL;
+ 123              		.loc 1 176 15
+ 124 0070 BB6A     		ldr	r3, [r7, #40]
+ 125 0072 8622     		movs	r2, #134
+ 126 0074 1A70     		strb	r2, [r3]
+ 177:./ucOSII/Core/os_tmr.c ****         return ((OS_TMR *)0);
+ 127              		.loc 1 177 16
+ 128 0076 0023     		movs	r3, #0
+ 129 0078 23E0     		b	.L5
+ 130              	.L9:
+ 178:./ucOSII/Core/os_tmr.c ****     }
+ 179:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrState       = OS_TMR_STATE_STOPPED;          /* Indicate that timer is not running y
+ 131              		.loc 1 179 28
+ 132 007a 7B69     		ldr	r3, [r7, #20]
+ 133 007c 0122     		movs	r2, #1
+ 134 007e 83F82520 		strb	r2, [r3, #37]
+ 180:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrDly         = dly;
+ 135              		.loc 1 180 28
+ 136 0082 7B69     		ldr	r3, [r7, #20]
+ 137 0084 FA68     		ldr	r2, [r7, #12]
+ 138 0086 9A61     		str	r2, [r3, #24]
+ 181:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrPeriod      = period;
+ 139              		.loc 1 181 28
+ 140 0088 7B69     		ldr	r3, [r7, #20]
+ 141 008a BA68     		ldr	r2, [r7, #8]
+ 142 008c DA61     		str	r2, [r3, #28]
+ 182:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrOpt         = opt;
+ 143              		.loc 1 182 28
+ 144 008e 7B69     		ldr	r3, [r7, #20]
+ 145 0090 FA79     		ldrb	r2, [r7, #7]
+ 146 0092 83F82420 		strb	r2, [r3, #36]
+ 183:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrCallback    = callback;
+ 147              		.loc 1 183 28
+ 148 0096 7B69     		ldr	r3, [r7, #20]
+ 149 0098 3A68     		ldr	r2, [r7]
+ 150 009a 5A60     		str	r2, [r3, #4]
+ 184:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrCallbackArg = callback_arg;
+ 151              		.loc 1 184 28
+ 152 009c 7B69     		ldr	r3, [r7, #20]
+ 153 009e 3A6A     		ldr	r2, [r7, #32]
+ 154 00a0 9A60     		str	r2, [r3, #8]
+ 185:./ucOSII/Core/os_tmr.c **** #if OS_TMR_CFG_NAME_EN > 0u
+ 186:./ucOSII/Core/os_tmr.c ****     if (pname == (INT8U *)0) {                              /* Is 'pname' a NULL pointer?          
+ 155              		.loc 1 186 8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 7
+
+
+ 156 00a2 7B6A     		ldr	r3, [r7, #36]
+ 157 00a4 002B     		cmp	r3, #0
+ 158 00a6 03D1     		bne	.L10
+ 187:./ucOSII/Core/os_tmr.c ****         ptmr->OSTmrName    = (INT8U *)(void *)"?";
+ 159              		.loc 1 187 28
+ 160 00a8 7B69     		ldr	r3, [r7, #20]
+ 161 00aa 094A     		ldr	r2, .L14+4
+ 162 00ac 1A62     		str	r2, [r3, #32]
+ 163 00ae 02E0     		b	.L11
+ 164              	.L10:
+ 188:./ucOSII/Core/os_tmr.c ****     } else {
+ 189:./ucOSII/Core/os_tmr.c ****         ptmr->OSTmrName    = pname;
+ 165              		.loc 1 189 28
+ 166 00b0 7B69     		ldr	r3, [r7, #20]
+ 167 00b2 7A6A     		ldr	r2, [r7, #36]
+ 168 00b4 1A62     		str	r2, [r3, #32]
+ 169              	.L11:
+ 190:./ucOSII/Core/os_tmr.c ****     }
+ 191:./ucOSII/Core/os_tmr.c **** #endif
+ 192:./ucOSII/Core/os_tmr.c ****     OSSchedUnlock();
+ 170              		.loc 1 192 5
+ 171 00b6 FFF7FEFF 		bl	OSSchedUnlock
+ 193:./ucOSII/Core/os_tmr.c ****     OS_TRACE_TMR_CREATE(ptmr, ptmr->OSTmrName);
+ 194:./ucOSII/Core/os_tmr.c ****     *perr = OS_ERR_NONE;
+ 172              		.loc 1 194 11
+ 173 00ba BB6A     		ldr	r3, [r7, #40]
+ 174 00bc 0022     		movs	r2, #0
+ 175 00be 1A70     		strb	r2, [r3]
+ 195:./ucOSII/Core/os_tmr.c ****     return (ptmr);
+ 176              		.loc 1 195 12
+ 177 00c0 7B69     		ldr	r3, [r7, #20]
+ 178              	.L5:
+ 196:./ucOSII/Core/os_tmr.c **** }
+ 179              		.loc 1 196 1
+ 180 00c2 1846     		mov	r0, r3
+ 181 00c4 1837     		adds	r7, r7, #24
+ 182              	.LCFI3:
+ 183              		.cfi_def_cfa_offset 8
+ 184 00c6 BD46     		mov	sp, r7
+ 185              	.LCFI4:
+ 186              		.cfi_def_cfa_register 13
+ 187              		@ sp needed
+ 188 00c8 80BD     		pop	{r7, pc}
+ 189              	.L15:
+ 190 00ca 00BF     		.align	2
+ 191              	.L14:
+ 192 00cc 00000000 		.word	OSIntNesting
+ 193 00d0 00000000 		.word	.LC0
+ 194              		.cfi_endproc
+ 195              	.LFE3:
+ 197              		.section	.text.OSTmrDel,"ax",%progbits
+ 198              		.align	1
+ 199              		.global	OSTmrDel
+ 200              		.syntax unified
+ 201              		.thumb
+ 202              		.thumb_func
+ 204              	OSTmrDel:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 8
+
+
+ 205              	.LFB4:
+ 197:./ucOSII/Core/os_tmr.c **** #endif
+ 198:./ucOSII/Core/os_tmr.c **** 
+ 199:./ucOSII/Core/os_tmr.c **** 
+ 200:./ucOSII/Core/os_tmr.c **** /*
+ 201:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 202:./ucOSII/Core/os_tmr.c **** *                                           DELETE A TIMER
+ 203:./ucOSII/Core/os_tmr.c **** *
+ 204:./ucOSII/Core/os_tmr.c **** * Description: This function is called by your application code to delete a timer.
+ 205:./ucOSII/Core/os_tmr.c **** *
+ 206:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr          Is a pointer to the timer to stop and delete.
+ 207:./ucOSII/Core/os_tmr.c **** *
+ 208:./ucOSII/Core/os_tmr.c **** *              perr          Is a pointer to an error code.  '*perr' will contain one of the follow
+ 209:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_NONE                  the call was successful and the timer
+ 210:./ucOSII/Core/os_tmr.c **** *                                                            was deleted.
+ 211:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_ILLEGAL_DEL_RUN_TIME  if you tried to delete a timer after s
+ 212:./ucOSII/Core/os_tmr.c **** *                                                            critical operation started.
+ 213:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID           'ptmr'  is a NULL pointer
+ 214:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_TYPE      'ptmr'  is not pointing to an OS_TMR
+ 215:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_ISR               if the function was called from an ISR
+ 216:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INACTIVE          if the timer was not created
+ 217:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_STATE     the timer is in an invalid state
+ 218:./ucOSII/Core/os_tmr.c **** *
+ 219:./ucOSII/Core/os_tmr.c **** * Returns    : OS_TRUE       If the call was successful
+ 220:./ucOSII/Core/os_tmr.c **** *              OS_FALSE      If not
+ 221:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 222:./ucOSII/Core/os_tmr.c **** */
+ 223:./ucOSII/Core/os_tmr.c **** 
+ 224:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 225:./ucOSII/Core/os_tmr.c **** BOOLEAN  OSTmrDel (OS_TMR  *ptmr,
+ 226:./ucOSII/Core/os_tmr.c ****                    INT8U   *perr)
+ 227:./ucOSII/Core/os_tmr.c **** {
+ 206              		.loc 1 227 1
+ 207              		.cfi_startproc
+ 208              		@ args = 0, pretend = 0, frame = 8
+ 209              		@ frame_needed = 1, uses_anonymous_args = 0
+ 210 0000 80B5     		push	{r7, lr}
+ 211              	.LCFI5:
+ 212              		.cfi_def_cfa_offset 8
+ 213              		.cfi_offset 7, -8
+ 214              		.cfi_offset 14, -4
+ 215 0002 82B0     		sub	sp, sp, #8
+ 216              	.LCFI6:
+ 217              		.cfi_def_cfa_offset 16
+ 218 0004 00AF     		add	r7, sp, #0
+ 219              	.LCFI7:
+ 220              		.cfi_def_cfa_register 7
+ 221 0006 7860     		str	r0, [r7, #4]
+ 222 0008 3960     		str	r1, [r7]
+ 228:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL
+ 229:./ucOSII/Core/os_tmr.c ****     if (perr == (INT8U *)0) {
+ 230:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 231:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 232:./ucOSII/Core/os_tmr.c ****     }
+ 233:./ucOSII/Core/os_tmr.c **** #endif
+ 234:./ucOSII/Core/os_tmr.c **** 
+ 235:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL_IEC61508
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 9
+
+
+ 236:./ucOSII/Core/os_tmr.c ****     if (OSSafetyCriticalStartFlag == OS_TRUE) {
+ 237:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 238:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_ILLEGAL_DEL_RUN_TIME;
+ 239:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 240:./ucOSII/Core/os_tmr.c ****     }
+ 241:./ucOSII/Core/os_tmr.c **** #endif
+ 242:./ucOSII/Core/os_tmr.c **** 
+ 243:./ucOSII/Core/os_tmr.c **** #if OS_ARG_CHK_EN > 0u
+ 244:./ucOSII/Core/os_tmr.c ****     if (ptmr == (OS_TMR *)0) {
+ 223              		.loc 1 244 8
+ 224 000a 7B68     		ldr	r3, [r7, #4]
+ 225 000c 002B     		cmp	r3, #0
+ 226 000e 04D1     		bne	.L17
+ 245:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID;
+ 227              		.loc 1 245 15
+ 228 0010 3B68     		ldr	r3, [r7]
+ 229 0012 8A22     		movs	r2, #138
+ 230 0014 1A70     		strb	r2, [r3]
+ 246:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 231              		.loc 1 246 16
+ 232 0016 0023     		movs	r3, #0
+ 233 0018 46E0     		b	.L18
+ 234              	.L17:
+ 247:./ucOSII/Core/os_tmr.c ****     }
+ 248:./ucOSII/Core/os_tmr.c **** #endif
+ 249:./ucOSII/Core/os_tmr.c **** 
+ 250:./ucOSII/Core/os_tmr.c ****     OS_TRACE_TMR_DEL_ENTER(ptmr);
+ 251:./ucOSII/Core/os_tmr.c **** 
+ 252:./ucOSII/Core/os_tmr.c ****     if (ptmr->OSTmrType != OS_TMR_TYPE) {                   /* Validate timer structure            
+ 235              		.loc 1 252 13
+ 236 001a 7B68     		ldr	r3, [r7, #4]
+ 237 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 238              		.loc 1 252 8
+ 239 001e 642B     		cmp	r3, #100
+ 240 0020 04D0     		beq	.L19
+ 253:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID_TYPE;
+ 241              		.loc 1 253 15
+ 242 0022 3B68     		ldr	r3, [r7]
+ 243 0024 8922     		movs	r2, #137
+ 244 0026 1A70     		strb	r2, [r3]
+ 254:./ucOSII/Core/os_tmr.c ****         OS_TRACE_TMR_DEL_EXIT(*perr);
+ 255:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 245              		.loc 1 255 16
+ 246 0028 0023     		movs	r3, #0
+ 247 002a 3DE0     		b	.L18
+ 248              	.L19:
+ 256:./ucOSII/Core/os_tmr.c ****     }
+ 257:./ucOSII/Core/os_tmr.c ****     if (OSIntNesting > 0u) {                                /* See if trying to call from an ISR   
+ 249              		.loc 1 257 22
+ 250 002c 204B     		ldr	r3, .L26
+ 251 002e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 252              		.loc 1 257 8
+ 253 0030 002B     		cmp	r3, #0
+ 254 0032 04D0     		beq	.L20
+ 258:./ucOSII/Core/os_tmr.c ****         *perr  = OS_ERR_TMR_ISR;
+ 255              		.loc 1 258 16
+ 256 0034 3B68     		ldr	r3, [r7]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 10
+
+
+ 257 0036 8B22     		movs	r2, #139
+ 258 0038 1A70     		strb	r2, [r3]
+ 259:./ucOSII/Core/os_tmr.c ****         OS_TRACE_TMR_DEL_EXIT(*perr);
+ 260:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 259              		.loc 1 260 16
+ 260 003a 0023     		movs	r3, #0
+ 261 003c 34E0     		b	.L18
+ 262              	.L20:
+ 261:./ucOSII/Core/os_tmr.c ****     }
+ 262:./ucOSII/Core/os_tmr.c ****     OSSchedLock();
+ 263              		.loc 1 262 5
+ 264 003e FFF7FEFF 		bl	OSSchedLock
+ 263:./ucOSII/Core/os_tmr.c ****     switch (ptmr->OSTmrState) {
+ 265              		.loc 1 263 17
+ 266 0042 7B68     		ldr	r3, [r7, #4]
+ 267 0044 93F82530 		ldrb	r3, [r3, #37]	@ zero_extendqisi2
+ 268              		.loc 1 263 5
+ 269 0048 032B     		cmp	r3, #3
+ 270 004a 09D0     		beq	.L21
+ 271 004c 032B     		cmp	r3, #3
+ 272 004e 25DC     		bgt	.L22
+ 273 0050 002B     		cmp	r3, #0
+ 274 0052 1CD0     		beq	.L23
+ 275 0054 002B     		cmp	r3, #0
+ 276 0056 21DB     		blt	.L22
+ 277 0058 013B     		subs	r3, r3, #1
+ 278 005a 012B     		cmp	r3, #1
+ 279 005c 1ED8     		bhi	.L22
+ 280 005e 0CE0     		b	.L25
+ 281              	.L21:
+ 264:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_RUNNING:
+ 265:./ucOSII/Core/os_tmr.c ****              OSTmr_Unlink(ptmr);                            /* Remove from current wheel spoke     
+ 282              		.loc 1 265 14
+ 283 0060 7868     		ldr	r0, [r7, #4]
+ 284 0062 FFF7FEFF 		bl	OSTmr_Unlink
+ 266:./ucOSII/Core/os_tmr.c ****              OSTmr_Free(ptmr);                              /* Return timer to free list of timers 
+ 285              		.loc 1 266 14
+ 286 0066 7868     		ldr	r0, [r7, #4]
+ 287 0068 FFF7FEFF 		bl	OSTmr_Free
+ 267:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 288              		.loc 1 267 14
+ 289 006c FFF7FEFF 		bl	OSSchedUnlock
+ 268:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_NONE;
+ 290              		.loc 1 268 20
+ 291 0070 3B68     		ldr	r3, [r7]
+ 292 0072 0022     		movs	r2, #0
+ 293 0074 1A70     		strb	r2, [r3]
+ 269:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_DEL_EXIT(*perr);
+ 270:./ucOSII/Core/os_tmr.c ****              return (OS_TRUE);
+ 294              		.loc 1 270 21
+ 295 0076 0123     		movs	r3, #1
+ 296 0078 16E0     		b	.L18
+ 297              	.L25:
+ 271:./ucOSII/Core/os_tmr.c **** 
+ 272:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_STOPPED:                          /* Timer has not started or ...        
+ 273:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_COMPLETED:                        /* ... timer has completed the ONE-SHOT
+ 274:./ucOSII/Core/os_tmr.c ****              OSTmr_Free(ptmr);                              /* Return timer to free list of timers 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 11
+
+
+ 298              		.loc 1 274 14
+ 299 007a 7868     		ldr	r0, [r7, #4]
+ 300 007c FFF7FEFF 		bl	OSTmr_Free
+ 275:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 301              		.loc 1 275 14
+ 302 0080 FFF7FEFF 		bl	OSSchedUnlock
+ 276:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_NONE;
+ 303              		.loc 1 276 20
+ 304 0084 3B68     		ldr	r3, [r7]
+ 305 0086 0022     		movs	r2, #0
+ 306 0088 1A70     		strb	r2, [r3]
+ 277:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_DEL_EXIT(*perr);
+ 278:./ucOSII/Core/os_tmr.c ****              return (OS_TRUE);
+ 307              		.loc 1 278 21
+ 308 008a 0123     		movs	r3, #1
+ 309 008c 0CE0     		b	.L18
+ 310              	.L23:
+ 279:./ucOSII/Core/os_tmr.c **** 
+ 280:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_UNUSED:                           /* Already deleted                     
+ 281:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 311              		.loc 1 281 14
+ 312 008e FFF7FEFF 		bl	OSSchedUnlock
+ 282:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INACTIVE;
+ 313              		.loc 1 282 20
+ 314 0092 3B68     		ldr	r3, [r7]
+ 315 0094 8722     		movs	r2, #135
+ 316 0096 1A70     		strb	r2, [r3]
+ 283:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_DEL_EXIT(*perr);
+ 284:./ucOSII/Core/os_tmr.c ****              return (OS_FALSE);
+ 317              		.loc 1 284 21
+ 318 0098 0023     		movs	r3, #0
+ 319 009a 05E0     		b	.L18
+ 320              	.L22:
+ 285:./ucOSII/Core/os_tmr.c **** 
+ 286:./ucOSII/Core/os_tmr.c ****         default:
+ 287:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 321              		.loc 1 287 14
+ 322 009c FFF7FEFF 		bl	OSSchedUnlock
+ 288:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INVALID_STATE;
+ 323              		.loc 1 288 20
+ 324 00a0 3B68     		ldr	r3, [r7]
+ 325 00a2 8D22     		movs	r2, #141
+ 326 00a4 1A70     		strb	r2, [r3]
+ 289:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_DEL_EXIT(*perr);
+ 290:./ucOSII/Core/os_tmr.c ****              return (OS_FALSE);
+ 327              		.loc 1 290 21
+ 328 00a6 0023     		movs	r3, #0
+ 329              	.L18:
+ 291:./ucOSII/Core/os_tmr.c ****     }
+ 292:./ucOSII/Core/os_tmr.c **** }
+ 330              		.loc 1 292 1
+ 331 00a8 1846     		mov	r0, r3
+ 332 00aa 0837     		adds	r7, r7, #8
+ 333              	.LCFI8:
+ 334              		.cfi_def_cfa_offset 8
+ 335 00ac BD46     		mov	sp, r7
+ 336              	.LCFI9:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 12
+
+
+ 337              		.cfi_def_cfa_register 13
+ 338              		@ sp needed
+ 339 00ae 80BD     		pop	{r7, pc}
+ 340              	.L27:
+ 341              		.align	2
+ 342              	.L26:
+ 343 00b0 00000000 		.word	OSIntNesting
+ 344              		.cfi_endproc
+ 345              	.LFE4:
+ 347              		.section	.text.OSTmrNameGet,"ax",%progbits
+ 348              		.align	1
+ 349              		.global	OSTmrNameGet
+ 350              		.syntax unified
+ 351              		.thumb
+ 352              		.thumb_func
+ 354              	OSTmrNameGet:
+ 355              	.LFB5:
+ 293:./ucOSII/Core/os_tmr.c **** #endif
+ 294:./ucOSII/Core/os_tmr.c **** 
+ 295:./ucOSII/Core/os_tmr.c **** 
+ 296:./ucOSII/Core/os_tmr.c **** /*
+ 297:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 298:./ucOSII/Core/os_tmr.c **** *                                       GET THE NAME OF A TIMER
+ 299:./ucOSII/Core/os_tmr.c **** *
+ 300:./ucOSII/Core/os_tmr.c **** * Description: This function is called to obtain the name of a timer.
+ 301:./ucOSII/Core/os_tmr.c **** *
+ 302:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr          Is a pointer to the timer to obtain the name for
+ 303:./ucOSII/Core/os_tmr.c **** *
+ 304:./ucOSII/Core/os_tmr.c **** *              pdest         Is a pointer to pointer to where the name of the timer will be placed.
+ 305:./ucOSII/Core/os_tmr.c **** *
+ 306:./ucOSII/Core/os_tmr.c **** *              perr          Is a pointer to an error code.  '*perr' will contain one of the follow
+ 307:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_NONE               The call was successful
+ 308:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_DEST   'pdest' is a NULL pointer
+ 309:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID        'ptmr'  is a NULL pointer
+ 310:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_TYPE   'ptmr'  is not pointing to an OS_TMR
+ 311:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_NAME_GET_ISR       if the call was made from an ISR
+ 312:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INACTIVE       'ptmr'  points to a timer that is not act
+ 313:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_STATE  the timer is in an invalid state
+ 314:./ucOSII/Core/os_tmr.c **** *
+ 315:./ucOSII/Core/os_tmr.c **** * Returns    : The length of the string or 0 if the timer does not exist.
+ 316:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 317:./ucOSII/Core/os_tmr.c **** */
+ 318:./ucOSII/Core/os_tmr.c **** 
+ 319:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u && OS_TMR_CFG_NAME_EN > 0u
+ 320:./ucOSII/Core/os_tmr.c **** INT8U  OSTmrNameGet (OS_TMR   *ptmr,
+ 321:./ucOSII/Core/os_tmr.c ****                      INT8U   **pdest,
+ 322:./ucOSII/Core/os_tmr.c ****                      INT8U    *perr)
+ 323:./ucOSII/Core/os_tmr.c **** {
+ 356              		.loc 1 323 1
+ 357              		.cfi_startproc
+ 358              		@ args = 0, pretend = 0, frame = 24
+ 359              		@ frame_needed = 1, uses_anonymous_args = 0
+ 360 0000 80B5     		push	{r7, lr}
+ 361              	.LCFI10:
+ 362              		.cfi_def_cfa_offset 8
+ 363              		.cfi_offset 7, -8
+ 364              		.cfi_offset 14, -4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 13
+
+
+ 365 0002 86B0     		sub	sp, sp, #24
+ 366              	.LCFI11:
+ 367              		.cfi_def_cfa_offset 32
+ 368 0004 00AF     		add	r7, sp, #0
+ 369              	.LCFI12:
+ 370              		.cfi_def_cfa_register 7
+ 371 0006 F860     		str	r0, [r7, #12]
+ 372 0008 B960     		str	r1, [r7, #8]
+ 373 000a 7A60     		str	r2, [r7, #4]
+ 324:./ucOSII/Core/os_tmr.c ****     INT8U  len;
+ 325:./ucOSII/Core/os_tmr.c **** 
+ 326:./ucOSII/Core/os_tmr.c **** 
+ 327:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL
+ 328:./ucOSII/Core/os_tmr.c ****     if (perr == (INT8U *)0) {
+ 329:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 330:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 331:./ucOSII/Core/os_tmr.c ****     }
+ 332:./ucOSII/Core/os_tmr.c **** #endif
+ 333:./ucOSII/Core/os_tmr.c **** 
+ 334:./ucOSII/Core/os_tmr.c **** #if OS_ARG_CHK_EN > 0u
+ 335:./ucOSII/Core/os_tmr.c ****     if (pdest == (INT8U **)0) {
+ 374              		.loc 1 335 8
+ 375 000c BB68     		ldr	r3, [r7, #8]
+ 376 000e 002B     		cmp	r3, #0
+ 377 0010 04D1     		bne	.L29
+ 336:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID_DEST;
+ 378              		.loc 1 336 15
+ 379 0012 7B68     		ldr	r3, [r7, #4]
+ 380 0014 8822     		movs	r2, #136
+ 381 0016 1A70     		strb	r2, [r3]
+ 337:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 382              		.loc 1 337 16
+ 383 0018 0023     		movs	r3, #0
+ 384 001a 44E0     		b	.L30
+ 385              	.L29:
+ 338:./ucOSII/Core/os_tmr.c ****     }
+ 339:./ucOSII/Core/os_tmr.c ****     if (ptmr == (OS_TMR *)0) {
+ 386              		.loc 1 339 8
+ 387 001c FB68     		ldr	r3, [r7, #12]
+ 388 001e 002B     		cmp	r3, #0
+ 389 0020 04D1     		bne	.L31
+ 340:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID;
+ 390              		.loc 1 340 15
+ 391 0022 7B68     		ldr	r3, [r7, #4]
+ 392 0024 8A22     		movs	r2, #138
+ 393 0026 1A70     		strb	r2, [r3]
+ 341:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 394              		.loc 1 341 16
+ 395 0028 0023     		movs	r3, #0
+ 396 002a 3CE0     		b	.L30
+ 397              	.L31:
+ 342:./ucOSII/Core/os_tmr.c ****     }
+ 343:./ucOSII/Core/os_tmr.c **** #endif
+ 344:./ucOSII/Core/os_tmr.c ****     if (ptmr->OSTmrType != OS_TMR_TYPE) {              /* Validate timer structure                 
+ 398              		.loc 1 344 13
+ 399 002c FB68     		ldr	r3, [r7, #12]
+ 400 002e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 14
+
+
+ 401              		.loc 1 344 8
+ 402 0030 642B     		cmp	r3, #100
+ 403 0032 04D0     		beq	.L32
+ 345:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID_TYPE;
+ 404              		.loc 1 345 15
+ 405 0034 7B68     		ldr	r3, [r7, #4]
+ 406 0036 8922     		movs	r2, #137
+ 407 0038 1A70     		strb	r2, [r3]
+ 346:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 408              		.loc 1 346 16
+ 409 003a 0023     		movs	r3, #0
+ 410 003c 33E0     		b	.L30
+ 411              	.L32:
+ 347:./ucOSII/Core/os_tmr.c ****     }
+ 348:./ucOSII/Core/os_tmr.c ****     if (OSIntNesting > 0u) {                           /* See if trying to call from an ISR        
+ 412              		.loc 1 348 22
+ 413 003e 1C4B     		ldr	r3, .L36
+ 414 0040 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 415              		.loc 1 348 8
+ 416 0042 002B     		cmp	r3, #0
+ 417 0044 04D0     		beq	.L33
+ 349:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_NAME_GET_ISR;
+ 418              		.loc 1 349 15
+ 419 0046 7B68     		ldr	r3, [r7, #4]
+ 420 0048 1122     		movs	r2, #17
+ 421 004a 1A70     		strb	r2, [r3]
+ 350:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 422              		.loc 1 350 16
+ 423 004c 0023     		movs	r3, #0
+ 424 004e 2AE0     		b	.L30
+ 425              	.L33:
+ 351:./ucOSII/Core/os_tmr.c ****     }
+ 352:./ucOSII/Core/os_tmr.c ****     OSSchedLock();
+ 426              		.loc 1 352 5
+ 427 0050 FFF7FEFF 		bl	OSSchedLock
+ 353:./ucOSII/Core/os_tmr.c ****     switch (ptmr->OSTmrState) {
+ 428              		.loc 1 353 17
+ 429 0054 FB68     		ldr	r3, [r7, #12]
+ 430 0056 93F82530 		ldrb	r3, [r3, #37]	@ zero_extendqisi2
+ 431              		.loc 1 353 5
+ 432 005a 002B     		cmp	r3, #0
+ 433 005c 16D0     		beq	.L34
+ 434 005e 002B     		cmp	r3, #0
+ 435 0060 1BDB     		blt	.L35
+ 436 0062 013B     		subs	r3, r3, #1
+ 437 0064 022B     		cmp	r3, #2
+ 438 0066 18D8     		bhi	.L35
+ 354:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_RUNNING:
+ 355:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_STOPPED:
+ 356:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_COMPLETED:
+ 357:./ucOSII/Core/os_tmr.c ****              *pdest = ptmr->OSTmrName;
+ 439              		.loc 1 357 27
+ 440 0068 FB68     		ldr	r3, [r7, #12]
+ 441 006a 1A6A     		ldr	r2, [r3, #32]
+ 442              		.loc 1 357 21
+ 443 006c BB68     		ldr	r3, [r7, #8]
+ 444 006e 1A60     		str	r2, [r3]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 15
+
+
+ 358:./ucOSII/Core/os_tmr.c ****              len    = OS_StrLen(*pdest);
+ 445              		.loc 1 358 23
+ 446 0070 BB68     		ldr	r3, [r7, #8]
+ 447 0072 1B68     		ldr	r3, [r3]
+ 448 0074 1846     		mov	r0, r3
+ 449 0076 FFF7FEFF 		bl	OS_StrLen
+ 450 007a 0346     		mov	r3, r0
+ 451 007c FB75     		strb	r3, [r7, #23]
+ 359:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 452              		.loc 1 359 14
+ 453 007e FFF7FEFF 		bl	OSSchedUnlock
+ 360:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_NONE;
+ 454              		.loc 1 360 20
+ 455 0082 7B68     		ldr	r3, [r7, #4]
+ 456 0084 0022     		movs	r2, #0
+ 457 0086 1A70     		strb	r2, [r3]
+ 361:./ucOSII/Core/os_tmr.c ****              return (len);
+ 458              		.loc 1 361 21
+ 459 0088 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 460 008a 0CE0     		b	.L30
+ 461              	.L34:
+ 362:./ucOSII/Core/os_tmr.c **** 
+ 363:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_UNUSED:                      /* Timer is not allocated                   
+ 364:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 462              		.loc 1 364 14
+ 463 008c FFF7FEFF 		bl	OSSchedUnlock
+ 365:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INACTIVE;
+ 464              		.loc 1 365 20
+ 465 0090 7B68     		ldr	r3, [r7, #4]
+ 466 0092 8722     		movs	r2, #135
+ 467 0094 1A70     		strb	r2, [r3]
+ 366:./ucOSII/Core/os_tmr.c ****              return (0u);
+ 468              		.loc 1 366 21
+ 469 0096 0023     		movs	r3, #0
+ 470 0098 05E0     		b	.L30
+ 471              	.L35:
+ 367:./ucOSII/Core/os_tmr.c **** 
+ 368:./ucOSII/Core/os_tmr.c ****         default:
+ 369:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 472              		.loc 1 369 14
+ 473 009a FFF7FEFF 		bl	OSSchedUnlock
+ 370:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INVALID_STATE;
+ 474              		.loc 1 370 20
+ 475 009e 7B68     		ldr	r3, [r7, #4]
+ 476 00a0 8D22     		movs	r2, #141
+ 477 00a2 1A70     		strb	r2, [r3]
+ 371:./ucOSII/Core/os_tmr.c ****              return (0u);
+ 478              		.loc 1 371 21
+ 479 00a4 0023     		movs	r3, #0
+ 480              	.L30:
+ 372:./ucOSII/Core/os_tmr.c ****     }
+ 373:./ucOSII/Core/os_tmr.c **** }
+ 481              		.loc 1 373 1
+ 482 00a6 1846     		mov	r0, r3
+ 483 00a8 1837     		adds	r7, r7, #24
+ 484              	.LCFI13:
+ 485              		.cfi_def_cfa_offset 8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 16
+
+
+ 486 00aa BD46     		mov	sp, r7
+ 487              	.LCFI14:
+ 488              		.cfi_def_cfa_register 13
+ 489              		@ sp needed
+ 490 00ac 80BD     		pop	{r7, pc}
+ 491              	.L37:
+ 492 00ae 00BF     		.align	2
+ 493              	.L36:
+ 494 00b0 00000000 		.word	OSIntNesting
+ 495              		.cfi_endproc
+ 496              	.LFE5:
+ 498              		.section	.text.OSTmrRemainGet,"ax",%progbits
+ 499              		.align	1
+ 500              		.global	OSTmrRemainGet
+ 501              		.syntax unified
+ 502              		.thumb
+ 503              		.thumb_func
+ 505              	OSTmrRemainGet:
+ 506              	.LFB6:
+ 374:./ucOSII/Core/os_tmr.c **** #endif
+ 375:./ucOSII/Core/os_tmr.c **** 
+ 376:./ucOSII/Core/os_tmr.c **** 
+ 377:./ucOSII/Core/os_tmr.c **** /*
+ 378:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 379:./ucOSII/Core/os_tmr.c **** *                          GET HOW MUCH TIME IS LEFT BEFORE A TIMER EXPIRES
+ 380:./ucOSII/Core/os_tmr.c **** *
+ 381:./ucOSII/Core/os_tmr.c **** * Description: This function is called to get the number of ticks before a timer times out.
+ 382:./ucOSII/Core/os_tmr.c **** *
+ 383:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr          Is a pointer to the timer to obtain the remaining time from.
+ 384:./ucOSII/Core/os_tmr.c **** *
+ 385:./ucOSII/Core/os_tmr.c **** *              perr          Is a pointer to an error code.  '*perr' will contain one of the follow
+ 386:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_NONE
+ 387:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID        'ptmr' is a NULL pointer
+ 388:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_TYPE   'ptmr'  is not pointing to an OS_TMR
+ 389:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_ISR            if the call was made from an ISR
+ 390:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INACTIVE       'ptmr' points to a timer that is not acti
+ 391:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_STATE  the timer is in an invalid state
+ 392:./ucOSII/Core/os_tmr.c **** *
+ 393:./ucOSII/Core/os_tmr.c **** * Returns    : The time remaining for the timer to expire.  The time represents 'timer' increments.
+ 394:./ucOSII/Core/os_tmr.c **** *              In other words, if OSTmr_Task() is signaled every 1/10 of a second then the returned
+ 395:./ucOSII/Core/os_tmr.c **** *              value represents the number of 1/10 of a second remaining before the timer expires.
+ 396:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 397:./ucOSII/Core/os_tmr.c **** */
+ 398:./ucOSII/Core/os_tmr.c **** 
+ 399:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 400:./ucOSII/Core/os_tmr.c **** INT32U  OSTmrRemainGet (OS_TMR  *ptmr,
+ 401:./ucOSII/Core/os_tmr.c ****                         INT8U   *perr)
+ 402:./ucOSII/Core/os_tmr.c **** {
+ 507              		.loc 1 402 1
+ 508              		.cfi_startproc
+ 509              		@ args = 0, pretend = 0, frame = 16
+ 510              		@ frame_needed = 1, uses_anonymous_args = 0
+ 511 0000 80B5     		push	{r7, lr}
+ 512              	.LCFI15:
+ 513              		.cfi_def_cfa_offset 8
+ 514              		.cfi_offset 7, -8
+ 515              		.cfi_offset 14, -4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 17
+
+
+ 516 0002 84B0     		sub	sp, sp, #16
+ 517              	.LCFI16:
+ 518              		.cfi_def_cfa_offset 24
+ 519 0004 00AF     		add	r7, sp, #0
+ 520              	.LCFI17:
+ 521              		.cfi_def_cfa_register 7
+ 522 0006 7860     		str	r0, [r7, #4]
+ 523 0008 3960     		str	r1, [r7]
+ 403:./ucOSII/Core/os_tmr.c ****     INT32U  remain;
+ 404:./ucOSII/Core/os_tmr.c **** 
+ 405:./ucOSII/Core/os_tmr.c **** 
+ 406:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL
+ 407:./ucOSII/Core/os_tmr.c ****     if (perr == (INT8U *)0) {
+ 408:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 409:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 410:./ucOSII/Core/os_tmr.c ****     }
+ 411:./ucOSII/Core/os_tmr.c **** #endif
+ 412:./ucOSII/Core/os_tmr.c **** 
+ 413:./ucOSII/Core/os_tmr.c **** #if OS_ARG_CHK_EN > 0u
+ 414:./ucOSII/Core/os_tmr.c ****     if (ptmr == (OS_TMR *)0) {
+ 524              		.loc 1 414 8
+ 525 000a 7B68     		ldr	r3, [r7, #4]
+ 526 000c 002B     		cmp	r3, #0
+ 527 000e 04D1     		bne	.L39
+ 415:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID;
+ 528              		.loc 1 415 15
+ 529 0010 3B68     		ldr	r3, [r7]
+ 530 0012 8A22     		movs	r2, #138
+ 531 0014 1A70     		strb	r2, [r3]
+ 416:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 532              		.loc 1 416 16
+ 533 0016 0023     		movs	r3, #0
+ 534 0018 66E0     		b	.L40
+ 535              	.L39:
+ 417:./ucOSII/Core/os_tmr.c ****     }
+ 418:./ucOSII/Core/os_tmr.c **** #endif
+ 419:./ucOSII/Core/os_tmr.c ****     if (ptmr->OSTmrType != OS_TMR_TYPE) {              /* Validate timer structure                 
+ 536              		.loc 1 419 13
+ 537 001a 7B68     		ldr	r3, [r7, #4]
+ 538 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 539              		.loc 1 419 8
+ 540 001e 642B     		cmp	r3, #100
+ 541 0020 04D0     		beq	.L41
+ 420:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID_TYPE;
+ 542              		.loc 1 420 15
+ 543 0022 3B68     		ldr	r3, [r7]
+ 544 0024 8922     		movs	r2, #137
+ 545 0026 1A70     		strb	r2, [r3]
+ 421:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 546              		.loc 1 421 16
+ 547 0028 0023     		movs	r3, #0
+ 548 002a 5DE0     		b	.L40
+ 549              	.L41:
+ 422:./ucOSII/Core/os_tmr.c ****     }
+ 423:./ucOSII/Core/os_tmr.c ****     if (OSIntNesting > 0u) {                           /* See if trying to call from an ISR        
+ 550              		.loc 1 423 22
+ 551 002c 304B     		ldr	r3, .L53
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 18
+
+
+ 552 002e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 553              		.loc 1 423 8
+ 554 0030 002B     		cmp	r3, #0
+ 555 0032 04D0     		beq	.L42
+ 424:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_ISR;
+ 556              		.loc 1 424 15
+ 557 0034 3B68     		ldr	r3, [r7]
+ 558 0036 8B22     		movs	r2, #139
+ 559 0038 1A70     		strb	r2, [r3]
+ 425:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 560              		.loc 1 425 16
+ 561 003a 0023     		movs	r3, #0
+ 562 003c 54E0     		b	.L40
+ 563              	.L42:
+ 426:./ucOSII/Core/os_tmr.c ****     }
+ 427:./ucOSII/Core/os_tmr.c ****     OSSchedLock();
+ 564              		.loc 1 427 5
+ 565 003e FFF7FEFF 		bl	OSSchedLock
+ 428:./ucOSII/Core/os_tmr.c ****     switch (ptmr->OSTmrState) {
+ 566              		.loc 1 428 17
+ 567 0042 7B68     		ldr	r3, [r7, #4]
+ 568 0044 93F82530 		ldrb	r3, [r3, #37]	@ zero_extendqisi2
+ 569              		.loc 1 428 5
+ 570 0048 032B     		cmp	r3, #3
+ 571 004a 47D8     		bhi	.L43
+ 572 004c 01A2     		adr	r2, .L45
+ 573 004e 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 574 0052 00BF     		.p2align 2
+ 575              	.L45:
+ 576 0054 CF000000 		.word	.L48+1
+ 577 0058 7F000000 		.word	.L47+1
+ 578 005c C1000000 		.word	.L46+1
+ 579 0060 65000000 		.word	.L44+1
+ 580              		.p2align 1
+ 581              	.L44:
+ 429:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_RUNNING:
+ 430:./ucOSII/Core/os_tmr.c ****              remain = ptmr->OSTmrMatch - OSTmrTime;    /* Determine how much time is left to timeou
+ 582              		.loc 1 430 27
+ 583 0064 7B68     		ldr	r3, [r7, #4]
+ 584 0066 5A69     		ldr	r2, [r3, #20]
+ 585              		.loc 1 430 40
+ 586 0068 224B     		ldr	r3, .L53+4
+ 587 006a 1B68     		ldr	r3, [r3]
+ 588              		.loc 1 430 21
+ 589 006c D31A     		subs	r3, r2, r3
+ 590 006e FB60     		str	r3, [r7, #12]
+ 431:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 591              		.loc 1 431 14
+ 592 0070 FFF7FEFF 		bl	OSSchedUnlock
+ 432:./ucOSII/Core/os_tmr.c ****              *perr  = OS_ERR_NONE;
+ 593              		.loc 1 432 21
+ 594 0074 3B68     		ldr	r3, [r7]
+ 595 0076 0022     		movs	r2, #0
+ 596 0078 1A70     		strb	r2, [r3]
+ 433:./ucOSII/Core/os_tmr.c ****              return (remain);
+ 597              		.loc 1 433 21
+ 598 007a FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 19
+
+
+ 599 007c 34E0     		b	.L40
+ 600              	.L47:
+ 434:./ucOSII/Core/os_tmr.c **** 
+ 435:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_STOPPED:                     /* It's assumed that the timer has not start
+ 436:./ucOSII/Core/os_tmr.c ****              switch (ptmr->OSTmrOpt) {
+ 601              		.loc 1 436 26
+ 602 007e 7B68     		ldr	r3, [r7, #4]
+ 603 0080 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
+ 604 0084 022B     		cmp	r3, #2
+ 605 0086 10D1     		bne	.L49
+ 437:./ucOSII/Core/os_tmr.c ****                  case OS_TMR_OPT_PERIODIC:
+ 438:./ucOSII/Core/os_tmr.c ****                       if (ptmr->OSTmrDly == 0u) {
+ 606              		.loc 1 438 31
+ 607 0088 7B68     		ldr	r3, [r7, #4]
+ 608 008a 9B69     		ldr	r3, [r3, #24]
+ 609              		.loc 1 438 26
+ 610 008c 002B     		cmp	r3, #0
+ 611 008e 03D1     		bne	.L50
+ 439:./ucOSII/Core/os_tmr.c ****                           remain = ptmr->OSTmrPeriod;
+ 612              		.loc 1 439 34
+ 613 0090 7B68     		ldr	r3, [r7, #4]
+ 614 0092 DB69     		ldr	r3, [r3, #28]
+ 615 0094 FB60     		str	r3, [r7, #12]
+ 616 0096 02E0     		b	.L51
+ 617              	.L50:
+ 440:./ucOSII/Core/os_tmr.c ****                       } else {
+ 441:./ucOSII/Core/os_tmr.c ****                           remain = ptmr->OSTmrDly;
+ 618              		.loc 1 441 34
+ 619 0098 7B68     		ldr	r3, [r7, #4]
+ 620 009a 9B69     		ldr	r3, [r3, #24]
+ 621 009c FB60     		str	r3, [r7, #12]
+ 622              	.L51:
+ 442:./ucOSII/Core/os_tmr.c ****                       }
+ 443:./ucOSII/Core/os_tmr.c ****                       OSSchedUnlock();
+ 623              		.loc 1 443 23
+ 624 009e FFF7FEFF 		bl	OSSchedUnlock
+ 444:./ucOSII/Core/os_tmr.c ****                       *perr  = OS_ERR_NONE;
+ 625              		.loc 1 444 30
+ 626 00a2 3B68     		ldr	r3, [r7]
+ 627 00a4 0022     		movs	r2, #0
+ 628 00a6 1A70     		strb	r2, [r3]
+ 445:./ucOSII/Core/os_tmr.c ****                       break;
+ 629              		.loc 1 445 23
+ 630 00a8 08E0     		b	.L52
+ 631              	.L49:
+ 446:./ucOSII/Core/os_tmr.c **** 
+ 447:./ucOSII/Core/os_tmr.c ****                  case OS_TMR_OPT_ONE_SHOT:
+ 448:./ucOSII/Core/os_tmr.c ****                  default:
+ 449:./ucOSII/Core/os_tmr.c ****                       remain = ptmr->OSTmrDly;
+ 632              		.loc 1 449 30
+ 633 00aa 7B68     		ldr	r3, [r7, #4]
+ 634 00ac 9B69     		ldr	r3, [r3, #24]
+ 635 00ae FB60     		str	r3, [r7, #12]
+ 450:./ucOSII/Core/os_tmr.c ****                       OSSchedUnlock();
+ 636              		.loc 1 450 23
+ 637 00b0 FFF7FEFF 		bl	OSSchedUnlock
+ 451:./ucOSII/Core/os_tmr.c ****                       *perr  = OS_ERR_NONE;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 20
+
+
+ 638              		.loc 1 451 30
+ 639 00b4 3B68     		ldr	r3, [r7]
+ 640 00b6 0022     		movs	r2, #0
+ 641 00b8 1A70     		strb	r2, [r3]
+ 452:./ucOSII/Core/os_tmr.c ****                       break;
+ 642              		.loc 1 452 23
+ 643 00ba 00BF     		nop
+ 644              	.L52:
+ 453:./ucOSII/Core/os_tmr.c ****              }
+ 454:./ucOSII/Core/os_tmr.c ****              return (remain);
+ 645              		.loc 1 454 21
+ 646 00bc FB68     		ldr	r3, [r7, #12]
+ 647 00be 13E0     		b	.L40
+ 648              	.L46:
+ 455:./ucOSII/Core/os_tmr.c **** 
+ 456:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_COMPLETED:                   /* Only ONE-SHOT that timed out can be in th
+ 457:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 649              		.loc 1 457 14
+ 650 00c0 FFF7FEFF 		bl	OSSchedUnlock
+ 458:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_NONE;
+ 651              		.loc 1 458 20
+ 652 00c4 3B68     		ldr	r3, [r7]
+ 653 00c6 0022     		movs	r2, #0
+ 654 00c8 1A70     		strb	r2, [r3]
+ 459:./ucOSII/Core/os_tmr.c ****              return (0u);
+ 655              		.loc 1 459 21
+ 656 00ca 0023     		movs	r3, #0
+ 657 00cc 0CE0     		b	.L40
+ 658              	.L48:
+ 460:./ucOSII/Core/os_tmr.c **** 
+ 461:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_UNUSED:
+ 462:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 659              		.loc 1 462 14
+ 660 00ce FFF7FEFF 		bl	OSSchedUnlock
+ 463:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INACTIVE;
+ 661              		.loc 1 463 20
+ 662 00d2 3B68     		ldr	r3, [r7]
+ 663 00d4 8722     		movs	r2, #135
+ 664 00d6 1A70     		strb	r2, [r3]
+ 464:./ucOSII/Core/os_tmr.c ****              return (0u);
+ 665              		.loc 1 464 21
+ 666 00d8 0023     		movs	r3, #0
+ 667 00da 05E0     		b	.L40
+ 668              	.L43:
+ 465:./ucOSII/Core/os_tmr.c **** 
+ 466:./ucOSII/Core/os_tmr.c ****         default:
+ 467:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 669              		.loc 1 467 14
+ 670 00dc FFF7FEFF 		bl	OSSchedUnlock
+ 468:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INVALID_STATE;
+ 671              		.loc 1 468 20
+ 672 00e0 3B68     		ldr	r3, [r7]
+ 673 00e2 8D22     		movs	r2, #141
+ 674 00e4 1A70     		strb	r2, [r3]
+ 469:./ucOSII/Core/os_tmr.c ****              return (0u);
+ 675              		.loc 1 469 21
+ 676 00e6 0023     		movs	r3, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 21
+
+
+ 677              	.L40:
+ 470:./ucOSII/Core/os_tmr.c ****     }
+ 471:./ucOSII/Core/os_tmr.c **** }
+ 678              		.loc 1 471 1
+ 679 00e8 1846     		mov	r0, r3
+ 680 00ea 1037     		adds	r7, r7, #16
+ 681              	.LCFI18:
+ 682              		.cfi_def_cfa_offset 8
+ 683 00ec BD46     		mov	sp, r7
+ 684              	.LCFI19:
+ 685              		.cfi_def_cfa_register 13
+ 686              		@ sp needed
+ 687 00ee 80BD     		pop	{r7, pc}
+ 688              	.L54:
+ 689              		.align	2
+ 690              	.L53:
+ 691 00f0 00000000 		.word	OSIntNesting
+ 692 00f4 00000000 		.word	OSTmrTime
+ 693              		.cfi_endproc
+ 694              	.LFE6:
+ 696              		.section	.text.OSTmrStateGet,"ax",%progbits
+ 697              		.align	1
+ 698              		.global	OSTmrStateGet
+ 699              		.syntax unified
+ 700              		.thumb
+ 701              		.thumb_func
+ 703              	OSTmrStateGet:
+ 704              	.LFB7:
+ 472:./ucOSII/Core/os_tmr.c **** #endif
+ 473:./ucOSII/Core/os_tmr.c **** 
+ 474:./ucOSII/Core/os_tmr.c **** 
+ 475:./ucOSII/Core/os_tmr.c **** /*
+ 476:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 477:./ucOSII/Core/os_tmr.c **** *                                  FIND OUT WHAT STATE A TIMER IS IN
+ 478:./ucOSII/Core/os_tmr.c **** *
+ 479:./ucOSII/Core/os_tmr.c **** * Description: This function is called to determine what state the timer is in:
+ 480:./ucOSII/Core/os_tmr.c **** *
+ 481:./ucOSII/Core/os_tmr.c **** *                  OS_TMR_STATE_UNUSED     the timer has not been created
+ 482:./ucOSII/Core/os_tmr.c **** *                  OS_TMR_STATE_STOPPED    the timer has been created but has not been started or h
+ 483:./ucOSII/Core/os_tmr.c **** *                  OS_TMR_STATE_COMPLETED  the timer is in ONE-SHOT mode and has completed it's tim
+ 484:./ucOSII/Core/os_tmr.c **** *                  OS_TMR_STATE_RUNNING    the timer is currently running
+ 485:./ucOSII/Core/os_tmr.c **** *
+ 486:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr          Is a pointer to the desired timer
+ 487:./ucOSII/Core/os_tmr.c **** *
+ 488:./ucOSII/Core/os_tmr.c **** *              perr          Is a pointer to an error code.  '*perr' will contain one of the follow
+ 489:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_NONE
+ 490:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID        'ptmr' is a NULL pointer
+ 491:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_TYPE   'ptmr'  is not pointing to an OS_TMR
+ 492:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_ISR            if the call was made from an ISR
+ 493:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INACTIVE       'ptmr' points to a timer that is not acti
+ 494:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_STATE  if the timer is not in a valid state
+ 495:./ucOSII/Core/os_tmr.c **** *
+ 496:./ucOSII/Core/os_tmr.c **** * Returns    : The current state of the timer (see description).
+ 497:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 498:./ucOSII/Core/os_tmr.c **** */
+ 499:./ucOSII/Core/os_tmr.c **** 
+ 500:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 22
+
+
+ 501:./ucOSII/Core/os_tmr.c **** INT8U  OSTmrStateGet (OS_TMR  *ptmr,
+ 502:./ucOSII/Core/os_tmr.c ****                       INT8U   *perr)
+ 503:./ucOSII/Core/os_tmr.c **** {
+ 705              		.loc 1 503 1
+ 706              		.cfi_startproc
+ 707              		@ args = 0, pretend = 0, frame = 16
+ 708              		@ frame_needed = 1, uses_anonymous_args = 0
+ 709 0000 80B5     		push	{r7, lr}
+ 710              	.LCFI20:
+ 711              		.cfi_def_cfa_offset 8
+ 712              		.cfi_offset 7, -8
+ 713              		.cfi_offset 14, -4
+ 714 0002 84B0     		sub	sp, sp, #16
+ 715              	.LCFI21:
+ 716              		.cfi_def_cfa_offset 24
+ 717 0004 00AF     		add	r7, sp, #0
+ 718              	.LCFI22:
+ 719              		.cfi_def_cfa_register 7
+ 720 0006 7860     		str	r0, [r7, #4]
+ 721 0008 3960     		str	r1, [r7]
+ 504:./ucOSII/Core/os_tmr.c ****     INT8U  state;
+ 505:./ucOSII/Core/os_tmr.c **** 
+ 506:./ucOSII/Core/os_tmr.c **** 
+ 507:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL
+ 508:./ucOSII/Core/os_tmr.c ****     if (perr == (INT8U *)0) {
+ 509:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 510:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 511:./ucOSII/Core/os_tmr.c ****     }
+ 512:./ucOSII/Core/os_tmr.c **** #endif
+ 513:./ucOSII/Core/os_tmr.c **** 
+ 514:./ucOSII/Core/os_tmr.c **** #if OS_ARG_CHK_EN > 0u
+ 515:./ucOSII/Core/os_tmr.c ****     if (ptmr == (OS_TMR *)0) {
+ 722              		.loc 1 515 8
+ 723 000a 7B68     		ldr	r3, [r7, #4]
+ 724 000c 002B     		cmp	r3, #0
+ 725 000e 04D1     		bne	.L56
+ 516:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID;
+ 726              		.loc 1 516 15
+ 727 0010 3B68     		ldr	r3, [r7]
+ 728 0012 8A22     		movs	r2, #138
+ 729 0014 1A70     		strb	r2, [r3]
+ 517:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 730              		.loc 1 517 16
+ 731 0016 0023     		movs	r3, #0
+ 732 0018 25E0     		b	.L57
+ 733              	.L56:
+ 518:./ucOSII/Core/os_tmr.c ****     }
+ 519:./ucOSII/Core/os_tmr.c **** #endif
+ 520:./ucOSII/Core/os_tmr.c ****     if (ptmr->OSTmrType != OS_TMR_TYPE) {              /* Validate timer structure                 
+ 734              		.loc 1 520 13
+ 735 001a 7B68     		ldr	r3, [r7, #4]
+ 736 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 737              		.loc 1 520 8
+ 738 001e 642B     		cmp	r3, #100
+ 739 0020 04D0     		beq	.L58
+ 521:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID_TYPE;
+ 740              		.loc 1 521 15
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 23
+
+
+ 741 0022 3B68     		ldr	r3, [r7]
+ 742 0024 8922     		movs	r2, #137
+ 743 0026 1A70     		strb	r2, [r3]
+ 522:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 744              		.loc 1 522 16
+ 745 0028 0023     		movs	r3, #0
+ 746 002a 1CE0     		b	.L57
+ 747              	.L58:
+ 523:./ucOSII/Core/os_tmr.c ****     }
+ 524:./ucOSII/Core/os_tmr.c ****     if (OSIntNesting > 0u) {                           /* See if trying to call from an ISR        
+ 748              		.loc 1 524 22
+ 749 002c 104B     		ldr	r3, .L62
+ 750 002e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 751              		.loc 1 524 8
+ 752 0030 002B     		cmp	r3, #0
+ 753 0032 04D0     		beq	.L59
+ 525:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_ISR;
+ 754              		.loc 1 525 15
+ 755 0034 3B68     		ldr	r3, [r7]
+ 756 0036 8B22     		movs	r2, #139
+ 757 0038 1A70     		strb	r2, [r3]
+ 526:./ucOSII/Core/os_tmr.c ****         return (0u);
+ 758              		.loc 1 526 16
+ 759 003a 0023     		movs	r3, #0
+ 760 003c 13E0     		b	.L57
+ 761              	.L59:
+ 527:./ucOSII/Core/os_tmr.c ****     }
+ 528:./ucOSII/Core/os_tmr.c ****     OSSchedLock();
+ 762              		.loc 1 528 5
+ 763 003e FFF7FEFF 		bl	OSSchedLock
+ 529:./ucOSII/Core/os_tmr.c ****     state = ptmr->OSTmrState;
+ 764              		.loc 1 529 11
+ 765 0042 7B68     		ldr	r3, [r7, #4]
+ 766 0044 93F82530 		ldrb	r3, [r3, #37]
+ 767 0048 FB73     		strb	r3, [r7, #15]
+ 530:./ucOSII/Core/os_tmr.c ****     switch (state) {
+ 768              		.loc 1 530 5
+ 769 004a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 770 004c 032B     		cmp	r3, #3
+ 771 004e 03D8     		bhi	.L60
+ 531:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_UNUSED:
+ 532:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_STOPPED:
+ 533:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_COMPLETED:
+ 534:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_RUNNING:
+ 535:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_NONE;
+ 772              		.loc 1 535 20
+ 773 0050 3B68     		ldr	r3, [r7]
+ 774 0052 0022     		movs	r2, #0
+ 775 0054 1A70     		strb	r2, [r3]
+ 536:./ucOSII/Core/os_tmr.c ****              break;
+ 776              		.loc 1 536 14
+ 777 0056 03E0     		b	.L61
+ 778              	.L60:
+ 537:./ucOSII/Core/os_tmr.c **** 
+ 538:./ucOSII/Core/os_tmr.c ****         default:
+ 539:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INVALID_STATE;
+ 779              		.loc 1 539 20
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 24
+
+
+ 780 0058 3B68     		ldr	r3, [r7]
+ 781 005a 8D22     		movs	r2, #141
+ 782 005c 1A70     		strb	r2, [r3]
+ 540:./ucOSII/Core/os_tmr.c ****              break;
+ 783              		.loc 1 540 14
+ 784 005e 00BF     		nop
+ 785              	.L61:
+ 541:./ucOSII/Core/os_tmr.c ****     }
+ 542:./ucOSII/Core/os_tmr.c ****     OSSchedUnlock();
+ 786              		.loc 1 542 5
+ 787 0060 FFF7FEFF 		bl	OSSchedUnlock
+ 543:./ucOSII/Core/os_tmr.c ****     return (state);
+ 788              		.loc 1 543 12
+ 789 0064 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 790              	.L57:
+ 544:./ucOSII/Core/os_tmr.c **** }
+ 791              		.loc 1 544 1
+ 792 0066 1846     		mov	r0, r3
+ 793 0068 1037     		adds	r7, r7, #16
+ 794              	.LCFI23:
+ 795              		.cfi_def_cfa_offset 8
+ 796 006a BD46     		mov	sp, r7
+ 797              	.LCFI24:
+ 798              		.cfi_def_cfa_register 13
+ 799              		@ sp needed
+ 800 006c 80BD     		pop	{r7, pc}
+ 801              	.L63:
+ 802 006e 00BF     		.align	2
+ 803              	.L62:
+ 804 0070 00000000 		.word	OSIntNesting
+ 805              		.cfi_endproc
+ 806              	.LFE7:
+ 808              		.section	.text.OSTmrStart,"ax",%progbits
+ 809              		.align	1
+ 810              		.global	OSTmrStart
+ 811              		.syntax unified
+ 812              		.thumb
+ 813              		.thumb_func
+ 815              	OSTmrStart:
+ 816              	.LFB8:
+ 545:./ucOSII/Core/os_tmr.c **** #endif
+ 546:./ucOSII/Core/os_tmr.c **** 
+ 547:./ucOSII/Core/os_tmr.c **** 
+ 548:./ucOSII/Core/os_tmr.c **** /*
+ 549:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 550:./ucOSII/Core/os_tmr.c **** *                                            START A TIMER
+ 551:./ucOSII/Core/os_tmr.c **** *
+ 552:./ucOSII/Core/os_tmr.c **** * Description: This function is called by your application code to start a timer.
+ 553:./ucOSII/Core/os_tmr.c **** *
+ 554:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr          Is a pointer to an OS_TMR
+ 555:./ucOSII/Core/os_tmr.c **** *
+ 556:./ucOSII/Core/os_tmr.c **** *              perr          Is a pointer to an error code.  '*perr' will contain one of the follow
+ 557:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_NONE
+ 558:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID
+ 559:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_TYPE    'ptmr'  is not pointing to an OS_TMR
+ 560:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_ISR             if the call was made from an ISR
+ 561:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INACTIVE        if the timer was not created
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 25
+
+
+ 562:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_STATE   the timer is in an invalid state
+ 563:./ucOSII/Core/os_tmr.c **** *
+ 564:./ucOSII/Core/os_tmr.c **** * Returns    : OS_TRUE    if the timer was started
+ 565:./ucOSII/Core/os_tmr.c **** *              OS_FALSE   if an error was detected
+ 566:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 567:./ucOSII/Core/os_tmr.c **** */
+ 568:./ucOSII/Core/os_tmr.c **** 
+ 569:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 570:./ucOSII/Core/os_tmr.c **** BOOLEAN  OSTmrStart (OS_TMR   *ptmr,
+ 571:./ucOSII/Core/os_tmr.c ****                      INT8U    *perr)
+ 572:./ucOSII/Core/os_tmr.c **** {
+ 817              		.loc 1 572 1
+ 818              		.cfi_startproc
+ 819              		@ args = 0, pretend = 0, frame = 8
+ 820              		@ frame_needed = 1, uses_anonymous_args = 0
+ 821 0000 80B5     		push	{r7, lr}
+ 822              	.LCFI25:
+ 823              		.cfi_def_cfa_offset 8
+ 824              		.cfi_offset 7, -8
+ 825              		.cfi_offset 14, -4
+ 826 0002 82B0     		sub	sp, sp, #8
+ 827              	.LCFI26:
+ 828              		.cfi_def_cfa_offset 16
+ 829 0004 00AF     		add	r7, sp, #0
+ 830              	.LCFI27:
+ 831              		.cfi_def_cfa_register 7
+ 832 0006 7860     		str	r0, [r7, #4]
+ 833 0008 3960     		str	r1, [r7]
+ 573:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL
+ 574:./ucOSII/Core/os_tmr.c ****     if (perr == (INT8U *)0) {
+ 575:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 576:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 577:./ucOSII/Core/os_tmr.c ****     }
+ 578:./ucOSII/Core/os_tmr.c **** #endif
+ 579:./ucOSII/Core/os_tmr.c **** 
+ 580:./ucOSII/Core/os_tmr.c **** #if OS_ARG_CHK_EN > 0u
+ 581:./ucOSII/Core/os_tmr.c ****     if (ptmr == (OS_TMR *)0) {
+ 834              		.loc 1 581 8
+ 835 000a 7B68     		ldr	r3, [r7, #4]
+ 836 000c 002B     		cmp	r3, #0
+ 837 000e 04D1     		bne	.L65
+ 582:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID;
+ 838              		.loc 1 582 15
+ 839 0010 3B68     		ldr	r3, [r7]
+ 840 0012 8A22     		movs	r2, #138
+ 841 0014 1A70     		strb	r2, [r3]
+ 583:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 842              		.loc 1 583 16
+ 843 0016 0023     		movs	r3, #0
+ 844 0018 48E0     		b	.L66
+ 845              	.L65:
+ 584:./ucOSII/Core/os_tmr.c ****     }
+ 585:./ucOSII/Core/os_tmr.c **** #endif
+ 586:./ucOSII/Core/os_tmr.c **** 
+ 587:./ucOSII/Core/os_tmr.c ****     OS_TRACE_TMR_START_ENTER(ptmr);
+ 588:./ucOSII/Core/os_tmr.c **** 
+ 589:./ucOSII/Core/os_tmr.c ****     if (ptmr->OSTmrType != OS_TMR_TYPE) {                   /* Validate timer structure            
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 26
+
+
+ 846              		.loc 1 589 13
+ 847 001a 7B68     		ldr	r3, [r7, #4]
+ 848 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 849              		.loc 1 589 8
+ 850 001e 642B     		cmp	r3, #100
+ 851 0020 04D0     		beq	.L67
+ 590:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID_TYPE;
+ 852              		.loc 1 590 15
+ 853 0022 3B68     		ldr	r3, [r7]
+ 854 0024 8922     		movs	r2, #137
+ 855 0026 1A70     		strb	r2, [r3]
+ 591:./ucOSII/Core/os_tmr.c ****         OS_TRACE_TMR_START_EXIT(*perr);
+ 592:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 856              		.loc 1 592 16
+ 857 0028 0023     		movs	r3, #0
+ 858 002a 3FE0     		b	.L66
+ 859              	.L67:
+ 593:./ucOSII/Core/os_tmr.c ****     }
+ 594:./ucOSII/Core/os_tmr.c ****     if (OSIntNesting > 0u) {                                /* See if trying to call from an ISR   
+ 860              		.loc 1 594 22
+ 861 002c 214B     		ldr	r3, .L74
+ 862 002e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 863              		.loc 1 594 8
+ 864 0030 002B     		cmp	r3, #0
+ 865 0032 04D0     		beq	.L68
+ 595:./ucOSII/Core/os_tmr.c ****         *perr  = OS_ERR_TMR_ISR;
+ 866              		.loc 1 595 16
+ 867 0034 3B68     		ldr	r3, [r7]
+ 868 0036 8B22     		movs	r2, #139
+ 869 0038 1A70     		strb	r2, [r3]
+ 596:./ucOSII/Core/os_tmr.c ****         OS_TRACE_TMR_START_EXIT(*perr);
+ 597:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 870              		.loc 1 597 16
+ 871 003a 0023     		movs	r3, #0
+ 872 003c 36E0     		b	.L66
+ 873              	.L68:
+ 598:./ucOSII/Core/os_tmr.c ****     }
+ 599:./ucOSII/Core/os_tmr.c ****     OSSchedLock();
+ 874              		.loc 1 599 5
+ 875 003e FFF7FEFF 		bl	OSSchedLock
+ 600:./ucOSII/Core/os_tmr.c ****     switch (ptmr->OSTmrState) {
+ 876              		.loc 1 600 17
+ 877 0042 7B68     		ldr	r3, [r7, #4]
+ 878 0044 93F82530 		ldrb	r3, [r3, #37]	@ zero_extendqisi2
+ 879              		.loc 1 600 5
+ 880 0048 032B     		cmp	r3, #3
+ 881 004a 09D0     		beq	.L69
+ 882 004c 032B     		cmp	r3, #3
+ 883 004e 27DC     		bgt	.L70
+ 884 0050 002B     		cmp	r3, #0
+ 885 0052 1ED0     		beq	.L71
+ 886 0054 002B     		cmp	r3, #0
+ 887 0056 23DB     		blt	.L70
+ 888 0058 013B     		subs	r3, r3, #1
+ 889 005a 012B     		cmp	r3, #1
+ 890 005c 20D8     		bhi	.L70
+ 891 005e 0DE0     		b	.L73
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 27
+
+
+ 892              	.L69:
+ 601:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_RUNNING:                          /* Restart the timer                   
+ 602:./ucOSII/Core/os_tmr.c ****              OSTmr_Unlink(ptmr);                            /* ... Stop the timer                  
+ 893              		.loc 1 602 14
+ 894 0060 7868     		ldr	r0, [r7, #4]
+ 895 0062 FFF7FEFF 		bl	OSTmr_Unlink
+ 603:./ucOSII/Core/os_tmr.c ****              OSTmr_Link(ptmr, OS_TMR_LINK_DLY);             /* ... Link timer to timer wheel       
+ 896              		.loc 1 603 14
+ 897 0066 0021     		movs	r1, #0
+ 898 0068 7868     		ldr	r0, [r7, #4]
+ 899 006a FFF7FEFF 		bl	OSTmr_Link
+ 604:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 900              		.loc 1 604 14
+ 901 006e FFF7FEFF 		bl	OSSchedUnlock
+ 605:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_NONE;
+ 902              		.loc 1 605 20
+ 903 0072 3B68     		ldr	r3, [r7]
+ 904 0074 0022     		movs	r2, #0
+ 905 0076 1A70     		strb	r2, [r3]
+ 606:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_START_EXIT(*perr);
+ 607:./ucOSII/Core/os_tmr.c ****              return (OS_TRUE);
+ 906              		.loc 1 607 21
+ 907 0078 0123     		movs	r3, #1
+ 908 007a 17E0     		b	.L66
+ 909              	.L73:
+ 608:./ucOSII/Core/os_tmr.c **** 
+ 609:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_STOPPED:                          /* Start the timer                     
+ 610:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_COMPLETED:
+ 611:./ucOSII/Core/os_tmr.c ****              OSTmr_Link(ptmr, OS_TMR_LINK_DLY);             /* ... Link timer to timer wheel       
+ 910              		.loc 1 611 14
+ 911 007c 0021     		movs	r1, #0
+ 912 007e 7868     		ldr	r0, [r7, #4]
+ 913 0080 FFF7FEFF 		bl	OSTmr_Link
+ 612:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 914              		.loc 1 612 14
+ 915 0084 FFF7FEFF 		bl	OSSchedUnlock
+ 613:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_NONE;
+ 916              		.loc 1 613 20
+ 917 0088 3B68     		ldr	r3, [r7]
+ 918 008a 0022     		movs	r2, #0
+ 919 008c 1A70     		strb	r2, [r3]
+ 614:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_START_EXIT(*perr);
+ 615:./ucOSII/Core/os_tmr.c ****              return (OS_TRUE);
+ 920              		.loc 1 615 21
+ 921 008e 0123     		movs	r3, #1
+ 922 0090 0CE0     		b	.L66
+ 923              	.L71:
+ 616:./ucOSII/Core/os_tmr.c **** 
+ 617:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_UNUSED:                           /* Timer not created                   
+ 618:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 924              		.loc 1 618 14
+ 925 0092 FFF7FEFF 		bl	OSSchedUnlock
+ 619:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INACTIVE;
+ 926              		.loc 1 619 20
+ 927 0096 3B68     		ldr	r3, [r7]
+ 928 0098 8722     		movs	r2, #135
+ 929 009a 1A70     		strb	r2, [r3]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 28
+
+
+ 620:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_START_EXIT(*perr);
+ 621:./ucOSII/Core/os_tmr.c ****              return (OS_FALSE);
+ 930              		.loc 1 621 21
+ 931 009c 0023     		movs	r3, #0
+ 932 009e 05E0     		b	.L66
+ 933              	.L70:
+ 622:./ucOSII/Core/os_tmr.c **** 
+ 623:./ucOSII/Core/os_tmr.c ****         default:
+ 624:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 934              		.loc 1 624 14
+ 935 00a0 FFF7FEFF 		bl	OSSchedUnlock
+ 625:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INVALID_STATE;
+ 936              		.loc 1 625 20
+ 937 00a4 3B68     		ldr	r3, [r7]
+ 938 00a6 8D22     		movs	r2, #141
+ 939 00a8 1A70     		strb	r2, [r3]
+ 626:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_START_EXIT(*perr);
+ 627:./ucOSII/Core/os_tmr.c ****              return (OS_FALSE);
+ 940              		.loc 1 627 21
+ 941 00aa 0023     		movs	r3, #0
+ 942              	.L66:
+ 628:./ucOSII/Core/os_tmr.c ****     }
+ 629:./ucOSII/Core/os_tmr.c **** }
+ 943              		.loc 1 629 1
+ 944 00ac 1846     		mov	r0, r3
+ 945 00ae 0837     		adds	r7, r7, #8
+ 946              	.LCFI28:
+ 947              		.cfi_def_cfa_offset 8
+ 948 00b0 BD46     		mov	sp, r7
+ 949              	.LCFI29:
+ 950              		.cfi_def_cfa_register 13
+ 951              		@ sp needed
+ 952 00b2 80BD     		pop	{r7, pc}
+ 953              	.L75:
+ 954              		.align	2
+ 955              	.L74:
+ 956 00b4 00000000 		.word	OSIntNesting
+ 957              		.cfi_endproc
+ 958              	.LFE8:
+ 960              		.section	.text.OSTmrStop,"ax",%progbits
+ 961              		.align	1
+ 962              		.global	OSTmrStop
+ 963              		.syntax unified
+ 964              		.thumb
+ 965              		.thumb_func
+ 967              	OSTmrStop:
+ 968              	.LFB9:
+ 630:./ucOSII/Core/os_tmr.c **** #endif
+ 631:./ucOSII/Core/os_tmr.c **** 
+ 632:./ucOSII/Core/os_tmr.c **** 
+ 633:./ucOSII/Core/os_tmr.c **** /*
+ 634:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 635:./ucOSII/Core/os_tmr.c **** *                                            STOP A TIMER
+ 636:./ucOSII/Core/os_tmr.c **** *
+ 637:./ucOSII/Core/os_tmr.c **** * Description: This function is called by your application code to stop a timer.
+ 638:./ucOSII/Core/os_tmr.c **** *
+ 639:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr          Is a pointer to the timer to stop.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 29
+
+
+ 640:./ucOSII/Core/os_tmr.c **** *
+ 641:./ucOSII/Core/os_tmr.c **** *              opt           Allows you to specify an option to this functions which can be:
+ 642:./ucOSII/Core/os_tmr.c **** *
+ 643:./ucOSII/Core/os_tmr.c **** *                               OS_TMR_OPT_NONE          Do nothing special but stop the timer
+ 644:./ucOSII/Core/os_tmr.c **** *                               OS_TMR_OPT_CALLBACK      Execute the callback function, pass it the
+ 645:./ucOSII/Core/os_tmr.c **** *                                                        callback argument specified when the timer
+ 646:./ucOSII/Core/os_tmr.c **** *                                                        was created.
+ 647:./ucOSII/Core/os_tmr.c **** *                               OS_TMR_OPT_CALLBACK_ARG  Execute the callback function, pass it the
+ 648:./ucOSII/Core/os_tmr.c **** *                                                        callback argument specified in THIS functi
+ 649:./ucOSII/Core/os_tmr.c **** *
+ 650:./ucOSII/Core/os_tmr.c **** *              callback_arg  Is a pointer to a 'new' callback argument that can be passed to the ca
+ 651:./ucOSII/Core/os_tmr.c **** *                            function instead of the timer's callback argument.  In other words, us
+ 652:./ucOSII/Core/os_tmr.c **** *                            'callback_arg' passed in THIS function INSTEAD of ptmr->OSTmrCallbackA
+ 653:./ucOSII/Core/os_tmr.c **** *
+ 654:./ucOSII/Core/os_tmr.c **** *              perr          Is a pointer to an error code.  '*perr' will contain one of the follow
+ 655:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_NONE
+ 656:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID         'ptmr' is a NULL pointer
+ 657:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_TYPE    'ptmr'  is not pointing to an OS_TMR
+ 658:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_ISR             if the function was called from an ISR
+ 659:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INACTIVE        if the timer was not created
+ 660:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_OPT     if you specified an invalid option for '
+ 661:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_STOPPED         if the timer was already stopped
+ 662:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_INVALID_STATE   the timer is in an invalid state
+ 663:./ucOSII/Core/os_tmr.c **** *                               OS_ERR_TMR_NO_CALLBACK     if the timer does not have a callback fu
+ 664:./ucOSII/Core/os_tmr.c **** *
+ 665:./ucOSII/Core/os_tmr.c **** * Returns    : OS_TRUE       If we stopped the timer (if the timer is already stopped, we also retu
+ 666:./ucOSII/Core/os_tmr.c **** *              OS_FALSE      If not
+ 667:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 668:./ucOSII/Core/os_tmr.c **** */
+ 669:./ucOSII/Core/os_tmr.c **** 
+ 670:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 671:./ucOSII/Core/os_tmr.c **** BOOLEAN  OSTmrStop (OS_TMR  *ptmr,
+ 672:./ucOSII/Core/os_tmr.c ****                     INT8U    opt,
+ 673:./ucOSII/Core/os_tmr.c ****                     void    *callback_arg,
+ 674:./ucOSII/Core/os_tmr.c ****                     INT8U   *perr)
+ 675:./ucOSII/Core/os_tmr.c **** {
+ 969              		.loc 1 675 1
+ 970              		.cfi_startproc
+ 971              		@ args = 0, pretend = 0, frame = 24
+ 972              		@ frame_needed = 1, uses_anonymous_args = 0
+ 973 0000 80B5     		push	{r7, lr}
+ 974              	.LCFI30:
+ 975              		.cfi_def_cfa_offset 8
+ 976              		.cfi_offset 7, -8
+ 977              		.cfi_offset 14, -4
+ 978 0002 86B0     		sub	sp, sp, #24
+ 979              	.LCFI31:
+ 980              		.cfi_def_cfa_offset 32
+ 981 0004 00AF     		add	r7, sp, #0
+ 982              	.LCFI32:
+ 983              		.cfi_def_cfa_register 7
+ 984 0006 F860     		str	r0, [r7, #12]
+ 985 0008 7A60     		str	r2, [r7, #4]
+ 986 000a 3B60     		str	r3, [r7]
+ 987 000c 0B46     		mov	r3, r1
+ 988 000e FB72     		strb	r3, [r7, #11]
+ 676:./ucOSII/Core/os_tmr.c ****     OS_TMR_CALLBACK  pfnct;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 30
+
+
+ 677:./ucOSII/Core/os_tmr.c **** 
+ 678:./ucOSII/Core/os_tmr.c **** 
+ 679:./ucOSII/Core/os_tmr.c **** #ifdef OS_SAFETY_CRITICAL
+ 680:./ucOSII/Core/os_tmr.c ****     if (perr == (INT8U *)0) {
+ 681:./ucOSII/Core/os_tmr.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 682:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 683:./ucOSII/Core/os_tmr.c ****     }
+ 684:./ucOSII/Core/os_tmr.c **** #endif
+ 685:./ucOSII/Core/os_tmr.c **** 
+ 686:./ucOSII/Core/os_tmr.c **** #if OS_ARG_CHK_EN > 0u
+ 687:./ucOSII/Core/os_tmr.c ****     if (ptmr == (OS_TMR *)0) {
+ 989              		.loc 1 687 8
+ 990 0010 FB68     		ldr	r3, [r7, #12]
+ 991 0012 002B     		cmp	r3, #0
+ 992 0014 04D1     		bne	.L77
+ 688:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID;
+ 993              		.loc 1 688 15
+ 994 0016 3B68     		ldr	r3, [r7]
+ 995 0018 8A22     		movs	r2, #138
+ 996 001a 1A70     		strb	r2, [r3]
+ 689:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 997              		.loc 1 689 16
+ 998 001c 0023     		movs	r3, #0
+ 999 001e 6EE0     		b	.L78
+ 1000              	.L77:
+ 690:./ucOSII/Core/os_tmr.c ****     }
+ 691:./ucOSII/Core/os_tmr.c **** #endif
+ 692:./ucOSII/Core/os_tmr.c **** 
+ 693:./ucOSII/Core/os_tmr.c ****     OS_TRACE_TMR_STOP_ENTER(ptmr);
+ 694:./ucOSII/Core/os_tmr.c **** 
+ 695:./ucOSII/Core/os_tmr.c ****     if (ptmr->OSTmrType != OS_TMR_TYPE) {                         /* Validate timer structure      
+ 1001              		.loc 1 695 13
+ 1002 0020 FB68     		ldr	r3, [r7, #12]
+ 1003 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1004              		.loc 1 695 8
+ 1005 0024 642B     		cmp	r3, #100
+ 1006 0026 04D0     		beq	.L79
+ 696:./ucOSII/Core/os_tmr.c ****         *perr = OS_ERR_TMR_INVALID_TYPE;
+ 1007              		.loc 1 696 15
+ 1008 0028 3B68     		ldr	r3, [r7]
+ 1009 002a 8922     		movs	r2, #137
+ 1010 002c 1A70     		strb	r2, [r3]
+ 697:./ucOSII/Core/os_tmr.c ****         OS_TRACE_TMR_STOP_EXIT(*perr);
+ 698:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 1011              		.loc 1 698 16
+ 1012 002e 0023     		movs	r3, #0
+ 1013 0030 65E0     		b	.L78
+ 1014              	.L79:
+ 699:./ucOSII/Core/os_tmr.c ****     }
+ 700:./ucOSII/Core/os_tmr.c ****     if (OSIntNesting > 0u) {                                      /* See if trying to call from an 
+ 1015              		.loc 1 700 22
+ 1016 0032 354B     		ldr	r3, .L95
+ 1017 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1018              		.loc 1 700 8
+ 1019 0036 002B     		cmp	r3, #0
+ 1020 0038 04D0     		beq	.L80
+ 701:./ucOSII/Core/os_tmr.c ****         *perr  = OS_ERR_TMR_ISR;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 31
+
+
+ 1021              		.loc 1 701 16
+ 1022 003a 3B68     		ldr	r3, [r7]
+ 1023 003c 8B22     		movs	r2, #139
+ 1024 003e 1A70     		strb	r2, [r3]
+ 702:./ucOSII/Core/os_tmr.c ****         OS_TRACE_TMR_STOP_EXIT(*perr);
+ 703:./ucOSII/Core/os_tmr.c ****         return (OS_FALSE);
+ 1025              		.loc 1 703 16
+ 1026 0040 0023     		movs	r3, #0
+ 1027 0042 5CE0     		b	.L78
+ 1028              	.L80:
+ 704:./ucOSII/Core/os_tmr.c ****     }
+ 705:./ucOSII/Core/os_tmr.c ****     OSSchedLock();
+ 1029              		.loc 1 705 5
+ 1030 0044 FFF7FEFF 		bl	OSSchedLock
+ 706:./ucOSII/Core/os_tmr.c ****     switch (ptmr->OSTmrState) {
+ 1031              		.loc 1 706 17
+ 1032 0048 FB68     		ldr	r3, [r7, #12]
+ 1033 004a 93F82530 		ldrb	r3, [r3, #37]	@ zero_extendqisi2
+ 1034              		.loc 1 706 5
+ 1035 004e 032B     		cmp	r3, #3
+ 1036 0050 09D0     		beq	.L81
+ 1037 0052 032B     		cmp	r3, #3
+ 1038 0054 4DDC     		bgt	.L82
+ 1039 0056 002B     		cmp	r3, #0
+ 1040 0058 44D0     		beq	.L83
+ 1041 005a 002B     		cmp	r3, #0
+ 1042 005c 49DB     		blt	.L82
+ 1043 005e 013B     		subs	r3, r3, #1
+ 1044 0060 012B     		cmp	r3, #1
+ 1045 0062 46D8     		bhi	.L82
+ 1046 0064 37E0     		b	.L93
+ 1047              	.L81:
+ 707:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_RUNNING:
+ 708:./ucOSII/Core/os_tmr.c ****              OSTmr_Unlink(ptmr);                                  /* Remove from current wheel spok
+ 1048              		.loc 1 708 14
+ 1049 0066 F868     		ldr	r0, [r7, #12]
+ 1050 0068 FFF7FEFF 		bl	OSTmr_Unlink
+ 709:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_NONE;
+ 1051              		.loc 1 709 20
+ 1052 006c 3B68     		ldr	r3, [r7]
+ 1053 006e 0022     		movs	r2, #0
+ 1054 0070 1A70     		strb	r2, [r3]
+ 710:./ucOSII/Core/os_tmr.c ****              switch (opt) {
+ 1055              		.loc 1 710 14
+ 1056 0072 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1057 0074 042B     		cmp	r3, #4
+ 1058 0076 16D0     		beq	.L85
+ 1059 0078 042B     		cmp	r3, #4
+ 1060 007a 23DC     		bgt	.L86
+ 1061 007c 002B     		cmp	r3, #0
+ 1062 007e 25D0     		beq	.L94
+ 1063 0080 032B     		cmp	r3, #3
+ 1064 0082 1FD1     		bne	.L86
+ 711:./ucOSII/Core/os_tmr.c ****                  case OS_TMR_OPT_CALLBACK:
+ 712:./ucOSII/Core/os_tmr.c ****                       pfnct = ptmr->OSTmrCallback;                /* Execute callback function if a
+ 1065              		.loc 1 712 29
+ 1066 0084 FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 32
+
+
+ 1067 0086 5B68     		ldr	r3, [r3, #4]
+ 1068 0088 7B61     		str	r3, [r7, #20]
+ 713:./ucOSII/Core/os_tmr.c ****                       if (pfnct != (OS_TMR_CALLBACK)0) {
+ 1069              		.loc 1 713 26
+ 1070 008a 7B69     		ldr	r3, [r7, #20]
+ 1071 008c 002B     		cmp	r3, #0
+ 1072 008e 06D0     		beq	.L88
+ 714:./ucOSII/Core/os_tmr.c ****                           (*pfnct)((void *)ptmr, ptmr->OSTmrCallbackArg);  /* Use callback arg when
+ 1073              		.loc 1 714 28
+ 1074 0090 FB68     		ldr	r3, [r7, #12]
+ 1075 0092 9A68     		ldr	r2, [r3, #8]
+ 1076 0094 7B69     		ldr	r3, [r7, #20]
+ 1077 0096 1146     		mov	r1, r2
+ 1078 0098 F868     		ldr	r0, [r7, #12]
+ 1079 009a 9847     		blx	r3
+ 1080              	.LVL0:
+ 715:./ucOSII/Core/os_tmr.c ****                       } else {
+ 716:./ucOSII/Core/os_tmr.c ****                           *perr = OS_ERR_TMR_NO_CALLBACK;
+ 717:./ucOSII/Core/os_tmr.c ****                       }
+ 718:./ucOSII/Core/os_tmr.c ****                       break;
+ 1081              		.loc 1 718 23
+ 1082 009c 17E0     		b	.L90
+ 1083              	.L88:
+ 716:./ucOSII/Core/os_tmr.c ****                       }
+ 1084              		.loc 1 716 33
+ 1085 009e 3B68     		ldr	r3, [r7]
+ 1086 00a0 8F22     		movs	r2, #143
+ 1087 00a2 1A70     		strb	r2, [r3]
+ 1088              		.loc 1 718 23
+ 1089 00a4 13E0     		b	.L90
+ 1090              	.L85:
+ 719:./ucOSII/Core/os_tmr.c **** 
+ 720:./ucOSII/Core/os_tmr.c ****                  case OS_TMR_OPT_CALLBACK_ARG:
+ 721:./ucOSII/Core/os_tmr.c ****                       pfnct = ptmr->OSTmrCallback;                /* Execute callback function if a
+ 1091              		.loc 1 721 29
+ 1092 00a6 FB68     		ldr	r3, [r7, #12]
+ 1093 00a8 5B68     		ldr	r3, [r3, #4]
+ 1094 00aa 7B61     		str	r3, [r7, #20]
+ 722:./ucOSII/Core/os_tmr.c ****                       if (pfnct != (OS_TMR_CALLBACK)0) {
+ 1095              		.loc 1 722 26
+ 1096 00ac 7B69     		ldr	r3, [r7, #20]
+ 1097 00ae 002B     		cmp	r3, #0
+ 1098 00b0 04D0     		beq	.L91
+ 723:./ucOSII/Core/os_tmr.c ****                           (*pfnct)((void *)ptmr, callback_arg);   /* ... using the 'callback_arg' p
+ 1099              		.loc 1 723 28
+ 1100 00b2 7B69     		ldr	r3, [r7, #20]
+ 1101 00b4 7968     		ldr	r1, [r7, #4]
+ 1102 00b6 F868     		ldr	r0, [r7, #12]
+ 1103 00b8 9847     		blx	r3
+ 1104              	.LVL1:
+ 724:./ucOSII/Core/os_tmr.c ****                       } else {
+ 725:./ucOSII/Core/os_tmr.c ****                           *perr = OS_ERR_TMR_NO_CALLBACK;
+ 726:./ucOSII/Core/os_tmr.c ****                       }
+ 727:./ucOSII/Core/os_tmr.c ****                       break;
+ 1105              		.loc 1 727 23
+ 1106 00ba 08E0     		b	.L90
+ 1107              	.L91:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 33
+
+
+ 725:./ucOSII/Core/os_tmr.c ****                       }
+ 1108              		.loc 1 725 33
+ 1109 00bc 3B68     		ldr	r3, [r7]
+ 1110 00be 8F22     		movs	r2, #143
+ 1111 00c0 1A70     		strb	r2, [r3]
+ 1112              		.loc 1 727 23
+ 1113 00c2 04E0     		b	.L90
+ 1114              	.L86:
+ 728:./ucOSII/Core/os_tmr.c **** 
+ 729:./ucOSII/Core/os_tmr.c ****                  case OS_TMR_OPT_NONE:
+ 730:./ucOSII/Core/os_tmr.c ****                       break;
+ 731:./ucOSII/Core/os_tmr.c **** 
+ 732:./ucOSII/Core/os_tmr.c ****                  default:
+ 733:./ucOSII/Core/os_tmr.c ****                      *perr = OS_ERR_TMR_INVALID_OPT;
+ 1115              		.loc 1 733 28
+ 1116 00c4 3B68     		ldr	r3, [r7]
+ 1117 00c6 8422     		movs	r2, #132
+ 1118 00c8 1A70     		strb	r2, [r3]
+ 734:./ucOSII/Core/os_tmr.c ****                      break;
+ 1119              		.loc 1 734 22
+ 1120 00ca 00E0     		b	.L90
+ 1121              	.L94:
+ 730:./ucOSII/Core/os_tmr.c **** 
+ 1122              		.loc 1 730 23
+ 1123 00cc 00BF     		nop
+ 1124              	.L90:
+ 735:./ucOSII/Core/os_tmr.c ****              }
+ 736:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 1125              		.loc 1 736 14
+ 1126 00ce FFF7FEFF 		bl	OSSchedUnlock
+ 737:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_STOP_EXIT(*perr);
+ 738:./ucOSII/Core/os_tmr.c ****              return (OS_TRUE);
+ 1127              		.loc 1 738 21
+ 1128 00d2 0123     		movs	r3, #1
+ 1129 00d4 13E0     		b	.L78
+ 1130              	.L93:
+ 739:./ucOSII/Core/os_tmr.c **** 
+ 740:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_COMPLETED:                              /* Timer has already completed th
+ 741:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_STOPPED:                                /* ... timer has not started yet.
+ 742:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 1131              		.loc 1 742 14
+ 1132 00d6 FFF7FEFF 		bl	OSSchedUnlock
+ 743:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_STOPPED;
+ 1133              		.loc 1 743 20
+ 1134 00da 3B68     		ldr	r3, [r7]
+ 1135 00dc 8E22     		movs	r2, #142
+ 1136 00de 1A70     		strb	r2, [r3]
+ 744:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_STOP_EXIT(*perr);
+ 745:./ucOSII/Core/os_tmr.c ****              return (OS_TRUE);
+ 1137              		.loc 1 745 21
+ 1138 00e0 0123     		movs	r3, #1
+ 1139 00e2 0CE0     		b	.L78
+ 1140              	.L83:
+ 746:./ucOSII/Core/os_tmr.c **** 
+ 747:./ucOSII/Core/os_tmr.c ****         case OS_TMR_STATE_UNUSED:                                 /* Timer was not created         
+ 748:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 1141              		.loc 1 748 14
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 34
+
+
+ 1142 00e4 FFF7FEFF 		bl	OSSchedUnlock
+ 749:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INACTIVE;
+ 1143              		.loc 1 749 20
+ 1144 00e8 3B68     		ldr	r3, [r7]
+ 1145 00ea 8722     		movs	r2, #135
+ 1146 00ec 1A70     		strb	r2, [r3]
+ 750:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_STOP_EXIT(*perr);
+ 751:./ucOSII/Core/os_tmr.c ****              return (OS_FALSE);
+ 1147              		.loc 1 751 21
+ 1148 00ee 0023     		movs	r3, #0
+ 1149 00f0 05E0     		b	.L78
+ 1150              	.L82:
+ 752:./ucOSII/Core/os_tmr.c **** 
+ 753:./ucOSII/Core/os_tmr.c ****         default:
+ 754:./ucOSII/Core/os_tmr.c ****              OSSchedUnlock();
+ 1151              		.loc 1 754 14
+ 1152 00f2 FFF7FEFF 		bl	OSSchedUnlock
+ 755:./ucOSII/Core/os_tmr.c ****              *perr = OS_ERR_TMR_INVALID_STATE;
+ 1153              		.loc 1 755 20
+ 1154 00f6 3B68     		ldr	r3, [r7]
+ 1155 00f8 8D22     		movs	r2, #141
+ 1156 00fa 1A70     		strb	r2, [r3]
+ 756:./ucOSII/Core/os_tmr.c ****              OS_TRACE_TMR_STOP_EXIT(*perr);
+ 757:./ucOSII/Core/os_tmr.c ****              return (OS_FALSE);
+ 1157              		.loc 1 757 21
+ 1158 00fc 0023     		movs	r3, #0
+ 1159              	.L78:
+ 758:./ucOSII/Core/os_tmr.c ****     }
+ 759:./ucOSII/Core/os_tmr.c **** }
+ 1160              		.loc 1 759 1
+ 1161 00fe 1846     		mov	r0, r3
+ 1162 0100 1837     		adds	r7, r7, #24
+ 1163              	.LCFI33:
+ 1164              		.cfi_def_cfa_offset 8
+ 1165 0102 BD46     		mov	sp, r7
+ 1166              	.LCFI34:
+ 1167              		.cfi_def_cfa_register 13
+ 1168              		@ sp needed
+ 1169 0104 80BD     		pop	{r7, pc}
+ 1170              	.L96:
+ 1171 0106 00BF     		.align	2
+ 1172              	.L95:
+ 1173 0108 00000000 		.word	OSIntNesting
+ 1174              		.cfi_endproc
+ 1175              	.LFE9:
+ 1177              		.section	.text.OSTmrSignal,"ax",%progbits
+ 1178              		.align	1
+ 1179              		.global	OSTmrSignal
+ 1180              		.syntax unified
+ 1181              		.thumb
+ 1182              		.thumb_func
+ 1184              	OSTmrSignal:
+ 1185              	.LFB10:
+ 760:./ucOSII/Core/os_tmr.c **** #endif
+ 761:./ucOSII/Core/os_tmr.c **** 
+ 762:./ucOSII/Core/os_tmr.c **** 
+ 763:./ucOSII/Core/os_tmr.c **** /*
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 35
+
+
+ 764:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 765:./ucOSII/Core/os_tmr.c **** *                             SIGNAL THAT IT'S TIME TO UPDATE THE TIMERS
+ 766:./ucOSII/Core/os_tmr.c **** *
+ 767:./ucOSII/Core/os_tmr.c **** * Description: This function is typically called by the ISR that occurs at the timer tick rate and 
+ 768:./ucOSII/Core/os_tmr.c **** *              used to signal to OSTmr_Task() that it's time to update the timers.
+ 769:./ucOSII/Core/os_tmr.c **** *
+ 770:./ucOSII/Core/os_tmr.c **** * Arguments  : none
+ 771:./ucOSII/Core/os_tmr.c **** *
+ 772:./ucOSII/Core/os_tmr.c **** * Returns    : OS_ERR_NONE         The call was successful and the timer task was signaled.
+ 773:./ucOSII/Core/os_tmr.c **** *              OS_ERR_SEM_OVF      If OSTmrSignal() was called more often than OSTmr_Task() can han
+ 774:./ucOSII/Core/os_tmr.c **** *                                  the timers. This would indicate that your system is heavily load
+ 775:./ucOSII/Core/os_tmr.c **** *              OS_ERR_EVENT_TYPE   Unlikely you would get this error because the semaphore used for
+ 776:./ucOSII/Core/os_tmr.c **** *                                  signaling is created by uC/OS-II.
+ 777:./ucOSII/Core/os_tmr.c **** *              OS_ERR_PEVENT_NULL  Again, unlikely you would ever get this error because the semaph
+ 778:./ucOSII/Core/os_tmr.c **** *                                  used for signaling is created by uC/OS-II.
+ 779:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 780:./ucOSII/Core/os_tmr.c **** */
+ 781:./ucOSII/Core/os_tmr.c **** 
+ 782:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 783:./ucOSII/Core/os_tmr.c **** INT8U  OSTmrSignal (void)
+ 784:./ucOSII/Core/os_tmr.c **** {
+ 1186              		.loc 1 784 1
+ 1187              		.cfi_startproc
+ 1188              		@ args = 0, pretend = 0, frame = 8
+ 1189              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1190 0000 80B5     		push	{r7, lr}
+ 1191              	.LCFI35:
+ 1192              		.cfi_def_cfa_offset 8
+ 1193              		.cfi_offset 7, -8
+ 1194              		.cfi_offset 14, -4
+ 1195 0002 82B0     		sub	sp, sp, #8
+ 1196              	.LCFI36:
+ 1197              		.cfi_def_cfa_offset 16
+ 1198 0004 00AF     		add	r7, sp, #0
+ 1199              	.LCFI37:
+ 1200              		.cfi_def_cfa_register 7
+ 785:./ucOSII/Core/os_tmr.c ****     INT8U  err;
+ 786:./ucOSII/Core/os_tmr.c **** 
+ 787:./ucOSII/Core/os_tmr.c **** 
+ 788:./ucOSII/Core/os_tmr.c ****     err = OSSemPost(OSTmrSemSignal);
+ 1201              		.loc 1 788 11
+ 1202 0006 064B     		ldr	r3, .L99
+ 1203 0008 1B68     		ldr	r3, [r3]
+ 1204 000a 1846     		mov	r0, r3
+ 1205 000c FFF7FEFF 		bl	OSSemPost
+ 1206 0010 0346     		mov	r3, r0
+ 1207 0012 FB71     		strb	r3, [r7, #7]
+ 789:./ucOSII/Core/os_tmr.c ****     return (err);
+ 1208              		.loc 1 789 12
+ 1209 0014 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 790:./ucOSII/Core/os_tmr.c **** }
+ 1210              		.loc 1 790 1
+ 1211 0016 1846     		mov	r0, r3
+ 1212 0018 0837     		adds	r7, r7, #8
+ 1213              	.LCFI38:
+ 1214              		.cfi_def_cfa_offset 8
+ 1215 001a BD46     		mov	sp, r7
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 36
+
+
+ 1216              	.LCFI39:
+ 1217              		.cfi_def_cfa_register 13
+ 1218              		@ sp needed
+ 1219 001c 80BD     		pop	{r7, pc}
+ 1220              	.L100:
+ 1221 001e 00BF     		.align	2
+ 1222              	.L99:
+ 1223 0020 00000000 		.word	OSTmrSemSignal
+ 1224              		.cfi_endproc
+ 1225              	.LFE10:
+ 1227              		.section	.text.OSTmr_Alloc,"ax",%progbits
+ 1228              		.align	1
+ 1229              		.syntax unified
+ 1230              		.thumb
+ 1231              		.thumb_func
+ 1233              	OSTmr_Alloc:
+ 1234              	.LFB11:
+ 791:./ucOSII/Core/os_tmr.c **** #endif
+ 792:./ucOSII/Core/os_tmr.c **** 
+ 793:./ucOSII/Core/os_tmr.c **** 
+ 794:./ucOSII/Core/os_tmr.c **** /*
+ 795:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 796:./ucOSII/Core/os_tmr.c **** *                                      ALLOCATE AND FREE A TIMER
+ 797:./ucOSII/Core/os_tmr.c **** *
+ 798:./ucOSII/Core/os_tmr.c **** * Description: This function is called to allocate a timer.
+ 799:./ucOSII/Core/os_tmr.c **** *
+ 800:./ucOSII/Core/os_tmr.c **** * Arguments  : none
+ 801:./ucOSII/Core/os_tmr.c **** *
+ 802:./ucOSII/Core/os_tmr.c **** * Returns    : a pointer to a timer if one is available
+ 803:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 804:./ucOSII/Core/os_tmr.c **** */
+ 805:./ucOSII/Core/os_tmr.c **** 
+ 806:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 807:./ucOSII/Core/os_tmr.c **** static  OS_TMR  *OSTmr_Alloc (void)
+ 808:./ucOSII/Core/os_tmr.c **** {
+ 1235              		.loc 1 808 1
+ 1236              		.cfi_startproc
+ 1237              		@ args = 0, pretend = 0, frame = 8
+ 1238              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1239              		@ link register save eliminated.
+ 1240 0000 80B4     		push	{r7}
+ 1241              	.LCFI40:
+ 1242              		.cfi_def_cfa_offset 4
+ 1243              		.cfi_offset 7, -4
+ 1244 0002 83B0     		sub	sp, sp, #12
+ 1245              	.LCFI41:
+ 1246              		.cfi_def_cfa_offset 16
+ 1247 0004 00AF     		add	r7, sp, #0
+ 1248              	.LCFI42:
+ 1249              		.cfi_def_cfa_register 7
+ 809:./ucOSII/Core/os_tmr.c ****     OS_TMR *ptmr;
+ 810:./ucOSII/Core/os_tmr.c **** 
+ 811:./ucOSII/Core/os_tmr.c **** 
+ 812:./ucOSII/Core/os_tmr.c ****     if (OSTmrFreeList == (OS_TMR *)0) {
+ 1250              		.loc 1 812 23
+ 1251 0006 134B     		ldr	r3, .L104
+ 1252 0008 1B68     		ldr	r3, [r3]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 37
+
+
+ 1253              		.loc 1 812 8
+ 1254 000a 002B     		cmp	r3, #0
+ 1255 000c 01D1     		bne	.L102
+ 813:./ucOSII/Core/os_tmr.c ****         return ((OS_TMR *)0);
+ 1256              		.loc 1 813 16
+ 1257 000e 0023     		movs	r3, #0
+ 1258 0010 19E0     		b	.L103
+ 1259              	.L102:
+ 814:./ucOSII/Core/os_tmr.c ****     }
+ 815:./ucOSII/Core/os_tmr.c ****     ptmr            = (OS_TMR *)OSTmrFreeList;
+ 1260              		.loc 1 815 21
+ 1261 0012 104B     		ldr	r3, .L104
+ 1262 0014 1B68     		ldr	r3, [r3]
+ 1263 0016 7B60     		str	r3, [r7, #4]
+ 816:./ucOSII/Core/os_tmr.c ****     OSTmrFreeList   = (OS_TMR *)ptmr->OSTmrNext;
+ 1264              		.loc 1 816 37
+ 1265 0018 7B68     		ldr	r3, [r7, #4]
+ 1266 001a DB68     		ldr	r3, [r3, #12]
+ 1267              		.loc 1 816 21
+ 1268 001c 0D4A     		ldr	r2, .L104
+ 1269 001e 1360     		str	r3, [r2]
+ 817:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrNext = (OS_TCB *)0;
+ 1270              		.loc 1 817 21
+ 1271 0020 7B68     		ldr	r3, [r7, #4]
+ 1272 0022 0022     		movs	r2, #0
+ 1273 0024 DA60     		str	r2, [r3, #12]
+ 818:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrPrev = (OS_TCB *)0;
+ 1274              		.loc 1 818 21
+ 1275 0026 7B68     		ldr	r3, [r7, #4]
+ 1276 0028 0022     		movs	r2, #0
+ 1277 002a 1A61     		str	r2, [r3, #16]
+ 819:./ucOSII/Core/os_tmr.c ****     OSTmrUsed++;
+ 1278              		.loc 1 819 14
+ 1279 002c 0A4B     		ldr	r3, .L104+4
+ 1280 002e 1B88     		ldrh	r3, [r3]
+ 1281 0030 0133     		adds	r3, r3, #1
+ 1282 0032 9AB2     		uxth	r2, r3
+ 1283 0034 084B     		ldr	r3, .L104+4
+ 1284 0036 1A80     		strh	r2, [r3]	@ movhi
+ 820:./ucOSII/Core/os_tmr.c ****     OSTmrFree--;
+ 1285              		.loc 1 820 14
+ 1286 0038 084B     		ldr	r3, .L104+8
+ 1287 003a 1B88     		ldrh	r3, [r3]
+ 1288 003c 013B     		subs	r3, r3, #1
+ 1289 003e 9AB2     		uxth	r2, r3
+ 1290 0040 064B     		ldr	r3, .L104+8
+ 1291 0042 1A80     		strh	r2, [r3]	@ movhi
+ 821:./ucOSII/Core/os_tmr.c ****     return (ptmr);
+ 1292              		.loc 1 821 12
+ 1293 0044 7B68     		ldr	r3, [r7, #4]
+ 1294              	.L103:
+ 822:./ucOSII/Core/os_tmr.c **** }
+ 1295              		.loc 1 822 1
+ 1296 0046 1846     		mov	r0, r3
+ 1297 0048 0C37     		adds	r7, r7, #12
+ 1298              	.LCFI43:
+ 1299              		.cfi_def_cfa_offset 4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 38
+
+
+ 1300 004a BD46     		mov	sp, r7
+ 1301              	.LCFI44:
+ 1302              		.cfi_def_cfa_register 13
+ 1303              		@ sp needed
+ 1304 004c 5DF8047B 		ldr	r7, [sp], #4
+ 1305              	.LCFI45:
+ 1306              		.cfi_restore 7
+ 1307              		.cfi_def_cfa_offset 0
+ 1308 0050 7047     		bx	lr
+ 1309              	.L105:
+ 1310 0052 00BF     		.align	2
+ 1311              	.L104:
+ 1312 0054 00000000 		.word	OSTmrFreeList
+ 1313 0058 00000000 		.word	OSTmrUsed
+ 1314 005c 00000000 		.word	OSTmrFree
+ 1315              		.cfi_endproc
+ 1316              	.LFE11:
+ 1318              		.section	.text.OSTmr_Free,"ax",%progbits
+ 1319              		.align	1
+ 1320              		.syntax unified
+ 1321              		.thumb
+ 1322              		.thumb_func
+ 1324              	OSTmr_Free:
+ 1325              	.LFB12:
+ 823:./ucOSII/Core/os_tmr.c **** #endif
+ 824:./ucOSII/Core/os_tmr.c **** 
+ 825:./ucOSII/Core/os_tmr.c **** 
+ 826:./ucOSII/Core/os_tmr.c **** /*
+ 827:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 828:./ucOSII/Core/os_tmr.c **** *                                   RETURN A TIMER TO THE FREE LIST
+ 829:./ucOSII/Core/os_tmr.c **** *
+ 830:./ucOSII/Core/os_tmr.c **** * Description: This function is called to return a timer object to the free list of timers.
+ 831:./ucOSII/Core/os_tmr.c **** *
+ 832:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr     is a pointer to the timer to free
+ 833:./ucOSII/Core/os_tmr.c **** *
+ 834:./ucOSII/Core/os_tmr.c **** * Returns    : none
+ 835:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 836:./ucOSII/Core/os_tmr.c **** */
+ 837:./ucOSII/Core/os_tmr.c **** 
+ 838:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 839:./ucOSII/Core/os_tmr.c **** static  void  OSTmr_Free (OS_TMR *ptmr)
+ 840:./ucOSII/Core/os_tmr.c **** {
+ 1326              		.loc 1 840 1
+ 1327              		.cfi_startproc
+ 1328              		@ args = 0, pretend = 0, frame = 8
+ 1329              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1330              		@ link register save eliminated.
+ 1331 0000 80B4     		push	{r7}
+ 1332              	.LCFI46:
+ 1333              		.cfi_def_cfa_offset 4
+ 1334              		.cfi_offset 7, -4
+ 1335 0002 83B0     		sub	sp, sp, #12
+ 1336              	.LCFI47:
+ 1337              		.cfi_def_cfa_offset 16
+ 1338 0004 00AF     		add	r7, sp, #0
+ 1339              	.LCFI48:
+ 1340              		.cfi_def_cfa_register 7
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 39
+
+
+ 1341 0006 7860     		str	r0, [r7, #4]
+ 841:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrState       = OS_TMR_STATE_UNUSED;      /* Clear timer object fields                
+ 1342              		.loc 1 841 28
+ 1343 0008 7B68     		ldr	r3, [r7, #4]
+ 1344 000a 0022     		movs	r2, #0
+ 1345 000c 83F82520 		strb	r2, [r3, #37]
+ 842:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrOpt         = OS_TMR_OPT_NONE;
+ 1346              		.loc 1 842 28
+ 1347 0010 7B68     		ldr	r3, [r7, #4]
+ 1348 0012 0022     		movs	r2, #0
+ 1349 0014 83F82420 		strb	r2, [r3, #36]
+ 843:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrPeriod      = 0u;
+ 1350              		.loc 1 843 28
+ 1351 0018 7B68     		ldr	r3, [r7, #4]
+ 1352 001a 0022     		movs	r2, #0
+ 1353 001c DA61     		str	r2, [r3, #28]
+ 844:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrMatch       = 0u;
+ 1354              		.loc 1 844 28
+ 1355 001e 7B68     		ldr	r3, [r7, #4]
+ 1356 0020 0022     		movs	r2, #0
+ 1357 0022 5A61     		str	r2, [r3, #20]
+ 845:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrCallback    = (OS_TMR_CALLBACK)0;
+ 1358              		.loc 1 845 28
+ 1359 0024 7B68     		ldr	r3, [r7, #4]
+ 1360 0026 0022     		movs	r2, #0
+ 1361 0028 5A60     		str	r2, [r3, #4]
+ 846:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrCallbackArg = (void *)0;
+ 1362              		.loc 1 846 28
+ 1363 002a 7B68     		ldr	r3, [r7, #4]
+ 1364 002c 0022     		movs	r2, #0
+ 1365 002e 9A60     		str	r2, [r3, #8]
+ 847:./ucOSII/Core/os_tmr.c **** #if OS_TMR_CFG_NAME_EN > 0u
+ 848:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrName        = (INT8U *)(void *)"?";
+ 1366              		.loc 1 848 28
+ 1367 0030 7B68     		ldr	r3, [r7, #4]
+ 1368 0032 0F4A     		ldr	r2, .L107
+ 1369 0034 1A62     		str	r2, [r3, #32]
+ 849:./ucOSII/Core/os_tmr.c **** #endif
+ 850:./ucOSII/Core/os_tmr.c **** 
+ 851:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrPrev        = (OS_TCB *)0;              /* Chain timer to free list                 
+ 1370              		.loc 1 851 28
+ 1371 0036 7B68     		ldr	r3, [r7, #4]
+ 1372 0038 0022     		movs	r2, #0
+ 1373 003a 1A61     		str	r2, [r3, #16]
+ 852:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrNext        = OSTmrFreeList;
+ 1374              		.loc 1 852 28
+ 1375 003c 0D4B     		ldr	r3, .L107+4
+ 1376 003e 1A68     		ldr	r2, [r3]
+ 1377 0040 7B68     		ldr	r3, [r7, #4]
+ 1378 0042 DA60     		str	r2, [r3, #12]
+ 853:./ucOSII/Core/os_tmr.c ****     OSTmrFreeList          = ptmr;
+ 1379              		.loc 1 853 28
+ 1380 0044 0B4A     		ldr	r2, .L107+4
+ 1381 0046 7B68     		ldr	r3, [r7, #4]
+ 1382 0048 1360     		str	r3, [r2]
+ 854:./ucOSII/Core/os_tmr.c **** 
+ 855:./ucOSII/Core/os_tmr.c ****     OSTmrUsed--;                                       /* Update timer object statistics           
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 40
+
+
+ 1383              		.loc 1 855 14
+ 1384 004a 0B4B     		ldr	r3, .L107+8
+ 1385 004c 1B88     		ldrh	r3, [r3]
+ 1386 004e 013B     		subs	r3, r3, #1
+ 1387 0050 9AB2     		uxth	r2, r3
+ 1388 0052 094B     		ldr	r3, .L107+8
+ 1389 0054 1A80     		strh	r2, [r3]	@ movhi
+ 856:./ucOSII/Core/os_tmr.c ****     OSTmrFree++;
+ 1390              		.loc 1 856 14
+ 1391 0056 094B     		ldr	r3, .L107+12
+ 1392 0058 1B88     		ldrh	r3, [r3]
+ 1393 005a 0133     		adds	r3, r3, #1
+ 1394 005c 9AB2     		uxth	r2, r3
+ 1395 005e 074B     		ldr	r3, .L107+12
+ 1396 0060 1A80     		strh	r2, [r3]	@ movhi
+ 857:./ucOSII/Core/os_tmr.c **** }
+ 1397              		.loc 1 857 1
+ 1398 0062 00BF     		nop
+ 1399 0064 0C37     		adds	r7, r7, #12
+ 1400              	.LCFI49:
+ 1401              		.cfi_def_cfa_offset 4
+ 1402 0066 BD46     		mov	sp, r7
+ 1403              	.LCFI50:
+ 1404              		.cfi_def_cfa_register 13
+ 1405              		@ sp needed
+ 1406 0068 5DF8047B 		ldr	r7, [sp], #4
+ 1407              	.LCFI51:
+ 1408              		.cfi_restore 7
+ 1409              		.cfi_def_cfa_offset 0
+ 1410 006c 7047     		bx	lr
+ 1411              	.L108:
+ 1412 006e 00BF     		.align	2
+ 1413              	.L107:
+ 1414 0070 00000000 		.word	.LC0
+ 1415 0074 00000000 		.word	OSTmrFreeList
+ 1416 0078 00000000 		.word	OSTmrUsed
+ 1417 007c 00000000 		.word	OSTmrFree
+ 1418              		.cfi_endproc
+ 1419              	.LFE12:
+ 1421              		.section	.rodata
+ 1422 0002 0000     		.align	2
+ 1423              	.LC1:
+ 1424 0004 75432F4F 		.ascii	"uC/OS-II TmrLock\000"
+ 1424      532D4949 
+ 1424      20546D72 
+ 1424      4C6F636B 
+ 1424      00
+ 1425 0015 000000   		.align	2
+ 1426              	.LC2:
+ 1427 0018 75432F4F 		.ascii	"uC/OS-II TmrSignal\000"
+ 1427      532D4949 
+ 1427      20546D72 
+ 1427      5369676E 
+ 1427      616C00
+ 1428              		.section	.text.OSTmr_Init,"ax",%progbits
+ 1429              		.align	1
+ 1430              		.global	OSTmr_Init
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 41
+
+
+ 1431              		.syntax unified
+ 1432              		.thumb
+ 1433              		.thumb_func
+ 1435              	OSTmr_Init:
+ 1436              	.LFB13:
+ 858:./ucOSII/Core/os_tmr.c **** #endif
+ 859:./ucOSII/Core/os_tmr.c **** 
+ 860:./ucOSII/Core/os_tmr.c **** 
+ 861:./ucOSII/Core/os_tmr.c **** /*
+ 862:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 863:./ucOSII/Core/os_tmr.c **** *                                                    INITIALIZATION
+ 864:./ucOSII/Core/os_tmr.c **** *                                          INITIALIZE THE FREE LIST OF TIMERS
+ 865:./ucOSII/Core/os_tmr.c **** *
+ 866:./ucOSII/Core/os_tmr.c **** * Description: This function is called by OSInit() to initialize the free list of OS_TMRs.
+ 867:./ucOSII/Core/os_tmr.c **** *
+ 868:./ucOSII/Core/os_tmr.c **** * Arguments  : none
+ 869:./ucOSII/Core/os_tmr.c **** *
+ 870:./ucOSII/Core/os_tmr.c **** * Returns    : none
+ 871:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 872:./ucOSII/Core/os_tmr.c **** */
+ 873:./ucOSII/Core/os_tmr.c **** 
+ 874:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 875:./ucOSII/Core/os_tmr.c **** void  OSTmr_Init (void)
+ 876:./ucOSII/Core/os_tmr.c **** {
+ 1437              		.loc 1 876 1
+ 1438              		.cfi_startproc
+ 1439              		@ args = 0, pretend = 0, frame = 24
+ 1440              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1441 0000 80B5     		push	{r7, lr}
+ 1442              	.LCFI52:
+ 1443              		.cfi_def_cfa_offset 8
+ 1444              		.cfi_offset 7, -8
+ 1445              		.cfi_offset 14, -4
+ 1446 0002 86B0     		sub	sp, sp, #24
+ 1447              	.LCFI53:
+ 1448              		.cfi_def_cfa_offset 32
+ 1449 0004 00AF     		add	r7, sp, #0
+ 1450              	.LCFI54:
+ 1451              		.cfi_def_cfa_register 7
+ 877:./ucOSII/Core/os_tmr.c **** #if OS_EVENT_NAME_EN > 0u
+ 878:./ucOSII/Core/os_tmr.c ****     INT8U    err;
+ 879:./ucOSII/Core/os_tmr.c **** #endif
+ 880:./ucOSII/Core/os_tmr.c ****     INT16U   ix;
+ 881:./ucOSII/Core/os_tmr.c ****     INT16U   ix_next;
+ 882:./ucOSII/Core/os_tmr.c ****     OS_TMR  *ptmr1;
+ 883:./ucOSII/Core/os_tmr.c ****     OS_TMR  *ptmr2;
+ 884:./ucOSII/Core/os_tmr.c **** 
+ 885:./ucOSII/Core/os_tmr.c **** 
+ 886:./ucOSII/Core/os_tmr.c ****     OS_MemClr((INT8U *)&OSTmrTbl[0],      sizeof(OSTmrTbl));            /* Clear all the TMRs      
+ 1452              		.loc 1 886 5
+ 1453 0006 4FF42071 		mov	r1, #640
+ 1454 000a 3848     		ldr	r0, .L112
+ 1455 000c FFF7FEFF 		bl	OS_MemClr
+ 887:./ucOSII/Core/os_tmr.c ****     OS_MemClr((INT8U *)&OSTmrWheelTbl[0], sizeof(OSTmrWheelTbl));       /* Clear the timer wheel   
+ 1456              		.loc 1 887 5
+ 1457 0010 3821     		movs	r1, #56
+ 1458 0012 3748     		ldr	r0, .L112+4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 42
+
+
+ 1459 0014 FFF7FEFF 		bl	OS_MemClr
+ 888:./ucOSII/Core/os_tmr.c **** 
+ 889:./ucOSII/Core/os_tmr.c ****     for (ix = 0u; ix < (OS_TMR_CFG_MAX - 1u); ix++) {                   /* Init. list of free TMRs 
+ 1460              		.loc 1 889 13
+ 1461 0018 0023     		movs	r3, #0
+ 1462 001a FB82     		strh	r3, [r7, #22]	@ movhi
+ 1463              		.loc 1 889 5
+ 1464 001c 22E0     		b	.L110
+ 1465              	.L111:
+ 890:./ucOSII/Core/os_tmr.c ****         ix_next = ix + 1u;
+ 1466              		.loc 1 890 17 discriminator 3
+ 1467 001e FB8A     		ldrh	r3, [r7, #22]	@ movhi
+ 1468 0020 0133     		adds	r3, r3, #1
+ 1469 0022 FB81     		strh	r3, [r7, #14]	@ movhi
+ 891:./ucOSII/Core/os_tmr.c ****         ptmr1 = &OSTmrTbl[ix];
+ 1470              		.loc 1 891 26 discriminator 3
+ 1471 0024 FA8A     		ldrh	r2, [r7, #22]
+ 1472              		.loc 1 891 15 discriminator 3
+ 1473 0026 1346     		mov	r3, r2
+ 1474 0028 9B00     		lsls	r3, r3, #2
+ 1475 002a 1344     		add	r3, r3, r2
+ 1476 002c DB00     		lsls	r3, r3, #3
+ 1477 002e 2F4A     		ldr	r2, .L112
+ 1478 0030 1344     		add	r3, r3, r2
+ 1479 0032 3B61     		str	r3, [r7, #16]
+ 892:./ucOSII/Core/os_tmr.c ****         ptmr2 = &OSTmrTbl[ix_next];
+ 1480              		.loc 1 892 26 discriminator 3
+ 1481 0034 FA89     		ldrh	r2, [r7, #14]
+ 1482              		.loc 1 892 15 discriminator 3
+ 1483 0036 1346     		mov	r3, r2
+ 1484 0038 9B00     		lsls	r3, r3, #2
+ 1485 003a 1344     		add	r3, r3, r2
+ 1486 003c DB00     		lsls	r3, r3, #3
+ 1487 003e 2B4A     		ldr	r2, .L112
+ 1488 0040 1344     		add	r3, r3, r2
+ 1489 0042 BB60     		str	r3, [r7, #8]
+ 893:./ucOSII/Core/os_tmr.c ****         ptmr1->OSTmrType    = OS_TMR_TYPE;
+ 1490              		.loc 1 893 29 discriminator 3
+ 1491 0044 3B69     		ldr	r3, [r7, #16]
+ 1492 0046 6422     		movs	r2, #100
+ 1493 0048 1A70     		strb	r2, [r3]
+ 894:./ucOSII/Core/os_tmr.c ****         ptmr1->OSTmrState   = OS_TMR_STATE_UNUSED;                      /* Indicate that timer is i
+ 1494              		.loc 1 894 29 discriminator 3
+ 1495 004a 3B69     		ldr	r3, [r7, #16]
+ 1496 004c 0022     		movs	r2, #0
+ 1497 004e 83F82520 		strb	r2, [r3, #37]
+ 895:./ucOSII/Core/os_tmr.c ****         ptmr1->OSTmrNext    = (void *)ptmr2;                            /* Link to next timer      
+ 1498              		.loc 1 895 29 discriminator 3
+ 1499 0052 3B69     		ldr	r3, [r7, #16]
+ 1500 0054 BA68     		ldr	r2, [r7, #8]
+ 1501 0056 DA60     		str	r2, [r3, #12]
+ 896:./ucOSII/Core/os_tmr.c **** #if OS_TMR_CFG_NAME_EN > 0u
+ 897:./ucOSII/Core/os_tmr.c ****         ptmr1->OSTmrName    = (INT8U *)(void *)"?";
+ 1502              		.loc 1 897 29 discriminator 3
+ 1503 0058 3B69     		ldr	r3, [r7, #16]
+ 1504 005a 264A     		ldr	r2, .L112+8
+ 1505 005c 1A62     		str	r2, [r3, #32]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 43
+
+
+ 889:./ucOSII/Core/os_tmr.c ****         ix_next = ix + 1u;
+ 1506              		.loc 1 889 49 discriminator 3
+ 1507 005e FB8A     		ldrh	r3, [r7, #22]
+ 1508 0060 0133     		adds	r3, r3, #1
+ 1509 0062 FB82     		strh	r3, [r7, #22]	@ movhi
+ 1510              	.L110:
+ 889:./ucOSII/Core/os_tmr.c ****         ix_next = ix + 1u;
+ 1511              		.loc 1 889 5 discriminator 1
+ 1512 0064 FB8A     		ldrh	r3, [r7, #22]
+ 1513 0066 0E2B     		cmp	r3, #14
+ 1514 0068 D9D9     		bls	.L111
+ 898:./ucOSII/Core/os_tmr.c **** #endif
+ 899:./ucOSII/Core/os_tmr.c ****     }
+ 900:./ucOSII/Core/os_tmr.c ****     ptmr1               = &OSTmrTbl[ix];
+ 1515              		.loc 1 900 36
+ 1516 006a FA8A     		ldrh	r2, [r7, #22]
+ 1517              		.loc 1 900 25
+ 1518 006c 1346     		mov	r3, r2
+ 1519 006e 9B00     		lsls	r3, r3, #2
+ 1520 0070 1344     		add	r3, r3, r2
+ 1521 0072 DB00     		lsls	r3, r3, #3
+ 1522 0074 1D4A     		ldr	r2, .L112
+ 1523 0076 1344     		add	r3, r3, r2
+ 1524 0078 3B61     		str	r3, [r7, #16]
+ 901:./ucOSII/Core/os_tmr.c ****     ptmr1->OSTmrType    = OS_TMR_TYPE;
+ 1525              		.loc 1 901 25
+ 1526 007a 3B69     		ldr	r3, [r7, #16]
+ 1527 007c 6422     		movs	r2, #100
+ 1528 007e 1A70     		strb	r2, [r3]
+ 902:./ucOSII/Core/os_tmr.c ****     ptmr1->OSTmrState   = OS_TMR_STATE_UNUSED;                          /* Indicate that timer is i
+ 1529              		.loc 1 902 25
+ 1530 0080 3B69     		ldr	r3, [r7, #16]
+ 1531 0082 0022     		movs	r2, #0
+ 1532 0084 83F82520 		strb	r2, [r3, #37]
+ 903:./ucOSII/Core/os_tmr.c ****     ptmr1->OSTmrNext    = (void *)0;                                    /* Last OS_TMR             
+ 1533              		.loc 1 903 25
+ 1534 0088 3B69     		ldr	r3, [r7, #16]
+ 1535 008a 0022     		movs	r2, #0
+ 1536 008c DA60     		str	r2, [r3, #12]
+ 904:./ucOSII/Core/os_tmr.c **** #if OS_TMR_CFG_NAME_EN > 0u
+ 905:./ucOSII/Core/os_tmr.c ****     ptmr1->OSTmrName    = (INT8U *)(void *)"?";
+ 1537              		.loc 1 905 25
+ 1538 008e 3B69     		ldr	r3, [r7, #16]
+ 1539 0090 184A     		ldr	r2, .L112+8
+ 1540 0092 1A62     		str	r2, [r3, #32]
+ 906:./ucOSII/Core/os_tmr.c **** #endif
+ 907:./ucOSII/Core/os_tmr.c ****     OSTmrTime           = 0u;
+ 1541              		.loc 1 907 25
+ 1542 0094 184B     		ldr	r3, .L112+12
+ 1543 0096 0022     		movs	r2, #0
+ 1544 0098 1A60     		str	r2, [r3]
+ 908:./ucOSII/Core/os_tmr.c ****     OSTmrUsed           = 0u;
+ 1545              		.loc 1 908 25
+ 1546 009a 184B     		ldr	r3, .L112+16
+ 1547 009c 0022     		movs	r2, #0
+ 1548 009e 1A80     		strh	r2, [r3]	@ movhi
+ 909:./ucOSII/Core/os_tmr.c ****     OSTmrFree           = OS_TMR_CFG_MAX;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 44
+
+
+ 1549              		.loc 1 909 25
+ 1550 00a0 174B     		ldr	r3, .L112+20
+ 1551 00a2 1022     		movs	r2, #16
+ 1552 00a4 1A80     		strh	r2, [r3]	@ movhi
+ 910:./ucOSII/Core/os_tmr.c ****     OSTmrFreeList       = &OSTmrTbl[0];
+ 1553              		.loc 1 910 25
+ 1554 00a6 174B     		ldr	r3, .L112+24
+ 1555 00a8 104A     		ldr	r2, .L112
+ 1556 00aa 1A60     		str	r2, [r3]
+ 911:./ucOSII/Core/os_tmr.c ****     OSTmrSem            = OSSemCreate(1u);
+ 1557              		.loc 1 911 27
+ 1558 00ac 0120     		movs	r0, #1
+ 1559 00ae FFF7FEFF 		bl	OSSemCreate
+ 1560 00b2 0346     		mov	r3, r0
+ 1561              		.loc 1 911 25
+ 1562 00b4 144A     		ldr	r2, .L112+28
+ 1563 00b6 1360     		str	r3, [r2]
+ 912:./ucOSII/Core/os_tmr.c ****     OSTmrSemSignal      = OSSemCreate(0u);
+ 1564              		.loc 1 912 27
+ 1565 00b8 0020     		movs	r0, #0
+ 1566 00ba FFF7FEFF 		bl	OSSemCreate
+ 1567 00be 0346     		mov	r3, r0
+ 1568              		.loc 1 912 25
+ 1569 00c0 124A     		ldr	r2, .L112+32
+ 1570 00c2 1360     		str	r3, [r2]
+ 913:./ucOSII/Core/os_tmr.c **** 
+ 914:./ucOSII/Core/os_tmr.c **** #if OS_EVENT_NAME_EN > 0u                                               /* Assign names to semaphor
+ 915:./ucOSII/Core/os_tmr.c ****     OSEventNameSet(OSTmrSem,       (INT8U *)(void *)"uC/OS-II TmrLock",   &err);
+ 1571              		.loc 1 915 5
+ 1572 00c4 104B     		ldr	r3, .L112+28
+ 1573 00c6 1B68     		ldr	r3, [r3]
+ 1574 00c8 FA1D     		adds	r2, r7, #7
+ 1575 00ca 1149     		ldr	r1, .L112+36
+ 1576 00cc 1846     		mov	r0, r3
+ 1577 00ce FFF7FEFF 		bl	OSEventNameSet
+ 916:./ucOSII/Core/os_tmr.c ****     OSEventNameSet(OSTmrSemSignal, (INT8U *)(void *)"uC/OS-II TmrSignal", &err);
+ 1578              		.loc 1 916 5
+ 1579 00d2 0E4B     		ldr	r3, .L112+32
+ 1580 00d4 1B68     		ldr	r3, [r3]
+ 1581 00d6 FA1D     		adds	r2, r7, #7
+ 1582 00d8 0E49     		ldr	r1, .L112+40
+ 1583 00da 1846     		mov	r0, r3
+ 1584 00dc FFF7FEFF 		bl	OSEventNameSet
+ 917:./ucOSII/Core/os_tmr.c **** #endif
+ 918:./ucOSII/Core/os_tmr.c **** 
+ 919:./ucOSII/Core/os_tmr.c ****     OSTmr_InitTask();
+ 1585              		.loc 1 919 5
+ 1586 00e0 FFF7FEFF 		bl	OSTmr_InitTask
+ 920:./ucOSII/Core/os_tmr.c **** }
+ 1587              		.loc 1 920 1
+ 1588 00e4 00BF     		nop
+ 1589 00e6 1837     		adds	r7, r7, #24
+ 1590              	.LCFI55:
+ 1591              		.cfi_def_cfa_offset 8
+ 1592 00e8 BD46     		mov	sp, r7
+ 1593              	.LCFI56:
+ 1594              		.cfi_def_cfa_register 13
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 45
+
+
+ 1595              		@ sp needed
+ 1596 00ea 80BD     		pop	{r7, pc}
+ 1597              	.L113:
+ 1598              		.align	2
+ 1599              	.L112:
+ 1600 00ec 00000000 		.word	OSTmrTbl
+ 1601 00f0 00000000 		.word	OSTmrWheelTbl
+ 1602 00f4 00000000 		.word	.LC0
+ 1603 00f8 00000000 		.word	OSTmrTime
+ 1604 00fc 00000000 		.word	OSTmrUsed
+ 1605 0100 00000000 		.word	OSTmrFree
+ 1606 0104 00000000 		.word	OSTmrFreeList
+ 1607 0108 00000000 		.word	OSTmrSem
+ 1608 010c 00000000 		.word	OSTmrSemSignal
+ 1609 0110 04000000 		.word	.LC1
+ 1610 0114 18000000 		.word	.LC2
+ 1611              		.cfi_endproc
+ 1612              	.LFE13:
+ 1614              		.section	.rodata
+ 1615 002b 00       		.align	2
+ 1616              	.LC3:
+ 1617 002c 75432F4F 		.ascii	"uC/OS-II Tmr\000"
+ 1617      532D4949 
+ 1617      20546D72 
+ 1617      00
+ 1618              		.section	.text.OSTmr_InitTask,"ax",%progbits
+ 1619              		.align	1
+ 1620              		.syntax unified
+ 1621              		.thumb
+ 1622              		.thumb_func
+ 1624              	OSTmr_InitTask:
+ 1625              	.LFB14:
+ 921:./ucOSII/Core/os_tmr.c **** #endif
+ 922:./ucOSII/Core/os_tmr.c **** 
+ 923:./ucOSII/Core/os_tmr.c **** 
+ 924:./ucOSII/Core/os_tmr.c **** /*
+ 925:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 926:./ucOSII/Core/os_tmr.c **** *                                INITIALIZE THE TIMER MANAGEMENT TASK
+ 927:./ucOSII/Core/os_tmr.c **** *
+ 928:./ucOSII/Core/os_tmr.c **** * Description: This function is called by OSTmrInit() to create the timer management task.
+ 929:./ucOSII/Core/os_tmr.c **** *                               * Arguments  : none
+ 930:./ucOSII/Core/os_tmr.c **** *
+ 931:./ucOSII/Core/os_tmr.c **** * Returns    : none
+ 932:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 933:./ucOSII/Core/os_tmr.c **** */
+ 934:./ucOSII/Core/os_tmr.c **** 
+ 935:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+ 936:./ucOSII/Core/os_tmr.c **** static  void  OSTmr_InitTask (void)
+ 937:./ucOSII/Core/os_tmr.c **** {
+ 1626              		.loc 1 937 1
+ 1627              		.cfi_startproc
+ 1628              		@ args = 0, pretend = 0, frame = 8
+ 1629              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1630 0000 80B5     		push	{r7, lr}
+ 1631              	.LCFI57:
+ 1632              		.cfi_def_cfa_offset 8
+ 1633              		.cfi_offset 7, -8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 46
+
+
+ 1634              		.cfi_offset 14, -4
+ 1635 0002 88B0     		sub	sp, sp, #32
+ 1636              	.LCFI58:
+ 1637              		.cfi_def_cfa_offset 40
+ 1638 0004 06AF     		add	r7, sp, #24
+ 1639              	.LCFI59:
+ 1640              		.cfi_def_cfa 7, 16
+ 938:./ucOSII/Core/os_tmr.c **** #if OS_TASK_NAME_EN > 0u
+ 939:./ucOSII/Core/os_tmr.c ****     INT8U  err;
+ 940:./ucOSII/Core/os_tmr.c **** #endif
+ 941:./ucOSII/Core/os_tmr.c **** 
+ 942:./ucOSII/Core/os_tmr.c **** 
+ 943:./ucOSII/Core/os_tmr.c **** #if OS_TASK_CREATE_EXT_EN > 0u
+ 944:./ucOSII/Core/os_tmr.c ****     #if OS_STK_GROWTH == 1u
+ 945:./ucOSII/Core/os_tmr.c ****     (void)OSTaskCreateExt(OSTmr_Task,
+ 1641              		.loc 1 945 11
+ 1642 0006 0323     		movs	r3, #3
+ 1643 0008 0493     		str	r3, [sp, #16]
+ 1644 000a 0023     		movs	r3, #0
+ 1645 000c 0393     		str	r3, [sp, #12]
+ 1646 000e 8023     		movs	r3, #128
+ 1647 0010 0293     		str	r3, [sp, #8]
+ 1648 0012 0A4B     		ldr	r3, .L115
+ 1649 0014 0193     		str	r3, [sp, #4]
+ 1650 0016 4FF6FD73 		movw	r3, #65533
+ 1651 001a 0093     		str	r3, [sp]
+ 1652 001c 3D23     		movs	r3, #61
+ 1653 001e 084A     		ldr	r2, .L115+4
+ 1654 0020 0021     		movs	r1, #0
+ 1655 0022 0848     		ldr	r0, .L115+8
+ 1656 0024 FFF7FEFF 		bl	OSTaskCreateExt
+ 946:./ucOSII/Core/os_tmr.c ****                           (void *)0,                                       /* No arguments passed t
+ 947:./ucOSII/Core/os_tmr.c ****                           &OSTmrTaskStk[OS_TASK_TMR_STK_SIZE - 1u],        /* Set Top-Of-Stack     
+ 948:./ucOSII/Core/os_tmr.c ****                           OS_TASK_TMR_PRIO,
+ 949:./ucOSII/Core/os_tmr.c ****                           OS_TASK_TMR_ID,
+ 950:./ucOSII/Core/os_tmr.c ****                           &OSTmrTaskStk[0],                                /* Set Bottom-Of-Stack  
+ 951:./ucOSII/Core/os_tmr.c ****                           OS_TASK_TMR_STK_SIZE,
+ 952:./ucOSII/Core/os_tmr.c ****                           (void *)0,                                       /* No TCB extension     
+ 953:./ucOSII/Core/os_tmr.c ****                           OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR);      /* Enable stack checking
+ 954:./ucOSII/Core/os_tmr.c ****     #else
+ 955:./ucOSII/Core/os_tmr.c ****     (void)OSTaskCreateExt(OSTmr_Task,
+ 956:./ucOSII/Core/os_tmr.c ****                           (void *)0,                                       /* No arguments passed t
+ 957:./ucOSII/Core/os_tmr.c ****                           &OSTmrTaskStk[0],                                /* Set Top-Of-Stack     
+ 958:./ucOSII/Core/os_tmr.c ****                           OS_TASK_TMR_PRIO,
+ 959:./ucOSII/Core/os_tmr.c ****                           OS_TASK_TMR_ID,
+ 960:./ucOSII/Core/os_tmr.c ****                           &OSTmrTaskStk[OS_TASK_TMR_STK_SIZE - 1u],        /* Set Bottom-Of-Stack  
+ 961:./ucOSII/Core/os_tmr.c ****                           OS_TASK_TMR_STK_SIZE,
+ 962:./ucOSII/Core/os_tmr.c ****                           (void *)0,                                       /* No TCB extension     
+ 963:./ucOSII/Core/os_tmr.c ****                           OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR);      /* Enable stack checking
+ 964:./ucOSII/Core/os_tmr.c ****     #endif
+ 965:./ucOSII/Core/os_tmr.c **** #else
+ 966:./ucOSII/Core/os_tmr.c ****     #if OS_STK_GROWTH == 1u
+ 967:./ucOSII/Core/os_tmr.c ****     (void)OSTaskCreate(OSTmr_Task,
+ 968:./ucOSII/Core/os_tmr.c ****                        (void *)0,
+ 969:./ucOSII/Core/os_tmr.c ****                        &OSTmrTaskStk[OS_TASK_TMR_STK_SIZE - 1u],
+ 970:./ucOSII/Core/os_tmr.c ****                        OS_TASK_TMR_PRIO);
+ 971:./ucOSII/Core/os_tmr.c ****     #else
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 47
+
+
+ 972:./ucOSII/Core/os_tmr.c ****     (void)OSTaskCreate(OSTmr_Task,
+ 973:./ucOSII/Core/os_tmr.c ****                        (void *)0,
+ 974:./ucOSII/Core/os_tmr.c ****                        &OSTmrTaskStk[0],
+ 975:./ucOSII/Core/os_tmr.c ****                        OS_TASK_TMR_PRIO);
+ 976:./ucOSII/Core/os_tmr.c ****     #endif
+ 977:./ucOSII/Core/os_tmr.c **** #endif
+ 978:./ucOSII/Core/os_tmr.c **** 
+ 979:./ucOSII/Core/os_tmr.c **** #if OS_TASK_NAME_EN > 0u
+ 980:./ucOSII/Core/os_tmr.c ****     OSTaskNameSet(OS_TASK_TMR_PRIO, (INT8U *)(void *)"uC/OS-II Tmr", &err);
+ 1657              		.loc 1 980 5
+ 1658 0028 FB1D     		adds	r3, r7, #7
+ 1659 002a 1A46     		mov	r2, r3
+ 1660 002c 0649     		ldr	r1, .L115+12
+ 1661 002e 3D20     		movs	r0, #61
+ 1662 0030 FFF7FEFF 		bl	OSTaskNameSet
+ 981:./ucOSII/Core/os_tmr.c **** #endif
+ 982:./ucOSII/Core/os_tmr.c **** }
+ 1663              		.loc 1 982 1
+ 1664 0034 00BF     		nop
+ 1665 0036 0837     		adds	r7, r7, #8
+ 1666              	.LCFI60:
+ 1667              		.cfi_def_cfa_offset 8
+ 1668 0038 BD46     		mov	sp, r7
+ 1669              	.LCFI61:
+ 1670              		.cfi_def_cfa_register 13
+ 1671              		@ sp needed
+ 1672 003a 80BD     		pop	{r7, pc}
+ 1673              	.L116:
+ 1674              		.align	2
+ 1675              	.L115:
+ 1676 003c 00000000 		.word	OSTmrTaskStk
+ 1677 0040 FC010000 		.word	OSTmrTaskStk+508
+ 1678 0044 00000000 		.word	OSTmr_Task
+ 1679 0048 2C000000 		.word	.LC3
+ 1680              		.cfi_endproc
+ 1681              	.LFE14:
+ 1683              		.section	.text.OSTmr_Link,"ax",%progbits
+ 1684              		.align	1
+ 1685              		.syntax unified
+ 1686              		.thumb
+ 1687              		.thumb_func
+ 1689              	OSTmr_Link:
+ 1690              	.LFB15:
+ 983:./ucOSII/Core/os_tmr.c **** #endif
+ 984:./ucOSII/Core/os_tmr.c **** 
+ 985:./ucOSII/Core/os_tmr.c **** 
+ 986:./ucOSII/Core/os_tmr.c **** /*
+ 987:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+ 988:./ucOSII/Core/os_tmr.c **** *                                 INSERT A TIMER INTO THE TIMER WHEEL
+ 989:./ucOSII/Core/os_tmr.c **** *
+ 990:./ucOSII/Core/os_tmr.c **** * Description: This function is called to insert the timer into the timer wheel.  The timer is alwa
+ 991:./ucOSII/Core/os_tmr.c **** *              inserted at the beginning of the list.
+ 992:./ucOSII/Core/os_tmr.c **** *
+ 993:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr          Is a pointer to the timer to insert.
+ 994:./ucOSII/Core/os_tmr.c **** *
+ 995:./ucOSII/Core/os_tmr.c **** *              type          Is either:
+ 996:./ucOSII/Core/os_tmr.c **** *                               OS_TMR_LINK_PERIODIC    Means to re-insert the timer after a period
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 48
+
+
+ 997:./ucOSII/Core/os_tmr.c **** *                               OS_TMR_LINK_DLY         Means to insert    the timer the first time
+ 998:./ucOSII/Core/os_tmr.c **** *
+ 999:./ucOSII/Core/os_tmr.c **** * Returns    : none
+1000:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+1001:./ucOSII/Core/os_tmr.c **** */
+1002:./ucOSII/Core/os_tmr.c **** 
+1003:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+1004:./ucOSII/Core/os_tmr.c **** static  void  OSTmr_Link (OS_TMR  *ptmr,
+1005:./ucOSII/Core/os_tmr.c ****                           INT8U    type)
+1006:./ucOSII/Core/os_tmr.c **** {
+ 1691              		.loc 1 1006 1
+ 1692              		.cfi_startproc
+ 1693              		@ args = 0, pretend = 0, frame = 24
+ 1694              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1695              		@ link register save eliminated.
+ 1696 0000 80B4     		push	{r7}
+ 1697              	.LCFI62:
+ 1698              		.cfi_def_cfa_offset 4
+ 1699              		.cfi_offset 7, -4
+ 1700 0002 87B0     		sub	sp, sp, #28
+ 1701              	.LCFI63:
+ 1702              		.cfi_def_cfa_offset 32
+ 1703 0004 00AF     		add	r7, sp, #0
+ 1704              	.LCFI64:
+ 1705              		.cfi_def_cfa_register 7
+ 1706 0006 7860     		str	r0, [r7, #4]
+ 1707 0008 0B46     		mov	r3, r1
+ 1708 000a FB70     		strb	r3, [r7, #3]
+1007:./ucOSII/Core/os_tmr.c ****     OS_TMR       *ptmr1;
+1008:./ucOSII/Core/os_tmr.c ****     OS_TMR_WHEEL *pspoke;
+1009:./ucOSII/Core/os_tmr.c ****     INT16U        spoke;
+1010:./ucOSII/Core/os_tmr.c **** 
+1011:./ucOSII/Core/os_tmr.c **** 
+1012:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrState = OS_TMR_STATE_RUNNING;
+ 1709              		.loc 1 1012 22
+ 1710 000c 7B68     		ldr	r3, [r7, #4]
+ 1711 000e 0322     		movs	r2, #3
+ 1712 0010 83F82520 		strb	r2, [r3, #37]
+1013:./ucOSII/Core/os_tmr.c ****     if (type == OS_TMR_LINK_PERIODIC) {                            /* Determine when timer will exp
+ 1713              		.loc 1 1013 8
+ 1714 0014 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 1715 0016 012B     		cmp	r3, #1
+ 1716 0018 07D1     		bne	.L118
+1014:./ucOSII/Core/os_tmr.c ****         ptmr->OSTmrMatch = ptmr->OSTmrPeriod + OSTmrTime;
+ 1717              		.loc 1 1014 32
+ 1718 001a 7B68     		ldr	r3, [r7, #4]
+ 1719 001c DA69     		ldr	r2, [r3, #28]
+ 1720              		.loc 1 1014 46
+ 1721 001e 2B4B     		ldr	r3, .L123
+ 1722 0020 1B68     		ldr	r3, [r3]
+ 1723 0022 1A44     		add	r2, r2, r3
+ 1724              		.loc 1 1014 26
+ 1725 0024 7B68     		ldr	r3, [r7, #4]
+ 1726 0026 5A61     		str	r2, [r3, #20]
+ 1727 0028 12E0     		b	.L119
+ 1728              	.L118:
+1015:./ucOSII/Core/os_tmr.c ****     } else {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 49
+
+
+1016:./ucOSII/Core/os_tmr.c ****         if (ptmr->OSTmrDly == 0u) {
+ 1729              		.loc 1 1016 17
+ 1730 002a 7B68     		ldr	r3, [r7, #4]
+ 1731 002c 9B69     		ldr	r3, [r3, #24]
+ 1732              		.loc 1 1016 12
+ 1733 002e 002B     		cmp	r3, #0
+ 1734 0030 07D1     		bne	.L120
+1017:./ucOSII/Core/os_tmr.c ****             ptmr->OSTmrMatch = ptmr->OSTmrPeriod + OSTmrTime;
+ 1735              		.loc 1 1017 36
+ 1736 0032 7B68     		ldr	r3, [r7, #4]
+ 1737 0034 DA69     		ldr	r2, [r3, #28]
+ 1738              		.loc 1 1017 50
+ 1739 0036 254B     		ldr	r3, .L123
+ 1740 0038 1B68     		ldr	r3, [r3]
+ 1741 003a 1A44     		add	r2, r2, r3
+ 1742              		.loc 1 1017 30
+ 1743 003c 7B68     		ldr	r3, [r7, #4]
+ 1744 003e 5A61     		str	r2, [r3, #20]
+ 1745 0040 06E0     		b	.L119
+ 1746              	.L120:
+1018:./ucOSII/Core/os_tmr.c ****         } else {
+1019:./ucOSII/Core/os_tmr.c ****             ptmr->OSTmrMatch = ptmr->OSTmrDly    + OSTmrTime;
+ 1747              		.loc 1 1019 36
+ 1748 0042 7B68     		ldr	r3, [r7, #4]
+ 1749 0044 9A69     		ldr	r2, [r3, #24]
+ 1750              		.loc 1 1019 50
+ 1751 0046 214B     		ldr	r3, .L123
+ 1752 0048 1B68     		ldr	r3, [r3]
+ 1753 004a 1A44     		add	r2, r2, r3
+ 1754              		.loc 1 1019 30
+ 1755 004c 7B68     		ldr	r3, [r7, #4]
+ 1756 004e 5A61     		str	r2, [r3, #20]
+ 1757              	.L119:
+1020:./ucOSII/Core/os_tmr.c ****         }
+1021:./ucOSII/Core/os_tmr.c ****     }
+1022:./ucOSII/Core/os_tmr.c ****     spoke  = (INT16U)(ptmr->OSTmrMatch % OS_TMR_CFG_WHEEL_SIZE);
+ 1758              		.loc 1 1022 27
+ 1759 0050 7B68     		ldr	r3, [r7, #4]
+ 1760 0052 5A69     		ldr	r2, [r3, #20]
+ 1761              		.loc 1 1022 40
+ 1762 0054 1E4B     		ldr	r3, .L123+4
+ 1763 0056 A3FB0213 		umull	r1, r3, r3, r2
+ 1764 005a D11A     		subs	r1, r2, r3
+ 1765 005c 4908     		lsrs	r1, r1, #1
+ 1766 005e 0B44     		add	r3, r3, r1
+ 1767 0060 9908     		lsrs	r1, r3, #2
+ 1768 0062 0B46     		mov	r3, r1
+ 1769 0064 DB00     		lsls	r3, r3, #3
+ 1770 0066 5B1A     		subs	r3, r3, r1
+ 1771 0068 D11A     		subs	r1, r2, r3
+ 1772              		.loc 1 1022 12
+ 1773 006a 0B46     		mov	r3, r1	@ movhi
+ 1774 006c FB82     		strh	r3, [r7, #22]	@ movhi
+1023:./ucOSII/Core/os_tmr.c ****     pspoke = &OSTmrWheelTbl[spoke];
+ 1775              		.loc 1 1023 28
+ 1776 006e FB8A     		ldrh	r3, [r7, #22]
+ 1777              		.loc 1 1023 12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 50
+
+
+ 1778 0070 DB00     		lsls	r3, r3, #3
+ 1779 0072 184A     		ldr	r2, .L123+8
+ 1780 0074 1344     		add	r3, r3, r2
+ 1781 0076 3B61     		str	r3, [r7, #16]
+1024:./ucOSII/Core/os_tmr.c **** 
+1025:./ucOSII/Core/os_tmr.c ****     if (pspoke->OSTmrFirst == (OS_TMR *)0) {                       /* Link into timer wheel        
+ 1782              		.loc 1 1025 15
+ 1783 0078 3B69     		ldr	r3, [r7, #16]
+ 1784 007a 1B68     		ldr	r3, [r3]
+ 1785              		.loc 1 1025 8
+ 1786 007c 002B     		cmp	r3, #0
+ 1787 007e 09D1     		bne	.L121
+1026:./ucOSII/Core/os_tmr.c ****         pspoke->OSTmrFirst   = ptmr;
+ 1788              		.loc 1 1026 30
+ 1789 0080 3B69     		ldr	r3, [r7, #16]
+ 1790 0082 7A68     		ldr	r2, [r7, #4]
+ 1791 0084 1A60     		str	r2, [r3]
+1027:./ucOSII/Core/os_tmr.c ****         ptmr->OSTmrNext      = (OS_TMR *)0;
+ 1792              		.loc 1 1027 30
+ 1793 0086 7B68     		ldr	r3, [r7, #4]
+ 1794 0088 0022     		movs	r2, #0
+ 1795 008a DA60     		str	r2, [r3, #12]
+1028:./ucOSII/Core/os_tmr.c ****         pspoke->OSTmrEntries = 1u;
+ 1796              		.loc 1 1028 30
+ 1797 008c 3B69     		ldr	r3, [r7, #16]
+ 1798 008e 0122     		movs	r2, #1
+ 1799 0090 9A80     		strh	r2, [r3, #4]	@ movhi
+ 1800 0092 11E0     		b	.L122
+ 1801              	.L121:
+1029:./ucOSII/Core/os_tmr.c ****     } else {
+1030:./ucOSII/Core/os_tmr.c ****         ptmr1                = pspoke->OSTmrFirst;                 /* Point to first timer in the s
+ 1802              		.loc 1 1030 30
+ 1803 0094 3B69     		ldr	r3, [r7, #16]
+ 1804 0096 1B68     		ldr	r3, [r3]
+ 1805 0098 FB60     		str	r3, [r7, #12]
+1031:./ucOSII/Core/os_tmr.c ****         pspoke->OSTmrFirst   = ptmr;
+ 1806              		.loc 1 1031 30
+ 1807 009a 3B69     		ldr	r3, [r7, #16]
+ 1808 009c 7A68     		ldr	r2, [r7, #4]
+ 1809 009e 1A60     		str	r2, [r3]
+1032:./ucOSII/Core/os_tmr.c ****         ptmr->OSTmrNext      = (void *)ptmr1;
+ 1810              		.loc 1 1032 30
+ 1811 00a0 7B68     		ldr	r3, [r7, #4]
+ 1812 00a2 FA68     		ldr	r2, [r7, #12]
+ 1813 00a4 DA60     		str	r2, [r3, #12]
+1033:./ucOSII/Core/os_tmr.c ****         ptmr1->OSTmrPrev     = (void *)ptmr;
+ 1814              		.loc 1 1033 30
+ 1815 00a6 FB68     		ldr	r3, [r7, #12]
+ 1816 00a8 7A68     		ldr	r2, [r7, #4]
+ 1817 00aa 1A61     		str	r2, [r3, #16]
+1034:./ucOSII/Core/os_tmr.c ****         pspoke->OSTmrEntries++;
+ 1818              		.loc 1 1034 15
+ 1819 00ac 3B69     		ldr	r3, [r7, #16]
+ 1820 00ae 9B88     		ldrh	r3, [r3, #4]
+ 1821              		.loc 1 1034 29
+ 1822 00b0 0133     		adds	r3, r3, #1
+ 1823 00b2 9AB2     		uxth	r2, r3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 51
+
+
+ 1824 00b4 3B69     		ldr	r3, [r7, #16]
+ 1825 00b6 9A80     		strh	r2, [r3, #4]	@ movhi
+ 1826              	.L122:
+1035:./ucOSII/Core/os_tmr.c ****     }
+1036:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrPrev = (void *)0;                                   /* Timer always inserted as firs
+ 1827              		.loc 1 1036 21
+ 1828 00b8 7B68     		ldr	r3, [r7, #4]
+ 1829 00ba 0022     		movs	r2, #0
+ 1830 00bc 1A61     		str	r2, [r3, #16]
+1037:./ucOSII/Core/os_tmr.c **** }
+ 1831              		.loc 1 1037 1
+ 1832 00be 00BF     		nop
+ 1833 00c0 1C37     		adds	r7, r7, #28
+ 1834              	.LCFI65:
+ 1835              		.cfi_def_cfa_offset 4
+ 1836 00c2 BD46     		mov	sp, r7
+ 1837              	.LCFI66:
+ 1838              		.cfi_def_cfa_register 13
+ 1839              		@ sp needed
+ 1840 00c4 5DF8047B 		ldr	r7, [sp], #4
+ 1841              	.LCFI67:
+ 1842              		.cfi_restore 7
+ 1843              		.cfi_def_cfa_offset 0
+ 1844 00c8 7047     		bx	lr
+ 1845              	.L124:
+ 1846 00ca 00BF     		.align	2
+ 1847              	.L123:
+ 1848 00cc 00000000 		.word	OSTmrTime
+ 1849 00d0 25499224 		.word	613566757
+ 1850 00d4 00000000 		.word	OSTmrWheelTbl
+ 1851              		.cfi_endproc
+ 1852              	.LFE15:
+ 1854              		.section	.text.OSTmr_Unlink,"ax",%progbits
+ 1855              		.align	1
+ 1856              		.syntax unified
+ 1857              		.thumb
+ 1858              		.thumb_func
+ 1860              	OSTmr_Unlink:
+ 1861              	.LFB16:
+1038:./ucOSII/Core/os_tmr.c **** #endif
+1039:./ucOSII/Core/os_tmr.c **** 
+1040:./ucOSII/Core/os_tmr.c **** 
+1041:./ucOSII/Core/os_tmr.c **** /*
+1042:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+1043:./ucOSII/Core/os_tmr.c **** *                                 REMOVE A TIMER FROM THE TIMER WHEEL
+1044:./ucOSII/Core/os_tmr.c **** *
+1045:./ucOSII/Core/os_tmr.c **** * Description: This function is called to remove the timer from the timer wheel.
+1046:./ucOSII/Core/os_tmr.c **** *
+1047:./ucOSII/Core/os_tmr.c **** * Arguments  : ptmr          Is a pointer to the timer to remove.
+1048:./ucOSII/Core/os_tmr.c **** *
+1049:./ucOSII/Core/os_tmr.c **** * Returns    : none
+1050:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+1051:./ucOSII/Core/os_tmr.c **** */
+1052:./ucOSII/Core/os_tmr.c **** 
+1053:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+1054:./ucOSII/Core/os_tmr.c **** static  void  OSTmr_Unlink (OS_TMR *ptmr)
+1055:./ucOSII/Core/os_tmr.c **** {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 52
+
+
+ 1862              		.loc 1 1055 1
+ 1863              		.cfi_startproc
+ 1864              		@ args = 0, pretend = 0, frame = 24
+ 1865              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1866              		@ link register save eliminated.
+ 1867 0000 80B4     		push	{r7}
+ 1868              	.LCFI68:
+ 1869              		.cfi_def_cfa_offset 4
+ 1870              		.cfi_offset 7, -4
+ 1871 0002 87B0     		sub	sp, sp, #28
+ 1872              	.LCFI69:
+ 1873              		.cfi_def_cfa_offset 32
+ 1874 0004 00AF     		add	r7, sp, #0
+ 1875              	.LCFI70:
+ 1876              		.cfi_def_cfa_register 7
+ 1877 0006 7860     		str	r0, [r7, #4]
+1056:./ucOSII/Core/os_tmr.c ****     OS_TMR        *ptmr1;
+1057:./ucOSII/Core/os_tmr.c ****     OS_TMR        *ptmr2;
+1058:./ucOSII/Core/os_tmr.c ****     OS_TMR_WHEEL  *pspoke;
+1059:./ucOSII/Core/os_tmr.c ****     INT16U         spoke;
+1060:./ucOSII/Core/os_tmr.c **** 
+1061:./ucOSII/Core/os_tmr.c **** 
+1062:./ucOSII/Core/os_tmr.c ****     spoke  = (INT16U)(ptmr->OSTmrMatch % OS_TMR_CFG_WHEEL_SIZE);
+ 1878              		.loc 1 1062 27
+ 1879 0008 7B68     		ldr	r3, [r7, #4]
+ 1880 000a 5A69     		ldr	r2, [r3, #20]
+ 1881              		.loc 1 1062 40
+ 1882 000c 244B     		ldr	r3, .L128
+ 1883 000e A3FB0213 		umull	r1, r3, r3, r2
+ 1884 0012 D11A     		subs	r1, r2, r3
+ 1885 0014 4908     		lsrs	r1, r1, #1
+ 1886 0016 0B44     		add	r3, r3, r1
+ 1887 0018 9908     		lsrs	r1, r3, #2
+ 1888 001a 0B46     		mov	r3, r1
+ 1889 001c DB00     		lsls	r3, r3, #3
+ 1890 001e 5B1A     		subs	r3, r3, r1
+ 1891 0020 D11A     		subs	r1, r2, r3
+ 1892              		.loc 1 1062 12
+ 1893 0022 0B46     		mov	r3, r1	@ movhi
+ 1894 0024 FB82     		strh	r3, [r7, #22]	@ movhi
+1063:./ucOSII/Core/os_tmr.c ****     pspoke = &OSTmrWheelTbl[spoke];
+ 1895              		.loc 1 1063 28
+ 1896 0026 FB8A     		ldrh	r3, [r7, #22]
+ 1897              		.loc 1 1063 12
+ 1898 0028 DB00     		lsls	r3, r3, #3
+ 1899 002a 1E4A     		ldr	r2, .L128+4
+ 1900 002c 1344     		add	r3, r3, r2
+ 1901 002e 3B61     		str	r3, [r7, #16]
+1064:./ucOSII/Core/os_tmr.c **** 
+1065:./ucOSII/Core/os_tmr.c ****     if (pspoke->OSTmrFirst == ptmr) {                       /* See if timer to remove is at the beg
+ 1902              		.loc 1 1065 15
+ 1903 0030 3B69     		ldr	r3, [r7, #16]
+ 1904 0032 1B68     		ldr	r3, [r3]
+ 1905              		.loc 1 1065 8
+ 1906 0034 7A68     		ldr	r2, [r7, #4]
+ 1907 0036 9A42     		cmp	r2, r3
+ 1908 0038 0CD1     		bne	.L126
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 53
+
+
+1066:./ucOSII/Core/os_tmr.c ****         ptmr1              = (OS_TMR *)ptmr->OSTmrNext;
+ 1909              		.loc 1 1066 28
+ 1910 003a 7B68     		ldr	r3, [r7, #4]
+ 1911 003c DB68     		ldr	r3, [r3, #12]
+ 1912 003e FB60     		str	r3, [r7, #12]
+1067:./ucOSII/Core/os_tmr.c ****         pspoke->OSTmrFirst = (OS_TMR *)ptmr1;
+ 1913              		.loc 1 1067 28
+ 1914 0040 3B69     		ldr	r3, [r7, #16]
+ 1915 0042 FA68     		ldr	r2, [r7, #12]
+ 1916 0044 1A60     		str	r2, [r3]
+1068:./ucOSII/Core/os_tmr.c ****         if (ptmr1 != (OS_TMR *)0) {
+ 1917              		.loc 1 1068 12
+ 1918 0046 FB68     		ldr	r3, [r7, #12]
+ 1919 0048 002B     		cmp	r3, #0
+ 1920 004a 12D0     		beq	.L127
+1069:./ucOSII/Core/os_tmr.c ****             ptmr1->OSTmrPrev = (void *)0;
+ 1921              		.loc 1 1069 30
+ 1922 004c FB68     		ldr	r3, [r7, #12]
+ 1923 004e 0022     		movs	r2, #0
+ 1924 0050 1A61     		str	r2, [r3, #16]
+ 1925 0052 0EE0     		b	.L127
+ 1926              	.L126:
+1070:./ucOSII/Core/os_tmr.c ****         }
+1071:./ucOSII/Core/os_tmr.c ****     } else {
+1072:./ucOSII/Core/os_tmr.c ****         ptmr1            = (OS_TMR *)ptmr->OSTmrPrev;       /* Remove timer from somewhere in the l
+ 1927              		.loc 1 1072 26
+ 1928 0054 7B68     		ldr	r3, [r7, #4]
+ 1929 0056 1B69     		ldr	r3, [r3, #16]
+ 1930 0058 FB60     		str	r3, [r7, #12]
+1073:./ucOSII/Core/os_tmr.c ****         ptmr2            = (OS_TMR *)ptmr->OSTmrNext;
+ 1931              		.loc 1 1073 26
+ 1932 005a 7B68     		ldr	r3, [r7, #4]
+ 1933 005c DB68     		ldr	r3, [r3, #12]
+ 1934 005e BB60     		str	r3, [r7, #8]
+1074:./ucOSII/Core/os_tmr.c ****         ptmr1->OSTmrNext = ptmr2;
+ 1935              		.loc 1 1074 26
+ 1936 0060 FB68     		ldr	r3, [r7, #12]
+ 1937 0062 BA68     		ldr	r2, [r7, #8]
+ 1938 0064 DA60     		str	r2, [r3, #12]
+1075:./ucOSII/Core/os_tmr.c ****         if (ptmr2 != (OS_TMR *)0) {
+ 1939              		.loc 1 1075 12
+ 1940 0066 BB68     		ldr	r3, [r7, #8]
+ 1941 0068 002B     		cmp	r3, #0
+ 1942 006a 02D0     		beq	.L127
+1076:./ucOSII/Core/os_tmr.c ****             ptmr2->OSTmrPrev = (void *)ptmr1;
+ 1943              		.loc 1 1076 30
+ 1944 006c BB68     		ldr	r3, [r7, #8]
+ 1945 006e FA68     		ldr	r2, [r7, #12]
+ 1946 0070 1A61     		str	r2, [r3, #16]
+ 1947              	.L127:
+1077:./ucOSII/Core/os_tmr.c ****         }
+1078:./ucOSII/Core/os_tmr.c ****     }
+1079:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrState = OS_TMR_STATE_STOPPED;
+ 1948              		.loc 1 1079 22
+ 1949 0072 7B68     		ldr	r3, [r7, #4]
+ 1950 0074 0122     		movs	r2, #1
+ 1951 0076 83F82520 		strb	r2, [r3, #37]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 54
+
+
+1080:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrNext  = (void *)0;
+ 1952              		.loc 1 1080 22
+ 1953 007a 7B68     		ldr	r3, [r7, #4]
+ 1954 007c 0022     		movs	r2, #0
+ 1955 007e DA60     		str	r2, [r3, #12]
+1081:./ucOSII/Core/os_tmr.c ****     ptmr->OSTmrPrev  = (void *)0;
+ 1956              		.loc 1 1081 22
+ 1957 0080 7B68     		ldr	r3, [r7, #4]
+ 1958 0082 0022     		movs	r2, #0
+ 1959 0084 1A61     		str	r2, [r3, #16]
+1082:./ucOSII/Core/os_tmr.c ****     pspoke->OSTmrEntries--;
+ 1960              		.loc 1 1082 11
+ 1961 0086 3B69     		ldr	r3, [r7, #16]
+ 1962 0088 9B88     		ldrh	r3, [r3, #4]
+ 1963              		.loc 1 1082 25
+ 1964 008a 013B     		subs	r3, r3, #1
+ 1965 008c 9AB2     		uxth	r2, r3
+ 1966 008e 3B69     		ldr	r3, [r7, #16]
+ 1967 0090 9A80     		strh	r2, [r3, #4]	@ movhi
+1083:./ucOSII/Core/os_tmr.c **** }
+ 1968              		.loc 1 1083 1
+ 1969 0092 00BF     		nop
+ 1970 0094 1C37     		adds	r7, r7, #28
+ 1971              	.LCFI71:
+ 1972              		.cfi_def_cfa_offset 4
+ 1973 0096 BD46     		mov	sp, r7
+ 1974              	.LCFI72:
+ 1975              		.cfi_def_cfa_register 13
+ 1976              		@ sp needed
+ 1977 0098 5DF8047B 		ldr	r7, [sp], #4
+ 1978              	.LCFI73:
+ 1979              		.cfi_restore 7
+ 1980              		.cfi_def_cfa_offset 0
+ 1981 009c 7047     		bx	lr
+ 1982              	.L129:
+ 1983 009e 00BF     		.align	2
+ 1984              	.L128:
+ 1985 00a0 25499224 		.word	613566757
+ 1986 00a4 00000000 		.word	OSTmrWheelTbl
+ 1987              		.cfi_endproc
+ 1988              	.LFE16:
+ 1990              		.section	.text.OSTmr_Task,"ax",%progbits
+ 1991              		.align	1
+ 1992              		.syntax unified
+ 1993              		.thumb
+ 1994              		.thumb_func
+ 1996              	OSTmr_Task:
+ 1997              	.LFB17:
+1084:./ucOSII/Core/os_tmr.c **** #endif
+1085:./ucOSII/Core/os_tmr.c **** 
+1086:./ucOSII/Core/os_tmr.c **** 
+1087:./ucOSII/Core/os_tmr.c **** /*
+1088:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+1089:./ucOSII/Core/os_tmr.c **** *                                        TIMER MANAGEMENT TASK
+1090:./ucOSII/Core/os_tmr.c **** *
+1091:./ucOSII/Core/os_tmr.c **** * Description: This task is created by OSTmrInit().
+1092:./ucOSII/Core/os_tmr.c **** *
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 55
+
+
+1093:./ucOSII/Core/os_tmr.c **** * Arguments  : none
+1094:./ucOSII/Core/os_tmr.c **** *
+1095:./ucOSII/Core/os_tmr.c **** * Returns    : none
+1096:./ucOSII/Core/os_tmr.c **** ***************************************************************************************************
+1097:./ucOSII/Core/os_tmr.c **** */
+1098:./ucOSII/Core/os_tmr.c **** 
+1099:./ucOSII/Core/os_tmr.c **** #if OS_TMR_EN > 0u
+1100:./ucOSII/Core/os_tmr.c **** static  void  OSTmr_Task (void *p_arg)
+1101:./ucOSII/Core/os_tmr.c **** {
+ 1998              		.loc 1 1101 1
+ 1999              		.cfi_startproc
+ 2000              		@ args = 0, pretend = 0, frame = 32
+ 2001              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2002 0000 80B5     		push	{r7, lr}
+ 2003              	.LCFI74:
+ 2004              		.cfi_def_cfa_offset 8
+ 2005              		.cfi_offset 7, -8
+ 2006              		.cfi_offset 14, -4
+ 2007 0002 88B0     		sub	sp, sp, #32
+ 2008              	.LCFI75:
+ 2009              		.cfi_def_cfa_offset 40
+ 2010 0004 00AF     		add	r7, sp, #0
+ 2011              	.LCFI76:
+ 2012              		.cfi_def_cfa_register 7
+ 2013 0006 7860     		str	r0, [r7, #4]
+ 2014              	.L136:
+1102:./ucOSII/Core/os_tmr.c ****     INT8U            err;
+1103:./ucOSII/Core/os_tmr.c ****     OS_TMR          *ptmr;
+1104:./ucOSII/Core/os_tmr.c ****     OS_TMR          *ptmr_next;
+1105:./ucOSII/Core/os_tmr.c ****     OS_TMR_CALLBACK  pfnct;
+1106:./ucOSII/Core/os_tmr.c ****     OS_TMR_WHEEL    *pspoke;
+1107:./ucOSII/Core/os_tmr.c ****     INT16U           spoke;
+1108:./ucOSII/Core/os_tmr.c **** 
+1109:./ucOSII/Core/os_tmr.c **** 
+1110:./ucOSII/Core/os_tmr.c ****     p_arg = p_arg;                                               /* Prevent compiler warning for no
+1111:./ucOSII/Core/os_tmr.c ****     for (;;) {
+1112:./ucOSII/Core/os_tmr.c ****         OSSemPend(OSTmrSemSignal, 0u, &err);                     /* Wait for signal indicating time
+ 2015              		.loc 1 1112 9
+ 2016 0008 2A4B     		ldr	r3, .L137
+ 2017 000a 1B68     		ldr	r3, [r3]
+ 2018 000c 07F10B02 		add	r2, r7, #11
+ 2019 0010 0021     		movs	r1, #0
+ 2020 0012 1846     		mov	r0, r3
+ 2021 0014 FFF7FEFF 		bl	OSSemPend
+1113:./ucOSII/Core/os_tmr.c ****         OSSchedLock();
+ 2022              		.loc 1 1113 9
+ 2023 0018 FFF7FEFF 		bl	OSSchedLock
+1114:./ucOSII/Core/os_tmr.c ****         OSTmrTime++;                                             /* Increment the current time     
+ 2024              		.loc 1 1114 18
+ 2025 001c 264B     		ldr	r3, .L137+4
+ 2026 001e 1B68     		ldr	r3, [r3]
+ 2027 0020 0133     		adds	r3, r3, #1
+ 2028 0022 254A     		ldr	r2, .L137+4
+ 2029 0024 1360     		str	r3, [r2]
+1115:./ucOSII/Core/os_tmr.c ****         spoke  = (INT16U)(OSTmrTime % OS_TMR_CFG_WHEEL_SIZE);    /* Position on current timer wheel
+ 2030              		.loc 1 1115 37
+ 2031 0026 244B     		ldr	r3, .L137+4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 56
+
+
+ 2032 0028 1A68     		ldr	r2, [r3]
+ 2033 002a 244B     		ldr	r3, .L137+8
+ 2034 002c A3FB0213 		umull	r1, r3, r3, r2
+ 2035 0030 D11A     		subs	r1, r2, r3
+ 2036 0032 4908     		lsrs	r1, r1, #1
+ 2037 0034 0B44     		add	r3, r3, r1
+ 2038 0036 9908     		lsrs	r1, r3, #2
+ 2039 0038 0B46     		mov	r3, r1
+ 2040 003a DB00     		lsls	r3, r3, #3
+ 2041 003c 5B1A     		subs	r3, r3, r1
+ 2042 003e D11A     		subs	r1, r2, r3
+ 2043              		.loc 1 1115 16
+ 2044 0040 0B46     		mov	r3, r1	@ movhi
+ 2045 0042 7B83     		strh	r3, [r7, #26]	@ movhi
+1116:./ucOSII/Core/os_tmr.c ****         pspoke = &OSTmrWheelTbl[spoke];
+ 2046              		.loc 1 1116 32
+ 2047 0044 7B8B     		ldrh	r3, [r7, #26]
+ 2048              		.loc 1 1116 16
+ 2049 0046 DB00     		lsls	r3, r3, #3
+ 2050 0048 1D4A     		ldr	r2, .L137+12
+ 2051 004a 1344     		add	r3, r3, r2
+ 2052 004c 7B61     		str	r3, [r7, #20]
+1117:./ucOSII/Core/os_tmr.c ****         ptmr   = pspoke->OSTmrFirst;
+ 2053              		.loc 1 1117 16
+ 2054 004e 7B69     		ldr	r3, [r7, #20]
+ 2055 0050 1B68     		ldr	r3, [r3]
+ 2056 0052 FB61     		str	r3, [r7, #28]
+1118:./ucOSII/Core/os_tmr.c ****         while (ptmr != (OS_TMR *)0) {
+ 2057              		.loc 1 1118 15
+ 2058 0054 27E0     		b	.L131
+ 2059              	.L135:
+1119:./ucOSII/Core/os_tmr.c ****             ptmr_next = (OS_TMR *)ptmr->OSTmrNext;               /* Point to next timer to update b
+ 2060              		.loc 1 1119 23
+ 2061 0056 FB69     		ldr	r3, [r7, #28]
+ 2062 0058 DB68     		ldr	r3, [r3, #12]
+ 2063 005a 3B61     		str	r3, [r7, #16]
+1120:./ucOSII/Core/os_tmr.c ****                                                                  /* ... timer could get unlinked fr
+1121:./ucOSII/Core/os_tmr.c ****             if (OSTmrTime == ptmr->OSTmrMatch) {                 /* Process each timer that expires
+ 2064              		.loc 1 1121 34
+ 2065 005c FB69     		ldr	r3, [r7, #28]
+ 2066 005e 5A69     		ldr	r2, [r3, #20]
+ 2067              		.loc 1 1121 27
+ 2068 0060 154B     		ldr	r3, .L137+4
+ 2069 0062 1B68     		ldr	r3, [r3]
+ 2070              		.loc 1 1121 16
+ 2071 0064 9A42     		cmp	r2, r3
+ 2072 0066 1CD1     		bne	.L132
+1122:./ucOSII/Core/os_tmr.c ****                 OS_TRACE_TMR_EXPIRED(ptmr);
+1123:./ucOSII/Core/os_tmr.c ****                 OSTmr_Unlink(ptmr);                              /* Remove from current wheel spoke
+ 2073              		.loc 1 1123 17
+ 2074 0068 F869     		ldr	r0, [r7, #28]
+ 2075 006a FFF7FEFF 		bl	OSTmr_Unlink
+1124:./ucOSII/Core/os_tmr.c ****                 if (ptmr->OSTmrOpt == OS_TMR_OPT_PERIODIC) {
+ 2076              		.loc 1 1124 25
+ 2077 006e FB69     		ldr	r3, [r7, #28]
+ 2078 0070 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
+ 2079              		.loc 1 1124 20
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 57
+
+
+ 2080 0074 022B     		cmp	r3, #2
+ 2081 0076 04D1     		bne	.L133
+1125:./ucOSII/Core/os_tmr.c ****                     OSTmr_Link(ptmr, OS_TMR_LINK_PERIODIC);      /* Recalculate new position of tim
+ 2082              		.loc 1 1125 21
+ 2083 0078 0121     		movs	r1, #1
+ 2084 007a F869     		ldr	r0, [r7, #28]
+ 2085 007c FFF7FEFF 		bl	OSTmr_Link
+ 2086 0080 03E0     		b	.L134
+ 2087              	.L133:
+1126:./ucOSII/Core/os_tmr.c ****                 } else {
+1127:./ucOSII/Core/os_tmr.c ****                     ptmr->OSTmrState = OS_TMR_STATE_COMPLETED;   /* Indicate that the timer has com
+ 2088              		.loc 1 1127 38
+ 2089 0082 FB69     		ldr	r3, [r7, #28]
+ 2090 0084 0222     		movs	r2, #2
+ 2091 0086 83F82520 		strb	r2, [r3, #37]
+ 2092              	.L134:
+1128:./ucOSII/Core/os_tmr.c ****                 }
+1129:./ucOSII/Core/os_tmr.c ****                 pfnct = ptmr->OSTmrCallback;                     /* Execute callback function if av
+ 2093              		.loc 1 1129 23
+ 2094 008a FB69     		ldr	r3, [r7, #28]
+ 2095 008c 5B68     		ldr	r3, [r3, #4]
+ 2096 008e FB60     		str	r3, [r7, #12]
+1130:./ucOSII/Core/os_tmr.c ****                 if (pfnct != (OS_TMR_CALLBACK)0) {
+ 2097              		.loc 1 1130 20
+ 2098 0090 FB68     		ldr	r3, [r7, #12]
+ 2099 0092 002B     		cmp	r3, #0
+ 2100 0094 05D0     		beq	.L132
+1131:./ucOSII/Core/os_tmr.c ****                     (*pfnct)((void *)ptmr, ptmr->OSTmrCallbackArg);
+ 2101              		.loc 1 1131 22
+ 2102 0096 FB69     		ldr	r3, [r7, #28]
+ 2103 0098 9A68     		ldr	r2, [r3, #8]
+ 2104 009a FB68     		ldr	r3, [r7, #12]
+ 2105 009c 1146     		mov	r1, r2
+ 2106 009e F869     		ldr	r0, [r7, #28]
+ 2107 00a0 9847     		blx	r3
+ 2108              	.LVL2:
+ 2109              	.L132:
+1132:./ucOSII/Core/os_tmr.c ****                 }
+1133:./ucOSII/Core/os_tmr.c ****             }
+1134:./ucOSII/Core/os_tmr.c ****             ptmr = ptmr_next;
+ 2110              		.loc 1 1134 18
+ 2111 00a2 3B69     		ldr	r3, [r7, #16]
+ 2112 00a4 FB61     		str	r3, [r7, #28]
+ 2113              	.L131:
+1118:./ucOSII/Core/os_tmr.c ****             ptmr_next = (OS_TMR *)ptmr->OSTmrNext;               /* Point to next timer to update b
+ 2114              		.loc 1 1118 15
+ 2115 00a6 FB69     		ldr	r3, [r7, #28]
+ 2116 00a8 002B     		cmp	r3, #0
+ 2117 00aa D4D1     		bne	.L135
+1135:./ucOSII/Core/os_tmr.c ****         }
+1136:./ucOSII/Core/os_tmr.c ****         OSSchedUnlock();
+ 2118              		.loc 1 1136 9
+ 2119 00ac FFF7FEFF 		bl	OSSchedUnlock
+1112:./ucOSII/Core/os_tmr.c ****         OSSchedLock();
+ 2120              		.loc 1 1112 9
+ 2121 00b0 AAE7     		b	.L136
+ 2122              	.L138:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 58
+
+
+ 2123 00b2 00BF     		.align	2
+ 2124              	.L137:
+ 2125 00b4 00000000 		.word	OSTmrSemSignal
+ 2126 00b8 00000000 		.word	OSTmrTime
+ 2127 00bc 25499224 		.word	613566757
+ 2128 00c0 00000000 		.word	OSTmrWheelTbl
+ 2129              		.cfi_endproc
+ 2130              	.LFE17:
+ 2132              		.text
+ 2133              	.Letext0:
+ 2134              		.file 2 "./ucOSII/Port/os_cpu.h"
+ 2135              		.file 3 "./ucOSII/Core/ucos_ii.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 59
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 os_tmr.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:20     .rodata:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:24     .text.OSTmrCreate:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:30     .text.OSTmrCreate:0000000000000000 OSTmrCreate
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1233   .text.OSTmr_Alloc:0000000000000000 OSTmr_Alloc
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:192    .text.OSTmrCreate:00000000000000cc $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:198    .text.OSTmrDel:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:204    .text.OSTmrDel:0000000000000000 OSTmrDel
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1860   .text.OSTmr_Unlink:0000000000000000 OSTmr_Unlink
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1324   .text.OSTmr_Free:0000000000000000 OSTmr_Free
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:343    .text.OSTmrDel:00000000000000b0 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:348    .text.OSTmrNameGet:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:354    .text.OSTmrNameGet:0000000000000000 OSTmrNameGet
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:494    .text.OSTmrNameGet:00000000000000b0 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:499    .text.OSTmrRemainGet:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:505    .text.OSTmrRemainGet:0000000000000000 OSTmrRemainGet
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:576    .text.OSTmrRemainGet:0000000000000054 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:580    .text.OSTmrRemainGet:0000000000000064 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:691    .text.OSTmrRemainGet:00000000000000f0 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:697    .text.OSTmrStateGet:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:703    .text.OSTmrStateGet:0000000000000000 OSTmrStateGet
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:804    .text.OSTmrStateGet:0000000000000070 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:809    .text.OSTmrStart:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:815    .text.OSTmrStart:0000000000000000 OSTmrStart
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1689   .text.OSTmr_Link:0000000000000000 OSTmr_Link
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:956    .text.OSTmrStart:00000000000000b4 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:961    .text.OSTmrStop:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:967    .text.OSTmrStop:0000000000000000 OSTmrStop
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1173   .text.OSTmrStop:0000000000000108 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1178   .text.OSTmrSignal:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1184   .text.OSTmrSignal:0000000000000000 OSTmrSignal
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1223   .text.OSTmrSignal:0000000000000020 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1228   .text.OSTmr_Alloc:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1312   .text.OSTmr_Alloc:0000000000000054 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1319   .text.OSTmr_Free:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1414   .text.OSTmr_Free:0000000000000070 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1429   .text.OSTmr_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1435   .text.OSTmr_Init:0000000000000000 OSTmr_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1624   .text.OSTmr_InitTask:0000000000000000 OSTmr_InitTask
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1600   .text.OSTmr_Init:00000000000000ec $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1619   .text.OSTmr_InitTask:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1676   .text.OSTmr_InitTask:000000000000003c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1996   .text.OSTmr_Task:0000000000000000 OSTmr_Task
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1684   .text.OSTmr_Link:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1848   .text.OSTmr_Link:00000000000000cc $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1855   .text.OSTmr_Unlink:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1985   .text.OSTmr_Unlink:00000000000000a0 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:1991   .text.OSTmr_Task:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s:2125   .text.OSTmr_Task:00000000000000b4 $d
+
+UNDEFINED SYMBOLS
+OSSchedLock
+OSSchedUnlock
+OSIntNesting
+OS_StrLen
+OSTmrTime
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccZd6Qdq.s 			page 60
+
+
+OSSemPost
+OSTmrSemSignal
+OSTmrFreeList
+OSTmrUsed
+OSTmrFree
+OS_MemClr
+OSSemCreate
+OSEventNameSet
+OSTmrTbl
+OSTmrWheelTbl
+OSTmrSem
+OSTaskCreateExt
+OSTaskNameSet
+OSTmrTaskStk
+OSSemPend

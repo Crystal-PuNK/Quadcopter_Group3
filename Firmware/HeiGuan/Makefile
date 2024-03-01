@@ -42,8 +42,8 @@ ASM_SOURCES =  \
 startup_stm32f401xe.s
 
 # ASM sources
-ASMM_SOURCES = 
-
+ASMM_SOURCES = \
+ucOSII/Port/os_cpu_a.S
 
 #######################################
 # binaries
@@ -98,6 +98,9 @@ C_INCLUDES =  \
 -I./CORE/${wildcard *.h} \
 -I./Hardware/${wildcard *.h} \
 -I./Library/${wildcard *.h} \
+-I./ucOSII/Config/${wildcard *.h} \
+-I./ucOSII/Core/${wildcard *.h} \
+-I./ucOSII/Port/${wildcard *.h} \
 -I./User/${wildcard *.h} 
 
 
@@ -142,9 +145,9 @@ OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASMM_SOURCES:.S=.o)))
 vpath %.S $(sort $(dir $(ASMM_SOURCES)))
-
+# 关闭所有优化
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+	$(CC) -c $(CFLAGS) -O0 -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
 $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
 	$(AS) -c $(CFLAGS) $< -o $@

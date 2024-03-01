@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"stm32f4xx_crc.c"
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 1
   28:./Library/stm32f4xx_crc.c **** /** @defgroup CRC 
   29:./Library/stm32f4xx_crc.c ****   * @brief CRC driver modules
   30:./Library/stm32f4xx_crc.c ****   * @{
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 2
 
 
   31:./Library/stm32f4xx_crc.c ****   */
@@ -81,36 +81,54 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 1
   48:./Library/stm32f4xx_crc.c ****   */
   49:./Library/stm32f4xx_crc.c **** void CRC_ResetDR(void)
   50:./Library/stm32f4xx_crc.c **** {
-  29              		.loc 1 50 1 view -0
+  29              		.loc 1 50 1
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
   33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 00AF     		add	r7, sp, #0
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_register 7
   51:./Library/stm32f4xx_crc.c ****   /* Reset CRC generator */
   52:./Library/stm32f4xx_crc.c ****   CRC->CR = CRC_CR_RESET;
-  34              		.loc 1 52 3 view .LVU1
-  35              		.loc 1 52 11 is_stmt 0 view .LVU2
-  36 0000 014B     		ldr	r3, .L2
-  37 0002 0122     		movs	r2, #1
-  38 0004 9A60     		str	r2, [r3, #8]
+  41              		.loc 1 52 6
+  42 0004 034B     		ldr	r3, .L2
+  43              		.loc 1 52 11
+  44 0006 0122     		movs	r2, #1
+  45 0008 9A60     		str	r2, [r3, #8]
   53:./Library/stm32f4xx_crc.c **** }
-  39              		.loc 1 53 1 view .LVU3
-  40 0006 7047     		bx	lr
-  41              	.L3:
-  42              		.align	2
-  43              	.L2:
-  44 0008 00300240 		.word	1073885184
-  45              		.cfi_endproc
-  46              	.LFE123:
-  48              		.section	.text.CRC_CalcCRC,"ax",%progbits
-  49              		.align	1
-  50              		.global	CRC_CalcCRC
-  51              		.syntax unified
-  52              		.thumb
-  53              		.thumb_func
-  55              	CRC_CalcCRC:
-  56              	.LVL0:
-  57              	.LFB124:
+  46              		.loc 1 53 1
+  47 000a 00BF     		nop
+  48 000c BD46     		mov	sp, r7
+  49              	.LCFI2:
+  50              		.cfi_def_cfa_register 13
+  51              		@ sp needed
+  52 000e 5DF8047B 		ldr	r7, [sp], #4
+  53              	.LCFI3:
+  54              		.cfi_restore 7
+  55              		.cfi_def_cfa_offset 0
+  56 0012 7047     		bx	lr
+  57              	.L3:
+  58              		.align	2
+  59              	.L2:
+  60 0014 00300240 		.word	1073885184
+  61              		.cfi_endproc
+  62              	.LFE123:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 3
+
+
+  64              		.section	.text.CRC_CalcCRC,"ax",%progbits
+  65              		.align	1
+  66              		.global	CRC_CalcCRC
+  67              		.syntax unified
+  68              		.thumb
+  69              		.thumb_func
+  71              	CRC_CalcCRC:
+  72              	.LFB124:
   54:./Library/stm32f4xx_crc.c **** 
   55:./Library/stm32f4xx_crc.c **** /**
   56:./Library/stm32f4xx_crc.c ****   * @brief  Computes the 32-bit CRC of a given data word(32-bit).
@@ -118,44 +136,66 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 1
   58:./Library/stm32f4xx_crc.c ****   * @retval 32-bit CRC
   59:./Library/stm32f4xx_crc.c ****   */
   60:./Library/stm32f4xx_crc.c **** uint32_t CRC_CalcCRC(uint32_t Data)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 3
-
-
   61:./Library/stm32f4xx_crc.c **** {
-  58              		.loc 1 61 1 is_stmt 1 view -0
-  59              		.cfi_startproc
-  60              		@ args = 0, pretend = 0, frame = 0
-  61              		@ frame_needed = 0, uses_anonymous_args = 0
-  62              		@ link register save eliminated.
+  73              		.loc 1 61 1
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 8
+  76              		@ frame_needed = 1, uses_anonymous_args = 0
+  77              		@ link register save eliminated.
+  78 0000 80B4     		push	{r7}
+  79              	.LCFI4:
+  80              		.cfi_def_cfa_offset 4
+  81              		.cfi_offset 7, -4
+  82 0002 83B0     		sub	sp, sp, #12
+  83              	.LCFI5:
+  84              		.cfi_def_cfa_offset 16
+  85 0004 00AF     		add	r7, sp, #0
+  86              	.LCFI6:
+  87              		.cfi_def_cfa_register 7
+  88 0006 7860     		str	r0, [r7, #4]
   62:./Library/stm32f4xx_crc.c ****   CRC->DR = Data;
-  63              		.loc 1 62 3 view .LVU5
-  64              		.loc 1 62 11 is_stmt 0 view .LVU6
-  65 0000 014B     		ldr	r3, .L5
-  66 0002 1860     		str	r0, [r3]
+  89              		.loc 1 62 6
+  90 0008 054A     		ldr	r2, .L6
+  91              		.loc 1 62 11
+  92 000a 7B68     		ldr	r3, [r7, #4]
+  93 000c 1360     		str	r3, [r2]
   63:./Library/stm32f4xx_crc.c ****   
   64:./Library/stm32f4xx_crc.c ****   return (CRC->DR);
-  67              		.loc 1 64 3 is_stmt 1 view .LVU7
-  68              		.loc 1 64 14 is_stmt 0 view .LVU8
-  69 0004 1868     		ldr	r0, [r3]
-  70              	.LVL1:
+  94              		.loc 1 64 14
+  95 000e 044B     		ldr	r3, .L6
+  96 0010 1B68     		ldr	r3, [r3]
   65:./Library/stm32f4xx_crc.c **** }
-  71              		.loc 1 65 1 view .LVU9
-  72 0006 7047     		bx	lr
-  73              	.L6:
-  74              		.align	2
-  75              	.L5:
-  76 0008 00300240 		.word	1073885184
-  77              		.cfi_endproc
-  78              	.LFE124:
-  80              		.section	.text.CRC_CalcBlockCRC,"ax",%progbits
-  81              		.align	1
-  82              		.global	CRC_CalcBlockCRC
-  83              		.syntax unified
-  84              		.thumb
-  85              		.thumb_func
-  87              	CRC_CalcBlockCRC:
-  88              	.LVL2:
-  89              	.LFB125:
+  97              		.loc 1 65 1
+  98 0012 1846     		mov	r0, r3
+  99 0014 0C37     		adds	r7, r7, #12
+ 100              	.LCFI7:
+ 101              		.cfi_def_cfa_offset 4
+ 102 0016 BD46     		mov	sp, r7
+ 103              	.LCFI8:
+ 104              		.cfi_def_cfa_register 13
+ 105              		@ sp needed
+ 106 0018 5DF8047B 		ldr	r7, [sp], #4
+ 107              	.LCFI9:
+ 108              		.cfi_restore 7
+ 109              		.cfi_def_cfa_offset 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 4
+
+
+ 110 001c 7047     		bx	lr
+ 111              	.L7:
+ 112 001e 00BF     		.align	2
+ 113              	.L6:
+ 114 0020 00300240 		.word	1073885184
+ 115              		.cfi_endproc
+ 116              	.LFE124:
+ 118              		.section	.text.CRC_CalcBlockCRC,"ax",%progbits
+ 119              		.align	1
+ 120              		.global	CRC_CalcBlockCRC
+ 121              		.syntax unified
+ 122              		.thumb
+ 123              		.thumb_func
+ 125              	CRC_CalcBlockCRC:
+ 126              	.LFB125:
   66:./Library/stm32f4xx_crc.c **** 
   67:./Library/stm32f4xx_crc.c **** /**
   68:./Library/stm32f4xx_crc.c ****   * @brief  Computes the 32-bit CRC of a given buffer of data word(32-bit).
@@ -165,230 +205,286 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 1
   72:./Library/stm32f4xx_crc.c ****   */
   73:./Library/stm32f4xx_crc.c **** uint32_t CRC_CalcBlockCRC(uint32_t pBuffer[], uint32_t BufferLength)
   74:./Library/stm32f4xx_crc.c **** {
-  90              		.loc 1 74 1 is_stmt 1 view -0
-  91              		.cfi_startproc
-  92              		@ args = 0, pretend = 0, frame = 0
-  93              		@ frame_needed = 0, uses_anonymous_args = 0
-  94              		@ link register save eliminated.
+ 127              		.loc 1 74 1
+ 128              		.cfi_startproc
+ 129              		@ args = 0, pretend = 0, frame = 16
+ 130              		@ frame_needed = 1, uses_anonymous_args = 0
+ 131              		@ link register save eliminated.
+ 132 0000 80B4     		push	{r7}
+ 133              	.LCFI10:
+ 134              		.cfi_def_cfa_offset 4
+ 135              		.cfi_offset 7, -4
+ 136 0002 85B0     		sub	sp, sp, #20
+ 137              	.LCFI11:
+ 138              		.cfi_def_cfa_offset 24
+ 139 0004 00AF     		add	r7, sp, #0
+ 140              	.LCFI12:
+ 141              		.cfi_def_cfa_register 7
+ 142 0006 7860     		str	r0, [r7, #4]
+ 143 0008 3960     		str	r1, [r7]
   75:./Library/stm32f4xx_crc.c ****   uint32_t index = 0;
-  95              		.loc 1 75 3 view .LVU11
+ 144              		.loc 1 75 12
+ 145 000a 0023     		movs	r3, #0
+ 146 000c FB60     		str	r3, [r7, #12]
   76:./Library/stm32f4xx_crc.c ****   
   77:./Library/stm32f4xx_crc.c ****   for(index = 0; index < BufferLength; index++)
-  96              		.loc 1 77 3 view .LVU12
-  97              		.loc 1 77 13 is_stmt 0 view .LVU13
-  98 0000 0023     		movs	r3, #0
-  99              	.LVL3:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 4
-
-
- 100              		.loc 1 77 18 is_stmt 1 view .LVU14
- 101              		.loc 1 77 3 is_stmt 0 view .LVU15
- 102 0002 8B42     		cmp	r3, r1
- 103 0004 0CD2     		bcs	.L14
-  74:./Library/stm32f4xx_crc.c ****   uint32_t index = 0;
- 104              		.loc 1 74 1 view .LVU16
- 105 0006 10B4     		push	{r4}
- 106              	.LCFI0:
- 107              		.cfi_def_cfa_offset 4
- 108              		.cfi_offset 4, -4
- 109              	.L9:
+ 147              		.loc 1 77 13
+ 148 000e 0023     		movs	r3, #0
+ 149 0010 FB60     		str	r3, [r7, #12]
+ 150              		.loc 1 77 3
+ 151 0012 09E0     		b	.L9
+ 152              	.L10:
   78:./Library/stm32f4xx_crc.c ****   {
   79:./Library/stm32f4xx_crc.c ****     CRC->DR = pBuffer[index];
- 110              		.loc 1 79 5 is_stmt 1 discriminator 3 view .LVU17
- 111              		.loc 1 79 13 is_stmt 0 discriminator 3 view .LVU18
- 112 0008 074A     		ldr	r2, .L15
- 113 000a 50F82340 		ldr	r4, [r0, r3, lsl #2]
- 114 000e 1460     		str	r4, [r2]
+ 153              		.loc 1 79 22 discriminator 3
+ 154 0014 FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 5
+
+
+ 155 0016 9B00     		lsls	r3, r3, #2
+ 156 0018 7A68     		ldr	r2, [r7, #4]
+ 157 001a 1344     		add	r3, r3, r2
+ 158              		.loc 1 79 8 discriminator 3
+ 159 001c 084A     		ldr	r2, .L12
+ 160              		.loc 1 79 22 discriminator 3
+ 161 001e 1B68     		ldr	r3, [r3]
+ 162              		.loc 1 79 13 discriminator 3
+ 163 0020 1360     		str	r3, [r2]
   77:./Library/stm32f4xx_crc.c ****   {
- 115              		.loc 1 77 40 is_stmt 1 discriminator 3 view .LVU19
+ 164              		.loc 1 77 45 discriminator 3
+ 165 0022 FB68     		ldr	r3, [r7, #12]
+ 166 0024 0133     		adds	r3, r3, #1
+ 167 0026 FB60     		str	r3, [r7, #12]
+ 168              	.L9:
   77:./Library/stm32f4xx_crc.c ****   {
- 116              		.loc 1 77 45 is_stmt 0 discriminator 3 view .LVU20
- 117 0010 0133     		adds	r3, r3, #1
- 118              	.LVL4:
-  77:./Library/stm32f4xx_crc.c ****   {
- 119              		.loc 1 77 18 is_stmt 1 discriminator 3 view .LVU21
-  77:./Library/stm32f4xx_crc.c ****   {
- 120              		.loc 1 77 3 is_stmt 0 discriminator 3 view .LVU22
- 121 0012 8B42     		cmp	r3, r1
- 122 0014 F8D3     		bcc	.L9
+ 169              		.loc 1 77 3 discriminator 1
+ 170 0028 FA68     		ldr	r2, [r7, #12]
+ 171 002a 3B68     		ldr	r3, [r7]
+ 172 002c 9A42     		cmp	r2, r3
+ 173 002e F1D3     		bcc	.L10
   80:./Library/stm32f4xx_crc.c ****   }
   81:./Library/stm32f4xx_crc.c ****   return (CRC->DR);
- 123              		.loc 1 81 3 is_stmt 1 view .LVU23
- 124              		.loc 1 81 14 is_stmt 0 view .LVU24
- 125 0016 044B     		ldr	r3, .L15
- 126              	.LVL5:
- 127              		.loc 1 81 14 view .LVU25
- 128 0018 1868     		ldr	r0, [r3]
- 129              	.LVL6:
+ 174              		.loc 1 81 14
+ 175 0030 034B     		ldr	r3, .L12
+ 176 0032 1B68     		ldr	r3, [r3]
   82:./Library/stm32f4xx_crc.c **** }
- 130              		.loc 1 82 1 view .LVU26
- 131 001a 5DF8044B 		ldr	r4, [sp], #4
- 132              	.LCFI1:
- 133              		.cfi_restore 4
- 134              		.cfi_def_cfa_offset 0
- 135 001e 7047     		bx	lr
- 136              	.LVL7:
- 137              	.L14:
-  81:./Library/stm32f4xx_crc.c **** }
- 138              		.loc 1 81 3 is_stmt 1 view .LVU27
-  81:./Library/stm32f4xx_crc.c **** }
- 139              		.loc 1 81 14 is_stmt 0 view .LVU28
- 140 0020 014B     		ldr	r3, .L15
- 141              	.LVL8:
-  81:./Library/stm32f4xx_crc.c **** }
- 142              		.loc 1 81 14 view .LVU29
- 143 0022 1868     		ldr	r0, [r3]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 5
-
-
- 144              	.LVL9:
- 145              		.loc 1 82 1 view .LVU30
- 146 0024 7047     		bx	lr
- 147              	.L16:
- 148 0026 00BF     		.align	2
- 149              	.L15:
- 150 0028 00300240 		.word	1073885184
- 151              		.cfi_endproc
- 152              	.LFE125:
- 154              		.section	.text.CRC_GetCRC,"ax",%progbits
- 155              		.align	1
- 156              		.global	CRC_GetCRC
- 157              		.syntax unified
- 158              		.thumb
- 159              		.thumb_func
- 161              	CRC_GetCRC:
- 162              	.LFB126:
+ 177              		.loc 1 82 1
+ 178 0034 1846     		mov	r0, r3
+ 179 0036 1437     		adds	r7, r7, #20
+ 180              	.LCFI13:
+ 181              		.cfi_def_cfa_offset 4
+ 182 0038 BD46     		mov	sp, r7
+ 183              	.LCFI14:
+ 184              		.cfi_def_cfa_register 13
+ 185              		@ sp needed
+ 186 003a 5DF8047B 		ldr	r7, [sp], #4
+ 187              	.LCFI15:
+ 188              		.cfi_restore 7
+ 189              		.cfi_def_cfa_offset 0
+ 190 003e 7047     		bx	lr
+ 191              	.L13:
+ 192              		.align	2
+ 193              	.L12:
+ 194 0040 00300240 		.word	1073885184
+ 195              		.cfi_endproc
+ 196              	.LFE125:
+ 198              		.section	.text.CRC_GetCRC,"ax",%progbits
+ 199              		.align	1
+ 200              		.global	CRC_GetCRC
+ 201              		.syntax unified
+ 202              		.thumb
+ 203              		.thumb_func
+ 205              	CRC_GetCRC:
+ 206              	.LFB126:
   83:./Library/stm32f4xx_crc.c **** 
   84:./Library/stm32f4xx_crc.c **** /**
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 6
+
+
   85:./Library/stm32f4xx_crc.c ****   * @brief  Returns the current CRC value.
   86:./Library/stm32f4xx_crc.c ****   * @param  None
   87:./Library/stm32f4xx_crc.c ****   * @retval 32-bit CRC
   88:./Library/stm32f4xx_crc.c ****   */
   89:./Library/stm32f4xx_crc.c **** uint32_t CRC_GetCRC(void)
   90:./Library/stm32f4xx_crc.c **** {
- 163              		.loc 1 90 1 is_stmt 1 view -0
- 164              		.cfi_startproc
- 165              		@ args = 0, pretend = 0, frame = 0
- 166              		@ frame_needed = 0, uses_anonymous_args = 0
- 167              		@ link register save eliminated.
+ 207              		.loc 1 90 1
+ 208              		.cfi_startproc
+ 209              		@ args = 0, pretend = 0, frame = 0
+ 210              		@ frame_needed = 1, uses_anonymous_args = 0
+ 211              		@ link register save eliminated.
+ 212 0000 80B4     		push	{r7}
+ 213              	.LCFI16:
+ 214              		.cfi_def_cfa_offset 4
+ 215              		.cfi_offset 7, -4
+ 216 0002 00AF     		add	r7, sp, #0
+ 217              	.LCFI17:
+ 218              		.cfi_def_cfa_register 7
   91:./Library/stm32f4xx_crc.c ****   return (CRC->DR);
- 168              		.loc 1 91 3 view .LVU32
- 169              		.loc 1 91 14 is_stmt 0 view .LVU33
- 170 0000 014B     		ldr	r3, .L18
- 171 0002 1868     		ldr	r0, [r3]
+ 219              		.loc 1 91 14
+ 220 0004 034B     		ldr	r3, .L16
+ 221 0006 1B68     		ldr	r3, [r3]
   92:./Library/stm32f4xx_crc.c **** }
- 172              		.loc 1 92 1 view .LVU34
- 173 0004 7047     		bx	lr
- 174              	.L19:
- 175 0006 00BF     		.align	2
- 176              	.L18:
- 177 0008 00300240 		.word	1073885184
- 178              		.cfi_endproc
- 179              	.LFE126:
- 181              		.section	.text.CRC_SetIDRegister,"ax",%progbits
- 182              		.align	1
- 183              		.global	CRC_SetIDRegister
- 184              		.syntax unified
- 185              		.thumb
- 186              		.thumb_func
- 188              	CRC_SetIDRegister:
- 189              	.LVL10:
- 190              	.LFB127:
+ 222              		.loc 1 92 1
+ 223 0008 1846     		mov	r0, r3
+ 224 000a BD46     		mov	sp, r7
+ 225              	.LCFI18:
+ 226              		.cfi_def_cfa_register 13
+ 227              		@ sp needed
+ 228 000c 5DF8047B 		ldr	r7, [sp], #4
+ 229              	.LCFI19:
+ 230              		.cfi_restore 7
+ 231              		.cfi_def_cfa_offset 0
+ 232 0010 7047     		bx	lr
+ 233              	.L17:
+ 234 0012 00BF     		.align	2
+ 235              	.L16:
+ 236 0014 00300240 		.word	1073885184
+ 237              		.cfi_endproc
+ 238              	.LFE126:
+ 240              		.section	.text.CRC_SetIDRegister,"ax",%progbits
+ 241              		.align	1
+ 242              		.global	CRC_SetIDRegister
+ 243              		.syntax unified
+ 244              		.thumb
+ 245              		.thumb_func
+ 247              	CRC_SetIDRegister:
+ 248              	.LFB127:
   93:./Library/stm32f4xx_crc.c **** 
   94:./Library/stm32f4xx_crc.c **** /**
   95:./Library/stm32f4xx_crc.c ****   * @brief  Stores a 8-bit data in the Independent Data(ID) register.
   96:./Library/stm32f4xx_crc.c ****   * @param  IDValue: 8-bit value to be stored in the ID register 					
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 6
-
-
   97:./Library/stm32f4xx_crc.c ****   * @retval None
   98:./Library/stm32f4xx_crc.c ****   */
   99:./Library/stm32f4xx_crc.c **** void CRC_SetIDRegister(uint8_t IDValue)
  100:./Library/stm32f4xx_crc.c **** {
- 191              		.loc 1 100 1 is_stmt 1 view -0
- 192              		.cfi_startproc
- 193              		@ args = 0, pretend = 0, frame = 0
- 194              		@ frame_needed = 0, uses_anonymous_args = 0
- 195              		@ link register save eliminated.
+ 249              		.loc 1 100 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 7
+
+
+ 250              		.cfi_startproc
+ 251              		@ args = 0, pretend = 0, frame = 8
+ 252              		@ frame_needed = 1, uses_anonymous_args = 0
+ 253              		@ link register save eliminated.
+ 254 0000 80B4     		push	{r7}
+ 255              	.LCFI20:
+ 256              		.cfi_def_cfa_offset 4
+ 257              		.cfi_offset 7, -4
+ 258 0002 83B0     		sub	sp, sp, #12
+ 259              	.LCFI21:
+ 260              		.cfi_def_cfa_offset 16
+ 261 0004 00AF     		add	r7, sp, #0
+ 262              	.LCFI22:
+ 263              		.cfi_def_cfa_register 7
+ 264 0006 0346     		mov	r3, r0
+ 265 0008 FB71     		strb	r3, [r7, #7]
  101:./Library/stm32f4xx_crc.c ****   CRC->IDR = IDValue;
- 196              		.loc 1 101 3 view .LVU36
- 197              		.loc 1 101 12 is_stmt 0 view .LVU37
- 198 0000 014B     		ldr	r3, .L21
- 199 0002 1871     		strb	r0, [r3, #4]
+ 266              		.loc 1 101 6
+ 267 000a 044A     		ldr	r2, .L19
+ 268              		.loc 1 101 12
+ 269 000c FB79     		ldrb	r3, [r7, #7]
+ 270 000e 1371     		strb	r3, [r2, #4]
  102:./Library/stm32f4xx_crc.c **** }
- 200              		.loc 1 102 1 view .LVU38
- 201 0004 7047     		bx	lr
- 202              	.L22:
- 203 0006 00BF     		.align	2
- 204              	.L21:
- 205 0008 00300240 		.word	1073885184
- 206              		.cfi_endproc
- 207              	.LFE127:
- 209              		.section	.text.CRC_GetIDRegister,"ax",%progbits
- 210              		.align	1
- 211              		.global	CRC_GetIDRegister
- 212              		.syntax unified
- 213              		.thumb
- 214              		.thumb_func
- 216              	CRC_GetIDRegister:
- 217              	.LFB128:
+ 271              		.loc 1 102 1
+ 272 0010 00BF     		nop
+ 273 0012 0C37     		adds	r7, r7, #12
+ 274              	.LCFI23:
+ 275              		.cfi_def_cfa_offset 4
+ 276 0014 BD46     		mov	sp, r7
+ 277              	.LCFI24:
+ 278              		.cfi_def_cfa_register 13
+ 279              		@ sp needed
+ 280 0016 5DF8047B 		ldr	r7, [sp], #4
+ 281              	.LCFI25:
+ 282              		.cfi_restore 7
+ 283              		.cfi_def_cfa_offset 0
+ 284 001a 7047     		bx	lr
+ 285              	.L20:
+ 286              		.align	2
+ 287              	.L19:
+ 288 001c 00300240 		.word	1073885184
+ 289              		.cfi_endproc
+ 290              	.LFE127:
+ 292              		.section	.text.CRC_GetIDRegister,"ax",%progbits
+ 293              		.align	1
+ 294              		.global	CRC_GetIDRegister
+ 295              		.syntax unified
+ 296              		.thumb
+ 297              		.thumb_func
+ 299              	CRC_GetIDRegister:
+ 300              	.LFB128:
  103:./Library/stm32f4xx_crc.c **** 
  104:./Library/stm32f4xx_crc.c **** /**
  105:./Library/stm32f4xx_crc.c ****   * @brief  Returns the 8-bit data stored in the Independent Data(ID) register
  106:./Library/stm32f4xx_crc.c ****   * @param  None
  107:./Library/stm32f4xx_crc.c ****   * @retval 8-bit value of the ID register 
  108:./Library/stm32f4xx_crc.c ****   */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 8
+
+
  109:./Library/stm32f4xx_crc.c **** uint8_t CRC_GetIDRegister(void)
  110:./Library/stm32f4xx_crc.c **** {
- 218              		.loc 1 110 1 is_stmt 1 view -0
- 219              		.cfi_startproc
- 220              		@ args = 0, pretend = 0, frame = 0
- 221              		@ frame_needed = 0, uses_anonymous_args = 0
- 222              		@ link register save eliminated.
+ 301              		.loc 1 110 1
+ 302              		.cfi_startproc
+ 303              		@ args = 0, pretend = 0, frame = 0
+ 304              		@ frame_needed = 1, uses_anonymous_args = 0
+ 305              		@ link register save eliminated.
+ 306 0000 80B4     		push	{r7}
+ 307              	.LCFI26:
+ 308              		.cfi_def_cfa_offset 4
+ 309              		.cfi_offset 7, -4
+ 310 0002 00AF     		add	r7, sp, #0
+ 311              	.LCFI27:
+ 312              		.cfi_def_cfa_register 7
  111:./Library/stm32f4xx_crc.c ****   return (CRC->IDR);
- 223              		.loc 1 111 3 view .LVU40
- 224              		.loc 1 111 14 is_stmt 0 view .LVU41
- 225 0000 014B     		ldr	r3, .L24
- 226 0002 1879     		ldrb	r0, [r3, #4]	@ zero_extendqisi2
+ 313              		.loc 1 111 14
+ 314 0004 034B     		ldr	r3, .L23
+ 315 0006 1B79     		ldrb	r3, [r3, #4]
+ 316 0008 DBB2     		uxtb	r3, r3
  112:./Library/stm32f4xx_crc.c **** }
- 227              		.loc 1 112 1 view .LVU42
- 228 0004 7047     		bx	lr
- 229              	.L25:
- 230 0006 00BF     		.align	2
- 231              	.L24:
- 232 0008 00300240 		.word	1073885184
- 233              		.cfi_endproc
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 7
-
-
- 234              	.LFE128:
- 236              		.text
- 237              	.Letext0:
- 238              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 239              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 240              		.file 4 "./CORE/stm32f4xx.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s 			page 8
+ 317              		.loc 1 112 1
+ 318 000a 1846     		mov	r0, r3
+ 319 000c BD46     		mov	sp, r7
+ 320              	.LCFI28:
+ 321              		.cfi_def_cfa_register 13
+ 322              		@ sp needed
+ 323 000e 5DF8047B 		ldr	r7, [sp], #4
+ 324              	.LCFI29:
+ 325              		.cfi_restore 7
+ 326              		.cfi_def_cfa_offset 0
+ 327 0012 7047     		bx	lr
+ 328              	.L24:
+ 329              		.align	2
+ 330              	.L23:
+ 331 0014 00300240 		.word	1073885184
+ 332              		.cfi_endproc
+ 333              	.LFE128:
+ 335              		.text
+ 336              	.Letext0:
+ 337              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 338              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 339              		.file 4 "./CORE/stm32f4xx.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f4xx_crc.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:20     .text.CRC_ResetDR:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:26     .text.CRC_ResetDR:0000000000000000 CRC_ResetDR
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:44     .text.CRC_ResetDR:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:49     .text.CRC_CalcCRC:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:55     .text.CRC_CalcCRC:0000000000000000 CRC_CalcCRC
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:76     .text.CRC_CalcCRC:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:81     .text.CRC_CalcBlockCRC:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:87     .text.CRC_CalcBlockCRC:0000000000000000 CRC_CalcBlockCRC
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:150    .text.CRC_CalcBlockCRC:0000000000000028 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:155    .text.CRC_GetCRC:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:161    .text.CRC_GetCRC:0000000000000000 CRC_GetCRC
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:177    .text.CRC_GetCRC:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:182    .text.CRC_SetIDRegister:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:188    .text.CRC_SetIDRegister:0000000000000000 CRC_SetIDRegister
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:205    .text.CRC_SetIDRegister:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:210    .text.CRC_GetIDRegister:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:216    .text.CRC_GetIDRegister:0000000000000000 CRC_GetIDRegister
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccsS7hUw.s:232    .text.CRC_GetIDRegister:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:20     .text.CRC_ResetDR:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:26     .text.CRC_ResetDR:0000000000000000 CRC_ResetDR
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:60     .text.CRC_ResetDR:0000000000000014 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:65     .text.CRC_CalcCRC:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:71     .text.CRC_CalcCRC:0000000000000000 CRC_CalcCRC
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:114    .text.CRC_CalcCRC:0000000000000020 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:119    .text.CRC_CalcBlockCRC:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:125    .text.CRC_CalcBlockCRC:0000000000000000 CRC_CalcBlockCRC
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:194    .text.CRC_CalcBlockCRC:0000000000000040 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:199    .text.CRC_GetCRC:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:205    .text.CRC_GetCRC:0000000000000000 CRC_GetCRC
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:236    .text.CRC_GetCRC:0000000000000014 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:241    .text.CRC_SetIDRegister:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:247    .text.CRC_SetIDRegister:0000000000000000 CRC_SetIDRegister
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:288    .text.CRC_SetIDRegister:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:293    .text.CRC_GetIDRegister:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:299    .text.CRC_GetIDRegister:0000000000000000 CRC_GetIDRegister
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc9SdY0v.s:331    .text.CRC_GetIDRegister:0000000000000014 $d
 
 NO UNDEFINED SYMBOLS

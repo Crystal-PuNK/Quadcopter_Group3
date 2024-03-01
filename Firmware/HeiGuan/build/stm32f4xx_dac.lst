@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"stm32f4xx_dac.c"
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
   28:./Library/stm32f4xx_dac.c ****     [..]
   29:./Library/stm32f4xx_dac.c ****     Digital to Analog conversion can be non-triggered using DAC_Trigger_None
   30:./Library/stm32f4xx_dac.c ****     and DAC_OUT1/DAC_OUT2 is available once writing to DHRx register 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 2
 
 
   31:./Library/stm32f4xx_dac.c ****     using DAC_SetChannel1Data() / DAC_SetChannel2Data() functions.
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
   85:./Library/stm32f4xx_dac.c ****        =====================
   86:./Library/stm32f4xx_dac.c ****        [..]    
   87:./Library/stm32f4xx_dac.c ****        A DMA1 request can be generated when an external trigger (but not
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 3
 
 
   88:./Library/stm32f4xx_dac.c ****        a software trigger) occurs if DMA1 requests are enabled using
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  142:./Library/stm32f4xx_dac.c **** /* DAC Dual Channels SWTRIG masks */
  143:./Library/stm32f4xx_dac.c **** #define DUAL_SWTRIG_SET            ((uint32_t)0x00000003)
  144:./Library/stm32f4xx_dac.c **** #define DUAL_SWTRIG_RESET          ((uint32_t)0xFFFFFFFC)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 4
 
 
  145:./Library/stm32f4xx_dac.c **** 
@@ -218,46 +218,47 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  179:./Library/stm32f4xx_dac.c ****   */
  180:./Library/stm32f4xx_dac.c **** void DAC_DeInit(void)
  181:./Library/stm32f4xx_dac.c **** {
-  29              		.loc 1 181 1 view -0
+  29              		.loc 1 181 1
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 08B5     		push	{r3, lr}
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
   34              	.LCFI0:
   35              		.cfi_def_cfa_offset 8
-  36              		.cfi_offset 3, -8
+  36              		.cfi_offset 7, -8
   37              		.cfi_offset 14, -4
+  38 0002 00AF     		add	r7, sp, #0
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_register 7
  182:./Library/stm32f4xx_dac.c ****   /* Enable DAC reset state */
  183:./Library/stm32f4xx_dac.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC, ENABLE);
-  38              		.loc 1 183 3 view .LVU1
-  39 0002 0121     		movs	r1, #1
-  40 0004 4FF00050 		mov	r0, #536870912
-  41 0008 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
-  42              	.LVL0:
+  41              		.loc 1 183 3
+  42 0004 0121     		movs	r1, #1
+  43 0006 4FF00050 		mov	r0, #536870912
+  44 000a FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
  184:./Library/stm32f4xx_dac.c ****   /* Release DAC from reset state */
  185:./Library/stm32f4xx_dac.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC, DISABLE);
-  43              		.loc 1 185 3 view .LVU2
-  44 000c 0021     		movs	r1, #0
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 5
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 5
 
 
-  45 000e 4FF00050 		mov	r0, #536870912
-  46 0012 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
-  47              	.LVL1:
+  45              		.loc 1 185 3
+  46 000e 0021     		movs	r1, #0
+  47 0010 4FF00050 		mov	r0, #536870912
+  48 0014 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
  186:./Library/stm32f4xx_dac.c **** }
-  48              		.loc 1 186 1 is_stmt 0 view .LVU3
-  49 0016 08BD     		pop	{r3, pc}
-  50              		.cfi_endproc
-  51              	.LFE123:
-  53              		.section	.text.DAC_Init,"ax",%progbits
-  54              		.align	1
-  55              		.global	DAC_Init
-  56              		.syntax unified
-  57              		.thumb
-  58              		.thumb_func
-  60              	DAC_Init:
-  61              	.LVL2:
-  62              	.LFB124:
+  49              		.loc 1 186 1
+  50 0018 00BF     		nop
+  51 001a 80BD     		pop	{r7, pc}
+  52              		.cfi_endproc
+  53              	.LFE123:
+  55              		.section	.text.DAC_Init,"ax",%progbits
+  56              		.align	1
+  57              		.global	DAC_Init
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  62              	DAC_Init:
+  63              	.LFB124:
  187:./Library/stm32f4xx_dac.c **** 
  188:./Library/stm32f4xx_dac.c **** /**
  189:./Library/stm32f4xx_dac.c ****   * @brief  Initializes the DAC peripheral according to the specified parameters
@@ -272,51 +273,60 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  198:./Library/stm32f4xx_dac.c ****   */
  199:./Library/stm32f4xx_dac.c **** void DAC_Init(uint32_t DAC_Channel, DAC_InitTypeDef* DAC_InitStruct)
  200:./Library/stm32f4xx_dac.c **** {
-  63              		.loc 1 200 1 is_stmt 1 view -0
-  64              		.cfi_startproc
-  65              		@ args = 0, pretend = 0, frame = 0
-  66              		@ frame_needed = 0, uses_anonymous_args = 0
-  67              		@ link register save eliminated.
-  68              		.loc 1 200 1 is_stmt 0 view .LVU5
-  69 0000 30B4     		push	{r4, r5}
-  70              	.LCFI1:
-  71              		.cfi_def_cfa_offset 8
-  72              		.cfi_offset 4, -8
-  73              		.cfi_offset 5, -4
+  64              		.loc 1 200 1
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 16
+  67              		@ frame_needed = 1, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+  69 0000 80B4     		push	{r7}
+  70              	.LCFI2:
+  71              		.cfi_def_cfa_offset 4
+  72              		.cfi_offset 7, -4
+  73 0002 85B0     		sub	sp, sp, #20
+  74              	.LCFI3:
+  75              		.cfi_def_cfa_offset 24
+  76 0004 00AF     		add	r7, sp, #0
+  77              	.LCFI4:
+  78              		.cfi_def_cfa_register 7
+  79 0006 7860     		str	r0, [r7, #4]
+  80 0008 3960     		str	r1, [r7]
  201:./Library/stm32f4xx_dac.c ****   uint32_t tmpreg1 = 0, tmpreg2 = 0;
-  74              		.loc 1 201 3 is_stmt 1 view .LVU6
-  75              	.LVL3:
+  81              		.loc 1 201 12
+  82 000a 0023     		movs	r3, #0
+  83 000c FB60     		str	r3, [r7, #12]
+  84              		.loc 1 201 25
+  85 000e 0023     		movs	r3, #0
+  86 0010 BB60     		str	r3, [r7, #8]
  202:./Library/stm32f4xx_dac.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 6
+
+
  203:./Library/stm32f4xx_dac.c ****   /* Check the DAC parameters */
  204:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_TRIGGER(DAC_InitStruct->DAC_Trigger));
-  76              		.loc 1 204 3 view .LVU7
  205:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_GENERATE_WAVE(DAC_InitStruct->DAC_WaveGeneration));
-  77              		.loc 1 205 3 view .LVU8
  206:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_LFSR_UNMASK_TRIANGLE_AMPLITUDE(DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitu
-  78              		.loc 1 206 3 view .LVU9
  207:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_OUTPUT_BUFFER_STATE(DAC_InitStruct->DAC_OutputBuffer));
-  79              		.loc 1 207 3 view .LVU10
  208:./Library/stm32f4xx_dac.c **** 
  209:./Library/stm32f4xx_dac.c **** /*---------------------------- DAC CR Configuration --------------------------*/
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 6
-
-
  210:./Library/stm32f4xx_dac.c ****   /* Get the DAC CR value */
  211:./Library/stm32f4xx_dac.c ****   tmpreg1 = DAC->CR;
-  80              		.loc 1 211 3 view .LVU11
-  81              		.loc 1 211 11 is_stmt 0 view .LVU12
-  82 0002 0A4C     		ldr	r4, .L5
-  83 0004 2268     		ldr	r2, [r4]
-  84              	.LVL4:
+  87              		.loc 1 211 16
+  88 0012 144B     		ldr	r3, .L3
+  89              		.loc 1 211 11
+  90 0014 1B68     		ldr	r3, [r3]
+  91 0016 FB60     		str	r3, [r7, #12]
  212:./Library/stm32f4xx_dac.c ****   /* Clear BOFFx, TENx, TSELx, WAVEx and MAMPx bits */
  213:./Library/stm32f4xx_dac.c ****   tmpreg1 &= ~(CR_CLEAR_MASK << DAC_Channel);
-  85              		.loc 1 213 3 is_stmt 1 view .LVU13
-  86              		.loc 1 213 30 is_stmt 0 view .LVU14
-  87 0006 40F6FE73 		movw	r3, #4094
-  88 000a 8340     		lsls	r3, r3, r0
-  89              		.loc 1 213 11 view .LVU15
-  90 000c 22EA0302 		bic	r2, r2, r3
-  91              	.LVL5:
+  92              		.loc 1 213 30
+  93 0018 40F6FE72 		movw	r2, #4094
+  94 001c 7B68     		ldr	r3, [r7, #4]
+  95 001e 02FA03F3 		lsl	r3, r2, r3
+  96              		.loc 1 213 14
+  97 0022 DB43     		mvns	r3, r3
+  98              		.loc 1 213 11
+  99 0024 FA68     		ldr	r2, [r7, #12]
+ 100 0026 1340     		ands	r3, r3, r2
+ 101 0028 FB60     		str	r3, [r7, #12]
  214:./Library/stm32f4xx_dac.c ****   /* Configure for the selected DAC channel: buffer output, trigger, 
  215:./Library/stm32f4xx_dac.c ****      wave generation, mask/amplitude for wave generation */
  216:./Library/stm32f4xx_dac.c ****   /* Set TSELx and TENx bits according to DAC_Trigger value */
@@ -324,64 +334,78 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  218:./Library/stm32f4xx_dac.c ****   /* Set MAMPx bits according to DAC_LFSRUnmask_TriangleAmplitude value */ 
  219:./Library/stm32f4xx_dac.c ****   /* Set BOFFx bit according to DAC_OutputBuffer value */   
  220:./Library/stm32f4xx_dac.c ****   tmpreg2 = (DAC_InitStruct->DAC_Trigger | DAC_InitStruct->DAC_WaveGeneration |
-  92              		.loc 1 220 3 is_stmt 1 view .LVU16
-  93              		.loc 1 220 28 is_stmt 0 view .LVU17
-  94 0010 0B68     		ldr	r3, [r1]
-  95              		.loc 1 220 42 view .LVU18
-  96 0012 4D68     		ldr	r5, [r1, #4]
-  97 0014 2B43     		orrs	r3, r3, r5
-  98              		.loc 1 220 79 view .LVU19
-  99 0016 8D68     		ldr	r5, [r1, #8]
- 100 0018 2B43     		orrs	r3, r3, r5
+ 102              		.loc 1 220 28
+ 103 002a 3B68     		ldr	r3, [r7]
+ 104 002c 1A68     		ldr	r2, [r3]
+ 105              		.loc 1 220 58
+ 106 002e 3B68     		ldr	r3, [r7]
+ 107 0030 5B68     		ldr	r3, [r3, #4]
+ 108              		.loc 1 220 42
+ 109 0032 1A43     		orrs	r2, r2, r3
  221:./Library/stm32f4xx_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | \
- 222:./Library/stm32f4xx_dac.c ****              DAC_InitStruct->DAC_OutputBuffer);
- 101              		.loc 1 222 28 view .LVU20
- 102 001a C968     		ldr	r1, [r1, #12]
- 103              	.LVL6:
+ 110              		.loc 1 221 28
+ 111 0034 3B68     		ldr	r3, [r7]
+ 112 0036 9B68     		ldr	r3, [r3, #8]
  220:./Library/stm32f4xx_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | \
- 104              		.loc 1 220 11 view .LVU21
- 105 001c 0B43     		orrs	r3, r3, r1
- 106              	.LVL7:
+ 113              		.loc 1 220 79
+ 114 0038 1A43     		orrs	r2, r2, r3
+ 222:./Library/stm32f4xx_dac.c ****              DAC_InitStruct->DAC_OutputBuffer);
+ 115              		.loc 1 222 28
+ 116 003a 3B68     		ldr	r3, [r7]
+ 117 003c DB68     		ldr	r3, [r3, #12]
+ 220:./Library/stm32f4xx_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | \
+ 118              		.loc 1 220 11
+ 119 003e 1343     		orrs	r3, r3, r2
+ 120 0040 BB60     		str	r3, [r7, #8]
  223:./Library/stm32f4xx_dac.c ****   /* Calculate CR register value depending on DAC_Channel */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 7
+
+
  224:./Library/stm32f4xx_dac.c ****   tmpreg1 |= tmpreg2 << DAC_Channel;
- 107              		.loc 1 224 3 is_stmt 1 view .LVU22
- 108              		.loc 1 224 22 is_stmt 0 view .LVU23
- 109 001e 03FA00F0 		lsl	r0, r3, r0
- 110              	.LVL8:
- 111              		.loc 1 224 11 view .LVU24
- 112 0022 1043     		orrs	r0, r0, r2
- 113              	.LVL9:
+ 121              		.loc 1 224 22
+ 122 0042 BA68     		ldr	r2, [r7, #8]
+ 123 0044 7B68     		ldr	r3, [r7, #4]
+ 124 0046 02FA03F3 		lsl	r3, r2, r3
+ 125              		.loc 1 224 11
+ 126 004a FA68     		ldr	r2, [r7, #12]
+ 127 004c 1343     		orrs	r3, r3, r2
+ 128 004e FB60     		str	r3, [r7, #12]
  225:./Library/stm32f4xx_dac.c ****   /* Write to DAC CR */
  226:./Library/stm32f4xx_dac.c ****   DAC->CR = tmpreg1;
- 114              		.loc 1 226 3 is_stmt 1 view .LVU25
- 115              		.loc 1 226 11 is_stmt 0 view .LVU26
- 116 0024 2060     		str	r0, [r4]
+ 129              		.loc 1 226 6
+ 130 0050 044A     		ldr	r2, .L3
+ 131              		.loc 1 226 11
+ 132 0052 FB68     		ldr	r3, [r7, #12]
+ 133 0054 1360     		str	r3, [r2]
  227:./Library/stm32f4xx_dac.c **** }
- 117              		.loc 1 227 1 view .LVU27
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 7
-
-
- 118 0026 30BC     		pop	{r4, r5}
- 119              	.LCFI2:
- 120              		.cfi_restore 5
- 121              		.cfi_restore 4
- 122              		.cfi_def_cfa_offset 0
- 123 0028 7047     		bx	lr
- 124              	.L6:
- 125 002a 00BF     		.align	2
- 126              	.L5:
- 127 002c 00740040 		.word	1073771520
- 128              		.cfi_endproc
- 129              	.LFE124:
- 131              		.section	.text.DAC_StructInit,"ax",%progbits
- 132              		.align	1
- 133              		.global	DAC_StructInit
- 134              		.syntax unified
- 135              		.thumb
- 136              		.thumb_func
- 138              	DAC_StructInit:
- 139              	.LVL10:
- 140              	.LFB125:
+ 134              		.loc 1 227 1
+ 135 0056 00BF     		nop
+ 136 0058 1437     		adds	r7, r7, #20
+ 137              	.LCFI5:
+ 138              		.cfi_def_cfa_offset 4
+ 139 005a BD46     		mov	sp, r7
+ 140              	.LCFI6:
+ 141              		.cfi_def_cfa_register 13
+ 142              		@ sp needed
+ 143 005c 5DF8047B 		ldr	r7, [sp], #4
+ 144              	.LCFI7:
+ 145              		.cfi_restore 7
+ 146              		.cfi_def_cfa_offset 0
+ 147 0060 7047     		bx	lr
+ 148              	.L4:
+ 149 0062 00BF     		.align	2
+ 150              	.L3:
+ 151 0064 00740040 		.word	1073771520
+ 152              		.cfi_endproc
+ 153              	.LFE124:
+ 155              		.section	.text.DAC_StructInit,"ax",%progbits
+ 156              		.align	1
+ 157              		.global	DAC_StructInit
+ 158              		.syntax unified
+ 159              		.thumb
+ 160              		.thumb_func
+ 162              	DAC_StructInit:
+ 163              	.LFB125:
  228:./Library/stm32f4xx_dac.c **** 
  229:./Library/stm32f4xx_dac.c **** /**
  230:./Library/stm32f4xx_dac.c ****   * @brief  Fills each DAC_InitStruct member with its default value.
@@ -391,50 +415,78 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  234:./Library/stm32f4xx_dac.c ****   */
  235:./Library/stm32f4xx_dac.c **** void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
  236:./Library/stm32f4xx_dac.c **** {
- 141              		.loc 1 236 1 is_stmt 1 view -0
- 142              		.cfi_startproc
- 143              		@ args = 0, pretend = 0, frame = 0
- 144              		@ frame_needed = 0, uses_anonymous_args = 0
- 145              		@ link register save eliminated.
+ 164              		.loc 1 236 1
+ 165              		.cfi_startproc
+ 166              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 8
+
+
+ 167              		@ frame_needed = 1, uses_anonymous_args = 0
+ 168              		@ link register save eliminated.
+ 169 0000 80B4     		push	{r7}
+ 170              	.LCFI8:
+ 171              		.cfi_def_cfa_offset 4
+ 172              		.cfi_offset 7, -4
+ 173 0002 83B0     		sub	sp, sp, #12
+ 174              	.LCFI9:
+ 175              		.cfi_def_cfa_offset 16
+ 176 0004 00AF     		add	r7, sp, #0
+ 177              	.LCFI10:
+ 178              		.cfi_def_cfa_register 7
+ 179 0006 7860     		str	r0, [r7, #4]
  237:./Library/stm32f4xx_dac.c **** /*--------------- Reset DAC init structure parameters values -----------------*/
  238:./Library/stm32f4xx_dac.c ****   /* Initialize the DAC_Trigger member */
  239:./Library/stm32f4xx_dac.c ****   DAC_InitStruct->DAC_Trigger = DAC_Trigger_None;
- 146              		.loc 1 239 3 view .LVU29
- 147              		.loc 1 239 31 is_stmt 0 view .LVU30
- 148 0000 0023     		movs	r3, #0
- 149 0002 0360     		str	r3, [r0]
+ 180              		.loc 1 239 31
+ 181 0008 7B68     		ldr	r3, [r7, #4]
+ 182 000a 0022     		movs	r2, #0
+ 183 000c 1A60     		str	r2, [r3]
  240:./Library/stm32f4xx_dac.c ****   /* Initialize the DAC_WaveGeneration member */
  241:./Library/stm32f4xx_dac.c ****   DAC_InitStruct->DAC_WaveGeneration = DAC_WaveGeneration_None;
- 150              		.loc 1 241 3 is_stmt 1 view .LVU31
- 151              		.loc 1 241 38 is_stmt 0 view .LVU32
- 152 0004 4360     		str	r3, [r0, #4]
+ 184              		.loc 1 241 38
+ 185 000e 7B68     		ldr	r3, [r7, #4]
+ 186 0010 0022     		movs	r2, #0
+ 187 0012 5A60     		str	r2, [r3, #4]
  242:./Library/stm32f4xx_dac.c ****   /* Initialize the DAC_LFSRUnmask_TriangleAmplitude member */
  243:./Library/stm32f4xx_dac.c ****   DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude = DAC_LFSRUnmask_Bit0;
- 153              		.loc 1 243 3 is_stmt 1 view .LVU33
- 154              		.loc 1 243 52 is_stmt 0 view .LVU34
- 155 0006 8360     		str	r3, [r0, #8]
+ 188              		.loc 1 243 52
+ 189 0014 7B68     		ldr	r3, [r7, #4]
+ 190 0016 0022     		movs	r2, #0
+ 191 0018 9A60     		str	r2, [r3, #8]
  244:./Library/stm32f4xx_dac.c ****   /* Initialize the DAC_OutputBuffer member */
  245:./Library/stm32f4xx_dac.c ****   DAC_InitStruct->DAC_OutputBuffer = DAC_OutputBuffer_Enable;
- 156              		.loc 1 245 3 is_stmt 1 view .LVU35
- 157              		.loc 1 245 36 is_stmt 0 view .LVU36
- 158 0008 C360     		str	r3, [r0, #12]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 8
-
-
+ 192              		.loc 1 245 36
+ 193 001a 7B68     		ldr	r3, [r7, #4]
+ 194 001c 0022     		movs	r2, #0
+ 195 001e DA60     		str	r2, [r3, #12]
  246:./Library/stm32f4xx_dac.c **** }
- 159              		.loc 1 246 1 view .LVU37
- 160 000a 7047     		bx	lr
- 161              		.cfi_endproc
- 162              	.LFE125:
- 164              		.section	.text.DAC_Cmd,"ax",%progbits
- 165              		.align	1
- 166              		.global	DAC_Cmd
- 167              		.syntax unified
- 168              		.thumb
- 169              		.thumb_func
- 171              	DAC_Cmd:
- 172              	.LVL11:
- 173              	.LFB126:
+ 196              		.loc 1 246 1
+ 197 0020 00BF     		nop
+ 198 0022 0C37     		adds	r7, r7, #12
+ 199              	.LCFI11:
+ 200              		.cfi_def_cfa_offset 4
+ 201 0024 BD46     		mov	sp, r7
+ 202              	.LCFI12:
+ 203              		.cfi_def_cfa_register 13
+ 204              		@ sp needed
+ 205 0026 5DF8047B 		ldr	r7, [sp], #4
+ 206              	.LCFI13:
+ 207              		.cfi_restore 7
+ 208              		.cfi_def_cfa_offset 0
+ 209 002a 7047     		bx	lr
+ 210              		.cfi_endproc
+ 211              	.LFE125:
+ 213              		.section	.text.DAC_Cmd,"ax",%progbits
+ 214              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 9
+
+
+ 215              		.global	DAC_Cmd
+ 216              		.syntax unified
+ 217              		.thumb
+ 218              		.thumb_func
+ 220              	DAC_Cmd:
+ 221              	.LFB126:
  247:./Library/stm32f4xx_dac.c **** 
  248:./Library/stm32f4xx_dac.c **** /**
  249:./Library/stm32f4xx_dac.c ****   * @brief  Enables or disables the specified DAC channel.
@@ -449,80 +501,109 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  258:./Library/stm32f4xx_dac.c ****   */
  259:./Library/stm32f4xx_dac.c **** void DAC_Cmd(uint32_t DAC_Channel, FunctionalState NewState)
  260:./Library/stm32f4xx_dac.c **** {
- 174              		.loc 1 260 1 is_stmt 1 view -0
- 175              		.cfi_startproc
- 176              		@ args = 0, pretend = 0, frame = 0
- 177              		@ frame_needed = 0, uses_anonymous_args = 0
- 178              		@ link register save eliminated.
+ 222              		.loc 1 260 1
+ 223              		.cfi_startproc
+ 224              		@ args = 0, pretend = 0, frame = 8
+ 225              		@ frame_needed = 1, uses_anonymous_args = 0
+ 226              		@ link register save eliminated.
+ 227 0000 80B4     		push	{r7}
+ 228              	.LCFI14:
+ 229              		.cfi_def_cfa_offset 4
+ 230              		.cfi_offset 7, -4
+ 231 0002 83B0     		sub	sp, sp, #12
+ 232              	.LCFI15:
+ 233              		.cfi_def_cfa_offset 16
+ 234 0004 00AF     		add	r7, sp, #0
+ 235              	.LCFI16:
+ 236              		.cfi_def_cfa_register 7
+ 237 0006 7860     		str	r0, [r7, #4]
+ 238 0008 0B46     		mov	r3, r1
+ 239 000a FB70     		strb	r3, [r7, #3]
  261:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  262:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 179              		.loc 1 262 3 view .LVU39
  263:./Library/stm32f4xx_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 180              		.loc 1 263 3 view .LVU40
  264:./Library/stm32f4xx_dac.c **** 
  265:./Library/stm32f4xx_dac.c ****   if (NewState != DISABLE)
- 181              		.loc 1 265 3 view .LVU41
- 182              		.loc 1 265 6 is_stmt 0 view .LVU42
- 183 0000 39B1     		cbz	r1, .L9
+ 240              		.loc 1 265 6
+ 241 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 242 000e 002B     		cmp	r3, #0
+ 243 0010 09D0     		beq	.L7
  266:./Library/stm32f4xx_dac.c ****   {
  267:./Library/stm32f4xx_dac.c ****     /* Enable the selected DAC channel */
  268:./Library/stm32f4xx_dac.c ****     DAC->CR |= (DAC_CR_EN1 << DAC_Channel);
- 184              		.loc 1 268 5 is_stmt 1 view .LVU43
- 185              		.loc 1 268 13 is_stmt 0 view .LVU44
- 186 0002 0849     		ldr	r1, .L11
- 187              	.LVL12:
- 188              		.loc 1 268 13 view .LVU45
- 189 0004 0B68     		ldr	r3, [r1]
- 190              		.loc 1 268 28 view .LVU46
- 191 0006 0122     		movs	r2, #1
- 192 0008 02FA00F0 		lsl	r0, r2, r0
- 193              	.LVL13:
- 194              		.loc 1 268 13 view .LVU47
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 9
+ 244              		.loc 1 268 13
+ 245 0012 0D4B     		ldr	r3, .L10
+ 246 0014 1A68     		ldr	r2, [r3]
+ 247              		.loc 1 268 28
+ 248 0016 0121     		movs	r1, #1
+ 249 0018 7B68     		ldr	r3, [r7, #4]
+ 250 001a 01FA03F3 		lsl	r3, r1, r3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 10
 
 
- 195 000c 1843     		orrs	r0, r0, r3
- 196 000e 0860     		str	r0, [r1]
- 197 0010 7047     		bx	lr
- 198              	.LVL14:
- 199              	.L9:
+ 251              		.loc 1 268 13
+ 252 001e 0A49     		ldr	r1, .L10
+ 253 0020 1343     		orrs	r3, r3, r2
+ 254 0022 0B60     		str	r3, [r1]
  269:./Library/stm32f4xx_dac.c ****   }
  270:./Library/stm32f4xx_dac.c ****   else
  271:./Library/stm32f4xx_dac.c ****   {
  272:./Library/stm32f4xx_dac.c ****     /* Disable the selected DAC channel */
  273:./Library/stm32f4xx_dac.c ****     DAC->CR &= (~(DAC_CR_EN1 << DAC_Channel));
- 200              		.loc 1 273 5 is_stmt 1 view .LVU48
- 201              		.loc 1 273 13 is_stmt 0 view .LVU49
- 202 0012 0449     		ldr	r1, .L11
- 203              	.LVL15:
- 204              		.loc 1 273 13 view .LVU50
- 205 0014 0B68     		ldr	r3, [r1]
- 206              		.loc 1 273 30 view .LVU51
- 207 0016 0122     		movs	r2, #1
- 208 0018 02FA00F0 		lsl	r0, r2, r0
- 209              	.LVL16:
- 210              		.loc 1 273 13 view .LVU52
- 211 001c 23EA0000 		bic	r0, r3, r0
- 212 0020 0860     		str	r0, [r1]
  274:./Library/stm32f4xx_dac.c ****   }
  275:./Library/stm32f4xx_dac.c **** }
- 213              		.loc 1 275 1 view .LVU53
- 214 0022 7047     		bx	lr
- 215              	.L12:
- 216              		.align	2
- 217              	.L11:
- 218 0024 00740040 		.word	1073771520
- 219              		.cfi_endproc
- 220              	.LFE126:
- 222              		.section	.text.DAC_SoftwareTriggerCmd,"ax",%progbits
- 223              		.align	1
- 224              		.global	DAC_SoftwareTriggerCmd
- 225              		.syntax unified
- 226              		.thumb
- 227              		.thumb_func
- 229              	DAC_SoftwareTriggerCmd:
- 230              	.LVL17:
- 231              	.LFB127:
+ 255              		.loc 1 275 1
+ 256 0024 09E0     		b	.L9
+ 257              	.L7:
+ 273:./Library/stm32f4xx_dac.c ****   }
+ 258              		.loc 1 273 13
+ 259 0026 084B     		ldr	r3, .L10
+ 260 0028 1A68     		ldr	r2, [r3]
+ 273:./Library/stm32f4xx_dac.c ****   }
+ 261              		.loc 1 273 30
+ 262 002a 0121     		movs	r1, #1
+ 263 002c 7B68     		ldr	r3, [r7, #4]
+ 264 002e 01FA03F3 		lsl	r3, r1, r3
+ 273:./Library/stm32f4xx_dac.c ****   }
+ 265              		.loc 1 273 17
+ 266 0032 DB43     		mvns	r3, r3
+ 273:./Library/stm32f4xx_dac.c ****   }
+ 267              		.loc 1 273 13
+ 268 0034 0449     		ldr	r1, .L10
+ 269 0036 1340     		ands	r3, r3, r2
+ 270 0038 0B60     		str	r3, [r1]
+ 271              	.L9:
+ 272              		.loc 1 275 1
+ 273 003a 00BF     		nop
+ 274 003c 0C37     		adds	r7, r7, #12
+ 275              	.LCFI17:
+ 276              		.cfi_def_cfa_offset 4
+ 277 003e BD46     		mov	sp, r7
+ 278              	.LCFI18:
+ 279              		.cfi_def_cfa_register 13
+ 280              		@ sp needed
+ 281 0040 5DF8047B 		ldr	r7, [sp], #4
+ 282              	.LCFI19:
+ 283              		.cfi_restore 7
+ 284              		.cfi_def_cfa_offset 0
+ 285 0044 7047     		bx	lr
+ 286              	.L11:
+ 287 0046 00BF     		.align	2
+ 288              	.L10:
+ 289 0048 00740040 		.word	1073771520
+ 290              		.cfi_endproc
+ 291              	.LFE126:
+ 293              		.section	.text.DAC_SoftwareTriggerCmd,"ax",%progbits
+ 294              		.align	1
+ 295              		.global	DAC_SoftwareTriggerCmd
+ 296              		.syntax unified
+ 297              		.thumb
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 11
+
+
+ 298              		.thumb_func
+ 300              	DAC_SoftwareTriggerCmd:
+ 301              	.LFB127:
  276:./Library/stm32f4xx_dac.c **** 
  277:./Library/stm32f4xx_dac.c **** /**
  278:./Library/stm32f4xx_dac.c ****   * @brief  Enables or disables the selected DAC channel software trigger.
@@ -536,87 +617,114 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  286:./Library/stm32f4xx_dac.c ****   */
  287:./Library/stm32f4xx_dac.c **** void DAC_SoftwareTriggerCmd(uint32_t DAC_Channel, FunctionalState NewState)
  288:./Library/stm32f4xx_dac.c **** {
- 232              		.loc 1 288 1 is_stmt 1 view -0
- 233              		.cfi_startproc
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 10
-
-
- 234              		@ args = 0, pretend = 0, frame = 0
- 235              		@ frame_needed = 0, uses_anonymous_args = 0
- 236              		@ link register save eliminated.
+ 302              		.loc 1 288 1
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 8
+ 305              		@ frame_needed = 1, uses_anonymous_args = 0
+ 306              		@ link register save eliminated.
+ 307 0000 80B4     		push	{r7}
+ 308              	.LCFI20:
+ 309              		.cfi_def_cfa_offset 4
+ 310              		.cfi_offset 7, -4
+ 311 0002 83B0     		sub	sp, sp, #12
+ 312              	.LCFI21:
+ 313              		.cfi_def_cfa_offset 16
+ 314 0004 00AF     		add	r7, sp, #0
+ 315              	.LCFI22:
+ 316              		.cfi_def_cfa_register 7
+ 317 0006 7860     		str	r0, [r7, #4]
+ 318 0008 0B46     		mov	r3, r1
+ 319 000a FB70     		strb	r3, [r7, #3]
  289:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  290:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 237              		.loc 1 290 3 view .LVU55
  291:./Library/stm32f4xx_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 238              		.loc 1 291 3 view .LVU56
  292:./Library/stm32f4xx_dac.c **** 
  293:./Library/stm32f4xx_dac.c ****   if (NewState != DISABLE)
- 239              		.loc 1 293 3 view .LVU57
- 240              		.loc 1 293 6 is_stmt 0 view .LVU58
- 241 0000 41B1     		cbz	r1, .L14
+ 320              		.loc 1 293 6
+ 321 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 322 000e 002B     		cmp	r3, #0
+ 323 0010 0AD0     		beq	.L13
  294:./Library/stm32f4xx_dac.c ****   {
  295:./Library/stm32f4xx_dac.c ****     /* Enable software trigger for the selected DAC channel */
  296:./Library/stm32f4xx_dac.c ****     DAC->SWTRIGR |= (uint32_t)DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4);
- 242              		.loc 1 296 5 is_stmt 1 view .LVU59
- 243              		.loc 1 296 18 is_stmt 0 view .LVU60
- 244 0002 0949     		ldr	r1, .L16
- 245              	.LVL18:
- 246              		.loc 1 296 18 view .LVU61
- 247 0004 4B68     		ldr	r3, [r1, #4]
- 248              		.loc 1 296 67 view .LVU62
- 249 0006 0009     		lsrs	r0, r0, #4
- 250              	.LVL19:
- 251              		.loc 1 296 51 view .LVU63
- 252 0008 0122     		movs	r2, #1
- 253 000a 02FA00F0 		lsl	r0, r2, r0
- 254              		.loc 1 296 18 view .LVU64
- 255 000e 1843     		orrs	r0, r0, r3
- 256 0010 4860     		str	r0, [r1, #4]
- 257 0012 7047     		bx	lr
- 258              	.LVL20:
- 259              	.L14:
+ 324              		.loc 1 296 18
+ 325 0012 0E4B     		ldr	r3, .L16
+ 326 0014 5A68     		ldr	r2, [r3, #4]
+ 327              		.loc 1 296 67
+ 328 0016 7B68     		ldr	r3, [r7, #4]
+ 329 0018 1B09     		lsrs	r3, r3, #4
+ 330              		.loc 1 296 51
+ 331 001a 0121     		movs	r1, #1
+ 332 001c 01FA03F3 		lsl	r3, r1, r3
+ 333              		.loc 1 296 18
+ 334 0020 0A49     		ldr	r1, .L16
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 12
+
+
+ 335 0022 1343     		orrs	r3, r3, r2
+ 336 0024 4B60     		str	r3, [r1, #4]
  297:./Library/stm32f4xx_dac.c ****   }
  298:./Library/stm32f4xx_dac.c ****   else
  299:./Library/stm32f4xx_dac.c ****   {
  300:./Library/stm32f4xx_dac.c ****     /* Disable software trigger for the selected DAC channel */
  301:./Library/stm32f4xx_dac.c ****     DAC->SWTRIGR &= ~((uint32_t)DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4));
- 260              		.loc 1 301 5 is_stmt 1 view .LVU65
- 261              		.loc 1 301 18 is_stmt 0 view .LVU66
- 262 0014 0449     		ldr	r1, .L16
- 263              	.LVL21:
- 264              		.loc 1 301 18 view .LVU67
- 265 0016 4B68     		ldr	r3, [r1, #4]
- 266              		.loc 1 301 69 view .LVU68
- 267 0018 0009     		lsrs	r0, r0, #4
- 268              	.LVL22:
- 269              		.loc 1 301 53 view .LVU69
- 270 001a 0122     		movs	r2, #1
- 271 001c 02FA00F0 		lsl	r0, r2, r0
- 272              		.loc 1 301 18 view .LVU70
- 273 0020 23EA0000 		bic	r0, r3, r0
- 274 0024 4860     		str	r0, [r1, #4]
  302:./Library/stm32f4xx_dac.c ****   }
  303:./Library/stm32f4xx_dac.c **** }
- 275              		.loc 1 303 1 view .LVU71
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 11
+ 337              		.loc 1 303 1
+ 338 0026 0AE0     		b	.L15
+ 339              	.L13:
+ 301:./Library/stm32f4xx_dac.c ****   }
+ 340              		.loc 1 301 18
+ 341 0028 084B     		ldr	r3, .L16
+ 342 002a 5A68     		ldr	r2, [r3, #4]
+ 301:./Library/stm32f4xx_dac.c ****   }
+ 343              		.loc 1 301 69
+ 344 002c 7B68     		ldr	r3, [r7, #4]
+ 345 002e 1B09     		lsrs	r3, r3, #4
+ 301:./Library/stm32f4xx_dac.c ****   }
+ 346              		.loc 1 301 53
+ 347 0030 0121     		movs	r1, #1
+ 348 0032 01FA03F3 		lsl	r3, r1, r3
+ 301:./Library/stm32f4xx_dac.c ****   }
+ 349              		.loc 1 301 21
+ 350 0036 DB43     		mvns	r3, r3
+ 301:./Library/stm32f4xx_dac.c ****   }
+ 351              		.loc 1 301 18
+ 352 0038 0449     		ldr	r1, .L16
+ 353 003a 1340     		ands	r3, r3, r2
+ 354 003c 4B60     		str	r3, [r1, #4]
+ 355              	.L15:
+ 356              		.loc 1 303 1
+ 357 003e 00BF     		nop
+ 358 0040 0C37     		adds	r7, r7, #12
+ 359              	.LCFI23:
+ 360              		.cfi_def_cfa_offset 4
+ 361 0042 BD46     		mov	sp, r7
+ 362              	.LCFI24:
+ 363              		.cfi_def_cfa_register 13
+ 364              		@ sp needed
+ 365 0044 5DF8047B 		ldr	r7, [sp], #4
+ 366              	.LCFI25:
+ 367              		.cfi_restore 7
+ 368              		.cfi_def_cfa_offset 0
+ 369 0048 7047     		bx	lr
+ 370              	.L17:
+ 371 004a 00BF     		.align	2
+ 372              	.L16:
+ 373 004c 00740040 		.word	1073771520
+ 374              		.cfi_endproc
+ 375              	.LFE127:
+ 377              		.section	.text.DAC_DualSoftwareTriggerCmd,"ax",%progbits
+ 378              		.align	1
+ 379              		.global	DAC_DualSoftwareTriggerCmd
+ 380              		.syntax unified
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 13
 
 
- 276 0026 7047     		bx	lr
- 277              	.L17:
- 278              		.align	2
- 279              	.L16:
- 280 0028 00740040 		.word	1073771520
- 281              		.cfi_endproc
- 282              	.LFE127:
- 284              		.section	.text.DAC_DualSoftwareTriggerCmd,"ax",%progbits
- 285              		.align	1
- 286              		.global	DAC_DualSoftwareTriggerCmd
- 287              		.syntax unified
- 288              		.thumb
- 289              		.thumb_func
- 291              	DAC_DualSoftwareTriggerCmd:
- 292              	.LVL23:
- 293              	.LFB128:
+ 381              		.thumb
+ 382              		.thumb_func
+ 384              	DAC_DualSoftwareTriggerCmd:
+ 385              	.LFB128:
  304:./Library/stm32f4xx_dac.c **** 
  305:./Library/stm32f4xx_dac.c **** /**
  306:./Library/stm32f4xx_dac.c ****   * @brief  Enables or disables simultaneously the two DAC channels software triggers.
@@ -626,63 +734,89 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  310:./Library/stm32f4xx_dac.c ****   */
  311:./Library/stm32f4xx_dac.c **** void DAC_DualSoftwareTriggerCmd(FunctionalState NewState)
  312:./Library/stm32f4xx_dac.c **** {
- 294              		.loc 1 312 1 is_stmt 1 view -0
- 295              		.cfi_startproc
- 296              		@ args = 0, pretend = 0, frame = 0
- 297              		@ frame_needed = 0, uses_anonymous_args = 0
- 298              		@ link register save eliminated.
+ 386              		.loc 1 312 1
+ 387              		.cfi_startproc
+ 388              		@ args = 0, pretend = 0, frame = 8
+ 389              		@ frame_needed = 1, uses_anonymous_args = 0
+ 390              		@ link register save eliminated.
+ 391 0000 80B4     		push	{r7}
+ 392              	.LCFI26:
+ 393              		.cfi_def_cfa_offset 4
+ 394              		.cfi_offset 7, -4
+ 395 0002 83B0     		sub	sp, sp, #12
+ 396              	.LCFI27:
+ 397              		.cfi_def_cfa_offset 16
+ 398 0004 00AF     		add	r7, sp, #0
+ 399              	.LCFI28:
+ 400              		.cfi_def_cfa_register 7
+ 401 0006 0346     		mov	r3, r0
+ 402 0008 FB71     		strb	r3, [r7, #7]
  313:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  314:./Library/stm32f4xx_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 299              		.loc 1 314 3 view .LVU73
  315:./Library/stm32f4xx_dac.c **** 
  316:./Library/stm32f4xx_dac.c ****   if (NewState != DISABLE)
- 300              		.loc 1 316 3 view .LVU74
- 301              		.loc 1 316 6 is_stmt 0 view .LVU75
- 302 0000 28B1     		cbz	r0, .L19
+ 403              		.loc 1 316 6
+ 404 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 405 000c 002B     		cmp	r3, #0
+ 406 000e 06D0     		beq	.L19
  317:./Library/stm32f4xx_dac.c ****   {
  318:./Library/stm32f4xx_dac.c ****     /* Enable software trigger for both DAC channels */
  319:./Library/stm32f4xx_dac.c ****     DAC->SWTRIGR |= DUAL_SWTRIG_SET;
- 303              		.loc 1 319 5 is_stmt 1 view .LVU76
- 304              		.loc 1 319 18 is_stmt 0 view .LVU77
- 305 0002 064A     		ldr	r2, .L21
- 306 0004 5368     		ldr	r3, [r2, #4]
- 307 0006 43F00303 		orr	r3, r3, #3
- 308 000a 5360     		str	r3, [r2, #4]
- 309 000c 7047     		bx	lr
- 310              	.L19:
+ 407              		.loc 1 319 18
+ 408 0010 094B     		ldr	r3, .L22
+ 409 0012 5B68     		ldr	r3, [r3, #4]
+ 410 0014 084A     		ldr	r2, .L22
+ 411 0016 43F00303 		orr	r3, r3, #3
+ 412 001a 5360     		str	r3, [r2, #4]
  320:./Library/stm32f4xx_dac.c ****   }
  321:./Library/stm32f4xx_dac.c ****   else
  322:./Library/stm32f4xx_dac.c ****   {
  323:./Library/stm32f4xx_dac.c ****     /* Disable software trigger for both DAC channels */
  324:./Library/stm32f4xx_dac.c ****     DAC->SWTRIGR &= DUAL_SWTRIG_RESET;
- 311              		.loc 1 324 5 is_stmt 1 view .LVU78
- 312              		.loc 1 324 18 is_stmt 0 view .LVU79
- 313 000e 034A     		ldr	r2, .L21
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 12
-
-
- 314 0010 5368     		ldr	r3, [r2, #4]
- 315 0012 23F00303 		bic	r3, r3, #3
- 316 0016 5360     		str	r3, [r2, #4]
  325:./Library/stm32f4xx_dac.c ****   }
  326:./Library/stm32f4xx_dac.c **** }
- 317              		.loc 1 326 1 view .LVU80
- 318 0018 7047     		bx	lr
- 319              	.L22:
- 320 001a 00BF     		.align	2
- 321              	.L21:
- 322 001c 00740040 		.word	1073771520
- 323              		.cfi_endproc
- 324              	.LFE128:
- 326              		.section	.text.DAC_WaveGenerationCmd,"ax",%progbits
- 327              		.align	1
- 328              		.global	DAC_WaveGenerationCmd
- 329              		.syntax unified
- 330              		.thumb
- 331              		.thumb_func
- 333              	DAC_WaveGenerationCmd:
- 334              	.LVL24:
- 335              	.LFB129:
+ 413              		.loc 1 326 1
+ 414 001c 05E0     		b	.L21
+ 415              	.L19:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 14
+
+
+ 324:./Library/stm32f4xx_dac.c ****   }
+ 416              		.loc 1 324 18
+ 417 001e 064B     		ldr	r3, .L22
+ 418 0020 5B68     		ldr	r3, [r3, #4]
+ 419 0022 054A     		ldr	r2, .L22
+ 420 0024 23F00303 		bic	r3, r3, #3
+ 421 0028 5360     		str	r3, [r2, #4]
+ 422              	.L21:
+ 423              		.loc 1 326 1
+ 424 002a 00BF     		nop
+ 425 002c 0C37     		adds	r7, r7, #12
+ 426              	.LCFI29:
+ 427              		.cfi_def_cfa_offset 4
+ 428 002e BD46     		mov	sp, r7
+ 429              	.LCFI30:
+ 430              		.cfi_def_cfa_register 13
+ 431              		@ sp needed
+ 432 0030 5DF8047B 		ldr	r7, [sp], #4
+ 433              	.LCFI31:
+ 434              		.cfi_restore 7
+ 435              		.cfi_def_cfa_offset 0
+ 436 0034 7047     		bx	lr
+ 437              	.L23:
+ 438 0036 00BF     		.align	2
+ 439              	.L22:
+ 440 0038 00740040 		.word	1073771520
+ 441              		.cfi_endproc
+ 442              	.LFE128:
+ 444              		.section	.text.DAC_WaveGenerationCmd,"ax",%progbits
+ 445              		.align	1
+ 446              		.global	DAC_WaveGenerationCmd
+ 447              		.syntax unified
+ 448              		.thumb
+ 449              		.thumb_func
+ 451              	DAC_WaveGenerationCmd:
+ 452              	.LFB129:
  327:./Library/stm32f4xx_dac.c **** 
  328:./Library/stm32f4xx_dac.c **** /**
  329:./Library/stm32f4xx_dac.c ****   * @brief  Enables or disables the selected DAC channel wave generation.
@@ -700,87 +834,115 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  341:./Library/stm32f4xx_dac.c ****   */
  342:./Library/stm32f4xx_dac.c **** void DAC_WaveGenerationCmd(uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalState NewState)
  343:./Library/stm32f4xx_dac.c **** {
- 336              		.loc 1 343 1 is_stmt 1 view -0
- 337              		.cfi_startproc
- 338              		@ args = 0, pretend = 0, frame = 0
- 339              		@ frame_needed = 0, uses_anonymous_args = 0
- 340              		@ link register save eliminated.
+ 453              		.loc 1 343 1
+ 454              		.cfi_startproc
+ 455              		@ args = 0, pretend = 0, frame = 16
+ 456              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 15
+
+
+ 457              		@ link register save eliminated.
+ 458 0000 80B4     		push	{r7}
+ 459              	.LCFI32:
+ 460              		.cfi_def_cfa_offset 4
+ 461              		.cfi_offset 7, -4
+ 462 0002 85B0     		sub	sp, sp, #20
+ 463              	.LCFI33:
+ 464              		.cfi_def_cfa_offset 24
+ 465 0004 00AF     		add	r7, sp, #0
+ 466              	.LCFI34:
+ 467              		.cfi_def_cfa_register 7
+ 468 0006 F860     		str	r0, [r7, #12]
+ 469 0008 B960     		str	r1, [r7, #8]
+ 470 000a 1346     		mov	r3, r2
+ 471 000c FB71     		strb	r3, [r7, #7]
  344:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  345:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 341              		.loc 1 345 3 view .LVU82
  346:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_WAVE(DAC_Wave)); 
- 342              		.loc 1 346 3 view .LVU83
  347:./Library/stm32f4xx_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 343              		.loc 1 347 3 view .LVU84
  348:./Library/stm32f4xx_dac.c **** 
  349:./Library/stm32f4xx_dac.c ****   if (NewState != DISABLE)
- 344              		.loc 1 349 3 view .LVU85
- 345              		.loc 1 349 6 is_stmt 0 view .LVU86
- 346 0000 2AB1     		cbz	r2, .L24
+ 472              		.loc 1 349 6
+ 473 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 474 0010 002B     		cmp	r3, #0
+ 475 0012 09D0     		beq	.L25
  350:./Library/stm32f4xx_dac.c ****   {
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 13
-
-
  351:./Library/stm32f4xx_dac.c ****     /* Enable the selected wave generation for the selected DAC channel */
  352:./Library/stm32f4xx_dac.c ****     DAC->CR |= DAC_Wave << DAC_Channel;
- 347              		.loc 1 352 5 is_stmt 1 view .LVU87
- 348              		.loc 1 352 13 is_stmt 0 view .LVU88
- 349 0002 064A     		ldr	r2, .L26
- 350              	.LVL25:
- 351              		.loc 1 352 13 view .LVU89
- 352 0004 1368     		ldr	r3, [r2]
- 353              		.loc 1 352 25 view .LVU90
- 354 0006 8140     		lsls	r1, r1, r0
- 355              	.LVL26:
- 356              		.loc 1 352 13 view .LVU91
- 357 0008 1943     		orrs	r1, r1, r3
- 358 000a 1160     		str	r1, [r2]
- 359 000c 7047     		bx	lr
- 360              	.LVL27:
- 361              	.L24:
+ 476              		.loc 1 352 13
+ 477 0014 0C4B     		ldr	r3, .L28
+ 478 0016 1A68     		ldr	r2, [r3]
+ 479              		.loc 1 352 25
+ 480 0018 B968     		ldr	r1, [r7, #8]
+ 481 001a FB68     		ldr	r3, [r7, #12]
+ 482 001c 01FA03F3 		lsl	r3, r1, r3
+ 483              		.loc 1 352 13
+ 484 0020 0949     		ldr	r1, .L28
+ 485 0022 1343     		orrs	r3, r3, r2
+ 486 0024 0B60     		str	r3, [r1]
  353:./Library/stm32f4xx_dac.c ****   }
  354:./Library/stm32f4xx_dac.c ****   else
  355:./Library/stm32f4xx_dac.c ****   {
  356:./Library/stm32f4xx_dac.c ****     /* Disable the selected wave generation for the selected DAC channel */
  357:./Library/stm32f4xx_dac.c ****     DAC->CR &= ~(DAC_Wave << DAC_Channel);
- 362              		.loc 1 357 5 is_stmt 1 view .LVU92
- 363              		.loc 1 357 13 is_stmt 0 view .LVU93
- 364 000e 034A     		ldr	r2, .L26
- 365              	.LVL28:
- 366              		.loc 1 357 13 view .LVU94
- 367 0010 1368     		ldr	r3, [r2]
- 368              		.loc 1 357 27 view .LVU95
- 369 0012 8140     		lsls	r1, r1, r0
- 370              	.LVL29:
- 371              		.loc 1 357 13 view .LVU96
- 372 0014 23EA0101 		bic	r1, r3, r1
- 373 0018 1160     		str	r1, [r2]
  358:./Library/stm32f4xx_dac.c ****   }
  359:./Library/stm32f4xx_dac.c **** }
- 374              		.loc 1 359 1 view .LVU97
- 375 001a 7047     		bx	lr
- 376              	.L27:
- 377              		.align	2
- 378              	.L26:
- 379 001c 00740040 		.word	1073771520
- 380              		.cfi_endproc
- 381              	.LFE129:
- 383              		.section	.text.DAC_SetChannel1Data,"ax",%progbits
- 384              		.align	1
- 385              		.global	DAC_SetChannel1Data
- 386              		.syntax unified
- 387              		.thumb
- 388              		.thumb_func
- 390              	DAC_SetChannel1Data:
- 391              	.LVL30:
- 392              	.LFB130:
+ 487              		.loc 1 359 1
+ 488 0026 09E0     		b	.L27
+ 489              	.L25:
+ 357:./Library/stm32f4xx_dac.c ****   }
+ 490              		.loc 1 357 13
+ 491 0028 074B     		ldr	r3, .L28
+ 492 002a 1A68     		ldr	r2, [r3]
+ 357:./Library/stm32f4xx_dac.c ****   }
+ 493              		.loc 1 357 27
+ 494 002c B968     		ldr	r1, [r7, #8]
+ 495 002e FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 16
+
+
+ 496 0030 01FA03F3 		lsl	r3, r1, r3
+ 357:./Library/stm32f4xx_dac.c ****   }
+ 497              		.loc 1 357 16
+ 498 0034 DB43     		mvns	r3, r3
+ 357:./Library/stm32f4xx_dac.c ****   }
+ 499              		.loc 1 357 13
+ 500 0036 0449     		ldr	r1, .L28
+ 501 0038 1340     		ands	r3, r3, r2
+ 502 003a 0B60     		str	r3, [r1]
+ 503              	.L27:
+ 504              		.loc 1 359 1
+ 505 003c 00BF     		nop
+ 506 003e 1437     		adds	r7, r7, #20
+ 507              	.LCFI35:
+ 508              		.cfi_def_cfa_offset 4
+ 509 0040 BD46     		mov	sp, r7
+ 510              	.LCFI36:
+ 511              		.cfi_def_cfa_register 13
+ 512              		@ sp needed
+ 513 0042 5DF8047B 		ldr	r7, [sp], #4
+ 514              	.LCFI37:
+ 515              		.cfi_restore 7
+ 516              		.cfi_def_cfa_offset 0
+ 517 0046 7047     		bx	lr
+ 518              	.L29:
+ 519              		.align	2
+ 520              	.L28:
+ 521 0048 00740040 		.word	1073771520
+ 522              		.cfi_endproc
+ 523              	.LFE129:
+ 525              		.section	.text.DAC_SetChannel1Data,"ax",%progbits
+ 526              		.align	1
+ 527              		.global	DAC_SetChannel1Data
+ 528              		.syntax unified
+ 529              		.thumb
+ 530              		.thumb_func
+ 532              	DAC_SetChannel1Data:
+ 533              	.LFB130:
  360:./Library/stm32f4xx_dac.c **** 
  361:./Library/stm32f4xx_dac.c **** /**
  362:./Library/stm32f4xx_dac.c ****   * @brief  Set the specified data holding register value for DAC channel1.
  363:./Library/stm32f4xx_dac.c ****   * @param  DAC_Align: Specifies the data alignment for DAC channel1.
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 14
-
-
  364:./Library/stm32f4xx_dac.c ****   *          This parameter can be one of the following values:
  365:./Library/stm32f4xx_dac.c ****   *            @arg DAC_Align_8b_R: 8bit right data alignment selected
  366:./Library/stm32f4xx_dac.c ****   *            @arg DAC_Align_12b_L: 12bit left data alignment selected
@@ -790,72 +952,88 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  370:./Library/stm32f4xx_dac.c ****   */
  371:./Library/stm32f4xx_dac.c **** void DAC_SetChannel1Data(uint32_t DAC_Align, uint16_t Data)
  372:./Library/stm32f4xx_dac.c **** {  
- 393              		.loc 1 372 1 is_stmt 1 view -0
- 394              		.cfi_startproc
- 395              		@ args = 0, pretend = 0, frame = 8
- 396              		@ frame_needed = 0, uses_anonymous_args = 0
- 397              		@ link register save eliminated.
- 398              		.loc 1 372 1 is_stmt 0 view .LVU99
- 399 0000 82B0     		sub	sp, sp, #8
- 400              	.LCFI3:
- 401              		.cfi_def_cfa_offset 8
+ 534              		.loc 1 372 1
+ 535              		.cfi_startproc
+ 536              		@ args = 0, pretend = 0, frame = 16
+ 537              		@ frame_needed = 1, uses_anonymous_args = 0
+ 538              		@ link register save eliminated.
+ 539 0000 80B4     		push	{r7}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 17
+
+
+ 540              	.LCFI38:
+ 541              		.cfi_def_cfa_offset 4
+ 542              		.cfi_offset 7, -4
+ 543 0002 85B0     		sub	sp, sp, #20
+ 544              	.LCFI39:
+ 545              		.cfi_def_cfa_offset 24
+ 546 0004 00AF     		add	r7, sp, #0
+ 547              	.LCFI40:
+ 548              		.cfi_def_cfa_register 7
+ 549 0006 7860     		str	r0, [r7, #4]
+ 550 0008 0B46     		mov	r3, r1
+ 551 000a 7B80     		strh	r3, [r7, #2]	@ movhi
  373:./Library/stm32f4xx_dac.c ****   __IO uint32_t tmp = 0;
- 402              		.loc 1 373 3 is_stmt 1 view .LVU100
- 403              		.loc 1 373 17 is_stmt 0 view .LVU101
- 404 0002 0023     		movs	r3, #0
- 405 0004 0193     		str	r3, [sp, #4]
+ 552              		.loc 1 373 17
+ 553 000c 0023     		movs	r3, #0
+ 554 000e FB60     		str	r3, [r7, #12]
  374:./Library/stm32f4xx_dac.c ****   
  375:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  376:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
- 406              		.loc 1 376 3 is_stmt 1 view .LVU102
  377:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_DATA(Data));
- 407              		.loc 1 377 3 view .LVU103
  378:./Library/stm32f4xx_dac.c ****   
  379:./Library/stm32f4xx_dac.c ****   tmp = (uint32_t)DAC_BASE; 
- 408              		.loc 1 379 3 view .LVU104
- 409              		.loc 1 379 7 is_stmt 0 view .LVU105
- 410 0006 054B     		ldr	r3, .L30
- 411 0008 0193     		str	r3, [sp, #4]
+ 555              		.loc 1 379 7
+ 556 0010 084B     		ldr	r3, .L31
+ 557 0012 FB60     		str	r3, [r7, #12]
  380:./Library/stm32f4xx_dac.c ****   tmp += DHR12R1_OFFSET + DAC_Align;
- 412              		.loc 1 380 3 is_stmt 1 view .LVU106
- 413              		.loc 1 380 7 is_stmt 0 view .LVU107
- 414 000a 019B     		ldr	r3, [sp, #4]
- 415 000c 0344     		add	r3, r3, r0
- 416 000e 0833     		adds	r3, r3, #8
- 417 0010 0193     		str	r3, [sp, #4]
+ 558              		.loc 1 380 7
+ 559 0014 FA68     		ldr	r2, [r7, #12]
+ 560 0016 7B68     		ldr	r3, [r7, #4]
+ 561 0018 1344     		add	r3, r3, r2
+ 562 001a 0833     		adds	r3, r3, #8
+ 563 001c FB60     		str	r3, [r7, #12]
  381:./Library/stm32f4xx_dac.c **** 
  382:./Library/stm32f4xx_dac.c ****   /* Set the DAC channel1 selected data holding register */
  383:./Library/stm32f4xx_dac.c ****   *(__IO uint32_t *) tmp = Data;
- 418              		.loc 1 383 3 is_stmt 1 view .LVU108
- 419              		.loc 1 383 4 is_stmt 0 view .LVU109
- 420 0012 019B     		ldr	r3, [sp, #4]
- 421              		.loc 1 383 26 view .LVU110
- 422 0014 1960     		str	r1, [r3]
+ 564              		.loc 1 383 4
+ 565 001e FB68     		ldr	r3, [r7, #12]
+ 566 0020 1A46     		mov	r2, r3
+ 567              		.loc 1 383 26
+ 568 0022 7B88     		ldrh	r3, [r7, #2]
+ 569 0024 1360     		str	r3, [r2]
  384:./Library/stm32f4xx_dac.c **** }
- 423              		.loc 1 384 1 view .LVU111
- 424 0016 02B0     		add	sp, sp, #8
- 425              	.LCFI4:
- 426              		.cfi_def_cfa_offset 0
- 427              		@ sp needed
- 428 0018 7047     		bx	lr
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 15
+ 570              		.loc 1 384 1
+ 571 0026 00BF     		nop
+ 572 0028 1437     		adds	r7, r7, #20
+ 573              	.LCFI41:
+ 574              		.cfi_def_cfa_offset 4
+ 575 002a BD46     		mov	sp, r7
+ 576              	.LCFI42:
+ 577              		.cfi_def_cfa_register 13
+ 578              		@ sp needed
+ 579 002c 5DF8047B 		ldr	r7, [sp], #4
+ 580              	.LCFI43:
+ 581              		.cfi_restore 7
+ 582              		.cfi_def_cfa_offset 0
+ 583 0030 7047     		bx	lr
+ 584              	.L32:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 18
 
 
- 429              	.L31:
- 430 001a 00BF     		.align	2
- 431              	.L30:
- 432 001c 00740040 		.word	1073771520
- 433              		.cfi_endproc
- 434              	.LFE130:
- 436              		.section	.text.DAC_SetChannel2Data,"ax",%progbits
- 437              		.align	1
- 438              		.global	DAC_SetChannel2Data
- 439              		.syntax unified
- 440              		.thumb
- 441              		.thumb_func
- 443              	DAC_SetChannel2Data:
- 444              	.LVL31:
- 445              	.LFB131:
+ 585 0032 00BF     		.align	2
+ 586              	.L31:
+ 587 0034 00740040 		.word	1073771520
+ 588              		.cfi_endproc
+ 589              	.LFE130:
+ 591              		.section	.text.DAC_SetChannel2Data,"ax",%progbits
+ 592              		.align	1
+ 593              		.global	DAC_SetChannel2Data
+ 594              		.syntax unified
+ 595              		.thumb
+ 596              		.thumb_func
+ 598              	DAC_SetChannel2Data:
+ 599              	.LFB131:
  385:./Library/stm32f4xx_dac.c **** 
  386:./Library/stm32f4xx_dac.c **** /**
  387:./Library/stm32f4xx_dac.c ****   * @brief  Set the specified data holding register value for DAC channel2.
@@ -869,72 +1047,85 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  395:./Library/stm32f4xx_dac.c ****   */
  396:./Library/stm32f4xx_dac.c **** void DAC_SetChannel2Data(uint32_t DAC_Align, uint16_t Data)
  397:./Library/stm32f4xx_dac.c **** {
- 446              		.loc 1 397 1 is_stmt 1 view -0
- 447              		.cfi_startproc
- 448              		@ args = 0, pretend = 0, frame = 8
- 449              		@ frame_needed = 0, uses_anonymous_args = 0
- 450              		@ link register save eliminated.
- 451              		.loc 1 397 1 is_stmt 0 view .LVU113
- 452 0000 82B0     		sub	sp, sp, #8
- 453              	.LCFI5:
- 454              		.cfi_def_cfa_offset 8
+ 600              		.loc 1 397 1
+ 601              		.cfi_startproc
+ 602              		@ args = 0, pretend = 0, frame = 16
+ 603              		@ frame_needed = 1, uses_anonymous_args = 0
+ 604              		@ link register save eliminated.
+ 605 0000 80B4     		push	{r7}
+ 606              	.LCFI44:
+ 607              		.cfi_def_cfa_offset 4
+ 608              		.cfi_offset 7, -4
+ 609 0002 85B0     		sub	sp, sp, #20
+ 610              	.LCFI45:
+ 611              		.cfi_def_cfa_offset 24
+ 612 0004 00AF     		add	r7, sp, #0
+ 613              	.LCFI46:
+ 614              		.cfi_def_cfa_register 7
+ 615 0006 7860     		str	r0, [r7, #4]
+ 616 0008 0B46     		mov	r3, r1
+ 617 000a 7B80     		strh	r3, [r7, #2]	@ movhi
  398:./Library/stm32f4xx_dac.c ****   __IO uint32_t tmp = 0;
- 455              		.loc 1 398 3 is_stmt 1 view .LVU114
- 456              		.loc 1 398 17 is_stmt 0 view .LVU115
- 457 0002 0023     		movs	r3, #0
- 458 0004 0193     		str	r3, [sp, #4]
+ 618              		.loc 1 398 17
+ 619 000c 0023     		movs	r3, #0
+ 620 000e FB60     		str	r3, [r7, #12]
  399:./Library/stm32f4xx_dac.c **** 
  400:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  401:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
- 459              		.loc 1 401 3 is_stmt 1 view .LVU116
  402:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_DATA(Data));
- 460              		.loc 1 402 3 view .LVU117
  403:./Library/stm32f4xx_dac.c ****   
  404:./Library/stm32f4xx_dac.c ****   tmp = (uint32_t)DAC_BASE;
- 461              		.loc 1 404 3 view .LVU118
- 462              		.loc 1 404 7 is_stmt 0 view .LVU119
- 463 0006 054B     		ldr	r3, .L34
- 464 0008 0193     		str	r3, [sp, #4]
+ 621              		.loc 1 404 7
+ 622 0010 084B     		ldr	r3, .L34
+ 623 0012 FB60     		str	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 19
+
+
  405:./Library/stm32f4xx_dac.c ****   tmp += DHR12R2_OFFSET + DAC_Align;
- 465              		.loc 1 405 3 is_stmt 1 view .LVU120
- 466              		.loc 1 405 7 is_stmt 0 view .LVU121
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 16
-
-
- 467 000a 019B     		ldr	r3, [sp, #4]
- 468 000c 0344     		add	r3, r3, r0
- 469 000e 1433     		adds	r3, r3, #20
- 470 0010 0193     		str	r3, [sp, #4]
+ 624              		.loc 1 405 7
+ 625 0014 FA68     		ldr	r2, [r7, #12]
+ 626 0016 7B68     		ldr	r3, [r7, #4]
+ 627 0018 1344     		add	r3, r3, r2
+ 628 001a 1433     		adds	r3, r3, #20
+ 629 001c FB60     		str	r3, [r7, #12]
  406:./Library/stm32f4xx_dac.c **** 
  407:./Library/stm32f4xx_dac.c ****   /* Set the DAC channel2 selected data holding register */
  408:./Library/stm32f4xx_dac.c ****   *(__IO uint32_t *)tmp = Data;
- 471              		.loc 1 408 3 is_stmt 1 view .LVU122
- 472              		.loc 1 408 4 is_stmt 0 view .LVU123
- 473 0012 019B     		ldr	r3, [sp, #4]
- 474              		.loc 1 408 25 view .LVU124
- 475 0014 1960     		str	r1, [r3]
+ 630              		.loc 1 408 4
+ 631 001e FB68     		ldr	r3, [r7, #12]
+ 632 0020 1A46     		mov	r2, r3
+ 633              		.loc 1 408 25
+ 634 0022 7B88     		ldrh	r3, [r7, #2]
+ 635 0024 1360     		str	r3, [r2]
  409:./Library/stm32f4xx_dac.c **** }
- 476              		.loc 1 409 1 view .LVU125
- 477 0016 02B0     		add	sp, sp, #8
- 478              	.LCFI6:
- 479              		.cfi_def_cfa_offset 0
- 480              		@ sp needed
- 481 0018 7047     		bx	lr
- 482              	.L35:
- 483 001a 00BF     		.align	2
- 484              	.L34:
- 485 001c 00740040 		.word	1073771520
- 486              		.cfi_endproc
- 487              	.LFE131:
- 489              		.section	.text.DAC_SetDualChannelData,"ax",%progbits
- 490              		.align	1
- 491              		.global	DAC_SetDualChannelData
- 492              		.syntax unified
- 493              		.thumb
- 494              		.thumb_func
- 496              	DAC_SetDualChannelData:
- 497              	.LVL32:
- 498              	.LFB132:
+ 636              		.loc 1 409 1
+ 637 0026 00BF     		nop
+ 638 0028 1437     		adds	r7, r7, #20
+ 639              	.LCFI47:
+ 640              		.cfi_def_cfa_offset 4
+ 641 002a BD46     		mov	sp, r7
+ 642              	.LCFI48:
+ 643              		.cfi_def_cfa_register 13
+ 644              		@ sp needed
+ 645 002c 5DF8047B 		ldr	r7, [sp], #4
+ 646              	.LCFI49:
+ 647              		.cfi_restore 7
+ 648              		.cfi_def_cfa_offset 0
+ 649 0030 7047     		bx	lr
+ 650              	.L35:
+ 651 0032 00BF     		.align	2
+ 652              	.L34:
+ 653 0034 00740040 		.word	1073771520
+ 654              		.cfi_endproc
+ 655              	.LFE131:
+ 657              		.section	.text.DAC_SetDualChannelData,"ax",%progbits
+ 658              		.align	1
+ 659              		.global	DAC_SetDualChannelData
+ 660              		.syntax unified
+ 661              		.thumb
+ 662              		.thumb_func
+ 664              	DAC_SetDualChannelData:
+ 665              	.LFB132:
  410:./Library/stm32f4xx_dac.c **** 
  411:./Library/stm32f4xx_dac.c **** /**
  412:./Library/stm32f4xx_dac.c ****   * @brief  Set the specified data holding register value for dual channel DAC.
@@ -947,93 +1138,135 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  419:./Library/stm32f4xx_dac.c ****   * @param  Data1: Data for DAC Channel1 to be loaded in the selected data  holding register.
  420:./Library/stm32f4xx_dac.c ****   * @note   In dual mode, a unique register access is required to write in both
  421:./Library/stm32f4xx_dac.c ****   *          DAC channels at the same time.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 20
+
+
  422:./Library/stm32f4xx_dac.c ****   * @retval None
  423:./Library/stm32f4xx_dac.c ****   */
  424:./Library/stm32f4xx_dac.c **** void DAC_SetDualChannelData(uint32_t DAC_Align, uint16_t Data2, uint16_t Data1)
  425:./Library/stm32f4xx_dac.c **** {
- 499              		.loc 1 425 1 is_stmt 1 view -0
- 500              		.cfi_startproc
- 501              		@ args = 0, pretend = 0, frame = 0
- 502              		@ frame_needed = 0, uses_anonymous_args = 0
- 503              		@ link register save eliminated.
+ 666              		.loc 1 425 1
+ 667              		.cfi_startproc
+ 668              		@ args = 0, pretend = 0, frame = 16
+ 669              		@ frame_needed = 1, uses_anonymous_args = 0
+ 670              		@ link register save eliminated.
+ 671 0000 80B4     		push	{r7}
+ 672              	.LCFI50:
+ 673              		.cfi_def_cfa_offset 4
+ 674              		.cfi_offset 7, -4
+ 675 0002 85B0     		sub	sp, sp, #20
+ 676              	.LCFI51:
+ 677              		.cfi_def_cfa_offset 24
+ 678 0004 00AF     		add	r7, sp, #0
+ 679              	.LCFI52:
+ 680              		.cfi_def_cfa_register 7
+ 681 0006 7860     		str	r0, [r7, #4]
+ 682 0008 0B46     		mov	r3, r1
+ 683 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 684 000c 1346     		mov	r3, r2	@ movhi
+ 685 000e 3B80     		strh	r3, [r7]	@ movhi
  426:./Library/stm32f4xx_dac.c ****   uint32_t data = 0, tmp = 0;
- 504              		.loc 1 426 3 view .LVU127
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 17
-
-
+ 686              		.loc 1 426 12
+ 687 0010 0023     		movs	r3, #0
+ 688 0012 FB60     		str	r3, [r7, #12]
+ 689              		.loc 1 426 22
+ 690 0014 0023     		movs	r3, #0
+ 691 0016 BB60     		str	r3, [r7, #8]
  427:./Library/stm32f4xx_dac.c ****   
  428:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  429:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
- 505              		.loc 1 429 3 view .LVU128
  430:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_DATA(Data1));
- 506              		.loc 1 430 3 view .LVU129
  431:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_DATA(Data2));
- 507              		.loc 1 431 3 view .LVU130
  432:./Library/stm32f4xx_dac.c ****   
  433:./Library/stm32f4xx_dac.c ****   /* Calculate and set dual DAC data holding register value */
  434:./Library/stm32f4xx_dac.c ****   if (DAC_Align == DAC_Align_8b_R)
- 508              		.loc 1 434 3 view .LVU131
- 509              		.loc 1 434 6 is_stmt 0 view .LVU132
- 510 0000 0828     		cmp	r0, #8
- 511 0002 04D0     		beq	.L39
+ 692              		.loc 1 434 6
+ 693 0018 7B68     		ldr	r3, [r7, #4]
+ 694 001a 082B     		cmp	r3, #8
+ 695 001c 05D1     		bne	.L37
  435:./Library/stm32f4xx_dac.c ****   {
  436:./Library/stm32f4xx_dac.c ****     data = ((uint32_t)Data2 << 8) | Data1; 
+ 696              		.loc 1 436 13
+ 697 001e 7B88     		ldrh	r3, [r7, #2]
+ 698              		.loc 1 436 29
+ 699 0020 1A02     		lsls	r2, r3, #8
+ 700              		.loc 1 436 35
+ 701 0022 3B88     		ldrh	r3, [r7]
+ 702              		.loc 1 436 10
+ 703 0024 1343     		orrs	r3, r3, r2
+ 704 0026 FB60     		str	r3, [r7, #12]
+ 705 0028 04E0     		b	.L38
+ 706              	.L37:
  437:./Library/stm32f4xx_dac.c ****   }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 21
+
+
  438:./Library/stm32f4xx_dac.c ****   else
  439:./Library/stm32f4xx_dac.c ****   {
  440:./Library/stm32f4xx_dac.c ****     data = ((uint32_t)Data2 << 16) | Data1;
- 512              		.loc 1 440 5 is_stmt 1 view .LVU133
- 513              		.loc 1 440 10 is_stmt 0 view .LVU134
- 514 0004 42EA0142 		orr	r2, r2, r1, lsl #16
- 515              	.LVL33:
- 516              	.L38:
+ 707              		.loc 1 440 13
+ 708 002a 7B88     		ldrh	r3, [r7, #2]
+ 709              		.loc 1 440 29
+ 710 002c 1A04     		lsls	r2, r3, #16
+ 711              		.loc 1 440 36
+ 712 002e 3B88     		ldrh	r3, [r7]
+ 713              		.loc 1 440 10
+ 714 0030 1343     		orrs	r3, r3, r2
+ 715 0032 FB60     		str	r3, [r7, #12]
+ 716              	.L38:
  441:./Library/stm32f4xx_dac.c ****   }
  442:./Library/stm32f4xx_dac.c ****   
  443:./Library/stm32f4xx_dac.c ****   tmp = (uint32_t)DAC_BASE;
- 517              		.loc 1 443 3 is_stmt 1 view .LVU135
+ 717              		.loc 1 443 7
+ 718 0034 074B     		ldr	r3, .L39
+ 719 0036 BB60     		str	r3, [r7, #8]
  444:./Library/stm32f4xx_dac.c ****   tmp += DHR12RD_OFFSET + DAC_Align;
- 518              		.loc 1 444 3 view .LVU136
- 519              		.loc 1 444 7 is_stmt 0 view .LVU137
- 520 0008 024B     		ldr	r3, .L40
- 521              	.LVL34:
+ 720              		.loc 1 444 7
+ 721 0038 7A68     		ldr	r2, [r7, #4]
+ 722 003a BB68     		ldr	r3, [r7, #8]
+ 723 003c 1344     		add	r3, r3, r2
+ 724 003e 2033     		adds	r3, r3, #32
+ 725 0040 BB60     		str	r3, [r7, #8]
  445:./Library/stm32f4xx_dac.c **** 
  446:./Library/stm32f4xx_dac.c ****   /* Set the dual DAC selected data holding register */
  447:./Library/stm32f4xx_dac.c ****   *(__IO uint32_t *)tmp = data;
- 522              		.loc 1 447 3 is_stmt 1 view .LVU138
- 523              		.loc 1 447 25 is_stmt 0 view .LVU139
- 524 000a C250     		str	r2, [r0, r3]
+ 726              		.loc 1 447 4
+ 727 0042 BB68     		ldr	r3, [r7, #8]
+ 728              		.loc 1 447 25
+ 729 0044 FA68     		ldr	r2, [r7, #12]
+ 730 0046 1A60     		str	r2, [r3]
  448:./Library/stm32f4xx_dac.c **** }
- 525              		.loc 1 448 1 view .LVU140
- 526 000c 7047     		bx	lr
- 527              	.LVL35:
- 528              	.L39:
- 436:./Library/stm32f4xx_dac.c ****   }
- 529              		.loc 1 436 5 is_stmt 1 view .LVU141
- 436:./Library/stm32f4xx_dac.c ****   }
- 530              		.loc 1 436 10 is_stmt 0 view .LVU142
- 531 000e 42EA0122 		orr	r2, r2, r1, lsl #8
- 532              	.LVL36:
- 436:./Library/stm32f4xx_dac.c ****   }
- 533              		.loc 1 436 10 view .LVU143
- 534 0012 F9E7     		b	.L38
- 535              	.L41:
- 536              		.align	2
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 18
+ 731              		.loc 1 448 1
+ 732 0048 00BF     		nop
+ 733 004a 1437     		adds	r7, r7, #20
+ 734              	.LCFI53:
+ 735              		.cfi_def_cfa_offset 4
+ 736 004c BD46     		mov	sp, r7
+ 737              	.LCFI54:
+ 738              		.cfi_def_cfa_register 13
+ 739              		@ sp needed
+ 740 004e 5DF8047B 		ldr	r7, [sp], #4
+ 741              	.LCFI55:
+ 742              		.cfi_restore 7
+ 743              		.cfi_def_cfa_offset 0
+ 744 0052 7047     		bx	lr
+ 745              	.L40:
+ 746              		.align	2
+ 747              	.L39:
+ 748 0054 00740040 		.word	1073771520
+ 749              		.cfi_endproc
+ 750              	.LFE132:
+ 752              		.section	.text.DAC_GetDataOutputValue,"ax",%progbits
+ 753              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 22
 
 
- 537              	.L40:
- 538 0014 20740040 		.word	1073771552
- 539              		.cfi_endproc
- 540              	.LFE132:
- 542              		.section	.text.DAC_GetDataOutputValue,"ax",%progbits
- 543              		.align	1
- 544              		.global	DAC_GetDataOutputValue
- 545              		.syntax unified
- 546              		.thumb
- 547              		.thumb_func
- 549              	DAC_GetDataOutputValue:
- 550              	.LVL37:
- 551              	.LFB133:
+ 754              		.global	DAC_GetDataOutputValue
+ 755              		.syntax unified
+ 756              		.thumb
+ 757              		.thumb_func
+ 759              	DAC_GetDataOutputValue:
+ 760              	.LFB133:
  449:./Library/stm32f4xx_dac.c **** 
  450:./Library/stm32f4xx_dac.c **** /**
  451:./Library/stm32f4xx_dac.c ****   * @brief  Returns the last data output value of the selected DAC channel.
@@ -1045,72 +1278,84 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  457:./Library/stm32f4xx_dac.c ****   */
  458:./Library/stm32f4xx_dac.c **** uint16_t DAC_GetDataOutputValue(uint32_t DAC_Channel)
  459:./Library/stm32f4xx_dac.c **** {
- 552              		.loc 1 459 1 is_stmt 1 view -0
- 553              		.cfi_startproc
- 554              		@ args = 0, pretend = 0, frame = 8
- 555              		@ frame_needed = 0, uses_anonymous_args = 0
- 556              		@ link register save eliminated.
- 557              		.loc 1 459 1 is_stmt 0 view .LVU145
- 558 0000 82B0     		sub	sp, sp, #8
- 559              	.LCFI7:
- 560              		.cfi_def_cfa_offset 8
+ 761              		.loc 1 459 1
+ 762              		.cfi_startproc
+ 763              		@ args = 0, pretend = 0, frame = 16
+ 764              		@ frame_needed = 1, uses_anonymous_args = 0
+ 765              		@ link register save eliminated.
+ 766 0000 80B4     		push	{r7}
+ 767              	.LCFI56:
+ 768              		.cfi_def_cfa_offset 4
+ 769              		.cfi_offset 7, -4
+ 770 0002 85B0     		sub	sp, sp, #20
+ 771              	.LCFI57:
+ 772              		.cfi_def_cfa_offset 24
+ 773 0004 00AF     		add	r7, sp, #0
+ 774              	.LCFI58:
+ 775              		.cfi_def_cfa_register 7
+ 776 0006 7860     		str	r0, [r7, #4]
  460:./Library/stm32f4xx_dac.c ****   __IO uint32_t tmp = 0;
- 561              		.loc 1 460 3 is_stmt 1 view .LVU146
- 562              		.loc 1 460 17 is_stmt 0 view .LVU147
- 563 0002 0023     		movs	r3, #0
- 564 0004 0193     		str	r3, [sp, #4]
+ 777              		.loc 1 460 17
+ 778 0008 0023     		movs	r3, #0
+ 779 000a FB60     		str	r3, [r7, #12]
  461:./Library/stm32f4xx_dac.c ****   
  462:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  463:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 565              		.loc 1 463 3 is_stmt 1 view .LVU148
  464:./Library/stm32f4xx_dac.c ****   
  465:./Library/stm32f4xx_dac.c ****   tmp = (uint32_t) DAC_BASE ;
- 566              		.loc 1 465 3 view .LVU149
- 567              		.loc 1 465 7 is_stmt 0 view .LVU150
- 568 0006 064B     		ldr	r3, .L44
- 569 0008 0193     		str	r3, [sp, #4]
+ 780              		.loc 1 465 7
+ 781 000c 084B     		ldr	r3, .L43
+ 782 000e FB60     		str	r3, [r7, #12]
  466:./Library/stm32f4xx_dac.c ****   tmp += DOR_OFFSET + ((uint32_t)DAC_Channel >> 2);
- 570              		.loc 1 466 3 is_stmt 1 view .LVU151
- 571              		.loc 1 466 7 is_stmt 0 view .LVU152
- 572 000a 019B     		ldr	r3, [sp, #4]
- 573 000c 03EB9003 		add	r3, r3, r0, lsr #2
- 574 0010 2C33     		adds	r3, r3, #44
- 575 0012 0193     		str	r3, [sp, #4]
+ 783              		.loc 1 466 46
+ 784 0010 7B68     		ldr	r3, [r7, #4]
+ 785 0012 9A08     		lsrs	r2, r3, #2
+ 786              		.loc 1 466 7
+ 787 0014 FB68     		ldr	r3, [r7, #12]
+ 788 0016 1344     		add	r3, r3, r2
+ 789 0018 2C33     		adds	r3, r3, #44
+ 790 001a FB60     		str	r3, [r7, #12]
  467:./Library/stm32f4xx_dac.c ****   
  468:./Library/stm32f4xx_dac.c ****   /* Returns the DAC channel data output register value */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 19
-
-
  469:./Library/stm32f4xx_dac.c ****   return (uint16_t) (*(__IO uint32_t*) tmp);
- 576              		.loc 1 469 3 is_stmt 1 view .LVU153
- 577              		.loc 1 469 23 is_stmt 0 view .LVU154
- 578 0014 019B     		ldr	r3, [sp, #4]
- 579              		.loc 1 469 22 view .LVU155
- 580 0016 1868     		ldr	r0, [r3]
- 581              	.LVL38:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 23
+
+
+ 791              		.loc 1 469 23
+ 792 001c FB68     		ldr	r3, [r7, #12]
+ 793              		.loc 1 469 22
+ 794 001e 1B68     		ldr	r3, [r3]
+ 795              		.loc 1 469 10
+ 796 0020 9BB2     		uxth	r3, r3
  470:./Library/stm32f4xx_dac.c **** }
- 582              		.loc 1 470 1 view .LVU156
- 583 0018 80B2     		uxth	r0, r0
- 584 001a 02B0     		add	sp, sp, #8
- 585              	.LCFI8:
- 586              		.cfi_def_cfa_offset 0
- 587              		@ sp needed
- 588 001c 7047     		bx	lr
- 589              	.L45:
- 590 001e 00BF     		.align	2
- 591              	.L44:
- 592 0020 00740040 		.word	1073771520
- 593              		.cfi_endproc
- 594              	.LFE133:
- 596              		.section	.text.DAC_DMACmd,"ax",%progbits
- 597              		.align	1
- 598              		.global	DAC_DMACmd
- 599              		.syntax unified
- 600              		.thumb
- 601              		.thumb_func
- 603              	DAC_DMACmd:
- 604              	.LVL39:
- 605              	.LFB134:
+ 797              		.loc 1 470 1
+ 798 0022 1846     		mov	r0, r3
+ 799 0024 1437     		adds	r7, r7, #20
+ 800              	.LCFI59:
+ 801              		.cfi_def_cfa_offset 4
+ 802 0026 BD46     		mov	sp, r7
+ 803              	.LCFI60:
+ 804              		.cfi_def_cfa_register 13
+ 805              		@ sp needed
+ 806 0028 5DF8047B 		ldr	r7, [sp], #4
+ 807              	.LCFI61:
+ 808              		.cfi_restore 7
+ 809              		.cfi_def_cfa_offset 0
+ 810 002c 7047     		bx	lr
+ 811              	.L44:
+ 812 002e 00BF     		.align	2
+ 813              	.L43:
+ 814 0030 00740040 		.word	1073771520
+ 815              		.cfi_endproc
+ 816              	.LFE133:
+ 818              		.section	.text.DAC_DMACmd,"ax",%progbits
+ 819              		.align	1
+ 820              		.global	DAC_DMACmd
+ 821              		.syntax unified
+ 822              		.thumb
+ 823              		.thumb_func
+ 825              	DAC_DMACmd:
+ 826              	.LFB134:
  471:./Library/stm32f4xx_dac.c **** /**
  472:./Library/stm32f4xx_dac.c ****   * @}
  473:./Library/stm32f4xx_dac.c ****   */
@@ -1133,14 +1378,14 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  490:./Library/stm32f4xx_dac.c ****   *         TIM2, TIM4, TIM5, TIM6, TIM7 or TIM8  but not a software trigger) occurs.
  491:./Library/stm32f4xx_dac.c ****   * @param  DAC_Channel: The selected DAC channel. 
  492:./Library/stm32f4xx_dac.c ****   *          This parameter can be one of the following values:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 24
+
+
  493:./Library/stm32f4xx_dac.c ****   *            @arg DAC_Channel_1: DAC Channel1 selected
  494:./Library/stm32f4xx_dac.c ****   *            @arg DAC_Channel_2: DAC Channel2 selected
  495:./Library/stm32f4xx_dac.c ****   * @param  NewState: new state of the selected DAC channel DMA request.
  496:./Library/stm32f4xx_dac.c ****   *          This parameter can be: ENABLE or DISABLE.
  497:./Library/stm32f4xx_dac.c ****   * @note   The DAC channel1 is mapped on DMA1 Stream 5 channel7 which must be
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 20
-
-
  498:./Library/stm32f4xx_dac.c ****   *          already configured.
  499:./Library/stm32f4xx_dac.c ****   * @note   The DAC channel2 is mapped on DMA1 Stream 6 channel7 which must be
  500:./Library/stm32f4xx_dac.c ****   *          already configured.    
@@ -1148,85 +1393,114 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  502:./Library/stm32f4xx_dac.c ****   */
  503:./Library/stm32f4xx_dac.c **** void DAC_DMACmd(uint32_t DAC_Channel, FunctionalState NewState)
  504:./Library/stm32f4xx_dac.c **** {
- 606              		.loc 1 504 1 is_stmt 1 view -0
- 607              		.cfi_startproc
- 608              		@ args = 0, pretend = 0, frame = 0
- 609              		@ frame_needed = 0, uses_anonymous_args = 0
- 610              		@ link register save eliminated.
+ 827              		.loc 1 504 1
+ 828              		.cfi_startproc
+ 829              		@ args = 0, pretend = 0, frame = 8
+ 830              		@ frame_needed = 1, uses_anonymous_args = 0
+ 831              		@ link register save eliminated.
+ 832 0000 80B4     		push	{r7}
+ 833              	.LCFI62:
+ 834              		.cfi_def_cfa_offset 4
+ 835              		.cfi_offset 7, -4
+ 836 0002 83B0     		sub	sp, sp, #12
+ 837              	.LCFI63:
+ 838              		.cfi_def_cfa_offset 16
+ 839 0004 00AF     		add	r7, sp, #0
+ 840              	.LCFI64:
+ 841              		.cfi_def_cfa_register 7
+ 842 0006 7860     		str	r0, [r7, #4]
+ 843 0008 0B46     		mov	r3, r1
+ 844 000a FB70     		strb	r3, [r7, #3]
  505:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  506:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 611              		.loc 1 506 3 view .LVU158
  507:./Library/stm32f4xx_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 612              		.loc 1 507 3 view .LVU159
  508:./Library/stm32f4xx_dac.c **** 
  509:./Library/stm32f4xx_dac.c ****   if (NewState != DISABLE)
- 613              		.loc 1 509 3 view .LVU160
- 614              		.loc 1 509 6 is_stmt 0 view .LVU161
- 615 0000 41B1     		cbz	r1, .L47
+ 845              		.loc 1 509 6
+ 846 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 847 000e 002B     		cmp	r3, #0
+ 848 0010 0AD0     		beq	.L46
  510:./Library/stm32f4xx_dac.c ****   {
  511:./Library/stm32f4xx_dac.c ****     /* Enable the selected DAC channel DMA request */
  512:./Library/stm32f4xx_dac.c ****     DAC->CR |= (DAC_CR_DMAEN1 << DAC_Channel);
- 616              		.loc 1 512 5 is_stmt 1 view .LVU162
- 617              		.loc 1 512 13 is_stmt 0 view .LVU163
- 618 0002 0949     		ldr	r1, .L49
- 619              	.LVL40:
- 620              		.loc 1 512 13 view .LVU164
- 621 0004 0B68     		ldr	r3, [r1]
- 622              		.loc 1 512 31 view .LVU165
- 623 0006 4FF48052 		mov	r2, #4096
- 624 000a 02FA00F0 		lsl	r0, r2, r0
- 625              	.LVL41:
- 626              		.loc 1 512 13 view .LVU166
- 627 000e 1843     		orrs	r0, r0, r3
- 628 0010 0860     		str	r0, [r1]
- 629 0012 7047     		bx	lr
- 630              	.LVL42:
- 631              	.L47:
+ 849              		.loc 1 512 13
+ 850 0012 0E4B     		ldr	r3, .L49
+ 851 0014 1A68     		ldr	r2, [r3]
+ 852              		.loc 1 512 31
+ 853 0016 4FF48051 		mov	r1, #4096
+ 854 001a 7B68     		ldr	r3, [r7, #4]
+ 855 001c 01FA03F3 		lsl	r3, r1, r3
+ 856              		.loc 1 512 13
+ 857 0020 0A49     		ldr	r1, .L49
+ 858 0022 1343     		orrs	r3, r3, r2
+ 859 0024 0B60     		str	r3, [r1]
  513:./Library/stm32f4xx_dac.c ****   }
  514:./Library/stm32f4xx_dac.c ****   else
  515:./Library/stm32f4xx_dac.c ****   {
  516:./Library/stm32f4xx_dac.c ****     /* Disable the selected DAC channel DMA request */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 25
+
+
  517:./Library/stm32f4xx_dac.c ****     DAC->CR &= (~(DAC_CR_DMAEN1 << DAC_Channel));
- 632              		.loc 1 517 5 is_stmt 1 view .LVU167
- 633              		.loc 1 517 13 is_stmt 0 view .LVU168
- 634 0014 0449     		ldr	r1, .L49
- 635              	.LVL43:
- 636              		.loc 1 517 13 view .LVU169
- 637 0016 0B68     		ldr	r3, [r1]
- 638              		.loc 1 517 33 view .LVU170
- 639 0018 4FF48052 		mov	r2, #4096
- 640 001c 02FA00F0 		lsl	r0, r2, r0
- 641              	.LVL44:
- 642              		.loc 1 517 13 view .LVU171
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 21
-
-
- 643 0020 23EA0000 		bic	r0, r3, r0
- 644 0024 0860     		str	r0, [r1]
  518:./Library/stm32f4xx_dac.c ****   }
  519:./Library/stm32f4xx_dac.c **** }
- 645              		.loc 1 519 1 view .LVU172
- 646 0026 7047     		bx	lr
- 647              	.L50:
- 648              		.align	2
- 649              	.L49:
- 650 0028 00740040 		.word	1073771520
- 651              		.cfi_endproc
- 652              	.LFE134:
- 654              		.section	.text.DAC_ITConfig,"ax",%progbits
- 655              		.align	1
- 656              		.global	DAC_ITConfig
- 657              		.syntax unified
- 658              		.thumb
- 659              		.thumb_func
- 661              	DAC_ITConfig:
- 662              	.LVL45:
- 663              	.LFB135:
+ 860              		.loc 1 519 1
+ 861 0026 0AE0     		b	.L48
+ 862              	.L46:
+ 517:./Library/stm32f4xx_dac.c ****   }
+ 863              		.loc 1 517 13
+ 864 0028 084B     		ldr	r3, .L49
+ 865 002a 1A68     		ldr	r2, [r3]
+ 517:./Library/stm32f4xx_dac.c ****   }
+ 866              		.loc 1 517 33
+ 867 002c 4FF48051 		mov	r1, #4096
+ 868 0030 7B68     		ldr	r3, [r7, #4]
+ 869 0032 01FA03F3 		lsl	r3, r1, r3
+ 517:./Library/stm32f4xx_dac.c ****   }
+ 870              		.loc 1 517 17
+ 871 0036 DB43     		mvns	r3, r3
+ 517:./Library/stm32f4xx_dac.c ****   }
+ 872              		.loc 1 517 13
+ 873 0038 0449     		ldr	r1, .L49
+ 874 003a 1340     		ands	r3, r3, r2
+ 875 003c 0B60     		str	r3, [r1]
+ 876              	.L48:
+ 877              		.loc 1 519 1
+ 878 003e 00BF     		nop
+ 879 0040 0C37     		adds	r7, r7, #12
+ 880              	.LCFI65:
+ 881              		.cfi_def_cfa_offset 4
+ 882 0042 BD46     		mov	sp, r7
+ 883              	.LCFI66:
+ 884              		.cfi_def_cfa_register 13
+ 885              		@ sp needed
+ 886 0044 5DF8047B 		ldr	r7, [sp], #4
+ 887              	.LCFI67:
+ 888              		.cfi_restore 7
+ 889              		.cfi_def_cfa_offset 0
+ 890 0048 7047     		bx	lr
+ 891              	.L50:
+ 892 004a 00BF     		.align	2
+ 893              	.L49:
+ 894 004c 00740040 		.word	1073771520
+ 895              		.cfi_endproc
+ 896              	.LFE134:
+ 898              		.section	.text.DAC_ITConfig,"ax",%progbits
+ 899              		.align	1
+ 900              		.global	DAC_ITConfig
+ 901              		.syntax unified
+ 902              		.thumb
+ 903              		.thumb_func
+ 905              	DAC_ITConfig:
+ 906              	.LFB135:
  520:./Library/stm32f4xx_dac.c **** /**
  521:./Library/stm32f4xx_dac.c ****   * @}
  522:./Library/stm32f4xx_dac.c ****   */
  523:./Library/stm32f4xx_dac.c **** 
  524:./Library/stm32f4xx_dac.c **** /** @defgroup DAC_Group3 Interrupts and flags management functions
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 26
+
+
  525:./Library/stm32f4xx_dac.c ****  *  @brief   Interrupts and flags management functions
  526:./Library/stm32f4xx_dac.c ****  *
  527:./Library/stm32f4xx_dac.c **** @verbatim   
@@ -1255,83 +1529,111 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  550:./Library/stm32f4xx_dac.c ****   */ 
  551:./Library/stm32f4xx_dac.c **** void DAC_ITConfig(uint32_t DAC_Channel, uint32_t DAC_IT, FunctionalState NewState)  
  552:./Library/stm32f4xx_dac.c **** {
- 664              		.loc 1 552 1 is_stmt 1 view -0
- 665              		.cfi_startproc
- 666              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 22
-
-
- 667              		@ frame_needed = 0, uses_anonymous_args = 0
- 668              		@ link register save eliminated.
+ 907              		.loc 1 552 1
+ 908              		.cfi_startproc
+ 909              		@ args = 0, pretend = 0, frame = 16
+ 910              		@ frame_needed = 1, uses_anonymous_args = 0
+ 911              		@ link register save eliminated.
+ 912 0000 80B4     		push	{r7}
+ 913              	.LCFI68:
+ 914              		.cfi_def_cfa_offset 4
+ 915              		.cfi_offset 7, -4
+ 916 0002 85B0     		sub	sp, sp, #20
+ 917              	.LCFI69:
+ 918              		.cfi_def_cfa_offset 24
+ 919 0004 00AF     		add	r7, sp, #0
+ 920              	.LCFI70:
+ 921              		.cfi_def_cfa_register 7
+ 922 0006 F860     		str	r0, [r7, #12]
+ 923 0008 B960     		str	r1, [r7, #8]
+ 924 000a 1346     		mov	r3, r2
+ 925 000c FB71     		strb	r3, [r7, #7]
  553:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  554:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 669              		.loc 1 554 3 view .LVU174
  555:./Library/stm32f4xx_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 670              		.loc 1 555 3 view .LVU175
  556:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_IT(DAC_IT)); 
- 671              		.loc 1 556 3 view .LVU176
  557:./Library/stm32f4xx_dac.c **** 
  558:./Library/stm32f4xx_dac.c ****   if (NewState != DISABLE)
- 672              		.loc 1 558 3 view .LVU177
- 673              		.loc 1 558 6 is_stmt 0 view .LVU178
- 674 0000 2AB1     		cbz	r2, .L52
+ 926              		.loc 1 558 6
+ 927 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 928 0010 002B     		cmp	r3, #0
+ 929 0012 09D0     		beq	.L52
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 27
+
+
  559:./Library/stm32f4xx_dac.c ****   {
  560:./Library/stm32f4xx_dac.c ****     /* Enable the selected DAC interrupts */
  561:./Library/stm32f4xx_dac.c ****     DAC->CR |=  (DAC_IT << DAC_Channel);
- 675              		.loc 1 561 5 is_stmt 1 view .LVU179
- 676              		.loc 1 561 13 is_stmt 0 view .LVU180
- 677 0002 064A     		ldr	r2, .L54
- 678              	.LVL46:
- 679              		.loc 1 561 13 view .LVU181
- 680 0004 1368     		ldr	r3, [r2]
- 681              		.loc 1 561 25 view .LVU182
- 682 0006 8140     		lsls	r1, r1, r0
- 683              	.LVL47:
- 684              		.loc 1 561 13 view .LVU183
- 685 0008 1943     		orrs	r1, r1, r3
- 686 000a 1160     		str	r1, [r2]
- 687 000c 7047     		bx	lr
- 688              	.LVL48:
- 689              	.L52:
+ 930              		.loc 1 561 13
+ 931 0014 0C4B     		ldr	r3, .L55
+ 932 0016 1A68     		ldr	r2, [r3]
+ 933              		.loc 1 561 25
+ 934 0018 B968     		ldr	r1, [r7, #8]
+ 935 001a FB68     		ldr	r3, [r7, #12]
+ 936 001c 01FA03F3 		lsl	r3, r1, r3
+ 937              		.loc 1 561 13
+ 938 0020 0949     		ldr	r1, .L55
+ 939 0022 1343     		orrs	r3, r3, r2
+ 940 0024 0B60     		str	r3, [r1]
  562:./Library/stm32f4xx_dac.c ****   }
  563:./Library/stm32f4xx_dac.c ****   else
  564:./Library/stm32f4xx_dac.c ****   {
  565:./Library/stm32f4xx_dac.c ****     /* Disable the selected DAC interrupts */
  566:./Library/stm32f4xx_dac.c ****     DAC->CR &= (~(uint32_t)(DAC_IT << DAC_Channel));
- 690              		.loc 1 566 5 is_stmt 1 view .LVU184
- 691              		.loc 1 566 13 is_stmt 0 view .LVU185
- 692 000e 034A     		ldr	r2, .L54
- 693              	.LVL49:
- 694              		.loc 1 566 13 view .LVU186
- 695 0010 1368     		ldr	r3, [r2]
- 696              		.loc 1 566 36 view .LVU187
- 697 0012 8140     		lsls	r1, r1, r0
- 698              	.LVL50:
- 699              		.loc 1 566 13 view .LVU188
- 700 0014 23EA0101 		bic	r1, r3, r1
- 701 0018 1160     		str	r1, [r2]
  567:./Library/stm32f4xx_dac.c ****   }
  568:./Library/stm32f4xx_dac.c **** }
- 702              		.loc 1 568 1 view .LVU189
- 703 001a 7047     		bx	lr
- 704              	.L55:
- 705              		.align	2
- 706              	.L54:
- 707 001c 00740040 		.word	1073771520
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 23
+ 941              		.loc 1 568 1
+ 942 0026 09E0     		b	.L54
+ 943              	.L52:
+ 566:./Library/stm32f4xx_dac.c ****   }
+ 944              		.loc 1 566 13
+ 945 0028 074B     		ldr	r3, .L55
+ 946 002a 1A68     		ldr	r2, [r3]
+ 566:./Library/stm32f4xx_dac.c ****   }
+ 947              		.loc 1 566 36
+ 948 002c B968     		ldr	r1, [r7, #8]
+ 949 002e FB68     		ldr	r3, [r7, #12]
+ 950 0030 01FA03F3 		lsl	r3, r1, r3
+ 566:./Library/stm32f4xx_dac.c ****   }
+ 951              		.loc 1 566 17
+ 952 0034 DB43     		mvns	r3, r3
+ 566:./Library/stm32f4xx_dac.c ****   }
+ 953              		.loc 1 566 13
+ 954 0036 0449     		ldr	r1, .L55
+ 955 0038 1340     		ands	r3, r3, r2
+ 956 003a 0B60     		str	r3, [r1]
+ 957              	.L54:
+ 958              		.loc 1 568 1
+ 959 003c 00BF     		nop
+ 960 003e 1437     		adds	r7, r7, #20
+ 961              	.LCFI71:
+ 962              		.cfi_def_cfa_offset 4
+ 963 0040 BD46     		mov	sp, r7
+ 964              	.LCFI72:
+ 965              		.cfi_def_cfa_register 13
+ 966              		@ sp needed
+ 967 0042 5DF8047B 		ldr	r7, [sp], #4
+ 968              	.LCFI73:
+ 969              		.cfi_restore 7
+ 970              		.cfi_def_cfa_offset 0
+ 971 0046 7047     		bx	lr
+ 972              	.L56:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 28
 
 
- 708              		.cfi_endproc
- 709              	.LFE135:
- 711              		.section	.text.DAC_GetFlagStatus,"ax",%progbits
- 712              		.align	1
- 713              		.global	DAC_GetFlagStatus
- 714              		.syntax unified
- 715              		.thumb
- 716              		.thumb_func
- 718              	DAC_GetFlagStatus:
- 719              	.LVL51:
- 720              	.LFB136:
+ 973              		.align	2
+ 974              	.L55:
+ 975 0048 00740040 		.word	1073771520
+ 976              		.cfi_endproc
+ 977              	.LFE135:
+ 979              		.section	.text.DAC_GetFlagStatus,"ax",%progbits
+ 980              		.align	1
+ 981              		.global	DAC_GetFlagStatus
+ 982              		.syntax unified
+ 983              		.thumb
+ 984              		.thumb_func
+ 986              	DAC_GetFlagStatus:
+ 987              	.LFB136:
  569:./Library/stm32f4xx_dac.c **** 
  570:./Library/stm32f4xx_dac.c **** /**
  571:./Library/stm32f4xx_dac.c ****   * @brief  Checks whether the specified DAC flag is set or not.
@@ -1348,74 +1650,102 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  582:./Library/stm32f4xx_dac.c ****   */
  583:./Library/stm32f4xx_dac.c **** FlagStatus DAC_GetFlagStatus(uint32_t DAC_Channel, uint32_t DAC_FLAG)
  584:./Library/stm32f4xx_dac.c **** {
- 721              		.loc 1 584 1 is_stmt 1 view -0
- 722              		.cfi_startproc
- 723              		@ args = 0, pretend = 0, frame = 0
- 724              		@ frame_needed = 0, uses_anonymous_args = 0
- 725              		@ link register save eliminated.
+ 988              		.loc 1 584 1
+ 989              		.cfi_startproc
+ 990              		@ args = 0, pretend = 0, frame = 16
+ 991              		@ frame_needed = 1, uses_anonymous_args = 0
+ 992              		@ link register save eliminated.
+ 993 0000 80B4     		push	{r7}
+ 994              	.LCFI74:
+ 995              		.cfi_def_cfa_offset 4
+ 996              		.cfi_offset 7, -4
+ 997 0002 85B0     		sub	sp, sp, #20
+ 998              	.LCFI75:
+ 999              		.cfi_def_cfa_offset 24
+ 1000 0004 00AF     		add	r7, sp, #0
+ 1001              	.LCFI76:
+ 1002              		.cfi_def_cfa_register 7
+ 1003 0006 7860     		str	r0, [r7, #4]
+ 1004 0008 3960     		str	r1, [r7]
  585:./Library/stm32f4xx_dac.c ****   FlagStatus bitstatus = RESET;
- 726              		.loc 1 585 3 view .LVU191
+ 1005              		.loc 1 585 14
+ 1006 000a 0023     		movs	r3, #0
+ 1007 000c FB73     		strb	r3, [r7, #15]
  586:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  587:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 727              		.loc 1 587 3 view .LVU192
  588:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_FLAG(DAC_FLAG));
- 728              		.loc 1 588 3 view .LVU193
  589:./Library/stm32f4xx_dac.c **** 
  590:./Library/stm32f4xx_dac.c ****   /* Check the status of the specified DAC flag */
  591:./Library/stm32f4xx_dac.c ****   if ((DAC->SR & (DAC_FLAG << DAC_Channel)) != (uint8_t)RESET)
- 729              		.loc 1 591 3 view .LVU194
- 730              		.loc 1 591 11 is_stmt 0 view .LVU195
- 731 0000 044B     		ldr	r3, .L59
- 732 0002 5B6B     		ldr	r3, [r3, #52]
- 733              		.loc 1 591 28 view .LVU196
- 734 0004 8140     		lsls	r1, r1, r0
- 735              	.LVL52:
- 736              		.loc 1 591 6 view .LVU197
- 737 0006 0B42     		tst	r3, r1
- 738 0008 01D0     		beq	.L58
+ 1008              		.loc 1 591 11
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 29
+
+
+ 1009 000e 0A4B     		ldr	r3, .L61
+ 1010 0010 5A6B     		ldr	r2, [r3, #52]
+ 1011              		.loc 1 591 28
+ 1012 0012 3968     		ldr	r1, [r7]
+ 1013 0014 7B68     		ldr	r3, [r7, #4]
+ 1014 0016 01FA03F3 		lsl	r3, r1, r3
+ 1015              		.loc 1 591 16
+ 1016 001a 1340     		ands	r3, r3, r2
+ 1017              		.loc 1 591 6
+ 1018 001c 002B     		cmp	r3, #0
+ 1019 001e 02D0     		beq	.L58
  592:./Library/stm32f4xx_dac.c ****   {
  593:./Library/stm32f4xx_dac.c ****     /* DAC_FLAG is set */
  594:./Library/stm32f4xx_dac.c ****     bitstatus = SET;
- 739              		.loc 1 594 15 view .LVU198
- 740 000a 0120     		movs	r0, #1
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 24
-
-
- 741              	.LVL53:
- 742              		.loc 1 594 15 view .LVU199
- 743 000c 7047     		bx	lr
- 744              	.LVL54:
- 745              	.L58:
+ 1020              		.loc 1 594 15
+ 1021 0020 0123     		movs	r3, #1
+ 1022 0022 FB73     		strb	r3, [r7, #15]
+ 1023 0024 01E0     		b	.L59
+ 1024              	.L58:
  595:./Library/stm32f4xx_dac.c ****   }
  596:./Library/stm32f4xx_dac.c ****   else
  597:./Library/stm32f4xx_dac.c ****   {
  598:./Library/stm32f4xx_dac.c ****     /* DAC_FLAG is reset */
  599:./Library/stm32f4xx_dac.c ****     bitstatus = RESET;
- 746              		.loc 1 599 15 view .LVU200
- 747 000e 0020     		movs	r0, #0
- 748              	.LVL55:
+ 1025              		.loc 1 599 15
+ 1026 0026 0023     		movs	r3, #0
+ 1027 0028 FB73     		strb	r3, [r7, #15]
+ 1028              	.L59:
  600:./Library/stm32f4xx_dac.c ****   }
  601:./Library/stm32f4xx_dac.c ****   /* Return the DAC_FLAG status */
  602:./Library/stm32f4xx_dac.c ****   return  bitstatus;
- 749              		.loc 1 602 3 is_stmt 1 view .LVU201
+ 1029              		.loc 1 602 11
+ 1030 002a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
  603:./Library/stm32f4xx_dac.c **** }
- 750              		.loc 1 603 1 is_stmt 0 view .LVU202
- 751 0010 7047     		bx	lr
- 752              	.L60:
- 753 0012 00BF     		.align	2
- 754              	.L59:
- 755 0014 00740040 		.word	1073771520
- 756              		.cfi_endproc
- 757              	.LFE136:
- 759              		.section	.text.DAC_ClearFlag,"ax",%progbits
- 760              		.align	1
- 761              		.global	DAC_ClearFlag
- 762              		.syntax unified
- 763              		.thumb
- 764              		.thumb_func
- 766              	DAC_ClearFlag:
- 767              	.LVL56:
- 768              	.LFB137:
+ 1031              		.loc 1 603 1
+ 1032 002c 1846     		mov	r0, r3
+ 1033 002e 1437     		adds	r7, r7, #20
+ 1034              	.LCFI77:
+ 1035              		.cfi_def_cfa_offset 4
+ 1036 0030 BD46     		mov	sp, r7
+ 1037              	.LCFI78:
+ 1038              		.cfi_def_cfa_register 13
+ 1039              		@ sp needed
+ 1040 0032 5DF8047B 		ldr	r7, [sp], #4
+ 1041              	.LCFI79:
+ 1042              		.cfi_restore 7
+ 1043              		.cfi_def_cfa_offset 0
+ 1044 0036 7047     		bx	lr
+ 1045              	.L62:
+ 1046              		.align	2
+ 1047              	.L61:
+ 1048 0038 00740040 		.word	1073771520
+ 1049              		.cfi_endproc
+ 1050              	.LFE136:
+ 1052              		.section	.text.DAC_ClearFlag,"ax",%progbits
+ 1053              		.align	1
+ 1054              		.global	DAC_ClearFlag
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 30
+
+
+ 1055              		.syntax unified
+ 1056              		.thumb
+ 1057              		.thumb_func
+ 1059              	DAC_ClearFlag:
+ 1060              	.LFB137:
  604:./Library/stm32f4xx_dac.c **** 
  605:./Library/stm32f4xx_dac.c **** /**
  606:./Library/stm32f4xx_dac.c ****   * @brief  Clears the DAC channel's pending flags.
@@ -1432,47 +1762,69 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  617:./Library/stm32f4xx_dac.c ****   */
  618:./Library/stm32f4xx_dac.c **** void DAC_ClearFlag(uint32_t DAC_Channel, uint32_t DAC_FLAG)
  619:./Library/stm32f4xx_dac.c **** {
- 769              		.loc 1 619 1 is_stmt 1 view -0
- 770              		.cfi_startproc
- 771              		@ args = 0, pretend = 0, frame = 0
- 772              		@ frame_needed = 0, uses_anonymous_args = 0
- 773              		@ link register save eliminated.
+ 1061              		.loc 1 619 1
+ 1062              		.cfi_startproc
+ 1063              		@ args = 0, pretend = 0, frame = 8
+ 1064              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1065              		@ link register save eliminated.
+ 1066 0000 80B4     		push	{r7}
+ 1067              	.LCFI80:
+ 1068              		.cfi_def_cfa_offset 4
+ 1069              		.cfi_offset 7, -4
+ 1070 0002 83B0     		sub	sp, sp, #12
+ 1071              	.LCFI81:
+ 1072              		.cfi_def_cfa_offset 16
+ 1073 0004 00AF     		add	r7, sp, #0
+ 1074              	.LCFI82:
+ 1075              		.cfi_def_cfa_register 7
+ 1076 0006 7860     		str	r0, [r7, #4]
+ 1077 0008 3960     		str	r1, [r7]
  620:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 25
-
-
  621:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 774              		.loc 1 621 3 view .LVU204
  622:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_FLAG(DAC_FLAG));
- 775              		.loc 1 622 3 view .LVU205
  623:./Library/stm32f4xx_dac.c **** 
  624:./Library/stm32f4xx_dac.c ****   /* Clear the selected DAC flags */
  625:./Library/stm32f4xx_dac.c ****   DAC->SR = (DAC_FLAG << DAC_Channel);
- 776              		.loc 1 625 3 view .LVU206
- 777              		.loc 1 625 23 is_stmt 0 view .LVU207
- 778 0000 8140     		lsls	r1, r1, r0
- 779              	.LVL57:
- 780              		.loc 1 625 11 view .LVU208
- 781 0002 014B     		ldr	r3, .L62
- 782 0004 5963     		str	r1, [r3, #52]
+ 1078              		.loc 1 625 6
+ 1079 000a 0649     		ldr	r1, .L64
+ 1080              		.loc 1 625 23
+ 1081 000c 3A68     		ldr	r2, [r7]
+ 1082 000e 7B68     		ldr	r3, [r7, #4]
+ 1083 0010 02FA03F3 		lsl	r3, r2, r3
+ 1084              		.loc 1 625 11
+ 1085 0014 4B63     		str	r3, [r1, #52]
  626:./Library/stm32f4xx_dac.c **** }
- 783              		.loc 1 626 1 view .LVU209
- 784 0006 7047     		bx	lr
- 785              	.L63:
- 786              		.align	2
- 787              	.L62:
- 788 0008 00740040 		.word	1073771520
- 789              		.cfi_endproc
- 790              	.LFE137:
- 792              		.section	.text.DAC_GetITStatus,"ax",%progbits
- 793              		.align	1
- 794              		.global	DAC_GetITStatus
- 795              		.syntax unified
- 796              		.thumb
- 797              		.thumb_func
- 799              	DAC_GetITStatus:
- 800              	.LVL58:
- 801              	.LFB138:
+ 1086              		.loc 1 626 1
+ 1087 0016 00BF     		nop
+ 1088 0018 0C37     		adds	r7, r7, #12
+ 1089              	.LCFI83:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 31
+
+
+ 1090              		.cfi_def_cfa_offset 4
+ 1091 001a BD46     		mov	sp, r7
+ 1092              	.LCFI84:
+ 1093              		.cfi_def_cfa_register 13
+ 1094              		@ sp needed
+ 1095 001c 5DF8047B 		ldr	r7, [sp], #4
+ 1096              	.LCFI85:
+ 1097              		.cfi_restore 7
+ 1098              		.cfi_def_cfa_offset 0
+ 1099 0020 7047     		bx	lr
+ 1100              	.L65:
+ 1101 0022 00BF     		.align	2
+ 1102              	.L64:
+ 1103 0024 00740040 		.word	1073771520
+ 1104              		.cfi_endproc
+ 1105              	.LFE137:
+ 1107              		.section	.text.DAC_GetITStatus,"ax",%progbits
+ 1108              		.align	1
+ 1109              		.global	DAC_GetITStatus
+ 1110              		.syntax unified
+ 1111              		.thumb
+ 1112              		.thumb_func
+ 1114              	DAC_GetITStatus:
+ 1115              	.LFB138:
  627:./Library/stm32f4xx_dac.c **** 
  628:./Library/stm32f4xx_dac.c **** /**
  629:./Library/stm32f4xx_dac.c ****   * @brief  Checks whether the specified DAC interrupt has occurred or not.
@@ -1489,99 +1841,124 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  640:./Library/stm32f4xx_dac.c ****   */
  641:./Library/stm32f4xx_dac.c **** ITStatus DAC_GetITStatus(uint32_t DAC_Channel, uint32_t DAC_IT)
  642:./Library/stm32f4xx_dac.c **** {
- 802              		.loc 1 642 1 is_stmt 1 view -0
- 803              		.cfi_startproc
- 804              		@ args = 0, pretend = 0, frame = 0
- 805              		@ frame_needed = 0, uses_anonymous_args = 0
- 806              		@ link register save eliminated.
+ 1116              		.loc 1 642 1
+ 1117              		.cfi_startproc
+ 1118              		@ args = 0, pretend = 0, frame = 16
+ 1119              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1120              		@ link register save eliminated.
+ 1121 0000 80B4     		push	{r7}
+ 1122              	.LCFI86:
+ 1123              		.cfi_def_cfa_offset 4
+ 1124              		.cfi_offset 7, -4
+ 1125 0002 85B0     		sub	sp, sp, #20
+ 1126              	.LCFI87:
+ 1127              		.cfi_def_cfa_offset 24
+ 1128 0004 00AF     		add	r7, sp, #0
+ 1129              	.LCFI88:
+ 1130              		.cfi_def_cfa_register 7
+ 1131 0006 7860     		str	r0, [r7, #4]
+ 1132 0008 3960     		str	r1, [r7]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 32
+
+
  643:./Library/stm32f4xx_dac.c ****   ITStatus bitstatus = RESET;
- 807              		.loc 1 643 3 view .LVU211
+ 1133              		.loc 1 643 12
+ 1134 000a 0023     		movs	r3, #0
+ 1135 000c FB73     		strb	r3, [r7, #15]
  644:./Library/stm32f4xx_dac.c ****   uint32_t enablestatus = 0;
- 808              		.loc 1 644 3 view .LVU212
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 26
-
-
+ 1136              		.loc 1 644 12
+ 1137 000e 0023     		movs	r3, #0
+ 1138 0010 BB60     		str	r3, [r7, #8]
  645:./Library/stm32f4xx_dac.c ****   
  646:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  647:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 809              		.loc 1 647 3 view .LVU213
  648:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_IT(DAC_IT));
- 810              		.loc 1 648 3 view .LVU214
  649:./Library/stm32f4xx_dac.c **** 
  650:./Library/stm32f4xx_dac.c ****   /* Get the DAC_IT enable bit status */
  651:./Library/stm32f4xx_dac.c ****   enablestatus = (DAC->CR & (DAC_IT << DAC_Channel)) ;
- 811              		.loc 1 651 3 view .LVU215
- 812              		.loc 1 651 22 is_stmt 0 view .LVU216
- 813 0000 064A     		ldr	r2, .L68
- 814 0002 1368     		ldr	r3, [r2]
- 815              		.loc 1 651 37 view .LVU217
- 816 0004 8140     		lsls	r1, r1, r0
- 817              	.LVL59:
- 818              		.loc 1 651 16 view .LVU218
- 819 0006 0B40     		ands	r3, r3, r1
- 820              	.LVL60:
+ 1139              		.loc 1 651 22
+ 1140 0012 104B     		ldr	r3, .L70
+ 1141 0014 1A68     		ldr	r2, [r3]
+ 1142              		.loc 1 651 37
+ 1143 0016 3968     		ldr	r1, [r7]
+ 1144 0018 7B68     		ldr	r3, [r7, #4]
+ 1145 001a 01FA03F3 		lsl	r3, r1, r3
+ 1146              		.loc 1 651 16
+ 1147 001e 1340     		ands	r3, r3, r2
+ 1148 0020 BB60     		str	r3, [r7, #8]
  652:./Library/stm32f4xx_dac.c ****   
  653:./Library/stm32f4xx_dac.c ****   /* Check the status of the specified DAC interrupt */
  654:./Library/stm32f4xx_dac.c ****   if (((DAC->SR & (DAC_IT << DAC_Channel)) != (uint32_t)RESET) && enablestatus)
- 821              		.loc 1 654 3 is_stmt 1 view .LVU219
- 822              		.loc 1 654 12 is_stmt 0 view .LVU220
- 823 0008 526B     		ldr	r2, [r2, #52]
- 824              		.loc 1 654 6 view .LVU221
- 825 000a 1142     		tst	r1, r2
- 826 000c 02D0     		beq	.L66
- 827              		.loc 1 654 64 discriminator 1 view .LVU222
- 828 000e 1BB9     		cbnz	r3, .L67
+ 1149              		.loc 1 654 12
+ 1150 0022 0C4B     		ldr	r3, .L70
+ 1151 0024 5A6B     		ldr	r2, [r3, #52]
+ 1152              		.loc 1 654 27
+ 1153 0026 3968     		ldr	r1, [r7]
+ 1154 0028 7B68     		ldr	r3, [r7, #4]
+ 1155 002a 01FA03F3 		lsl	r3, r1, r3
+ 1156              		.loc 1 654 17
+ 1157 002e 1340     		ands	r3, r3, r2
+ 1158              		.loc 1 654 6
+ 1159 0030 002B     		cmp	r3, #0
+ 1160 0032 05D0     		beq	.L67
+ 1161              		.loc 1 654 64 discriminator 1
+ 1162 0034 BB68     		ldr	r3, [r7, #8]
+ 1163 0036 002B     		cmp	r3, #0
+ 1164 0038 02D0     		beq	.L67
  655:./Library/stm32f4xx_dac.c ****   {
  656:./Library/stm32f4xx_dac.c ****     /* DAC_IT is set */
  657:./Library/stm32f4xx_dac.c ****     bitstatus = SET;
+ 1165              		.loc 1 657 15
+ 1166 003a 0123     		movs	r3, #1
+ 1167 003c FB73     		strb	r3, [r7, #15]
+ 1168 003e 01E0     		b	.L68
+ 1169              	.L67:
  658:./Library/stm32f4xx_dac.c ****   }
  659:./Library/stm32f4xx_dac.c ****   else
  660:./Library/stm32f4xx_dac.c ****   {
  661:./Library/stm32f4xx_dac.c ****     /* DAC_IT is reset */
  662:./Library/stm32f4xx_dac.c ****     bitstatus = RESET;
- 829              		.loc 1 662 15 view .LVU223
- 830 0010 0020     		movs	r0, #0
- 831              	.LVL61:
- 832              		.loc 1 662 15 view .LVU224
- 833 0012 7047     		bx	lr
- 834              	.LVL62:
- 835              	.L66:
- 836              		.loc 1 662 15 view .LVU225
- 837 0014 0020     		movs	r0, #0
- 838              	.LVL63:
- 839              		.loc 1 662 15 view .LVU226
- 840 0016 7047     		bx	lr
- 841              	.LVL64:
- 842              	.L67:
- 657:./Library/stm32f4xx_dac.c ****   }
- 843              		.loc 1 657 15 view .LVU227
- 844 0018 0120     		movs	r0, #1
- 845              	.LVL65:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 33
+
+
+ 1170              		.loc 1 662 15
+ 1171 0040 0023     		movs	r3, #0
+ 1172 0042 FB73     		strb	r3, [r7, #15]
+ 1173              	.L68:
  663:./Library/stm32f4xx_dac.c ****   }
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 27
-
-
  664:./Library/stm32f4xx_dac.c ****   /* Return the DAC_IT status */
  665:./Library/stm32f4xx_dac.c ****   return  bitstatus;
- 846              		.loc 1 665 3 is_stmt 1 view .LVU228
+ 1174              		.loc 1 665 11
+ 1175 0044 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
  666:./Library/stm32f4xx_dac.c **** }
- 847              		.loc 1 666 1 is_stmt 0 view .LVU229
- 848 001a 7047     		bx	lr
- 849              	.L69:
- 850              		.align	2
- 851              	.L68:
- 852 001c 00740040 		.word	1073771520
- 853              		.cfi_endproc
- 854              	.LFE138:
- 856              		.section	.text.DAC_ClearITPendingBit,"ax",%progbits
- 857              		.align	1
- 858              		.global	DAC_ClearITPendingBit
- 859              		.syntax unified
- 860              		.thumb
- 861              		.thumb_func
- 863              	DAC_ClearITPendingBit:
- 864              	.LVL66:
- 865              	.LFB139:
+ 1176              		.loc 1 666 1
+ 1177 0046 1846     		mov	r0, r3
+ 1178 0048 1437     		adds	r7, r7, #20
+ 1179              	.LCFI89:
+ 1180              		.cfi_def_cfa_offset 4
+ 1181 004a BD46     		mov	sp, r7
+ 1182              	.LCFI90:
+ 1183              		.cfi_def_cfa_register 13
+ 1184              		@ sp needed
+ 1185 004c 5DF8047B 		ldr	r7, [sp], #4
+ 1186              	.LCFI91:
+ 1187              		.cfi_restore 7
+ 1188              		.cfi_def_cfa_offset 0
+ 1189 0050 7047     		bx	lr
+ 1190              	.L71:
+ 1191 0052 00BF     		.align	2
+ 1192              	.L70:
+ 1193 0054 00740040 		.word	1073771520
+ 1194              		.cfi_endproc
+ 1195              	.LFE138:
+ 1197              		.section	.text.DAC_ClearITPendingBit,"ax",%progbits
+ 1198              		.align	1
+ 1199              		.global	DAC_ClearITPendingBit
+ 1200              		.syntax unified
+ 1201              		.thumb
+ 1202              		.thumb_func
+ 1204              	DAC_ClearITPendingBit:
+ 1205              	.LFB139:
  667:./Library/stm32f4xx_dac.c **** 
  668:./Library/stm32f4xx_dac.c **** /**
  669:./Library/stm32f4xx_dac.c ****   * @brief  Clears the DAC channel's interrupt pending bits.
@@ -1598,99 +1975,121 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 1
  680:./Library/stm32f4xx_dac.c ****   */
  681:./Library/stm32f4xx_dac.c **** void DAC_ClearITPendingBit(uint32_t DAC_Channel, uint32_t DAC_IT)
  682:./Library/stm32f4xx_dac.c **** {
- 866              		.loc 1 682 1 is_stmt 1 view -0
- 867              		.cfi_startproc
- 868              		@ args = 0, pretend = 0, frame = 0
- 869              		@ frame_needed = 0, uses_anonymous_args = 0
- 870              		@ link register save eliminated.
+ 1206              		.loc 1 682 1
+ 1207              		.cfi_startproc
+ 1208              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 34
+
+
+ 1209              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1210              		@ link register save eliminated.
+ 1211 0000 80B4     		push	{r7}
+ 1212              	.LCFI92:
+ 1213              		.cfi_def_cfa_offset 4
+ 1214              		.cfi_offset 7, -4
+ 1215 0002 83B0     		sub	sp, sp, #12
+ 1216              	.LCFI93:
+ 1217              		.cfi_def_cfa_offset 16
+ 1218 0004 00AF     		add	r7, sp, #0
+ 1219              	.LCFI94:
+ 1220              		.cfi_def_cfa_register 7
+ 1221 0006 7860     		str	r0, [r7, #4]
+ 1222 0008 3960     		str	r1, [r7]
  683:./Library/stm32f4xx_dac.c ****   /* Check the parameters */
  684:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
- 871              		.loc 1 684 3 view .LVU231
  685:./Library/stm32f4xx_dac.c ****   assert_param(IS_DAC_IT(DAC_IT)); 
- 872              		.loc 1 685 3 view .LVU232
  686:./Library/stm32f4xx_dac.c **** 
  687:./Library/stm32f4xx_dac.c ****   /* Clear the selected DAC interrupt pending bits */
  688:./Library/stm32f4xx_dac.c ****   DAC->SR = (DAC_IT << DAC_Channel);
- 873              		.loc 1 688 3 view .LVU233
- 874              		.loc 1 688 21 is_stmt 0 view .LVU234
- 875 0000 8140     		lsls	r1, r1, r0
- 876              	.LVL67:
- 877              		.loc 1 688 11 view .LVU235
- 878 0002 014B     		ldr	r3, .L71
- 879 0004 5963     		str	r1, [r3, #52]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 28
-
-
+ 1223              		.loc 1 688 6
+ 1224 000a 0649     		ldr	r1, .L73
+ 1225              		.loc 1 688 21
+ 1226 000c 3A68     		ldr	r2, [r7]
+ 1227 000e 7B68     		ldr	r3, [r7, #4]
+ 1228 0010 02FA03F3 		lsl	r3, r2, r3
+ 1229              		.loc 1 688 11
+ 1230 0014 4B63     		str	r3, [r1, #52]
  689:./Library/stm32f4xx_dac.c **** }
- 880              		.loc 1 689 1 view .LVU236
- 881 0006 7047     		bx	lr
- 882              	.L72:
- 883              		.align	2
- 884              	.L71:
- 885 0008 00740040 		.word	1073771520
- 886              		.cfi_endproc
- 887              	.LFE139:
- 889              		.text
- 890              	.Letext0:
- 891              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 892              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 893              		.file 4 "./CORE/stm32f4xx.h"
- 894              		.file 5 "./Library/stm32f4xx_dac.h"
- 895              		.file 6 "./Library/stm32f4xx_rcc.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s 			page 29
+ 1231              		.loc 1 689 1
+ 1232 0016 00BF     		nop
+ 1233 0018 0C37     		adds	r7, r7, #12
+ 1234              	.LCFI95:
+ 1235              		.cfi_def_cfa_offset 4
+ 1236 001a BD46     		mov	sp, r7
+ 1237              	.LCFI96:
+ 1238              		.cfi_def_cfa_register 13
+ 1239              		@ sp needed
+ 1240 001c 5DF8047B 		ldr	r7, [sp], #4
+ 1241              	.LCFI97:
+ 1242              		.cfi_restore 7
+ 1243              		.cfi_def_cfa_offset 0
+ 1244 0020 7047     		bx	lr
+ 1245              	.L74:
+ 1246 0022 00BF     		.align	2
+ 1247              	.L73:
+ 1248 0024 00740040 		.word	1073771520
+ 1249              		.cfi_endproc
+ 1250              	.LFE139:
+ 1252              		.text
+ 1253              	.Letext0:
+ 1254              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1255              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 1256              		.file 4 "./CORE/stm32f4xx.h"
+ 1257              		.file 5 "./Library/stm32f4xx_dac.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s 			page 35
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f4xx_dac.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:20     .text.DAC_DeInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:26     .text.DAC_DeInit:0000000000000000 DAC_DeInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:54     .text.DAC_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:60     .text.DAC_Init:0000000000000000 DAC_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:127    .text.DAC_Init:000000000000002c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:132    .text.DAC_StructInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:138    .text.DAC_StructInit:0000000000000000 DAC_StructInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:165    .text.DAC_Cmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:171    .text.DAC_Cmd:0000000000000000 DAC_Cmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:218    .text.DAC_Cmd:0000000000000024 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:223    .text.DAC_SoftwareTriggerCmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:229    .text.DAC_SoftwareTriggerCmd:0000000000000000 DAC_SoftwareTriggerCmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:280    .text.DAC_SoftwareTriggerCmd:0000000000000028 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:285    .text.DAC_DualSoftwareTriggerCmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:291    .text.DAC_DualSoftwareTriggerCmd:0000000000000000 DAC_DualSoftwareTriggerCmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:322    .text.DAC_DualSoftwareTriggerCmd:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:327    .text.DAC_WaveGenerationCmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:333    .text.DAC_WaveGenerationCmd:0000000000000000 DAC_WaveGenerationCmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:379    .text.DAC_WaveGenerationCmd:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:384    .text.DAC_SetChannel1Data:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:390    .text.DAC_SetChannel1Data:0000000000000000 DAC_SetChannel1Data
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:432    .text.DAC_SetChannel1Data:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:437    .text.DAC_SetChannel2Data:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:443    .text.DAC_SetChannel2Data:0000000000000000 DAC_SetChannel2Data
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:485    .text.DAC_SetChannel2Data:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:490    .text.DAC_SetDualChannelData:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:496    .text.DAC_SetDualChannelData:0000000000000000 DAC_SetDualChannelData
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:538    .text.DAC_SetDualChannelData:0000000000000014 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:543    .text.DAC_GetDataOutputValue:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:549    .text.DAC_GetDataOutputValue:0000000000000000 DAC_GetDataOutputValue
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:592    .text.DAC_GetDataOutputValue:0000000000000020 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:597    .text.DAC_DMACmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:603    .text.DAC_DMACmd:0000000000000000 DAC_DMACmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:650    .text.DAC_DMACmd:0000000000000028 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:655    .text.DAC_ITConfig:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:661    .text.DAC_ITConfig:0000000000000000 DAC_ITConfig
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:707    .text.DAC_ITConfig:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:712    .text.DAC_GetFlagStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:718    .text.DAC_GetFlagStatus:0000000000000000 DAC_GetFlagStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:755    .text.DAC_GetFlagStatus:0000000000000014 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:760    .text.DAC_ClearFlag:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:766    .text.DAC_ClearFlag:0000000000000000 DAC_ClearFlag
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:788    .text.DAC_ClearFlag:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:793    .text.DAC_GetITStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:799    .text.DAC_GetITStatus:0000000000000000 DAC_GetITStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:852    .text.DAC_GetITStatus:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:857    .text.DAC_ClearITPendingBit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:863    .text.DAC_ClearITPendingBit:0000000000000000 DAC_ClearITPendingBit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccGp4nuj.s:885    .text.DAC_ClearITPendingBit:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:20     .text.DAC_DeInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:26     .text.DAC_DeInit:0000000000000000 DAC_DeInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:56     .text.DAC_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:62     .text.DAC_Init:0000000000000000 DAC_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:151    .text.DAC_Init:0000000000000064 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:156    .text.DAC_StructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:162    .text.DAC_StructInit:0000000000000000 DAC_StructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:214    .text.DAC_Cmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:220    .text.DAC_Cmd:0000000000000000 DAC_Cmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:289    .text.DAC_Cmd:0000000000000048 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:294    .text.DAC_SoftwareTriggerCmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:300    .text.DAC_SoftwareTriggerCmd:0000000000000000 DAC_SoftwareTriggerCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:373    .text.DAC_SoftwareTriggerCmd:000000000000004c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:378    .text.DAC_DualSoftwareTriggerCmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:384    .text.DAC_DualSoftwareTriggerCmd:0000000000000000 DAC_DualSoftwareTriggerCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:440    .text.DAC_DualSoftwareTriggerCmd:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:445    .text.DAC_WaveGenerationCmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:451    .text.DAC_WaveGenerationCmd:0000000000000000 DAC_WaveGenerationCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:521    .text.DAC_WaveGenerationCmd:0000000000000048 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:526    .text.DAC_SetChannel1Data:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:532    .text.DAC_SetChannel1Data:0000000000000000 DAC_SetChannel1Data
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:587    .text.DAC_SetChannel1Data:0000000000000034 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:592    .text.DAC_SetChannel2Data:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:598    .text.DAC_SetChannel2Data:0000000000000000 DAC_SetChannel2Data
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:653    .text.DAC_SetChannel2Data:0000000000000034 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:658    .text.DAC_SetDualChannelData:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:664    .text.DAC_SetDualChannelData:0000000000000000 DAC_SetDualChannelData
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:748    .text.DAC_SetDualChannelData:0000000000000054 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:753    .text.DAC_GetDataOutputValue:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:759    .text.DAC_GetDataOutputValue:0000000000000000 DAC_GetDataOutputValue
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:814    .text.DAC_GetDataOutputValue:0000000000000030 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:819    .text.DAC_DMACmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:825    .text.DAC_DMACmd:0000000000000000 DAC_DMACmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:894    .text.DAC_DMACmd:000000000000004c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:899    .text.DAC_ITConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:905    .text.DAC_ITConfig:0000000000000000 DAC_ITConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:975    .text.DAC_ITConfig:0000000000000048 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:980    .text.DAC_GetFlagStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:986    .text.DAC_GetFlagStatus:0000000000000000 DAC_GetFlagStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1048   .text.DAC_GetFlagStatus:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1053   .text.DAC_ClearFlag:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1059   .text.DAC_ClearFlag:0000000000000000 DAC_ClearFlag
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1103   .text.DAC_ClearFlag:0000000000000024 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1108   .text.DAC_GetITStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1114   .text.DAC_GetITStatus:0000000000000000 DAC_GetITStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1193   .text.DAC_GetITStatus:0000000000000054 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1198   .text.DAC_ClearITPendingBit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1204   .text.DAC_ClearITPendingBit:0000000000000000 DAC_ClearITPendingBit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cckzC73U.s:1248   .text.DAC_ClearITPendingBit:0000000000000024 $d
 
 UNDEFINED SYMBOLS
 RCC_APB1PeriphResetCmd

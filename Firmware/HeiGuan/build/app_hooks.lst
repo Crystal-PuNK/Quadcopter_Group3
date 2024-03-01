@@ -1,0 +1,619 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"app_hooks.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.App_TaskCreateHook,"ax",%progbits
+  20              		.align	1
+  21              		.global	App_TaskCreateHook
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	App_TaskCreateHook:
+  27              	.LFB3:
+  28              		.file 1 "./ucOSII/Config/app_hooks.c"
+   1:./ucOSII/Config/app_hooks.c **** /*
+   2:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+   3:./ucOSII/Config/app_hooks.c **** *                                            EXAMPLE CODE
+   4:./ucOSII/Config/app_hooks.c **** *
+   5:./ucOSII/Config/app_hooks.c **** *               This file is provided as an example on how to use Micrium products.
+   6:./ucOSII/Config/app_hooks.c **** *
+   7:./ucOSII/Config/app_hooks.c **** *               Please feel free to use any application code labeled as 'EXAMPLE CODE' in
+   8:./ucOSII/Config/app_hooks.c **** *               your application products.  Example code may be used as is, in whole or in
+   9:./ucOSII/Config/app_hooks.c **** *               part, or may be used as a reference only. This file can be modified as
+  10:./ucOSII/Config/app_hooks.c **** *               required to meet the end-product requirements.
+  11:./ucOSII/Config/app_hooks.c **** *
+  12:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  13:./ucOSII/Config/app_hooks.c **** */
+  14:./ucOSII/Config/app_hooks.c **** 
+  15:./ucOSII/Config/app_hooks.c **** /*
+  16:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  17:./ucOSII/Config/app_hooks.c **** *
+  18:./ucOSII/Config/app_hooks.c **** *                                              uC/OS-II
+  19:./ucOSII/Config/app_hooks.c **** *                                          Application Hooks
+  20:./ucOSII/Config/app_hooks.c **** *
+  21:./ucOSII/Config/app_hooks.c **** * Filename : app_hooks.c
+  22:./ucOSII/Config/app_hooks.c **** * Version  : V2.93.01
+  23:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  24:./ucOSII/Config/app_hooks.c **** */
+  25:./ucOSII/Config/app_hooks.c **** 
+  26:./ucOSII/Config/app_hooks.c **** /*
+  27:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  28:./ucOSII/Config/app_hooks.c **** *                                            INCLUDE FILES
+  29:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  30:./ucOSII/Config/app_hooks.c **** */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 2
+
+
+  31:./ucOSII/Config/app_hooks.c **** 
+  32:./ucOSII/Config/app_hooks.c **** #include  <os.h>
+  33:./ucOSII/Config/app_hooks.c **** 
+  34:./ucOSII/Config/app_hooks.c **** 
+  35:./ucOSII/Config/app_hooks.c **** /*
+  36:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  37:./ucOSII/Config/app_hooks.c **** *                                      EXTERN  GLOBAL VARIABLES
+  38:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  39:./ucOSII/Config/app_hooks.c **** */
+  40:./ucOSII/Config/app_hooks.c **** 
+  41:./ucOSII/Config/app_hooks.c **** 
+  42:./ucOSII/Config/app_hooks.c **** /*
+  43:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  44:./ucOSII/Config/app_hooks.c **** *                                           LOCAL CONSTANTS
+  45:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  46:./ucOSII/Config/app_hooks.c **** */
+  47:./ucOSII/Config/app_hooks.c **** 
+  48:./ucOSII/Config/app_hooks.c **** 
+  49:./ucOSII/Config/app_hooks.c **** /*
+  50:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  51:./ucOSII/Config/app_hooks.c **** *                                          LOCAL DATA TYPES
+  52:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  53:./ucOSII/Config/app_hooks.c **** */
+  54:./ucOSII/Config/app_hooks.c **** 
+  55:./ucOSII/Config/app_hooks.c **** /*
+  56:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  57:./ucOSII/Config/app_hooks.c **** *                                            LOCAL TABLES
+  58:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  59:./ucOSII/Config/app_hooks.c **** */
+  60:./ucOSII/Config/app_hooks.c **** 
+  61:./ucOSII/Config/app_hooks.c **** 
+  62:./ucOSII/Config/app_hooks.c **** /*
+  63:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  64:./ucOSII/Config/app_hooks.c **** *                                       LOCAL GLOBAL VARIABLES
+  65:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  66:./ucOSII/Config/app_hooks.c **** */
+  67:./ucOSII/Config/app_hooks.c **** 
+  68:./ucOSII/Config/app_hooks.c **** 
+  69:./ucOSII/Config/app_hooks.c **** /*
+  70:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  71:./ucOSII/Config/app_hooks.c **** *                                      LOCAL FUNCTION PROTOTYPES
+  72:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  73:./ucOSII/Config/app_hooks.c **** */
+  74:./ucOSII/Config/app_hooks.c **** 
+  75:./ucOSII/Config/app_hooks.c **** 
+  76:./ucOSII/Config/app_hooks.c **** 
+  77:./ucOSII/Config/app_hooks.c **** /*
+  78:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  79:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  80:./ucOSII/Config/app_hooks.c **** **                                         GLOBAL FUNCTIONS
+  81:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  82:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  83:./ucOSII/Config/app_hooks.c **** */
+  84:./ucOSII/Config/app_hooks.c **** 
+  85:./ucOSII/Config/app_hooks.c **** /*
+  86:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  87:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 3
+
+
+  88:./ucOSII/Config/app_hooks.c **** **                                        uC/OS-II APP HOOKS
+  89:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  90:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  91:./ucOSII/Config/app_hooks.c **** */
+  92:./ucOSII/Config/app_hooks.c **** 
+  93:./ucOSII/Config/app_hooks.c **** #if (OS_APP_HOOKS_EN > 0)
+  94:./ucOSII/Config/app_hooks.c **** 
+  95:./ucOSII/Config/app_hooks.c **** /*
+  96:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+  97:./ucOSII/Config/app_hooks.c **** *                                  TASK CREATION HOOK (APPLICATION)
+  98:./ucOSII/Config/app_hooks.c **** *
+  99:./ucOSII/Config/app_hooks.c **** * Description : This function is called when a task is created.
+ 100:./ucOSII/Config/app_hooks.c **** *
+ 101:./ucOSII/Config/app_hooks.c **** * Argument(s) : ptcb   is a pointer to the task control block of the task being created.
+ 102:./ucOSII/Config/app_hooks.c **** *
+ 103:./ucOSII/Config/app_hooks.c **** * Note(s)     : (1) Interrupts are disabled during this call.
+ 104:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 105:./ucOSII/Config/app_hooks.c **** */
+ 106:./ucOSII/Config/app_hooks.c **** 
+ 107:./ucOSII/Config/app_hooks.c **** void  App_TaskCreateHook (OS_TCB *ptcb)
+ 108:./ucOSII/Config/app_hooks.c **** {
+  29              		.loc 1 108 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 83B0     		sub	sp, sp, #12
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 16
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
+  44 0006 7860     		str	r0, [r7, #4]
+ 109:./ucOSII/Config/app_hooks.c ****     (void)ptcb;
+ 110:./ucOSII/Config/app_hooks.c **** }
+  45              		.loc 1 110 1
+  46 0008 00BF     		nop
+  47 000a 0C37     		adds	r7, r7, #12
+  48              	.LCFI3:
+  49              		.cfi_def_cfa_offset 4
+  50 000c BD46     		mov	sp, r7
+  51              	.LCFI4:
+  52              		.cfi_def_cfa_register 13
+  53              		@ sp needed
+  54 000e 5DF8047B 		ldr	r7, [sp], #4
+  55              	.LCFI5:
+  56              		.cfi_restore 7
+  57              		.cfi_def_cfa_offset 0
+  58 0012 7047     		bx	lr
+  59              		.cfi_endproc
+  60              	.LFE3:
+  62              		.section	.text.App_TaskDelHook,"ax",%progbits
+  63              		.align	1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 4
+
+
+  64              		.global	App_TaskDelHook
+  65              		.syntax unified
+  66              		.thumb
+  67              		.thumb_func
+  69              	App_TaskDelHook:
+  70              	.LFB4:
+ 111:./ucOSII/Config/app_hooks.c **** 
+ 112:./ucOSII/Config/app_hooks.c **** 
+ 113:./ucOSII/Config/app_hooks.c **** /*
+ 114:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 115:./ucOSII/Config/app_hooks.c **** *                                  TASK DELETION HOOK (APPLICATION)
+ 116:./ucOSII/Config/app_hooks.c **** *
+ 117:./ucOSII/Config/app_hooks.c **** * Description : This function is called when a task is deleted.
+ 118:./ucOSII/Config/app_hooks.c **** *
+ 119:./ucOSII/Config/app_hooks.c **** * Argument(s) : ptcb   is a pointer to the task control block of the task being deleted.
+ 120:./ucOSII/Config/app_hooks.c **** *
+ 121:./ucOSII/Config/app_hooks.c **** * Note(s)     : (1) Interrupts are disabled during this call.
+ 122:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 123:./ucOSII/Config/app_hooks.c **** */
+ 124:./ucOSII/Config/app_hooks.c **** 
+ 125:./ucOSII/Config/app_hooks.c **** void  App_TaskDelHook (OS_TCB *ptcb)
+ 126:./ucOSII/Config/app_hooks.c **** {
+  71              		.loc 1 126 1
+  72              		.cfi_startproc
+  73              		@ args = 0, pretend = 0, frame = 8
+  74              		@ frame_needed = 1, uses_anonymous_args = 0
+  75              		@ link register save eliminated.
+  76 0000 80B4     		push	{r7}
+  77              	.LCFI6:
+  78              		.cfi_def_cfa_offset 4
+  79              		.cfi_offset 7, -4
+  80 0002 83B0     		sub	sp, sp, #12
+  81              	.LCFI7:
+  82              		.cfi_def_cfa_offset 16
+  83 0004 00AF     		add	r7, sp, #0
+  84              	.LCFI8:
+  85              		.cfi_def_cfa_register 7
+  86 0006 7860     		str	r0, [r7, #4]
+ 127:./ucOSII/Config/app_hooks.c ****     (void)ptcb;
+ 128:./ucOSII/Config/app_hooks.c **** }
+  87              		.loc 1 128 1
+  88 0008 00BF     		nop
+  89 000a 0C37     		adds	r7, r7, #12
+  90              	.LCFI9:
+  91              		.cfi_def_cfa_offset 4
+  92 000c BD46     		mov	sp, r7
+  93              	.LCFI10:
+  94              		.cfi_def_cfa_register 13
+  95              		@ sp needed
+  96 000e 5DF8047B 		ldr	r7, [sp], #4
+  97              	.LCFI11:
+  98              		.cfi_restore 7
+  99              		.cfi_def_cfa_offset 0
+ 100 0012 7047     		bx	lr
+ 101              		.cfi_endproc
+ 102              	.LFE4:
+ 104              		.section	.text.App_TaskIdleHook,"ax",%progbits
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 5
+
+
+ 105              		.align	1
+ 106              		.global	App_TaskIdleHook
+ 107              		.syntax unified
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	App_TaskIdleHook:
+ 112              	.LFB5:
+ 129:./ucOSII/Config/app_hooks.c **** 
+ 130:./ucOSII/Config/app_hooks.c **** 
+ 131:./ucOSII/Config/app_hooks.c **** /*
+ 132:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 133:./ucOSII/Config/app_hooks.c **** *                                    IDLE TASK HOOK (APPLICATION)
+ 134:./ucOSII/Config/app_hooks.c **** *
+ 135:./ucOSII/Config/app_hooks.c **** * Description : This function is called by OSTaskIdleHook(), which is called by the idle task.  Thi
+ 136:./ucOSII/Config/app_hooks.c **** *               has been added to allow you to do such things as STOP the CPU to conserve power.
+ 137:./ucOSII/Config/app_hooks.c **** *
+ 138:./ucOSII/Config/app_hooks.c **** * Argument(s) : none.
+ 139:./ucOSII/Config/app_hooks.c **** *
+ 140:./ucOSII/Config/app_hooks.c **** * Note(s)     : (1) Interrupts are enabled during this call.
+ 141:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 142:./ucOSII/Config/app_hooks.c **** */
+ 143:./ucOSII/Config/app_hooks.c **** 
+ 144:./ucOSII/Config/app_hooks.c **** #if OS_VERSION >= 251
+ 145:./ucOSII/Config/app_hooks.c **** void  App_TaskIdleHook (void)
+ 146:./ucOSII/Config/app_hooks.c **** {
+ 113              		.loc 1 146 1
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 0
+ 116              		@ frame_needed = 1, uses_anonymous_args = 0
+ 117              		@ link register save eliminated.
+ 118 0000 80B4     		push	{r7}
+ 119              	.LCFI12:
+ 120              		.cfi_def_cfa_offset 4
+ 121              		.cfi_offset 7, -4
+ 122 0002 00AF     		add	r7, sp, #0
+ 123              	.LCFI13:
+ 124              		.cfi_def_cfa_register 7
+ 147:./ucOSII/Config/app_hooks.c **** }
+ 125              		.loc 1 147 1
+ 126 0004 00BF     		nop
+ 127 0006 BD46     		mov	sp, r7
+ 128              	.LCFI14:
+ 129              		.cfi_def_cfa_register 13
+ 130              		@ sp needed
+ 131 0008 5DF8047B 		ldr	r7, [sp], #4
+ 132              	.LCFI15:
+ 133              		.cfi_restore 7
+ 134              		.cfi_def_cfa_offset 0
+ 135 000c 7047     		bx	lr
+ 136              		.cfi_endproc
+ 137              	.LFE5:
+ 139              		.section	.text.App_TaskStatHook,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	App_TaskStatHook
+ 142              		.syntax unified
+ 143              		.thumb
+ 144              		.thumb_func
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 6
+
+
+ 146              	App_TaskStatHook:
+ 147              	.LFB6:
+ 148:./ucOSII/Config/app_hooks.c **** #endif
+ 149:./ucOSII/Config/app_hooks.c **** 
+ 150:./ucOSII/Config/app_hooks.c **** 
+ 151:./ucOSII/Config/app_hooks.c **** /*
+ 152:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 153:./ucOSII/Config/app_hooks.c **** *                                  STATISTIC TASK HOOK (APPLICATION)
+ 154:./ucOSII/Config/app_hooks.c **** *
+ 155:./ucOSII/Config/app_hooks.c **** * Description : This function is called by OSTaskStatHook(), which is called every second by uC/OS-
+ 156:./ucOSII/Config/app_hooks.c **** *               statistics task.  This allows your application to add functionality to the statisti
+ 157:./ucOSII/Config/app_hooks.c **** *
+ 158:./ucOSII/Config/app_hooks.c **** * Argument(s) : none.
+ 159:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 160:./ucOSII/Config/app_hooks.c **** */
+ 161:./ucOSII/Config/app_hooks.c **** 
+ 162:./ucOSII/Config/app_hooks.c **** void  App_TaskStatHook (void)
+ 163:./ucOSII/Config/app_hooks.c **** {
+ 148              		.loc 1 163 1
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 1, uses_anonymous_args = 0
+ 152              		@ link register save eliminated.
+ 153 0000 80B4     		push	{r7}
+ 154              	.LCFI16:
+ 155              		.cfi_def_cfa_offset 4
+ 156              		.cfi_offset 7, -4
+ 157 0002 00AF     		add	r7, sp, #0
+ 158              	.LCFI17:
+ 159              		.cfi_def_cfa_register 7
+ 164:./ucOSII/Config/app_hooks.c **** }
+ 160              		.loc 1 164 1
+ 161 0004 00BF     		nop
+ 162 0006 BD46     		mov	sp, r7
+ 163              	.LCFI18:
+ 164              		.cfi_def_cfa_register 13
+ 165              		@ sp needed
+ 166 0008 5DF8047B 		ldr	r7, [sp], #4
+ 167              	.LCFI19:
+ 168              		.cfi_restore 7
+ 169              		.cfi_def_cfa_offset 0
+ 170 000c 7047     		bx	lr
+ 171              		.cfi_endproc
+ 172              	.LFE6:
+ 174              		.section	.text.App_TaskReturnHook,"ax",%progbits
+ 175              		.align	1
+ 176              		.global	App_TaskReturnHook
+ 177              		.syntax unified
+ 178              		.thumb
+ 179              		.thumb_func
+ 181              	App_TaskReturnHook:
+ 182              	.LFB7:
+ 165:./ucOSII/Config/app_hooks.c **** 
+ 166:./ucOSII/Config/app_hooks.c **** 
+ 167:./ucOSII/Config/app_hooks.c **** /*
+ 168:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 169:./ucOSII/Config/app_hooks.c **** *                                   TASK RETURN HOOK (APPLICATION)
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 7
+
+
+ 170:./ucOSII/Config/app_hooks.c **** *
+ 171:./ucOSII/Config/app_hooks.c **** * Description: This function is called if a task accidentally returns.  In other words, a task shou
+ 172:./ucOSII/Config/app_hooks.c **** *              either be an infinite loop or delete itself when done.
+ 173:./ucOSII/Config/app_hooks.c **** *
+ 174:./ucOSII/Config/app_hooks.c **** * Arguments  : ptcb      is a pointer to the task control block of the task that is returning.
+ 175:./ucOSII/Config/app_hooks.c **** *
+ 176:./ucOSII/Config/app_hooks.c **** * Note(s)    : none
+ 177:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 178:./ucOSII/Config/app_hooks.c **** */
+ 179:./ucOSII/Config/app_hooks.c **** 
+ 180:./ucOSII/Config/app_hooks.c **** 
+ 181:./ucOSII/Config/app_hooks.c **** #if OS_VERSION >= 289
+ 182:./ucOSII/Config/app_hooks.c **** void  App_TaskReturnHook (OS_TCB  *ptcb)
+ 183:./ucOSII/Config/app_hooks.c **** {
+ 183              		.loc 1 183 1
+ 184              		.cfi_startproc
+ 185              		@ args = 0, pretend = 0, frame = 8
+ 186              		@ frame_needed = 1, uses_anonymous_args = 0
+ 187              		@ link register save eliminated.
+ 188 0000 80B4     		push	{r7}
+ 189              	.LCFI20:
+ 190              		.cfi_def_cfa_offset 4
+ 191              		.cfi_offset 7, -4
+ 192 0002 83B0     		sub	sp, sp, #12
+ 193              	.LCFI21:
+ 194              		.cfi_def_cfa_offset 16
+ 195 0004 00AF     		add	r7, sp, #0
+ 196              	.LCFI22:
+ 197              		.cfi_def_cfa_register 7
+ 198 0006 7860     		str	r0, [r7, #4]
+ 184:./ucOSII/Config/app_hooks.c ****     (void)ptcb;
+ 185:./ucOSII/Config/app_hooks.c **** }
+ 199              		.loc 1 185 1
+ 200 0008 00BF     		nop
+ 201 000a 0C37     		adds	r7, r7, #12
+ 202              	.LCFI23:
+ 203              		.cfi_def_cfa_offset 4
+ 204 000c BD46     		mov	sp, r7
+ 205              	.LCFI24:
+ 206              		.cfi_def_cfa_register 13
+ 207              		@ sp needed
+ 208 000e 5DF8047B 		ldr	r7, [sp], #4
+ 209              	.LCFI25:
+ 210              		.cfi_restore 7
+ 211              		.cfi_def_cfa_offset 0
+ 212 0012 7047     		bx	lr
+ 213              		.cfi_endproc
+ 214              	.LFE7:
+ 216              		.section	.text.App_TaskSwHook,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	App_TaskSwHook
+ 219              		.syntax unified
+ 220              		.thumb
+ 221              		.thumb_func
+ 223              	App_TaskSwHook:
+ 224              	.LFB8:
+ 186:./ucOSII/Config/app_hooks.c **** #endif
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 8
+
+
+ 187:./ucOSII/Config/app_hooks.c **** 
+ 188:./ucOSII/Config/app_hooks.c **** 
+ 189:./ucOSII/Config/app_hooks.c **** /*
+ 190:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 191:./ucOSII/Config/app_hooks.c **** *                                   TASK SWITCH HOOK (APPLICATION)
+ 192:./ucOSII/Config/app_hooks.c **** *
+ 193:./ucOSII/Config/app_hooks.c **** * Description : This function is called when a task switch is performed.  This allows you to perfor
+ 194:./ucOSII/Config/app_hooks.c **** *               operations during a context switch.
+ 195:./ucOSII/Config/app_hooks.c **** *
+ 196:./ucOSII/Config/app_hooks.c **** * Argument(s) : none.
+ 197:./ucOSII/Config/app_hooks.c **** *
+ 198:./ucOSII/Config/app_hooks.c **** * Note(s)     : (1) Interrupts are disabled during this call.
+ 199:./ucOSII/Config/app_hooks.c **** *
+ 200:./ucOSII/Config/app_hooks.c **** *               (2) It is assumed that the global pointer 'OSTCBHighRdy' points to the TCB of the t
+ 201:./ucOSII/Config/app_hooks.c **** *                   will be 'switched in' (i.e. the highest priority task) and, 'OSTCBCur' points t
+ 202:./ucOSII/Config/app_hooks.c **** *                  task being switched out (i.e. the preempted task).
+ 203:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 204:./ucOSII/Config/app_hooks.c **** */
+ 205:./ucOSII/Config/app_hooks.c **** 
+ 206:./ucOSII/Config/app_hooks.c **** #if OS_TASK_SW_HOOK_EN > 0
+ 207:./ucOSII/Config/app_hooks.c **** void  App_TaskSwHook (void)
+ 208:./ucOSII/Config/app_hooks.c **** {
+ 225              		.loc 1 208 1
+ 226              		.cfi_startproc
+ 227              		@ args = 0, pretend = 0, frame = 0
+ 228              		@ frame_needed = 1, uses_anonymous_args = 0
+ 229              		@ link register save eliminated.
+ 230 0000 80B4     		push	{r7}
+ 231              	.LCFI26:
+ 232              		.cfi_def_cfa_offset 4
+ 233              		.cfi_offset 7, -4
+ 234 0002 00AF     		add	r7, sp, #0
+ 235              	.LCFI27:
+ 236              		.cfi_def_cfa_register 7
+ 209:./ucOSII/Config/app_hooks.c **** 
+ 210:./ucOSII/Config/app_hooks.c **** }
+ 237              		.loc 1 210 1
+ 238 0004 00BF     		nop
+ 239 0006 BD46     		mov	sp, r7
+ 240              	.LCFI28:
+ 241              		.cfi_def_cfa_register 13
+ 242              		@ sp needed
+ 243 0008 5DF8047B 		ldr	r7, [sp], #4
+ 244              	.LCFI29:
+ 245              		.cfi_restore 7
+ 246              		.cfi_def_cfa_offset 0
+ 247 000c 7047     		bx	lr
+ 248              		.cfi_endproc
+ 249              	.LFE8:
+ 251              		.section	.text.App_TCBInitHook,"ax",%progbits
+ 252              		.align	1
+ 253              		.global	App_TCBInitHook
+ 254              		.syntax unified
+ 255              		.thumb
+ 256              		.thumb_func
+ 258              	App_TCBInitHook:
+ 259              	.LFB9:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 9
+
+
+ 211:./ucOSII/Config/app_hooks.c **** #endif
+ 212:./ucOSII/Config/app_hooks.c **** 
+ 213:./ucOSII/Config/app_hooks.c **** 
+ 214:./ucOSII/Config/app_hooks.c **** /*
+ 215:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 216:./ucOSII/Config/app_hooks.c **** *                                   OS_TCBInit() HOOK (APPLICATION)
+ 217:./ucOSII/Config/app_hooks.c **** *
+ 218:./ucOSII/Config/app_hooks.c **** * Description : This function is called by OSTCBInitHook(), which is called by OS_TCBInit() after s
+ 219:./ucOSII/Config/app_hooks.c **** *               up most of the TCB.
+ 220:./ucOSII/Config/app_hooks.c **** *
+ 221:./ucOSII/Config/app_hooks.c **** * Argument(s) : ptcb    is a pointer to the TCB of the task being created.
+ 222:./ucOSII/Config/app_hooks.c **** *
+ 223:./ucOSII/Config/app_hooks.c **** * Note(s)     : (1) Interrupts may or may not be ENABLED during this call.
+ 224:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 225:./ucOSII/Config/app_hooks.c **** */
+ 226:./ucOSII/Config/app_hooks.c **** 
+ 227:./ucOSII/Config/app_hooks.c **** #if OS_VERSION >= 204
+ 228:./ucOSII/Config/app_hooks.c **** void  App_TCBInitHook (OS_TCB *ptcb)
+ 229:./ucOSII/Config/app_hooks.c **** {
+ 260              		.loc 1 229 1
+ 261              		.cfi_startproc
+ 262              		@ args = 0, pretend = 0, frame = 8
+ 263              		@ frame_needed = 1, uses_anonymous_args = 0
+ 264              		@ link register save eliminated.
+ 265 0000 80B4     		push	{r7}
+ 266              	.LCFI30:
+ 267              		.cfi_def_cfa_offset 4
+ 268              		.cfi_offset 7, -4
+ 269 0002 83B0     		sub	sp, sp, #12
+ 270              	.LCFI31:
+ 271              		.cfi_def_cfa_offset 16
+ 272 0004 00AF     		add	r7, sp, #0
+ 273              	.LCFI32:
+ 274              		.cfi_def_cfa_register 7
+ 275 0006 7860     		str	r0, [r7, #4]
+ 230:./ucOSII/Config/app_hooks.c ****     (void)ptcb;
+ 231:./ucOSII/Config/app_hooks.c **** }
+ 276              		.loc 1 231 1
+ 277 0008 00BF     		nop
+ 278 000a 0C37     		adds	r7, r7, #12
+ 279              	.LCFI33:
+ 280              		.cfi_def_cfa_offset 4
+ 281 000c BD46     		mov	sp, r7
+ 282              	.LCFI34:
+ 283              		.cfi_def_cfa_register 13
+ 284              		@ sp needed
+ 285 000e 5DF8047B 		ldr	r7, [sp], #4
+ 286              	.LCFI35:
+ 287              		.cfi_restore 7
+ 288              		.cfi_def_cfa_offset 0
+ 289 0012 7047     		bx	lr
+ 290              		.cfi_endproc
+ 291              	.LFE9:
+ 293              		.section	.text.App_TimeTickHook,"ax",%progbits
+ 294              		.align	1
+ 295              		.global	App_TimeTickHook
+ 296              		.syntax unified
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 10
+
+
+ 297              		.thumb
+ 298              		.thumb_func
+ 300              	App_TimeTickHook:
+ 301              	.LFB10:
+ 232:./ucOSII/Config/app_hooks.c **** #endif
+ 233:./ucOSII/Config/app_hooks.c **** 
+ 234:./ucOSII/Config/app_hooks.c **** 
+ 235:./ucOSII/Config/app_hooks.c **** /*
+ 236:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 237:./ucOSII/Config/app_hooks.c **** *                                       TICK HOOK (APPLICATION)
+ 238:./ucOSII/Config/app_hooks.c **** *
+ 239:./ucOSII/Config/app_hooks.c **** * Description : This function is called every tick.
+ 240:./ucOSII/Config/app_hooks.c **** *
+ 241:./ucOSII/Config/app_hooks.c **** * Argument(s) : none.
+ 242:./ucOSII/Config/app_hooks.c **** *
+ 243:./ucOSII/Config/app_hooks.c **** * Note(s)     : (1) Interrupts may or may not be ENABLED during this call.
+ 244:./ucOSII/Config/app_hooks.c **** ***************************************************************************************************
+ 245:./ucOSII/Config/app_hooks.c **** */
+ 246:./ucOSII/Config/app_hooks.c **** 
+ 247:./ucOSII/Config/app_hooks.c **** #if OS_TIME_TICK_HOOK_EN > 0
+ 248:./ucOSII/Config/app_hooks.c **** void  App_TimeTickHook (void)
+ 249:./ucOSII/Config/app_hooks.c **** {
+ 302              		.loc 1 249 1
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 0
+ 305              		@ frame_needed = 1, uses_anonymous_args = 0
+ 306              		@ link register save eliminated.
+ 307 0000 80B4     		push	{r7}
+ 308              	.LCFI36:
+ 309              		.cfi_def_cfa_offset 4
+ 310              		.cfi_offset 7, -4
+ 311 0002 00AF     		add	r7, sp, #0
+ 312              	.LCFI37:
+ 313              		.cfi_def_cfa_register 7
+ 250:./ucOSII/Config/app_hooks.c **** 
+ 251:./ucOSII/Config/app_hooks.c **** }
+ 314              		.loc 1 251 1
+ 315 0004 00BF     		nop
+ 316 0006 BD46     		mov	sp, r7
+ 317              	.LCFI38:
+ 318              		.cfi_def_cfa_register 13
+ 319              		@ sp needed
+ 320 0008 5DF8047B 		ldr	r7, [sp], #4
+ 321              	.LCFI39:
+ 322              		.cfi_restore 7
+ 323              		.cfi_def_cfa_offset 0
+ 324 000c 7047     		bx	lr
+ 325              		.cfi_endproc
+ 326              	.LFE10:
+ 328              		.text
+ 329              	.Letext0:
+ 330              		.file 2 "./ucOSII/Port/os_cpu.h"
+ 331              		.file 3 "./ucOSII/Core/ucos_ii.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 app_hooks.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:20     .text.App_TaskCreateHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:26     .text.App_TaskCreateHook:0000000000000000 App_TaskCreateHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:63     .text.App_TaskDelHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:69     .text.App_TaskDelHook:0000000000000000 App_TaskDelHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:105    .text.App_TaskIdleHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:111    .text.App_TaskIdleHook:0000000000000000 App_TaskIdleHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:140    .text.App_TaskStatHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:146    .text.App_TaskStatHook:0000000000000000 App_TaskStatHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:175    .text.App_TaskReturnHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:181    .text.App_TaskReturnHook:0000000000000000 App_TaskReturnHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:217    .text.App_TaskSwHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:223    .text.App_TaskSwHook:0000000000000000 App_TaskSwHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:252    .text.App_TCBInitHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:258    .text.App_TCBInitHook:0000000000000000 App_TCBInitHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:294    .text.App_TimeTickHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccglFkWs.s:300    .text.App_TimeTickHook:0000000000000000 App_TimeTickHook
+
+NO UNDEFINED SYMBOLS

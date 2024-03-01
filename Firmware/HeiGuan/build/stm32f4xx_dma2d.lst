@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"stm32f4xx_dma2d.c"
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
   28:./Library/stm32f4xx_dma2d.c ****         (#) Configures Foreground or/and background
   29:./Library/stm32f4xx_dma2d.c ****           (++) memory address
   30:./Library/stm32f4xx_dma2d.c ****           (++) alpha value
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 2
 
 
   31:./Library/stm32f4xx_dma2d.c ****           (++) offset and default color
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
   85:./Library/stm32f4xx_dma2d.c ****     [..]  This section provides functions allowing to:
   86:./Library/stm32f4xx_dma2d.c ****       (+) Initialize and configure the DMA2D
   87:./Library/stm32f4xx_dma2d.c ****       (+) Start/Abort/Suspend Transfer
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 3
 
 
   88:./Library/stm32f4xx_dma2d.c ****       (+) Initialize, configure and set Foreground and background
@@ -139,48 +139,49 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  103:./Library/stm32f4xx_dma2d.c **** 
  104:./Library/stm32f4xx_dma2d.c **** void DMA2D_DeInit(void)
  105:./Library/stm32f4xx_dma2d.c **** {
-  29              		.loc 1 105 1 view -0
+  29              		.loc 1 105 1
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 08B5     		push	{r3, lr}
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
   34              	.LCFI0:
   35              		.cfi_def_cfa_offset 8
-  36              		.cfi_offset 3, -8
+  36              		.cfi_offset 7, -8
   37              		.cfi_offset 14, -4
+  38 0002 00AF     		add	r7, sp, #0
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_register 7
  106:./Library/stm32f4xx_dma2d.c ****   /* Enable DMA2D reset state */
  107:./Library/stm32f4xx_dma2d.c ****   RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_DMA2D, ENABLE);
-  38              		.loc 1 107 3 view .LVU1
-  39 0002 0121     		movs	r1, #1
-  40 0004 4FF40000 		mov	r0, #8388608
-  41 0008 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
-  42              	.LVL0:
+  41              		.loc 1 107 3
+  42 0004 0121     		movs	r1, #1
+  43 0006 4FF40000 		mov	r0, #8388608
+  44 000a FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
  108:./Library/stm32f4xx_dma2d.c ****   /* Release DMA2D from reset state */
  109:./Library/stm32f4xx_dma2d.c ****   RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_DMA2D, DISABLE);
-  43              		.loc 1 109 3 view .LVU2
-  44 000c 0021     		movs	r1, #0
-  45 000e 4FF40000 		mov	r0, #8388608
-  46 0012 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
-  47              	.LVL1:
+  45              		.loc 1 109 3
+  46 000e 0021     		movs	r1, #0
+  47 0010 4FF40000 		mov	r0, #8388608
+  48 0014 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
  110:./Library/stm32f4xx_dma2d.c **** }
-  48              		.loc 1 110 1 is_stmt 0 view .LVU3
-  49 0016 08BD     		pop	{r3, pc}
-  50              		.cfi_endproc
-  51              	.LFE123:
-  53              		.section	.text.DMA2D_Init,"ax",%progbits
-  54              		.align	1
-  55              		.global	DMA2D_Init
-  56              		.syntax unified
-  57              		.thumb
-  58              		.thumb_func
-  60              	DMA2D_Init:
-  61              	.LVL2:
-  62              	.LFB124:
+  49              		.loc 1 110 1
+  50 0018 00BF     		nop
+  51 001a 80BD     		pop	{r7, pc}
+  52              		.cfi_endproc
+  53              	.LFE123:
+  55              		.section	.text.DMA2D_Init,"ax",%progbits
+  56              		.align	1
+  57              		.global	DMA2D_Init
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  62              	DMA2D_Init:
+  63              	.LFB124:
  111:./Library/stm32f4xx_dma2d.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 4
+
+
  112:./Library/stm32f4xx_dma2d.c **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 4
-
-
  113:./Library/stm32f4xx_dma2d.c **** /**
  114:./Library/stm32f4xx_dma2d.c ****   * @brief  Initializes the DMA2D peripheral according to the specified parameters
  115:./Library/stm32f4xx_dma2d.c ****   *         in the DMA2D_InitStruct.
@@ -191,224 +192,343 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  120:./Library/stm32f4xx_dma2d.c ****   */
  121:./Library/stm32f4xx_dma2d.c **** void DMA2D_Init(DMA2D_InitTypeDef* DMA2D_InitStruct)
  122:./Library/stm32f4xx_dma2d.c **** {
-  63              		.loc 1 122 1 is_stmt 1 view -0
-  64              		.cfi_startproc
-  65              		@ args = 0, pretend = 0, frame = 0
-  66              		@ frame_needed = 0, uses_anonymous_args = 0
-  67              		@ link register save eliminated.
-  68              		.loc 1 122 1 is_stmt 0 view .LVU5
-  69 0000 30B4     		push	{r4, r5}
-  70              	.LCFI1:
-  71              		.cfi_def_cfa_offset 8
-  72              		.cfi_offset 4, -8
-  73              		.cfi_offset 5, -4
+  64              		.loc 1 122 1
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 24
+  67              		@ frame_needed = 1, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+  69 0000 80B4     		push	{r7}
+  70              	.LCFI2:
+  71              		.cfi_def_cfa_offset 4
+  72              		.cfi_offset 7, -4
+  73 0002 87B0     		sub	sp, sp, #28
+  74              	.LCFI3:
+  75              		.cfi_def_cfa_offset 32
+  76 0004 00AF     		add	r7, sp, #0
+  77              	.LCFI4:
+  78              		.cfi_def_cfa_register 7
+  79 0006 7860     		str	r0, [r7, #4]
  123:./Library/stm32f4xx_dma2d.c **** 
  124:./Library/stm32f4xx_dma2d.c ****   uint32_t outgreen = 0;
-  74              		.loc 1 124 3 is_stmt 1 view .LVU6
-  75              	.LVL3:
+  80              		.loc 1 124 12
+  81 0008 0023     		movs	r3, #0
+  82 000a 7B61     		str	r3, [r7, #20]
  125:./Library/stm32f4xx_dma2d.c ****   uint32_t outred   = 0;
-  76              		.loc 1 125 3 view .LVU7
+  83              		.loc 1 125 12
+  84 000c 0023     		movs	r3, #0
+  85 000e 3B61     		str	r3, [r7, #16]
  126:./Library/stm32f4xx_dma2d.c ****   uint32_t outalpha = 0;
-  77              		.loc 1 126 3 view .LVU8
+  86              		.loc 1 126 12
+  87 0010 0023     		movs	r3, #0
+  88 0012 FB60     		str	r3, [r7, #12]
  127:./Library/stm32f4xx_dma2d.c ****   uint32_t pixline  = 0;
-  78              		.loc 1 127 3 view .LVU9
+  89              		.loc 1 127 12
+  90 0014 0023     		movs	r3, #0
+  91 0016 BB60     		str	r3, [r7, #8]
  128:./Library/stm32f4xx_dma2d.c **** 
  129:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  130:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_MODE(DMA2D_InitStruct->DMA2D_Mode));
-  79              		.loc 1 130 3 view .LVU10
  131:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_CMODE(DMA2D_InitStruct->DMA2D_CMode));
-  80              		.loc 1 131 3 view .LVU11
  132:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_OGREEN(DMA2D_InitStruct->DMA2D_OutputGreen));
-  81              		.loc 1 132 3 view .LVU12
  133:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_ORED(DMA2D_InitStruct->DMA2D_OutputRed));
-  82              		.loc 1 133 3 view .LVU13
  134:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_OBLUE(DMA2D_InitStruct->DMA2D_OutputBlue));
-  83              		.loc 1 134 3 view .LVU14
  135:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_OALPHA(DMA2D_InitStruct->DMA2D_OutputAlpha));
-  84              		.loc 1 135 3 view .LVU15
  136:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_OUTPUT_OFFSET(DMA2D_InitStruct->DMA2D_OutputOffset));
-  85              		.loc 1 136 3 view .LVU16
  137:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_LINE(DMA2D_InitStruct->DMA2D_NumberOfLine));
-  86              		.loc 1 137 3 view .LVU17
  138:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_PIXEL(DMA2D_InitStruct->DMA2D_PixelPerLine));
-  87              		.loc 1 138 3 view .LVU18
  139:./Library/stm32f4xx_dma2d.c **** 
  140:./Library/stm32f4xx_dma2d.c ****   /* Configures the DMA2D operation mode */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 5
+
+
  141:./Library/stm32f4xx_dma2d.c ****   DMA2D->CR &= (uint32_t)CR_MASK;
-  88              		.loc 1 141 3 view .LVU19
-  89              		.loc 1 141 13 is_stmt 0 view .LVU20
-  90 0002 2D4B     		ldr	r3, .L13
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 5
-
-
-  91 0004 1A68     		ldr	r2, [r3]
-  92 0006 22F00312 		bic	r2, r2, #196611
-  93 000a 22F4F852 		bic	r2, r2, #7936
-  94 000e 1A60     		str	r2, [r3]
+  92              		.loc 1 141 13
+  93 0018 4E4B     		ldr	r3, .L8
+  94 001a 1B68     		ldr	r3, [r3]
+  95 001c 4D4A     		ldr	r2, .L8
+  96 001e 23F00313 		bic	r3, r3, #196611
+  97 0022 23F4F853 		bic	r3, r3, #7936
+  98 0026 1360     		str	r3, [r2]
  142:./Library/stm32f4xx_dma2d.c ****   DMA2D->CR |= (DMA2D_InitStruct->DMA2D_Mode);
-  95              		.loc 1 142 3 is_stmt 1 view .LVU21
-  96              		.loc 1 142 13 is_stmt 0 view .LVU22
-  97 0010 1A68     		ldr	r2, [r3]
-  98              		.loc 1 142 33 view .LVU23
-  99 0012 0168     		ldr	r1, [r0]
- 100              		.loc 1 142 13 view .LVU24
- 101 0014 0A43     		orrs	r2, r2, r1
- 102 0016 1A60     		str	r2, [r3]
+  99              		.loc 1 142 13
+ 100 0028 4A4B     		ldr	r3, .L8
+ 101 002a 1A68     		ldr	r2, [r3]
+ 102              		.loc 1 142 33
+ 103 002c 7B68     		ldr	r3, [r7, #4]
+ 104 002e 1B68     		ldr	r3, [r3]
+ 105              		.loc 1 142 13
+ 106 0030 4849     		ldr	r1, .L8
+ 107 0032 1343     		orrs	r3, r3, r2
+ 108 0034 0B60     		str	r3, [r1]
  143:./Library/stm32f4xx_dma2d.c **** 
  144:./Library/stm32f4xx_dma2d.c ****   /* Configures the color mode of the output image */
  145:./Library/stm32f4xx_dma2d.c ****   DMA2D->OPFCCR &= ~(uint32_t)DMA2D_OPFCCR_CM;
- 103              		.loc 1 145 3 is_stmt 1 view .LVU25
- 104              		.loc 1 145 17 is_stmt 0 view .LVU26
- 105 0018 5A6B     		ldr	r2, [r3, #52]
- 106 001a 22F00702 		bic	r2, r2, #7
- 107 001e 5A63     		str	r2, [r3, #52]
+ 109              		.loc 1 145 17
+ 110 0036 474B     		ldr	r3, .L8
+ 111 0038 5B6B     		ldr	r3, [r3, #52]
+ 112 003a 464A     		ldr	r2, .L8
+ 113 003c 23F00703 		bic	r3, r3, #7
+ 114 0040 5363     		str	r3, [r2, #52]
  146:./Library/stm32f4xx_dma2d.c ****   DMA2D->OPFCCR |= (DMA2D_InitStruct->DMA2D_CMode);
- 108              		.loc 1 146 3 is_stmt 1 view .LVU27
- 109              		.loc 1 146 17 is_stmt 0 view .LVU28
- 110 0020 5A6B     		ldr	r2, [r3, #52]
- 111              		.loc 1 146 37 view .LVU29
- 112 0022 4168     		ldr	r1, [r0, #4]
- 113              		.loc 1 146 17 view .LVU30
- 114 0024 0A43     		orrs	r2, r2, r1
- 115 0026 5A63     		str	r2, [r3, #52]
+ 115              		.loc 1 146 17
+ 116 0042 444B     		ldr	r3, .L8
+ 117 0044 5A6B     		ldr	r2, [r3, #52]
+ 118              		.loc 1 146 37
+ 119 0046 7B68     		ldr	r3, [r7, #4]
+ 120 0048 5B68     		ldr	r3, [r3, #4]
+ 121              		.loc 1 146 17
+ 122 004a 4249     		ldr	r1, .L8
+ 123 004c 1343     		orrs	r3, r3, r2
+ 124 004e 4B63     		str	r3, [r1, #52]
  147:./Library/stm32f4xx_dma2d.c **** 
  148:./Library/stm32f4xx_dma2d.c ****   /* Configures the output color */
  149:./Library/stm32f4xx_dma2d.c **** 
  150:./Library/stm32f4xx_dma2d.c ****   if (DMA2D_InitStruct->DMA2D_CMode == DMA2D_ARGB8888)
- 116              		.loc 1 150 3 is_stmt 1 view .LVU31
- 117              		.loc 1 150 23 is_stmt 0 view .LVU32
- 118 0028 4368     		ldr	r3, [r0, #4]
- 119              		.loc 1 150 6 view .LVU33
- 120 002a 23BB     		cbnz	r3, .L4
+ 125              		.loc 1 150 23
+ 126 0050 7B68     		ldr	r3, [r7, #4]
+ 127 0052 5B68     		ldr	r3, [r3, #4]
+ 128              		.loc 1 150 6
+ 129 0054 002B     		cmp	r3, #0
+ 130 0056 0CD1     		bne	.L3
  151:./Library/stm32f4xx_dma2d.c ****   {
  152:./Library/stm32f4xx_dma2d.c ****     outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 8;
- 121              		.loc 1 152 5 is_stmt 1 view .LVU34
- 122              		.loc 1 152 32 is_stmt 0 view .LVU35
- 123 002c C268     		ldr	r2, [r0, #12]
- 124              		.loc 1 152 14 view .LVU36
- 125 002e 1202     		lsls	r2, r2, #8
- 126              	.LVL4:
+ 131              		.loc 1 152 32
+ 132 0058 7B68     		ldr	r3, [r7, #4]
+ 133 005a DB68     		ldr	r3, [r3, #12]
+ 134              		.loc 1 152 14
+ 135 005c 1B02     		lsls	r3, r3, #8
+ 136 005e 7B61     		str	r3, [r7, #20]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 6
+
+
  153:./Library/stm32f4xx_dma2d.c ****     outred = DMA2D_InitStruct->DMA2D_OutputRed << 16;
- 127              		.loc 1 153 5 is_stmt 1 view .LVU37
- 128              		.loc 1 153 30 is_stmt 0 view .LVU38
- 129 0030 0369     		ldr	r3, [r0, #16]
- 130              		.loc 1 153 12 view .LVU39
- 131 0032 1B04     		lsls	r3, r3, #16
- 132              	.LVL5:
+ 137              		.loc 1 153 30
+ 138 0060 7B68     		ldr	r3, [r7, #4]
+ 139 0062 1B69     		ldr	r3, [r3, #16]
+ 140              		.loc 1 153 12
+ 141 0064 1B04     		lsls	r3, r3, #16
+ 142 0066 3B61     		str	r3, [r7, #16]
  154:./Library/stm32f4xx_dma2d.c ****     outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 24;
- 133              		.loc 1 154 5 is_stmt 1 view .LVU40
- 134              		.loc 1 154 32 is_stmt 0 view .LVU41
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 6
-
-
- 135 0034 4169     		ldr	r1, [r0, #20]
- 136              		.loc 1 154 14 view .LVU42
- 137 0036 0906     		lsls	r1, r1, #24
- 138              	.LVL6:
- 139              	.L5:
+ 143              		.loc 1 154 32
+ 144 0068 7B68     		ldr	r3, [r7, #4]
+ 145 006a 5B69     		ldr	r3, [r3, #20]
+ 146              		.loc 1 154 14
+ 147 006c 1B06     		lsls	r3, r3, #24
+ 148 006e FB60     		str	r3, [r7, #12]
+ 149 0070 3AE0     		b	.L4
+ 150              	.L3:
  155:./Library/stm32f4xx_dma2d.c ****   }
  156:./Library/stm32f4xx_dma2d.c ****   else
  157:./Library/stm32f4xx_dma2d.c ****   
  158:./Library/stm32f4xx_dma2d.c ****     if (DMA2D_InitStruct->DMA2D_CMode == DMA2D_RGB888)
+ 151              		.loc 1 158 25
+ 152 0072 7B68     		ldr	r3, [r7, #4]
+ 153 0074 5B68     		ldr	r3, [r3, #4]
+ 154              		.loc 1 158 8
+ 155 0076 012B     		cmp	r3, #1
+ 156 0078 0AD1     		bne	.L5
  159:./Library/stm32f4xx_dma2d.c ****     {
  160:./Library/stm32f4xx_dma2d.c ****       outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 8;
+ 157              		.loc 1 160 34
+ 158 007a 7B68     		ldr	r3, [r7, #4]
+ 159 007c DB68     		ldr	r3, [r3, #12]
+ 160              		.loc 1 160 16
+ 161 007e 1B02     		lsls	r3, r3, #8
+ 162 0080 7B61     		str	r3, [r7, #20]
  161:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 16;
+ 163              		.loc 1 161 32
+ 164 0082 7B68     		ldr	r3, [r7, #4]
+ 165 0084 1B69     		ldr	r3, [r3, #16]
+ 166              		.loc 1 161 14
+ 167 0086 1B04     		lsls	r3, r3, #16
+ 168 0088 3B61     		str	r3, [r7, #16]
  162:./Library/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
+ 169              		.loc 1 162 16
+ 170 008a 0023     		movs	r3, #0
+ 171 008c FB60     		str	r3, [r7, #12]
+ 172 008e 2BE0     		b	.L4
+ 173              	.L5:
  163:./Library/stm32f4xx_dma2d.c ****     }
  164:./Library/stm32f4xx_dma2d.c ****      
  165:./Library/stm32f4xx_dma2d.c ****   else
  166:./Library/stm32f4xx_dma2d.c **** 
  167:./Library/stm32f4xx_dma2d.c ****     if (DMA2D_InitStruct->DMA2D_CMode == DMA2D_RGB565)
+ 174              		.loc 1 167 25
+ 175 0090 7B68     		ldr	r3, [r7, #4]
+ 176 0092 5B68     		ldr	r3, [r3, #4]
+ 177              		.loc 1 167 8
+ 178 0094 022B     		cmp	r3, #2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 7
+
+
+ 179 0096 0AD1     		bne	.L6
  168:./Library/stm32f4xx_dma2d.c ****     {
  169:./Library/stm32f4xx_dma2d.c ****       outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 5;
+ 180              		.loc 1 169 34
+ 181 0098 7B68     		ldr	r3, [r7, #4]
+ 182 009a DB68     		ldr	r3, [r3, #12]
+ 183              		.loc 1 169 16
+ 184 009c 5B01     		lsls	r3, r3, #5
+ 185 009e 7B61     		str	r3, [r7, #20]
  170:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 11;
+ 186              		.loc 1 170 32
+ 187 00a0 7B68     		ldr	r3, [r7, #4]
+ 188 00a2 1B69     		ldr	r3, [r3, #16]
+ 189              		.loc 1 170 14
+ 190 00a4 DB02     		lsls	r3, r3, #11
+ 191 00a6 3B61     		str	r3, [r7, #16]
  171:./Library/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
+ 192              		.loc 1 171 16
+ 193 00a8 0023     		movs	r3, #0
+ 194 00aa FB60     		str	r3, [r7, #12]
+ 195 00ac 1CE0     		b	.L4
+ 196              	.L6:
  172:./Library/stm32f4xx_dma2d.c ****     }
  173:./Library/stm32f4xx_dma2d.c **** 
  174:./Library/stm32f4xx_dma2d.c ****   else
  175:./Library/stm32f4xx_dma2d.c **** 
  176:./Library/stm32f4xx_dma2d.c ****     if (DMA2D_InitStruct->DMA2D_CMode == DMA2D_ARGB1555)
+ 197              		.loc 1 176 25
+ 198 00ae 7B68     		ldr	r3, [r7, #4]
+ 199 00b0 5B68     		ldr	r3, [r3, #4]
+ 200              		.loc 1 176 8
+ 201 00b2 032B     		cmp	r3, #3
+ 202 00b4 0CD1     		bne	.L7
  177:./Library/stm32f4xx_dma2d.c ****     {  
  178:./Library/stm32f4xx_dma2d.c ****       outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 5;
+ 203              		.loc 1 178 34
+ 204 00b6 7B68     		ldr	r3, [r7, #4]
+ 205 00b8 DB68     		ldr	r3, [r3, #12]
+ 206              		.loc 1 178 16
+ 207 00ba 5B01     		lsls	r3, r3, #5
+ 208 00bc 7B61     		str	r3, [r7, #20]
  179:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 10;
+ 209              		.loc 1 179 32
+ 210 00be 7B68     		ldr	r3, [r7, #4]
+ 211 00c0 1B69     		ldr	r3, [r3, #16]
+ 212              		.loc 1 179 14
+ 213 00c2 9B02     		lsls	r3, r3, #10
+ 214 00c4 3B61     		str	r3, [r7, #16]
  180:./Library/stm32f4xx_dma2d.c ****       outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 15;
+ 215              		.loc 1 180 34
+ 216 00c6 7B68     		ldr	r3, [r7, #4]
+ 217 00c8 5B69     		ldr	r3, [r3, #20]
+ 218              		.loc 1 180 16
+ 219 00ca DB03     		lsls	r3, r3, #15
+ 220 00cc FB60     		str	r3, [r7, #12]
+ 221 00ce 0BE0     		b	.L4
+ 222              	.L7:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 8
+
+
  181:./Library/stm32f4xx_dma2d.c ****     }
  182:./Library/stm32f4xx_dma2d.c **** 
  183:./Library/stm32f4xx_dma2d.c ****   else /* DMA2D_CMode = DMA2D_ARGB4444 */
  184:./Library/stm32f4xx_dma2d.c ****   {
  185:./Library/stm32f4xx_dma2d.c ****     outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 4;
+ 223              		.loc 1 185 32
+ 224 00d0 7B68     		ldr	r3, [r7, #4]
+ 225 00d2 DB68     		ldr	r3, [r3, #12]
+ 226              		.loc 1 185 14
+ 227 00d4 1B01     		lsls	r3, r3, #4
+ 228 00d6 7B61     		str	r3, [r7, #20]
  186:./Library/stm32f4xx_dma2d.c ****     outred = DMA2D_InitStruct->DMA2D_OutputRed << 8;
+ 229              		.loc 1 186 30
+ 230 00d8 7B68     		ldr	r3, [r7, #4]
+ 231 00da 1B69     		ldr	r3, [r3, #16]
+ 232              		.loc 1 186 12
+ 233 00dc 1B02     		lsls	r3, r3, #8
+ 234 00de 3B61     		str	r3, [r7, #16]
  187:./Library/stm32f4xx_dma2d.c ****     outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 12;
+ 235              		.loc 1 187 32
+ 236 00e0 7B68     		ldr	r3, [r7, #4]
+ 237 00e2 5B69     		ldr	r3, [r3, #20]
+ 238              		.loc 1 187 14
+ 239 00e4 1B03     		lsls	r3, r3, #12
+ 240 00e6 FB60     		str	r3, [r7, #12]
+ 241              	.L4:
  188:./Library/stm32f4xx_dma2d.c ****   }  
  189:./Library/stm32f4xx_dma2d.c ****   DMA2D->OCOLR = ((outgreen) | (outred) | (DMA2D_InitStruct->DMA2D_OutputBlue) | (outalpha));
- 140              		.loc 1 189 3 is_stmt 1 view .LVU43
- 141              		.loc 1 189 30 is_stmt 0 view .LVU44
- 142 0038 1A43     		orrs	r2, r2, r3
- 143              	.LVL7:
- 144              		.loc 1 189 60 view .LVU45
- 145 003a 8368     		ldr	r3, [r0, #8]
- 146              	.LVL8:
- 147              		.loc 1 189 41 view .LVU46
- 148 003c 1A43     		orrs	r2, r2, r3
- 149              		.loc 1 189 80 view .LVU47
- 150 003e 0A43     		orrs	r2, r2, r1
- 151              		.loc 1 189 16 view .LVU48
- 152 0040 1D4B     		ldr	r3, .L13
- 153 0042 9A63     		str	r2, [r3, #56]
+ 242              		.loc 1 189 30
+ 243 00e8 7A69     		ldr	r2, [r7, #20]
+ 244 00ea 3B69     		ldr	r3, [r7, #16]
+ 245 00ec 1A43     		orrs	r2, r2, r3
+ 246              		.loc 1 189 60
+ 247 00ee 7B68     		ldr	r3, [r7, #4]
+ 248 00f0 9B68     		ldr	r3, [r3, #8]
+ 249              		.loc 1 189 41
+ 250 00f2 1A43     		orrs	r2, r2, r3
+ 251              		.loc 1 189 8
+ 252 00f4 1749     		ldr	r1, .L8
+ 253              		.loc 1 189 80
+ 254 00f6 FB68     		ldr	r3, [r7, #12]
+ 255 00f8 1343     		orrs	r3, r3, r2
+ 256              		.loc 1 189 16
+ 257 00fa 8B63     		str	r3, [r1, #56]
  190:./Library/stm32f4xx_dma2d.c **** 
  191:./Library/stm32f4xx_dma2d.c ****   /* Configures the output memory address */
  192:./Library/stm32f4xx_dma2d.c ****   DMA2D->OMAR = (DMA2D_InitStruct->DMA2D_OutputMemoryAdd);
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 7
-
-
- 154              		.loc 1 192 3 is_stmt 1 view .LVU49
- 155              		.loc 1 192 34 is_stmt 0 view .LVU50
- 156 0044 8269     		ldr	r2, [r0, #24]
- 157              		.loc 1 192 15 view .LVU51
- 158 0046 DA63     		str	r2, [r3, #60]
+ 258              		.loc 1 192 8
+ 259 00fc 154A     		ldr	r2, .L8
+ 260              		.loc 1 192 34
+ 261 00fe 7B68     		ldr	r3, [r7, #4]
+ 262 0100 9B69     		ldr	r3, [r3, #24]
+ 263              		.loc 1 192 15
+ 264 0102 D363     		str	r3, [r2, #60]
  193:./Library/stm32f4xx_dma2d.c **** 
  194:./Library/stm32f4xx_dma2d.c ****   /* Configure  the line Offset */
  195:./Library/stm32f4xx_dma2d.c ****   DMA2D->OOR &= ~(uint32_t)DMA2D_OOR_LO;
- 159              		.loc 1 195 3 is_stmt 1 view .LVU52
- 160              		.loc 1 195 14 is_stmt 0 view .LVU53
- 161 0048 1A6C     		ldr	r2, [r3, #64]
- 162 004a 22F47F52 		bic	r2, r2, #16320
- 163 004e 22F03F02 		bic	r2, r2, #63
- 164 0052 1A64     		str	r2, [r3, #64]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 9
+
+
+ 265              		.loc 1 195 14
+ 266 0104 134B     		ldr	r3, .L8
+ 267 0106 1B6C     		ldr	r3, [r3, #64]
+ 268 0108 124A     		ldr	r2, .L8
+ 269 010a 23F47F53 		bic	r3, r3, #16320
+ 270 010e 23F03F03 		bic	r3, r3, #63
+ 271 0112 1364     		str	r3, [r2, #64]
  196:./Library/stm32f4xx_dma2d.c ****   DMA2D->OOR |= (DMA2D_InitStruct->DMA2D_OutputOffset);
- 165              		.loc 1 196 3 is_stmt 1 view .LVU54
- 166              		.loc 1 196 14 is_stmt 0 view .LVU55
- 167 0054 1A6C     		ldr	r2, [r3, #64]
- 168              		.loc 1 196 34 view .LVU56
- 169 0056 C169     		ldr	r1, [r0, #28]
- 170              	.LVL9:
- 171              		.loc 1 196 14 view .LVU57
- 172 0058 0A43     		orrs	r2, r2, r1
- 173 005a 1A64     		str	r2, [r3, #64]
+ 272              		.loc 1 196 14
+ 273 0114 0F4B     		ldr	r3, .L8
+ 274 0116 1A6C     		ldr	r2, [r3, #64]
+ 275              		.loc 1 196 34
+ 276 0118 7B68     		ldr	r3, [r7, #4]
+ 277 011a DB69     		ldr	r3, [r3, #28]
+ 278              		.loc 1 196 14
+ 279 011c 0D49     		ldr	r1, .L8
+ 280 011e 1343     		orrs	r3, r3, r2
+ 281 0120 0B64     		str	r3, [r1, #64]
  197:./Library/stm32f4xx_dma2d.c **** 
  198:./Library/stm32f4xx_dma2d.c ****   /* Configure the number of line and pixel per line */
  199:./Library/stm32f4xx_dma2d.c ****   pixline = DMA2D_InitStruct->DMA2D_PixelPerLine << 16; 
- 174              		.loc 1 199 3 is_stmt 1 view .LVU58
- 175              		.loc 1 199 29 is_stmt 0 view .LVU59
- 176 005c 456A     		ldr	r5, [r0, #36]
- 177              	.LVL10:
+ 282              		.loc 1 199 29
+ 283 0122 7B68     		ldr	r3, [r7, #4]
+ 284 0124 5B6A     		ldr	r3, [r3, #36]
+ 285              		.loc 1 199 11
+ 286 0126 1B04     		lsls	r3, r3, #16
+ 287 0128 BB60     		str	r3, [r7, #8]
  200:./Library/stm32f4xx_dma2d.c ****   DMA2D->NLR &= ~(DMA2D_NLR_NL | DMA2D_NLR_PL);
- 178              		.loc 1 200 3 is_stmt 1 view .LVU60
- 179              		.loc 1 200 14 is_stmt 0 view .LVU61
- 180 005e 5C6C     		ldr	r4, [r3, #68]
- 181 0060 04F04044 		and	r4, r4, #-1073741824
- 182 0064 5C64     		str	r4, [r3, #68]
+ 288              		.loc 1 200 14
+ 289 012a 0A4B     		ldr	r3, .L8
+ 290 012c 5B6C     		ldr	r3, [r3, #68]
+ 291 012e 094A     		ldr	r2, .L8
+ 292 0130 03F04043 		and	r3, r3, #-1073741824
+ 293 0134 5364     		str	r3, [r2, #68]
  201:./Library/stm32f4xx_dma2d.c ****   DMA2D->NLR |= ((DMA2D_InitStruct->DMA2D_NumberOfLine) | (pixline));
- 183              		.loc 1 201 3 is_stmt 1 view .LVU62
- 184              		.loc 1 201 14 is_stmt 0 view .LVU63
- 185 0066 5A6C     		ldr	r2, [r3, #68]
- 186              		.loc 1 201 35 view .LVU64
- 187 0068 016A     		ldr	r1, [r0, #32]
- 188              		.loc 1 201 57 view .LVU65
- 189 006a 41EA0541 		orr	r1, r1, r5, lsl #16
- 190              		.loc 1 201 14 view .LVU66
- 191 006e 0A43     		orrs	r2, r2, r1
- 192 0070 5A64     		str	r2, [r3, #68]
+ 294              		.loc 1 201 14
+ 295 0136 074B     		ldr	r3, .L8
+ 296 0138 5A6C     		ldr	r2, [r3, #68]
+ 297              		.loc 1 201 35
+ 298 013a 7B68     		ldr	r3, [r7, #4]
+ 299 013c 196A     		ldr	r1, [r3, #32]
+ 300              		.loc 1 201 57
+ 301 013e BB68     		ldr	r3, [r7, #8]
+ 302 0140 0B43     		orrs	r3, r3, r1
+ 303              		.loc 1 201 14
+ 304 0142 0449     		ldr	r1, .L8
+ 305 0144 1343     		orrs	r3, r3, r2
+ 306 0146 4B64     		str	r3, [r1, #68]
  202:./Library/stm32f4xx_dma2d.c **** 
  203:./Library/stm32f4xx_dma2d.c **** /**
  204:./Library/stm32f4xx_dma2d.c ****   * @brief  Fills each DMA2D_InitStruct member with its default value.
@@ -417,254 +537,147 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  207:./Library/stm32f4xx_dma2d.c ****   * @retval None
  208:./Library/stm32f4xx_dma2d.c ****   */
  209:./Library/stm32f4xx_dma2d.c **** }
- 193              		.loc 1 209 1 view .LVU67
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 8
+ 307              		.loc 1 209 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 10
 
 
- 194 0072 30BC     		pop	{r4, r5}
- 195              	.LCFI2:
- 196              		.cfi_remember_state
- 197              		.cfi_restore 5
- 198              		.cfi_restore 4
- 199              		.cfi_def_cfa_offset 0
- 200              	.LVL11:
- 201              		.loc 1 209 1 view .LVU68
- 202 0074 7047     		bx	lr
- 203              	.LVL12:
- 204              	.L4:
- 205              	.LCFI3:
- 206              		.cfi_restore_state
- 158:./Library/stm32f4xx_dma2d.c ****     {
- 207              		.loc 1 158 5 is_stmt 1 view .LVU69
- 158:./Library/stm32f4xx_dma2d.c ****     {
- 208              		.loc 1 158 8 is_stmt 0 view .LVU70
- 209 0076 012B     		cmp	r3, #1
- 210 0078 0AD0     		beq	.L10
- 167:./Library/stm32f4xx_dma2d.c ****     {
- 211              		.loc 1 167 5 is_stmt 1 view .LVU71
- 167:./Library/stm32f4xx_dma2d.c ****     {
- 212              		.loc 1 167 8 is_stmt 0 view .LVU72
- 213 007a 022B     		cmp	r3, #2
- 214 007c 0ED0     		beq	.L11
- 176:./Library/stm32f4xx_dma2d.c ****     {  
- 215              		.loc 1 176 5 is_stmt 1 view .LVU73
- 176:./Library/stm32f4xx_dma2d.c ****     {  
- 216              		.loc 1 176 8 is_stmt 0 view .LVU74
- 217 007e 032B     		cmp	r3, #3
- 218 0080 12D0     		beq	.L12
- 185:./Library/stm32f4xx_dma2d.c ****     outred = DMA2D_InitStruct->DMA2D_OutputRed << 8;
- 219              		.loc 1 185 5 is_stmt 1 view .LVU75
- 185:./Library/stm32f4xx_dma2d.c ****     outred = DMA2D_InitStruct->DMA2D_OutputRed << 8;
- 220              		.loc 1 185 32 is_stmt 0 view .LVU76
- 221 0082 C268     		ldr	r2, [r0, #12]
- 185:./Library/stm32f4xx_dma2d.c ****     outred = DMA2D_InitStruct->DMA2D_OutputRed << 8;
- 222              		.loc 1 185 14 view .LVU77
- 223 0084 1201     		lsls	r2, r2, #4
- 224              	.LVL13:
- 186:./Library/stm32f4xx_dma2d.c ****     outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 12;
- 225              		.loc 1 186 5 is_stmt 1 view .LVU78
- 186:./Library/stm32f4xx_dma2d.c ****     outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 12;
- 226              		.loc 1 186 30 is_stmt 0 view .LVU79
- 227 0086 0369     		ldr	r3, [r0, #16]
- 186:./Library/stm32f4xx_dma2d.c ****     outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 12;
- 228              		.loc 1 186 12 view .LVU80
- 229 0088 1B02     		lsls	r3, r3, #8
- 230              	.LVL14:
- 187:./Library/stm32f4xx_dma2d.c ****   }  
- 231              		.loc 1 187 5 is_stmt 1 view .LVU81
- 187:./Library/stm32f4xx_dma2d.c ****   }  
- 232              		.loc 1 187 32 is_stmt 0 view .LVU82
- 233 008a 4169     		ldr	r1, [r0, #20]
- 187:./Library/stm32f4xx_dma2d.c ****   }  
- 234              		.loc 1 187 14 view .LVU83
- 235 008c 0903     		lsls	r1, r1, #12
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 9
-
-
- 236              	.LVL15:
- 187:./Library/stm32f4xx_dma2d.c ****   }  
- 237              		.loc 1 187 14 view .LVU84
- 238 008e D3E7     		b	.L5
- 239              	.LVL16:
- 240              	.L10:
- 160:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 16;
- 241              		.loc 1 160 7 is_stmt 1 view .LVU85
- 160:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 16;
- 242              		.loc 1 160 34 is_stmt 0 view .LVU86
- 243 0090 C268     		ldr	r2, [r0, #12]
- 160:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 16;
- 244              		.loc 1 160 16 view .LVU87
- 245 0092 1202     		lsls	r2, r2, #8
- 246              	.LVL17:
- 161:./Library/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
- 247              		.loc 1 161 7 is_stmt 1 view .LVU88
- 161:./Library/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
- 248              		.loc 1 161 32 is_stmt 0 view .LVU89
- 249 0094 0369     		ldr	r3, [r0, #16]
- 161:./Library/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
- 250              		.loc 1 161 14 view .LVU90
- 251 0096 1B04     		lsls	r3, r3, #16
- 252              	.LVL18:
- 162:./Library/stm32f4xx_dma2d.c ****     }
- 253              		.loc 1 162 7 is_stmt 1 view .LVU91
- 162:./Library/stm32f4xx_dma2d.c ****     }
- 254              		.loc 1 162 16 is_stmt 0 view .LVU92
- 255 0098 0021     		movs	r1, #0
- 256 009a CDE7     		b	.L5
- 257              	.LVL19:
- 258              	.L11:
- 169:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 11;
- 259              		.loc 1 169 7 is_stmt 1 view .LVU93
- 169:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 11;
- 260              		.loc 1 169 34 is_stmt 0 view .LVU94
- 261 009c C268     		ldr	r2, [r0, #12]
- 169:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 11;
- 262              		.loc 1 169 16 view .LVU95
- 263 009e 5201     		lsls	r2, r2, #5
- 264              	.LVL20:
- 170:./Library/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
- 265              		.loc 1 170 7 is_stmt 1 view .LVU96
- 170:./Library/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
- 266              		.loc 1 170 32 is_stmt 0 view .LVU97
- 267 00a0 0369     		ldr	r3, [r0, #16]
- 170:./Library/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
- 268              		.loc 1 170 14 view .LVU98
- 269 00a2 DB02     		lsls	r3, r3, #11
- 270              	.LVL21:
- 171:./Library/stm32f4xx_dma2d.c ****     }
- 271              		.loc 1 171 7 is_stmt 1 view .LVU99
- 171:./Library/stm32f4xx_dma2d.c ****     }
- 272              		.loc 1 171 16 is_stmt 0 view .LVU100
- 273 00a4 0021     		movs	r1, #0
- 274 00a6 C7E7     		b	.L5
- 275              	.LVL22:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 10
-
-
- 276              	.L12:
- 178:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 10;
- 277              		.loc 1 178 7 is_stmt 1 view .LVU101
- 178:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 10;
- 278              		.loc 1 178 34 is_stmt 0 view .LVU102
- 279 00a8 C268     		ldr	r2, [r0, #12]
- 178:./Library/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 10;
- 280              		.loc 1 178 16 view .LVU103
- 281 00aa 5201     		lsls	r2, r2, #5
- 282              	.LVL23:
- 179:./Library/stm32f4xx_dma2d.c ****       outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 15;
- 283              		.loc 1 179 7 is_stmt 1 view .LVU104
- 179:./Library/stm32f4xx_dma2d.c ****       outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 15;
- 284              		.loc 1 179 32 is_stmt 0 view .LVU105
- 285 00ac 0369     		ldr	r3, [r0, #16]
- 179:./Library/stm32f4xx_dma2d.c ****       outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 15;
- 286              		.loc 1 179 14 view .LVU106
- 287 00ae 9B02     		lsls	r3, r3, #10
- 288              	.LVL24:
- 180:./Library/stm32f4xx_dma2d.c ****     }
- 289              		.loc 1 180 7 is_stmt 1 view .LVU107
- 180:./Library/stm32f4xx_dma2d.c ****     }
- 290              		.loc 1 180 34 is_stmt 0 view .LVU108
- 291 00b0 4169     		ldr	r1, [r0, #20]
- 180:./Library/stm32f4xx_dma2d.c ****     }
- 292              		.loc 1 180 16 view .LVU109
- 293 00b2 C903     		lsls	r1, r1, #15
- 294              	.LVL25:
- 180:./Library/stm32f4xx_dma2d.c ****     }
- 295              		.loc 1 180 16 view .LVU110
- 296 00b4 C0E7     		b	.L5
- 297              	.L14:
- 298 00b6 00BF     		.align	2
- 299              	.L13:
- 300 00b8 00B00240 		.word	1073917952
- 301              		.cfi_endproc
- 302              	.LFE124:
- 304              		.section	.text.DMA2D_StructInit,"ax",%progbits
- 305              		.align	1
- 306              		.global	DMA2D_StructInit
- 307              		.syntax unified
- 308              		.thumb
- 309              		.thumb_func
- 311              	DMA2D_StructInit:
- 312              	.LVL26:
- 313              	.LFB125:
+ 308 0148 00BF     		nop
+ 309 014a 1C37     		adds	r7, r7, #28
+ 310              	.LCFI5:
+ 311              		.cfi_def_cfa_offset 4
+ 312 014c BD46     		mov	sp, r7
+ 313              	.LCFI6:
+ 314              		.cfi_def_cfa_register 13
+ 315              		@ sp needed
+ 316 014e 5DF8047B 		ldr	r7, [sp], #4
+ 317              	.LCFI7:
+ 318              		.cfi_restore 7
+ 319              		.cfi_def_cfa_offset 0
+ 320 0152 7047     		bx	lr
+ 321              	.L9:
+ 322              		.align	2
+ 323              	.L8:
+ 324 0154 00B00240 		.word	1073917952
+ 325              		.cfi_endproc
+ 326              	.LFE124:
+ 328              		.section	.text.DMA2D_StructInit,"ax",%progbits
+ 329              		.align	1
+ 330              		.global	DMA2D_StructInit
+ 331              		.syntax unified
+ 332              		.thumb
+ 333              		.thumb_func
+ 335              	DMA2D_StructInit:
+ 336              	.LFB125:
  210:./Library/stm32f4xx_dma2d.c **** void DMA2D_StructInit(DMA2D_InitTypeDef* DMA2D_InitStruct)
  211:./Library/stm32f4xx_dma2d.c **** {
- 314              		.loc 1 211 1 is_stmt 1 view -0
- 315              		.cfi_startproc
- 316              		@ args = 0, pretend = 0, frame = 0
- 317              		@ frame_needed = 0, uses_anonymous_args = 0
- 318              		@ link register save eliminated.
+ 337              		.loc 1 211 1
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 8
+ 340              		@ frame_needed = 1, uses_anonymous_args = 0
+ 341              		@ link register save eliminated.
+ 342 0000 80B4     		push	{r7}
+ 343              	.LCFI8:
+ 344              		.cfi_def_cfa_offset 4
+ 345              		.cfi_offset 7, -4
+ 346 0002 83B0     		sub	sp, sp, #12
+ 347              	.LCFI9:
+ 348              		.cfi_def_cfa_offset 16
+ 349 0004 00AF     		add	r7, sp, #0
+ 350              	.LCFI10:
+ 351              		.cfi_def_cfa_register 7
+ 352 0006 7860     		str	r0, [r7, #4]
  212:./Library/stm32f4xx_dma2d.c ****   /* Initialize the transfer mode member */
  213:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_Mode = DMA2D_M2M;
- 319              		.loc 1 213 3 view .LVU112
- 320              		.loc 1 213 32 is_stmt 0 view .LVU113
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 11
-
-
- 321 0000 0023     		movs	r3, #0
- 322 0002 0360     		str	r3, [r0]
+ 353              		.loc 1 213 32
+ 354 0008 7B68     		ldr	r3, [r7, #4]
+ 355 000a 0022     		movs	r2, #0
+ 356 000c 1A60     		str	r2, [r3]
  214:./Library/stm32f4xx_dma2d.c **** 
  215:./Library/stm32f4xx_dma2d.c ****   /* Initialize the output color mode members */
  216:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_CMode = DMA2D_ARGB8888;
- 323              		.loc 1 216 3 is_stmt 1 view .LVU114
- 324              		.loc 1 216 33 is_stmt 0 view .LVU115
- 325 0004 4360     		str	r3, [r0, #4]
+ 357              		.loc 1 216 33
+ 358 000e 7B68     		ldr	r3, [r7, #4]
+ 359 0010 0022     		movs	r2, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 11
+
+
+ 360 0012 5A60     		str	r2, [r3, #4]
  217:./Library/stm32f4xx_dma2d.c **** 
  218:./Library/stm32f4xx_dma2d.c ****   /* Initialize the alpha and RGB values */
  219:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputGreen = 0x00;
- 326              		.loc 1 219 3 is_stmt 1 view .LVU116
- 327              		.loc 1 219 39 is_stmt 0 view .LVU117
- 328 0006 C360     		str	r3, [r0, #12]
+ 361              		.loc 1 219 39
+ 362 0014 7B68     		ldr	r3, [r7, #4]
+ 363 0016 0022     		movs	r2, #0
+ 364 0018 DA60     		str	r2, [r3, #12]
  220:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputBlue = 0x00;
- 329              		.loc 1 220 3 is_stmt 1 view .LVU118
- 330              		.loc 1 220 38 is_stmt 0 view .LVU119
- 331 0008 8360     		str	r3, [r0, #8]
+ 365              		.loc 1 220 38
+ 366 001a 7B68     		ldr	r3, [r7, #4]
+ 367 001c 0022     		movs	r2, #0
+ 368 001e 9A60     		str	r2, [r3, #8]
  221:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputRed = 0x00;
- 332              		.loc 1 221 3 is_stmt 1 view .LVU120
- 333              		.loc 1 221 37 is_stmt 0 view .LVU121
- 334 000a 0361     		str	r3, [r0, #16]
+ 369              		.loc 1 221 37
+ 370 0020 7B68     		ldr	r3, [r7, #4]
+ 371 0022 0022     		movs	r2, #0
+ 372 0024 1A61     		str	r2, [r3, #16]
  222:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputAlpha = 0x00;
- 335              		.loc 1 222 3 is_stmt 1 view .LVU122
- 336              		.loc 1 222 39 is_stmt 0 view .LVU123
- 337 000c 4361     		str	r3, [r0, #20]
+ 373              		.loc 1 222 39
+ 374 0026 7B68     		ldr	r3, [r7, #4]
+ 375 0028 0022     		movs	r2, #0
+ 376 002a 5A61     		str	r2, [r3, #20]
  223:./Library/stm32f4xx_dma2d.c **** 
  224:./Library/stm32f4xx_dma2d.c ****   /* Initialize the output memory address */
  225:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputMemoryAdd = 0x00;
- 338              		.loc 1 225 3 is_stmt 1 view .LVU124
- 339              		.loc 1 225 43 is_stmt 0 view .LVU125
- 340 000e 8361     		str	r3, [r0, #24]
+ 377              		.loc 1 225 43
+ 378 002c 7B68     		ldr	r3, [r7, #4]
+ 379 002e 0022     		movs	r2, #0
+ 380 0030 9A61     		str	r2, [r3, #24]
  226:./Library/stm32f4xx_dma2d.c **** 
  227:./Library/stm32f4xx_dma2d.c ****   /* Initialize the output offset */
  228:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputOffset = 0x00;
- 341              		.loc 1 228 3 is_stmt 1 view .LVU126
- 342              		.loc 1 228 40 is_stmt 0 view .LVU127
- 343 0010 C361     		str	r3, [r0, #28]
+ 381              		.loc 1 228 40
+ 382 0032 7B68     		ldr	r3, [r7, #4]
+ 383 0034 0022     		movs	r2, #0
+ 384 0036 DA61     		str	r2, [r3, #28]
  229:./Library/stm32f4xx_dma2d.c **** 
  230:./Library/stm32f4xx_dma2d.c ****   /* Initialize the number of line and the number of pixel per line */
  231:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_NumberOfLine = 0x00;
- 344              		.loc 1 231 3 is_stmt 1 view .LVU128
- 345              		.loc 1 231 40 is_stmt 0 view .LVU129
- 346 0012 0362     		str	r3, [r0, #32]
+ 385              		.loc 1 231 40
+ 386 0038 7B68     		ldr	r3, [r7, #4]
+ 387 003a 0022     		movs	r2, #0
+ 388 003c 1A62     		str	r2, [r3, #32]
  232:./Library/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_PixelPerLine = 0x00;
- 347              		.loc 1 232 3 is_stmt 1 view .LVU130
- 348              		.loc 1 232 40 is_stmt 0 view .LVU131
- 349 0014 4362     		str	r3, [r0, #36]
+ 389              		.loc 1 232 40
+ 390 003e 7B68     		ldr	r3, [r7, #4]
+ 391 0040 0022     		movs	r2, #0
+ 392 0042 5A62     		str	r2, [r3, #36]
  233:./Library/stm32f4xx_dma2d.c **** }
- 350              		.loc 1 233 1 view .LVU132
- 351 0016 7047     		bx	lr
- 352              		.cfi_endproc
- 353              	.LFE125:
- 355              		.section	.text.DMA2D_StartTransfer,"ax",%progbits
- 356              		.align	1
- 357              		.global	DMA2D_StartTransfer
- 358              		.syntax unified
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 12
+ 393              		.loc 1 233 1
+ 394 0044 00BF     		nop
+ 395 0046 0C37     		adds	r7, r7, #12
+ 396              	.LCFI11:
+ 397              		.cfi_def_cfa_offset 4
+ 398 0048 BD46     		mov	sp, r7
+ 399              	.LCFI12:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 12
 
 
- 359              		.thumb
- 360              		.thumb_func
- 362              	DMA2D_StartTransfer:
- 363              	.LFB126:
+ 400              		.cfi_def_cfa_register 13
+ 401              		@ sp needed
+ 402 004a 5DF8047B 		ldr	r7, [sp], #4
+ 403              	.LCFI13:
+ 404              		.cfi_restore 7
+ 405              		.cfi_def_cfa_offset 0
+ 406 004e 7047     		bx	lr
+ 407              		.cfi_endproc
+ 408              	.LFE125:
+ 410              		.section	.text.DMA2D_StartTransfer,"ax",%progbits
+ 411              		.align	1
+ 412              		.global	DMA2D_StartTransfer
+ 413              		.syntax unified
+ 414              		.thumb
+ 415              		.thumb_func
+ 417              	DMA2D_StartTransfer:
+ 418              	.LFB126:
  234:./Library/stm32f4xx_dma2d.c **** 
  235:./Library/stm32f4xx_dma2d.c **** /**
  236:./Library/stm32f4xx_dma2d.c ****   * @brief  Start the DMA2D transfer.
@@ -674,36 +687,55 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  240:./Library/stm32f4xx_dma2d.c **** 
  241:./Library/stm32f4xx_dma2d.c **** void DMA2D_StartTransfer(void)
  242:./Library/stm32f4xx_dma2d.c **** {
- 364              		.loc 1 242 1 is_stmt 1 view -0
- 365              		.cfi_startproc
- 366              		@ args = 0, pretend = 0, frame = 0
- 367              		@ frame_needed = 0, uses_anonymous_args = 0
- 368              		@ link register save eliminated.
+ 419              		.loc 1 242 1
+ 420              		.cfi_startproc
+ 421              		@ args = 0, pretend = 0, frame = 0
+ 422              		@ frame_needed = 1, uses_anonymous_args = 0
+ 423              		@ link register save eliminated.
+ 424 0000 80B4     		push	{r7}
+ 425              	.LCFI14:
+ 426              		.cfi_def_cfa_offset 4
+ 427              		.cfi_offset 7, -4
+ 428 0002 00AF     		add	r7, sp, #0
+ 429              	.LCFI15:
+ 430              		.cfi_def_cfa_register 7
  243:./Library/stm32f4xx_dma2d.c ****     /* Start DMA2D transfer by setting START bit */
  244:./Library/stm32f4xx_dma2d.c ****     DMA2D->CR |= (uint32_t)DMA2D_CR_START;
- 369              		.loc 1 244 5 view .LVU134
- 370              		.loc 1 244 15 is_stmt 0 view .LVU135
- 371 0000 024A     		ldr	r2, .L17
- 372 0002 1368     		ldr	r3, [r2]
- 373 0004 43F00103 		orr	r3, r3, #1
- 374 0008 1360     		str	r3, [r2]
+ 431              		.loc 1 244 15
+ 432 0004 054B     		ldr	r3, .L12
+ 433 0006 1B68     		ldr	r3, [r3]
+ 434 0008 044A     		ldr	r2, .L12
+ 435 000a 43F00103 		orr	r3, r3, #1
+ 436 000e 1360     		str	r3, [r2]
  245:./Library/stm32f4xx_dma2d.c **** }
- 375              		.loc 1 245 1 view .LVU136
- 376 000a 7047     		bx	lr
- 377              	.L18:
- 378              		.align	2
- 379              	.L17:
- 380 000c 00B00240 		.word	1073917952
- 381              		.cfi_endproc
- 382              	.LFE126:
- 384              		.section	.text.DMA2D_AbortTransfer,"ax",%progbits
- 385              		.align	1
- 386              		.global	DMA2D_AbortTransfer
- 387              		.syntax unified
- 388              		.thumb
- 389              		.thumb_func
- 391              	DMA2D_AbortTransfer:
- 392              	.LFB127:
+ 437              		.loc 1 245 1
+ 438 0010 00BF     		nop
+ 439 0012 BD46     		mov	sp, r7
+ 440              	.LCFI16:
+ 441              		.cfi_def_cfa_register 13
+ 442              		@ sp needed
+ 443 0014 5DF8047B 		ldr	r7, [sp], #4
+ 444              	.LCFI17:
+ 445              		.cfi_restore 7
+ 446              		.cfi_def_cfa_offset 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 13
+
+
+ 447 0018 7047     		bx	lr
+ 448              	.L13:
+ 449 001a 00BF     		.align	2
+ 450              	.L12:
+ 451 001c 00B00240 		.word	1073917952
+ 452              		.cfi_endproc
+ 453              	.LFE126:
+ 455              		.section	.text.DMA2D_AbortTransfer,"ax",%progbits
+ 456              		.align	1
+ 457              		.global	DMA2D_AbortTransfer
+ 458              		.syntax unified
+ 459              		.thumb
+ 460              		.thumb_func
+ 462              	DMA2D_AbortTransfer:
+ 463              	.LFB127:
  246:./Library/stm32f4xx_dma2d.c **** 
  247:./Library/stm32f4xx_dma2d.c **** /**
  248:./Library/stm32f4xx_dma2d.c ****   * @brief  Abort the DMA2D transfer.
@@ -713,41 +745,56 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  252:./Library/stm32f4xx_dma2d.c **** 
  253:./Library/stm32f4xx_dma2d.c **** void DMA2D_AbortTransfer(void)
  254:./Library/stm32f4xx_dma2d.c **** {
- 393              		.loc 1 254 1 is_stmt 1 view -0
- 394              		.cfi_startproc
- 395              		@ args = 0, pretend = 0, frame = 0
- 396              		@ frame_needed = 0, uses_anonymous_args = 0
- 397              		@ link register save eliminated.
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 13
-
-
+ 464              		.loc 1 254 1
+ 465              		.cfi_startproc
+ 466              		@ args = 0, pretend = 0, frame = 0
+ 467              		@ frame_needed = 1, uses_anonymous_args = 0
+ 468              		@ link register save eliminated.
+ 469 0000 80B4     		push	{r7}
+ 470              	.LCFI18:
+ 471              		.cfi_def_cfa_offset 4
+ 472              		.cfi_offset 7, -4
+ 473 0002 00AF     		add	r7, sp, #0
+ 474              	.LCFI19:
+ 475              		.cfi_def_cfa_register 7
  255:./Library/stm32f4xx_dma2d.c ****     /* Start DMA2D transfer by setting START bit */
  256:./Library/stm32f4xx_dma2d.c ****     DMA2D->CR |= (uint32_t)DMA2D_CR_ABORT;
- 398              		.loc 1 256 5 view .LVU138
- 399              		.loc 1 256 15 is_stmt 0 view .LVU139
- 400 0000 024A     		ldr	r2, .L20
- 401 0002 1368     		ldr	r3, [r2]
- 402 0004 43F00403 		orr	r3, r3, #4
- 403 0008 1360     		str	r3, [r2]
+ 476              		.loc 1 256 15
+ 477 0004 054B     		ldr	r3, .L15
+ 478 0006 1B68     		ldr	r3, [r3]
+ 479 0008 044A     		ldr	r2, .L15
+ 480 000a 43F00403 		orr	r3, r3, #4
+ 481 000e 1360     		str	r3, [r2]
  257:./Library/stm32f4xx_dma2d.c **** 
  258:./Library/stm32f4xx_dma2d.c **** }
- 404              		.loc 1 258 1 view .LVU140
- 405 000a 7047     		bx	lr
- 406              	.L21:
- 407              		.align	2
- 408              	.L20:
- 409 000c 00B00240 		.word	1073917952
- 410              		.cfi_endproc
- 411              	.LFE127:
- 413              		.section	.text.DMA2D_Suspend,"ax",%progbits
- 414              		.align	1
- 415              		.global	DMA2D_Suspend
- 416              		.syntax unified
- 417              		.thumb
- 418              		.thumb_func
- 420              	DMA2D_Suspend:
- 421              	.LVL27:
- 422              	.LFB128:
+ 482              		.loc 1 258 1
+ 483 0010 00BF     		nop
+ 484 0012 BD46     		mov	sp, r7
+ 485              	.LCFI20:
+ 486              		.cfi_def_cfa_register 13
+ 487              		@ sp needed
+ 488 0014 5DF8047B 		ldr	r7, [sp], #4
+ 489              	.LCFI21:
+ 490              		.cfi_restore 7
+ 491              		.cfi_def_cfa_offset 0
+ 492 0018 7047     		bx	lr
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 14
+
+
+ 493              	.L16:
+ 494 001a 00BF     		.align	2
+ 495              	.L15:
+ 496 001c 00B00240 		.word	1073917952
+ 497              		.cfi_endproc
+ 498              	.LFE127:
+ 500              		.section	.text.DMA2D_Suspend,"ax",%progbits
+ 501              		.align	1
+ 502              		.global	DMA2D_Suspend
+ 503              		.syntax unified
+ 504              		.thumb
+ 505              		.thumb_func
+ 507              	DMA2D_Suspend:
+ 508              	.LFB128:
  259:./Library/stm32f4xx_dma2d.c **** 
  260:./Library/stm32f4xx_dma2d.c **** /**
  261:./Library/stm32f4xx_dma2d.c ****   * @brief  Stop or continue the DMA2D transfer.
@@ -757,63 +804,89 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  265:./Library/stm32f4xx_dma2d.c ****   */
  266:./Library/stm32f4xx_dma2d.c **** void DMA2D_Suspend(FunctionalState NewState)
  267:./Library/stm32f4xx_dma2d.c **** {
- 423              		.loc 1 267 1 is_stmt 1 view -0
- 424              		.cfi_startproc
- 425              		@ args = 0, pretend = 0, frame = 0
- 426              		@ frame_needed = 0, uses_anonymous_args = 0
- 427              		@ link register save eliminated.
+ 509              		.loc 1 267 1
+ 510              		.cfi_startproc
+ 511              		@ args = 0, pretend = 0, frame = 8
+ 512              		@ frame_needed = 1, uses_anonymous_args = 0
+ 513              		@ link register save eliminated.
+ 514 0000 80B4     		push	{r7}
+ 515              	.LCFI22:
+ 516              		.cfi_def_cfa_offset 4
+ 517              		.cfi_offset 7, -4
+ 518 0002 83B0     		sub	sp, sp, #12
+ 519              	.LCFI23:
+ 520              		.cfi_def_cfa_offset 16
+ 521 0004 00AF     		add	r7, sp, #0
+ 522              	.LCFI24:
+ 523              		.cfi_def_cfa_register 7
+ 524 0006 0346     		mov	r3, r0
+ 525 0008 FB71     		strb	r3, [r7, #7]
  268:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  269:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 428              		.loc 1 269 3 view .LVU142
  270:./Library/stm32f4xx_dma2d.c **** 
  271:./Library/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
- 429              		.loc 1 271 3 view .LVU143
- 430              		.loc 1 271 6 is_stmt 0 view .LVU144
- 431 0000 28B1     		cbz	r0, .L23
+ 526              		.loc 1 271 6
+ 527 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 528 000c 002B     		cmp	r3, #0
+ 529 000e 06D0     		beq	.L18
  272:./Library/stm32f4xx_dma2d.c ****   {
  273:./Library/stm32f4xx_dma2d.c ****     /* Suspend DMA2D transfer by setting STOP bit */
  274:./Library/stm32f4xx_dma2d.c ****     DMA2D->CR |= (uint32_t)DMA2D_CR_SUSP;
- 432              		.loc 1 274 5 is_stmt 1 view .LVU145
- 433              		.loc 1 274 15 is_stmt 0 view .LVU146
- 434 0002 064A     		ldr	r2, .L25
- 435 0004 1368     		ldr	r3, [r2]
- 436 0006 43F00203 		orr	r3, r3, #2
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 14
+ 530              		.loc 1 274 15
+ 531 0010 094B     		ldr	r3, .L21
+ 532 0012 1B68     		ldr	r3, [r3]
+ 533 0014 084A     		ldr	r2, .L21
+ 534 0016 43F00203 		orr	r3, r3, #2
+ 535 001a 1360     		str	r3, [r2]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 15
 
 
- 437 000a 1360     		str	r3, [r2]
- 438 000c 7047     		bx	lr
- 439              	.L23:
  275:./Library/stm32f4xx_dma2d.c ****   }
  276:./Library/stm32f4xx_dma2d.c ****   else
  277:./Library/stm32f4xx_dma2d.c ****   {
  278:./Library/stm32f4xx_dma2d.c ****     /* Continue DMA2D transfer by clearing STOP bit */
  279:./Library/stm32f4xx_dma2d.c ****     DMA2D->CR &= ~(uint32_t)DMA2D_CR_SUSP;
- 440              		.loc 1 279 5 is_stmt 1 view .LVU147
- 441              		.loc 1 279 15 is_stmt 0 view .LVU148
- 442 000e 034A     		ldr	r2, .L25
- 443 0010 1368     		ldr	r3, [r2]
- 444 0012 23F00203 		bic	r3, r3, #2
- 445 0016 1360     		str	r3, [r2]
  280:./Library/stm32f4xx_dma2d.c ****   }
  281:./Library/stm32f4xx_dma2d.c **** }
- 446              		.loc 1 281 1 view .LVU149
- 447 0018 7047     		bx	lr
- 448              	.L26:
- 449 001a 00BF     		.align	2
- 450              	.L25:
- 451 001c 00B00240 		.word	1073917952
- 452              		.cfi_endproc
- 453              	.LFE128:
- 455              		.section	.text.DMA2D_FGConfig,"ax",%progbits
- 456              		.align	1
- 457              		.global	DMA2D_FGConfig
- 458              		.syntax unified
- 459              		.thumb
- 460              		.thumb_func
- 462              	DMA2D_FGConfig:
- 463              	.LVL28:
- 464              	.LFB129:
+ 536              		.loc 1 281 1
+ 537 001c 05E0     		b	.L20
+ 538              	.L18:
+ 279:./Library/stm32f4xx_dma2d.c ****   }
+ 539              		.loc 1 279 15
+ 540 001e 064B     		ldr	r3, .L21
+ 541 0020 1B68     		ldr	r3, [r3]
+ 542 0022 054A     		ldr	r2, .L21
+ 543 0024 23F00203 		bic	r3, r3, #2
+ 544 0028 1360     		str	r3, [r2]
+ 545              	.L20:
+ 546              		.loc 1 281 1
+ 547 002a 00BF     		nop
+ 548 002c 0C37     		adds	r7, r7, #12
+ 549              	.LCFI25:
+ 550              		.cfi_def_cfa_offset 4
+ 551 002e BD46     		mov	sp, r7
+ 552              	.LCFI26:
+ 553              		.cfi_def_cfa_register 13
+ 554              		@ sp needed
+ 555 0030 5DF8047B 		ldr	r7, [sp], #4
+ 556              	.LCFI27:
+ 557              		.cfi_restore 7
+ 558              		.cfi_def_cfa_offset 0
+ 559 0034 7047     		bx	lr
+ 560              	.L22:
+ 561 0036 00BF     		.align	2
+ 562              	.L21:
+ 563 0038 00B00240 		.word	1073917952
+ 564              		.cfi_endproc
+ 565              	.LFE128:
+ 567              		.section	.text.DMA2D_FGConfig,"ax",%progbits
+ 568              		.align	1
+ 569              		.global	DMA2D_FGConfig
+ 570              		.syntax unified
+ 571              		.thumb
+ 572              		.thumb_func
+ 574              	DMA2D_FGConfig:
+ 575              	.LFB129:
  282:./Library/stm32f4xx_dma2d.c **** 
  283:./Library/stm32f4xx_dma2d.c **** /**
  284:./Library/stm32f4xx_dma2d.c ****   * @brief  Configures the Foreground according to the specified parameters
@@ -825,291 +898,378 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  290:./Library/stm32f4xx_dma2d.c ****   */
  291:./Library/stm32f4xx_dma2d.c **** void DMA2D_FGConfig(DMA2D_FG_InitTypeDef* DMA2D_FG_InitStruct)
  292:./Library/stm32f4xx_dma2d.c **** {
- 465              		.loc 1 292 1 is_stmt 1 view -0
- 466              		.cfi_startproc
- 467              		@ args = 0, pretend = 0, frame = 0
- 468              		@ frame_needed = 0, uses_anonymous_args = 0
- 469              		@ link register save eliminated.
- 470              		.loc 1 292 1 is_stmt 0 view .LVU151
- 471 0000 10B4     		push	{r4}
- 472              	.LCFI4:
- 473              		.cfi_def_cfa_offset 4
- 474              		.cfi_offset 4, -4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 16
+
+
+ 576              		.loc 1 292 1
+ 577              		.cfi_startproc
+ 578              		@ args = 0, pretend = 0, frame = 32
+ 579              		@ frame_needed = 1, uses_anonymous_args = 0
+ 580              		@ link register save eliminated.
+ 581 0000 80B4     		push	{r7}
+ 582              	.LCFI28:
+ 583              		.cfi_def_cfa_offset 4
+ 584              		.cfi_offset 7, -4
+ 585 0002 89B0     		sub	sp, sp, #36
+ 586              	.LCFI29:
+ 587              		.cfi_def_cfa_offset 40
+ 588 0004 00AF     		add	r7, sp, #0
+ 589              	.LCFI30:
+ 590              		.cfi_def_cfa_register 7
+ 591 0006 7860     		str	r0, [r7, #4]
  293:./Library/stm32f4xx_dma2d.c **** 
  294:./Library/stm32f4xx_dma2d.c ****   uint32_t fg_clutcolormode = 0;
- 475              		.loc 1 294 3 is_stmt 1 view .LVU152
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 15
-
-
- 476              	.LVL29:
+ 592              		.loc 1 294 12
+ 593 0008 0023     		movs	r3, #0
+ 594 000a FB61     		str	r3, [r7, #28]
  295:./Library/stm32f4xx_dma2d.c ****   uint32_t fg_clutsize = 0;
- 477              		.loc 1 295 3 view .LVU153
+ 595              		.loc 1 295 12
+ 596 000c 0023     		movs	r3, #0
+ 597 000e BB61     		str	r3, [r7, #24]
  296:./Library/stm32f4xx_dma2d.c ****   uint32_t fg_alpha_mode = 0;
- 478              		.loc 1 296 3 view .LVU154
+ 598              		.loc 1 296 12
+ 599 0010 0023     		movs	r3, #0
+ 600 0012 7B61     		str	r3, [r7, #20]
  297:./Library/stm32f4xx_dma2d.c ****   uint32_t fg_alphavalue = 0;
- 479              		.loc 1 297 3 view .LVU155
+ 601              		.loc 1 297 12
+ 602 0014 0023     		movs	r3, #0
+ 603 0016 3B61     		str	r3, [r7, #16]
  298:./Library/stm32f4xx_dma2d.c ****   uint32_t fg_colorgreen = 0;
- 480              		.loc 1 298 3 view .LVU156
+ 604              		.loc 1 298 12
+ 605 0018 0023     		movs	r3, #0
+ 606 001a FB60     		str	r3, [r7, #12]
  299:./Library/stm32f4xx_dma2d.c ****   uint32_t fg_colorred = 0;
- 481              		.loc 1 299 3 view .LVU157
+ 607              		.loc 1 299 12
+ 608 001c 0023     		movs	r3, #0
+ 609 001e BB60     		str	r3, [r7, #8]
  300:./Library/stm32f4xx_dma2d.c **** 
  301:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGO(DMA2D_FG_InitStruct->DMA2D_FGO));
- 482              		.loc 1 301 3 view .LVU158
  302:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGCM(DMA2D_FG_InitStruct->DMA2D_FGCM));
- 483              		.loc 1 302 3 view .LVU159
  303:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FG_CLUT_CM(DMA2D_FG_InitStruct->DMA2D_FG_CLUT_CM));
- 484              		.loc 1 303 3 view .LVU160
  304:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FG_CLUT_SIZE(DMA2D_FG_InitStruct->DMA2D_FG_CLUT_SIZE));
- 485              		.loc 1 304 3 view .LVU161
  305:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FG_ALPHA_MODE(DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_MODE));
- 486              		.loc 1 305 3 view .LVU162
  306:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FG_ALPHA_VALUE(DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_VALUE));
- 487              		.loc 1 306 3 view .LVU163
  307:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGC_BLUE(DMA2D_FG_InitStruct->DMA2D_FGC_BLUE));
- 488              		.loc 1 307 3 view .LVU164
  308:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGC_GREEN(DMA2D_FG_InitStruct->DMA2D_FGC_GREEN));
- 489              		.loc 1 308 3 view .LVU165
  309:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGC_RED(DMA2D_FG_InitStruct->DMA2D_FGC_RED));
- 490              		.loc 1 309 3 view .LVU166
  310:./Library/stm32f4xx_dma2d.c **** 
  311:./Library/stm32f4xx_dma2d.c ****   /* Configures the FG memory address */
  312:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGMAR = (DMA2D_FG_InitStruct->DMA2D_FGMA);
- 491              		.loc 1 312 3 view .LVU167
- 492              		.loc 1 312 38 is_stmt 0 view .LVU168
- 493 0002 0268     		ldr	r2, [r0]
- 494              		.loc 1 312 16 view .LVU169
- 495 0004 194B     		ldr	r3, .L29
- 496 0006 DA60     		str	r2, [r3, #12]
+ 610              		.loc 1 312 8
+ 611 0020 2D4A     		ldr	r2, .L24
+ 612              		.loc 1 312 38
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 17
+
+
+ 613 0022 7B68     		ldr	r3, [r7, #4]
+ 614 0024 1B68     		ldr	r3, [r3]
+ 615              		.loc 1 312 16
+ 616 0026 D360     		str	r3, [r2, #12]
  313:./Library/stm32f4xx_dma2d.c **** 
  314:./Library/stm32f4xx_dma2d.c ****   /* Configures the FG offset */
  315:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGOR &= ~(uint32_t)DMA2D_FGOR_LO;
- 497              		.loc 1 315 3 is_stmt 1 view .LVU170
- 498              		.loc 1 315 15 is_stmt 0 view .LVU171
- 499 0008 1A69     		ldr	r2, [r3, #16]
- 500 000a 22F47F52 		bic	r2, r2, #16320
- 501 000e 22F03F02 		bic	r2, r2, #63
- 502 0012 1A61     		str	r2, [r3, #16]
+ 617              		.loc 1 315 15
+ 618 0028 2B4B     		ldr	r3, .L24
+ 619 002a 1B69     		ldr	r3, [r3, #16]
+ 620 002c 2A4A     		ldr	r2, .L24
+ 621 002e 23F47F53 		bic	r3, r3, #16320
+ 622 0032 23F03F03 		bic	r3, r3, #63
+ 623 0036 1361     		str	r3, [r2, #16]
  316:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGOR |= (DMA2D_FG_InitStruct->DMA2D_FGO);
- 503              		.loc 1 316 3 is_stmt 1 view .LVU172
- 504              		.loc 1 316 15 is_stmt 0 view .LVU173
- 505 0014 1A69     		ldr	r2, [r3, #16]
- 506              		.loc 1 316 38 view .LVU174
- 507 0016 4168     		ldr	r1, [r0, #4]
- 508              		.loc 1 316 15 view .LVU175
- 509 0018 0A43     		orrs	r2, r2, r1
- 510 001a 1A61     		str	r2, [r3, #16]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 16
-
-
+ 624              		.loc 1 316 15
+ 625 0038 274B     		ldr	r3, .L24
+ 626 003a 1A69     		ldr	r2, [r3, #16]
+ 627              		.loc 1 316 38
+ 628 003c 7B68     		ldr	r3, [r7, #4]
+ 629 003e 5B68     		ldr	r3, [r3, #4]
+ 630              		.loc 1 316 15
+ 631 0040 2549     		ldr	r1, .L24
+ 632 0042 1343     		orrs	r3, r3, r2
+ 633 0044 0B61     		str	r3, [r1, #16]
  317:./Library/stm32f4xx_dma2d.c **** 
  318:./Library/stm32f4xx_dma2d.c ****   /* Configures foreground Pixel Format Convertor */
  319:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGPFCCR &= (uint32_t)PFCCR_MASK;
- 511              		.loc 1 319 3 is_stmt 1 view .LVU176
- 512              		.loc 1 319 18 is_stmt 0 view .LVU177
- 513 001c D969     		ldr	r1, [r3, #28]
- 514 001e 144A     		ldr	r2, .L29+4
- 515 0020 0A40     		ands	r2, r2, r1
- 516 0022 DA61     		str	r2, [r3, #28]
+ 634              		.loc 1 319 18
+ 635 0046 244B     		ldr	r3, .L24
+ 636 0048 DA69     		ldr	r2, [r3, #28]
+ 637 004a 2349     		ldr	r1, .L24
+ 638 004c 234B     		ldr	r3, .L24+4
+ 639 004e 1340     		ands	r3, r3, r2
+ 640 0050 CB61     		str	r3, [r1, #28]
  320:./Library/stm32f4xx_dma2d.c ****   fg_clutcolormode = DMA2D_FG_InitStruct->DMA2D_FG_CLUT_CM << 4;
- 517              		.loc 1 320 3 is_stmt 1 view .LVU178
- 518              	.LVL30:
+ 641              		.loc 1 320 41
+ 642 0052 7B68     		ldr	r3, [r7, #4]
+ 643 0054 DB68     		ldr	r3, [r3, #12]
+ 644              		.loc 1 320 20
+ 645 0056 1B01     		lsls	r3, r3, #4
+ 646 0058 FB61     		str	r3, [r7, #28]
  321:./Library/stm32f4xx_dma2d.c ****   fg_clutsize = DMA2D_FG_InitStruct->DMA2D_FG_CLUT_SIZE << 8;
- 519              		.loc 1 321 3 view .LVU179
+ 647              		.loc 1 321 36
+ 648 005a 7B68     		ldr	r3, [r7, #4]
+ 649 005c 1B69     		ldr	r3, [r3, #16]
+ 650              		.loc 1 321 15
+ 651 005e 1B02     		lsls	r3, r3, #8
+ 652 0060 BB61     		str	r3, [r7, #24]
  322:./Library/stm32f4xx_dma2d.c ****   fg_alpha_mode = DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_MODE << 16;
- 520              		.loc 1 322 3 view .LVU180
+ 653              		.loc 1 322 38
+ 654 0062 7B68     		ldr	r3, [r7, #4]
+ 655 0064 5B69     		ldr	r3, [r3, #20]
+ 656              		.loc 1 322 17
+ 657 0066 1B04     		lsls	r3, r3, #16
+ 658 0068 7B61     		str	r3, [r7, #20]
  323:./Library/stm32f4xx_dma2d.c ****   fg_alphavalue = DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_VALUE << 24;
- 521              		.loc 1 323 3 view .LVU181
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 18
+
+
+ 659              		.loc 1 323 38
+ 660 006a 7B68     		ldr	r3, [r7, #4]
+ 661 006c 9B69     		ldr	r3, [r3, #24]
+ 662              		.loc 1 323 17
+ 663 006e 1B06     		lsls	r3, r3, #24
+ 664 0070 3B61     		str	r3, [r7, #16]
  324:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGPFCCR |= (DMA2D_FG_InitStruct->DMA2D_FGCM | fg_clutcolormode | fg_clutsize | \
- 522              		.loc 1 324 3 view .LVU182
- 523              		.loc 1 324 18 is_stmt 0 view .LVU183
- 524 0024 D969     		ldr	r1, [r3, #28]
- 525              		.loc 1 324 41 view .LVU184
- 526 0026 8268     		ldr	r2, [r0, #8]
- 527              		.loc 1 324 54 view .LVU185
- 528 0028 C468     		ldr	r4, [r0, #12]
- 529 002a 42EA0412 		orr	r2, r2, r4, lsl #4
- 530              		.loc 1 324 73 view .LVU186
- 531 002e 0469     		ldr	r4, [r0, #16]
- 532 0030 42EA0422 		orr	r2, r2, r4, lsl #8
- 533              		.loc 1 324 87 view .LVU187
- 534 0034 4469     		ldr	r4, [r0, #20]
- 535 0036 42EA0442 		orr	r2, r2, r4, lsl #16
+ 665              		.loc 1 324 18
+ 666 0072 194B     		ldr	r3, .L24
+ 667 0074 DA69     		ldr	r2, [r3, #28]
+ 668              		.loc 1 324 41
+ 669 0076 7B68     		ldr	r3, [r7, #4]
+ 670 0078 9968     		ldr	r1, [r3, #8]
+ 671              		.loc 1 324 54
+ 672 007a FB69     		ldr	r3, [r7, #28]
+ 673 007c 1943     		orrs	r1, r1, r3
+ 674              		.loc 1 324 73
+ 675 007e BB69     		ldr	r3, [r7, #24]
+ 676 0080 1943     		orrs	r1, r1, r3
+ 677              		.loc 1 324 87
+ 678 0082 7B69     		ldr	r3, [r7, #20]
+ 679 0084 1943     		orrs	r1, r1, r3
  325:./Library/stm32f4xx_dma2d.c ****                     fg_alpha_mode | fg_alphavalue);
- 536              		.loc 1 325 35 view .LVU188
- 537 003a 8469     		ldr	r4, [r0, #24]
- 538 003c 42EA0462 		orr	r2, r2, r4, lsl #24
+ 680              		.loc 1 325 35
+ 681 0086 3B69     		ldr	r3, [r7, #16]
+ 682 0088 0B43     		orrs	r3, r3, r1
  324:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGPFCCR |= (DMA2D_FG_InitStruct->DMA2D_FGCM | fg_clutcolormode | fg_clutsize | \
- 539              		.loc 1 324 18 view .LVU189
- 540 0040 0A43     		orrs	r2, r2, r1
- 541 0042 DA61     		str	r2, [r3, #28]
- 542              	.LVL31:
+ 683              		.loc 1 324 18
+ 684 008a 1349     		ldr	r1, .L24
+ 685 008c 1343     		orrs	r3, r3, r2
+ 686 008e CB61     		str	r3, [r1, #28]
  326:./Library/stm32f4xx_dma2d.c **** 
  327:./Library/stm32f4xx_dma2d.c ****   /* Configures foreground color */
  328:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGCOLR &= ~(DMA2D_FGCOLR_BLUE | DMA2D_FGCOLR_GREEN | DMA2D_FGCOLR_RED);
- 543              		.loc 1 328 3 is_stmt 1 view .LVU190
- 544              		.loc 1 328 17 is_stmt 0 view .LVU191
- 545 0044 1A6A     		ldr	r2, [r3, #32]
- 546 0046 02F07F42 		and	r2, r2, #-16777216
- 547 004a 1A62     		str	r2, [r3, #32]
+ 687              		.loc 1 328 17
+ 688 0090 114B     		ldr	r3, .L24
+ 689 0092 1B6A     		ldr	r3, [r3, #32]
+ 690 0094 104A     		ldr	r2, .L24
+ 691 0096 03F07F43 		and	r3, r3, #-16777216
+ 692 009a 1362     		str	r3, [r2, #32]
  329:./Library/stm32f4xx_dma2d.c ****   fg_colorgreen = DMA2D_FG_InitStruct->DMA2D_FGC_GREEN << 8;
- 548              		.loc 1 329 3 is_stmt 1 view .LVU192
- 549              	.LVL32:
+ 693              		.loc 1 329 38
+ 694 009c 7B68     		ldr	r3, [r7, #4]
+ 695 009e 1B6A     		ldr	r3, [r3, #32]
+ 696              		.loc 1 329 17
+ 697 00a0 1B02     		lsls	r3, r3, #8
+ 698 00a2 FB60     		str	r3, [r7, #12]
  330:./Library/stm32f4xx_dma2d.c ****   fg_colorred = DMA2D_FG_InitStruct->DMA2D_FGC_RED << 16;
- 550              		.loc 1 330 3 view .LVU193
+ 699              		.loc 1 330 36
+ 700 00a4 7B68     		ldr	r3, [r7, #4]
+ 701 00a6 5B6A     		ldr	r3, [r3, #36]
+ 702              		.loc 1 330 15
+ 703 00a8 1B04     		lsls	r3, r3, #16
+ 704 00aa BB60     		str	r3, [r7, #8]
  331:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGCOLR |= (DMA2D_FG_InitStruct->DMA2D_FGC_BLUE | fg_colorgreen | fg_colorred);
- 551              		.loc 1 331 3 view .LVU194
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 17
+ 705              		.loc 1 331 17
+ 706 00ac 0A4B     		ldr	r3, .L24
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 19
 
 
- 552              		.loc 1 331 17 is_stmt 0 view .LVU195
- 553 004c 196A     		ldr	r1, [r3, #32]
- 554              		.loc 1 331 40 view .LVU196
- 555 004e C269     		ldr	r2, [r0, #28]
- 556              		.loc 1 331 57 view .LVU197
- 557 0050 046A     		ldr	r4, [r0, #32]
- 558              	.LVL33:
- 559              		.loc 1 331 57 view .LVU198
- 560 0052 42EA0422 		orr	r2, r2, r4, lsl #8
- 561              		.loc 1 331 73 view .LVU199
- 562 0056 446A     		ldr	r4, [r0, #36]
- 563 0058 42EA0442 		orr	r2, r2, r4, lsl #16
- 564              		.loc 1 331 17 view .LVU200
- 565 005c 0A43     		orrs	r2, r2, r1
- 566 005e 1A62     		str	r2, [r3, #32]
- 567              	.LVL34:
+ 707 00ae 1A6A     		ldr	r2, [r3, #32]
+ 708              		.loc 1 331 40
+ 709 00b0 7B68     		ldr	r3, [r7, #4]
+ 710 00b2 D969     		ldr	r1, [r3, #28]
+ 711              		.loc 1 331 57
+ 712 00b4 FB68     		ldr	r3, [r7, #12]
+ 713 00b6 1943     		orrs	r1, r1, r3
+ 714              		.loc 1 331 73
+ 715 00b8 BB68     		ldr	r3, [r7, #8]
+ 716 00ba 0B43     		orrs	r3, r3, r1
+ 717              		.loc 1 331 17
+ 718 00bc 0649     		ldr	r1, .L24
+ 719 00be 1343     		orrs	r3, r3, r2
+ 720 00c0 0B62     		str	r3, [r1, #32]
  332:./Library/stm32f4xx_dma2d.c **** 
  333:./Library/stm32f4xx_dma2d.c ****   /* Configures foreground CLUT memory address */
  334:./Library/stm32f4xx_dma2d.c ****   DMA2D->FGCMAR = DMA2D_FG_InitStruct->DMA2D_FGCMAR;
- 568              		.loc 1 334 3 is_stmt 1 view .LVU201
- 569              		.loc 1 334 38 is_stmt 0 view .LVU202
- 570 0060 826A     		ldr	r2, [r0, #40]
- 571              		.loc 1 334 17 view .LVU203
- 572 0062 DA62     		str	r2, [r3, #44]
+ 721              		.loc 1 334 8
+ 722 00c2 054A     		ldr	r2, .L24
+ 723              		.loc 1 334 38
+ 724 00c4 7B68     		ldr	r3, [r7, #4]
+ 725 00c6 9B6A     		ldr	r3, [r3, #40]
+ 726              		.loc 1 334 17
+ 727 00c8 D362     		str	r3, [r2, #44]
  335:./Library/stm32f4xx_dma2d.c **** }
- 573              		.loc 1 335 1 view .LVU204
- 574 0064 5DF8044B 		ldr	r4, [sp], #4
- 575              	.LCFI5:
- 576              		.cfi_restore 4
- 577              		.cfi_def_cfa_offset 0
- 578              	.LVL35:
- 579              		.loc 1 335 1 view .LVU205
- 580 0068 7047     		bx	lr
- 581              	.L30:
- 582 006a 00BF     		.align	2
- 583              	.L29:
- 584 006c 00B00240 		.word	1073917952
- 585 0070 C000FC00 		.word	16515264
- 586              		.cfi_endproc
- 587              	.LFE129:
- 589              		.section	.text.DMA2D_FG_StructInit,"ax",%progbits
- 590              		.align	1
- 591              		.global	DMA2D_FG_StructInit
- 592              		.syntax unified
- 593              		.thumb
- 594              		.thumb_func
- 596              	DMA2D_FG_StructInit:
- 597              	.LVL36:
- 598              	.LFB130:
+ 728              		.loc 1 335 1
+ 729 00ca 00BF     		nop
+ 730 00cc 2437     		adds	r7, r7, #36
+ 731              	.LCFI31:
+ 732              		.cfi_def_cfa_offset 4
+ 733 00ce BD46     		mov	sp, r7
+ 734              	.LCFI32:
+ 735              		.cfi_def_cfa_register 13
+ 736              		@ sp needed
+ 737 00d0 5DF8047B 		ldr	r7, [sp], #4
+ 738              	.LCFI33:
+ 739              		.cfi_restore 7
+ 740              		.cfi_def_cfa_offset 0
+ 741 00d4 7047     		bx	lr
+ 742              	.L25:
+ 743 00d6 00BF     		.align	2
+ 744              	.L24:
+ 745 00d8 00B00240 		.word	1073917952
+ 746 00dc C000FC00 		.word	16515264
+ 747              		.cfi_endproc
+ 748              	.LFE129:
+ 750              		.section	.text.DMA2D_FG_StructInit,"ax",%progbits
+ 751              		.align	1
+ 752              		.global	DMA2D_FG_StructInit
+ 753              		.syntax unified
+ 754              		.thumb
+ 755              		.thumb_func
+ 757              	DMA2D_FG_StructInit:
+ 758              	.LFB130:
  336:./Library/stm32f4xx_dma2d.c **** 
  337:./Library/stm32f4xx_dma2d.c **** /**
  338:./Library/stm32f4xx_dma2d.c ****   * @brief  Fills each DMA2D_FGStruct member with its default value.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 20
+
+
  339:./Library/stm32f4xx_dma2d.c ****   * @param  DMA2D_FGStruct: pointer to a DMA2D_FGTypeDef structure which will
  340:./Library/stm32f4xx_dma2d.c ****   *         be initialized.
  341:./Library/stm32f4xx_dma2d.c ****   * @retval None
  342:./Library/stm32f4xx_dma2d.c ****   */
  343:./Library/stm32f4xx_dma2d.c **** void DMA2D_FG_StructInit(DMA2D_FG_InitTypeDef* DMA2D_FG_InitStruct)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 18
-
-
  344:./Library/stm32f4xx_dma2d.c **** {
- 599              		.loc 1 344 1 is_stmt 1 view -0
- 600              		.cfi_startproc
- 601              		@ args = 0, pretend = 0, frame = 0
- 602              		@ frame_needed = 0, uses_anonymous_args = 0
- 603              		@ link register save eliminated.
+ 759              		.loc 1 344 1
+ 760              		.cfi_startproc
+ 761              		@ args = 0, pretend = 0, frame = 8
+ 762              		@ frame_needed = 1, uses_anonymous_args = 0
+ 763              		@ link register save eliminated.
+ 764 0000 80B4     		push	{r7}
+ 765              	.LCFI34:
+ 766              		.cfi_def_cfa_offset 4
+ 767              		.cfi_offset 7, -4
+ 768 0002 83B0     		sub	sp, sp, #12
+ 769              	.LCFI35:
+ 770              		.cfi_def_cfa_offset 16
+ 771 0004 00AF     		add	r7, sp, #0
+ 772              	.LCFI36:
+ 773              		.cfi_def_cfa_register 7
+ 774 0006 7860     		str	r0, [r7, #4]
  345:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground memory address */
  346:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGMA = 0x00;
- 604              		.loc 1 346 3 view .LVU207
- 605              		.loc 1 346 35 is_stmt 0 view .LVU208
- 606 0000 0023     		movs	r3, #0
- 607 0002 0360     		str	r3, [r0]
+ 775              		.loc 1 346 35
+ 776 0008 7B68     		ldr	r3, [r7, #4]
+ 777 000a 0022     		movs	r2, #0
+ 778 000c 1A60     		str	r2, [r3]
  347:./Library/stm32f4xx_dma2d.c **** 
  348:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground offset */
  349:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGO = 0x00;
- 608              		.loc 1 349 3 is_stmt 1 view .LVU209
- 609              		.loc 1 349 34 is_stmt 0 view .LVU210
- 610 0004 4360     		str	r3, [r0, #4]
+ 779              		.loc 1 349 34
+ 780 000e 7B68     		ldr	r3, [r7, #4]
+ 781 0010 0022     		movs	r2, #0
+ 782 0012 5A60     		str	r2, [r3, #4]
  350:./Library/stm32f4xx_dma2d.c **** 
  351:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground color mode */
  352:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGCM = CM_ARGB8888;
- 611              		.loc 1 352 3 is_stmt 1 view .LVU211
- 612              		.loc 1 352 35 is_stmt 0 view .LVU212
- 613 0006 8360     		str	r3, [r0, #8]
+ 783              		.loc 1 352 35
+ 784 0014 7B68     		ldr	r3, [r7, #4]
+ 785 0016 0022     		movs	r2, #0
+ 786 0018 9A60     		str	r2, [r3, #8]
  353:./Library/stm32f4xx_dma2d.c **** 
  354:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground CLUT color mode */
  355:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FG_CLUT_CM = CLUT_CM_ARGB8888;
- 614              		.loc 1 355 3 is_stmt 1 view .LVU213
- 615              		.loc 1 355 41 is_stmt 0 view .LVU214
- 616 0008 C360     		str	r3, [r0, #12]
+ 787              		.loc 1 355 41
+ 788 001a 7B68     		ldr	r3, [r7, #4]
+ 789 001c 0022     		movs	r2, #0
+ 790 001e DA60     		str	r2, [r3, #12]
  356:./Library/stm32f4xx_dma2d.c **** 
  357:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground CLUT size */
  358:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FG_CLUT_SIZE = 0x00;
- 617              		.loc 1 358 3 is_stmt 1 view .LVU215
- 618              		.loc 1 358 43 is_stmt 0 view .LVU216
- 619 000a 0361     		str	r3, [r0, #16]
+ 791              		.loc 1 358 43
+ 792 0020 7B68     		ldr	r3, [r7, #4]
+ 793 0022 0022     		movs	r2, #0
+ 794 0024 1A61     		str	r2, [r3, #16]
  359:./Library/stm32f4xx_dma2d.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 21
+
+
  360:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground alpha mode */
  361:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_MODE = NO_MODIF_ALPHA_VALUE;
- 620              		.loc 1 361 3 is_stmt 1 view .LVU217
- 621              		.loc 1 361 47 is_stmt 0 view .LVU218
- 622 000c 4361     		str	r3, [r0, #20]
+ 795              		.loc 1 361 47
+ 796 0026 7B68     		ldr	r3, [r7, #4]
+ 797 0028 0022     		movs	r2, #0
+ 798 002a 5A61     		str	r2, [r3, #20]
  362:./Library/stm32f4xx_dma2d.c **** 
  363:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground alpha value */
  364:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_VALUE = 0x00;
- 623              		.loc 1 364 3 is_stmt 1 view .LVU219
- 624              		.loc 1 364 48 is_stmt 0 view .LVU220
- 625 000e 8361     		str	r3, [r0, #24]
+ 799              		.loc 1 364 48
+ 800 002c 7B68     		ldr	r3, [r7, #4]
+ 801 002e 0022     		movs	r2, #0
+ 802 0030 9A61     		str	r2, [r3, #24]
  365:./Library/stm32f4xx_dma2d.c **** 
  366:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground blue value */
  367:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGC_BLUE = 0x00;
- 626              		.loc 1 367 3 is_stmt 1 view .LVU221
- 627              		.loc 1 367 39 is_stmt 0 view .LVU222
- 628 0010 C361     		str	r3, [r0, #28]
+ 803              		.loc 1 367 39
+ 804 0032 7B68     		ldr	r3, [r7, #4]
+ 805 0034 0022     		movs	r2, #0
+ 806 0036 DA61     		str	r2, [r3, #28]
  368:./Library/stm32f4xx_dma2d.c **** 
  369:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground green value */
  370:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGC_GREEN = 0x00;
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 19
-
-
- 629              		.loc 1 370 3 is_stmt 1 view .LVU223
- 630              		.loc 1 370 40 is_stmt 0 view .LVU224
- 631 0012 0362     		str	r3, [r0, #32]
+ 807              		.loc 1 370 40
+ 808 0038 7B68     		ldr	r3, [r7, #4]
+ 809 003a 0022     		movs	r2, #0
+ 810 003c 1A62     		str	r2, [r3, #32]
  371:./Library/stm32f4xx_dma2d.c **** 
  372:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground red value */
  373:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGC_RED = 0x00;
- 632              		.loc 1 373 3 is_stmt 1 view .LVU225
- 633              		.loc 1 373 38 is_stmt 0 view .LVU226
- 634 0014 4362     		str	r3, [r0, #36]
+ 811              		.loc 1 373 38
+ 812 003e 7B68     		ldr	r3, [r7, #4]
+ 813 0040 0022     		movs	r2, #0
+ 814 0042 5A62     		str	r2, [r3, #36]
  374:./Library/stm32f4xx_dma2d.c **** 
  375:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground CLUT memory address */
  376:./Library/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGCMAR = 0x00;
- 635              		.loc 1 376 3 is_stmt 1 view .LVU227
- 636              		.loc 1 376 37 is_stmt 0 view .LVU228
- 637 0016 8362     		str	r3, [r0, #40]
+ 815              		.loc 1 376 37
+ 816 0044 7B68     		ldr	r3, [r7, #4]
+ 817 0046 0022     		movs	r2, #0
+ 818 0048 9A62     		str	r2, [r3, #40]
  377:./Library/stm32f4xx_dma2d.c **** }
- 638              		.loc 1 377 1 view .LVU229
- 639 0018 7047     		bx	lr
- 640              		.cfi_endproc
- 641              	.LFE130:
- 643              		.section	.text.DMA2D_BGConfig,"ax",%progbits
- 644              		.align	1
- 645              		.global	DMA2D_BGConfig
- 646              		.syntax unified
- 647              		.thumb
- 648              		.thumb_func
- 650              	DMA2D_BGConfig:
- 651              	.LVL37:
- 652              	.LFB131:
+ 819              		.loc 1 377 1
+ 820 004a 00BF     		nop
+ 821 004c 0C37     		adds	r7, r7, #12
+ 822              	.LCFI37:
+ 823              		.cfi_def_cfa_offset 4
+ 824 004e BD46     		mov	sp, r7
+ 825              	.LCFI38:
+ 826              		.cfi_def_cfa_register 13
+ 827              		@ sp needed
+ 828 0050 5DF8047B 		ldr	r7, [sp], #4
+ 829              	.LCFI39:
+ 830              		.cfi_restore 7
+ 831              		.cfi_def_cfa_offset 0
+ 832 0054 7047     		bx	lr
+ 833              		.cfi_endproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 22
+
+
+ 834              	.LFE130:
+ 836              		.section	.text.DMA2D_BGConfig,"ax",%progbits
+ 837              		.align	1
+ 838              		.global	DMA2D_BGConfig
+ 839              		.syntax unified
+ 840              		.thumb
+ 841              		.thumb_func
+ 843              	DMA2D_BGConfig:
+ 844              	.LFB131:
  378:./Library/stm32f4xx_dma2d.c **** 
  379:./Library/stm32f4xx_dma2d.c **** 
  380:./Library/stm32f4xx_dma2d.c **** /**
@@ -1122,192 +1282,244 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  387:./Library/stm32f4xx_dma2d.c ****   */
  388:./Library/stm32f4xx_dma2d.c **** void DMA2D_BGConfig(DMA2D_BG_InitTypeDef* DMA2D_BG_InitStruct)
  389:./Library/stm32f4xx_dma2d.c **** {
- 653              		.loc 1 389 1 is_stmt 1 view -0
- 654              		.cfi_startproc
- 655              		@ args = 0, pretend = 0, frame = 0
- 656              		@ frame_needed = 0, uses_anonymous_args = 0
- 657              		@ link register save eliminated.
- 658              		.loc 1 389 1 is_stmt 0 view .LVU231
- 659 0000 10B4     		push	{r4}
- 660              	.LCFI6:
- 661              		.cfi_def_cfa_offset 4
- 662              		.cfi_offset 4, -4
+ 845              		.loc 1 389 1
+ 846              		.cfi_startproc
+ 847              		@ args = 0, pretend = 0, frame = 32
+ 848              		@ frame_needed = 1, uses_anonymous_args = 0
+ 849              		@ link register save eliminated.
+ 850 0000 80B4     		push	{r7}
+ 851              	.LCFI40:
+ 852              		.cfi_def_cfa_offset 4
+ 853              		.cfi_offset 7, -4
+ 854 0002 89B0     		sub	sp, sp, #36
+ 855              	.LCFI41:
+ 856              		.cfi_def_cfa_offset 40
+ 857 0004 00AF     		add	r7, sp, #0
+ 858              	.LCFI42:
+ 859              		.cfi_def_cfa_register 7
+ 860 0006 7860     		str	r0, [r7, #4]
  390:./Library/stm32f4xx_dma2d.c **** 
  391:./Library/stm32f4xx_dma2d.c ****   uint32_t bg_clutcolormode = 0;
- 663              		.loc 1 391 3 is_stmt 1 view .LVU232
- 664              	.LVL38:
+ 861              		.loc 1 391 12
+ 862 0008 0023     		movs	r3, #0
+ 863 000a FB61     		str	r3, [r7, #28]
  392:./Library/stm32f4xx_dma2d.c ****   uint32_t bg_clutsize = 0;
- 665              		.loc 1 392 3 view .LVU233
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 20
-
-
+ 864              		.loc 1 392 12
+ 865 000c 0023     		movs	r3, #0
+ 866 000e BB61     		str	r3, [r7, #24]
  393:./Library/stm32f4xx_dma2d.c ****   uint32_t bg_alpha_mode = 0;
- 666              		.loc 1 393 3 view .LVU234
+ 867              		.loc 1 393 12
+ 868 0010 0023     		movs	r3, #0
+ 869 0012 7B61     		str	r3, [r7, #20]
  394:./Library/stm32f4xx_dma2d.c ****   uint32_t bg_alphavalue = 0;
- 667              		.loc 1 394 3 view .LVU235
+ 870              		.loc 1 394 12
+ 871 0014 0023     		movs	r3, #0
+ 872 0016 3B61     		str	r3, [r7, #16]
  395:./Library/stm32f4xx_dma2d.c ****   uint32_t bg_colorgreen = 0;
- 668              		.loc 1 395 3 view .LVU236
+ 873              		.loc 1 395 12
+ 874 0018 0023     		movs	r3, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 23
+
+
+ 875 001a FB60     		str	r3, [r7, #12]
  396:./Library/stm32f4xx_dma2d.c ****   uint32_t bg_colorred = 0;
- 669              		.loc 1 396 3 view .LVU237
+ 876              		.loc 1 396 12
+ 877 001c 0023     		movs	r3, #0
+ 878 001e BB60     		str	r3, [r7, #8]
  397:./Library/stm32f4xx_dma2d.c **** 
  398:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGO(DMA2D_BG_InitStruct->DMA2D_BGO));
- 670              		.loc 1 398 3 view .LVU238
  399:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGCM(DMA2D_BG_InitStruct->DMA2D_BGCM));
- 671              		.loc 1 399 3 view .LVU239
  400:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BG_CLUT_CM(DMA2D_BG_InitStruct->DMA2D_BG_CLUT_CM));
- 672              		.loc 1 400 3 view .LVU240
  401:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BG_CLUT_SIZE(DMA2D_BG_InitStruct->DMA2D_BG_CLUT_SIZE));
- 673              		.loc 1 401 3 view .LVU241
  402:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BG_ALPHA_MODE(DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_MODE));
- 674              		.loc 1 402 3 view .LVU242
  403:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BG_ALPHA_VALUE(DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_VALUE));
- 675              		.loc 1 403 3 view .LVU243
  404:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGC_BLUE(DMA2D_BG_InitStruct->DMA2D_BGC_BLUE));
- 676              		.loc 1 404 3 view .LVU244
  405:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGC_GREEN(DMA2D_BG_InitStruct->DMA2D_BGC_GREEN));
- 677              		.loc 1 405 3 view .LVU245
  406:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGC_RED(DMA2D_BG_InitStruct->DMA2D_BGC_RED));
- 678              		.loc 1 406 3 view .LVU246
  407:./Library/stm32f4xx_dma2d.c **** 
  408:./Library/stm32f4xx_dma2d.c ****   /* Configures the BG memory address */
  409:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGMAR = (DMA2D_BG_InitStruct->DMA2D_BGMA);
- 679              		.loc 1 409 3 view .LVU247
- 680              		.loc 1 409 38 is_stmt 0 view .LVU248
- 681 0002 0268     		ldr	r2, [r0]
- 682              		.loc 1 409 16 view .LVU249
- 683 0004 194B     		ldr	r3, .L34
- 684 0006 5A61     		str	r2, [r3, #20]
+ 879              		.loc 1 409 8
+ 880 0020 2D4A     		ldr	r2, .L28
+ 881              		.loc 1 409 38
+ 882 0022 7B68     		ldr	r3, [r7, #4]
+ 883 0024 1B68     		ldr	r3, [r3]
+ 884              		.loc 1 409 16
+ 885 0026 5361     		str	r3, [r2, #20]
  410:./Library/stm32f4xx_dma2d.c **** 
  411:./Library/stm32f4xx_dma2d.c ****   /* Configures the BG offset */
  412:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGOR &= ~(uint32_t)DMA2D_BGOR_LO;
- 685              		.loc 1 412 3 is_stmt 1 view .LVU250
- 686              		.loc 1 412 15 is_stmt 0 view .LVU251
- 687 0008 9A69     		ldr	r2, [r3, #24]
- 688 000a 22F47F52 		bic	r2, r2, #16320
- 689 000e 22F03F02 		bic	r2, r2, #63
- 690 0012 9A61     		str	r2, [r3, #24]
+ 886              		.loc 1 412 15
+ 887 0028 2B4B     		ldr	r3, .L28
+ 888 002a 9B69     		ldr	r3, [r3, #24]
+ 889 002c 2A4A     		ldr	r2, .L28
+ 890 002e 23F47F53 		bic	r3, r3, #16320
+ 891 0032 23F03F03 		bic	r3, r3, #63
+ 892 0036 9361     		str	r3, [r2, #24]
  413:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGOR |= (DMA2D_BG_InitStruct->DMA2D_BGO);
- 691              		.loc 1 413 3 is_stmt 1 view .LVU252
- 692              		.loc 1 413 15 is_stmt 0 view .LVU253
- 693 0014 9A69     		ldr	r2, [r3, #24]
- 694              		.loc 1 413 38 view .LVU254
- 695 0016 4168     		ldr	r1, [r0, #4]
- 696              		.loc 1 413 15 view .LVU255
- 697 0018 0A43     		orrs	r2, r2, r1
- 698 001a 9A61     		str	r2, [r3, #24]
+ 893              		.loc 1 413 15
+ 894 0038 274B     		ldr	r3, .L28
+ 895 003a 9A69     		ldr	r2, [r3, #24]
+ 896              		.loc 1 413 38
+ 897 003c 7B68     		ldr	r3, [r7, #4]
+ 898 003e 5B68     		ldr	r3, [r3, #4]
+ 899              		.loc 1 413 15
+ 900 0040 2549     		ldr	r1, .L28
+ 901 0042 1343     		orrs	r3, r3, r2
+ 902 0044 8B61     		str	r3, [r1, #24]
  414:./Library/stm32f4xx_dma2d.c **** 
  415:./Library/stm32f4xx_dma2d.c ****   /* Configures background Pixel Format Convertor */
  416:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGPFCCR &= (uint32_t)PFCCR_MASK;
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 21
-
-
- 699              		.loc 1 416 3 is_stmt 1 view .LVU256
- 700              		.loc 1 416 18 is_stmt 0 view .LVU257
- 701 001c 596A     		ldr	r1, [r3, #36]
- 702 001e 144A     		ldr	r2, .L34+4
- 703 0020 0A40     		ands	r2, r2, r1
- 704 0022 5A62     		str	r2, [r3, #36]
+ 903              		.loc 1 416 18
+ 904 0046 244B     		ldr	r3, .L28
+ 905 0048 5A6A     		ldr	r2, [r3, #36]
+ 906 004a 2349     		ldr	r1, .L28
+ 907 004c 234B     		ldr	r3, .L28+4
+ 908 004e 1340     		ands	r3, r3, r2
+ 909 0050 4B62     		str	r3, [r1, #36]
  417:./Library/stm32f4xx_dma2d.c ****   bg_clutcolormode = DMA2D_BG_InitStruct->DMA2D_BG_CLUT_CM << 4;
- 705              		.loc 1 417 3 is_stmt 1 view .LVU258
- 706              	.LVL39:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 24
+
+
+ 910              		.loc 1 417 41
+ 911 0052 7B68     		ldr	r3, [r7, #4]
+ 912 0054 DB68     		ldr	r3, [r3, #12]
+ 913              		.loc 1 417 20
+ 914 0056 1B01     		lsls	r3, r3, #4
+ 915 0058 FB61     		str	r3, [r7, #28]
  418:./Library/stm32f4xx_dma2d.c ****   bg_clutsize = DMA2D_BG_InitStruct->DMA2D_BG_CLUT_SIZE << 8;
- 707              		.loc 1 418 3 view .LVU259
+ 916              		.loc 1 418 36
+ 917 005a 7B68     		ldr	r3, [r7, #4]
+ 918 005c 1B69     		ldr	r3, [r3, #16]
+ 919              		.loc 1 418 15
+ 920 005e 1B02     		lsls	r3, r3, #8
+ 921 0060 BB61     		str	r3, [r7, #24]
  419:./Library/stm32f4xx_dma2d.c ****   bg_alpha_mode = DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_MODE << 16;
- 708              		.loc 1 419 3 view .LVU260
+ 922              		.loc 1 419 38
+ 923 0062 7B68     		ldr	r3, [r7, #4]
+ 924 0064 5B69     		ldr	r3, [r3, #20]
+ 925              		.loc 1 419 17
+ 926 0066 1B04     		lsls	r3, r3, #16
+ 927 0068 7B61     		str	r3, [r7, #20]
  420:./Library/stm32f4xx_dma2d.c ****   bg_alphavalue = DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_VALUE << 24;
- 709              		.loc 1 420 3 view .LVU261
+ 928              		.loc 1 420 38
+ 929 006a 7B68     		ldr	r3, [r7, #4]
+ 930 006c 9B69     		ldr	r3, [r3, #24]
+ 931              		.loc 1 420 17
+ 932 006e 1B06     		lsls	r3, r3, #24
+ 933 0070 3B61     		str	r3, [r7, #16]
  421:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGPFCCR |= (DMA2D_BG_InitStruct->DMA2D_BGCM | bg_clutcolormode | bg_clutsize | \
- 710              		.loc 1 421 3 view .LVU262
- 711              		.loc 1 421 18 is_stmt 0 view .LVU263
- 712 0024 596A     		ldr	r1, [r3, #36]
- 713              		.loc 1 421 41 view .LVU264
- 714 0026 8268     		ldr	r2, [r0, #8]
- 715              		.loc 1 421 54 view .LVU265
- 716 0028 C468     		ldr	r4, [r0, #12]
- 717 002a 42EA0412 		orr	r2, r2, r4, lsl #4
- 718              		.loc 1 421 73 view .LVU266
- 719 002e 0469     		ldr	r4, [r0, #16]
- 720 0030 42EA0422 		orr	r2, r2, r4, lsl #8
- 721              		.loc 1 421 87 view .LVU267
- 722 0034 4469     		ldr	r4, [r0, #20]
- 723 0036 42EA0442 		orr	r2, r2, r4, lsl #16
+ 934              		.loc 1 421 18
+ 935 0072 194B     		ldr	r3, .L28
+ 936 0074 5A6A     		ldr	r2, [r3, #36]
+ 937              		.loc 1 421 41
+ 938 0076 7B68     		ldr	r3, [r7, #4]
+ 939 0078 9968     		ldr	r1, [r3, #8]
+ 940              		.loc 1 421 54
+ 941 007a FB69     		ldr	r3, [r7, #28]
+ 942 007c 1943     		orrs	r1, r1, r3
+ 943              		.loc 1 421 73
+ 944 007e BB69     		ldr	r3, [r7, #24]
+ 945 0080 1943     		orrs	r1, r1, r3
+ 946              		.loc 1 421 87
+ 947 0082 7B69     		ldr	r3, [r7, #20]
+ 948 0084 1943     		orrs	r1, r1, r3
  422:./Library/stm32f4xx_dma2d.c ****                     bg_alpha_mode | bg_alphavalue);
- 724              		.loc 1 422 35 view .LVU268
- 725 003a 8469     		ldr	r4, [r0, #24]
- 726 003c 42EA0462 		orr	r2, r2, r4, lsl #24
+ 949              		.loc 1 422 35
+ 950 0086 3B69     		ldr	r3, [r7, #16]
+ 951 0088 0B43     		orrs	r3, r3, r1
  421:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGPFCCR |= (DMA2D_BG_InitStruct->DMA2D_BGCM | bg_clutcolormode | bg_clutsize | \
- 727              		.loc 1 421 18 view .LVU269
- 728 0040 0A43     		orrs	r2, r2, r1
- 729 0042 5A62     		str	r2, [r3, #36]
- 730              	.LVL40:
+ 952              		.loc 1 421 18
+ 953 008a 1349     		ldr	r1, .L28
+ 954 008c 1343     		orrs	r3, r3, r2
+ 955 008e 4B62     		str	r3, [r1, #36]
  423:./Library/stm32f4xx_dma2d.c **** 
  424:./Library/stm32f4xx_dma2d.c ****   /* Configures background color */
  425:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGCOLR &= ~(DMA2D_BGCOLR_BLUE | DMA2D_BGCOLR_GREEN | DMA2D_BGCOLR_RED);
- 731              		.loc 1 425 3 is_stmt 1 view .LVU270
- 732              		.loc 1 425 17 is_stmt 0 view .LVU271
- 733 0044 9A6A     		ldr	r2, [r3, #40]
- 734 0046 02F07F42 		and	r2, r2, #-16777216
- 735 004a 9A62     		str	r2, [r3, #40]
+ 956              		.loc 1 425 17
+ 957 0090 114B     		ldr	r3, .L28
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 25
+
+
+ 958 0092 9B6A     		ldr	r3, [r3, #40]
+ 959 0094 104A     		ldr	r2, .L28
+ 960 0096 03F07F43 		and	r3, r3, #-16777216
+ 961 009a 9362     		str	r3, [r2, #40]
  426:./Library/stm32f4xx_dma2d.c ****   bg_colorgreen = DMA2D_BG_InitStruct->DMA2D_BGC_GREEN << 8;
- 736              		.loc 1 426 3 is_stmt 1 view .LVU272
- 737              	.LVL41:
+ 962              		.loc 1 426 38
+ 963 009c 7B68     		ldr	r3, [r7, #4]
+ 964 009e 1B6A     		ldr	r3, [r3, #32]
+ 965              		.loc 1 426 17
+ 966 00a0 1B02     		lsls	r3, r3, #8
+ 967 00a2 FB60     		str	r3, [r7, #12]
  427:./Library/stm32f4xx_dma2d.c ****   bg_colorred = DMA2D_BG_InitStruct->DMA2D_BGC_RED << 16;
- 738              		.loc 1 427 3 view .LVU273
+ 968              		.loc 1 427 36
+ 969 00a4 7B68     		ldr	r3, [r7, #4]
+ 970 00a6 5B6A     		ldr	r3, [r3, #36]
+ 971              		.loc 1 427 15
+ 972 00a8 1B04     		lsls	r3, r3, #16
+ 973 00aa BB60     		str	r3, [r7, #8]
  428:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGCOLR |= (DMA2D_BG_InitStruct->DMA2D_BGC_BLUE | bg_colorgreen | bg_colorred);
- 739              		.loc 1 428 3 view .LVU274
- 740              		.loc 1 428 17 is_stmt 0 view .LVU275
- 741 004c 996A     		ldr	r1, [r3, #40]
- 742              		.loc 1 428 40 view .LVU276
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 22
-
-
- 743 004e C269     		ldr	r2, [r0, #28]
- 744              		.loc 1 428 57 view .LVU277
- 745 0050 046A     		ldr	r4, [r0, #32]
- 746              	.LVL42:
- 747              		.loc 1 428 57 view .LVU278
- 748 0052 42EA0422 		orr	r2, r2, r4, lsl #8
- 749              		.loc 1 428 73 view .LVU279
- 750 0056 446A     		ldr	r4, [r0, #36]
- 751 0058 42EA0442 		orr	r2, r2, r4, lsl #16
- 752              		.loc 1 428 17 view .LVU280
- 753 005c 0A43     		orrs	r2, r2, r1
- 754 005e 9A62     		str	r2, [r3, #40]
- 755              	.LVL43:
+ 974              		.loc 1 428 17
+ 975 00ac 0A4B     		ldr	r3, .L28
+ 976 00ae 9A6A     		ldr	r2, [r3, #40]
+ 977              		.loc 1 428 40
+ 978 00b0 7B68     		ldr	r3, [r7, #4]
+ 979 00b2 D969     		ldr	r1, [r3, #28]
+ 980              		.loc 1 428 57
+ 981 00b4 FB68     		ldr	r3, [r7, #12]
+ 982 00b6 1943     		orrs	r1, r1, r3
+ 983              		.loc 1 428 73
+ 984 00b8 BB68     		ldr	r3, [r7, #8]
+ 985 00ba 0B43     		orrs	r3, r3, r1
+ 986              		.loc 1 428 17
+ 987 00bc 0649     		ldr	r1, .L28
+ 988 00be 1343     		orrs	r3, r3, r2
+ 989 00c0 8B62     		str	r3, [r1, #40]
  429:./Library/stm32f4xx_dma2d.c ****   
  430:./Library/stm32f4xx_dma2d.c ****   /* Configures background CLUT memory address */
  431:./Library/stm32f4xx_dma2d.c ****   DMA2D->BGCMAR = DMA2D_BG_InitStruct->DMA2D_BGCMAR;
- 756              		.loc 1 431 3 is_stmt 1 view .LVU281
- 757              		.loc 1 431 38 is_stmt 0 view .LVU282
- 758 0060 826A     		ldr	r2, [r0, #40]
- 759              		.loc 1 431 17 view .LVU283
- 760 0062 1A63     		str	r2, [r3, #48]
+ 990              		.loc 1 431 8
+ 991 00c2 054A     		ldr	r2, .L28
+ 992              		.loc 1 431 38
+ 993 00c4 7B68     		ldr	r3, [r7, #4]
+ 994 00c6 9B6A     		ldr	r3, [r3, #40]
+ 995              		.loc 1 431 17
+ 996 00c8 1363     		str	r3, [r2, #48]
  432:./Library/stm32f4xx_dma2d.c **** 
  433:./Library/stm32f4xx_dma2d.c **** }
- 761              		.loc 1 433 1 view .LVU284
- 762 0064 5DF8044B 		ldr	r4, [sp], #4
- 763              	.LCFI7:
- 764              		.cfi_restore 4
- 765              		.cfi_def_cfa_offset 0
- 766              	.LVL44:
- 767              		.loc 1 433 1 view .LVU285
- 768 0068 7047     		bx	lr
- 769              	.L35:
- 770 006a 00BF     		.align	2
- 771              	.L34:
- 772 006c 00B00240 		.word	1073917952
- 773 0070 C000FC00 		.word	16515264
- 774              		.cfi_endproc
- 775              	.LFE131:
- 777              		.section	.text.DMA2D_BG_StructInit,"ax",%progbits
- 778              		.align	1
- 779              		.global	DMA2D_BG_StructInit
- 780              		.syntax unified
- 781              		.thumb
- 782              		.thumb_func
- 784              	DMA2D_BG_StructInit:
- 785              	.LVL45:
- 786              	.LFB132:
+ 997              		.loc 1 433 1
+ 998 00ca 00BF     		nop
+ 999 00cc 2437     		adds	r7, r7, #36
+ 1000              	.LCFI43:
+ 1001              		.cfi_def_cfa_offset 4
+ 1002 00ce BD46     		mov	sp, r7
+ 1003              	.LCFI44:
+ 1004              		.cfi_def_cfa_register 13
+ 1005              		@ sp needed
+ 1006 00d0 5DF8047B 		ldr	r7, [sp], #4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 26
+
+
+ 1007              	.LCFI45:
+ 1008              		.cfi_restore 7
+ 1009              		.cfi_def_cfa_offset 0
+ 1010 00d4 7047     		bx	lr
+ 1011              	.L29:
+ 1012 00d6 00BF     		.align	2
+ 1013              	.L28:
+ 1014 00d8 00B00240 		.word	1073917952
+ 1015 00dc C000FC00 		.word	16515264
+ 1016              		.cfi_endproc
+ 1017              	.LFE131:
+ 1019              		.section	.text.DMA2D_BG_StructInit,"ax",%progbits
+ 1020              		.align	1
+ 1021              		.global	DMA2D_BG_StructInit
+ 1022              		.syntax unified
+ 1023              		.thumb
+ 1024              		.thumb_func
+ 1026              	DMA2D_BG_StructInit:
+ 1027              	.LFB132:
  434:./Library/stm32f4xx_dma2d.c **** 
  435:./Library/stm32f4xx_dma2d.c **** /**
  436:./Library/stm32f4xx_dma2d.c ****   * @brief  Fills each DMA2D_BGStruct member with its default value.
@@ -1317,97 +1529,129 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  440:./Library/stm32f4xx_dma2d.c ****   */
  441:./Library/stm32f4xx_dma2d.c **** void DMA2D_BG_StructInit(DMA2D_BG_InitTypeDef* DMA2D_BG_InitStruct)
  442:./Library/stm32f4xx_dma2d.c **** {
- 787              		.loc 1 442 1 is_stmt 1 view -0
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 23
-
-
- 788              		.cfi_startproc
- 789              		@ args = 0, pretend = 0, frame = 0
- 790              		@ frame_needed = 0, uses_anonymous_args = 0
- 791              		@ link register save eliminated.
+ 1028              		.loc 1 442 1
+ 1029              		.cfi_startproc
+ 1030              		@ args = 0, pretend = 0, frame = 8
+ 1031              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1032              		@ link register save eliminated.
+ 1033 0000 80B4     		push	{r7}
+ 1034              	.LCFI46:
+ 1035              		.cfi_def_cfa_offset 4
+ 1036              		.cfi_offset 7, -4
+ 1037 0002 83B0     		sub	sp, sp, #12
+ 1038              	.LCFI47:
+ 1039              		.cfi_def_cfa_offset 16
+ 1040 0004 00AF     		add	r7, sp, #0
+ 1041              	.LCFI48:
+ 1042              		.cfi_def_cfa_register 7
+ 1043 0006 7860     		str	r0, [r7, #4]
  443:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background memory address */
  444:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGMA = 0x00;
- 792              		.loc 1 444 3 view .LVU287
- 793              		.loc 1 444 35 is_stmt 0 view .LVU288
- 794 0000 0023     		movs	r3, #0
- 795 0002 0360     		str	r3, [r0]
+ 1044              		.loc 1 444 35
+ 1045 0008 7B68     		ldr	r3, [r7, #4]
+ 1046 000a 0022     		movs	r2, #0
+ 1047 000c 1A60     		str	r2, [r3]
  445:./Library/stm32f4xx_dma2d.c **** 
  446:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background offset */
  447:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGO = 0x00;
- 796              		.loc 1 447 3 is_stmt 1 view .LVU289
- 797              		.loc 1 447 34 is_stmt 0 view .LVU290
- 798 0004 4360     		str	r3, [r0, #4]
+ 1048              		.loc 1 447 34
+ 1049 000e 7B68     		ldr	r3, [r7, #4]
+ 1050 0010 0022     		movs	r2, #0
+ 1051 0012 5A60     		str	r2, [r3, #4]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 27
+
+
  448:./Library/stm32f4xx_dma2d.c **** 
  449:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background color mode */
  450:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGCM = CM_ARGB8888;
- 799              		.loc 1 450 3 is_stmt 1 view .LVU291
- 800              		.loc 1 450 35 is_stmt 0 view .LVU292
- 801 0006 8360     		str	r3, [r0, #8]
+ 1052              		.loc 1 450 35
+ 1053 0014 7B68     		ldr	r3, [r7, #4]
+ 1054 0016 0022     		movs	r2, #0
+ 1055 0018 9A60     		str	r2, [r3, #8]
  451:./Library/stm32f4xx_dma2d.c **** 
  452:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background CLUT color mode */
  453:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BG_CLUT_CM = CLUT_CM_ARGB8888;
- 802              		.loc 1 453 3 is_stmt 1 view .LVU293
- 803              		.loc 1 453 41 is_stmt 0 view .LVU294
- 804 0008 C360     		str	r3, [r0, #12]
+ 1056              		.loc 1 453 41
+ 1057 001a 7B68     		ldr	r3, [r7, #4]
+ 1058 001c 0022     		movs	r2, #0
+ 1059 001e DA60     		str	r2, [r3, #12]
  454:./Library/stm32f4xx_dma2d.c **** 
  455:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background CLUT size */
  456:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BG_CLUT_SIZE = 0x00;
- 805              		.loc 1 456 3 is_stmt 1 view .LVU295
- 806              		.loc 1 456 43 is_stmt 0 view .LVU296
- 807 000a 0361     		str	r3, [r0, #16]
+ 1060              		.loc 1 456 43
+ 1061 0020 7B68     		ldr	r3, [r7, #4]
+ 1062 0022 0022     		movs	r2, #0
+ 1063 0024 1A61     		str	r2, [r3, #16]
  457:./Library/stm32f4xx_dma2d.c **** 
  458:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background alpha mode */
  459:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_MODE = NO_MODIF_ALPHA_VALUE;
- 808              		.loc 1 459 3 is_stmt 1 view .LVU297
- 809              		.loc 1 459 47 is_stmt 0 view .LVU298
- 810 000c 4361     		str	r3, [r0, #20]
+ 1064              		.loc 1 459 47
+ 1065 0026 7B68     		ldr	r3, [r7, #4]
+ 1066 0028 0022     		movs	r2, #0
+ 1067 002a 5A61     		str	r2, [r3, #20]
  460:./Library/stm32f4xx_dma2d.c **** 
  461:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background alpha value */
  462:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_VALUE = 0x00;
- 811              		.loc 1 462 3 is_stmt 1 view .LVU299
- 812              		.loc 1 462 48 is_stmt 0 view .LVU300
- 813 000e 8361     		str	r3, [r0, #24]
+ 1068              		.loc 1 462 48
+ 1069 002c 7B68     		ldr	r3, [r7, #4]
+ 1070 002e 0022     		movs	r2, #0
+ 1071 0030 9A61     		str	r2, [r3, #24]
  463:./Library/stm32f4xx_dma2d.c **** 
  464:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background blue value */
  465:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGC_BLUE = 0x00;
- 814              		.loc 1 465 3 is_stmt 1 view .LVU301
- 815              		.loc 1 465 39 is_stmt 0 view .LVU302
- 816 0010 C361     		str	r3, [r0, #28]
+ 1072              		.loc 1 465 39
+ 1073 0032 7B68     		ldr	r3, [r7, #4]
+ 1074 0034 0022     		movs	r2, #0
+ 1075 0036 DA61     		str	r2, [r3, #28]
  466:./Library/stm32f4xx_dma2d.c **** 
  467:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background green value */
  468:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGC_GREEN = 0x00;
- 817              		.loc 1 468 3 is_stmt 1 view .LVU303
- 818              		.loc 1 468 40 is_stmt 0 view .LVU304
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 24
-
-
- 819 0012 0362     		str	r3, [r0, #32]
+ 1076              		.loc 1 468 40
+ 1077 0038 7B68     		ldr	r3, [r7, #4]
+ 1078 003a 0022     		movs	r2, #0
+ 1079 003c 1A62     		str	r2, [r3, #32]
  469:./Library/stm32f4xx_dma2d.c **** 
  470:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background red value */
  471:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGC_RED = 0x00;
- 820              		.loc 1 471 3 is_stmt 1 view .LVU305
- 821              		.loc 1 471 38 is_stmt 0 view .LVU306
- 822 0014 4362     		str	r3, [r0, #36]
+ 1080              		.loc 1 471 38
+ 1081 003e 7B68     		ldr	r3, [r7, #4]
+ 1082 0040 0022     		movs	r2, #0
+ 1083 0042 5A62     		str	r2, [r3, #36]
  472:./Library/stm32f4xx_dma2d.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 28
+
+
  473:./Library/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background CLUT memory address */
  474:./Library/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGCMAR = 0x00;
- 823              		.loc 1 474 3 is_stmt 1 view .LVU307
- 824              		.loc 1 474 37 is_stmt 0 view .LVU308
- 825 0016 8362     		str	r3, [r0, #40]
+ 1084              		.loc 1 474 37
+ 1085 0044 7B68     		ldr	r3, [r7, #4]
+ 1086 0046 0022     		movs	r2, #0
+ 1087 0048 9A62     		str	r2, [r3, #40]
  475:./Library/stm32f4xx_dma2d.c **** }
- 826              		.loc 1 475 1 view .LVU309
- 827 0018 7047     		bx	lr
- 828              		.cfi_endproc
- 829              	.LFE132:
- 831              		.section	.text.DMA2D_FGStart,"ax",%progbits
- 832              		.align	1
- 833              		.global	DMA2D_FGStart
- 834              		.syntax unified
- 835              		.thumb
- 836              		.thumb_func
- 838              	DMA2D_FGStart:
- 839              	.LVL46:
- 840              	.LFB133:
+ 1088              		.loc 1 475 1
+ 1089 004a 00BF     		nop
+ 1090 004c 0C37     		adds	r7, r7, #12
+ 1091              	.LCFI49:
+ 1092              		.cfi_def_cfa_offset 4
+ 1093 004e BD46     		mov	sp, r7
+ 1094              	.LCFI50:
+ 1095              		.cfi_def_cfa_register 13
+ 1096              		@ sp needed
+ 1097 0050 5DF8047B 		ldr	r7, [sp], #4
+ 1098              	.LCFI51:
+ 1099              		.cfi_restore 7
+ 1100              		.cfi_def_cfa_offset 0
+ 1101 0054 7047     		bx	lr
+ 1102              		.cfi_endproc
+ 1103              	.LFE132:
+ 1105              		.section	.text.DMA2D_FGStart,"ax",%progbits
+ 1106              		.align	1
+ 1107              		.global	DMA2D_FGStart
+ 1108              		.syntax unified
+ 1109              		.thumb
+ 1110              		.thumb_func
+ 1112              	DMA2D_FGStart:
+ 1113              	.LFB133:
  476:./Library/stm32f4xx_dma2d.c **** 
  477:./Library/stm32f4xx_dma2d.c **** /**
  478:./Library/stm32f4xx_dma2d.c ****   * @brief  Start the automatic loading of the CLUT or abort the transfer.
@@ -1418,63 +1662,92 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  483:./Library/stm32f4xx_dma2d.c **** 
  484:./Library/stm32f4xx_dma2d.c **** void DMA2D_FGStart(FunctionalState NewState) 
  485:./Library/stm32f4xx_dma2d.c **** {
- 841              		.loc 1 485 1 is_stmt 1 view -0
- 842              		.cfi_startproc
- 843              		@ args = 0, pretend = 0, frame = 0
- 844              		@ frame_needed = 0, uses_anonymous_args = 0
- 845              		@ link register save eliminated.
+ 1114              		.loc 1 485 1
+ 1115              		.cfi_startproc
+ 1116              		@ args = 0, pretend = 0, frame = 8
+ 1117              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1118              		@ link register save eliminated.
+ 1119 0000 80B4     		push	{r7}
+ 1120              	.LCFI52:
+ 1121              		.cfi_def_cfa_offset 4
+ 1122              		.cfi_offset 7, -4
+ 1123 0002 83B0     		sub	sp, sp, #12
+ 1124              	.LCFI53:
+ 1125              		.cfi_def_cfa_offset 16
+ 1126 0004 00AF     		add	r7, sp, #0
+ 1127              	.LCFI54:
+ 1128              		.cfi_def_cfa_register 7
+ 1129 0006 0346     		mov	r3, r0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 29
+
+
+ 1130 0008 FB71     		strb	r3, [r7, #7]
  486:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  487:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 846              		.loc 1 487 3 view .LVU311
  488:./Library/stm32f4xx_dma2d.c **** 
  489:./Library/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
- 847              		.loc 1 489 3 view .LVU312
- 848              		.loc 1 489 6 is_stmt 0 view .LVU313
- 849 0000 28B1     		cbz	r0, .L38
+ 1131              		.loc 1 489 6
+ 1132 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1133 000c 002B     		cmp	r3, #0
+ 1134 000e 06D0     		beq	.L32
  490:./Library/stm32f4xx_dma2d.c ****   {
  491:./Library/stm32f4xx_dma2d.c ****     /* Start the automatic loading of the CLUT */
  492:./Library/stm32f4xx_dma2d.c ****     DMA2D->FGPFCCR |= DMA2D_FGPFCCR_START;
- 850              		.loc 1 492 5 is_stmt 1 view .LVU314
- 851              		.loc 1 492 20 is_stmt 0 view .LVU315
- 852 0002 064A     		ldr	r2, .L40
- 853 0004 D369     		ldr	r3, [r2, #28]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 25
-
-
- 854 0006 43F02003 		orr	r3, r3, #32
- 855 000a D361     		str	r3, [r2, #28]
- 856 000c 7047     		bx	lr
- 857              	.L38:
+ 1135              		.loc 1 492 20
+ 1136 0010 094B     		ldr	r3, .L35
+ 1137 0012 DB69     		ldr	r3, [r3, #28]
+ 1138 0014 084A     		ldr	r2, .L35
+ 1139 0016 43F02003 		orr	r3, r3, #32
+ 1140 001a D361     		str	r3, [r2, #28]
  493:./Library/stm32f4xx_dma2d.c ****   }
  494:./Library/stm32f4xx_dma2d.c ****   else
  495:./Library/stm32f4xx_dma2d.c ****   {
  496:./Library/stm32f4xx_dma2d.c ****     /* abort the transfer */
  497:./Library/stm32f4xx_dma2d.c ****     DMA2D->FGPFCCR &= (uint32_t)~DMA2D_FGPFCCR_START;
- 858              		.loc 1 497 5 is_stmt 1 view .LVU316
- 859              		.loc 1 497 20 is_stmt 0 view .LVU317
- 860 000e 034A     		ldr	r2, .L40
- 861 0010 D369     		ldr	r3, [r2, #28]
- 862 0012 23F02003 		bic	r3, r3, #32
- 863 0016 D361     		str	r3, [r2, #28]
  498:./Library/stm32f4xx_dma2d.c ****   }
  499:./Library/stm32f4xx_dma2d.c **** }
- 864              		.loc 1 499 1 view .LVU318
- 865 0018 7047     		bx	lr
- 866              	.L41:
- 867 001a 00BF     		.align	2
- 868              	.L40:
- 869 001c 00B00240 		.word	1073917952
- 870              		.cfi_endproc
- 871              	.LFE133:
- 873              		.section	.text.DMA2D_BGStart,"ax",%progbits
- 874              		.align	1
- 875              		.global	DMA2D_BGStart
- 876              		.syntax unified
- 877              		.thumb
- 878              		.thumb_func
- 880              	DMA2D_BGStart:
- 881              	.LVL47:
- 882              	.LFB134:
+ 1141              		.loc 1 499 1
+ 1142 001c 05E0     		b	.L34
+ 1143              	.L32:
+ 497:./Library/stm32f4xx_dma2d.c ****   }
+ 1144              		.loc 1 497 20
+ 1145 001e 064B     		ldr	r3, .L35
+ 1146 0020 DB69     		ldr	r3, [r3, #28]
+ 1147 0022 054A     		ldr	r2, .L35
+ 1148 0024 23F02003 		bic	r3, r3, #32
+ 1149 0028 D361     		str	r3, [r2, #28]
+ 1150              	.L34:
+ 1151              		.loc 1 499 1
+ 1152 002a 00BF     		nop
+ 1153 002c 0C37     		adds	r7, r7, #12
+ 1154              	.LCFI55:
+ 1155              		.cfi_def_cfa_offset 4
+ 1156 002e BD46     		mov	sp, r7
+ 1157              	.LCFI56:
+ 1158              		.cfi_def_cfa_register 13
+ 1159              		@ sp needed
+ 1160 0030 5DF8047B 		ldr	r7, [sp], #4
+ 1161              	.LCFI57:
+ 1162              		.cfi_restore 7
+ 1163              		.cfi_def_cfa_offset 0
+ 1164 0034 7047     		bx	lr
+ 1165              	.L36:
+ 1166 0036 00BF     		.align	2
+ 1167              	.L35:
+ 1168 0038 00B00240 		.word	1073917952
+ 1169              		.cfi_endproc
+ 1170              	.LFE133:
+ 1172              		.section	.text.DMA2D_BGStart,"ax",%progbits
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 30
+
+
+ 1173              		.align	1
+ 1174              		.global	DMA2D_BGStart
+ 1175              		.syntax unified
+ 1176              		.thumb
+ 1177              		.thumb_func
+ 1179              	DMA2D_BGStart:
+ 1180              	.LFB134:
  500:./Library/stm32f4xx_dma2d.c **** 
  501:./Library/stm32f4xx_dma2d.c **** /**
  502:./Library/stm32f4xx_dma2d.c ****   * @brief  Start the automatic loading of the CLUT or abort the transfer.
@@ -1485,63 +1758,89 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  507:./Library/stm32f4xx_dma2d.c ****   
  508:./Library/stm32f4xx_dma2d.c **** void DMA2D_BGStart(FunctionalState NewState) 
  509:./Library/stm32f4xx_dma2d.c **** {
- 883              		.loc 1 509 1 is_stmt 1 view -0
- 884              		.cfi_startproc
- 885              		@ args = 0, pretend = 0, frame = 0
- 886              		@ frame_needed = 0, uses_anonymous_args = 0
- 887              		@ link register save eliminated.
+ 1181              		.loc 1 509 1
+ 1182              		.cfi_startproc
+ 1183              		@ args = 0, pretend = 0, frame = 8
+ 1184              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1185              		@ link register save eliminated.
+ 1186 0000 80B4     		push	{r7}
+ 1187              	.LCFI58:
+ 1188              		.cfi_def_cfa_offset 4
+ 1189              		.cfi_offset 7, -4
+ 1190 0002 83B0     		sub	sp, sp, #12
+ 1191              	.LCFI59:
+ 1192              		.cfi_def_cfa_offset 16
+ 1193 0004 00AF     		add	r7, sp, #0
+ 1194              	.LCFI60:
+ 1195              		.cfi_def_cfa_register 7
+ 1196 0006 0346     		mov	r3, r0
+ 1197 0008 FB71     		strb	r3, [r7, #7]
  510:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  511:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 888              		.loc 1 511 3 view .LVU320
  512:./Library/stm32f4xx_dma2d.c ****   
  513:./Library/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
- 889              		.loc 1 513 3 view .LVU321
- 890              		.loc 1 513 6 is_stmt 0 view .LVU322
- 891 0000 28B1     		cbz	r0, .L43
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 26
-
-
+ 1198              		.loc 1 513 6
+ 1199 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1200 000c 002B     		cmp	r3, #0
+ 1201 000e 06D0     		beq	.L38
  514:./Library/stm32f4xx_dma2d.c ****   {
  515:./Library/stm32f4xx_dma2d.c ****     /* Start the automatic loading of the CLUT */
  516:./Library/stm32f4xx_dma2d.c ****     DMA2D->BGPFCCR |= DMA2D_BGPFCCR_START;
- 892              		.loc 1 516 5 is_stmt 1 view .LVU323
- 893              		.loc 1 516 20 is_stmt 0 view .LVU324
- 894 0002 064A     		ldr	r2, .L45
- 895 0004 536A     		ldr	r3, [r2, #36]
- 896 0006 43F02003 		orr	r3, r3, #32
- 897 000a 5362     		str	r3, [r2, #36]
- 898 000c 7047     		bx	lr
- 899              	.L43:
+ 1202              		.loc 1 516 20
+ 1203 0010 094B     		ldr	r3, .L41
+ 1204 0012 5B6A     		ldr	r3, [r3, #36]
+ 1205 0014 084A     		ldr	r2, .L41
+ 1206 0016 43F02003 		orr	r3, r3, #32
+ 1207 001a 5362     		str	r3, [r2, #36]
  517:./Library/stm32f4xx_dma2d.c ****   }
  518:./Library/stm32f4xx_dma2d.c ****   else
  519:./Library/stm32f4xx_dma2d.c ****   {
  520:./Library/stm32f4xx_dma2d.c ****     /* abort the transfer */
  521:./Library/stm32f4xx_dma2d.c ****     DMA2D->BGPFCCR &= (uint32_t)~DMA2D_BGPFCCR_START;
- 900              		.loc 1 521 5 is_stmt 1 view .LVU325
- 901              		.loc 1 521 20 is_stmt 0 view .LVU326
- 902 000e 034A     		ldr	r2, .L45
- 903 0010 536A     		ldr	r3, [r2, #36]
- 904 0012 23F02003 		bic	r3, r3, #32
- 905 0016 5362     		str	r3, [r2, #36]
  522:./Library/stm32f4xx_dma2d.c ****   }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 31
+
+
  523:./Library/stm32f4xx_dma2d.c **** }
- 906              		.loc 1 523 1 view .LVU327
- 907 0018 7047     		bx	lr
- 908              	.L46:
- 909 001a 00BF     		.align	2
- 910              	.L45:
- 911 001c 00B00240 		.word	1073917952
- 912              		.cfi_endproc
- 913              	.LFE134:
- 915              		.section	.text.DMA2D_DeadTimeConfig,"ax",%progbits
- 916              		.align	1
- 917              		.global	DMA2D_DeadTimeConfig
- 918              		.syntax unified
- 919              		.thumb
- 920              		.thumb_func
- 922              	DMA2D_DeadTimeConfig:
- 923              	.LVL48:
- 924              	.LFB135:
+ 1208              		.loc 1 523 1
+ 1209 001c 05E0     		b	.L40
+ 1210              	.L38:
+ 521:./Library/stm32f4xx_dma2d.c ****   }
+ 1211              		.loc 1 521 20
+ 1212 001e 064B     		ldr	r3, .L41
+ 1213 0020 5B6A     		ldr	r3, [r3, #36]
+ 1214 0022 054A     		ldr	r2, .L41
+ 1215 0024 23F02003 		bic	r3, r3, #32
+ 1216 0028 5362     		str	r3, [r2, #36]
+ 1217              	.L40:
+ 1218              		.loc 1 523 1
+ 1219 002a 00BF     		nop
+ 1220 002c 0C37     		adds	r7, r7, #12
+ 1221              	.LCFI61:
+ 1222              		.cfi_def_cfa_offset 4
+ 1223 002e BD46     		mov	sp, r7
+ 1224              	.LCFI62:
+ 1225              		.cfi_def_cfa_register 13
+ 1226              		@ sp needed
+ 1227 0030 5DF8047B 		ldr	r7, [sp], #4
+ 1228              	.LCFI63:
+ 1229              		.cfi_restore 7
+ 1230              		.cfi_def_cfa_offset 0
+ 1231 0034 7047     		bx	lr
+ 1232              	.L42:
+ 1233 0036 00BF     		.align	2
+ 1234              	.L41:
+ 1235 0038 00B00240 		.word	1073917952
+ 1236              		.cfi_endproc
+ 1237              	.LFE134:
+ 1239              		.section	.text.DMA2D_DeadTimeConfig,"ax",%progbits
+ 1240              		.align	1
+ 1241              		.global	DMA2D_DeadTimeConfig
+ 1242              		.syntax unified
+ 1243              		.thumb
+ 1244              		.thumb_func
+ 1246              	DMA2D_DeadTimeConfig:
+ 1247              	.LFB135:
  524:./Library/stm32f4xx_dma2d.c **** 
  525:./Library/stm32f4xx_dma2d.c **** /**
  526:./Library/stm32f4xx_dma2d.c ****   * @brief  Configures the DMA2D dead time.
@@ -1551,84 +1850,110 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  530:./Library/stm32f4xx_dma2d.c ****   */
  531:./Library/stm32f4xx_dma2d.c **** void DMA2D_DeadTimeConfig(uint32_t DMA2D_DeadTime, FunctionalState NewState)
  532:./Library/stm32f4xx_dma2d.c **** {
- 925              		.loc 1 532 1 is_stmt 1 view -0
- 926              		.cfi_startproc
- 927              		@ args = 0, pretend = 0, frame = 0
- 928              		@ frame_needed = 0, uses_anonymous_args = 0
- 929              		@ link register save eliminated.
+ 1248              		.loc 1 532 1
+ 1249              		.cfi_startproc
+ 1250              		@ args = 0, pretend = 0, frame = 16
+ 1251              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1252              		@ link register save eliminated.
+ 1253 0000 80B4     		push	{r7}
+ 1254              	.LCFI64:
+ 1255              		.cfi_def_cfa_offset 4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 32
+
+
+ 1256              		.cfi_offset 7, -4
+ 1257 0002 85B0     		sub	sp, sp, #20
+ 1258              	.LCFI65:
+ 1259              		.cfi_def_cfa_offset 24
+ 1260 0004 00AF     		add	r7, sp, #0
+ 1261              	.LCFI66:
+ 1262              		.cfi_def_cfa_register 7
+ 1263 0006 7860     		str	r0, [r7, #4]
+ 1264 0008 0B46     		mov	r3, r1
+ 1265 000a FB70     		strb	r3, [r7, #3]
  533:./Library/stm32f4xx_dma2d.c ****    uint32_t DeadTime;
- 930              		.loc 1 533 4 view .LVU329
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 27
-
-
  534:./Library/stm32f4xx_dma2d.c **** 
  535:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  536:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_DEAD_TIME(DMA2D_DeadTime));
- 931              		.loc 1 536 3 view .LVU330
  537:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 932              		.loc 1 537 3 view .LVU331
  538:./Library/stm32f4xx_dma2d.c **** 
  539:./Library/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
- 933              		.loc 1 539 3 view .LVU332
- 934              		.loc 1 539 6 is_stmt 0 view .LVU333
- 935 0000 69B1     		cbz	r1, .L48
+ 1266              		.loc 1 539 6
+ 1267 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 1268 000e 002B     		cmp	r3, #0
+ 1269 0010 13D0     		beq	.L44
  540:./Library/stm32f4xx_dma2d.c ****   {
  541:./Library/stm32f4xx_dma2d.c ****     /* Enable and Configures the dead time */
  542:./Library/stm32f4xx_dma2d.c ****     DMA2D->AMTCR &= (uint32_t)DEAD_MASK;
- 936              		.loc 1 542 5 is_stmt 1 view .LVU334
- 937              		.loc 1 542 18 is_stmt 0 view .LVU335
- 938 0002 0A4A     		ldr	r2, .L50
- 939 0004 D36C     		ldr	r3, [r2, #76]
- 940 0006 23F47F43 		bic	r3, r3, #65280
- 941 000a 23F00103 		bic	r3, r3, #1
- 942 000e D364     		str	r3, [r2, #76]
+ 1270              		.loc 1 542 18
+ 1271 0012 104B     		ldr	r3, .L47
+ 1272 0014 DB6C     		ldr	r3, [r3, #76]
+ 1273 0016 0F4A     		ldr	r2, .L47
+ 1274 0018 23F47F43 		bic	r3, r3, #65280
+ 1275 001c 23F00103 		bic	r3, r3, #1
+ 1276 0020 D364     		str	r3, [r2, #76]
  543:./Library/stm32f4xx_dma2d.c ****     DeadTime = DMA2D_DeadTime << 8;
- 943              		.loc 1 543 5 is_stmt 1 view .LVU336
- 944              	.LVL49:
+ 1277              		.loc 1 543 14
+ 1278 0022 7B68     		ldr	r3, [r7, #4]
+ 1279 0024 1B02     		lsls	r3, r3, #8
+ 1280 0026 FB60     		str	r3, [r7, #12]
  544:./Library/stm32f4xx_dma2d.c ****     DMA2D->AMTCR |= (DeadTime | DMA2D_AMTCR_EN);
- 945              		.loc 1 544 5 view .LVU337
- 946              		.loc 1 544 18 is_stmt 0 view .LVU338
- 947 0010 D36C     		ldr	r3, [r2, #76]
- 948 0012 43EA0020 		orr	r0, r3, r0, lsl #8
- 949              	.LVL50:
- 950              		.loc 1 544 18 view .LVU339
- 951 0016 40F00100 		orr	r0, r0, #1
- 952 001a D064     		str	r0, [r2, #76]
- 953 001c 7047     		bx	lr
- 954              	.LVL51:
- 955              	.L48:
+ 1281              		.loc 1 544 18
+ 1282 0028 0A4B     		ldr	r3, .L47
+ 1283 002a DA6C     		ldr	r2, [r3, #76]
+ 1284 002c FB68     		ldr	r3, [r7, #12]
+ 1285 002e 1343     		orrs	r3, r3, r2
+ 1286 0030 084A     		ldr	r2, .L47
+ 1287 0032 43F00103 		orr	r3, r3, #1
+ 1288 0036 D364     		str	r3, [r2, #76]
  545:./Library/stm32f4xx_dma2d.c ****   }
  546:./Library/stm32f4xx_dma2d.c ****   else
  547:./Library/stm32f4xx_dma2d.c ****   {
  548:./Library/stm32f4xx_dma2d.c ****      DMA2D->AMTCR &= ~(uint32_t)DMA2D_AMTCR_EN;
- 956              		.loc 1 548 6 is_stmt 1 view .LVU340
- 957              		.loc 1 548 19 is_stmt 0 view .LVU341
- 958 001e 034A     		ldr	r2, .L50
- 959 0020 D36C     		ldr	r3, [r2, #76]
- 960 0022 23F00103 		bic	r3, r3, #1
- 961 0026 D364     		str	r3, [r2, #76]
  549:./Library/stm32f4xx_dma2d.c ****   }
  550:./Library/stm32f4xx_dma2d.c **** }
- 962              		.loc 1 550 1 view .LVU342
- 963 0028 7047     		bx	lr
- 964              	.L51:
- 965 002a 00BF     		.align	2
- 966              	.L50:
- 967 002c 00B00240 		.word	1073917952
- 968              		.cfi_endproc
- 969              	.LFE135:
- 971              		.section	.text.DMA2D_LineWatermarkConfig,"ax",%progbits
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 28
+ 1289              		.loc 1 550 1
+ 1290 0038 05E0     		b	.L46
+ 1291              	.L44:
+ 548:./Library/stm32f4xx_dma2d.c ****   }
+ 1292              		.loc 1 548 19
+ 1293 003a 064B     		ldr	r3, .L47
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 33
 
 
- 972              		.align	1
- 973              		.global	DMA2D_LineWatermarkConfig
- 974              		.syntax unified
- 975              		.thumb
- 976              		.thumb_func
- 978              	DMA2D_LineWatermarkConfig:
- 979              	.LVL52:
- 980              	.LFB136:
+ 1294 003c DB6C     		ldr	r3, [r3, #76]
+ 1295 003e 054A     		ldr	r2, .L47
+ 1296 0040 23F00103 		bic	r3, r3, #1
+ 1297 0044 D364     		str	r3, [r2, #76]
+ 1298              	.L46:
+ 1299              		.loc 1 550 1
+ 1300 0046 00BF     		nop
+ 1301 0048 1437     		adds	r7, r7, #20
+ 1302              	.LCFI67:
+ 1303              		.cfi_def_cfa_offset 4
+ 1304 004a BD46     		mov	sp, r7
+ 1305              	.LCFI68:
+ 1306              		.cfi_def_cfa_register 13
+ 1307              		@ sp needed
+ 1308 004c 5DF8047B 		ldr	r7, [sp], #4
+ 1309              	.LCFI69:
+ 1310              		.cfi_restore 7
+ 1311              		.cfi_def_cfa_offset 0
+ 1312 0050 7047     		bx	lr
+ 1313              	.L48:
+ 1314 0052 00BF     		.align	2
+ 1315              	.L47:
+ 1316 0054 00B00240 		.word	1073917952
+ 1317              		.cfi_endproc
+ 1318              	.LFE135:
+ 1320              		.section	.text.DMA2D_LineWatermarkConfig,"ax",%progbits
+ 1321              		.align	1
+ 1322              		.global	DMA2D_LineWatermarkConfig
+ 1323              		.syntax unified
+ 1324              		.thumb
+ 1325              		.thumb_func
+ 1327              	DMA2D_LineWatermarkConfig:
+ 1328              	.LFB136:
  551:./Library/stm32f4xx_dma2d.c **** 
  552:./Library/stm32f4xx_dma2d.c **** /**
  553:./Library/stm32f4xx_dma2d.c ****   * @brief  Define the configuration of the line watermark .
@@ -1638,39 +1963,64 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  557:./Library/stm32f4xx_dma2d.c **** 
  558:./Library/stm32f4xx_dma2d.c **** void DMA2D_LineWatermarkConfig(uint32_t DMA2D_LWatermarkConfig)
  559:./Library/stm32f4xx_dma2d.c **** {
- 981              		.loc 1 559 1 is_stmt 1 view -0
- 982              		.cfi_startproc
- 983              		@ args = 0, pretend = 0, frame = 0
- 984              		@ frame_needed = 0, uses_anonymous_args = 0
- 985              		@ link register save eliminated.
+ 1329              		.loc 1 559 1
+ 1330              		.cfi_startproc
+ 1331              		@ args = 0, pretend = 0, frame = 8
+ 1332              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1333              		@ link register save eliminated.
+ 1334 0000 80B4     		push	{r7}
+ 1335              	.LCFI70:
+ 1336              		.cfi_def_cfa_offset 4
+ 1337              		.cfi_offset 7, -4
+ 1338 0002 83B0     		sub	sp, sp, #12
+ 1339              	.LCFI71:
+ 1340              		.cfi_def_cfa_offset 16
+ 1341 0004 00AF     		add	r7, sp, #0
+ 1342              	.LCFI72:
+ 1343              		.cfi_def_cfa_register 7
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 34
+
+
+ 1344 0006 7860     		str	r0, [r7, #4]
  560:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  561:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_LineWatermark(DMA2D_LWatermarkConfig));
- 986              		.loc 1 561 3 view .LVU344
  562:./Library/stm32f4xx_dma2d.c **** 
  563:./Library/stm32f4xx_dma2d.c ****   /* Sets the Line watermark configuration */
  564:./Library/stm32f4xx_dma2d.c ****   DMA2D->LWR = (uint32_t)DMA2D_LWatermarkConfig;
- 987              		.loc 1 564 3 view .LVU345
- 988              		.loc 1 564 14 is_stmt 0 view .LVU346
- 989 0000 014B     		ldr	r3, .L53
- 990 0002 9864     		str	r0, [r3, #72]
+ 1345              		.loc 1 564 8
+ 1346 0008 044A     		ldr	r2, .L50
+ 1347              		.loc 1 564 14
+ 1348 000a 7B68     		ldr	r3, [r7, #4]
+ 1349 000c 9364     		str	r3, [r2, #72]
  565:./Library/stm32f4xx_dma2d.c **** }
- 991              		.loc 1 565 1 view .LVU347
- 992 0004 7047     		bx	lr
- 993              	.L54:
- 994 0006 00BF     		.align	2
- 995              	.L53:
- 996 0008 00B00240 		.word	1073917952
- 997              		.cfi_endproc
- 998              	.LFE136:
- 1000              		.section	.text.DMA2D_ITConfig,"ax",%progbits
- 1001              		.align	1
- 1002              		.global	DMA2D_ITConfig
- 1003              		.syntax unified
- 1004              		.thumb
- 1005              		.thumb_func
- 1007              	DMA2D_ITConfig:
- 1008              	.LVL53:
- 1009              	.LFB137:
+ 1350              		.loc 1 565 1
+ 1351 000e 00BF     		nop
+ 1352 0010 0C37     		adds	r7, r7, #12
+ 1353              	.LCFI73:
+ 1354              		.cfi_def_cfa_offset 4
+ 1355 0012 BD46     		mov	sp, r7
+ 1356              	.LCFI74:
+ 1357              		.cfi_def_cfa_register 13
+ 1358              		@ sp needed
+ 1359 0014 5DF8047B 		ldr	r7, [sp], #4
+ 1360              	.LCFI75:
+ 1361              		.cfi_restore 7
+ 1362              		.cfi_def_cfa_offset 0
+ 1363 0018 7047     		bx	lr
+ 1364              	.L51:
+ 1365 001a 00BF     		.align	2
+ 1366              	.L50:
+ 1367 001c 00B00240 		.word	1073917952
+ 1368              		.cfi_endproc
+ 1369              	.LFE136:
+ 1371              		.section	.text.DMA2D_ITConfig,"ax",%progbits
+ 1372              		.align	1
+ 1373              		.global	DMA2D_ITConfig
+ 1374              		.syntax unified
+ 1375              		.thumb
+ 1376              		.thumb_func
+ 1378              	DMA2D_ITConfig:
+ 1379              	.LFB137:
  566:./Library/stm32f4xx_dma2d.c **** 
  567:./Library/stm32f4xx_dma2d.c **** /**
  568:./Library/stm32f4xx_dma2d.c ****   * @}
@@ -1678,9 +2028,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  570:./Library/stm32f4xx_dma2d.c **** 
  571:./Library/stm32f4xx_dma2d.c **** /** @defgroup DMA2D_Group2 Interrupts and flags management functions
  572:./Library/stm32f4xx_dma2d.c ****  *  @brief   Interrupts and flags management functions
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 29
-
-
  573:./Library/stm32f4xx_dma2d.c ****  *
  574:./Library/stm32f4xx_dma2d.c **** @verbatim
  575:./Library/stm32f4xx_dma2d.c ****  ===============================================================================
@@ -1691,6 +2038,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  580:./Library/stm32f4xx_dma2d.c ****          Interrupts and to get the status and clear flags and Interrupts 
  581:./Library/stm32f4xx_dma2d.c ****          pending bits.
  582:./Library/stm32f4xx_dma2d.c ****     [..] The DMA2D provides 6 Interrupts sources and 6 Flags
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 35
+
+
  583:./Library/stm32f4xx_dma2d.c ****     
  584:./Library/stm32f4xx_dma2d.c ****     *** Flags ***
  585:./Library/stm32f4xx_dma2d.c ****     =============
@@ -1735,73 +2085,101 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  624:./Library/stm32f4xx_dma2d.c **** 
  625:./Library/stm32f4xx_dma2d.c **** void DMA2D_ITConfig(uint32_t DMA2D_IT, FunctionalState NewState)
  626:./Library/stm32f4xx_dma2d.c **** {
- 1010              		.loc 1 626 1 is_stmt 1 view -0
- 1011              		.cfi_startproc
- 1012              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 30
+ 1380              		.loc 1 626 1
+ 1381              		.cfi_startproc
+ 1382              		@ args = 0, pretend = 0, frame = 8
+ 1383              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1384              		@ link register save eliminated.
+ 1385 0000 80B4     		push	{r7}
+ 1386              	.LCFI76:
+ 1387              		.cfi_def_cfa_offset 4
+ 1388              		.cfi_offset 7, -4
+ 1389 0002 83B0     		sub	sp, sp, #12
+ 1390              	.LCFI77:
+ 1391              		.cfi_def_cfa_offset 16
+ 1392 0004 00AF     		add	r7, sp, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 36
 
 
- 1013              		@ frame_needed = 0, uses_anonymous_args = 0
- 1014              		@ link register save eliminated.
+ 1393              	.LCFI78:
+ 1394              		.cfi_def_cfa_register 7
+ 1395 0006 7860     		str	r0, [r7, #4]
+ 1396 0008 0B46     		mov	r3, r1
+ 1397 000a FB70     		strb	r3, [r7, #3]
  627:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  628:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_IT(DMA2D_IT));
- 1015              		.loc 1 628 3 view .LVU349
  629:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
- 1016              		.loc 1 629 3 view .LVU350
  630:./Library/stm32f4xx_dma2d.c **** 
  631:./Library/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
- 1017              		.loc 1 631 3 view .LVU351
- 1018              		.loc 1 631 6 is_stmt 0 view .LVU352
- 1019 0000 21B1     		cbz	r1, .L56
+ 1398              		.loc 1 631 6
+ 1399 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 1400 000e 002B     		cmp	r3, #0
+ 1401 0010 06D0     		beq	.L53
  632:./Library/stm32f4xx_dma2d.c ****   {
  633:./Library/stm32f4xx_dma2d.c ****     /* Enable the selected DMA2D interrupts */
  634:./Library/stm32f4xx_dma2d.c ****     DMA2D->CR |= DMA2D_IT;
- 1020              		.loc 1 634 5 is_stmt 1 view .LVU353
- 1021              		.loc 1 634 15 is_stmt 0 view .LVU354
- 1022 0002 054A     		ldr	r2, .L58
- 1023 0004 1368     		ldr	r3, [r2]
- 1024 0006 1843     		orrs	r0, r0, r3
- 1025              	.LVL54:
- 1026              		.loc 1 634 15 view .LVU355
- 1027 0008 1060     		str	r0, [r2]
- 1028 000a 7047     		bx	lr
- 1029              	.LVL55:
- 1030              	.L56:
+ 1402              		.loc 1 634 15
+ 1403 0012 0A4B     		ldr	r3, .L56
+ 1404 0014 1A68     		ldr	r2, [r3]
+ 1405 0016 0949     		ldr	r1, .L56
+ 1406 0018 7B68     		ldr	r3, [r7, #4]
+ 1407 001a 1343     		orrs	r3, r3, r2
+ 1408 001c 0B60     		str	r3, [r1]
  635:./Library/stm32f4xx_dma2d.c ****   }
  636:./Library/stm32f4xx_dma2d.c ****   else
  637:./Library/stm32f4xx_dma2d.c ****   {
  638:./Library/stm32f4xx_dma2d.c ****     /* Disable the selected DMA2D interrupts */
  639:./Library/stm32f4xx_dma2d.c ****     DMA2D->CR &= (uint32_t)~DMA2D_IT;
- 1031              		.loc 1 639 5 is_stmt 1 view .LVU356
- 1032              		.loc 1 639 15 is_stmt 0 view .LVU357
- 1033 000c 024A     		ldr	r2, .L58
- 1034 000e 1368     		ldr	r3, [r2]
- 1035 0010 23EA0000 		bic	r0, r3, r0
- 1036              	.LVL56:
- 1037              		.loc 1 639 15 view .LVU358
- 1038 0014 1060     		str	r0, [r2]
  640:./Library/stm32f4xx_dma2d.c ****   }
  641:./Library/stm32f4xx_dma2d.c **** }
- 1039              		.loc 1 641 1 view .LVU359
- 1040 0016 7047     		bx	lr
- 1041              	.L59:
- 1042              		.align	2
- 1043              	.L58:
- 1044 0018 00B00240 		.word	1073917952
- 1045              		.cfi_endproc
- 1046              	.LFE137:
- 1048              		.section	.text.DMA2D_GetFlagStatus,"ax",%progbits
- 1049              		.align	1
- 1050              		.global	DMA2D_GetFlagStatus
- 1051              		.syntax unified
- 1052              		.thumb
- 1053              		.thumb_func
- 1055              	DMA2D_GetFlagStatus:
- 1056              	.LVL57:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 31
+ 1409              		.loc 1 641 1
+ 1410 001e 06E0     		b	.L55
+ 1411              	.L53:
+ 639:./Library/stm32f4xx_dma2d.c ****   }
+ 1412              		.loc 1 639 15
+ 1413 0020 064B     		ldr	r3, .L56
+ 1414 0022 1A68     		ldr	r2, [r3]
+ 639:./Library/stm32f4xx_dma2d.c ****   }
+ 1415              		.loc 1 639 28
+ 1416 0024 7B68     		ldr	r3, [r7, #4]
+ 1417 0026 DB43     		mvns	r3, r3
+ 639:./Library/stm32f4xx_dma2d.c ****   }
+ 1418              		.loc 1 639 15
+ 1419 0028 0449     		ldr	r1, .L56
+ 1420 002a 1340     		ands	r3, r3, r2
+ 1421 002c 0B60     		str	r3, [r1]
+ 1422              	.L55:
+ 1423              		.loc 1 641 1
+ 1424 002e 00BF     		nop
+ 1425 0030 0C37     		adds	r7, r7, #12
+ 1426              	.LCFI79:
+ 1427              		.cfi_def_cfa_offset 4
+ 1428 0032 BD46     		mov	sp, r7
+ 1429              	.LCFI80:
+ 1430              		.cfi_def_cfa_register 13
+ 1431              		@ sp needed
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 37
 
 
- 1057              	.LFB138:
+ 1432 0034 5DF8047B 		ldr	r7, [sp], #4
+ 1433              	.LCFI81:
+ 1434              		.cfi_restore 7
+ 1435              		.cfi_def_cfa_offset 0
+ 1436 0038 7047     		bx	lr
+ 1437              	.L57:
+ 1438 003a 00BF     		.align	2
+ 1439              	.L56:
+ 1440 003c 00B00240 		.word	1073917952
+ 1441              		.cfi_endproc
+ 1442              	.LFE137:
+ 1444              		.section	.text.DMA2D_GetFlagStatus,"ax",%progbits
+ 1445              		.align	1
+ 1446              		.global	DMA2D_GetFlagStatus
+ 1447              		.syntax unified
+ 1448              		.thumb
+ 1449              		.thumb_func
+ 1451              	DMA2D_GetFlagStatus:
+ 1452              	.LFB138:
  642:./Library/stm32f4xx_dma2d.c **** 
  643:./Library/stm32f4xx_dma2d.c **** /**
  644:./Library/stm32f4xx_dma2d.c ****   * @brief  Checks whether the specified DMA2D's flag is set or not.
@@ -1818,70 +2196,98 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  655:./Library/stm32f4xx_dma2d.c **** 
  656:./Library/stm32f4xx_dma2d.c **** FlagStatus DMA2D_GetFlagStatus(uint32_t DMA2D_FLAG)
  657:./Library/stm32f4xx_dma2d.c **** {
- 1058              		.loc 1 657 1 is_stmt 1 view -0
- 1059              		.cfi_startproc
- 1060              		@ args = 0, pretend = 0, frame = 0
- 1061              		@ frame_needed = 0, uses_anonymous_args = 0
- 1062              		@ link register save eliminated.
+ 1453              		.loc 1 657 1
+ 1454              		.cfi_startproc
+ 1455              		@ args = 0, pretend = 0, frame = 16
+ 1456              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1457              		@ link register save eliminated.
+ 1458 0000 80B4     		push	{r7}
+ 1459              	.LCFI82:
+ 1460              		.cfi_def_cfa_offset 4
+ 1461              		.cfi_offset 7, -4
+ 1462 0002 85B0     		sub	sp, sp, #20
+ 1463              	.LCFI83:
+ 1464              		.cfi_def_cfa_offset 24
+ 1465 0004 00AF     		add	r7, sp, #0
+ 1466              	.LCFI84:
+ 1467              		.cfi_def_cfa_register 7
+ 1468 0006 7860     		str	r0, [r7, #4]
  658:./Library/stm32f4xx_dma2d.c ****   FlagStatus bitstatus = RESET;
- 1063              		.loc 1 658 3 view .LVU361
+ 1469              		.loc 1 658 14
+ 1470 0008 0023     		movs	r3, #0
+ 1471 000a FB73     		strb	r3, [r7, #15]
  659:./Library/stm32f4xx_dma2d.c ****   
  660:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 38
+
+
  661:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_GET_FLAG(DMA2D_FLAG));
- 1064              		.loc 1 661 3 view .LVU362
  662:./Library/stm32f4xx_dma2d.c ****   
  663:./Library/stm32f4xx_dma2d.c ****   /* Check the status of the specified DMA2D flag */
  664:./Library/stm32f4xx_dma2d.c ****   if (((DMA2D->ISR) & DMA2D_FLAG) != (uint32_t)RESET)
- 1065              		.loc 1 664 3 view .LVU363
- 1066              		.loc 1 664 14 is_stmt 0 view .LVU364
- 1067 0000 034B     		ldr	r3, .L63
- 1068 0002 5B68     		ldr	r3, [r3, #4]
- 1069              		.loc 1 664 6 view .LVU365
- 1070 0004 0342     		tst	r3, r0
- 1071 0006 01D0     		beq	.L62
+ 1472              		.loc 1 664 14
+ 1473 000c 084B     		ldr	r3, .L62
+ 1474 000e 5A68     		ldr	r2, [r3, #4]
+ 1475              		.loc 1 664 21
+ 1476 0010 7B68     		ldr	r3, [r7, #4]
+ 1477 0012 1340     		ands	r3, r3, r2
+ 1478              		.loc 1 664 6
+ 1479 0014 002B     		cmp	r3, #0
+ 1480 0016 02D0     		beq	.L59
  665:./Library/stm32f4xx_dma2d.c ****   {
  666:./Library/stm32f4xx_dma2d.c ****     /* DMA2D_FLAG is set */
  667:./Library/stm32f4xx_dma2d.c ****     bitstatus = SET;
- 1072              		.loc 1 667 15 view .LVU366
- 1073 0008 0120     		movs	r0, #1
- 1074              	.LVL58:
- 1075              		.loc 1 667 15 view .LVU367
- 1076 000a 7047     		bx	lr
- 1077              	.LVL59:
- 1078              	.L62:
+ 1481              		.loc 1 667 15
+ 1482 0018 0123     		movs	r3, #1
+ 1483 001a FB73     		strb	r3, [r7, #15]
+ 1484 001c 01E0     		b	.L60
+ 1485              	.L59:
  668:./Library/stm32f4xx_dma2d.c ****   }
  669:./Library/stm32f4xx_dma2d.c ****   else
  670:./Library/stm32f4xx_dma2d.c ****   {
  671:./Library/stm32f4xx_dma2d.c ****     /* DMA2D_FLAG is reset */
  672:./Library/stm32f4xx_dma2d.c ****     bitstatus = RESET;
- 1079              		.loc 1 672 15 view .LVU368
- 1080 000c 0020     		movs	r0, #0
- 1081              	.LVL60:
+ 1486              		.loc 1 672 15
+ 1487 001e 0023     		movs	r3, #0
+ 1488 0020 FB73     		strb	r3, [r7, #15]
+ 1489              	.L60:
  673:./Library/stm32f4xx_dma2d.c ****   }
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 32
-
-
  674:./Library/stm32f4xx_dma2d.c ****   /* Return the DMA2D_FLAG status */
  675:./Library/stm32f4xx_dma2d.c ****   return bitstatus;
- 1082              		.loc 1 675 3 is_stmt 1 view .LVU369
+ 1490              		.loc 1 675 10
+ 1491 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
  676:./Library/stm32f4xx_dma2d.c **** }
- 1083              		.loc 1 676 1 is_stmt 0 view .LVU370
- 1084 000e 7047     		bx	lr
- 1085              	.L64:
- 1086              		.align	2
- 1087              	.L63:
- 1088 0010 00B00240 		.word	1073917952
- 1089              		.cfi_endproc
- 1090              	.LFE138:
- 1092              		.section	.text.DMA2D_ClearFlag,"ax",%progbits
- 1093              		.align	1
- 1094              		.global	DMA2D_ClearFlag
- 1095              		.syntax unified
- 1096              		.thumb
- 1097              		.thumb_func
- 1099              	DMA2D_ClearFlag:
- 1100              	.LVL61:
- 1101              	.LFB139:
+ 1492              		.loc 1 676 1
+ 1493 0024 1846     		mov	r0, r3
+ 1494 0026 1437     		adds	r7, r7, #20
+ 1495              	.LCFI85:
+ 1496              		.cfi_def_cfa_offset 4
+ 1497 0028 BD46     		mov	sp, r7
+ 1498              	.LCFI86:
+ 1499              		.cfi_def_cfa_register 13
+ 1500              		@ sp needed
+ 1501 002a 5DF8047B 		ldr	r7, [sp], #4
+ 1502              	.LCFI87:
+ 1503              		.cfi_restore 7
+ 1504              		.cfi_def_cfa_offset 0
+ 1505 002e 7047     		bx	lr
+ 1506              	.L63:
+ 1507              		.align	2
+ 1508              	.L62:
+ 1509 0030 00B00240 		.word	1073917952
+ 1510              		.cfi_endproc
+ 1511              	.LFE138:
+ 1513              		.section	.text.DMA2D_ClearFlag,"ax",%progbits
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 39
+
+
+ 1514              		.align	1
+ 1515              		.global	DMA2D_ClearFlag
+ 1516              		.syntax unified
+ 1517              		.thumb
+ 1518              		.thumb_func
+ 1520              	DMA2D_ClearFlag:
+ 1521              	.LFB139:
  677:./Library/stm32f4xx_dma2d.c **** 
  678:./Library/stm32f4xx_dma2d.c **** /**
  679:./Library/stm32f4xx_dma2d.c ****   * @brief  Clears the DMA2D's pending flags.
@@ -1897,42 +2303,64 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  689:./Library/stm32f4xx_dma2d.c ****   */
  690:./Library/stm32f4xx_dma2d.c **** void DMA2D_ClearFlag(uint32_t DMA2D_FLAG)
  691:./Library/stm32f4xx_dma2d.c **** {
- 1102              		.loc 1 691 1 is_stmt 1 view -0
- 1103              		.cfi_startproc
- 1104              		@ args = 0, pretend = 0, frame = 0
- 1105              		@ frame_needed = 0, uses_anonymous_args = 0
- 1106              		@ link register save eliminated.
+ 1522              		.loc 1 691 1
+ 1523              		.cfi_startproc
+ 1524              		@ args = 0, pretend = 0, frame = 8
+ 1525              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1526              		@ link register save eliminated.
+ 1527 0000 80B4     		push	{r7}
+ 1528              	.LCFI88:
+ 1529              		.cfi_def_cfa_offset 4
+ 1530              		.cfi_offset 7, -4
+ 1531 0002 83B0     		sub	sp, sp, #12
+ 1532              	.LCFI89:
+ 1533              		.cfi_def_cfa_offset 16
+ 1534 0004 00AF     		add	r7, sp, #0
+ 1535              	.LCFI90:
+ 1536              		.cfi_def_cfa_register 7
+ 1537 0006 7860     		str	r0, [r7, #4]
  692:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  693:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_GET_FLAG(DMA2D_FLAG));
- 1107              		.loc 1 693 3 view .LVU372
  694:./Library/stm32f4xx_dma2d.c ****     
  695:./Library/stm32f4xx_dma2d.c ****   /* Clear the corresponding DMA2D flag */
  696:./Library/stm32f4xx_dma2d.c ****   DMA2D->IFCR = (uint32_t)DMA2D_FLAG;
- 1108              		.loc 1 696 3 view .LVU373
- 1109              		.loc 1 696 15 is_stmt 0 view .LVU374
- 1110 0000 014B     		ldr	r3, .L66
- 1111 0002 9860     		str	r0, [r3, #8]
+ 1538              		.loc 1 696 8
+ 1539 0008 044A     		ldr	r2, .L65
+ 1540              		.loc 1 696 15
+ 1541 000a 7B68     		ldr	r3, [r7, #4]
+ 1542 000c 9360     		str	r3, [r2, #8]
  697:./Library/stm32f4xx_dma2d.c **** }
- 1112              		.loc 1 697 1 view .LVU375
- 1113 0004 7047     		bx	lr
- 1114              	.L67:
- 1115 0006 00BF     		.align	2
- 1116              	.L66:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 33
+ 1543              		.loc 1 697 1
+ 1544 000e 00BF     		nop
+ 1545 0010 0C37     		adds	r7, r7, #12
+ 1546              	.LCFI91:
+ 1547              		.cfi_def_cfa_offset 4
+ 1548 0012 BD46     		mov	sp, r7
+ 1549              	.LCFI92:
+ 1550              		.cfi_def_cfa_register 13
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 40
 
 
- 1117 0008 00B00240 		.word	1073917952
- 1118              		.cfi_endproc
- 1119              	.LFE139:
- 1121              		.section	.text.DMA2D_GetITStatus,"ax",%progbits
- 1122              		.align	1
- 1123              		.global	DMA2D_GetITStatus
- 1124              		.syntax unified
- 1125              		.thumb
- 1126              		.thumb_func
- 1128              	DMA2D_GetITStatus:
- 1129              	.LVL62:
- 1130              	.LFB140:
+ 1551              		@ sp needed
+ 1552 0014 5DF8047B 		ldr	r7, [sp], #4
+ 1553              	.LCFI93:
+ 1554              		.cfi_restore 7
+ 1555              		.cfi_def_cfa_offset 0
+ 1556 0018 7047     		bx	lr
+ 1557              	.L66:
+ 1558 001a 00BF     		.align	2
+ 1559              	.L65:
+ 1560 001c 00B00240 		.word	1073917952
+ 1561              		.cfi_endproc
+ 1562              	.LFE139:
+ 1564              		.section	.text.DMA2D_GetITStatus,"ax",%progbits
+ 1565              		.align	1
+ 1566              		.global	DMA2D_GetITStatus
+ 1567              		.syntax unified
+ 1568              		.thumb
+ 1569              		.thumb_func
+ 1571              	DMA2D_GetITStatus:
+ 1572              	.LFB140:
  698:./Library/stm32f4xx_dma2d.c **** 
  699:./Library/stm32f4xx_dma2d.c **** /**
  700:./Library/stm32f4xx_dma2d.c ****   * @brief  Checks whether the specified DMA2D's interrupt has occurred or not.
@@ -1948,99 +2376,132 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  710:./Library/stm32f4xx_dma2d.c ****   */
  711:./Library/stm32f4xx_dma2d.c **** ITStatus DMA2D_GetITStatus(uint32_t DMA2D_IT)
  712:./Library/stm32f4xx_dma2d.c **** {
- 1131              		.loc 1 712 1 is_stmt 1 view -0
- 1132              		.cfi_startproc
- 1133              		@ args = 0, pretend = 0, frame = 0
- 1134              		@ frame_needed = 0, uses_anonymous_args = 0
- 1135              		@ link register save eliminated.
- 1136              		.loc 1 712 1 is_stmt 0 view .LVU377
- 1137 0000 0346     		mov	r3, r0
+ 1573              		.loc 1 712 1
+ 1574              		.cfi_startproc
+ 1575              		@ args = 0, pretend = 0, frame = 16
+ 1576              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1577              		@ link register save eliminated.
+ 1578 0000 80B4     		push	{r7}
+ 1579              	.LCFI94:
+ 1580              		.cfi_def_cfa_offset 4
+ 1581              		.cfi_offset 7, -4
+ 1582 0002 85B0     		sub	sp, sp, #20
+ 1583              	.LCFI95:
+ 1584              		.cfi_def_cfa_offset 24
+ 1585 0004 00AF     		add	r7, sp, #0
+ 1586              	.LCFI96:
+ 1587              		.cfi_def_cfa_register 7
+ 1588 0006 7860     		str	r0, [r7, #4]
  713:./Library/stm32f4xx_dma2d.c ****   ITStatus bitstatus = RESET;
- 1138              		.loc 1 713 3 is_stmt 1 view .LVU378
- 1139              	.LVL63:
+ 1589              		.loc 1 713 12
+ 1590 0008 0023     		movs	r3, #0
+ 1591 000a FB73     		strb	r3, [r7, #15]
  714:./Library/stm32f4xx_dma2d.c ****   uint32_t DMA2D_IT_FLAG = DMA2D_IT >> 8;
- 1140              		.loc 1 714 3 view .LVU379
+ 1592              		.loc 1 714 12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 41
+
+
+ 1593 000c 7B68     		ldr	r3, [r7, #4]
+ 1594 000e 1B0A     		lsrs	r3, r3, #8
+ 1595 0010 BB60     		str	r3, [r7, #8]
  715:./Library/stm32f4xx_dma2d.c ****   
  716:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  717:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_IT(DMA2D_IT));
- 1141              		.loc 1 717 3 view .LVU380
  718:./Library/stm32f4xx_dma2d.c **** 
  719:./Library/stm32f4xx_dma2d.c ****   if ((DMA2D->ISR & DMA2D_IT_FLAG) != (uint32_t)RESET)
- 1142              		.loc 1 719 3 view .LVU381
- 1143              		.loc 1 719 13 is_stmt 0 view .LVU382
- 1144 0002 074A     		ldr	r2, .L73
- 1145 0004 5268     		ldr	r2, [r2, #4]
- 1146              		.loc 1 719 6 view .LVU383
- 1147 0006 12EA1022 		ands	r2, r2, r0, lsr #8
- 1148 000a 06D0     		beq	.L71
+ 1596              		.loc 1 719 13
+ 1597 0012 104B     		ldr	r3, .L73
+ 1598 0014 5A68     		ldr	r2, [r3, #4]
+ 1599              		.loc 1 719 19
+ 1600 0016 BB68     		ldr	r3, [r7, #8]
+ 1601 0018 1340     		ands	r3, r3, r2
+ 1602              		.loc 1 719 6
+ 1603 001a 002B     		cmp	r3, #0
+ 1604 001c 02D0     		beq	.L68
  720:./Library/stm32f4xx_dma2d.c ****   {
  721:./Library/stm32f4xx_dma2d.c ****     bitstatus = SET;
- 1149              		.loc 1 721 15 view .LVU384
- 1150 000c 0120     		movs	r0, #1
- 1151              	.LVL64:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 34
-
-
- 1152              	.L69:
+ 1605              		.loc 1 721 15
+ 1606 001e 0123     		movs	r3, #1
+ 1607 0020 FB73     		strb	r3, [r7, #15]
+ 1608 0022 01E0     		b	.L69
+ 1609              	.L68:
  722:./Library/stm32f4xx_dma2d.c ****   }
  723:./Library/stm32f4xx_dma2d.c ****   else
  724:./Library/stm32f4xx_dma2d.c ****   {
  725:./Library/stm32f4xx_dma2d.c ****     bitstatus = RESET;
+ 1610              		.loc 1 725 15
+ 1611 0024 0023     		movs	r3, #0
+ 1612 0026 FB73     		strb	r3, [r7, #15]
+ 1613              	.L69:
  726:./Library/stm32f4xx_dma2d.c ****   }
  727:./Library/stm32f4xx_dma2d.c ****   
  728:./Library/stm32f4xx_dma2d.c ****   if (((DMA2D->CR & DMA2D_IT) != (uint32_t)RESET) && (bitstatus != (uint32_t)RESET))
- 1153              		.loc 1 728 3 is_stmt 1 view .LVU385
- 1154              		.loc 1 728 14 is_stmt 0 view .LVU386
- 1155 000e 044A     		ldr	r2, .L73
- 1156 0010 1268     		ldr	r2, [r2]
- 1157              		.loc 1 728 6 view .LVU387
- 1158 0012 1A42     		tst	r2, r3
- 1159 0014 00D1     		bne	.L70
+ 1614              		.loc 1 728 14
+ 1615 0028 0A4B     		ldr	r3, .L73
+ 1616 002a 1A68     		ldr	r2, [r3]
+ 1617              		.loc 1 728 19
+ 1618 002c 7B68     		ldr	r3, [r7, #4]
+ 1619 002e 1340     		ands	r3, r3, r2
+ 1620              		.loc 1 728 6
+ 1621 0030 002B     		cmp	r3, #0
+ 1622 0032 05D0     		beq	.L70
+ 1623              		.loc 1 728 51 discriminator 1
+ 1624 0034 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1625 0036 002B     		cmp	r3, #0
+ 1626 0038 02D0     		beq	.L70
  729:./Library/stm32f4xx_dma2d.c ****   {
  730:./Library/stm32f4xx_dma2d.c ****     bitstatus = SET;
+ 1627              		.loc 1 730 15
+ 1628 003a 0123     		movs	r3, #1
+ 1629 003c FB73     		strb	r3, [r7, #15]
+ 1630 003e 01E0     		b	.L71
+ 1631              	.L70:
  731:./Library/stm32f4xx_dma2d.c ****   }
  732:./Library/stm32f4xx_dma2d.c ****   else
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 42
+
+
  733:./Library/stm32f4xx_dma2d.c ****   {
  734:./Library/stm32f4xx_dma2d.c ****     bitstatus = RESET;
- 1160              		.loc 1 734 15 view .LVU388
- 1161 0016 0020     		movs	r0, #0
- 1162              	.LVL65:
- 1163              	.L70:
+ 1632              		.loc 1 734 15
+ 1633 0040 0023     		movs	r3, #0
+ 1634 0042 FB73     		strb	r3, [r7, #15]
+ 1635              	.L71:
  735:./Library/stm32f4xx_dma2d.c ****   }
  736:./Library/stm32f4xx_dma2d.c ****   return bitstatus;
- 1164              		.loc 1 736 3 is_stmt 1 view .LVU389
+ 1636              		.loc 1 736 10
+ 1637 0044 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
  737:./Library/stm32f4xx_dma2d.c **** }
- 1165              		.loc 1 737 1 is_stmt 0 view .LVU390
- 1166 0018 7047     		bx	lr
- 1167              	.LVL66:
- 1168              	.L71:
- 725:./Library/stm32f4xx_dma2d.c ****   }
- 1169              		.loc 1 725 15 view .LVU391
- 1170 001a 0020     		movs	r0, #0
- 1171              	.LVL67:
- 725:./Library/stm32f4xx_dma2d.c ****   }
- 1172              		.loc 1 725 15 view .LVU392
- 1173 001c F7E7     		b	.L69
- 1174              	.L74:
- 1175 001e 00BF     		.align	2
- 1176              	.L73:
- 1177 0020 00B00240 		.word	1073917952
- 1178              		.cfi_endproc
- 1179              	.LFE140:
- 1181              		.section	.text.DMA2D_ClearITPendingBit,"ax",%progbits
- 1182              		.align	1
- 1183              		.global	DMA2D_ClearITPendingBit
- 1184              		.syntax unified
- 1185              		.thumb
- 1186              		.thumb_func
- 1188              	DMA2D_ClearITPendingBit:
- 1189              	.LVL68:
- 1190              	.LFB141:
+ 1638              		.loc 1 737 1
+ 1639 0046 1846     		mov	r0, r3
+ 1640 0048 1437     		adds	r7, r7, #20
+ 1641              	.LCFI97:
+ 1642              		.cfi_def_cfa_offset 4
+ 1643 004a BD46     		mov	sp, r7
+ 1644              	.LCFI98:
+ 1645              		.cfi_def_cfa_register 13
+ 1646              		@ sp needed
+ 1647 004c 5DF8047B 		ldr	r7, [sp], #4
+ 1648              	.LCFI99:
+ 1649              		.cfi_restore 7
+ 1650              		.cfi_def_cfa_offset 0
+ 1651 0050 7047     		bx	lr
+ 1652              	.L74:
+ 1653 0052 00BF     		.align	2
+ 1654              	.L73:
+ 1655 0054 00B00240 		.word	1073917952
+ 1656              		.cfi_endproc
+ 1657              	.LFE140:
+ 1659              		.section	.text.DMA2D_ClearITPendingBit,"ax",%progbits
+ 1660              		.align	1
+ 1661              		.global	DMA2D_ClearITPendingBit
+ 1662              		.syntax unified
+ 1663              		.thumb
+ 1664              		.thumb_func
+ 1666              	DMA2D_ClearITPendingBit:
+ 1667              	.LFB141:
  738:./Library/stm32f4xx_dma2d.c **** 
  739:./Library/stm32f4xx_dma2d.c **** /**
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 35
-
-
  740:./Library/stm32f4xx_dma2d.c ****   * @brief  Clears the DMA2D's interrupt pending bits.
  741:./Library/stm32f4xx_dma2d.c ****   * @param  DMA2D_IT: specifies the interrupt pending bit to clear.
  742:./Library/stm32f4xx_dma2d.c ****   *   This parameter can be any combination of the following values:
@@ -2054,103 +2515,128 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 1
  750:./Library/stm32f4xx_dma2d.c ****   */
  751:./Library/stm32f4xx_dma2d.c **** void DMA2D_ClearITPendingBit(uint32_t DMA2D_IT)
  752:./Library/stm32f4xx_dma2d.c **** {
- 1191              		.loc 1 752 1 is_stmt 1 view -0
- 1192              		.cfi_startproc
- 1193              		@ args = 0, pretend = 0, frame = 0
- 1194              		@ frame_needed = 0, uses_anonymous_args = 0
- 1195              		@ link register save eliminated.
+ 1668              		.loc 1 752 1
+ 1669              		.cfi_startproc
+ 1670              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 43
+
+
+ 1671              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1672              		@ link register save eliminated.
+ 1673 0000 80B4     		push	{r7}
+ 1674              	.LCFI100:
+ 1675              		.cfi_def_cfa_offset 4
+ 1676              		.cfi_offset 7, -4
+ 1677 0002 83B0     		sub	sp, sp, #12
+ 1678              	.LCFI101:
+ 1679              		.cfi_def_cfa_offset 16
+ 1680 0004 00AF     		add	r7, sp, #0
+ 1681              	.LCFI102:
+ 1682              		.cfi_def_cfa_register 7
+ 1683 0006 7860     		str	r0, [r7, #4]
  753:./Library/stm32f4xx_dma2d.c ****   /* Check the parameters */
  754:./Library/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_IT(DMA2D_IT));
- 1196              		.loc 1 754 3 view .LVU394
  755:./Library/stm32f4xx_dma2d.c ****   DMA2D_IT = DMA2D_IT >> 8;
- 1197              		.loc 1 755 3 view .LVU395
- 1198              		.loc 1 755 12 is_stmt 0 view .LVU396
- 1199 0000 000A     		lsrs	r0, r0, #8
- 1200              	.LVL69:
+ 1684              		.loc 1 755 12
+ 1685 0008 7B68     		ldr	r3, [r7, #4]
+ 1686 000a 1B0A     		lsrs	r3, r3, #8
+ 1687 000c 7B60     		str	r3, [r7, #4]
  756:./Library/stm32f4xx_dma2d.c ****     
  757:./Library/stm32f4xx_dma2d.c ****   /* Clear the corresponding DMA2D Interrupt */
  758:./Library/stm32f4xx_dma2d.c ****   DMA2D->IFCR = (uint32_t)DMA2D_IT;
- 1201              		.loc 1 758 3 is_stmt 1 view .LVU397
- 1202              		.loc 1 758 15 is_stmt 0 view .LVU398
- 1203 0002 014B     		ldr	r3, .L76
- 1204 0004 9860     		str	r0, [r3, #8]
+ 1688              		.loc 1 758 8
+ 1689 000e 044A     		ldr	r2, .L76
+ 1690              		.loc 1 758 15
+ 1691 0010 7B68     		ldr	r3, [r7, #4]
+ 1692 0012 9360     		str	r3, [r2, #8]
  759:./Library/stm32f4xx_dma2d.c **** }
- 1205              		.loc 1 759 1 view .LVU399
- 1206 0006 7047     		bx	lr
- 1207              	.L77:
- 1208              		.align	2
- 1209              	.L76:
- 1210 0008 00B00240 		.word	1073917952
- 1211              		.cfi_endproc
- 1212              	.LFE141:
- 1214              		.text
- 1215              	.Letext0:
- 1216              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 1217              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 1218              		.file 4 "./CORE/stm32f4xx.h"
- 1219              		.file 5 "./Library/stm32f4xx_dma2d.h"
- 1220              		.file 6 "./Library/stm32f4xx_rcc.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 36
+ 1693              		.loc 1 759 1
+ 1694 0014 00BF     		nop
+ 1695 0016 0C37     		adds	r7, r7, #12
+ 1696              	.LCFI103:
+ 1697              		.cfi_def_cfa_offset 4
+ 1698 0018 BD46     		mov	sp, r7
+ 1699              	.LCFI104:
+ 1700              		.cfi_def_cfa_register 13
+ 1701              		@ sp needed
+ 1702 001a 5DF8047B 		ldr	r7, [sp], #4
+ 1703              	.LCFI105:
+ 1704              		.cfi_restore 7
+ 1705              		.cfi_def_cfa_offset 0
+ 1706 001e 7047     		bx	lr
+ 1707              	.L77:
+ 1708              		.align	2
+ 1709              	.L76:
+ 1710 0020 00B00240 		.word	1073917952
+ 1711              		.cfi_endproc
+ 1712              	.LFE141:
+ 1714              		.text
+ 1715              	.Letext0:
+ 1716              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1717              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 1718              		.file 4 "./CORE/stm32f4xx.h"
+ 1719              		.file 5 "./Library/stm32f4xx_dma2d.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 44
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f4xx_dma2d.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:20     .text.DMA2D_DeInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:26     .text.DMA2D_DeInit:0000000000000000 DMA2D_DeInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:54     .text.DMA2D_Init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:60     .text.DMA2D_Init:0000000000000000 DMA2D_Init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:300    .text.DMA2D_Init:00000000000000b8 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:305    .text.DMA2D_StructInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:311    .text.DMA2D_StructInit:0000000000000000 DMA2D_StructInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:356    .text.DMA2D_StartTransfer:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:362    .text.DMA2D_StartTransfer:0000000000000000 DMA2D_StartTransfer
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:380    .text.DMA2D_StartTransfer:000000000000000c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:385    .text.DMA2D_AbortTransfer:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:391    .text.DMA2D_AbortTransfer:0000000000000000 DMA2D_AbortTransfer
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:409    .text.DMA2D_AbortTransfer:000000000000000c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:414    .text.DMA2D_Suspend:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:420    .text.DMA2D_Suspend:0000000000000000 DMA2D_Suspend
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:451    .text.DMA2D_Suspend:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:456    .text.DMA2D_FGConfig:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:462    .text.DMA2D_FGConfig:0000000000000000 DMA2D_FGConfig
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:584    .text.DMA2D_FGConfig:000000000000006c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:590    .text.DMA2D_FG_StructInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:596    .text.DMA2D_FG_StructInit:0000000000000000 DMA2D_FG_StructInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:644    .text.DMA2D_BGConfig:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:650    .text.DMA2D_BGConfig:0000000000000000 DMA2D_BGConfig
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:772    .text.DMA2D_BGConfig:000000000000006c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:778    .text.DMA2D_BG_StructInit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:784    .text.DMA2D_BG_StructInit:0000000000000000 DMA2D_BG_StructInit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:832    .text.DMA2D_FGStart:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:838    .text.DMA2D_FGStart:0000000000000000 DMA2D_FGStart
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:869    .text.DMA2D_FGStart:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:874    .text.DMA2D_BGStart:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:880    .text.DMA2D_BGStart:0000000000000000 DMA2D_BGStart
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:911    .text.DMA2D_BGStart:000000000000001c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:916    .text.DMA2D_DeadTimeConfig:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:922    .text.DMA2D_DeadTimeConfig:0000000000000000 DMA2D_DeadTimeConfig
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:967    .text.DMA2D_DeadTimeConfig:000000000000002c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:972    .text.DMA2D_LineWatermarkConfig:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:978    .text.DMA2D_LineWatermarkConfig:0000000000000000 DMA2D_LineWatermarkConfig
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:996    .text.DMA2D_LineWatermarkConfig:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1001   .text.DMA2D_ITConfig:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1007   .text.DMA2D_ITConfig:0000000000000000 DMA2D_ITConfig
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1044   .text.DMA2D_ITConfig:0000000000000018 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1049   .text.DMA2D_GetFlagStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1055   .text.DMA2D_GetFlagStatus:0000000000000000 DMA2D_GetFlagStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1088   .text.DMA2D_GetFlagStatus:0000000000000010 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1093   .text.DMA2D_ClearFlag:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1099   .text.DMA2D_ClearFlag:0000000000000000 DMA2D_ClearFlag
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1117   .text.DMA2D_ClearFlag:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1122   .text.DMA2D_GetITStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1128   .text.DMA2D_GetITStatus:0000000000000000 DMA2D_GetITStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1177   .text.DMA2D_GetITStatus:0000000000000020 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1182   .text.DMA2D_ClearITPendingBit:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1188   .text.DMA2D_ClearITPendingBit:0000000000000000 DMA2D_ClearITPendingBit
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s:1210   .text.DMA2D_ClearITPendingBit:0000000000000008 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:20     .text.DMA2D_DeInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:26     .text.DMA2D_DeInit:0000000000000000 DMA2D_DeInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:56     .text.DMA2D_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:62     .text.DMA2D_Init:0000000000000000 DMA2D_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:324    .text.DMA2D_Init:0000000000000154 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:329    .text.DMA2D_StructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:335    .text.DMA2D_StructInit:0000000000000000 DMA2D_StructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:411    .text.DMA2D_StartTransfer:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:417    .text.DMA2D_StartTransfer:0000000000000000 DMA2D_StartTransfer
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:451    .text.DMA2D_StartTransfer:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:456    .text.DMA2D_AbortTransfer:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:462    .text.DMA2D_AbortTransfer:0000000000000000 DMA2D_AbortTransfer
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:496    .text.DMA2D_AbortTransfer:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:501    .text.DMA2D_Suspend:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:507    .text.DMA2D_Suspend:0000000000000000 DMA2D_Suspend
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:563    .text.DMA2D_Suspend:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:568    .text.DMA2D_FGConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:574    .text.DMA2D_FGConfig:0000000000000000 DMA2D_FGConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:745    .text.DMA2D_FGConfig:00000000000000d8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:751    .text.DMA2D_FG_StructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:757    .text.DMA2D_FG_StructInit:0000000000000000 DMA2D_FG_StructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:837    .text.DMA2D_BGConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:843    .text.DMA2D_BGConfig:0000000000000000 DMA2D_BGConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1014   .text.DMA2D_BGConfig:00000000000000d8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1020   .text.DMA2D_BG_StructInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1026   .text.DMA2D_BG_StructInit:0000000000000000 DMA2D_BG_StructInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1106   .text.DMA2D_FGStart:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1112   .text.DMA2D_FGStart:0000000000000000 DMA2D_FGStart
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1168   .text.DMA2D_FGStart:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1173   .text.DMA2D_BGStart:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1179   .text.DMA2D_BGStart:0000000000000000 DMA2D_BGStart
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1235   .text.DMA2D_BGStart:0000000000000038 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1240   .text.DMA2D_DeadTimeConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1246   .text.DMA2D_DeadTimeConfig:0000000000000000 DMA2D_DeadTimeConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1316   .text.DMA2D_DeadTimeConfig:0000000000000054 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1321   .text.DMA2D_LineWatermarkConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1327   .text.DMA2D_LineWatermarkConfig:0000000000000000 DMA2D_LineWatermarkConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1367   .text.DMA2D_LineWatermarkConfig:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1372   .text.DMA2D_ITConfig:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1378   .text.DMA2D_ITConfig:0000000000000000 DMA2D_ITConfig
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1440   .text.DMA2D_ITConfig:000000000000003c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1445   .text.DMA2D_GetFlagStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1451   .text.DMA2D_GetFlagStatus:0000000000000000 DMA2D_GetFlagStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1509   .text.DMA2D_GetFlagStatus:0000000000000030 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1514   .text.DMA2D_ClearFlag:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1520   .text.DMA2D_ClearFlag:0000000000000000 DMA2D_ClearFlag
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1560   .text.DMA2D_ClearFlag:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1565   .text.DMA2D_GetITStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1571   .text.DMA2D_GetITStatus:0000000000000000 DMA2D_GetITStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1655   .text.DMA2D_GetITStatus:0000000000000054 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1660   .text.DMA2D_ClearITPendingBit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1666   .text.DMA2D_ClearITPendingBit:0000000000000000 DMA2D_ClearITPendingBit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s:1710   .text.DMA2D_ClearITPendingBit:0000000000000020 $d
 
 UNDEFINED SYMBOLS
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccnEgMqv.s 			page 37
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc3Jc8qO.s 			page 45
 
 
 RCC_AHB1PeriphResetCmd

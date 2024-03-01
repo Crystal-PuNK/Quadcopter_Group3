@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"stm32f4xx_iwdg.c"
@@ -26,9 +26,8 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
   23              		.thumb
   24              		.thumb_func
   26              	IWDG_WriteAccessCmd:
-  27              	.LVL0:
-  28              	.LFB123:
-  29              		.file 1 "./Library/stm32f4xx_iwdg.c"
+  27              	.LFB123:
+  28              		.file 1 "./Library/stm32f4xx_iwdg.c"
    1:./Library/stm32f4xx_iwdg.c **** /**
    2:./Library/stm32f4xx_iwdg.c ****   ******************************************************************************
    3:./Library/stm32f4xx_iwdg.c ****   * @file    stm32f4xx_iwdg.c
@@ -58,10 +57,10 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
   27:./Library/stm32f4xx_iwdg.c ****       The IWDG counter should be reloaded at regular intervals to prevent
   28:./Library/stm32f4xx_iwdg.c ****       an MCU reset.
   29:./Library/stm32f4xx_iwdg.c ****                              
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 2
-
-
   30:./Library/stm32f4xx_iwdg.c ****       The IWDG is implemented in the VDD voltage domain that is still functional
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 2
+
+
   31:./Library/stm32f4xx_iwdg.c ****       in STOP and STANDBY mode (IWDG reset can wake-up from STANDBY).          
   32:./Library/stm32f4xx_iwdg.c ****               
   33:./Library/stm32f4xx_iwdg.c ****       IWDGRST flag in RCC_CSR register can be used to inform when a IWDG
@@ -118,10 +117,10 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
   84:./Library/stm32f4xx_iwdg.c **** /** @defgroup IWDG 
   85:./Library/stm32f4xx_iwdg.c ****   * @brief IWDG driver modules
   86:./Library/stm32f4xx_iwdg.c ****   * @{
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 3
-
-
   87:./Library/stm32f4xx_iwdg.c ****   */ 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 3
+
+
   88:./Library/stm32f4xx_iwdg.c **** 
   89:./Library/stm32f4xx_iwdg.c **** /* Private typedef -----------------------------------------------------------*/
   90:./Library/stm32f4xx_iwdg.c **** /* Private define ------------------------------------------------------------*/
@@ -161,40 +160,63 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
  124:./Library/stm32f4xx_iwdg.c ****   */
  125:./Library/stm32f4xx_iwdg.c **** void IWDG_WriteAccessCmd(uint16_t IWDG_WriteAccess)
  126:./Library/stm32f4xx_iwdg.c **** {
-  30              		.loc 1 126 1 view -0
-  31              		.cfi_startproc
-  32              		@ args = 0, pretend = 0, frame = 0
-  33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              		@ link register save eliminated.
+  29              		.loc 1 126 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 83B0     		sub	sp, sp, #12
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 16
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
+  44 0006 0346     		mov	r3, r0
+  45 0008 FB80     		strh	r3, [r7, #6]	@ movhi
  127:./Library/stm32f4xx_iwdg.c ****   /* Check the parameters */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 4
+
+
  128:./Library/stm32f4xx_iwdg.c ****   assert_param(IS_IWDG_WRITE_ACCESS(IWDG_WriteAccess));
-  35              		.loc 1 128 3 view .LVU1
  129:./Library/stm32f4xx_iwdg.c ****   IWDG->KR = IWDG_WriteAccess;
-  36              		.loc 1 129 3 view .LVU2
-  37              		.loc 1 129 12 is_stmt 0 view .LVU3
-  38 0000 014B     		ldr	r3, .L2
-  39 0002 1860     		str	r0, [r3]
+  46              		.loc 1 129 7
+  47 000a 044A     		ldr	r2, .L2
+  48              		.loc 1 129 12
+  49 000c FB88     		ldrh	r3, [r7, #6]
+  50 000e 1360     		str	r3, [r2]
  130:./Library/stm32f4xx_iwdg.c **** }
-  40              		.loc 1 130 1 view .LVU4
-  41 0004 7047     		bx	lr
-  42              	.L3:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 4
-
-
-  43 0006 00BF     		.align	2
-  44              	.L2:
-  45 0008 00300040 		.word	1073754112
-  46              		.cfi_endproc
-  47              	.LFE123:
-  49              		.section	.text.IWDG_SetPrescaler,"ax",%progbits
-  50              		.align	1
-  51              		.global	IWDG_SetPrescaler
-  52              		.syntax unified
-  53              		.thumb
-  54              		.thumb_func
-  56              	IWDG_SetPrescaler:
-  57              	.LVL1:
-  58              	.LFB124:
+  51              		.loc 1 130 1
+  52 0010 00BF     		nop
+  53 0012 0C37     		adds	r7, r7, #12
+  54              	.LCFI3:
+  55              		.cfi_def_cfa_offset 4
+  56 0014 BD46     		mov	sp, r7
+  57              	.LCFI4:
+  58              		.cfi_def_cfa_register 13
+  59              		@ sp needed
+  60 0016 5DF8047B 		ldr	r7, [sp], #4
+  61              	.LCFI5:
+  62              		.cfi_restore 7
+  63              		.cfi_def_cfa_offset 0
+  64 001a 7047     		bx	lr
+  65              	.L3:
+  66              		.align	2
+  67              	.L2:
+  68 001c 00300040 		.word	1073754112
+  69              		.cfi_endproc
+  70              	.LFE123:
+  72              		.section	.text.IWDG_SetPrescaler,"ax",%progbits
+  73              		.align	1
+  74              		.global	IWDG_SetPrescaler
+  75              		.syntax unified
+  76              		.thumb
+  77              		.thumb_func
+  79              	IWDG_SetPrescaler:
+  80              	.LFB124:
  131:./Library/stm32f4xx_iwdg.c **** 
  132:./Library/stm32f4xx_iwdg.c **** /**
  133:./Library/stm32f4xx_iwdg.c ****   * @brief  Sets IWDG Prescaler value.
@@ -211,40 +233,63 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
  144:./Library/stm32f4xx_iwdg.c ****   */
  145:./Library/stm32f4xx_iwdg.c **** void IWDG_SetPrescaler(uint8_t IWDG_Prescaler)
  146:./Library/stm32f4xx_iwdg.c **** {
-  59              		.loc 1 146 1 is_stmt 1 view -0
-  60              		.cfi_startproc
-  61              		@ args = 0, pretend = 0, frame = 0
-  62              		@ frame_needed = 0, uses_anonymous_args = 0
-  63              		@ link register save eliminated.
+  81              		.loc 1 146 1
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 8
+  84              		@ frame_needed = 1, uses_anonymous_args = 0
+  85              		@ link register save eliminated.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 5
+
+
+  86 0000 80B4     		push	{r7}
+  87              	.LCFI6:
+  88              		.cfi_def_cfa_offset 4
+  89              		.cfi_offset 7, -4
+  90 0002 83B0     		sub	sp, sp, #12
+  91              	.LCFI7:
+  92              		.cfi_def_cfa_offset 16
+  93 0004 00AF     		add	r7, sp, #0
+  94              	.LCFI8:
+  95              		.cfi_def_cfa_register 7
+  96 0006 0346     		mov	r3, r0
+  97 0008 FB71     		strb	r3, [r7, #7]
  147:./Library/stm32f4xx_iwdg.c ****   /* Check the parameters */
  148:./Library/stm32f4xx_iwdg.c ****   assert_param(IS_IWDG_PRESCALER(IWDG_Prescaler));
-  64              		.loc 1 148 3 view .LVU6
  149:./Library/stm32f4xx_iwdg.c ****   IWDG->PR = IWDG_Prescaler;
-  65              		.loc 1 149 3 view .LVU7
-  66              		.loc 1 149 12 is_stmt 0 view .LVU8
-  67 0000 014B     		ldr	r3, .L5
-  68 0002 5860     		str	r0, [r3, #4]
+  98              		.loc 1 149 7
+  99 000a 044A     		ldr	r2, .L5
+ 100              		.loc 1 149 12
+ 101 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 102 000e 5360     		str	r3, [r2, #4]
  150:./Library/stm32f4xx_iwdg.c **** }
-  69              		.loc 1 150 1 view .LVU9
-  70 0004 7047     		bx	lr
-  71              	.L6:
-  72 0006 00BF     		.align	2
-  73              	.L5:
-  74 0008 00300040 		.word	1073754112
-  75              		.cfi_endproc
-  76              	.LFE124:
-  78              		.section	.text.IWDG_SetReload,"ax",%progbits
-  79              		.align	1
-  80              		.global	IWDG_SetReload
-  81              		.syntax unified
-  82              		.thumb
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 5
-
-
-  83              		.thumb_func
-  85              	IWDG_SetReload:
-  86              	.LVL2:
-  87              	.LFB125:
+ 103              		.loc 1 150 1
+ 104 0010 00BF     		nop
+ 105 0012 0C37     		adds	r7, r7, #12
+ 106              	.LCFI9:
+ 107              		.cfi_def_cfa_offset 4
+ 108 0014 BD46     		mov	sp, r7
+ 109              	.LCFI10:
+ 110              		.cfi_def_cfa_register 13
+ 111              		@ sp needed
+ 112 0016 5DF8047B 		ldr	r7, [sp], #4
+ 113              	.LCFI11:
+ 114              		.cfi_restore 7
+ 115              		.cfi_def_cfa_offset 0
+ 116 001a 7047     		bx	lr
+ 117              	.L6:
+ 118              		.align	2
+ 119              	.L5:
+ 120 001c 00300040 		.word	1073754112
+ 121              		.cfi_endproc
+ 122              	.LFE124:
+ 124              		.section	.text.IWDG_SetReload,"ax",%progbits
+ 125              		.align	1
+ 126              		.global	IWDG_SetReload
+ 127              		.syntax unified
+ 128              		.thumb
+ 129              		.thumb_func
+ 131              	IWDG_SetReload:
+ 132              	.LFB125:
  151:./Library/stm32f4xx_iwdg.c **** 
  152:./Library/stm32f4xx_iwdg.c **** /**
  153:./Library/stm32f4xx_iwdg.c ****   * @brief  Sets IWDG Reload value.
@@ -253,39 +298,69 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
  156:./Library/stm32f4xx_iwdg.c ****   * @retval None
  157:./Library/stm32f4xx_iwdg.c ****   */
  158:./Library/stm32f4xx_iwdg.c **** void IWDG_SetReload(uint16_t Reload)
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 6
+
+
  159:./Library/stm32f4xx_iwdg.c **** {
-  88              		.loc 1 159 1 is_stmt 1 view -0
-  89              		.cfi_startproc
-  90              		@ args = 0, pretend = 0, frame = 0
-  91              		@ frame_needed = 0, uses_anonymous_args = 0
-  92              		@ link register save eliminated.
+ 133              		.loc 1 159 1
+ 134              		.cfi_startproc
+ 135              		@ args = 0, pretend = 0, frame = 8
+ 136              		@ frame_needed = 1, uses_anonymous_args = 0
+ 137              		@ link register save eliminated.
+ 138 0000 80B4     		push	{r7}
+ 139              	.LCFI12:
+ 140              		.cfi_def_cfa_offset 4
+ 141              		.cfi_offset 7, -4
+ 142 0002 83B0     		sub	sp, sp, #12
+ 143              	.LCFI13:
+ 144              		.cfi_def_cfa_offset 16
+ 145 0004 00AF     		add	r7, sp, #0
+ 146              	.LCFI14:
+ 147              		.cfi_def_cfa_register 7
+ 148 0006 0346     		mov	r3, r0
+ 149 0008 FB80     		strh	r3, [r7, #6]	@ movhi
  160:./Library/stm32f4xx_iwdg.c ****   /* Check the parameters */
  161:./Library/stm32f4xx_iwdg.c ****   assert_param(IS_IWDG_RELOAD(Reload));
-  93              		.loc 1 161 3 view .LVU11
  162:./Library/stm32f4xx_iwdg.c ****   IWDG->RLR = Reload;
-  94              		.loc 1 162 3 view .LVU12
-  95              		.loc 1 162 13 is_stmt 0 view .LVU13
-  96 0000 014B     		ldr	r3, .L8
-  97 0002 9860     		str	r0, [r3, #8]
+ 150              		.loc 1 162 7
+ 151 000a 044A     		ldr	r2, .L8
+ 152              		.loc 1 162 13
+ 153 000c FB88     		ldrh	r3, [r7, #6]
+ 154 000e 9360     		str	r3, [r2, #8]
  163:./Library/stm32f4xx_iwdg.c **** }
-  98              		.loc 1 163 1 view .LVU14
-  99 0004 7047     		bx	lr
- 100              	.L9:
- 101 0006 00BF     		.align	2
- 102              	.L8:
- 103 0008 00300040 		.word	1073754112
- 104              		.cfi_endproc
- 105              	.LFE125:
- 107              		.section	.text.IWDG_ReloadCounter,"ax",%progbits
- 108              		.align	1
- 109              		.global	IWDG_ReloadCounter
- 110              		.syntax unified
- 111              		.thumb
- 112              		.thumb_func
- 114              	IWDG_ReloadCounter:
- 115              	.LFB126:
+ 155              		.loc 1 163 1
+ 156 0010 00BF     		nop
+ 157 0012 0C37     		adds	r7, r7, #12
+ 158              	.LCFI15:
+ 159              		.cfi_def_cfa_offset 4
+ 160 0014 BD46     		mov	sp, r7
+ 161              	.LCFI16:
+ 162              		.cfi_def_cfa_register 13
+ 163              		@ sp needed
+ 164 0016 5DF8047B 		ldr	r7, [sp], #4
+ 165              	.LCFI17:
+ 166              		.cfi_restore 7
+ 167              		.cfi_def_cfa_offset 0
+ 168 001a 7047     		bx	lr
+ 169              	.L9:
+ 170              		.align	2
+ 171              	.L8:
+ 172 001c 00300040 		.word	1073754112
+ 173              		.cfi_endproc
+ 174              	.LFE125:
+ 176              		.section	.text.IWDG_ReloadCounter,"ax",%progbits
+ 177              		.align	1
+ 178              		.global	IWDG_ReloadCounter
+ 179              		.syntax unified
+ 180              		.thumb
+ 181              		.thumb_func
+ 183              	IWDG_ReloadCounter:
+ 184              	.LFB126:
  164:./Library/stm32f4xx_iwdg.c **** 
  165:./Library/stm32f4xx_iwdg.c **** /**
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 7
+
+
  166:./Library/stm32f4xx_iwdg.c ****   * @brief  Reloads IWDG counter with value defined in the reload register
  167:./Library/stm32f4xx_iwdg.c ****   *         (write access to IWDG_PR and IWDG_RLR registers disabled).
  168:./Library/stm32f4xx_iwdg.c ****   * @param  None
@@ -293,43 +368,59 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
  170:./Library/stm32f4xx_iwdg.c ****   */
  171:./Library/stm32f4xx_iwdg.c **** void IWDG_ReloadCounter(void)
  172:./Library/stm32f4xx_iwdg.c **** {
- 116              		.loc 1 172 1 is_stmt 1 view -0
- 117              		.cfi_startproc
- 118              		@ args = 0, pretend = 0, frame = 0
- 119              		@ frame_needed = 0, uses_anonymous_args = 0
- 120              		@ link register save eliminated.
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 6
-
-
+ 185              		.loc 1 172 1
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 0
+ 188              		@ frame_needed = 1, uses_anonymous_args = 0
+ 189              		@ link register save eliminated.
+ 190 0000 80B4     		push	{r7}
+ 191              	.LCFI18:
+ 192              		.cfi_def_cfa_offset 4
+ 193              		.cfi_offset 7, -4
+ 194 0002 00AF     		add	r7, sp, #0
+ 195              	.LCFI19:
+ 196              		.cfi_def_cfa_register 7
  173:./Library/stm32f4xx_iwdg.c ****   IWDG->KR = KR_KEY_RELOAD;
- 121              		.loc 1 173 3 view .LVU16
- 122              		.loc 1 173 12 is_stmt 0 view .LVU17
- 123 0000 024B     		ldr	r3, .L11
- 124 0002 4AF6AA22 		movw	r2, #43690
- 125 0006 1A60     		str	r2, [r3]
+ 197              		.loc 1 173 7
+ 198 0004 044B     		ldr	r3, .L11
+ 199              		.loc 1 173 12
+ 200 0006 4AF6AA22 		movw	r2, #43690
+ 201 000a 1A60     		str	r2, [r3]
  174:./Library/stm32f4xx_iwdg.c **** }
- 126              		.loc 1 174 1 view .LVU18
- 127 0008 7047     		bx	lr
- 128              	.L12:
- 129 000a 00BF     		.align	2
- 130              	.L11:
- 131 000c 00300040 		.word	1073754112
- 132              		.cfi_endproc
- 133              	.LFE126:
- 135              		.section	.text.IWDG_Enable,"ax",%progbits
- 136              		.align	1
- 137              		.global	IWDG_Enable
- 138              		.syntax unified
- 139              		.thumb
- 140              		.thumb_func
- 142              	IWDG_Enable:
- 143              	.LFB127:
+ 202              		.loc 1 174 1
+ 203 000c 00BF     		nop
+ 204 000e BD46     		mov	sp, r7
+ 205              	.LCFI20:
+ 206              		.cfi_def_cfa_register 13
+ 207              		@ sp needed
+ 208 0010 5DF8047B 		ldr	r7, [sp], #4
+ 209              	.LCFI21:
+ 210              		.cfi_restore 7
+ 211              		.cfi_def_cfa_offset 0
+ 212 0014 7047     		bx	lr
+ 213              	.L12:
+ 214 0016 00BF     		.align	2
+ 215              	.L11:
+ 216 0018 00300040 		.word	1073754112
+ 217              		.cfi_endproc
+ 218              	.LFE126:
+ 220              		.section	.text.IWDG_Enable,"ax",%progbits
+ 221              		.align	1
+ 222              		.global	IWDG_Enable
+ 223              		.syntax unified
+ 224              		.thumb
+ 225              		.thumb_func
+ 227              	IWDG_Enable:
+ 228              	.LFB127:
  175:./Library/stm32f4xx_iwdg.c **** 
  176:./Library/stm32f4xx_iwdg.c **** /**
  177:./Library/stm32f4xx_iwdg.c ****   * @}
  178:./Library/stm32f4xx_iwdg.c ****   */
  179:./Library/stm32f4xx_iwdg.c **** 
  180:./Library/stm32f4xx_iwdg.c **** /** @defgroup IWDG_Group2 IWDG activation function
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 8
+
+
  181:./Library/stm32f4xx_iwdg.c ****  *  @brief   IWDG activation function 
  182:./Library/stm32f4xx_iwdg.c ****  *
  183:./Library/stm32f4xx_iwdg.c **** @verbatim   
@@ -348,38 +439,53 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
  196:./Library/stm32f4xx_iwdg.c ****   */
  197:./Library/stm32f4xx_iwdg.c **** void IWDG_Enable(void)
  198:./Library/stm32f4xx_iwdg.c **** {
- 144              		.loc 1 198 1 is_stmt 1 view -0
- 145              		.cfi_startproc
- 146              		@ args = 0, pretend = 0, frame = 0
- 147              		@ frame_needed = 0, uses_anonymous_args = 0
- 148              		@ link register save eliminated.
+ 229              		.loc 1 198 1
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 1, uses_anonymous_args = 0
+ 233              		@ link register save eliminated.
+ 234 0000 80B4     		push	{r7}
+ 235              	.LCFI22:
+ 236              		.cfi_def_cfa_offset 4
+ 237              		.cfi_offset 7, -4
+ 238 0002 00AF     		add	r7, sp, #0
+ 239              	.LCFI23:
+ 240              		.cfi_def_cfa_register 7
  199:./Library/stm32f4xx_iwdg.c ****   IWDG->KR = KR_KEY_ENABLE;
- 149              		.loc 1 199 3 view .LVU20
- 150              		.loc 1 199 12 is_stmt 0 view .LVU21
- 151 0000 024B     		ldr	r3, .L14
- 152 0002 4CF6CC42 		movw	r2, #52428
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 7
-
-
- 153 0006 1A60     		str	r2, [r3]
+ 241              		.loc 1 199 7
+ 242 0004 044B     		ldr	r3, .L14
+ 243              		.loc 1 199 12
+ 244 0006 4CF6CC42 		movw	r2, #52428
+ 245 000a 1A60     		str	r2, [r3]
  200:./Library/stm32f4xx_iwdg.c **** }
- 154              		.loc 1 200 1 view .LVU22
- 155 0008 7047     		bx	lr
- 156              	.L15:
- 157 000a 00BF     		.align	2
- 158              	.L14:
- 159 000c 00300040 		.word	1073754112
- 160              		.cfi_endproc
- 161              	.LFE127:
- 163              		.section	.text.IWDG_GetFlagStatus,"ax",%progbits
- 164              		.align	1
- 165              		.global	IWDG_GetFlagStatus
- 166              		.syntax unified
- 167              		.thumb
- 168              		.thumb_func
- 170              	IWDG_GetFlagStatus:
- 171              	.LVL3:
- 172              	.LFB128:
+ 246              		.loc 1 200 1
+ 247 000c 00BF     		nop
+ 248 000e BD46     		mov	sp, r7
+ 249              	.LCFI24:
+ 250              		.cfi_def_cfa_register 13
+ 251              		@ sp needed
+ 252 0010 5DF8047B 		ldr	r7, [sp], #4
+ 253              	.LCFI25:
+ 254              		.cfi_restore 7
+ 255              		.cfi_def_cfa_offset 0
+ 256 0014 7047     		bx	lr
+ 257              	.L15:
+ 258 0016 00BF     		.align	2
+ 259              	.L14:
+ 260 0018 00300040 		.word	1073754112
+ 261              		.cfi_endproc
+ 262              	.LFE127:
+ 264              		.section	.text.IWDG_GetFlagStatus,"ax",%progbits
+ 265              		.align	1
+ 266              		.global	IWDG_GetFlagStatus
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 9
+
+
+ 267              		.syntax unified
+ 268              		.thumb
+ 269              		.thumb_func
+ 271              	IWDG_GetFlagStatus:
+ 272              	.LFB128:
  201:./Library/stm32f4xx_iwdg.c **** 
  202:./Library/stm32f4xx_iwdg.c **** /**
  203:./Library/stm32f4xx_iwdg.c ****   * @}
@@ -407,83 +513,110 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 1
  225:./Library/stm32f4xx_iwdg.c ****   */
  226:./Library/stm32f4xx_iwdg.c **** FlagStatus IWDG_GetFlagStatus(uint16_t IWDG_FLAG)
  227:./Library/stm32f4xx_iwdg.c **** {
- 173              		.loc 1 227 1 is_stmt 1 view -0
- 174              		.cfi_startproc
- 175              		@ args = 0, pretend = 0, frame = 0
- 176              		@ frame_needed = 0, uses_anonymous_args = 0
- 177              		@ link register save eliminated.
+ 273              		.loc 1 227 1
+ 274              		.cfi_startproc
+ 275              		@ args = 0, pretend = 0, frame = 16
+ 276              		@ frame_needed = 1, uses_anonymous_args = 0
+ 277              		@ link register save eliminated.
+ 278 0000 80B4     		push	{r7}
+ 279              	.LCFI26:
+ 280              		.cfi_def_cfa_offset 4
+ 281              		.cfi_offset 7, -4
+ 282 0002 85B0     		sub	sp, sp, #20
+ 283              	.LCFI27:
+ 284              		.cfi_def_cfa_offset 24
+ 285 0004 00AF     		add	r7, sp, #0
+ 286              	.LCFI28:
+ 287              		.cfi_def_cfa_register 7
+ 288 0006 0346     		mov	r3, r0
+ 289 0008 FB80     		strh	r3, [r7, #6]	@ movhi
  228:./Library/stm32f4xx_iwdg.c ****   FlagStatus bitstatus = RESET;
- 178              		.loc 1 228 3 view .LVU24
+ 290              		.loc 1 228 14
+ 291 000a 0023     		movs	r3, #0
+ 292 000c FB73     		strb	r3, [r7, #15]
  229:./Library/stm32f4xx_iwdg.c ****   /* Check the parameters */
  230:./Library/stm32f4xx_iwdg.c ****   assert_param(IS_IWDG_FLAG(IWDG_FLAG));
- 179              		.loc 1 230 3 view .LVU25
  231:./Library/stm32f4xx_iwdg.c ****   if ((IWDG->SR & IWDG_FLAG) != (uint32_t)RESET)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 8
+ 293              		.loc 1 231 12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 10
 
 
- 180              		.loc 1 231 3 view .LVU26
- 181              		.loc 1 231 12 is_stmt 0 view .LVU27
- 182 0000 034B     		ldr	r3, .L19
- 183 0002 DB68     		ldr	r3, [r3, #12]
- 184              		.loc 1 231 6 view .LVU28
- 185 0004 1842     		tst	r0, r3
- 186 0006 01D0     		beq	.L18
+ 294 000e 094B     		ldr	r3, .L20
+ 295 0010 DA68     		ldr	r2, [r3, #12]
+ 296              		.loc 1 231 17
+ 297 0012 FB88     		ldrh	r3, [r7, #6]
+ 298 0014 1340     		ands	r3, r3, r2
+ 299              		.loc 1 231 6
+ 300 0016 002B     		cmp	r3, #0
+ 301 0018 02D0     		beq	.L17
  232:./Library/stm32f4xx_iwdg.c ****   {
  233:./Library/stm32f4xx_iwdg.c ****     bitstatus = SET;
- 187              		.loc 1 233 15 view .LVU29
- 188 0008 0120     		movs	r0, #1
- 189              	.LVL4:
- 190              		.loc 1 233 15 view .LVU30
- 191 000a 7047     		bx	lr
- 192              	.LVL5:
- 193              	.L18:
+ 302              		.loc 1 233 15
+ 303 001a 0123     		movs	r3, #1
+ 304 001c FB73     		strb	r3, [r7, #15]
+ 305 001e 01E0     		b	.L18
+ 306              	.L17:
  234:./Library/stm32f4xx_iwdg.c ****   }
  235:./Library/stm32f4xx_iwdg.c ****   else
  236:./Library/stm32f4xx_iwdg.c ****   {
  237:./Library/stm32f4xx_iwdg.c ****     bitstatus = RESET;
- 194              		.loc 1 237 15 view .LVU31
- 195 000c 0020     		movs	r0, #0
- 196              	.LVL6:
+ 307              		.loc 1 237 15
+ 308 0020 0023     		movs	r3, #0
+ 309 0022 FB73     		strb	r3, [r7, #15]
+ 310              	.L18:
  238:./Library/stm32f4xx_iwdg.c ****   }
  239:./Library/stm32f4xx_iwdg.c ****   /* Return the flag status */
  240:./Library/stm32f4xx_iwdg.c ****   return bitstatus;
- 197              		.loc 1 240 3 is_stmt 1 view .LVU32
+ 311              		.loc 1 240 10
+ 312 0024 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
  241:./Library/stm32f4xx_iwdg.c **** }
- 198              		.loc 1 241 1 is_stmt 0 view .LVU33
- 199 000e 7047     		bx	lr
- 200              	.L20:
- 201              		.align	2
- 202              	.L19:
- 203 0010 00300040 		.word	1073754112
- 204              		.cfi_endproc
- 205              	.LFE128:
- 207              		.text
- 208              	.Letext0:
- 209              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 210              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 211              		.file 4 "./CORE/stm32f4xx.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s 			page 9
+ 313              		.loc 1 241 1
+ 314 0026 1846     		mov	r0, r3
+ 315 0028 1437     		adds	r7, r7, #20
+ 316              	.LCFI29:
+ 317              		.cfi_def_cfa_offset 4
+ 318 002a BD46     		mov	sp, r7
+ 319              	.LCFI30:
+ 320              		.cfi_def_cfa_register 13
+ 321              		@ sp needed
+ 322 002c 5DF8047B 		ldr	r7, [sp], #4
+ 323              	.LCFI31:
+ 324              		.cfi_restore 7
+ 325              		.cfi_def_cfa_offset 0
+ 326 0030 7047     		bx	lr
+ 327              	.L21:
+ 328 0032 00BF     		.align	2
+ 329              	.L20:
+ 330 0034 00300040 		.word	1073754112
+ 331              		.cfi_endproc
+ 332              	.LFE128:
+ 334              		.text
+ 335              	.Letext0:
+ 336              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 337              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 338              		.file 4 "./CORE/stm32f4xx.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f4xx_iwdg.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:20     .text.IWDG_WriteAccessCmd:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:26     .text.IWDG_WriteAccessCmd:0000000000000000 IWDG_WriteAccessCmd
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:45     .text.IWDG_WriteAccessCmd:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:50     .text.IWDG_SetPrescaler:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:56     .text.IWDG_SetPrescaler:0000000000000000 IWDG_SetPrescaler
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:74     .text.IWDG_SetPrescaler:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:79     .text.IWDG_SetReload:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:85     .text.IWDG_SetReload:0000000000000000 IWDG_SetReload
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:103    .text.IWDG_SetReload:0000000000000008 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:108    .text.IWDG_ReloadCounter:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:114    .text.IWDG_ReloadCounter:0000000000000000 IWDG_ReloadCounter
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:131    .text.IWDG_ReloadCounter:000000000000000c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:136    .text.IWDG_Enable:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:142    .text.IWDG_Enable:0000000000000000 IWDG_Enable
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:159    .text.IWDG_Enable:000000000000000c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:164    .text.IWDG_GetFlagStatus:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:170    .text.IWDG_GetFlagStatus:0000000000000000 IWDG_GetFlagStatus
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccLtNZEP.s:203    .text.IWDG_GetFlagStatus:0000000000000010 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:20     .text.IWDG_WriteAccessCmd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:26     .text.IWDG_WriteAccessCmd:0000000000000000 IWDG_WriteAccessCmd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:68     .text.IWDG_WriteAccessCmd:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:73     .text.IWDG_SetPrescaler:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:79     .text.IWDG_SetPrescaler:0000000000000000 IWDG_SetPrescaler
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:120    .text.IWDG_SetPrescaler:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:125    .text.IWDG_SetReload:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:131    .text.IWDG_SetReload:0000000000000000 IWDG_SetReload
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:172    .text.IWDG_SetReload:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:177    .text.IWDG_ReloadCounter:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:183    .text.IWDG_ReloadCounter:0000000000000000 IWDG_ReloadCounter
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:216    .text.IWDG_ReloadCounter:0000000000000018 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:221    .text.IWDG_Enable:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:227    .text.IWDG_Enable:0000000000000000 IWDG_Enable
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:260    .text.IWDG_Enable:0000000000000018 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:265    .text.IWDG_GetFlagStatus:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:271    .text.IWDG_GetFlagStatus:0000000000000000 IWDG_GetFlagStatus
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc97XNYp.s:330    .text.IWDG_GetFlagStatus:0000000000000034 $d
 
 NO UNDEFINED SYMBOLS

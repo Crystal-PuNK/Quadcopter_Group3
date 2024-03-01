@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"stm32f4xx_hash_md5.c"
@@ -26,9 +26,8 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
   23              		.thumb
   24              		.thumb_func
   26              	HASH_MD5:
-  27              	.LVL0:
-  28              	.LFB123:
-  29              		.file 1 "./Library/stm32f4xx_hash_md5.c"
+  27              	.LFB123:
+  28              		.file 1 "./Library/stm32f4xx_hash_md5.c"
    1:./Library/stm32f4xx_hash_md5.c **** /**
    2:./Library/stm32f4xx_hash_md5.c ****   ******************************************************************************
    3:./Library/stm32f4xx_hash_md5.c ****   * @file    stm32f4xx_hash_md5.c
@@ -58,10 +57,10 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
   27:./Library/stm32f4xx_hash_md5.c ****   * @attention
   28:./Library/stm32f4xx_hash_md5.c ****   *
   29:./Library/stm32f4xx_hash_md5.c ****   * Copyright (c) 2016 STMicroelectronics.
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 2
-
-
   30:./Library/stm32f4xx_hash_md5.c ****   * All rights reserved.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 2
+
+
   31:./Library/stm32f4xx_hash_md5.c ****   *
   32:./Library/stm32f4xx_hash_md5.c ****   * This software is licensed under terms that can be found in the LICENSE file
   33:./Library/stm32f4xx_hash_md5.c ****   * in the root directory of this software component.
@@ -118,231 +117,210 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
   84:./Library/stm32f4xx_hash_md5.c ****   *          - ERROR: digest computation failed
   85:./Library/stm32f4xx_hash_md5.c ****   */
   86:./Library/stm32f4xx_hash_md5.c **** ErrorStatus HASH_MD5(uint8_t *Input, uint32_t Ilen, uint8_t Output[16])
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 3
-
-
   87:./Library/stm32f4xx_hash_md5.c **** {
-  30              		.loc 1 87 1 view -0
-  31              		.cfi_startproc
-  32              		@ args = 0, pretend = 0, frame = 56
-  33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              		.loc 1 87 1 is_stmt 0 view .LVU1
-  35 0000 F0B5     		push	{r4, r5, r6, r7, lr}
-  36              	.LCFI0:
-  37              		.cfi_def_cfa_offset 20
-  38              		.cfi_offset 4, -20
-  39              		.cfi_offset 5, -16
-  40              		.cfi_offset 6, -12
-  41              		.cfi_offset 7, -8
-  42              		.cfi_offset 14, -4
-  43 0002 8FB0     		sub	sp, sp, #60
-  44              	.LCFI1:
-  45              		.cfi_def_cfa_offset 80
-  46 0004 0F46     		mov	r7, r1
-  47 0006 1646     		mov	r6, r2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 3
+
+
+  29              		.loc 1 87 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 112
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 7, -8
+  37              		.cfi_offset 14, -4
+  38 0002 9CB0     		sub	sp, sp, #112
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 120
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
+  44 0006 F860     		str	r0, [r7, #12]
+  45 0008 B960     		str	r1, [r7, #8]
+  46 000a 7A60     		str	r2, [r7, #4]
   88:./Library/stm32f4xx_hash_md5.c ****   HASH_InitTypeDef MD5_HASH_InitStructure;
-  48              		.loc 1 88 3 is_stmt 1 view .LVU2
   89:./Library/stm32f4xx_hash_md5.c ****   HASH_MsgDigest MD5_MessageDigest;
-  49              		.loc 1 89 3 view .LVU3
   90:./Library/stm32f4xx_hash_md5.c ****   __IO uint16_t nbvalidbitsdata = 0;
-  50              		.loc 1 90 3 view .LVU4
-  51              		.loc 1 90 17 is_stmt 0 view .LVU5
-  52 0008 0024     		movs	r4, #0
-  53 000a ADF80640 		strh	r4, [sp, #6]	@ movhi
+  47              		.loc 1 90 17
+  48 000c 0023     		movs	r3, #0
+  49 000e 7B83     		strh	r3, [r7, #26]	@ movhi
   91:./Library/stm32f4xx_hash_md5.c ****   uint32_t i = 0;
-  54              		.loc 1 91 3 is_stmt 1 view .LVU6
-  55              	.LVL1:
+  50              		.loc 1 91 12
+  51 0010 0023     		movs	r3, #0
+  52 0012 FB66     		str	r3, [r7, #108]
   92:./Library/stm32f4xx_hash_md5.c ****   __IO uint32_t counter = 0;
-  56              		.loc 1 92 3 view .LVU7
-  57              		.loc 1 92 17 is_stmt 0 view .LVU8
-  58 000e 0094     		str	r4, [sp]
+  53              		.loc 1 92 17
+  54 0014 0023     		movs	r3, #0
+  55 0016 7B61     		str	r3, [r7, #20]
   93:./Library/stm32f4xx_hash_md5.c ****   uint32_t busystatus = 0;
-  59              		.loc 1 93 3 is_stmt 1 view .LVU9
-  60              	.LVL2:
+  56              		.loc 1 93 12
+  57 0018 0023     		movs	r3, #0
+  58 001a 3B66     		str	r3, [r7, #96]
   94:./Library/stm32f4xx_hash_md5.c ****   ErrorStatus status = SUCCESS;
-  61              		.loc 1 94 3 view .LVU10
+  59              		.loc 1 94 15
+  60 001c 0123     		movs	r3, #1
+  61 001e 87F86B30 		strb	r3, [r7, #107]
   95:./Library/stm32f4xx_hash_md5.c ****   uint32_t inputaddr  = (uint32_t)Input;
-  62              		.loc 1 95 3 view .LVU11
-  63              		.loc 1 95 12 is_stmt 0 view .LVU12
-  64 0010 0546     		mov	r5, r0
-  65              	.LVL3:
+  62              		.loc 1 95 12
+  63 0022 FB68     		ldr	r3, [r7, #12]
+  64 0024 7B66     		str	r3, [r7, #100]
   96:./Library/stm32f4xx_hash_md5.c ****   uint32_t outputaddr = (uint32_t)Output;
-  66              		.loc 1 96 3 is_stmt 1 view .LVU13
+  65              		.loc 1 96 12
+  66 0026 7B68     		ldr	r3, [r7, #4]
+  67 0028 FB65     		str	r3, [r7, #92]
   97:./Library/stm32f4xx_hash_md5.c **** 
   98:./Library/stm32f4xx_hash_md5.c **** 
   99:./Library/stm32f4xx_hash_md5.c ****   /* Number of valid bits in last word of the Input data */
  100:./Library/stm32f4xx_hash_md5.c ****   nbvalidbitsdata = 8 * (Ilen % 4);
-  67              		.loc 1 100 3 view .LVU14
-  68              		.loc 1 100 19 is_stmt 0 view .LVU15
-  69 0012 01F00303 		and	r3, r1, #3
-  70 0016 DB00     		lsls	r3, r3, #3
-  71 0018 ADF80630 		strh	r3, [sp, #6]	@ movhi
+  68              		.loc 1 100 19
+  69 002a BB68     		ldr	r3, [r7, #8]
+  70 002c 9BB2     		uxth	r3, r3
+  71 002e 03F00303 		and	r3, r3, #3
+  72 0032 9BB2     		uxth	r3, r3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 4
+
+
+  73 0034 DB00     		lsls	r3, r3, #3
+  74 0036 9BB2     		uxth	r3, r3
+  75 0038 7B83     		strh	r3, [r7, #26]	@ movhi
  101:./Library/stm32f4xx_hash_md5.c **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 4
-
-
  102:./Library/stm32f4xx_hash_md5.c ****   /* HASH peripheral initialization */
  103:./Library/stm32f4xx_hash_md5.c ****   HASH_DeInit();
-  72              		.loc 1 103 3 is_stmt 1 view .LVU16
-  73 001c FFF7FEFF 		bl	HASH_DeInit
-  74              	.LVL4:
+  76              		.loc 1 103 3
+  77 003a FFF7FEFF 		bl	HASH_DeInit
  104:./Library/stm32f4xx_hash_md5.c **** 
  105:./Library/stm32f4xx_hash_md5.c ****   /* HASH Configuration */
  106:./Library/stm32f4xx_hash_md5.c ****   MD5_HASH_InitStructure.HASH_AlgoSelection = HASH_AlgoSelection_MD5;
-  75              		.loc 1 106 3 view .LVU17
-  76              		.loc 1 106 45 is_stmt 0 view .LVU18
-  77 0020 8023     		movs	r3, #128
-  78 0022 0A93     		str	r3, [sp, #40]
+  78              		.loc 1 106 45
+  79 003e 8023     		movs	r3, #128
+  80 0040 FB63     		str	r3, [r7, #60]
  107:./Library/stm32f4xx_hash_md5.c ****   MD5_HASH_InitStructure.HASH_AlgoMode = HASH_AlgoMode_HASH;
-  79              		.loc 1 107 3 is_stmt 1 view .LVU19
-  80              		.loc 1 107 40 is_stmt 0 view .LVU20
-  81 0024 0B94     		str	r4, [sp, #44]
+  81              		.loc 1 107 40
+  82 0042 0023     		movs	r3, #0
+  83 0044 3B64     		str	r3, [r7, #64]
  108:./Library/stm32f4xx_hash_md5.c ****   MD5_HASH_InitStructure.HASH_DataType = HASH_DataType_8b;
-  82              		.loc 1 108 3 is_stmt 1 view .LVU21
-  83              		.loc 1 108 40 is_stmt 0 view .LVU22
-  84 0026 2023     		movs	r3, #32
-  85 0028 0C93     		str	r3, [sp, #48]
+  84              		.loc 1 108 40
+  85 0046 2023     		movs	r3, #32
+  86 0048 7B64     		str	r3, [r7, #68]
  109:./Library/stm32f4xx_hash_md5.c ****   HASH_Init(&MD5_HASH_InitStructure);
-  86              		.loc 1 109 3 is_stmt 1 view .LVU23
-  87 002a 0AA8     		add	r0, sp, #40
-  88 002c FFF7FEFF 		bl	HASH_Init
-  89              	.LVL5:
+  87              		.loc 1 109 3
+  88 004a 07F13C03 		add	r3, r7, #60
+  89 004e 1846     		mov	r0, r3
+  90 0050 FFF7FEFF 		bl	HASH_Init
  110:./Library/stm32f4xx_hash_md5.c **** 
  111:./Library/stm32f4xx_hash_md5.c ****   /* Configure the number of valid bits in last word of the data */
  112:./Library/stm32f4xx_hash_md5.c ****   HASH_SetLastWordValidBitsNbr(nbvalidbitsdata);
-  90              		.loc 1 112 3 view .LVU24
-  91 0030 BDF80600 		ldrh	r0, [sp, #6]
-  92 0034 80B2     		uxth	r0, r0
-  93 0036 FFF7FEFF 		bl	HASH_SetLastWordValidBitsNbr
-  94              	.LVL6:
+  91              		.loc 1 112 3
+  92 0054 7B8B     		ldrh	r3, [r7, #26]	@ movhi
+  93 0056 9BB2     		uxth	r3, r3
+  94 0058 1846     		mov	r0, r3
+  95 005a FFF7FEFF 		bl	HASH_SetLastWordValidBitsNbr
  113:./Library/stm32f4xx_hash_md5.c **** 
  114:./Library/stm32f4xx_hash_md5.c ****   /* Write the Input block in the IN FIFO */
  115:./Library/stm32f4xx_hash_md5.c ****   for(i=0; i<Ilen; i+=4)
-  95              		.loc 1 115 3 view .LVU25
-  96              		.loc 1 115 3 is_stmt 0 view .LVU26
-  97 003a 04E0     		b	.L2
-  98              	.LVL7:
-  99              	.L3:
+  96              		.loc 1 115 8
+  97 005e 0023     		movs	r3, #0
+  98 0060 FB66     		str	r3, [r7, #108]
+  99              		.loc 1 115 3
+ 100 0062 0AE0     		b	.L2
+ 101              	.L3:
  116:./Library/stm32f4xx_hash_md5.c ****   {
  117:./Library/stm32f4xx_hash_md5.c ****     HASH_DataIn(*(uint32_t*)inputaddr);
- 100              		.loc 1 117 5 is_stmt 1 discriminator 3 view .LVU27
- 101 003c 55F8040B 		ldr	r0, [r5], #4
- 102              	.LVL8:
- 103              		.loc 1 117 5 is_stmt 0 discriminator 3 view .LVU28
- 104 0040 FFF7FEFF 		bl	HASH_DataIn
- 105              	.LVL9:
+ 102              		.loc 1 117 18 discriminator 3
+ 103 0064 7B6E     		ldr	r3, [r7, #100]
+ 104              		.loc 1 117 5 discriminator 3
+ 105 0066 1B68     		ldr	r3, [r3]
+ 106 0068 1846     		mov	r0, r3
+ 107 006a FFF7FEFF 		bl	HASH_DataIn
  118:./Library/stm32f4xx_hash_md5.c ****     inputaddr+=4;
- 106              		.loc 1 118 5 is_stmt 1 discriminator 3 view .LVU29
- 115:./Library/stm32f4xx_hash_md5.c ****   {
- 107              		.loc 1 115 20 discriminator 3 view .LVU30
- 115:./Library/stm32f4xx_hash_md5.c ****   {
- 108              		.loc 1 115 21 is_stmt 0 discriminator 3 view .LVU31
- 109 0044 0434     		adds	r4, r4, #4
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 5
+ 108              		.loc 1 118 14 discriminator 3
+ 109 006e 7B6E     		ldr	r3, [r7, #100]
+ 110 0070 0433     		adds	r3, r3, #4
+ 111 0072 7B66     		str	r3, [r7, #100]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 5
 
 
- 110              	.LVL10:
- 111              	.L2:
  115:./Library/stm32f4xx_hash_md5.c ****   {
- 112              		.loc 1 115 12 is_stmt 1 discriminator 1 view .LVU32
+ 112              		.loc 1 115 21 discriminator 3
+ 113 0074 FB6E     		ldr	r3, [r7, #108]
+ 114 0076 0433     		adds	r3, r3, #4
+ 115 0078 FB66     		str	r3, [r7, #108]
+ 116              	.L2:
  115:./Library/stm32f4xx_hash_md5.c ****   {
- 113              		.loc 1 115 3 is_stmt 0 discriminator 1 view .LVU33
- 114 0046 BC42     		cmp	r4, r7
- 115 0048 F8D3     		bcc	.L3
+ 117              		.loc 1 115 3 discriminator 1
+ 118 007a FA6E     		ldr	r2, [r7, #108]
+ 119 007c BB68     		ldr	r3, [r7, #8]
+ 120 007e 9A42     		cmp	r2, r3
+ 121 0080 F0D3     		bcc	.L3
  119:./Library/stm32f4xx_hash_md5.c ****   }
  120:./Library/stm32f4xx_hash_md5.c **** 
  121:./Library/stm32f4xx_hash_md5.c ****   /* Start the HASH processor */
  122:./Library/stm32f4xx_hash_md5.c ****   HASH_StartDigest();
- 116              		.loc 1 122 3 is_stmt 1 view .LVU34
- 117 004a FFF7FEFF 		bl	HASH_StartDigest
- 118              	.LVL11:
- 119              	.L5:
+ 122              		.loc 1 122 3
+ 123 0082 FFF7FEFF 		bl	HASH_StartDigest
+ 124              	.L5:
  123:./Library/stm32f4xx_hash_md5.c **** 
  124:./Library/stm32f4xx_hash_md5.c ****   /* wait until the Busy flag is RESET */
  125:./Library/stm32f4xx_hash_md5.c ****   do
- 120              		.loc 1 125 3 discriminator 2 view .LVU35
  126:./Library/stm32f4xx_hash_md5.c ****   {
  127:./Library/stm32f4xx_hash_md5.c ****     busystatus = HASH_GetFlagStatus(HASH_FLAG_BUSY);
- 121              		.loc 1 127 5 discriminator 2 view .LVU36
- 122              		.loc 1 127 18 is_stmt 0 discriminator 2 view .LVU37
- 123 004e 0820     		movs	r0, #8
- 124 0050 FFF7FEFF 		bl	HASH_GetFlagStatus
- 125              	.LVL12:
+ 125              		.loc 1 127 18 discriminator 2
+ 126 0086 0820     		movs	r0, #8
+ 127 0088 FFF7FEFF 		bl	HASH_GetFlagStatus
+ 128 008c 0346     		mov	r3, r0
+ 129              		.loc 1 127 16 discriminator 2
+ 130 008e 3B66     		str	r3, [r7, #96]
  128:./Library/stm32f4xx_hash_md5.c ****     counter++;
- 126              		.loc 1 128 5 is_stmt 1 discriminator 2 view .LVU38
- 127              		.loc 1 128 12 is_stmt 0 discriminator 2 view .LVU39
- 128 0054 009B     		ldr	r3, [sp]
- 129 0056 0133     		adds	r3, r3, #1
- 130 0058 0093     		str	r3, [sp]
+ 131              		.loc 1 128 12 discriminator 2
+ 132 0090 7B69     		ldr	r3, [r7, #20]
+ 133 0092 0133     		adds	r3, r3, #1
+ 134 0094 7B61     		str	r3, [r7, #20]
  129:./Library/stm32f4xx_hash_md5.c ****   }while ((counter != MD5BUSY_TIMEOUT) && (busystatus != RESET));
- 131              		.loc 1 129 10 is_stmt 1 discriminator 2 view .LVU40
- 132              		.loc 1 129 20 is_stmt 0 discriminator 2 view .LVU41
- 133 005a 009B     		ldr	r3, [sp]
- 134              		.loc 1 129 3 discriminator 2 view .LVU42
- 135 005c B3F5803F 		cmp	r3, #65536
- 136 0060 01D0     		beq	.L4
- 137              		.loc 1 129 40 discriminator 1 view .LVU43
- 138 0062 0028     		cmp	r0, #0
- 139 0064 F3D1     		bne	.L5
- 140              	.L4:
+ 135              		.loc 1 129 20 discriminator 2
+ 136 0096 7B69     		ldr	r3, [r7, #20]
+ 137              		.loc 1 129 3 discriminator 2
+ 138 0098 B3F5803F 		cmp	r3, #65536
+ 139 009c 02D0     		beq	.L4
+ 140              		.loc 1 129 40 discriminator 1
+ 141 009e 3B6E     		ldr	r3, [r7, #96]
+ 142 00a0 002B     		cmp	r3, #0
+ 143 00a2 F0D1     		bne	.L5
+ 144              	.L4:
  130:./Library/stm32f4xx_hash_md5.c **** 
  131:./Library/stm32f4xx_hash_md5.c ****   if (busystatus != RESET)
- 141              		.loc 1 131 3 is_stmt 1 view .LVU44
- 142              		.loc 1 131 6 is_stmt 0 view .LVU45
- 143 0066 10B1     		cbz	r0, .L9
+ 145              		.loc 1 131 6
+ 146 00a4 3B6E     		ldr	r3, [r7, #96]
+ 147 00a6 002B     		cmp	r3, #0
+ 148 00a8 03D0     		beq	.L6
  132:./Library/stm32f4xx_hash_md5.c ****   {
  133:./Library/stm32f4xx_hash_md5.c ****      status = ERROR;
- 144              		.loc 1 133 13 view .LVU46
- 145 0068 0020     		movs	r0, #0
- 146              	.LVL13:
- 147              	.L6:
+ 149              		.loc 1 133 13
+ 150 00aa 0023     		movs	r3, #0
+ 151 00ac 87F86B30 		strb	r3, [r7, #107]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 6
+
+
+ 152 00b0 25E0     		b	.L7
+ 153              	.L6:
  134:./Library/stm32f4xx_hash_md5.c ****   }
  135:./Library/stm32f4xx_hash_md5.c ****   else
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 6
-
-
  136:./Library/stm32f4xx_hash_md5.c ****   {
  137:./Library/stm32f4xx_hash_md5.c ****     /* Read the message digest */
  138:./Library/stm32f4xx_hash_md5.c ****     HASH_GetDigest(&MD5_MessageDigest);
+ 154              		.loc 1 138 5
+ 155 00b2 07F11C03 		add	r3, r7, #28
+ 156 00b6 1846     		mov	r0, r3
+ 157 00b8 FFF7FEFF 		bl	HASH_GetDigest
  139:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[0]);
- 140:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 141:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[1]);
- 142:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 143:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[2]);
- 144:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 145:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[3]);
- 146:./Library/stm32f4xx_hash_md5.c ****   }
- 147:./Library/stm32f4xx_hash_md5.c ****   return status; 
- 148              		.loc 1 147 3 is_stmt 1 view .LVU47
- 148:./Library/stm32f4xx_hash_md5.c **** }
- 149              		.loc 1 148 1 is_stmt 0 view .LVU48
- 150 006a 0FB0     		add	sp, sp, #60
- 151              	.LCFI2:
- 152              		.cfi_remember_state
- 153              		.cfi_def_cfa_offset 20
- 154              		@ sp needed
- 155 006c F0BD     		pop	{r4, r5, r6, r7, pc}
- 156              	.LVL14:
- 157              	.L9:
- 158              	.LCFI3:
- 159              		.cfi_restore_state
- 138:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[0]);
- 160              		.loc 1 138 5 is_stmt 1 view .LVU49
- 161 006e 02A8     		add	r0, sp, #8
- 162              	.LVL15:
- 138:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[0]);
- 163              		.loc 1 138 5 is_stmt 0 view .LVU50
- 164 0070 FFF7FEFF 		bl	HASH_GetDigest
- 165              	.LVL16:
- 139:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 166              		.loc 1 139 5 is_stmt 1 view .LVU51
- 139:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 167              		.loc 1 139 33 is_stmt 0 view .LVU52
- 168 0074 029B     		ldr	r3, [sp, #8]
- 169              	.LVL17:
- 170              	.LBB18:
- 171              	.LBI18:
- 172              		.file 2 "./CORE/core_cmInstr.h"
+ 158              		.loc 1 139 33
+ 159 00bc FA69     		ldr	r2, [r7, #28]
+ 160              		.loc 1 139 6
+ 161 00be FB6D     		ldr	r3, [r7, #92]
+ 162 00c0 FA64     		str	r2, [r7, #76]
+ 163              	.LBB18:
+ 164              	.LBB19:
+ 165              		.file 2 "./CORE/core_cmInstr.h"
    1:./CORE/core_cmInstr.h **** /**************************************************************************//**
    2:./CORE/core_cmInstr.h ****  * @file     core_cmInstr.h
    3:./CORE/core_cmInstr.h ****  * @brief    CMSIS Cortex-M Core Instruction Access Header File
@@ -358,9 +336,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
   13:./CORE/core_cmInstr.h ****    Redistribution and use in source and binary forms, with or without
   14:./CORE/core_cmInstr.h ****    modification, are permitted provided that the following conditions are met:
   15:./CORE/core_cmInstr.h ****    - Redistributions of source code must retain the above copyright
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 7
-
-
   16:./CORE/core_cmInstr.h ****      notice, this list of conditions and the following disclaimer.
   17:./CORE/core_cmInstr.h ****    - Redistributions in binary form must reproduce the above copyright
   18:./CORE/core_cmInstr.h ****      notice, this list of conditions and the following disclaimer in the
@@ -383,6 +358,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
   35:./CORE/core_cmInstr.h ****    ---------------------------------------------------------------------------*/
   36:./CORE/core_cmInstr.h **** 
   37:./CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 7
+
+
   38:./CORE/core_cmInstr.h **** #ifndef __CORE_CMINSTR_H
   39:./CORE/core_cmInstr.h **** #define __CORE_CMINSTR_H
   40:./CORE/core_cmInstr.h **** 
@@ -418,9 +396,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
   70:./CORE/core_cmInstr.h **** 
   71:./CORE/core_cmInstr.h **** /** \brief  Wait For Event
   72:./CORE/core_cmInstr.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 8
-
-
   73:./CORE/core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
   74:./CORE/core_cmInstr.h ****     a low-power state until one of a number of events occurs.
   75:./CORE/core_cmInstr.h ****  */
@@ -443,6 +418,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
   92:./CORE/core_cmInstr.h **** #define __ISB() do {\
   93:./CORE/core_cmInstr.h ****                    __schedule_barrier();\
   94:./CORE/core_cmInstr.h ****                    __isb(0xF);\
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 8
+
+
   95:./CORE/core_cmInstr.h ****                    __schedule_barrier();\
   96:./CORE/core_cmInstr.h ****                 } while (0)
   97:./CORE/core_cmInstr.h **** 
@@ -478,9 +456,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  127:./CORE/core_cmInstr.h **** #define __REV                             __rev
  128:./CORE/core_cmInstr.h **** 
  129:./CORE/core_cmInstr.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 9
-
-
  130:./CORE/core_cmInstr.h **** /** \brief  Reverse byte order (16 bit)
  131:./CORE/core_cmInstr.h **** 
  132:./CORE/core_cmInstr.h ****     This function reverses the byte order in two unsigned short values.
@@ -503,6 +478,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  149:./CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
  150:./CORE/core_cmInstr.h ****     \return               Reversed value
  151:./CORE/core_cmInstr.h ****  */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 9
+
+
  152:./CORE/core_cmInstr.h **** #ifndef __NO_EMBEDDED_ASM
  153:./CORE/core_cmInstr.h **** __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
  154:./CORE/core_cmInstr.h **** {
@@ -538,9 +516,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  184:./CORE/core_cmInstr.h **** 
  185:./CORE/core_cmInstr.h ****     This function reverses the bit order of the given value.
  186:./CORE/core_cmInstr.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 10
-
-
  187:./CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
  188:./CORE/core_cmInstr.h ****     \return               Reversed value
  189:./CORE/core_cmInstr.h ****  */
@@ -563,6 +538,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  206:./CORE/core_cmInstr.h ****   return(result);
  207:./CORE/core_cmInstr.h **** }
  208:./CORE/core_cmInstr.h **** #endif
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 10
+
+
  209:./CORE/core_cmInstr.h **** 
  210:./CORE/core_cmInstr.h **** 
  211:./CORE/core_cmInstr.h **** /** \brief  Count leading zeros
@@ -598,9 +576,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  241:./CORE/core_cmInstr.h **** 
  242:./CORE/core_cmInstr.h **** 
  243:./CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (32 bit)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 11
-
-
  244:./CORE/core_cmInstr.h **** 
  245:./CORE/core_cmInstr.h ****     This function executes a exclusive LDR instruction for 32 bit values.
  246:./CORE/core_cmInstr.h **** 
@@ -623,6 +598,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  263:./CORE/core_cmInstr.h **** 
  264:./CORE/core_cmInstr.h **** 
  265:./CORE/core_cmInstr.h **** /** \brief  STR Exclusive (16 bit)
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 11
+
+
  266:./CORE/core_cmInstr.h **** 
  267:./CORE/core_cmInstr.h ****     This function executes a exclusive STR instruction for 16 bit values.
  268:./CORE/core_cmInstr.h **** 
@@ -658,9 +636,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  298:./CORE/core_cmInstr.h **** 
  299:./CORE/core_cmInstr.h ****     This function saturates a signed value.
  300:./CORE/core_cmInstr.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 12
-
-
  301:./CORE/core_cmInstr.h ****     \param [in]  value  Value to be saturated
  302:./CORE/core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (1..32)
  303:./CORE/core_cmInstr.h ****     \return             Saturated value
@@ -683,6 +658,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  320:./CORE/core_cmInstr.h **** 
  321:./CORE/core_cmInstr.h ****     This function moves each bit of a bitstring right by one bit.
  322:./CORE/core_cmInstr.h ****     The carry input is shifted in at the left end of the bitstring.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 12
+
+
  323:./CORE/core_cmInstr.h **** 
  324:./CORE/core_cmInstr.h ****     \param [in]    value  Value to rotate
  325:./CORE/core_cmInstr.h ****     \return               Rotated value
@@ -718,9 +696,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  355:./CORE/core_cmInstr.h **** 
  356:./CORE/core_cmInstr.h **** /** \brief  LDRT Unprivileged (32 bit)
  357:./CORE/core_cmInstr.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 13
-
-
  358:./CORE/core_cmInstr.h ****     This function executes a Unprivileged LDRT instruction for 32 bit values.
  359:./CORE/core_cmInstr.h **** 
  360:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
@@ -743,6 +718,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  377:./CORE/core_cmInstr.h **** 
  378:./CORE/core_cmInstr.h ****     This function executes a Unprivileged STRT instruction for 16 bit values.
  379:./CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 13
+
+
  380:./CORE/core_cmInstr.h ****     \param [in]  value  Value to store
  381:./CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
  382:./CORE/core_cmInstr.h ****  */
@@ -778,9 +756,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  412:./CORE/core_cmInstr.h **** /** \brief  No Operation
  413:./CORE/core_cmInstr.h **** 
  414:./CORE/core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 14
-
-
  415:./CORE/core_cmInstr.h ****  */
  416:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __NOP(void)
  417:./CORE/core_cmInstr.h **** {
@@ -803,6 +778,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  434:./CORE/core_cmInstr.h **** 
  435:./CORE/core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
  436:./CORE/core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 14
+
+
  437:./CORE/core_cmInstr.h ****  */
  438:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __WFE(void)
  439:./CORE/core_cmInstr.h **** {
@@ -838,9 +816,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  469:./CORE/core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
  470:./CORE/core_cmInstr.h ****  */
  471:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE void __DSB(void)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 15
-
-
  472:./CORE/core_cmInstr.h **** {
  473:./CORE/core_cmInstr.h ****   __ASM volatile ("dsb 0xF":::"memory");
  474:./CORE/core_cmInstr.h **** }
@@ -863,116 +838,110 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  491:./CORE/core_cmInstr.h **** 
  492:./CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
  493:./CORE/core_cmInstr.h ****     \return               Reversed value
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 15
+
+
  494:./CORE/core_cmInstr.h ****  */
  495:./CORE/core_cmInstr.h **** __attribute__((always_inline)) __STATIC_INLINE uint32_t __REV(uint32_t value)
- 173              		.loc 2 495 57 is_stmt 1 view .LVU53
- 174              	.LBB19:
  496:./CORE/core_cmInstr.h **** {
  497:./CORE/core_cmInstr.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
  498:./CORE/core_cmInstr.h ****   return __builtin_bswap32(value);
- 175              		.loc 2 498 3 view .LVU54
- 176              		.loc 2 498 10 is_stmt 0 view .LVU55
- 177 0076 1BBA     		rev	r3, r3
- 178              	.LVL18:
- 179              		.loc 2 498 10 view .LVU56
- 180              	.LBE19:
- 181              	.LBE18:
- 139:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 182              		.loc 1 139 31 view .LVU57
- 183 0078 3360     		str	r3, [r6]
- 140:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[1]);
- 184              		.loc 1 140 5 is_stmt 1 view .LVU58
- 185              	.LVL19:
- 141:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 186              		.loc 1 141 5 view .LVU59
- 141:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 187              		.loc 1 141 33 is_stmt 0 view .LVU60
- 188 007a 039B     		ldr	r3, [sp, #12]
- 189              	.LVL20:
- 190              	.LBB20:
- 191              	.LBI20:
- 495:./CORE/core_cmInstr.h **** {
- 192              		.loc 2 495 57 is_stmt 1 view .LVU61
- 193              	.LBB21:
- 194              		.loc 2 498 3 view .LVU62
- 195              		.loc 2 498 10 is_stmt 0 view .LVU63
- 196 007c 1BBA     		rev	r3, r3
- 197              	.LVL21:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 16
+ 166              		.loc 2 498 10
+ 167 00c2 FA6C     		ldr	r2, [r7, #76]
+ 168 00c4 12BA     		rev	r2, r2
+ 169              	.LBE19:
+ 170              	.LBE18:
+ 171              		.loc 1 139 31
+ 172 00c6 1A60     		str	r2, [r3]
+ 140:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
+ 173              		.loc 1 140 15
+ 174 00c8 FB6D     		ldr	r3, [r7, #92]
+ 175 00ca 0433     		adds	r3, r3, #4
+ 176 00cc FB65     		str	r3, [r7, #92]
+ 141:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[1]);
+ 177              		.loc 1 141 33
+ 178 00ce 3A6A     		ldr	r2, [r7, #32]
+ 179              		.loc 1 141 6
+ 180 00d0 FB6D     		ldr	r3, [r7, #92]
+ 181 00d2 3A65     		str	r2, [r7, #80]
+ 182              	.LBB20:
+ 183              	.LBB21:
+ 184              		.loc 2 498 10
+ 185 00d4 3A6D     		ldr	r2, [r7, #80]
+ 186 00d6 12BA     		rev	r2, r2
+ 187              	.LBE21:
+ 188              	.LBE20:
+ 189              		.loc 1 141 31
+ 190 00d8 1A60     		str	r2, [r3]
+ 142:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
+ 191              		.loc 1 142 15
+ 192 00da FB6D     		ldr	r3, [r7, #92]
+ 193 00dc 0433     		adds	r3, r3, #4
+ 194 00de FB65     		str	r3, [r7, #92]
+ 143:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[2]);
+ 195              		.loc 1 143 33
+ 196 00e0 7A6A     		ldr	r2, [r7, #36]
+ 197              		.loc 1 143 6
+ 198 00e2 FB6D     		ldr	r3, [r7, #92]
+ 199 00e4 7A65     		str	r2, [r7, #84]
+ 200              	.LBB22:
+ 201              	.LBB23:
+ 202              		.loc 2 498 10
+ 203 00e6 7A6D     		ldr	r2, [r7, #84]
+ 204 00e8 12BA     		rev	r2, r2
+ 205              	.LBE23:
+ 206              	.LBE22:
+ 207              		.loc 1 143 31
+ 208 00ea 1A60     		str	r2, [r3]
+ 144:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
+ 209              		.loc 1 144 15
+ 210 00ec FB6D     		ldr	r3, [r7, #92]
+ 211 00ee 0433     		adds	r3, r3, #4
+ 212 00f0 FB65     		str	r3, [r7, #92]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 16
 
 
- 198              		.loc 2 498 10 view .LVU64
- 199              	.LBE21:
- 200              	.LBE20:
- 141:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 201              		.loc 1 141 31 view .LVU65
- 202 007e 7360     		str	r3, [r6, #4]
- 142:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[2]);
- 203              		.loc 1 142 5 is_stmt 1 view .LVU66
- 204              	.LVL22:
- 143:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 205              		.loc 1 143 5 view .LVU67
- 143:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 206              		.loc 1 143 33 is_stmt 0 view .LVU68
- 207 0080 049B     		ldr	r3, [sp, #16]
- 208              	.LVL23:
- 209              	.LBB22:
- 210              	.LBI22:
- 495:./CORE/core_cmInstr.h **** {
- 211              		.loc 2 495 57 is_stmt 1 view .LVU69
- 212              	.LBB23:
- 213              		.loc 2 498 3 view .LVU70
- 214              		.loc 2 498 10 is_stmt 0 view .LVU71
- 215 0082 1BBA     		rev	r3, r3
- 216              	.LVL24:
- 217              		.loc 2 498 10 view .LVU72
- 218              	.LBE23:
- 219              	.LBE22:
- 143:./Library/stm32f4xx_hash_md5.c ****     outputaddr+=4;
- 220              		.loc 1 143 31 view .LVU73
- 221 0084 B360     		str	r3, [r6, #8]
- 144:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[3]);
- 222              		.loc 1 144 5 is_stmt 1 view .LVU74
- 223              	.LVL25:
- 145:./Library/stm32f4xx_hash_md5.c ****   }
- 224              		.loc 1 145 5 view .LVU75
- 145:./Library/stm32f4xx_hash_md5.c ****   }
- 225              		.loc 1 145 33 is_stmt 0 view .LVU76
- 226 0086 059B     		ldr	r3, [sp, #20]
- 227              	.LVL26:
- 228              	.LBB24:
- 229              	.LBI24:
- 495:./CORE/core_cmInstr.h **** {
- 230              		.loc 2 495 57 is_stmt 1 view .LVU77
- 231              	.LBB25:
- 232              		.loc 2 498 3 view .LVU78
- 233              		.loc 2 498 10 is_stmt 0 view .LVU79
- 234 0088 1BBA     		rev	r3, r3
- 235              	.LVL27:
- 236              		.loc 2 498 10 view .LVU80
- 237              	.LBE25:
- 238              	.LBE24:
- 145:./Library/stm32f4xx_hash_md5.c ****   }
- 239              		.loc 1 145 31 view .LVU81
- 240 008a F360     		str	r3, [r6, #12]
-  94:./Library/stm32f4xx_hash_md5.c ****   uint32_t inputaddr  = (uint32_t)Input;
- 241              		.loc 1 94 15 view .LVU82
- 242 008c 0120     		movs	r0, #1
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 17
-
-
- 243 008e ECE7     		b	.L6
- 244              		.cfi_endproc
- 245              	.LFE123:
- 247              		.section	.text.HMAC_MD5,"ax",%progbits
- 248              		.align	1
- 249              		.global	HMAC_MD5
- 250              		.syntax unified
- 251              		.thumb
- 252              		.thumb_func
- 254              	HMAC_MD5:
- 255              	.LVL28:
- 256              	.LFB124:
+ 145:./Library/stm32f4xx_hash_md5.c ****     *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[3]);
+ 213              		.loc 1 145 33
+ 214 00f2 BA6A     		ldr	r2, [r7, #40]
+ 215              		.loc 1 145 6
+ 216 00f4 FB6D     		ldr	r3, [r7, #92]
+ 217 00f6 BA65     		str	r2, [r7, #88]
+ 218              	.LBB24:
+ 219              	.LBB25:
+ 220              		.loc 2 498 10
+ 221 00f8 BA6D     		ldr	r2, [r7, #88]
+ 222 00fa 12BA     		rev	r2, r2
+ 223              	.LBE25:
+ 224              	.LBE24:
+ 225              		.loc 1 145 31
+ 226 00fc 1A60     		str	r2, [r3]
+ 227              	.L7:
+ 146:./Library/stm32f4xx_hash_md5.c ****   }
+ 147:./Library/stm32f4xx_hash_md5.c ****   return status; 
+ 228              		.loc 1 147 10
+ 229 00fe 97F86B30 		ldrb	r3, [r7, #107]	@ zero_extendqisi2
+ 148:./Library/stm32f4xx_hash_md5.c **** }
+ 230              		.loc 1 148 1
+ 231 0102 1846     		mov	r0, r3
+ 232 0104 7037     		adds	r7, r7, #112
+ 233              	.LCFI3:
+ 234              		.cfi_def_cfa_offset 8
+ 235 0106 BD46     		mov	sp, r7
+ 236              	.LCFI4:
+ 237              		.cfi_def_cfa_register 13
+ 238              		@ sp needed
+ 239 0108 80BD     		pop	{r7, pc}
+ 240              		.cfi_endproc
+ 241              	.LFE123:
+ 243              		.section	.text.HMAC_MD5,"ax",%progbits
+ 244              		.align	1
+ 245              		.global	HMAC_MD5
+ 246              		.syntax unified
+ 247              		.thumb
+ 248              		.thumb_func
+ 250              	HMAC_MD5:
+ 251              	.LFB124:
  149:./Library/stm32f4xx_hash_md5.c **** 
  150:./Library/stm32f4xx_hash_md5.c **** /**
  151:./Library/stm32f4xx_hash_md5.c ****   * @brief  Compute the HMAC MD5 digest.
@@ -988,663 +957,564 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 1
  161:./Library/stm32f4xx_hash_md5.c **** ErrorStatus HMAC_MD5(uint8_t *Key, uint32_t Keylen, uint8_t *Input, 
  162:./Library/stm32f4xx_hash_md5.c ****                      uint32_t Ilen, uint8_t Output[16])
  163:./Library/stm32f4xx_hash_md5.c **** {
- 257              		.loc 1 163 1 is_stmt 1 view -0
- 258              		.cfi_startproc
- 259              		@ args = 4, pretend = 0, frame = 56
- 260              		@ frame_needed = 0, uses_anonymous_args = 0
- 261              		.loc 1 163 1 is_stmt 0 view .LVU84
- 262 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
- 263              	.LCFI4:
- 264              		.cfi_def_cfa_offset 28
- 265              		.cfi_offset 4, -28
- 266              		.cfi_offset 5, -24
- 267              		.cfi_offset 6, -20
- 268              		.cfi_offset 7, -16
- 269              		.cfi_offset 8, -12
- 270              		.cfi_offset 9, -8
- 271              		.cfi_offset 14, -4
- 272 0004 8FB0     		sub	sp, sp, #60
- 273              	.LCFI5:
- 274              		.cfi_def_cfa_offset 88
- 275 0006 8146     		mov	r9, r0
- 276 0008 0D46     		mov	r5, r1
- 277 000a 1F46     		mov	r7, r3
+ 252              		.loc 1 163 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 17
+
+
+ 253              		.cfi_startproc
+ 254              		@ args = 4, pretend = 0, frame = 112
+ 255              		@ frame_needed = 1, uses_anonymous_args = 0
+ 256 0000 80B5     		push	{r7, lr}
+ 257              	.LCFI5:
+ 258              		.cfi_def_cfa_offset 8
+ 259              		.cfi_offset 7, -8
+ 260              		.cfi_offset 14, -4
+ 261 0002 9CB0     		sub	sp, sp, #112
+ 262              	.LCFI6:
+ 263              		.cfi_def_cfa_offset 120
+ 264 0004 00AF     		add	r7, sp, #0
+ 265              	.LCFI7:
+ 266              		.cfi_def_cfa_register 7
+ 267 0006 F860     		str	r0, [r7, #12]
+ 268 0008 B960     		str	r1, [r7, #8]
+ 269 000a 7A60     		str	r2, [r7, #4]
+ 270 000c 3B60     		str	r3, [r7]
  164:./Library/stm32f4xx_hash_md5.c ****   HASH_InitTypeDef MD5_HASH_InitStructure;
- 278              		.loc 1 164 3 is_stmt 1 view .LVU85
  165:./Library/stm32f4xx_hash_md5.c ****   HASH_MsgDigest MD5_MessageDigest;
- 279              		.loc 1 165 3 view .LVU86
  166:./Library/stm32f4xx_hash_md5.c ****   __IO uint16_t nbvalidbitsdata = 0;
- 280              		.loc 1 166 3 view .LVU87
- 281              		.loc 1 166 17 is_stmt 0 view .LVU88
- 282 000c 0023     		movs	r3, #0
- 283              	.LVL29:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 18
-
-
- 284              		.loc 1 166 17 view .LVU89
- 285 000e ADF80630 		strh	r3, [sp, #6]	@ movhi
+ 271              		.loc 1 166 17
+ 272 000e 0023     		movs	r3, #0
+ 273 0010 FB82     		strh	r3, [r7, #22]	@ movhi
  167:./Library/stm32f4xx_hash_md5.c ****   __IO uint16_t nbvalidbitskey = 0;
- 286              		.loc 1 167 3 is_stmt 1 view .LVU90
- 287              		.loc 1 167 17 is_stmt 0 view .LVU91
- 288 0012 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 274              		.loc 1 167 17
+ 275 0012 0023     		movs	r3, #0
+ 276 0014 BB82     		strh	r3, [r7, #20]	@ movhi
  168:./Library/stm32f4xx_hash_md5.c ****   uint32_t i = 0;
- 289              		.loc 1 168 3 is_stmt 1 view .LVU92
- 290              	.LVL30:
+ 277              		.loc 1 168 12
+ 278 0016 0023     		movs	r3, #0
+ 279 0018 FB66     		str	r3, [r7, #108]
  169:./Library/stm32f4xx_hash_md5.c ****   __IO uint32_t counter = 0;
- 291              		.loc 1 169 3 view .LVU93
- 292              		.loc 1 169 17 is_stmt 0 view .LVU94
- 293 0016 0093     		str	r3, [sp]
+ 280              		.loc 1 169 17
+ 281 001a 0023     		movs	r3, #0
+ 282 001c 3B61     		str	r3, [r7, #16]
  170:./Library/stm32f4xx_hash_md5.c ****   uint32_t busystatus = 0;
- 294              		.loc 1 170 3 is_stmt 1 view .LVU95
- 295              	.LVL31:
+ 283              		.loc 1 170 12
+ 284 001e 0023     		movs	r3, #0
+ 285 0020 FB65     		str	r3, [r7, #92]
  171:./Library/stm32f4xx_hash_md5.c ****   ErrorStatus status = SUCCESS;
- 296              		.loc 1 171 3 view .LVU96
+ 286              		.loc 1 171 15
+ 287 0022 0123     		movs	r3, #1
+ 288 0024 87F86B30 		strb	r3, [r7, #107]
  172:./Library/stm32f4xx_hash_md5.c ****   uint32_t keyaddr    = (uint32_t)Key;
- 297              		.loc 1 172 3 view .LVU97
- 298              		.loc 1 172 12 is_stmt 0 view .LVU98
- 299 0018 8046     		mov	r8, r0
- 300              	.LVL32:
+ 289              		.loc 1 172 12
+ 290 0028 FB68     		ldr	r3, [r7, #12]
+ 291 002a 7B66     		str	r3, [r7, #100]
  173:./Library/stm32f4xx_hash_md5.c ****   uint32_t inputaddr  = (uint32_t)Input;
- 301              		.loc 1 173 3 is_stmt 1 view .LVU99
- 302              		.loc 1 173 12 is_stmt 0 view .LVU100
- 303 001a 1646     		mov	r6, r2
- 304              	.LVL33:
+ 292              		.loc 1 173 12
+ 293 002c 7B68     		ldr	r3, [r7, #4]
+ 294 002e 3B66     		str	r3, [r7, #96]
  174:./Library/stm32f4xx_hash_md5.c ****   uint32_t outputaddr = (uint32_t)Output;
- 305              		.loc 1 174 3 is_stmt 1 view .LVU101
+ 295              		.loc 1 174 12
+ 296 0030 BB6F     		ldr	r3, [r7, #120]
+ 297 0032 BB65     		str	r3, [r7, #88]
  175:./Library/stm32f4xx_hash_md5.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 18
+
+
  176:./Library/stm32f4xx_hash_md5.c ****   /* Number of valid bits in last word of the Input data */
  177:./Library/stm32f4xx_hash_md5.c ****   nbvalidbitsdata = 8 * (Ilen % 4);
- 306              		.loc 1 177 3 view .LVU102
- 307              		.loc 1 177 19 is_stmt 0 view .LVU103
- 308 001c 07F00303 		and	r3, r7, #3
- 309 0020 DB00     		lsls	r3, r3, #3
- 310 0022 ADF80630 		strh	r3, [sp, #6]	@ movhi
+ 298              		.loc 1 177 19
+ 299 0034 3B68     		ldr	r3, [r7]
+ 300 0036 9BB2     		uxth	r3, r3
+ 301 0038 03F00303 		and	r3, r3, #3
+ 302 003c 9BB2     		uxth	r3, r3
+ 303 003e DB00     		lsls	r3, r3, #3
+ 304 0040 9BB2     		uxth	r3, r3
+ 305 0042 FB82     		strh	r3, [r7, #22]	@ movhi
  178:./Library/stm32f4xx_hash_md5.c **** 
  179:./Library/stm32f4xx_hash_md5.c ****   /* Number of valid bits in last word of the Key */
  180:./Library/stm32f4xx_hash_md5.c ****   nbvalidbitskey = 8 * (Keylen % 4);
- 311              		.loc 1 180 3 is_stmt 1 view .LVU104
- 312              		.loc 1 180 18 is_stmt 0 view .LVU105
- 313 0026 01F00303 		and	r3, r1, #3
- 314 002a DB00     		lsls	r3, r3, #3
- 315 002c ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 306              		.loc 1 180 18
+ 307 0044 BB68     		ldr	r3, [r7, #8]
+ 308 0046 9BB2     		uxth	r3, r3
+ 309 0048 03F00303 		and	r3, r3, #3
+ 310 004c 9BB2     		uxth	r3, r3
+ 311 004e DB00     		lsls	r3, r3, #3
+ 312 0050 9BB2     		uxth	r3, r3
+ 313 0052 BB82     		strh	r3, [r7, #20]	@ movhi
  181:./Library/stm32f4xx_hash_md5.c ****    
  182:./Library/stm32f4xx_hash_md5.c ****   /* HASH peripheral initialization */
  183:./Library/stm32f4xx_hash_md5.c ****   HASH_DeInit();
- 316              		.loc 1 183 3 is_stmt 1 view .LVU106
- 317 0030 FFF7FEFF 		bl	HASH_DeInit
- 318              	.LVL34:
+ 314              		.loc 1 183 3
+ 315 0054 FFF7FEFF 		bl	HASH_DeInit
  184:./Library/stm32f4xx_hash_md5.c **** 
  185:./Library/stm32f4xx_hash_md5.c ****   /* HASH Configuration */
  186:./Library/stm32f4xx_hash_md5.c ****   MD5_HASH_InitStructure.HASH_AlgoSelection = HASH_AlgoSelection_MD5;
- 319              		.loc 1 186 3 view .LVU107
- 320              		.loc 1 186 45 is_stmt 0 view .LVU108
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 19
-
-
- 321 0034 8023     		movs	r3, #128
- 322 0036 0A93     		str	r3, [sp, #40]
+ 316              		.loc 1 186 45
+ 317 0058 8023     		movs	r3, #128
+ 318 005a BB63     		str	r3, [r7, #56]
  187:./Library/stm32f4xx_hash_md5.c ****   MD5_HASH_InitStructure.HASH_AlgoMode = HASH_AlgoMode_HMAC;
- 323              		.loc 1 187 3 is_stmt 1 view .LVU109
- 324              		.loc 1 187 40 is_stmt 0 view .LVU110
- 325 0038 4023     		movs	r3, #64
- 326 003a 0B93     		str	r3, [sp, #44]
+ 319              		.loc 1 187 40
+ 320 005c 4023     		movs	r3, #64
+ 321 005e FB63     		str	r3, [r7, #60]
  188:./Library/stm32f4xx_hash_md5.c ****   MD5_HASH_InitStructure.HASH_DataType = HASH_DataType_8b;
- 327              		.loc 1 188 3 is_stmt 1 view .LVU111
- 328              		.loc 1 188 40 is_stmt 0 view .LVU112
- 329 003c 2023     		movs	r3, #32
- 330 003e 0C93     		str	r3, [sp, #48]
+ 322              		.loc 1 188 40
+ 323 0060 2023     		movs	r3, #32
+ 324 0062 3B64     		str	r3, [r7, #64]
  189:./Library/stm32f4xx_hash_md5.c ****   if(Keylen > 64)
- 331              		.loc 1 189 3 is_stmt 1 view .LVU113
- 332              		.loc 1 189 5 is_stmt 0 view .LVU114
- 333 0040 402D     		cmp	r5, #64
- 334 0042 0CD9     		bls	.L11
+ 325              		.loc 1 189 5
+ 326 0064 BB68     		ldr	r3, [r7, #8]
+ 327 0066 402B     		cmp	r3, #64
+ 328 0068 03D9     		bls	.L14
  190:./Library/stm32f4xx_hash_md5.c ****   {
  191:./Library/stm32f4xx_hash_md5.c ****     /* HMAC long Key */
  192:./Library/stm32f4xx_hash_md5.c ****     MD5_HASH_InitStructure.HASH_HMACKeyType = HASH_HMACKeyType_LongKey;
- 335              		.loc 1 192 5 is_stmt 1 view .LVU115
- 336              		.loc 1 192 45 is_stmt 0 view .LVU116
- 337 0044 4FF48033 		mov	r3, #65536
- 338 0048 0D93     		str	r3, [sp, #52]
- 339              	.L12:
+ 329              		.loc 1 192 45
+ 330 006a 4FF48033 		mov	r3, #65536
+ 331 006e 7B64     		str	r3, [r7, #68]
+ 332 0070 01E0     		b	.L15
+ 333              	.L14:
  193:./Library/stm32f4xx_hash_md5.c ****   }
  194:./Library/stm32f4xx_hash_md5.c ****   else
  195:./Library/stm32f4xx_hash_md5.c ****   {
  196:./Library/stm32f4xx_hash_md5.c ****     /* HMAC short Key */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 19
+
+
  197:./Library/stm32f4xx_hash_md5.c ****     MD5_HASH_InitStructure.HASH_HMACKeyType = HASH_HMACKeyType_ShortKey;
+ 334              		.loc 1 197 45
+ 335 0072 0023     		movs	r3, #0
+ 336 0074 7B64     		str	r3, [r7, #68]
+ 337              	.L15:
  198:./Library/stm32f4xx_hash_md5.c ****   }
  199:./Library/stm32f4xx_hash_md5.c ****   HASH_Init(&MD5_HASH_InitStructure);
- 340              		.loc 1 199 3 is_stmt 1 view .LVU117
- 341 004a 0AA8     		add	r0, sp, #40
- 342 004c FFF7FEFF 		bl	HASH_Init
- 343              	.LVL35:
+ 338              		.loc 1 199 3
+ 339 0076 07F13803 		add	r3, r7, #56
+ 340 007a 1846     		mov	r0, r3
+ 341 007c FFF7FEFF 		bl	HASH_Init
  200:./Library/stm32f4xx_hash_md5.c **** 
  201:./Library/stm32f4xx_hash_md5.c ****   /* Configure the number of valid bits in last word of the Key */
  202:./Library/stm32f4xx_hash_md5.c ****   HASH_SetLastWordValidBitsNbr(nbvalidbitskey);
- 344              		.loc 1 202 3 view .LVU118
- 345 0050 BDF80400 		ldrh	r0, [sp, #4]
- 346 0054 80B2     		uxth	r0, r0
- 347 0056 FFF7FEFF 		bl	HASH_SetLastWordValidBitsNbr
- 348              	.LVL36:
+ 342              		.loc 1 202 3
+ 343 0080 BB8A     		ldrh	r3, [r7, #20]	@ movhi
+ 344 0082 9BB2     		uxth	r3, r3
+ 345 0084 1846     		mov	r0, r3
+ 346 0086 FFF7FEFF 		bl	HASH_SetLastWordValidBitsNbr
  203:./Library/stm32f4xx_hash_md5.c **** 
  204:./Library/stm32f4xx_hash_md5.c ****   /* Write the Key */
  205:./Library/stm32f4xx_hash_md5.c ****   for(i=0; i<Keylen; i+=4)
- 349              		.loc 1 205 3 view .LVU119
- 350              		.loc 1 205 8 is_stmt 0 view .LVU120
- 351 005a 0024     		movs	r4, #0
- 352              		.loc 1 205 3 view .LVU121
- 353 005c 07E0     		b	.L13
- 354              	.L11:
- 197:./Library/stm32f4xx_hash_md5.c ****   }
- 355              		.loc 1 197 5 is_stmt 1 view .LVU122
- 197:./Library/stm32f4xx_hash_md5.c ****   }
- 356              		.loc 1 197 45 is_stmt 0 view .LVU123
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 20
-
-
- 357 005e 0023     		movs	r3, #0
- 358 0060 0D93     		str	r3, [sp, #52]
- 359 0062 F2E7     		b	.L12
- 360              	.LVL37:
- 361              	.L14:
+ 347              		.loc 1 205 8
+ 348 008a 0023     		movs	r3, #0
+ 349 008c FB66     		str	r3, [r7, #108]
+ 350              		.loc 1 205 3
+ 351 008e 0AE0     		b	.L16
+ 352              	.L17:
  206:./Library/stm32f4xx_hash_md5.c ****   {
  207:./Library/stm32f4xx_hash_md5.c ****     HASH_DataIn(*(uint32_t*)keyaddr);
- 362              		.loc 1 207 5 is_stmt 1 discriminator 3 view .LVU124
- 363 0064 59F8040B 		ldr	r0, [r9], #4
- 364              	.LVL38:
- 365              		.loc 1 207 5 is_stmt 0 discriminator 3 view .LVU125
- 366 0068 FFF7FEFF 		bl	HASH_DataIn
- 367              	.LVL39:
+ 353              		.loc 1 207 18 discriminator 3
+ 354 0090 7B6E     		ldr	r3, [r7, #100]
+ 355              		.loc 1 207 5 discriminator 3
+ 356 0092 1B68     		ldr	r3, [r3]
+ 357 0094 1846     		mov	r0, r3
+ 358 0096 FFF7FEFF 		bl	HASH_DataIn
  208:./Library/stm32f4xx_hash_md5.c ****     keyaddr+=4;
- 368              		.loc 1 208 5 is_stmt 1 discriminator 3 view .LVU126
+ 359              		.loc 1 208 12 discriminator 3
+ 360 009a 7B6E     		ldr	r3, [r7, #100]
+ 361 009c 0433     		adds	r3, r3, #4
+ 362 009e 7B66     		str	r3, [r7, #100]
  205:./Library/stm32f4xx_hash_md5.c ****   {
- 369              		.loc 1 205 22 discriminator 3 view .LVU127
+ 363              		.loc 1 205 23 discriminator 3
+ 364 00a0 FB6E     		ldr	r3, [r7, #108]
+ 365 00a2 0433     		adds	r3, r3, #4
+ 366 00a4 FB66     		str	r3, [r7, #108]
+ 367              	.L16:
  205:./Library/stm32f4xx_hash_md5.c ****   {
- 370              		.loc 1 205 23 is_stmt 0 discriminator 3 view .LVU128
- 371 006c 0434     		adds	r4, r4, #4
- 372              	.LVL40:
- 373              	.L13:
- 205:./Library/stm32f4xx_hash_md5.c ****   {
- 374              		.loc 1 205 12 is_stmt 1 discriminator 1 view .LVU129
- 205:./Library/stm32f4xx_hash_md5.c ****   {
- 375              		.loc 1 205 3 is_stmt 0 discriminator 1 view .LVU130
- 376 006e AC42     		cmp	r4, r5
- 377 0070 F8D3     		bcc	.L14
+ 368              		.loc 1 205 3 discriminator 1
+ 369 00a6 FA6E     		ldr	r2, [r7, #108]
+ 370 00a8 BB68     		ldr	r3, [r7, #8]
+ 371 00aa 9A42     		cmp	r2, r3
+ 372 00ac F0D3     		bcc	.L17
  209:./Library/stm32f4xx_hash_md5.c ****   }
  210:./Library/stm32f4xx_hash_md5.c ****   
  211:./Library/stm32f4xx_hash_md5.c ****   /* Start the HASH processor */
  212:./Library/stm32f4xx_hash_md5.c ****   HASH_StartDigest();
- 378              		.loc 1 212 3 is_stmt 1 view .LVU131
- 379 0072 FFF7FEFF 		bl	HASH_StartDigest
- 380              	.LVL41:
- 381              	.L16:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 20
+
+
+ 373              		.loc 1 212 3
+ 374 00ae FFF7FEFF 		bl	HASH_StartDigest
+ 375              	.L19:
  213:./Library/stm32f4xx_hash_md5.c **** 
  214:./Library/stm32f4xx_hash_md5.c ****   /* wait until the Busy flag is RESET */
  215:./Library/stm32f4xx_hash_md5.c ****   do
- 382              		.loc 1 215 3 discriminator 2 view .LVU132
  216:./Library/stm32f4xx_hash_md5.c ****   {
  217:./Library/stm32f4xx_hash_md5.c ****     busystatus = HASH_GetFlagStatus(HASH_FLAG_BUSY);
- 383              		.loc 1 217 5 discriminator 2 view .LVU133
- 384              		.loc 1 217 18 is_stmt 0 discriminator 2 view .LVU134
- 385 0076 0820     		movs	r0, #8
- 386 0078 FFF7FEFF 		bl	HASH_GetFlagStatus
- 387              	.LVL42:
- 388              		.loc 1 217 16 discriminator 2 view .LVU135
- 389 007c 8146     		mov	r9, r0
- 390              	.LVL43:
+ 376              		.loc 1 217 18 discriminator 2
+ 377 00b2 0820     		movs	r0, #8
+ 378 00b4 FFF7FEFF 		bl	HASH_GetFlagStatus
+ 379 00b8 0346     		mov	r3, r0
+ 380              		.loc 1 217 16 discriminator 2
+ 381 00ba FB65     		str	r3, [r7, #92]
  218:./Library/stm32f4xx_hash_md5.c ****     counter++;
- 391              		.loc 1 218 5 is_stmt 1 discriminator 2 view .LVU136
- 392              		.loc 1 218 12 is_stmt 0 discriminator 2 view .LVU137
- 393 007e 009C     		ldr	r4, [sp]
- 394 0080 0134     		adds	r4, r4, #1
- 395 0082 0094     		str	r4, [sp]
+ 382              		.loc 1 218 12 discriminator 2
+ 383 00bc 3B69     		ldr	r3, [r7, #16]
+ 384 00be 0133     		adds	r3, r3, #1
+ 385 00c0 3B61     		str	r3, [r7, #16]
  219:./Library/stm32f4xx_hash_md5.c ****   }while ((counter != MD5BUSY_TIMEOUT) && (busystatus != RESET));
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 21
-
-
- 396              		.loc 1 219 10 is_stmt 1 discriminator 2 view .LVU138
- 397              		.loc 1 219 20 is_stmt 0 discriminator 2 view .LVU139
- 398 0084 009B     		ldr	r3, [sp]
- 399              		.loc 1 219 3 discriminator 2 view .LVU140
- 400 0086 B3F5803F 		cmp	r3, #65536
- 401 008a 01D0     		beq	.L15
- 402              		.loc 1 219 40 discriminator 1 view .LVU141
- 403 008c 0028     		cmp	r0, #0
- 404 008e F2D1     		bne	.L16
- 405              	.L15:
+ 386              		.loc 1 219 20 discriminator 2
+ 387 00c2 3B69     		ldr	r3, [r7, #16]
+ 388              		.loc 1 219 3 discriminator 2
+ 389 00c4 B3F5803F 		cmp	r3, #65536
+ 390 00c8 02D0     		beq	.L18
+ 391              		.loc 1 219 40 discriminator 1
+ 392 00ca FB6D     		ldr	r3, [r7, #92]
+ 393 00cc 002B     		cmp	r3, #0
+ 394 00ce F0D1     		bne	.L19
+ 395              	.L18:
  220:./Library/stm32f4xx_hash_md5.c **** 
  221:./Library/stm32f4xx_hash_md5.c ****   if (busystatus != RESET)
- 406              		.loc 1 221 3 is_stmt 1 view .LVU142
- 407              		.loc 1 221 6 is_stmt 0 view .LVU143
- 408 0090 B9F1000F 		cmp	r9, #0
- 409 0094 03D0     		beq	.L30
+ 396              		.loc 1 221 6
+ 397 00d0 FB6D     		ldr	r3, [r7, #92]
+ 398 00d2 002B     		cmp	r3, #0
+ 399 00d4 03D0     		beq	.L20
  222:./Library/stm32f4xx_hash_md5.c ****   {
  223:./Library/stm32f4xx_hash_md5.c ****      status = ERROR;
- 410              		.loc 1 223 13 view .LVU144
- 411 0096 0020     		movs	r0, #0
- 412              	.LVL44:
- 413              	.L17:
+ 400              		.loc 1 223 13
+ 401 00d6 0023     		movs	r3, #0
+ 402 00d8 87F86B30 		strb	r3, [r7, #107]
+ 403 00dc 89E0     		b	.L21
+ 404              	.L20:
  224:./Library/stm32f4xx_hash_md5.c ****   }
  225:./Library/stm32f4xx_hash_md5.c ****   else
  226:./Library/stm32f4xx_hash_md5.c ****   {
  227:./Library/stm32f4xx_hash_md5.c ****     /* Configure the number of valid bits in last word of the Input data */
  228:./Library/stm32f4xx_hash_md5.c ****     HASH_SetLastWordValidBitsNbr(nbvalidbitsdata);
+ 405              		.loc 1 228 5
+ 406 00de FB8A     		ldrh	r3, [r7, #22]	@ movhi
+ 407 00e0 9BB2     		uxth	r3, r3
+ 408 00e2 1846     		mov	r0, r3
+ 409 00e4 FFF7FEFF 		bl	HASH_SetLastWordValidBitsNbr
  229:./Library/stm32f4xx_hash_md5.c **** 
  230:./Library/stm32f4xx_hash_md5.c ****     /* Write the Input block in the IN FIFO */
  231:./Library/stm32f4xx_hash_md5.c ****     for(i=0; i<Ilen; i+=4)
+ 410              		.loc 1 231 10
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 21
+
+
+ 411 00e8 0023     		movs	r3, #0
+ 412 00ea FB66     		str	r3, [r7, #108]
+ 413              		.loc 1 231 5
+ 414 00ec 0AE0     		b	.L22
+ 415              	.L23:
  232:./Library/stm32f4xx_hash_md5.c ****     {
  233:./Library/stm32f4xx_hash_md5.c ****       HASH_DataIn(*(uint32_t*)inputaddr);
+ 416              		.loc 1 233 20 discriminator 3
+ 417 00ee 3B6E     		ldr	r3, [r7, #96]
+ 418              		.loc 1 233 7 discriminator 3
+ 419 00f0 1B68     		ldr	r3, [r3]
+ 420 00f2 1846     		mov	r0, r3
+ 421 00f4 FFF7FEFF 		bl	HASH_DataIn
  234:./Library/stm32f4xx_hash_md5.c ****       inputaddr+=4;
+ 422              		.loc 1 234 16 discriminator 3
+ 423 00f8 3B6E     		ldr	r3, [r7, #96]
+ 424 00fa 0433     		adds	r3, r3, #4
+ 425 00fc 3B66     		str	r3, [r7, #96]
+ 231:./Library/stm32f4xx_hash_md5.c ****     {
+ 426              		.loc 1 231 23 discriminator 3
+ 427 00fe FB6E     		ldr	r3, [r7, #108]
+ 428 0100 0433     		adds	r3, r3, #4
+ 429 0102 FB66     		str	r3, [r7, #108]
+ 430              	.L22:
+ 231:./Library/stm32f4xx_hash_md5.c ****     {
+ 431              		.loc 1 231 5 discriminator 1
+ 432 0104 FA6E     		ldr	r2, [r7, #108]
+ 433 0106 3B68     		ldr	r3, [r7]
+ 434 0108 9A42     		cmp	r2, r3
+ 435 010a F0D3     		bcc	.L23
  235:./Library/stm32f4xx_hash_md5.c ****     }
  236:./Library/stm32f4xx_hash_md5.c **** 
  237:./Library/stm32f4xx_hash_md5.c ****     /* Start the HASH processor */
  238:./Library/stm32f4xx_hash_md5.c ****     HASH_StartDigest();
+ 436              		.loc 1 238 5
+ 437 010c FFF7FEFF 		bl	HASH_StartDigest
  239:./Library/stm32f4xx_hash_md5.c **** 
  240:./Library/stm32f4xx_hash_md5.c ****     /* wait until the Busy flag is RESET */
  241:./Library/stm32f4xx_hash_md5.c ****     counter =0;
+ 438              		.loc 1 241 13
+ 439 0110 0023     		movs	r3, #0
+ 440 0112 3B61     		str	r3, [r7, #16]
+ 441              	.L25:
  242:./Library/stm32f4xx_hash_md5.c ****     do
  243:./Library/stm32f4xx_hash_md5.c ****     {
  244:./Library/stm32f4xx_hash_md5.c ****        busystatus = HASH_GetFlagStatus(HASH_FLAG_BUSY);
+ 442              		.loc 1 244 21 discriminator 2
+ 443 0114 0820     		movs	r0, #8
+ 444 0116 FFF7FEFF 		bl	HASH_GetFlagStatus
+ 445 011a 0346     		mov	r3, r0
+ 446              		.loc 1 244 19 discriminator 2
+ 447 011c FB65     		str	r3, [r7, #92]
  245:./Library/stm32f4xx_hash_md5.c ****        counter++;
+ 448              		.loc 1 245 15 discriminator 2
+ 449 011e 3B69     		ldr	r3, [r7, #16]
+ 450 0120 0133     		adds	r3, r3, #1
+ 451 0122 3B61     		str	r3, [r7, #16]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 22
+
+
  246:./Library/stm32f4xx_hash_md5.c ****     }while ((counter != MD5BUSY_TIMEOUT) && (busystatus != RESET));
+ 452              		.loc 1 246 22 discriminator 2
+ 453 0124 3B69     		ldr	r3, [r7, #16]
+ 454              		.loc 1 246 5 discriminator 2
+ 455 0126 B3F5803F 		cmp	r3, #65536
+ 456 012a 02D0     		beq	.L24
+ 457              		.loc 1 246 42 discriminator 1
+ 458 012c FB6D     		ldr	r3, [r7, #92]
+ 459 012e 002B     		cmp	r3, #0
+ 460 0130 F0D1     		bne	.L25
+ 461              	.L24:
  247:./Library/stm32f4xx_hash_md5.c **** 
  248:./Library/stm32f4xx_hash_md5.c ****     if (busystatus != RESET)
+ 462              		.loc 1 248 8
+ 463 0132 FB6D     		ldr	r3, [r7, #92]
+ 464 0134 002B     		cmp	r3, #0
+ 465 0136 03D0     		beq	.L26
  249:./Library/stm32f4xx_hash_md5.c ****     {
  250:./Library/stm32f4xx_hash_md5.c ****       status = ERROR;
+ 466              		.loc 1 250 14
+ 467 0138 0023     		movs	r3, #0
+ 468 013a 87F86B30 		strb	r3, [r7, #107]
+ 469 013e 58E0     		b	.L21
+ 470              	.L26:
  251:./Library/stm32f4xx_hash_md5.c ****     }
  252:./Library/stm32f4xx_hash_md5.c ****     else
  253:./Library/stm32f4xx_hash_md5.c ****     {  
  254:./Library/stm32f4xx_hash_md5.c ****       /* Configure the number of valid bits in last word of the Key */
  255:./Library/stm32f4xx_hash_md5.c ****       HASH_SetLastWordValidBitsNbr(nbvalidbitskey);
+ 471              		.loc 1 255 7
+ 472 0140 BB8A     		ldrh	r3, [r7, #20]	@ movhi
+ 473 0142 9BB2     		uxth	r3, r3
+ 474 0144 1846     		mov	r0, r3
+ 475 0146 FFF7FEFF 		bl	HASH_SetLastWordValidBitsNbr
  256:./Library/stm32f4xx_hash_md5.c **** 
  257:./Library/stm32f4xx_hash_md5.c ****       /* Write the Key */
  258:./Library/stm32f4xx_hash_md5.c ****       keyaddr = (uint32_t)Key;
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 22
-
-
+ 476              		.loc 1 258 15
+ 477 014a FB68     		ldr	r3, [r7, #12]
+ 478 014c 7B66     		str	r3, [r7, #100]
  259:./Library/stm32f4xx_hash_md5.c ****       for(i=0; i<Keylen; i+=4)
+ 479              		.loc 1 259 12
+ 480 014e 0023     		movs	r3, #0
+ 481 0150 FB66     		str	r3, [r7, #108]
+ 482              		.loc 1 259 7
+ 483 0152 0AE0     		b	.L27
+ 484              	.L28:
  260:./Library/stm32f4xx_hash_md5.c ****       {
  261:./Library/stm32f4xx_hash_md5.c ****         HASH_DataIn(*(uint32_t*)keyaddr);
+ 485              		.loc 1 261 22 discriminator 3
+ 486 0154 7B6E     		ldr	r3, [r7, #100]
+ 487              		.loc 1 261 9 discriminator 3
+ 488 0156 1B68     		ldr	r3, [r3]
+ 489 0158 1846     		mov	r0, r3
+ 490 015a FFF7FEFF 		bl	HASH_DataIn
  262:./Library/stm32f4xx_hash_md5.c ****         keyaddr+=4;
+ 491              		.loc 1 262 16 discriminator 3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 23
+
+
+ 492 015e 7B6E     		ldr	r3, [r7, #100]
+ 493 0160 0433     		adds	r3, r3, #4
+ 494 0162 7B66     		str	r3, [r7, #100]
+ 259:./Library/stm32f4xx_hash_md5.c ****       for(i=0; i<Keylen; i+=4)
+ 495              		.loc 1 259 27 discriminator 3
+ 496 0164 FB6E     		ldr	r3, [r7, #108]
+ 497 0166 0433     		adds	r3, r3, #4
+ 498 0168 FB66     		str	r3, [r7, #108]
+ 499              	.L27:
+ 259:./Library/stm32f4xx_hash_md5.c ****       for(i=0; i<Keylen; i+=4)
+ 500              		.loc 1 259 7 discriminator 1
+ 501 016a FA6E     		ldr	r2, [r7, #108]
+ 502 016c BB68     		ldr	r3, [r7, #8]
+ 503 016e 9A42     		cmp	r2, r3
+ 504 0170 F0D3     		bcc	.L28
  263:./Library/stm32f4xx_hash_md5.c ****       }
  264:./Library/stm32f4xx_hash_md5.c ****   
  265:./Library/stm32f4xx_hash_md5.c ****        /* Start the HASH processor */
  266:./Library/stm32f4xx_hash_md5.c ****        HASH_StartDigest();
+ 505              		.loc 1 266 8
+ 506 0172 FFF7FEFF 		bl	HASH_StartDigest
  267:./Library/stm32f4xx_hash_md5.c **** 
  268:./Library/stm32f4xx_hash_md5.c ****        /* wait until the Busy flag is RESET */
  269:./Library/stm32f4xx_hash_md5.c ****        counter =0;
+ 507              		.loc 1 269 16
+ 508 0176 0023     		movs	r3, #0
+ 509 0178 3B61     		str	r3, [r7, #16]
+ 510              	.L30:
  270:./Library/stm32f4xx_hash_md5.c ****        do
  271:./Library/stm32f4xx_hash_md5.c ****        {
  272:./Library/stm32f4xx_hash_md5.c ****           busystatus = HASH_GetFlagStatus(HASH_FLAG_BUSY);
+ 511              		.loc 1 272 24 discriminator 2
+ 512 017a 0820     		movs	r0, #8
+ 513 017c FFF7FEFF 		bl	HASH_GetFlagStatus
+ 514 0180 0346     		mov	r3, r0
+ 515              		.loc 1 272 22 discriminator 2
+ 516 0182 FB65     		str	r3, [r7, #92]
  273:./Library/stm32f4xx_hash_md5.c ****           counter++;
+ 517              		.loc 1 273 18 discriminator 2
+ 518 0184 3B69     		ldr	r3, [r7, #16]
+ 519 0186 0133     		adds	r3, r3, #1
+ 520 0188 3B61     		str	r3, [r7, #16]
  274:./Library/stm32f4xx_hash_md5.c ****       }while ((counter != MD5BUSY_TIMEOUT) && (busystatus != RESET));
+ 521              		.loc 1 274 24 discriminator 2
+ 522 018a 3B69     		ldr	r3, [r7, #16]
+ 523              		.loc 1 274 7 discriminator 2
+ 524 018c B3F5803F 		cmp	r3, #65536
+ 525 0190 02D0     		beq	.L29
+ 526              		.loc 1 274 44 discriminator 1
+ 527 0192 FB6D     		ldr	r3, [r7, #92]
+ 528 0194 002B     		cmp	r3, #0
+ 529 0196 F0D1     		bne	.L30
+ 530              	.L29:
  275:./Library/stm32f4xx_hash_md5.c **** 
  276:./Library/stm32f4xx_hash_md5.c ****       if (busystatus != RESET)
+ 531              		.loc 1 276 10
+ 532 0198 FB6D     		ldr	r3, [r7, #92]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 24
+
+
+ 533 019a 002B     		cmp	r3, #0
+ 534 019c 03D0     		beq	.L31
  277:./Library/stm32f4xx_hash_md5.c ****       {
  278:./Library/stm32f4xx_hash_md5.c ****          status = ERROR;
+ 535              		.loc 1 278 17
+ 536 019e 0023     		movs	r3, #0
+ 537 01a0 87F86B30 		strb	r3, [r7, #107]
+ 538 01a4 25E0     		b	.L21
+ 539              	.L31:
  279:./Library/stm32f4xx_hash_md5.c ****       }
  280:./Library/stm32f4xx_hash_md5.c ****       else
  281:./Library/stm32f4xx_hash_md5.c ****       {
  282:./Library/stm32f4xx_hash_md5.c ****          /* Read the message digest */
  283:./Library/stm32f4xx_hash_md5.c ****          HASH_GetDigest(&MD5_MessageDigest);
+ 540              		.loc 1 283 10
+ 541 01a6 07F11803 		add	r3, r7, #24
+ 542 01aa 1846     		mov	r0, r3
+ 543 01ac FFF7FEFF 		bl	HASH_GetDigest
  284:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[0]);
+ 544              		.loc 1 284 38
+ 545 01b0 BA69     		ldr	r2, [r7, #24]
+ 546              		.loc 1 284 11
+ 547 01b2 BB6D     		ldr	r3, [r7, #88]
+ 548 01b4 BA64     		str	r2, [r7, #72]
+ 549              	.LBB26:
+ 550              	.LBB27:
+ 551              		.loc 2 498 10
+ 552 01b6 BA6C     		ldr	r2, [r7, #72]
+ 553 01b8 12BA     		rev	r2, r2
+ 554              	.LBE27:
+ 555              	.LBE26:
+ 556              		.loc 1 284 36
+ 557 01ba 1A60     		str	r2, [r3]
  285:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
+ 558              		.loc 1 285 20
+ 559 01bc BB6D     		ldr	r3, [r7, #88]
+ 560 01be 0433     		adds	r3, r3, #4
+ 561 01c0 BB65     		str	r3, [r7, #88]
  286:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[1]);
+ 562              		.loc 1 286 38
+ 563 01c2 FA69     		ldr	r2, [r7, #28]
+ 564              		.loc 1 286 11
+ 565 01c4 BB6D     		ldr	r3, [r7, #88]
+ 566 01c6 FA64     		str	r2, [r7, #76]
+ 567              	.LBB28:
+ 568              	.LBB29:
+ 569              		.loc 2 498 10
+ 570 01c8 FA6C     		ldr	r2, [r7, #76]
+ 571 01ca 12BA     		rev	r2, r2
+ 572              	.LBE29:
+ 573              	.LBE28:
+ 574              		.loc 1 286 36
+ 575 01cc 1A60     		str	r2, [r3]
  287:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
+ 576              		.loc 1 287 20
+ 577 01ce BB6D     		ldr	r3, [r7, #88]
+ 578 01d0 0433     		adds	r3, r3, #4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 25
+
+
+ 579 01d2 BB65     		str	r3, [r7, #88]
  288:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[2]);
+ 580              		.loc 1 288 38
+ 581 01d4 3A6A     		ldr	r2, [r7, #32]
+ 582              		.loc 1 288 11
+ 583 01d6 BB6D     		ldr	r3, [r7, #88]
+ 584 01d8 3A65     		str	r2, [r7, #80]
+ 585              	.LBB30:
+ 586              	.LBB31:
+ 587              		.loc 2 498 10
+ 588 01da 3A6D     		ldr	r2, [r7, #80]
+ 589 01dc 12BA     		rev	r2, r2
+ 590              	.LBE31:
+ 591              	.LBE30:
+ 592              		.loc 1 288 36
+ 593 01de 1A60     		str	r2, [r3]
  289:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
+ 594              		.loc 1 289 20
+ 595 01e0 BB6D     		ldr	r3, [r7, #88]
+ 596 01e2 0433     		adds	r3, r3, #4
+ 597 01e4 BB65     		str	r3, [r7, #88]
  290:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[3]);
+ 598              		.loc 1 290 38
+ 599 01e6 7A6A     		ldr	r2, [r7, #36]
+ 600              		.loc 1 290 11
+ 601 01e8 BB6D     		ldr	r3, [r7, #88]
+ 602 01ea 7A65     		str	r2, [r7, #84]
+ 603              	.LBB32:
+ 604              	.LBB33:
+ 605              		.loc 2 498 10
+ 606 01ec 7A6D     		ldr	r2, [r7, #84]
+ 607 01ee 12BA     		rev	r2, r2
+ 608              	.LBE33:
+ 609              	.LBE32:
+ 610              		.loc 1 290 36
+ 611 01f0 1A60     		str	r2, [r3]
+ 612              	.L21:
  291:./Library/stm32f4xx_hash_md5.c ****       }
  292:./Library/stm32f4xx_hash_md5.c ****     }
  293:./Library/stm32f4xx_hash_md5.c ****   }
  294:./Library/stm32f4xx_hash_md5.c ****   return status;  
- 414              		.loc 1 294 3 is_stmt 1 view .LVU145
+ 613              		.loc 1 294 10
+ 614 01f2 97F86B30 		ldrb	r3, [r7, #107]	@ zero_extendqisi2
  295:./Library/stm32f4xx_hash_md5.c **** }
- 415              		.loc 1 295 1 is_stmt 0 view .LVU146
- 416 0098 0FB0     		add	sp, sp, #60
- 417              	.LCFI6:
- 418              		.cfi_remember_state
- 419              		.cfi_def_cfa_offset 28
- 420              		@ sp needed
- 421 009a BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
- 422              	.LVL45:
- 423              	.L30:
- 424              	.LCFI7:
- 425              		.cfi_restore_state
- 228:./Library/stm32f4xx_hash_md5.c **** 
- 426              		.loc 1 228 5 is_stmt 1 view .LVU147
- 427 009e BDF80600 		ldrh	r0, [sp, #6]
- 428              	.LVL46:
- 228:./Library/stm32f4xx_hash_md5.c **** 
- 429              		.loc 1 228 5 is_stmt 0 view .LVU148
- 430 00a2 80B2     		uxth	r0, r0
- 431 00a4 FFF7FEFF 		bl	HASH_SetLastWordValidBitsNbr
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 23
+ 615              		.loc 1 295 1
+ 616 01f6 1846     		mov	r0, r3
+ 617 01f8 7037     		adds	r7, r7, #112
+ 618              	.LCFI8:
+ 619              		.cfi_def_cfa_offset 8
+ 620 01fa BD46     		mov	sp, r7
+ 621              	.LCFI9:
+ 622              		.cfi_def_cfa_register 13
+ 623              		@ sp needed
+ 624 01fc 80BD     		pop	{r7, pc}
+ 625              		.cfi_endproc
+ 626              	.LFE124:
+ 628              		.text
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 26
 
 
- 432              	.LVL47:
- 231:./Library/stm32f4xx_hash_md5.c ****     {
- 433              		.loc 1 231 5 is_stmt 1 view .LVU149
- 231:./Library/stm32f4xx_hash_md5.c ****     {
- 434              		.loc 1 231 5 is_stmt 0 view .LVU150
- 435 00a8 05E0     		b	.L18
- 436              	.LVL48:
- 437              	.L19:
- 233:./Library/stm32f4xx_hash_md5.c ****       inputaddr+=4;
- 438              		.loc 1 233 7 is_stmt 1 discriminator 3 view .LVU151
- 439 00aa 56F8040B 		ldr	r0, [r6], #4
- 440              	.LVL49:
- 233:./Library/stm32f4xx_hash_md5.c ****       inputaddr+=4;
- 441              		.loc 1 233 7 is_stmt 0 discriminator 3 view .LVU152
- 442 00ae FFF7FEFF 		bl	HASH_DataIn
- 443              	.LVL50:
- 234:./Library/stm32f4xx_hash_md5.c ****     }
- 444              		.loc 1 234 7 is_stmt 1 discriminator 3 view .LVU153
- 231:./Library/stm32f4xx_hash_md5.c ****     {
- 445              		.loc 1 231 22 discriminator 3 view .LVU154
- 231:./Library/stm32f4xx_hash_md5.c ****     {
- 446              		.loc 1 231 23 is_stmt 0 discriminator 3 view .LVU155
- 447 00b2 09F10409 		add	r9, r9, #4
- 448              	.LVL51:
- 449              	.L18:
- 231:./Library/stm32f4xx_hash_md5.c ****     {
- 450              		.loc 1 231 14 is_stmt 1 discriminator 1 view .LVU156
- 231:./Library/stm32f4xx_hash_md5.c ****     {
- 451              		.loc 1 231 5 is_stmt 0 discriminator 1 view .LVU157
- 452 00b6 B945     		cmp	r9, r7
- 453 00b8 F7D3     		bcc	.L19
- 238:./Library/stm32f4xx_hash_md5.c **** 
- 454              		.loc 1 238 5 is_stmt 1 view .LVU158
- 455 00ba FFF7FEFF 		bl	HASH_StartDigest
- 456              	.LVL52:
- 241:./Library/stm32f4xx_hash_md5.c ****     do
- 457              		.loc 1 241 5 view .LVU159
- 241:./Library/stm32f4xx_hash_md5.c ****     do
- 458              		.loc 1 241 13 is_stmt 0 view .LVU160
- 459 00be 0023     		movs	r3, #0
- 460 00c0 0093     		str	r3, [sp]
- 461              	.L21:
- 242:./Library/stm32f4xx_hash_md5.c ****     {
- 462              		.loc 1 242 5 is_stmt 1 discriminator 2 view .LVU161
- 244:./Library/stm32f4xx_hash_md5.c ****        counter++;
- 463              		.loc 1 244 8 discriminator 2 view .LVU162
- 244:./Library/stm32f4xx_hash_md5.c ****        counter++;
- 464              		.loc 1 244 21 is_stmt 0 discriminator 2 view .LVU163
- 465 00c2 0820     		movs	r0, #8
- 466 00c4 FFF7FEFF 		bl	HASH_GetFlagStatus
- 467              	.LVL53:
- 244:./Library/stm32f4xx_hash_md5.c ****        counter++;
- 468              		.loc 1 244 19 discriminator 2 view .LVU164
- 469 00c8 0446     		mov	r4, r0
- 470              	.LVL54:
- 245:./Library/stm32f4xx_hash_md5.c ****     }while ((counter != MD5BUSY_TIMEOUT) && (busystatus != RESET));
- 471              		.loc 1 245 8 is_stmt 1 discriminator 2 view .LVU165
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 24
-
-
- 245:./Library/stm32f4xx_hash_md5.c ****     }while ((counter != MD5BUSY_TIMEOUT) && (busystatus != RESET));
- 472              		.loc 1 245 15 is_stmt 0 discriminator 2 view .LVU166
- 473 00ca 009B     		ldr	r3, [sp]
- 474 00cc 0133     		adds	r3, r3, #1
- 475 00ce 0093     		str	r3, [sp]
- 246:./Library/stm32f4xx_hash_md5.c **** 
- 476              		.loc 1 246 12 is_stmt 1 discriminator 2 view .LVU167
- 246:./Library/stm32f4xx_hash_md5.c **** 
- 477              		.loc 1 246 22 is_stmt 0 discriminator 2 view .LVU168
- 478 00d0 009B     		ldr	r3, [sp]
- 246:./Library/stm32f4xx_hash_md5.c **** 
- 479              		.loc 1 246 5 discriminator 2 view .LVU169
- 480 00d2 B3F5803F 		cmp	r3, #65536
- 481 00d6 01D0     		beq	.L20
- 246:./Library/stm32f4xx_hash_md5.c **** 
- 482              		.loc 1 246 42 discriminator 1 view .LVU170
- 483 00d8 0028     		cmp	r0, #0
- 484 00da F2D1     		bne	.L21
- 485              	.L20:
- 248:./Library/stm32f4xx_hash_md5.c ****     {
- 486              		.loc 1 248 5 is_stmt 1 view .LVU171
- 248:./Library/stm32f4xx_hash_md5.c ****     {
- 487              		.loc 1 248 8 is_stmt 0 view .LVU172
- 488 00dc 0CB1     		cbz	r4, .L31
- 250:./Library/stm32f4xx_hash_md5.c ****     }
- 489              		.loc 1 250 14 view .LVU173
- 490 00de 0020     		movs	r0, #0
- 491              	.LVL55:
- 250:./Library/stm32f4xx_hash_md5.c ****     }
- 492              		.loc 1 250 14 view .LVU174
- 493 00e0 DAE7     		b	.L17
- 494              	.LVL56:
- 495              	.L31:
- 255:./Library/stm32f4xx_hash_md5.c **** 
- 496              		.loc 1 255 7 is_stmt 1 view .LVU175
- 497 00e2 BDF80400 		ldrh	r0, [sp, #4]
- 498              	.LVL57:
- 255:./Library/stm32f4xx_hash_md5.c **** 
- 499              		.loc 1 255 7 is_stmt 0 view .LVU176
- 500 00e6 80B2     		uxth	r0, r0
- 501 00e8 FFF7FEFF 		bl	HASH_SetLastWordValidBitsNbr
- 502              	.LVL58:
- 258:./Library/stm32f4xx_hash_md5.c ****       for(i=0; i<Keylen; i+=4)
- 503              		.loc 1 258 7 is_stmt 1 view .LVU177
- 259:./Library/stm32f4xx_hash_md5.c ****       {
- 504              		.loc 1 259 7 view .LVU178
- 259:./Library/stm32f4xx_hash_md5.c ****       {
- 505              		.loc 1 259 7 is_stmt 0 view .LVU179
- 506 00ec 04E0     		b	.L22
- 507              	.LVL59:
- 508              	.L23:
- 261:./Library/stm32f4xx_hash_md5.c ****         keyaddr+=4;
- 509              		.loc 1 261 9 is_stmt 1 discriminator 3 view .LVU180
- 510 00ee 58F8040B 		ldr	r0, [r8], #4
- 511              	.LVL60:
- 261:./Library/stm32f4xx_hash_md5.c ****         keyaddr+=4;
- 512              		.loc 1 261 9 is_stmt 0 discriminator 3 view .LVU181
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 25
-
-
- 513 00f2 FFF7FEFF 		bl	HASH_DataIn
- 514              	.LVL61:
- 262:./Library/stm32f4xx_hash_md5.c ****       }
- 515              		.loc 1 262 9 is_stmt 1 discriminator 3 view .LVU182
- 259:./Library/stm32f4xx_hash_md5.c ****       {
- 516              		.loc 1 259 26 discriminator 3 view .LVU183
- 259:./Library/stm32f4xx_hash_md5.c ****       {
- 517              		.loc 1 259 27 is_stmt 0 discriminator 3 view .LVU184
- 518 00f6 0434     		adds	r4, r4, #4
- 519              	.LVL62:
- 520              	.L22:
- 259:./Library/stm32f4xx_hash_md5.c ****       {
- 521              		.loc 1 259 16 is_stmt 1 discriminator 1 view .LVU185
- 259:./Library/stm32f4xx_hash_md5.c ****       {
- 522              		.loc 1 259 7 is_stmt 0 discriminator 1 view .LVU186
- 523 00f8 AC42     		cmp	r4, r5
- 524 00fa F8D3     		bcc	.L23
- 266:./Library/stm32f4xx_hash_md5.c **** 
- 525              		.loc 1 266 8 is_stmt 1 view .LVU187
- 526 00fc FFF7FEFF 		bl	HASH_StartDigest
- 527              	.LVL63:
- 269:./Library/stm32f4xx_hash_md5.c ****        do
- 528              		.loc 1 269 8 view .LVU188
- 269:./Library/stm32f4xx_hash_md5.c ****        do
- 529              		.loc 1 269 16 is_stmt 0 view .LVU189
- 530 0100 0023     		movs	r3, #0
- 531 0102 0093     		str	r3, [sp]
- 532              	.L25:
- 270:./Library/stm32f4xx_hash_md5.c ****        {
- 533              		.loc 1 270 8 is_stmt 1 discriminator 2 view .LVU190
- 272:./Library/stm32f4xx_hash_md5.c ****           counter++;
- 534              		.loc 1 272 11 discriminator 2 view .LVU191
- 272:./Library/stm32f4xx_hash_md5.c ****           counter++;
- 535              		.loc 1 272 24 is_stmt 0 discriminator 2 view .LVU192
- 536 0104 0820     		movs	r0, #8
- 537 0106 FFF7FEFF 		bl	HASH_GetFlagStatus
- 538              	.LVL64:
- 273:./Library/stm32f4xx_hash_md5.c ****       }while ((counter != MD5BUSY_TIMEOUT) && (busystatus != RESET));
- 539              		.loc 1 273 11 is_stmt 1 discriminator 2 view .LVU193
- 273:./Library/stm32f4xx_hash_md5.c ****       }while ((counter != MD5BUSY_TIMEOUT) && (busystatus != RESET));
- 540              		.loc 1 273 18 is_stmt 0 discriminator 2 view .LVU194
- 541 010a 009B     		ldr	r3, [sp]
- 542 010c 0133     		adds	r3, r3, #1
- 543 010e 0093     		str	r3, [sp]
- 274:./Library/stm32f4xx_hash_md5.c **** 
- 544              		.loc 1 274 14 is_stmt 1 discriminator 2 view .LVU195
- 274:./Library/stm32f4xx_hash_md5.c **** 
- 545              		.loc 1 274 24 is_stmt 0 discriminator 2 view .LVU196
- 546 0110 009B     		ldr	r3, [sp]
- 274:./Library/stm32f4xx_hash_md5.c **** 
- 547              		.loc 1 274 7 discriminator 2 view .LVU197
- 548 0112 B3F5803F 		cmp	r3, #65536
- 549 0116 01D0     		beq	.L24
- 274:./Library/stm32f4xx_hash_md5.c **** 
- 550              		.loc 1 274 44 discriminator 1 view .LVU198
- 551 0118 0028     		cmp	r0, #0
- 552 011a F3D1     		bne	.L25
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 26
-
-
- 553              	.L24:
- 276:./Library/stm32f4xx_hash_md5.c ****       {
- 554              		.loc 1 276 7 is_stmt 1 view .LVU199
- 276:./Library/stm32f4xx_hash_md5.c ****       {
- 555              		.loc 1 276 10 is_stmt 0 view .LVU200
- 556 011c 08B1     		cbz	r0, .L32
- 278:./Library/stm32f4xx_hash_md5.c ****       }
- 557              		.loc 1 278 17 view .LVU201
- 558 011e 0020     		movs	r0, #0
- 559              	.LVL65:
- 278:./Library/stm32f4xx_hash_md5.c ****       }
- 560              		.loc 1 278 17 view .LVU202
- 561 0120 BAE7     		b	.L17
- 562              	.LVL66:
- 563              	.L32:
- 283:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[0]);
- 564              		.loc 1 283 10 is_stmt 1 view .LVU203
- 565 0122 02A8     		add	r0, sp, #8
- 566              	.LVL67:
- 283:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[0]);
- 567              		.loc 1 283 10 is_stmt 0 view .LVU204
- 568 0124 FFF7FEFF 		bl	HASH_GetDigest
- 569              	.LVL68:
- 284:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 570              		.loc 1 284 10 is_stmt 1 view .LVU205
- 284:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 571              		.loc 1 284 38 is_stmt 0 view .LVU206
- 572 0128 029B     		ldr	r3, [sp, #8]
- 573              	.LVL69:
- 574              	.LBB26:
- 575              	.LBI26:
- 495:./CORE/core_cmInstr.h **** {
- 576              		.loc 2 495 57 is_stmt 1 view .LVU207
- 577              	.LBB27:
- 578              		.loc 2 498 3 view .LVU208
- 579              		.loc 2 498 10 is_stmt 0 view .LVU209
- 580 012a 1BBA     		rev	r3, r3
- 581              	.LVL70:
- 582              		.loc 2 498 10 view .LVU210
- 583              	.LBE27:
- 584              	.LBE26:
- 284:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 585              		.loc 1 284 36 view .LVU211
- 586 012c 169A     		ldr	r2, [sp, #88]
- 587 012e 1360     		str	r3, [r2]
- 285:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[1]);
- 588              		.loc 1 285 10 is_stmt 1 view .LVU212
- 589              	.LVL71:
- 286:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 590              		.loc 1 286 10 view .LVU213
- 286:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 591              		.loc 1 286 38 is_stmt 0 view .LVU214
- 592 0130 039B     		ldr	r3, [sp, #12]
- 593              	.LVL72:
- 594              	.LBB28:
- 595              	.LBI28:
- 495:./CORE/core_cmInstr.h **** {
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 27
-
-
- 596              		.loc 2 495 57 is_stmt 1 view .LVU215
- 597              	.LBB29:
- 598              		.loc 2 498 3 view .LVU216
- 599              		.loc 2 498 10 is_stmt 0 view .LVU217
- 600 0132 1BBA     		rev	r3, r3
- 601              	.LVL73:
- 602              		.loc 2 498 10 view .LVU218
- 603              	.LBE29:
- 604              	.LBE28:
- 286:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 605              		.loc 1 286 36 view .LVU219
- 606 0134 5360     		str	r3, [r2, #4]
- 287:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[2]);
- 607              		.loc 1 287 10 is_stmt 1 view .LVU220
- 608              	.LVL74:
- 288:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 609              		.loc 1 288 10 view .LVU221
- 288:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 610              		.loc 1 288 38 is_stmt 0 view .LVU222
- 611 0136 049B     		ldr	r3, [sp, #16]
- 612              	.LVL75:
- 613              	.LBB30:
- 614              	.LBI30:
- 495:./CORE/core_cmInstr.h **** {
- 615              		.loc 2 495 57 is_stmt 1 view .LVU223
- 616              	.LBB31:
- 617              		.loc 2 498 3 view .LVU224
- 618              		.loc 2 498 10 is_stmt 0 view .LVU225
- 619 0138 1BBA     		rev	r3, r3
- 620              	.LVL76:
- 621              		.loc 2 498 10 view .LVU226
- 622              	.LBE31:
- 623              	.LBE30:
- 288:./Library/stm32f4xx_hash_md5.c ****          outputaddr+=4;
- 624              		.loc 1 288 36 view .LVU227
- 625 013a 9360     		str	r3, [r2, #8]
- 289:./Library/stm32f4xx_hash_md5.c ****          *(uint32_t*)(outputaddr)  = __REV(MD5_MessageDigest.Data[3]);
- 626              		.loc 1 289 10 is_stmt 1 view .LVU228
- 627              	.LVL77:
- 290:./Library/stm32f4xx_hash_md5.c ****       }
- 628              		.loc 1 290 10 view .LVU229
- 290:./Library/stm32f4xx_hash_md5.c ****       }
- 629              		.loc 1 290 38 is_stmt 0 view .LVU230
- 630 013c 059B     		ldr	r3, [sp, #20]
- 631              	.LVL78:
- 632              	.LBB32:
- 633              	.LBI32:
- 495:./CORE/core_cmInstr.h **** {
- 634              		.loc 2 495 57 is_stmt 1 view .LVU231
- 635              	.LBB33:
- 636              		.loc 2 498 3 view .LVU232
- 637              		.loc 2 498 10 is_stmt 0 view .LVU233
- 638 013e 1BBA     		rev	r3, r3
- 639              	.LVL79:
- 640              		.loc 2 498 10 view .LVU234
- 641              	.LBE33:
- 642              	.LBE32:
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 28
-
-
- 290:./Library/stm32f4xx_hash_md5.c ****       }
- 643              		.loc 1 290 36 view .LVU235
- 644 0140 D360     		str	r3, [r2, #12]
- 171:./Library/stm32f4xx_hash_md5.c ****   uint32_t keyaddr    = (uint32_t)Key;
- 645              		.loc 1 171 15 view .LVU236
- 646 0142 0120     		movs	r0, #1
- 647 0144 A8E7     		b	.L17
- 648              		.cfi_endproc
- 649              	.LFE124:
- 651              		.text
- 652              	.Letext0:
- 653              		.file 3 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 654              		.file 4 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 655              		.file 5 "./CORE/stm32f4xx.h"
- 656              		.file 6 "./Library/stm32f4xx_hash.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s 			page 29
+ 629              	.Letext0:
+ 630              		.file 3 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 631              		.file 4 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 632              		.file 5 "./CORE/stm32f4xx.h"
+ 633              		.file 6 "./Library/stm32f4xx_hash.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s 			page 27
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f4xx_hash_md5.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s:20     .text.HASH_MD5:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s:26     .text.HASH_MD5:0000000000000000 HASH_MD5
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s:248    .text.HMAC_MD5:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc0VKbs2.s:254    .text.HMAC_MD5:0000000000000000 HMAC_MD5
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s:20     .text.HASH_MD5:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s:26     .text.HASH_MD5:0000000000000000 HASH_MD5
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s:244    .text.HMAC_MD5:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccRpQner.s:250    .text.HMAC_MD5:0000000000000000 HMAC_MD5
 
 UNDEFINED SYMBOLS
 HASH_DeInit

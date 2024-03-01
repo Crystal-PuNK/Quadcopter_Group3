@@ -1,0 +1,2032 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"os_cpu_c.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	OS_CPU_ExceptStk
+  20              		.section	.bss.OS_CPU_ExceptStk,"aw",%nobits
+  21              		.align	2
+  24              	OS_CPU_ExceptStk:
+  25 0000 00000000 		.space	1024
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	OS_CPU_ExceptStkBase
+  27              		.section	.bss.OS_CPU_ExceptStkBase,"aw",%nobits
+  28              		.align	2
+  31              	OS_CPU_ExceptStkBase:
+  32 0000 00000000 		.space	4
+  33              		.section	.bss.OSTmrCtr,"aw",%nobits
+  34              		.align	1
+  37              	OSTmrCtr:
+  38 0000 0000     		.space	2
+  39              		.global	OS_KA_BASEPRI_Boundary
+  40              		.section	.bss.OS_KA_BASEPRI_Boundary,"aw",%nobits
+  41              		.align	2
+  44              	OS_KA_BASEPRI_Boundary:
+  45 0000 00000000 		.space	4
+  46              		.section	.text.OSInitHookBegin,"ax",%progbits
+  47              		.align	1
+  48              		.global	OSInitHookBegin
+  49              		.syntax unified
+  50              		.thumb
+  51              		.thumb_func
+  53              	OSInitHookBegin:
+  54              	.LFB3:
+  55              		.file 1 "./ucOSII/Port/os_cpu_c.c"
+   1:./ucOSII/Port/os_cpu_c.c **** /*
+   2:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+   3:./ucOSII/Port/os_cpu_c.c **** *                                              uC/OS-II
+   4:./ucOSII/Port/os_cpu_c.c **** *                                        The Real-Time Kernel
+   5:./ucOSII/Port/os_cpu_c.c **** *
+   6:./ucOSII/Port/os_cpu_c.c **** *                    Copyright 1992-2021 Silicon Laboratories Inc. www.silabs.com
+   7:./ucOSII/Port/os_cpu_c.c **** *
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 2
+
+
+   8:./ucOSII/Port/os_cpu_c.c **** *                                 SPDX-License-Identifier: APACHE-2.0
+   9:./ucOSII/Port/os_cpu_c.c **** *
+  10:./ucOSII/Port/os_cpu_c.c **** *               This software is subject to an open source license and is distributed by
+  11:./ucOSII/Port/os_cpu_c.c **** *                Silicon Laboratories Inc. pursuant to the terms of the Apache License,
+  12:./ucOSII/Port/os_cpu_c.c **** *                    Version 2.0 available at www.apache.org/licenses/LICENSE-2.0.
+  13:./ucOSII/Port/os_cpu_c.c **** *
+  14:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  15:./ucOSII/Port/os_cpu_c.c **** */
+  16:./ucOSII/Port/os_cpu_c.c **** 
+  17:./ucOSII/Port/os_cpu_c.c **** /*
+  18:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  19:./ucOSII/Port/os_cpu_c.c **** *
+  20:./ucOSII/Port/os_cpu_c.c **** *                                             ARMv7-M Port
+  21:./ucOSII/Port/os_cpu_c.c **** *
+  22:./ucOSII/Port/os_cpu_c.c **** * File    : os_cpu_c.c
+  23:./ucOSII/Port/os_cpu_c.c **** * Version : V2.93.01
+  24:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  25:./ucOSII/Port/os_cpu_c.c **** * For     : ARMv7-M Cortex-M
+  26:./ucOSII/Port/os_cpu_c.c **** * Mode    : Thumb-2 ISA
+  27:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  28:./ucOSII/Port/os_cpu_c.c **** * Note(s) : (1) This port supports the ARM Cortex-M3, Cortex-M4 and Cortex-M7 architectures.
+  29:./ucOSII/Port/os_cpu_c.c **** *           (2) It has been tested with the following Hardware Floating Point Unit.
+  30:./ucOSII/Port/os_cpu_c.c **** *               (a) Single-precision: FPv4-SP-D16-M and FPv5-SP-D16-M
+  31:./ucOSII/Port/os_cpu_c.c **** *               (b) Double-precision: FPv5-D16-M
+  32:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  33:./ucOSII/Port/os_cpu_c.c **** */
+  34:./ucOSII/Port/os_cpu_c.c **** 
+  35:./ucOSII/Port/os_cpu_c.c **** #define   OS_CPU_GLOBALS
+  36:./ucOSII/Port/os_cpu_c.c **** 
+  37:./ucOSII/Port/os_cpu_c.c **** 
+  38:./ucOSII/Port/os_cpu_c.c **** /*
+  39:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  40:./ucOSII/Port/os_cpu_c.c **** *                                             INCLUDE FILES
+  41:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  42:./ucOSII/Port/os_cpu_c.c **** */
+  43:./ucOSII/Port/os_cpu_c.c **** 
+  44:./ucOSII/Port/os_cpu_c.c **** #include  <ucos_ii.h>
+  45:./ucOSII/Port/os_cpu_c.c **** 
+  46:./ucOSII/Port/os_cpu_c.c **** 
+  47:./ucOSII/Port/os_cpu_c.c **** /*
+  48:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  49:./ucOSII/Port/os_cpu_c.c **** *                                          LOCAL VARIABLES
+  50:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  51:./ucOSII/Port/os_cpu_c.c **** */
+  52:./ucOSII/Port/os_cpu_c.c **** 
+  53:./ucOSII/Port/os_cpu_c.c **** #if OS_TMR_EN > 0u
+  54:./ucOSII/Port/os_cpu_c.c **** static  INT16U  OSTmrCtr;
+  55:./ucOSII/Port/os_cpu_c.c **** #endif
+  56:./ucOSII/Port/os_cpu_c.c **** 
+  57:./ucOSII/Port/os_cpu_c.c **** /*
+  58:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  59:./ucOSII/Port/os_cpu_c.c **** *                                       LOCAL GLOBAL VARIABLES
+  60:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  61:./ucOSII/Port/os_cpu_c.c **** */
+  62:./ucOSII/Port/os_cpu_c.c **** 
+  63:./ucOSII/Port/os_cpu_c.c **** INT32U  OS_KA_BASEPRI_Boundary;                                 /* Base Priority boundary.         
+  64:./ucOSII/Port/os_cpu_c.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 3
+
+
+  65:./ucOSII/Port/os_cpu_c.c **** 
+  66:./ucOSII/Port/os_cpu_c.c **** /*
+  67:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  68:./ucOSII/Port/os_cpu_c.c **** *                                          SYS TICK DEFINES
+  69:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  70:./ucOSII/Port/os_cpu_c.c **** */
+  71:./ucOSII/Port/os_cpu_c.c **** 
+  72:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SYST_CSR         (*((volatile INT32U *)0xE000E010uL)) /* SysTick Ctrl & Status R
+  73:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SYST_RVR         (*((volatile INT32U *)0xE000E014uL)) /* SysTick Reload  Value R
+  74:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SYST_CVR         (*((volatile INT32U *)0xE000E018uL)) /* SysTick Current Value R
+  75:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SYST_CALIB       (*((volatile INT32U *)0xE000E01CuL)) /* SysTick Cal     Value R
+  76:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SCB_SHPRI1       (*((volatile INT32U *)0xE000ED18uL)) /* System Handlers  4 to  
+  77:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SCB_SHPRI2       (*((volatile INT32U *)0xE000ED1CuL)) /* System Handlers  8 to 1
+  78:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SCB_SHPRI3       (*((volatile INT32U *)0xE000ED20uL)) /* System Handlers 12 to 1
+  79:./ucOSII/Port/os_cpu_c.c **** 
+  80:./ucOSII/Port/os_cpu_c.c **** 
+  81:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SYST_CSR_COUNTFLAG                     0x00010000uL   /* Count flag.            
+  82:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SYST_CSR_CLKSOURCE                     0x00000004uL   /* Clock Source.          
+  83:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SYST_CSR_TICKINT                       0x00000002uL   /* Interrupt enable.      
+  84:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_SYST_CSR_ENABLE                        0x00000001uL   /* Counter mode.          
+  85:./ucOSII/Port/os_cpu_c.c **** 
+  86:./ucOSII/Port/os_cpu_c.c **** 
+  87:./ucOSII/Port/os_cpu_c.c **** /*
+  88:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  89:./ucOSII/Port/os_cpu_c.c **** *                                         FLOATING POINT DEFINES
+  90:./ucOSII/Port/os_cpu_c.c **** *
+  91:./ucOSII/Port/os_cpu_c.c **** * Note(s) : 1) Enabled FP lazy stacking and enable automatic state saving.
+  92:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+  93:./ucOSII/Port/os_cpu_c.c **** */
+  94:./ucOSII/Port/os_cpu_c.c **** 
+  95:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_FP_FPCCR         (*((volatile INT32U *)0xE000EF34uL)) /* Floating-Point Context 
+  96:./ucOSII/Port/os_cpu_c.c **** #define  OS_CPU_CM_FPCCR_LAZY_STK                         0xC0000000uL   /* See Note 1.            
+  97:./ucOSII/Port/os_cpu_c.c **** 
+  98:./ucOSII/Port/os_cpu_c.c **** 
+  99:./ucOSII/Port/os_cpu_c.c **** /*
+ 100:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 101:./ucOSII/Port/os_cpu_c.c **** *                                       OS INITIALIZATION HOOK
+ 102:./ucOSII/Port/os_cpu_c.c **** *                                            (BEGINNING)
+ 103:./ucOSII/Port/os_cpu_c.c **** *
+ 104:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called by OSInit() at the beginning of OSInit().
+ 105:./ucOSII/Port/os_cpu_c.c **** *
+ 106:./ucOSII/Port/os_cpu_c.c **** * Arguments  : none
+ 107:./ucOSII/Port/os_cpu_c.c **** *
+ 108:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) Interrupts should be disabled during this call.
+ 109:./ucOSII/Port/os_cpu_c.c **** *              2) When using hardware floating point please do the following during the reset handl
+ 110:./ucOSII/Port/os_cpu_c.c **** *                 a) Set full access for CP10 & CP11 bits in CPACR register.
+ 111:./ucOSII/Port/os_cpu_c.c **** *                 b) Set bits ASPEN and LSPEN in FPCCR register.
+ 112:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 113:./ucOSII/Port/os_cpu_c.c **** */
+ 114:./ucOSII/Port/os_cpu_c.c **** #if OS_CPU_HOOKS_EN > 0u
+ 115:./ucOSII/Port/os_cpu_c.c **** void  OSInitHookBegin (void)
+ 116:./ucOSII/Port/os_cpu_c.c **** {
+  56              		.loc 1 116 1
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 16
+  59              		@ frame_needed = 1, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 4
+
+
+  61 0000 80B4     		push	{r7}
+  62              	.LCFI0:
+  63              		.cfi_def_cfa_offset 4
+  64              		.cfi_offset 7, -4
+  65 0002 85B0     		sub	sp, sp, #20
+  66              	.LCFI1:
+  67              		.cfi_def_cfa_offset 24
+  68 0004 00AF     		add	r7, sp, #0
+  69              	.LCFI2:
+  70              		.cfi_def_cfa_register 7
+ 117:./ucOSII/Port/os_cpu_c.c ****     INT32U   size;
+ 118:./ucOSII/Port/os_cpu_c.c ****     OS_STK  *pstk;
+ 119:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_ARM_FP_EN > 0u)
+ 120:./ucOSII/Port/os_cpu_c.c ****     INT32U   reg_val;
+ 121:./ucOSII/Port/os_cpu_c.c **** #endif
+ 122:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Clear exception stack for stack 
+ 123:./ucOSII/Port/os_cpu_c.c ****     pstk = &OS_CPU_ExceptStk[0];
+  71              		.loc 1 123 10
+  72 0006 184B     		ldr	r3, .L6
+  73 0008 BB60     		str	r3, [r7, #8]
+ 124:./ucOSII/Port/os_cpu_c.c ****     size = OS_CPU_EXCEPT_STK_SIZE;
+  74              		.loc 1 124 10
+  75 000a 4FF48073 		mov	r3, #256
+  76 000e FB60     		str	r3, [r7, #12]
+ 125:./ucOSII/Port/os_cpu_c.c ****     while (size > 0u) {
+  77              		.loc 1 125 11
+  78 0010 07E0     		b	.L2
+  79              	.L3:
+ 126:./ucOSII/Port/os_cpu_c.c ****         size--;
+  80              		.loc 1 126 13
+  81 0012 FB68     		ldr	r3, [r7, #12]
+  82 0014 013B     		subs	r3, r3, #1
+  83 0016 FB60     		str	r3, [r7, #12]
+ 127:./ucOSII/Port/os_cpu_c.c ****        *pstk++ = (OS_STK)0;
+  84              		.loc 1 127 13
+  85 0018 BB68     		ldr	r3, [r7, #8]
+  86 001a 1A1D     		adds	r2, r3, #4
+  87 001c BA60     		str	r2, [r7, #8]
+  88              		.loc 1 127 16
+  89 001e 0022     		movs	r2, #0
+  90 0020 1A60     		str	r2, [r3]
+  91              	.L2:
+ 125:./ucOSII/Port/os_cpu_c.c ****     while (size > 0u) {
+  92              		.loc 1 125 11
+  93 0022 FB68     		ldr	r3, [r7, #12]
+  94 0024 002B     		cmp	r3, #0
+  95 0026 F4D1     		bne	.L3
+ 128:./ucOSII/Port/os_cpu_c.c ****     }
+ 129:./ucOSII/Port/os_cpu_c.c **** 
+ 130:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Align the ISR stack to 8-bytes  
+ 131:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_ExceptStkBase = (OS_STK *)&OS_CPU_ExceptStk[OS_CPU_EXCEPT_STK_SIZE];
+  96              		.loc 1 131 26
+  97 0028 104B     		ldr	r3, .L6+4
+  98 002a 114A     		ldr	r2, .L6+8
+  99 002c 1A60     		str	r2, [r3]
+ 132:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_ExceptStkBase = (OS_STK *)((OS_STK)(OS_CPU_ExceptStkBase) & 0xFFFFFFF8);
+ 100              		.loc 1 132 39
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 5
+
+
+ 101 002e 0F4B     		ldr	r3, .L6+4
+ 102 0030 1B68     		ldr	r3, [r3]
+ 103              		.loc 1 132 70
+ 104 0032 23F00703 		bic	r3, r3, #7
+ 105              		.loc 1 132 28
+ 106 0036 1A46     		mov	r2, r3
+ 107              		.loc 1 132 26
+ 108 0038 0C4B     		ldr	r3, .L6+4
+ 109 003a 1A60     		str	r2, [r3]
+ 133:./ucOSII/Port/os_cpu_c.c **** 
+ 134:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_ARM_FP_EN > 0u)
+ 135:./ucOSII/Port/os_cpu_c.c ****     reg_val = OS_CPU_CM_FP_FPCCR;                               /* Check the floating point mode.  
+ 110              		.loc 1 135 15
+ 111 003c 0D4B     		ldr	r3, .L6+12
+ 112              		.loc 1 135 13
+ 113 003e 1B68     		ldr	r3, [r3]
+ 114 0040 7B60     		str	r3, [r7, #4]
+ 136:./ucOSII/Port/os_cpu_c.c ****     if ((reg_val & OS_CPU_CM_FPCCR_LAZY_STK) != OS_CPU_CM_FPCCR_LAZY_STK) {
+ 115              		.loc 1 136 18
+ 116 0042 7B68     		ldr	r3, [r7, #4]
+ 117 0044 03F04043 		and	r3, r3, #-1073741824
+ 118              		.loc 1 136 8
+ 119 0048 B3F1404F 		cmp	r3, #-1073741824
+ 120 004c 00D0     		beq	.L4
+ 121              	.L5:
+ 137:./ucOSII/Port/os_cpu_c.c ****         while (1u) {                                            /* See Note (2).                   
+ 122              		.loc 1 137 15 discriminator 1
+ 123 004e FEE7     		b	.L5
+ 124              	.L4:
+ 138:./ucOSII/Port/os_cpu_c.c ****             ;
+ 139:./ucOSII/Port/os_cpu_c.c ****         }
+ 140:./ucOSII/Port/os_cpu_c.c ****     }
+ 141:./ucOSII/Port/os_cpu_c.c **** #endif
+ 142:./ucOSII/Port/os_cpu_c.c **** 
+ 143:./ucOSII/Port/os_cpu_c.c **** #if OS_TMR_EN > 0u
+ 144:./ucOSII/Port/os_cpu_c.c ****     OSTmrCtr = 0u;
+ 125              		.loc 1 144 14
+ 126 0050 094B     		ldr	r3, .L6+16
+ 127 0052 0022     		movs	r2, #0
+ 128 0054 1A80     		strh	r2, [r3]	@ movhi
+ 145:./ucOSII/Port/os_cpu_c.c **** #endif
+ 146:./ucOSII/Port/os_cpu_c.c **** 
+ 147:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Set BASEPRI boundary from the co
+ 148:./ucOSII/Port/os_cpu_c.c ****     OS_KA_BASEPRI_Boundary = (INT32U)(CPU_CFG_KA_IPL_BOUNDARY << (8u - CPU_CFG_NVIC_PRIO_BITS));
+ 129              		.loc 1 148 28
+ 130 0056 094B     		ldr	r3, .L6+20
+ 131 0058 4022     		movs	r2, #64
+ 132 005a 1A60     		str	r2, [r3]
+ 149:./ucOSII/Port/os_cpu_c.c **** }
+ 133              		.loc 1 149 1
+ 134 005c 00BF     		nop
+ 135 005e 1437     		adds	r7, r7, #20
+ 136              	.LCFI3:
+ 137              		.cfi_def_cfa_offset 4
+ 138 0060 BD46     		mov	sp, r7
+ 139              	.LCFI4:
+ 140              		.cfi_def_cfa_register 13
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 6
+
+
+ 141              		@ sp needed
+ 142 0062 5DF8047B 		ldr	r7, [sp], #4
+ 143              	.LCFI5:
+ 144              		.cfi_restore 7
+ 145              		.cfi_def_cfa_offset 0
+ 146 0066 7047     		bx	lr
+ 147              	.L7:
+ 148              		.align	2
+ 149              	.L6:
+ 150 0068 00000000 		.word	OS_CPU_ExceptStk
+ 151 006c 00000000 		.word	OS_CPU_ExceptStkBase
+ 152 0070 00040000 		.word	OS_CPU_ExceptStk+1024
+ 153 0074 34EF00E0 		.word	-536809676
+ 154 0078 00000000 		.word	OSTmrCtr
+ 155 007c 00000000 		.word	OS_KA_BASEPRI_Boundary
+ 156              		.cfi_endproc
+ 157              	.LFE3:
+ 159              		.section	.text.OSInitHookEnd,"ax",%progbits
+ 160              		.align	1
+ 161              		.global	OSInitHookEnd
+ 162              		.syntax unified
+ 163              		.thumb
+ 164              		.thumb_func
+ 166              	OSInitHookEnd:
+ 167              	.LFB4:
+ 150:./ucOSII/Port/os_cpu_c.c **** #endif
+ 151:./ucOSII/Port/os_cpu_c.c **** 
+ 152:./ucOSII/Port/os_cpu_c.c **** 
+ 153:./ucOSII/Port/os_cpu_c.c **** /*
+ 154:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 155:./ucOSII/Port/os_cpu_c.c **** *                                       OS INITIALIZATION HOOK
+ 156:./ucOSII/Port/os_cpu_c.c **** *                                               (END)
+ 157:./ucOSII/Port/os_cpu_c.c **** *
+ 158:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called by OSInit() at the end of OSInit().
+ 159:./ucOSII/Port/os_cpu_c.c **** *
+ 160:./ucOSII/Port/os_cpu_c.c **** * Arguments  : none
+ 161:./ucOSII/Port/os_cpu_c.c **** *
+ 162:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) Interrupts should be disabled during this call.
+ 163:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 164:./ucOSII/Port/os_cpu_c.c **** */
+ 165:./ucOSII/Port/os_cpu_c.c **** #if OS_CPU_HOOKS_EN > 0u
+ 166:./ucOSII/Port/os_cpu_c.c **** void  OSInitHookEnd (void)
+ 167:./ucOSII/Port/os_cpu_c.c **** {
+ 168              		.loc 1 167 1
+ 169              		.cfi_startproc
+ 170              		@ args = 0, pretend = 0, frame = 0
+ 171              		@ frame_needed = 1, uses_anonymous_args = 0
+ 172              		@ link register save eliminated.
+ 173 0000 80B4     		push	{r7}
+ 174              	.LCFI6:
+ 175              		.cfi_def_cfa_offset 4
+ 176              		.cfi_offset 7, -4
+ 177 0002 00AF     		add	r7, sp, #0
+ 178              	.LCFI7:
+ 179              		.cfi_def_cfa_register 7
+ 168:./ucOSII/Port/os_cpu_c.c **** 
+ 169:./ucOSII/Port/os_cpu_c.c **** }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 7
+
+
+ 180              		.loc 1 169 1
+ 181 0004 00BF     		nop
+ 182 0006 BD46     		mov	sp, r7
+ 183              	.LCFI8:
+ 184              		.cfi_def_cfa_register 13
+ 185              		@ sp needed
+ 186 0008 5DF8047B 		ldr	r7, [sp], #4
+ 187              	.LCFI9:
+ 188              		.cfi_restore 7
+ 189              		.cfi_def_cfa_offset 0
+ 190 000c 7047     		bx	lr
+ 191              		.cfi_endproc
+ 192              	.LFE4:
+ 194              		.section	.text.OSTaskCreateHook,"ax",%progbits
+ 195              		.align	1
+ 196              		.global	OSTaskCreateHook
+ 197              		.syntax unified
+ 198              		.thumb
+ 199              		.thumb_func
+ 201              	OSTaskCreateHook:
+ 202              	.LFB5:
+ 170:./ucOSII/Port/os_cpu_c.c **** #endif
+ 171:./ucOSII/Port/os_cpu_c.c **** 
+ 172:./ucOSII/Port/os_cpu_c.c **** 
+ 173:./ucOSII/Port/os_cpu_c.c **** /*
+ 174:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 175:./ucOSII/Port/os_cpu_c.c **** *                                          TASK CREATION HOOK
+ 176:./ucOSII/Port/os_cpu_c.c **** *
+ 177:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called when a task is created.
+ 178:./ucOSII/Port/os_cpu_c.c **** *
+ 179:./ucOSII/Port/os_cpu_c.c **** * Arguments  : ptcb   is a pointer to the task control block of the task being created.
+ 180:./ucOSII/Port/os_cpu_c.c **** *
+ 181:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) Interrupts are disabled during this call.
+ 182:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 183:./ucOSII/Port/os_cpu_c.c **** */
+ 184:./ucOSII/Port/os_cpu_c.c **** #if OS_CPU_HOOKS_EN > 0u
+ 185:./ucOSII/Port/os_cpu_c.c **** void  OSTaskCreateHook (OS_TCB *ptcb)
+ 186:./ucOSII/Port/os_cpu_c.c **** {
+ 203              		.loc 1 186 1
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 8
+ 206              		@ frame_needed = 1, uses_anonymous_args = 0
+ 207 0000 80B5     		push	{r7, lr}
+ 208              	.LCFI10:
+ 209              		.cfi_def_cfa_offset 8
+ 210              		.cfi_offset 7, -8
+ 211              		.cfi_offset 14, -4
+ 212 0002 82B0     		sub	sp, sp, #8
+ 213              	.LCFI11:
+ 214              		.cfi_def_cfa_offset 16
+ 215 0004 00AF     		add	r7, sp, #0
+ 216              	.LCFI12:
+ 217              		.cfi_def_cfa_register 7
+ 218 0006 7860     		str	r0, [r7, #4]
+ 187:./ucOSII/Port/os_cpu_c.c **** #if OS_APP_HOOKS_EN > 0u
+ 188:./ucOSII/Port/os_cpu_c.c ****     App_TaskCreateHook(ptcb);
+ 219              		.loc 1 188 5
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 8
+
+
+ 220 0008 7868     		ldr	r0, [r7, #4]
+ 221 000a FFF7FEFF 		bl	App_TaskCreateHook
+ 189:./ucOSII/Port/os_cpu_c.c **** #else
+ 190:./ucOSII/Port/os_cpu_c.c ****     (void)ptcb;                                                 /* Prevent compiler warning        
+ 191:./ucOSII/Port/os_cpu_c.c **** #endif
+ 192:./ucOSII/Port/os_cpu_c.c **** }
+ 222              		.loc 1 192 1
+ 223 000e 00BF     		nop
+ 224 0010 0837     		adds	r7, r7, #8
+ 225              	.LCFI13:
+ 226              		.cfi_def_cfa_offset 8
+ 227 0012 BD46     		mov	sp, r7
+ 228              	.LCFI14:
+ 229              		.cfi_def_cfa_register 13
+ 230              		@ sp needed
+ 231 0014 80BD     		pop	{r7, pc}
+ 232              		.cfi_endproc
+ 233              	.LFE5:
+ 235              		.section	.text.OSTaskDelHook,"ax",%progbits
+ 236              		.align	1
+ 237              		.global	OSTaskDelHook
+ 238              		.syntax unified
+ 239              		.thumb
+ 240              		.thumb_func
+ 242              	OSTaskDelHook:
+ 243              	.LFB6:
+ 193:./ucOSII/Port/os_cpu_c.c **** #endif
+ 194:./ucOSII/Port/os_cpu_c.c **** 
+ 195:./ucOSII/Port/os_cpu_c.c **** 
+ 196:./ucOSII/Port/os_cpu_c.c **** /*
+ 197:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 198:./ucOSII/Port/os_cpu_c.c **** *                                           TASK DELETION HOOK
+ 199:./ucOSII/Port/os_cpu_c.c **** *
+ 200:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called when a task is deleted.
+ 201:./ucOSII/Port/os_cpu_c.c **** *
+ 202:./ucOSII/Port/os_cpu_c.c **** * Arguments  : ptcb   is a pointer to the task control block of the task being deleted.
+ 203:./ucOSII/Port/os_cpu_c.c **** *
+ 204:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) Interrupts are disabled during this call.
+ 205:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 206:./ucOSII/Port/os_cpu_c.c **** */
+ 207:./ucOSII/Port/os_cpu_c.c **** #if OS_CPU_HOOKS_EN > 0u
+ 208:./ucOSII/Port/os_cpu_c.c **** void  OSTaskDelHook (OS_TCB *ptcb)
+ 209:./ucOSII/Port/os_cpu_c.c **** {
+ 244              		.loc 1 209 1
+ 245              		.cfi_startproc
+ 246              		@ args = 0, pretend = 0, frame = 8
+ 247              		@ frame_needed = 1, uses_anonymous_args = 0
+ 248 0000 80B5     		push	{r7, lr}
+ 249              	.LCFI15:
+ 250              		.cfi_def_cfa_offset 8
+ 251              		.cfi_offset 7, -8
+ 252              		.cfi_offset 14, -4
+ 253 0002 82B0     		sub	sp, sp, #8
+ 254              	.LCFI16:
+ 255              		.cfi_def_cfa_offset 16
+ 256 0004 00AF     		add	r7, sp, #0
+ 257              	.LCFI17:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 9
+
+
+ 258              		.cfi_def_cfa_register 7
+ 259 0006 7860     		str	r0, [r7, #4]
+ 210:./ucOSII/Port/os_cpu_c.c **** #if OS_APP_HOOKS_EN > 0u
+ 211:./ucOSII/Port/os_cpu_c.c ****     App_TaskDelHook(ptcb);
+ 260              		.loc 1 211 5
+ 261 0008 7868     		ldr	r0, [r7, #4]
+ 262 000a FFF7FEFF 		bl	App_TaskDelHook
+ 212:./ucOSII/Port/os_cpu_c.c **** #else
+ 213:./ucOSII/Port/os_cpu_c.c ****     (void)ptcb;                                                 /* Prevent compiler warning        
+ 214:./ucOSII/Port/os_cpu_c.c **** #endif
+ 215:./ucOSII/Port/os_cpu_c.c **** }
+ 263              		.loc 1 215 1
+ 264 000e 00BF     		nop
+ 265 0010 0837     		adds	r7, r7, #8
+ 266              	.LCFI18:
+ 267              		.cfi_def_cfa_offset 8
+ 268 0012 BD46     		mov	sp, r7
+ 269              	.LCFI19:
+ 270              		.cfi_def_cfa_register 13
+ 271              		@ sp needed
+ 272 0014 80BD     		pop	{r7, pc}
+ 273              		.cfi_endproc
+ 274              	.LFE6:
+ 276              		.section	.text.OSTaskIdleHook,"ax",%progbits
+ 277              		.align	1
+ 278              		.global	OSTaskIdleHook
+ 279              		.syntax unified
+ 280              		.thumb
+ 281              		.thumb_func
+ 283              	OSTaskIdleHook:
+ 284              	.LFB7:
+ 216:./ucOSII/Port/os_cpu_c.c **** #endif
+ 217:./ucOSII/Port/os_cpu_c.c **** 
+ 218:./ucOSII/Port/os_cpu_c.c **** 
+ 219:./ucOSII/Port/os_cpu_c.c **** /*
+ 220:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 221:./ucOSII/Port/os_cpu_c.c **** *                                             IDLE TASK HOOK
+ 222:./ucOSII/Port/os_cpu_c.c **** *
+ 223:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called by the idle task.  This hook has been added to allow you to 
+ 224:./ucOSII/Port/os_cpu_c.c **** *              such things as STOP the CPU to conserve power.
+ 225:./ucOSII/Port/os_cpu_c.c **** *
+ 226:./ucOSII/Port/os_cpu_c.c **** * Arguments  : none
+ 227:./ucOSII/Port/os_cpu_c.c **** *
+ 228:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) Interrupts are enabled during this call.
+ 229:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 230:./ucOSII/Port/os_cpu_c.c **** */
+ 231:./ucOSII/Port/os_cpu_c.c **** #if OS_CPU_HOOKS_EN > 0u
+ 232:./ucOSII/Port/os_cpu_c.c **** void  OSTaskIdleHook (void)
+ 233:./ucOSII/Port/os_cpu_c.c **** {
+ 285              		.loc 1 233 1
+ 286              		.cfi_startproc
+ 287              		@ args = 0, pretend = 0, frame = 0
+ 288              		@ frame_needed = 1, uses_anonymous_args = 0
+ 289 0000 80B5     		push	{r7, lr}
+ 290              	.LCFI20:
+ 291              		.cfi_def_cfa_offset 8
+ 292              		.cfi_offset 7, -8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 10
+
+
+ 293              		.cfi_offset 14, -4
+ 294 0002 00AF     		add	r7, sp, #0
+ 295              	.LCFI21:
+ 296              		.cfi_def_cfa_register 7
+ 234:./ucOSII/Port/os_cpu_c.c **** #if OS_APP_HOOKS_EN > 0u
+ 235:./ucOSII/Port/os_cpu_c.c ****     App_TaskIdleHook();
+ 297              		.loc 1 235 5
+ 298 0004 FFF7FEFF 		bl	App_TaskIdleHook
+ 236:./ucOSII/Port/os_cpu_c.c **** #endif
+ 237:./ucOSII/Port/os_cpu_c.c **** }
+ 299              		.loc 1 237 1
+ 300 0008 00BF     		nop
+ 301 000a 80BD     		pop	{r7, pc}
+ 302              		.cfi_endproc
+ 303              	.LFE7:
+ 305              		.section	.text.OSTaskReturnHook,"ax",%progbits
+ 306              		.align	1
+ 307              		.global	OSTaskReturnHook
+ 308              		.syntax unified
+ 309              		.thumb
+ 310              		.thumb_func
+ 312              	OSTaskReturnHook:
+ 313              	.LFB8:
+ 238:./ucOSII/Port/os_cpu_c.c **** #endif
+ 239:./ucOSII/Port/os_cpu_c.c **** 
+ 240:./ucOSII/Port/os_cpu_c.c **** 
+ 241:./ucOSII/Port/os_cpu_c.c **** /*
+ 242:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 243:./ucOSII/Port/os_cpu_c.c **** *                                            TASK RETURN HOOK
+ 244:./ucOSII/Port/os_cpu_c.c **** *
+ 245:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called if a task accidentally returns.  In other words, a task shou
+ 246:./ucOSII/Port/os_cpu_c.c **** *              either be an infinite loop or delete itself when done.
+ 247:./ucOSII/Port/os_cpu_c.c **** *
+ 248:./ucOSII/Port/os_cpu_c.c **** * Arguments  : ptcb      is a pointer to the task control block of the task that is returning.
+ 249:./ucOSII/Port/os_cpu_c.c **** *
+ 250:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : none
+ 251:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 252:./ucOSII/Port/os_cpu_c.c **** */
+ 253:./ucOSII/Port/os_cpu_c.c **** 
+ 254:./ucOSII/Port/os_cpu_c.c **** #if OS_CPU_HOOKS_EN > 0u
+ 255:./ucOSII/Port/os_cpu_c.c **** void  OSTaskReturnHook (OS_TCB  *ptcb)
+ 256:./ucOSII/Port/os_cpu_c.c **** {
+ 314              		.loc 1 256 1
+ 315              		.cfi_startproc
+ 316              		@ args = 0, pretend = 0, frame = 8
+ 317              		@ frame_needed = 1, uses_anonymous_args = 0
+ 318 0000 80B5     		push	{r7, lr}
+ 319              	.LCFI22:
+ 320              		.cfi_def_cfa_offset 8
+ 321              		.cfi_offset 7, -8
+ 322              		.cfi_offset 14, -4
+ 323 0002 82B0     		sub	sp, sp, #8
+ 324              	.LCFI23:
+ 325              		.cfi_def_cfa_offset 16
+ 326 0004 00AF     		add	r7, sp, #0
+ 327              	.LCFI24:
+ 328              		.cfi_def_cfa_register 7
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 11
+
+
+ 329 0006 7860     		str	r0, [r7, #4]
+ 257:./ucOSII/Port/os_cpu_c.c **** #if OS_APP_HOOKS_EN > 0u
+ 258:./ucOSII/Port/os_cpu_c.c ****     App_TaskReturnHook(ptcb);
+ 330              		.loc 1 258 5
+ 331 0008 7868     		ldr	r0, [r7, #4]
+ 332 000a FFF7FEFF 		bl	App_TaskReturnHook
+ 259:./ucOSII/Port/os_cpu_c.c **** #else
+ 260:./ucOSII/Port/os_cpu_c.c ****     (void)ptcb;
+ 261:./ucOSII/Port/os_cpu_c.c **** #endif
+ 262:./ucOSII/Port/os_cpu_c.c **** }
+ 333              		.loc 1 262 1
+ 334 000e 00BF     		nop
+ 335 0010 0837     		adds	r7, r7, #8
+ 336              	.LCFI25:
+ 337              		.cfi_def_cfa_offset 8
+ 338 0012 BD46     		mov	sp, r7
+ 339              	.LCFI26:
+ 340              		.cfi_def_cfa_register 13
+ 341              		@ sp needed
+ 342 0014 80BD     		pop	{r7, pc}
+ 343              		.cfi_endproc
+ 344              	.LFE8:
+ 346              		.section	.text.OSTaskStatHook,"ax",%progbits
+ 347              		.align	1
+ 348              		.global	OSTaskStatHook
+ 349              		.syntax unified
+ 350              		.thumb
+ 351              		.thumb_func
+ 353              	OSTaskStatHook:
+ 354              	.LFB9:
+ 263:./ucOSII/Port/os_cpu_c.c **** #endif
+ 264:./ucOSII/Port/os_cpu_c.c **** 
+ 265:./ucOSII/Port/os_cpu_c.c **** 
+ 266:./ucOSII/Port/os_cpu_c.c **** /*
+ 267:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 268:./ucOSII/Port/os_cpu_c.c **** *                                           STATISTIC TASK HOOK
+ 269:./ucOSII/Port/os_cpu_c.c **** *
+ 270:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called every second by uC/OS-II's statistics task.  This allows you
+ 271:./ucOSII/Port/os_cpu_c.c **** *              application to add functionality to the statistics task.
+ 272:./ucOSII/Port/os_cpu_c.c **** *
+ 273:./ucOSII/Port/os_cpu_c.c **** * Arguments  : none
+ 274:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 275:./ucOSII/Port/os_cpu_c.c **** */
+ 276:./ucOSII/Port/os_cpu_c.c **** 
+ 277:./ucOSII/Port/os_cpu_c.c **** #if OS_CPU_HOOKS_EN > 0u
+ 278:./ucOSII/Port/os_cpu_c.c **** void  OSTaskStatHook (void)
+ 279:./ucOSII/Port/os_cpu_c.c **** {
+ 355              		.loc 1 279 1
+ 356              		.cfi_startproc
+ 357              		@ args = 0, pretend = 0, frame = 0
+ 358              		@ frame_needed = 1, uses_anonymous_args = 0
+ 359 0000 80B5     		push	{r7, lr}
+ 360              	.LCFI27:
+ 361              		.cfi_def_cfa_offset 8
+ 362              		.cfi_offset 7, -8
+ 363              		.cfi_offset 14, -4
+ 364 0002 00AF     		add	r7, sp, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 12
+
+
+ 365              	.LCFI28:
+ 366              		.cfi_def_cfa_register 7
+ 280:./ucOSII/Port/os_cpu_c.c **** #if OS_APP_HOOKS_EN > 0u
+ 281:./ucOSII/Port/os_cpu_c.c ****     App_TaskStatHook();
+ 367              		.loc 1 281 5
+ 368 0004 FFF7FEFF 		bl	App_TaskStatHook
+ 282:./ucOSII/Port/os_cpu_c.c **** #endif
+ 283:./ucOSII/Port/os_cpu_c.c **** }
+ 369              		.loc 1 283 1
+ 370 0008 00BF     		nop
+ 371 000a 80BD     		pop	{r7, pc}
+ 372              		.cfi_endproc
+ 373              	.LFE9:
+ 375              		.section	.text.OSTaskStkInit,"ax",%progbits
+ 376              		.align	1
+ 377              		.global	OSTaskStkInit
+ 378              		.syntax unified
+ 379              		.thumb
+ 380              		.thumb_func
+ 382              	OSTaskStkInit:
+ 383              	.LFB10:
+ 284:./ucOSII/Port/os_cpu_c.c **** #endif
+ 285:./ucOSII/Port/os_cpu_c.c **** 
+ 286:./ucOSII/Port/os_cpu_c.c **** 
+ 287:./ucOSII/Port/os_cpu_c.c **** /*
+ 288:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 289:./ucOSII/Port/os_cpu_c.c **** *                                        INITIALIZE A TASK'S STACK
+ 290:./ucOSII/Port/os_cpu_c.c **** *
+ 291:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called by either OSTaskCreate() or OSTaskCreateExt() to initialize 
+ 292:./ucOSII/Port/os_cpu_c.c **** *              stack frame of the task being created.  This function is highly processor specific.
+ 293:./ucOSII/Port/os_cpu_c.c **** *
+ 294:./ucOSII/Port/os_cpu_c.c **** * Arguments  : task          is a pointer to the task code
+ 295:./ucOSII/Port/os_cpu_c.c **** *
+ 296:./ucOSII/Port/os_cpu_c.c **** *              p_arg         is a pointer to a user supplied data area that will be passed to the t
+ 297:./ucOSII/Port/os_cpu_c.c **** *                            when the task first executes.
+ 298:./ucOSII/Port/os_cpu_c.c **** *
+ 299:./ucOSII/Port/os_cpu_c.c **** *              ptos          is a pointer to the top of stack.  It is assumed that 'ptos' points to
+ 300:./ucOSII/Port/os_cpu_c.c **** *                            a 'free' entry on the task stack.  If OS_STK_GROWTH is set to 1 then
+ 301:./ucOSII/Port/os_cpu_c.c **** *                            'ptos' will contain the HIGHEST valid address of the stack.  Similarly
+ 302:./ucOSII/Port/os_cpu_c.c **** *                            OS_STK_GROWTH is set to 0, the 'ptos' will contains the LOWEST valid a
+ 303:./ucOSII/Port/os_cpu_c.c **** *                            of the stack.
+ 304:./ucOSII/Port/os_cpu_c.c **** *
+ 305:./ucOSII/Port/os_cpu_c.c **** *              opt           specifies options that can be used to alter the behavior of OSTaskStkI
+ 306:./ucOSII/Port/os_cpu_c.c **** *                            (see uCOS_II.H for OS_TASK_OPT_xxx).
+ 307:./ucOSII/Port/os_cpu_c.c **** *
+ 308:./ucOSII/Port/os_cpu_c.c **** * Returns    : Always returns the location of the new top-of-stack once the processor registers hav
+ 309:./ucOSII/Port/os_cpu_c.c **** *              been placed on the stack in the proper order.
+ 310:./ucOSII/Port/os_cpu_c.c **** *
+ 311:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : (1) Interrupts are enabled when task starts executing.
+ 312:./ucOSII/Port/os_cpu_c.c **** *
+ 313:./ucOSII/Port/os_cpu_c.c **** *              (2) All tasks run in Thread mode, using process stack.
+ 314:./ucOSII/Port/os_cpu_c.c **** *
+ 315:./ucOSII/Port/os_cpu_c.c **** *              (3) There are two different stack frames depending on whether the Floating-Point(FP)
+ 316:./ucOSII/Port/os_cpu_c.c **** *                  co-processor is enabled or not.
+ 317:./ucOSII/Port/os_cpu_c.c **** *
+ 318:./ucOSII/Port/os_cpu_c.c **** *                  (a) The stack frame shown in the diagram is used when the Co-processor Access Co
+ 319:./ucOSII/Port/os_cpu_c.c **** *                      Register(CPACR) is disabling the Floating Point Unit. In this case, the FP
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 13
+
+
+ 320:./ucOSII/Port/os_cpu_c.c **** *                      registers(S0- S31) & FP Status Control(FPSCR) register are not saved in the 
+ 321:./ucOSII/Port/os_cpu_c.c **** *
+ 322:./ucOSII/Port/os_cpu_c.c **** *                  (b) The stack frame shown in the diagram is used when the Floating Point Unit is
+ 323:./ucOSII/Port/os_cpu_c.c **** *                      that is, CP10 and CP11 field in CPACR are ones and FPCCR sets bits ASPEN and
+ 324:./ucOSII/Port/os_cpu_c.c **** *
+ 325:./ucOSII/Port/os_cpu_c.c **** *                      (1) When enabling the FPU through CPACR, make sure to set bits ASPEN and LSP
+ 326:./ucOSII/Port/os_cpu_c.c **** *                          Floating-Point Context Control Register (FPCCR).
+ 327:./ucOSII/Port/os_cpu_c.c **** *
+ 328:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 329:./ucOSII/Port/os_cpu_c.c **** *                                          |             |
+ 330:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 331:./ucOSII/Port/os_cpu_c.c **** *                                          |             |
+ 332:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 333:./ucOSII/Port/os_cpu_c.c **** *                                          |    FPSCR    |
+ 334:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 335:./ucOSII/Port/os_cpu_c.c **** *                                          |     S15     |
+ 336:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 337:./ucOSII/Port/os_cpu_c.c **** *                                          |     S14     |
+ 338:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 339:./ucOSII/Port/os_cpu_c.c **** *                                          |     S13     |
+ 340:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 341:./ucOSII/Port/os_cpu_c.c **** *                                                .
+ 342:./ucOSII/Port/os_cpu_c.c **** *                                                .
+ 343:./ucOSII/Port/os_cpu_c.c **** *                                                .
+ 344:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 345:./ucOSII/Port/os_cpu_c.c **** *                                          |     S2      |
+ 346:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 347:./ucOSII/Port/os_cpu_c.c **** *                                          |     S1      |
+ 348:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 349:./ucOSII/Port/os_cpu_c.c **** *                    |             |       |     S0      |
+ 350:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 351:./ucOSII/Port/os_cpu_c.c **** *                    |    xPSR     |       |    xPSR     |
+ 352:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 353:./ucOSII/Port/os_cpu_c.c **** *                    | Return Addr |       | Return Addr |
+ 354:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 355:./ucOSII/Port/os_cpu_c.c **** *                    |  LR(R14)    |       |   LR(R14)   |
+ 356:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 357:./ucOSII/Port/os_cpu_c.c **** *                    |    R12      |       |     R12     |
+ 358:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 359:./ucOSII/Port/os_cpu_c.c **** *                    |    R3       |       |     R3      |
+ 360:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 361:./ucOSII/Port/os_cpu_c.c **** *                    |    R2       |       |     R0      |
+ 362:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 363:./ucOSII/Port/os_cpu_c.c **** *                    |    R1       |       |     R1      |
+ 364:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 365:./ucOSII/Port/os_cpu_c.c **** *                    |    R0       |       |     R0      |
+ 366:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 367:./ucOSII/Port/os_cpu_c.c **** *                    | EXEC_RETURN |       | EXEC_RETURN |
+ 368:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 369:./ucOSII/Port/os_cpu_c.c **** *                    |    R11      |       |     R11     |
+ 370:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 371:./ucOSII/Port/os_cpu_c.c **** *                    |    R10      |       |     R10     |
+ 372:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 373:./ucOSII/Port/os_cpu_c.c **** *                    |    R9       |       |     R9      |
+ 374:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 375:./ucOSII/Port/os_cpu_c.c **** *                    |    R8       |       |     R8      |
+ 376:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 14
+
+
+ 377:./ucOSII/Port/os_cpu_c.c **** *                    |    R7       |       |     R7      |
+ 378:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 379:./ucOSII/Port/os_cpu_c.c **** *                    |    R6       |       |     R6      |
+ 380:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 381:./ucOSII/Port/os_cpu_c.c **** *                    |    R5       |       |     R5      |
+ 382:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 383:./ucOSII/Port/os_cpu_c.c **** *                    |    R4       |       |     R4      |
+ 384:./ucOSII/Port/os_cpu_c.c **** *                    +-------------+       +-------------+
+ 385:./ucOSII/Port/os_cpu_c.c **** *                          (a)             |     S31     |
+ 386:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 387:./ucOSII/Port/os_cpu_c.c **** *                                          |     S30     |
+ 388:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 389:./ucOSII/Port/os_cpu_c.c **** *                                          |     S29     |
+ 390:./ucOSII/Port/os_cpu_c.c ****                                            +-------------+
+ 391:./ucOSII/Port/os_cpu_c.c **** *                                                .
+ 392:./ucOSII/Port/os_cpu_c.c **** *                                                .
+ 393:./ucOSII/Port/os_cpu_c.c **** *                                                .
+ 394:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 395:./ucOSII/Port/os_cpu_c.c **** *                                          |     S17     |
+ 396:./ucOSII/Port/os_cpu_c.c ****                                            +-------------+
+ 397:./ucOSII/Port/os_cpu_c.c **** *                                          |     S16     |
+ 398:./ucOSII/Port/os_cpu_c.c **** *                                          +-------------+
+ 399:./ucOSII/Port/os_cpu_c.c **** *                                               (b)
+ 400:./ucOSII/Port/os_cpu_c.c **** *
+ 401:./ucOSII/Port/os_cpu_c.c **** *             (4) The SP must be 8-byte aligned in conforming to the Procedure Call Standard for th
+ 402:./ucOSII/Port/os_cpu_c.c **** *
+ 403:./ucOSII/Port/os_cpu_c.c **** *                    (a) Section 2.1 of the  ABI for the ARM Architecture Advisory Note. SP must be
+ 404:./ucOSII/Port/os_cpu_c.c **** *                        on entry to AAPCS-Conforming functions states :
+ 405:./ucOSII/Port/os_cpu_c.c **** *
+ 406:./ucOSII/Port/os_cpu_c.c **** *                        The Procedure Call Standard for the ARM Architecture [AAPCS] requires prim
+ 407:./ucOSII/Port/os_cpu_c.c **** *                        data types to be naturally aligned according to their sizes (for size = 1,
+ 408:./ucOSII/Port/os_cpu_c.c **** *                        Doing otherwise creates more problems than it solves.
+ 409:./ucOSII/Port/os_cpu_c.c **** *
+ 410:./ucOSII/Port/os_cpu_c.c **** *                        In return for preserving the natural alignment of data, conforming code is
+ 411:./ucOSII/Port/os_cpu_c.c **** *                        to rely on that alignment. To support aligning data allocated on the stack
+ 412:./ucOSII/Port/os_cpu_c.c **** *                        pointer (SP) is required to be 8-byte aligned on entry to a conforming fun
+ 413:./ucOSII/Port/os_cpu_c.c **** *                        practice this requirement is met if:
+ 414:./ucOSII/Port/os_cpu_c.c **** *
+ 415:./ucOSII/Port/os_cpu_c.c **** *                           (1) At each call site, the current size of the calling function's stack
+ 416:./ucOSII/Port/os_cpu_c.c **** *                               This places an obligation on compilers and assembly language progra
+ 417:./ucOSII/Port/os_cpu_c.c **** *
+ 418:./ucOSII/Port/os_cpu_c.c **** *                           (2) SP is a multiple of 8 when control first enters a program.
+ 419:./ucOSII/Port/os_cpu_c.c **** *                               This places an obligation on authors of low level OS, RTOS, and run
+ 420:./ucOSII/Port/os_cpu_c.c **** *                               code to align SP at all points at which control first enters
+ 421:./ucOSII/Port/os_cpu_c.c **** *                               a body of (AAPCS-conforming) code.
+ 422:./ucOSII/Port/os_cpu_c.c **** *
+ 423:./ucOSII/Port/os_cpu_c.c **** *                       In turn, this requires the value of SP to be aligned to 0 modulo 8:
+ 424:./ucOSII/Port/os_cpu_c.c **** *
+ 425:./ucOSII/Port/os_cpu_c.c **** *                           (3) By exception handlers, before calling AAPCS-conforming code.
+ 426:./ucOSII/Port/os_cpu_c.c **** *
+ 427:./ucOSII/Port/os_cpu_c.c **** *                           (4) By OS/RTOS/run-time system code, before giving control to an applic
+ 428:./ucOSII/Port/os_cpu_c.c **** *
+ 429:./ucOSII/Port/os_cpu_c.c **** *                 (b) Section 2.3.1 corrective steps from the the SP must be 8-byte aligned on entr
+ 430:./ucOSII/Port/os_cpu_c.c **** *                     to AAPCS-conforming functions advisory note also states.
+ 431:./ucOSII/Port/os_cpu_c.c **** *
+ 432:./ucOSII/Port/os_cpu_c.c **** *                     " This requirement extends to operating systems and run-time code for all arc
+ 433:./ucOSII/Port/os_cpu_c.c **** *                       prior to ARMV7 and to the A, R and M architecture profiles thereafter. Spec
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 15
+
+
+ 434:./ucOSII/Port/os_cpu_c.c **** *                       associated with ARMV7M are discussed in section 2.3.3"
+ 435:./ucOSII/Port/os_cpu_c.c **** *
+ 436:./ucOSII/Port/os_cpu_c.c **** *                     (1) Even if the SP 8-byte aligment is not a requirement for the ARMv7M profil
+ 437:./ucOSII/Port/os_cpu_c.c **** *                         to 8-byte boundaries to support legacy execution enviroments.
+ 438:./ucOSII/Port/os_cpu_c.c **** *
+ 439:./ucOSII/Port/os_cpu_c.c **** *                 (c) Section 5.2.1.2 from the Procedure Call Standard for the ARM
+ 440:./ucOSII/Port/os_cpu_c.c **** *                     architecture states :  "The stack must also conform to the following
+ 441:./ucOSII/Port/os_cpu_c.c **** *                     constraint at a public interface:
+ 442:./ucOSII/Port/os_cpu_c.c **** *
+ 443:./ucOSII/Port/os_cpu_c.c **** *                     (1) SP mod 8 = 0. The stack must be double-word aligned"
+ 444:./ucOSII/Port/os_cpu_c.c **** *
+ 445:./ucOSII/Port/os_cpu_c.c **** *                 (d) From the ARM Technical Support Knowledge Base. 8 Byte stack aligment.
+ 446:./ucOSII/Port/os_cpu_c.c **** *
+ 447:./ucOSII/Port/os_cpu_c.c **** *                     "8 byte stack alignment is a requirement of the ARM Architecture Procedure
+ 448:./ucOSII/Port/os_cpu_c.c **** *                      Call Standard [AAPCS]. This specifies that functions must maintain an 8 byte
+ 449:./ucOSII/Port/os_cpu_c.c **** *                      aligned stack address (e.g. 0x00, 0x08, 0x10, 0x18, 0x20) on all external
+ 450:./ucOSII/Port/os_cpu_c.c **** *                      interfaces. In practice this requirement is met if:
+ 451:./ucOSII/Port/os_cpu_c.c **** *
+ 452:./ucOSII/Port/os_cpu_c.c **** *                      (1) At each external interface, the current stack pointer
+ 453:./ucOSII/Port/os_cpu_c.c **** *                          is a multiple of 8 bytes.
+ 454:./ucOSII/Port/os_cpu_c.c **** *
+ 455:./ucOSII/Port/os_cpu_c.c **** *                      (2) Your OS maintains 8 byte stack alignment on its external interfaces
+ 456:./ucOSII/Port/os_cpu_c.c **** *                          e.g. on task switches"
+ 457:./ucOSII/Port/os_cpu_c.c **** *
+ 458:./ucOSII/Port/os_cpu_c.c **** *              (5) Exception Return Behavior(EXEC_RETURN)
+ 459:./ucOSII/Port/os_cpu_c.c **** *                  0xFFFFFFFD      Return to Thread mode, exception return uses non-floating point 
+ 460:./ucOSII/Port/os_cpu_c.c **** *                                  from the PSP and execution uses PSP after return.
+ 461:./ucOSII/Port/os_cpu_c.c **** *
+ 462:./ucOSII/Port/os_cpu_c.c **** *                  0xFFFFFFED      Return to Thread mode, exception return uses floating point stat
+ 463:./ucOSII/Port/os_cpu_c.c **** *                                  from the PSP and execution uses PSP after return.
+ 464:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 465:./ucOSII/Port/os_cpu_c.c **** */
+ 466:./ucOSII/Port/os_cpu_c.c **** 
+ 467:./ucOSII/Port/os_cpu_c.c **** OS_STK  *OSTaskStkInit (void    (*task)(void *p_arg),
+ 468:./ucOSII/Port/os_cpu_c.c ****                         void     *p_arg,
+ 469:./ucOSII/Port/os_cpu_c.c ****                         OS_STK   *ptos,
+ 470:./ucOSII/Port/os_cpu_c.c ****                         INT16U    opt)
+ 471:./ucOSII/Port/os_cpu_c.c **** {
+ 384              		.loc 1 471 1
+ 385              		.cfi_startproc
+ 386              		@ args = 0, pretend = 0, frame = 24
+ 387              		@ frame_needed = 1, uses_anonymous_args = 0
+ 388              		@ link register save eliminated.
+ 389 0000 80B4     		push	{r7}
+ 390              	.LCFI29:
+ 391              		.cfi_def_cfa_offset 4
+ 392              		.cfi_offset 7, -4
+ 393 0002 87B0     		sub	sp, sp, #28
+ 394              	.LCFI30:
+ 395              		.cfi_def_cfa_offset 32
+ 396 0004 00AF     		add	r7, sp, #0
+ 397              	.LCFI31:
+ 398              		.cfi_def_cfa_register 7
+ 399 0006 F860     		str	r0, [r7, #12]
+ 400 0008 B960     		str	r1, [r7, #8]
+ 401 000a 7A60     		str	r2, [r7, #4]
+ 402 000c 7B80     		strh	r3, [r7, #2]	@ movhi
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 16
+
+
+ 472:./ucOSII/Port/os_cpu_c.c ****     OS_STK  *p_stk;
+ 473:./ucOSII/Port/os_cpu_c.c **** 
+ 474:./ucOSII/Port/os_cpu_c.c **** 
+ 475:./ucOSII/Port/os_cpu_c.c ****     (void)opt;                                                  /* 'opt' is not used, prevent warni
+ 476:./ucOSII/Port/os_cpu_c.c ****     p_stk      = ptos + 1u;                                     /* Load stack pointer              
+ 403              		.loc 1 476 16
+ 404 000e 7B68     		ldr	r3, [r7, #4]
+ 405 0010 0433     		adds	r3, r3, #4
+ 406 0012 7B61     		str	r3, [r7, #20]
+ 477:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Align the stack to 8-bytes.     
+ 478:./ucOSII/Port/os_cpu_c.c ****     p_stk      = (OS_STK *)((OS_STK)(p_stk) & 0xFFFFFFF8u);
+ 407              		.loc 1 478 29
+ 408 0014 7B69     		ldr	r3, [r7, #20]
+ 409              		.loc 1 478 45
+ 410 0016 23F00703 		bic	r3, r3, #7
+ 411              		.loc 1 478 16
+ 412 001a 7B61     		str	r3, [r7, #20]
+ 479:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Registers stacked as if auto-sav
+ 480:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_ARM_FP_EN > 0u)                                     /* FPU auto-saved registers.       
+ 481:./ucOSII/Port/os_cpu_c.c ****      --p_stk;
+ 413              		.loc 1 481 6
+ 414 001c 7B69     		ldr	r3, [r7, #20]
+ 415 001e 043B     		subs	r3, r3, #4
+ 416 0020 7B61     		str	r3, [r7, #20]
+ 482:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x02000000u;                           /* FPSCR                           
+ 417              		.loc 1 482 16
+ 418 0022 7B69     		ldr	r3, [r7, #20]
+ 419 0024 043B     		subs	r3, r3, #4
+ 420 0026 7B61     		str	r3, [r7, #20]
+ 421 0028 7B69     		ldr	r3, [r7, #20]
+ 422 002a 4FF00072 		mov	r2, #33554432
+ 423 002e 1A60     		str	r2, [r3]
+ 483:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Initialize S0-S15 floating point
+ 484:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41700000u;                           /* S15                             
+ 424              		.loc 1 484 16
+ 425 0030 7B69     		ldr	r3, [r7, #20]
+ 426 0032 043B     		subs	r3, r3, #4
+ 427 0034 7B61     		str	r3, [r7, #20]
+ 428 0036 7B69     		ldr	r3, [r7, #20]
+ 429 0038 934A     		ldr	r2, .L16
+ 430 003a 1A60     		str	r2, [r3]
+ 485:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41600000u;                           /* S14                             
+ 431              		.loc 1 485 16
+ 432 003c 7B69     		ldr	r3, [r7, #20]
+ 433 003e 043B     		subs	r3, r3, #4
+ 434 0040 7B61     		str	r3, [r7, #20]
+ 435 0042 7B69     		ldr	r3, [r7, #20]
+ 436 0044 914A     		ldr	r2, .L16+4
+ 437 0046 1A60     		str	r2, [r3]
+ 486:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41500000u;                           /* S13                             
+ 438              		.loc 1 486 16
+ 439 0048 7B69     		ldr	r3, [r7, #20]
+ 440 004a 043B     		subs	r3, r3, #4
+ 441 004c 7B61     		str	r3, [r7, #20]
+ 442 004e 7B69     		ldr	r3, [r7, #20]
+ 443 0050 8F4A     		ldr	r2, .L16+8
+ 444 0052 1A60     		str	r2, [r3]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 17
+
+
+ 487:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41400000u;                           /* S12                             
+ 445              		.loc 1 487 16
+ 446 0054 7B69     		ldr	r3, [r7, #20]
+ 447 0056 043B     		subs	r3, r3, #4
+ 448 0058 7B61     		str	r3, [r7, #20]
+ 449 005a 7B69     		ldr	r3, [r7, #20]
+ 450 005c 8D4A     		ldr	r2, .L16+12
+ 451 005e 1A60     		str	r2, [r3]
+ 488:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41300000u;                           /* S11                             
+ 452              		.loc 1 488 16
+ 453 0060 7B69     		ldr	r3, [r7, #20]
+ 454 0062 043B     		subs	r3, r3, #4
+ 455 0064 7B61     		str	r3, [r7, #20]
+ 456 0066 7B69     		ldr	r3, [r7, #20]
+ 457 0068 8B4A     		ldr	r2, .L16+16
+ 458 006a 1A60     		str	r2, [r3]
+ 489:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41200000u;                           /* S10                             
+ 459              		.loc 1 489 16
+ 460 006c 7B69     		ldr	r3, [r7, #20]
+ 461 006e 043B     		subs	r3, r3, #4
+ 462 0070 7B61     		str	r3, [r7, #20]
+ 463 0072 7B69     		ldr	r3, [r7, #20]
+ 464 0074 894A     		ldr	r2, .L16+20
+ 465 0076 1A60     		str	r2, [r3]
+ 490:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41100000u;                           /* S9                              
+ 466              		.loc 1 490 16
+ 467 0078 7B69     		ldr	r3, [r7, #20]
+ 468 007a 043B     		subs	r3, r3, #4
+ 469 007c 7B61     		str	r3, [r7, #20]
+ 470 007e 7B69     		ldr	r3, [r7, #20]
+ 471 0080 874A     		ldr	r2, .L16+24
+ 472 0082 1A60     		str	r2, [r3]
+ 491:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41000000u;                           /* S8                              
+ 473              		.loc 1 491 16
+ 474 0084 7B69     		ldr	r3, [r7, #20]
+ 475 0086 043B     		subs	r3, r3, #4
+ 476 0088 7B61     		str	r3, [r7, #20]
+ 477 008a 7B69     		ldr	r3, [r7, #20]
+ 478 008c 4FF08242 		mov	r2, #1090519040
+ 479 0090 1A60     		str	r2, [r3]
+ 492:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x40E00000u;                           /* S7                              
+ 480              		.loc 1 492 16
+ 481 0092 7B69     		ldr	r3, [r7, #20]
+ 482 0094 043B     		subs	r3, r3, #4
+ 483 0096 7B61     		str	r3, [r7, #20]
+ 484 0098 7B69     		ldr	r3, [r7, #20]
+ 485 009a 824A     		ldr	r2, .L16+28
+ 486 009c 1A60     		str	r2, [r3]
+ 493:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x40C00000u;                           /* S6                              
+ 487              		.loc 1 493 16
+ 488 009e 7B69     		ldr	r3, [r7, #20]
+ 489 00a0 043B     		subs	r3, r3, #4
+ 490 00a2 7B61     		str	r3, [r7, #20]
+ 491 00a4 7B69     		ldr	r3, [r7, #20]
+ 492 00a6 804A     		ldr	r2, .L16+32
+ 493 00a8 1A60     		str	r2, [r3]
+ 494:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x40A00000u;                           /* S5                              
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 18
+
+
+ 494              		.loc 1 494 16
+ 495 00aa 7B69     		ldr	r3, [r7, #20]
+ 496 00ac 043B     		subs	r3, r3, #4
+ 497 00ae 7B61     		str	r3, [r7, #20]
+ 498 00b0 7B69     		ldr	r3, [r7, #20]
+ 499 00b2 7E4A     		ldr	r2, .L16+36
+ 500 00b4 1A60     		str	r2, [r3]
+ 495:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x40800000u;                           /* S4                              
+ 501              		.loc 1 495 16
+ 502 00b6 7B69     		ldr	r3, [r7, #20]
+ 503 00b8 043B     		subs	r3, r3, #4
+ 504 00ba 7B61     		str	r3, [r7, #20]
+ 505 00bc 7B69     		ldr	r3, [r7, #20]
+ 506 00be 4FF08142 		mov	r2, #1082130432
+ 507 00c2 1A60     		str	r2, [r3]
+ 496:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x40400000u;                           /* S3                              
+ 508              		.loc 1 496 16
+ 509 00c4 7B69     		ldr	r3, [r7, #20]
+ 510 00c6 043B     		subs	r3, r3, #4
+ 511 00c8 7B61     		str	r3, [r7, #20]
+ 512 00ca 7B69     		ldr	r3, [r7, #20]
+ 513 00cc 784A     		ldr	r2, .L16+40
+ 514 00ce 1A60     		str	r2, [r3]
+ 497:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x40000000u;                           /* S2                              
+ 515              		.loc 1 497 16
+ 516 00d0 7B69     		ldr	r3, [r7, #20]
+ 517 00d2 043B     		subs	r3, r3, #4
+ 518 00d4 7B61     		str	r3, [r7, #20]
+ 519 00d6 7B69     		ldr	r3, [r7, #20]
+ 520 00d8 4FF08042 		mov	r2, #1073741824
+ 521 00dc 1A60     		str	r2, [r3]
+ 498:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x3F800000u;                           /* S1                              
+ 522              		.loc 1 498 16
+ 523 00de 7B69     		ldr	r3, [r7, #20]
+ 524 00e0 043B     		subs	r3, r3, #4
+ 525 00e2 7B61     		str	r3, [r7, #20]
+ 526 00e4 7B69     		ldr	r3, [r7, #20]
+ 527 00e6 4FF07E52 		mov	r2, #1065353216
+ 528 00ea 1A60     		str	r2, [r3]
+ 499:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x00000000u;                           /* S0                              
+ 529              		.loc 1 499 16
+ 530 00ec 7B69     		ldr	r3, [r7, #20]
+ 531 00ee 043B     		subs	r3, r3, #4
+ 532 00f0 7B61     		str	r3, [r7, #20]
+ 533 00f2 7B69     		ldr	r3, [r7, #20]
+ 534 00f4 0022     		movs	r2, #0
+ 535 00f6 1A60     		str	r2, [r3]
+ 500:./ucOSII/Port/os_cpu_c.c **** #endif
+ 501:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x01000000uL;                          /* xPSR                            
+ 536              		.loc 1 501 16
+ 537 00f8 7B69     		ldr	r3, [r7, #20]
+ 538 00fa 043B     		subs	r3, r3, #4
+ 539 00fc 7B61     		str	r3, [r7, #20]
+ 540 00fe 7B69     		ldr	r3, [r7, #20]
+ 541 0100 4FF08072 		mov	r2, #16777216
+ 542 0104 1A60     		str	r2, [r3]
+ 502:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)task;                                  /* Entry Point                     
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 19
+
+
+ 543              		.loc 1 502 16
+ 544 0106 7B69     		ldr	r3, [r7, #20]
+ 545 0108 043B     		subs	r3, r3, #4
+ 546 010a 7B61     		str	r3, [r7, #20]
+ 547              		.loc 1 502 18
+ 548 010c FA68     		ldr	r2, [r7, #12]
+ 549              		.loc 1 502 16
+ 550 010e 7B69     		ldr	r3, [r7, #20]
+ 551 0110 1A60     		str	r2, [r3]
+ 503:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)OS_TaskReturn;                         /* R14 (LR)                        
+ 552              		.loc 1 503 16
+ 553 0112 7B69     		ldr	r3, [r7, #20]
+ 554 0114 043B     		subs	r3, r3, #4
+ 555 0116 7B61     		str	r3, [r7, #20]
+ 556              		.loc 1 503 18
+ 557 0118 664A     		ldr	r2, .L16+44
+ 558              		.loc 1 503 16
+ 559 011a 7B69     		ldr	r3, [r7, #20]
+ 560 011c 1A60     		str	r2, [r3]
+ 504:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x12121212uL;                          /* R12                             
+ 561              		.loc 1 504 16
+ 562 011e 7B69     		ldr	r3, [r7, #20]
+ 563 0120 043B     		subs	r3, r3, #4
+ 564 0122 7B61     		str	r3, [r7, #20]
+ 565 0124 7B69     		ldr	r3, [r7, #20]
+ 566 0126 4FF01232 		mov	r2, #303174162
+ 567 012a 1A60     		str	r2, [r3]
+ 505:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x03030303uL;                          /* R3                              
+ 568              		.loc 1 505 16
+ 569 012c 7B69     		ldr	r3, [r7, #20]
+ 570 012e 043B     		subs	r3, r3, #4
+ 571 0130 7B61     		str	r3, [r7, #20]
+ 572 0132 7B69     		ldr	r3, [r7, #20]
+ 573 0134 4FF00332 		mov	r2, #50529027
+ 574 0138 1A60     		str	r2, [r3]
+ 506:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x02020202uL;                          /* R2                              
+ 575              		.loc 1 506 16
+ 576 013a 7B69     		ldr	r3, [r7, #20]
+ 577 013c 043B     		subs	r3, r3, #4
+ 578 013e 7B61     		str	r3, [r7, #20]
+ 579 0140 7B69     		ldr	r3, [r7, #20]
+ 580 0142 4FF00232 		mov	r2, #33686018
+ 581 0146 1A60     		str	r2, [r3]
+ 507:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x01010101uL;                          /* R1                              
+ 582              		.loc 1 507 16
+ 583 0148 7B69     		ldr	r3, [r7, #20]
+ 584 014a 043B     		subs	r3, r3, #4
+ 585 014c 7B61     		str	r3, [r7, #20]
+ 586 014e 7B69     		ldr	r3, [r7, #20]
+ 587 0150 4FF00132 		mov	r2, #16843009
+ 588 0154 1A60     		str	r2, [r3]
+ 508:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)p_arg;                                 /* R0 : argument                   
+ 589              		.loc 1 508 16
+ 590 0156 7B69     		ldr	r3, [r7, #20]
+ 591 0158 043B     		subs	r3, r3, #4
+ 592 015a 7B61     		str	r3, [r7, #20]
+ 593              		.loc 1 508 18
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 20
+
+
+ 594 015c BA68     		ldr	r2, [r7, #8]
+ 595              		.loc 1 508 16
+ 596 015e 7B69     		ldr	r3, [r7, #20]
+ 597 0160 1A60     		str	r2, [r3]
+ 509:./ucOSII/Port/os_cpu_c.c **** 
+ 510:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_ARM_FP_EN > 0u)
+ 511:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0xFFFFFFEDuL;                          /* R14: EXEC_RETURN; See Note 5    
+ 598              		.loc 1 511 16
+ 599 0162 7B69     		ldr	r3, [r7, #20]
+ 600 0164 043B     		subs	r3, r3, #4
+ 601 0166 7B61     		str	r3, [r7, #20]
+ 602 0168 7B69     		ldr	r3, [r7, #20]
+ 603 016a 6FF01202 		mvn	r2, #18
+ 604 016e 1A60     		str	r2, [r3]
+ 512:./ucOSII/Port/os_cpu_c.c **** #else
+ 513:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0xFFFFFFFDuL;                          /* R14: EXEC_RETURN; See Note 5    
+ 514:./ucOSII/Port/os_cpu_c.c **** #endif
+ 515:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Remaining registers saved on pro
+ 516:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x11111111uL;                          /* R11                             
+ 605              		.loc 1 516 16
+ 606 0170 7B69     		ldr	r3, [r7, #20]
+ 607 0172 043B     		subs	r3, r3, #4
+ 608 0174 7B61     		str	r3, [r7, #20]
+ 609 0176 7B69     		ldr	r3, [r7, #20]
+ 610 0178 4FF01132 		mov	r2, #286331153
+ 611 017c 1A60     		str	r2, [r3]
+ 517:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x10101010uL;                          /* R10                             
+ 612              		.loc 1 517 16
+ 613 017e 7B69     		ldr	r3, [r7, #20]
+ 614 0180 043B     		subs	r3, r3, #4
+ 615 0182 7B61     		str	r3, [r7, #20]
+ 616 0184 7B69     		ldr	r3, [r7, #20]
+ 617 0186 4FF01032 		mov	r2, #269488144
+ 618 018a 1A60     		str	r2, [r3]
+ 518:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x09090909uL;                          /* R9                              
+ 619              		.loc 1 518 16
+ 620 018c 7B69     		ldr	r3, [r7, #20]
+ 621 018e 043B     		subs	r3, r3, #4
+ 622 0190 7B61     		str	r3, [r7, #20]
+ 623 0192 7B69     		ldr	r3, [r7, #20]
+ 624 0194 4FF00932 		mov	r2, #151587081
+ 625 0198 1A60     		str	r2, [r3]
+ 519:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x08080808uL;                          /* R8                              
+ 626              		.loc 1 519 16
+ 627 019a 7B69     		ldr	r3, [r7, #20]
+ 628 019c 043B     		subs	r3, r3, #4
+ 629 019e 7B61     		str	r3, [r7, #20]
+ 630 01a0 7B69     		ldr	r3, [r7, #20]
+ 631 01a2 4FF00832 		mov	r2, #134744072
+ 632 01a6 1A60     		str	r2, [r3]
+ 520:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x07070707uL;                          /* R7                              
+ 633              		.loc 1 520 16
+ 634 01a8 7B69     		ldr	r3, [r7, #20]
+ 635 01aa 043B     		subs	r3, r3, #4
+ 636 01ac 7B61     		str	r3, [r7, #20]
+ 637 01ae 7B69     		ldr	r3, [r7, #20]
+ 638 01b0 4FF00732 		mov	r2, #117901063
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 21
+
+
+ 639 01b4 1A60     		str	r2, [r3]
+ 521:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x06060606uL;                          /* R6                              
+ 640              		.loc 1 521 16
+ 641 01b6 7B69     		ldr	r3, [r7, #20]
+ 642 01b8 043B     		subs	r3, r3, #4
+ 643 01ba 7B61     		str	r3, [r7, #20]
+ 644 01bc 7B69     		ldr	r3, [r7, #20]
+ 645 01be 4FF00632 		mov	r2, #101058054
+ 646 01c2 1A60     		str	r2, [r3]
+ 522:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x05050505uL;                          /* R5                              
+ 647              		.loc 1 522 16
+ 648 01c4 7B69     		ldr	r3, [r7, #20]
+ 649 01c6 043B     		subs	r3, r3, #4
+ 650 01c8 7B61     		str	r3, [r7, #20]
+ 651 01ca 7B69     		ldr	r3, [r7, #20]
+ 652 01cc 4FF00532 		mov	r2, #84215045
+ 653 01d0 1A60     		str	r2, [r3]
+ 523:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x04040404uL;                          /* R4                              
+ 654              		.loc 1 523 16
+ 655 01d2 7B69     		ldr	r3, [r7, #20]
+ 656 01d4 043B     		subs	r3, r3, #4
+ 657 01d6 7B61     		str	r3, [r7, #20]
+ 658 01d8 7B69     		ldr	r3, [r7, #20]
+ 659 01da 4FF00432 		mov	r2, #67372036
+ 660 01de 1A60     		str	r2, [r3]
+ 524:./ucOSII/Port/os_cpu_c.c **** 
+ 525:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_ARM_FP_EN > 0u)
+ 526:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Initialize S16-S31 floating poin
+ 527:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41F80000u;                           /* S31                             
+ 661              		.loc 1 527 16
+ 662 01e0 7B69     		ldr	r3, [r7, #20]
+ 663 01e2 043B     		subs	r3, r3, #4
+ 664 01e4 7B61     		str	r3, [r7, #20]
+ 665 01e6 7B69     		ldr	r3, [r7, #20]
+ 666 01e8 334A     		ldr	r2, .L16+48
+ 667 01ea 1A60     		str	r2, [r3]
+ 528:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41F00000u;                           /* S30                             
+ 668              		.loc 1 528 16
+ 669 01ec 7B69     		ldr	r3, [r7, #20]
+ 670 01ee 043B     		subs	r3, r3, #4
+ 671 01f0 7B61     		str	r3, [r7, #20]
+ 672 01f2 7B69     		ldr	r3, [r7, #20]
+ 673 01f4 314A     		ldr	r2, .L16+52
+ 674 01f6 1A60     		str	r2, [r3]
+ 529:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41E80000u;                           /* S29                             
+ 675              		.loc 1 529 16
+ 676 01f8 7B69     		ldr	r3, [r7, #20]
+ 677 01fa 043B     		subs	r3, r3, #4
+ 678 01fc 7B61     		str	r3, [r7, #20]
+ 679 01fe 7B69     		ldr	r3, [r7, #20]
+ 680 0200 2F4A     		ldr	r2, .L16+56
+ 681 0202 1A60     		str	r2, [r3]
+ 530:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41E00000u;                           /* S28                             
+ 682              		.loc 1 530 16
+ 683 0204 7B69     		ldr	r3, [r7, #20]
+ 684 0206 043B     		subs	r3, r3, #4
+ 685 0208 7B61     		str	r3, [r7, #20]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 22
+
+
+ 686 020a 7B69     		ldr	r3, [r7, #20]
+ 687 020c 2D4A     		ldr	r2, .L16+60
+ 688 020e 1A60     		str	r2, [r3]
+ 531:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41D80000u;                           /* S27                             
+ 689              		.loc 1 531 16
+ 690 0210 7B69     		ldr	r3, [r7, #20]
+ 691 0212 043B     		subs	r3, r3, #4
+ 692 0214 7B61     		str	r3, [r7, #20]
+ 693 0216 7B69     		ldr	r3, [r7, #20]
+ 694 0218 2B4A     		ldr	r2, .L16+64
+ 695 021a 1A60     		str	r2, [r3]
+ 532:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41D00000u;                           /* S26                             
+ 696              		.loc 1 532 16
+ 697 021c 7B69     		ldr	r3, [r7, #20]
+ 698 021e 043B     		subs	r3, r3, #4
+ 699 0220 7B61     		str	r3, [r7, #20]
+ 700 0222 7B69     		ldr	r3, [r7, #20]
+ 701 0224 294A     		ldr	r2, .L16+68
+ 702 0226 1A60     		str	r2, [r3]
+ 533:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41C80000u;                           /* S25                             
+ 703              		.loc 1 533 16
+ 704 0228 7B69     		ldr	r3, [r7, #20]
+ 705 022a 043B     		subs	r3, r3, #4
+ 706 022c 7B61     		str	r3, [r7, #20]
+ 707 022e 7B69     		ldr	r3, [r7, #20]
+ 708 0230 274A     		ldr	r2, .L16+72
+ 709 0232 1A60     		str	r2, [r3]
+ 534:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41C00000u;                           /* S24                             
+ 710              		.loc 1 534 16
+ 711 0234 7B69     		ldr	r3, [r7, #20]
+ 712 0236 043B     		subs	r3, r3, #4
+ 713 0238 7B61     		str	r3, [r7, #20]
+ 714 023a 7B69     		ldr	r3, [r7, #20]
+ 715 023c 254A     		ldr	r2, .L16+76
+ 716 023e 1A60     		str	r2, [r3]
+ 535:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41B80000u;                           /* S23                             
+ 717              		.loc 1 535 16
+ 718 0240 7B69     		ldr	r3, [r7, #20]
+ 719 0242 043B     		subs	r3, r3, #4
+ 720 0244 7B61     		str	r3, [r7, #20]
+ 721 0246 7B69     		ldr	r3, [r7, #20]
+ 722 0248 234A     		ldr	r2, .L16+80
+ 723 024a 1A60     		str	r2, [r3]
+ 536:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41B00000u;                           /* S22                             
+ 724              		.loc 1 536 16
+ 725 024c 7B69     		ldr	r3, [r7, #20]
+ 726 024e 043B     		subs	r3, r3, #4
+ 727 0250 7B61     		str	r3, [r7, #20]
+ 728 0252 7B69     		ldr	r3, [r7, #20]
+ 729 0254 214A     		ldr	r2, .L16+84
+ 730 0256 1A60     		str	r2, [r3]
+ 537:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41A80000u;                           /* S21                             
+ 731              		.loc 1 537 16
+ 732 0258 7B69     		ldr	r3, [r7, #20]
+ 733 025a 043B     		subs	r3, r3, #4
+ 734 025c 7B61     		str	r3, [r7, #20]
+ 735 025e 7B69     		ldr	r3, [r7, #20]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 23
+
+
+ 736 0260 1F4A     		ldr	r2, .L16+88
+ 737 0262 1A60     		str	r2, [r3]
+ 538:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41A00000u;                           /* S20                             
+ 738              		.loc 1 538 16
+ 739 0264 7B69     		ldr	r3, [r7, #20]
+ 740 0266 043B     		subs	r3, r3, #4
+ 741 0268 7B61     		str	r3, [r7, #20]
+ 742 026a 7B69     		ldr	r3, [r7, #20]
+ 743 026c 1D4A     		ldr	r2, .L16+92
+ 744 026e 1A60     		str	r2, [r3]
+ 539:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41980000u;                           /* S19                             
+ 745              		.loc 1 539 16
+ 746 0270 7B69     		ldr	r3, [r7, #20]
+ 747 0272 043B     		subs	r3, r3, #4
+ 748 0274 7B61     		str	r3, [r7, #20]
+ 749 0276 7B69     		ldr	r3, [r7, #20]
+ 750 0278 1B4A     		ldr	r2, .L16+96
+ 751 027a 1A60     		str	r2, [r3]
+ 540:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41900000u;                           /* S18                             
+ 752              		.loc 1 540 16
+ 753 027c 7B69     		ldr	r3, [r7, #20]
+ 754 027e 043B     		subs	r3, r3, #4
+ 755 0280 7B61     		str	r3, [r7, #20]
+ 756 0282 7B69     		ldr	r3, [r7, #20]
+ 757 0284 32E0     		b	.L17
+ 758              	.L18:
+ 759 0286 00BF     		.align	2
+ 760              	.L16:
+ 761 0288 00007041 		.word	1097859072
+ 762 028c 00006041 		.word	1096810496
+ 763 0290 00005041 		.word	1095761920
+ 764 0294 00004041 		.word	1094713344
+ 765 0298 00003041 		.word	1093664768
+ 766 029c 00002041 		.word	1092616192
+ 767 02a0 00001041 		.word	1091567616
+ 768 02a4 0000E040 		.word	1088421888
+ 769 02a8 0000C040 		.word	1086324736
+ 770 02ac 0000A040 		.word	1084227584
+ 771 02b0 00004040 		.word	1077936128
+ 772 02b4 00000000 		.word	OS_TaskReturn
+ 773 02b8 0000F841 		.word	1106771968
+ 774 02bc 0000F041 		.word	1106247680
+ 775 02c0 0000E841 		.word	1105723392
+ 776 02c4 0000E041 		.word	1105199104
+ 777 02c8 0000D841 		.word	1104674816
+ 778 02cc 0000D041 		.word	1104150528
+ 779 02d0 0000C841 		.word	1103626240
+ 780 02d4 0000C041 		.word	1103101952
+ 781 02d8 0000B841 		.word	1102577664
+ 782 02dc 0000B041 		.word	1102053376
+ 783 02e0 0000A841 		.word	1101529088
+ 784 02e4 0000A041 		.word	1101004800
+ 785 02e8 00009841 		.word	1100480512
+ 786              	.L17:
+ 787 02ec 0A4A     		ldr	r2, .L19
+ 788 02ee 1A60     		str	r2, [r3]
+ 541:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41880000u;                           /* S17                             
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 24
+
+
+ 789              		.loc 1 541 16
+ 790 02f0 7B69     		ldr	r3, [r7, #20]
+ 791 02f2 043B     		subs	r3, r3, #4
+ 792 02f4 7B61     		str	r3, [r7, #20]
+ 793 02f6 7B69     		ldr	r3, [r7, #20]
+ 794 02f8 084A     		ldr	r2, .L19+4
+ 795 02fa 1A60     		str	r2, [r3]
+ 542:./ucOSII/Port/os_cpu_c.c ****     *(--p_stk) = (OS_STK)0x41800000u;                           /* S16                             
+ 796              		.loc 1 542 16
+ 797 02fc 7B69     		ldr	r3, [r7, #20]
+ 798 02fe 043B     		subs	r3, r3, #4
+ 799 0300 7B61     		str	r3, [r7, #20]
+ 800 0302 7B69     		ldr	r3, [r7, #20]
+ 801 0304 4FF08342 		mov	r2, #1098907648
+ 802 0308 1A60     		str	r2, [r3]
+ 543:./ucOSII/Port/os_cpu_c.c **** #endif
+ 544:./ucOSII/Port/os_cpu_c.c **** 
+ 545:./ucOSII/Port/os_cpu_c.c ****     return (p_stk);
+ 803              		.loc 1 545 12
+ 804 030a 7B69     		ldr	r3, [r7, #20]
+ 546:./ucOSII/Port/os_cpu_c.c **** }
+ 805              		.loc 1 546 1
+ 806 030c 1846     		mov	r0, r3
+ 807 030e 1C37     		adds	r7, r7, #28
+ 808              	.LCFI32:
+ 809              		.cfi_def_cfa_offset 4
+ 810 0310 BD46     		mov	sp, r7
+ 811              	.LCFI33:
+ 812              		.cfi_def_cfa_register 13
+ 813              		@ sp needed
+ 814 0312 5DF8047B 		ldr	r7, [sp], #4
+ 815              	.LCFI34:
+ 816              		.cfi_restore 7
+ 817              		.cfi_def_cfa_offset 0
+ 818 0316 7047     		bx	lr
+ 819              	.L20:
+ 820              		.align	2
+ 821              	.L19:
+ 822 0318 00009041 		.word	1099956224
+ 823 031c 00008841 		.word	1099431936
+ 824              		.cfi_endproc
+ 825              	.LFE10:
+ 827              		.section	.text.OSTaskSwHook,"ax",%progbits
+ 828              		.align	1
+ 829              		.global	OSTaskSwHook
+ 830              		.syntax unified
+ 831              		.thumb
+ 832              		.thumb_func
+ 834              	OSTaskSwHook:
+ 835              	.LFB11:
+ 547:./ucOSII/Port/os_cpu_c.c **** 
+ 548:./ucOSII/Port/os_cpu_c.c **** 
+ 549:./ucOSII/Port/os_cpu_c.c **** /*
+ 550:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 551:./ucOSII/Port/os_cpu_c.c **** *                                           TASK SWITCH HOOK
+ 552:./ucOSII/Port/os_cpu_c.c **** *
+ 553:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called when a task switch is performed.  This allows you to perform
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 25
+
+
+ 554:./ucOSII/Port/os_cpu_c.c **** *              operations during a context switch.
+ 555:./ucOSII/Port/os_cpu_c.c **** *
+ 556:./ucOSII/Port/os_cpu_c.c **** * Arguments  : none
+ 557:./ucOSII/Port/os_cpu_c.c **** *
+ 558:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) Interrupts are disabled during this call.
+ 559:./ucOSII/Port/os_cpu_c.c **** *              2) It is assumed that the global pointer 'OSTCBHighRdy' points to the TCB of the tas
+ 560:./ucOSII/Port/os_cpu_c.c **** *                 will be 'switched in' (i.e. the highest priority task) and, 'OSTCBCur' points to 
+ 561:./ucOSII/Port/os_cpu_c.c **** *                 task being switched out (i.e. the preempted task).
+ 562:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 563:./ucOSII/Port/os_cpu_c.c **** */
+ 564:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_HOOKS_EN > 0u) && (OS_TASK_SW_HOOK_EN > 0u)
+ 565:./ucOSII/Port/os_cpu_c.c **** void  OSTaskSwHook (void)
+ 566:./ucOSII/Port/os_cpu_c.c **** {
+ 836              		.loc 1 566 1
+ 837              		.cfi_startproc
+ 838              		@ args = 0, pretend = 0, frame = 0
+ 839              		@ frame_needed = 1, uses_anonymous_args = 0
+ 840 0000 80B5     		push	{r7, lr}
+ 841              	.LCFI35:
+ 842              		.cfi_def_cfa_offset 8
+ 843              		.cfi_offset 7, -8
+ 844              		.cfi_offset 14, -4
+ 845 0002 00AF     		add	r7, sp, #0
+ 846              	.LCFI36:
+ 847              		.cfi_def_cfa_register 7
+ 567:./ucOSII/Port/os_cpu_c.c **** 
+ 568:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_ARM_FP_EN > 0u)
+ 569:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_FP_Reg_Push(OSTCBCur->OSTCBStkPtr);                  /* Push the FP registers of the cur
+ 848              		.loc 1 569 32
+ 849 0004 074B     		ldr	r3, .L22
+ 850 0006 1B68     		ldr	r3, [r3]
+ 851              		.loc 1 569 5
+ 852 0008 1B68     		ldr	r3, [r3]
+ 853 000a 1846     		mov	r0, r3
+ 854 000c FFF7FEFF 		bl	OS_CPU_FP_Reg_Push
+ 570:./ucOSII/Port/os_cpu_c.c **** #endif
+ 571:./ucOSII/Port/os_cpu_c.c **** 
+ 572:./ucOSII/Port/os_cpu_c.c **** #if OS_APP_HOOKS_EN > 0u
+ 573:./ucOSII/Port/os_cpu_c.c ****     App_TaskSwHook();
+ 855              		.loc 1 573 5
+ 856 0010 FFF7FEFF 		bl	App_TaskSwHook
+ 574:./ucOSII/Port/os_cpu_c.c **** #endif
+ 575:./ucOSII/Port/os_cpu_c.c **** 
+ 576:./ucOSII/Port/os_cpu_c.c ****     OS_TRACE_TASK_SWITCHED_IN(OSTCBHighRdy);
+ 577:./ucOSII/Port/os_cpu_c.c **** 
+ 578:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_ARM_FP_EN > 0u)
+ 579:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_FP_Reg_Pop(OSTCBHighRdy->OSTCBStkPtr);               /* Pop the FP registers of the high
+ 857              		.loc 1 579 35
+ 858 0014 044B     		ldr	r3, .L22+4
+ 859 0016 1B68     		ldr	r3, [r3]
+ 860              		.loc 1 579 5
+ 861 0018 1B68     		ldr	r3, [r3]
+ 862 001a 1846     		mov	r0, r3
+ 863 001c FFF7FEFF 		bl	OS_CPU_FP_Reg_Pop
+ 580:./ucOSII/Port/os_cpu_c.c **** #endif
+ 581:./ucOSII/Port/os_cpu_c.c **** }
+ 864              		.loc 1 581 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 26
+
+
+ 865 0020 00BF     		nop
+ 866 0022 80BD     		pop	{r7, pc}
+ 867              	.L23:
+ 868              		.align	2
+ 869              	.L22:
+ 870 0024 00000000 		.word	OSTCBCur
+ 871 0028 00000000 		.word	OSTCBHighRdy
+ 872              		.cfi_endproc
+ 873              	.LFE11:
+ 875              		.section	.text.OSTCBInitHook,"ax",%progbits
+ 876              		.align	1
+ 877              		.global	OSTCBInitHook
+ 878              		.syntax unified
+ 879              		.thumb
+ 880              		.thumb_func
+ 882              	OSTCBInitHook:
+ 883              	.LFB12:
+ 582:./ucOSII/Port/os_cpu_c.c **** #endif
+ 583:./ucOSII/Port/os_cpu_c.c **** 
+ 584:./ucOSII/Port/os_cpu_c.c **** 
+ 585:./ucOSII/Port/os_cpu_c.c **** /*
+ 586:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 587:./ucOSII/Port/os_cpu_c.c **** *                                           OS_TCBInit() HOOK
+ 588:./ucOSII/Port/os_cpu_c.c **** *
+ 589:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called by OS_TCBInit() after setting up most of the TCB.
+ 590:./ucOSII/Port/os_cpu_c.c **** *
+ 591:./ucOSII/Port/os_cpu_c.c **** * Arguments  : ptcb    is a pointer to the TCB of the task being created.
+ 592:./ucOSII/Port/os_cpu_c.c **** *
+ 593:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) Interrupts may or may not be ENABLED during this call.
+ 594:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 595:./ucOSII/Port/os_cpu_c.c **** */
+ 596:./ucOSII/Port/os_cpu_c.c **** #if OS_CPU_HOOKS_EN > 0u
+ 597:./ucOSII/Port/os_cpu_c.c **** void  OSTCBInitHook (OS_TCB *ptcb)
+ 598:./ucOSII/Port/os_cpu_c.c **** {
+ 884              		.loc 1 598 1
+ 885              		.cfi_startproc
+ 886              		@ args = 0, pretend = 0, frame = 8
+ 887              		@ frame_needed = 1, uses_anonymous_args = 0
+ 888 0000 80B5     		push	{r7, lr}
+ 889              	.LCFI37:
+ 890              		.cfi_def_cfa_offset 8
+ 891              		.cfi_offset 7, -8
+ 892              		.cfi_offset 14, -4
+ 893 0002 82B0     		sub	sp, sp, #8
+ 894              	.LCFI38:
+ 895              		.cfi_def_cfa_offset 16
+ 896 0004 00AF     		add	r7, sp, #0
+ 897              	.LCFI39:
+ 898              		.cfi_def_cfa_register 7
+ 899 0006 7860     		str	r0, [r7, #4]
+ 599:./ucOSII/Port/os_cpu_c.c **** #if OS_APP_HOOKS_EN > 0u
+ 600:./ucOSII/Port/os_cpu_c.c ****     App_TCBInitHook(ptcb);
+ 900              		.loc 1 600 5
+ 901 0008 7868     		ldr	r0, [r7, #4]
+ 902 000a FFF7FEFF 		bl	App_TCBInitHook
+ 601:./ucOSII/Port/os_cpu_c.c **** #else
+ 602:./ucOSII/Port/os_cpu_c.c ****     (void)ptcb;                                                 /* Prevent compiler warning        
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 27
+
+
+ 603:./ucOSII/Port/os_cpu_c.c **** #endif
+ 604:./ucOSII/Port/os_cpu_c.c **** }
+ 903              		.loc 1 604 1
+ 904 000e 00BF     		nop
+ 905 0010 0837     		adds	r7, r7, #8
+ 906              	.LCFI40:
+ 907              		.cfi_def_cfa_offset 8
+ 908 0012 BD46     		mov	sp, r7
+ 909              	.LCFI41:
+ 910              		.cfi_def_cfa_register 13
+ 911              		@ sp needed
+ 912 0014 80BD     		pop	{r7, pc}
+ 913              		.cfi_endproc
+ 914              	.LFE12:
+ 916              		.section	.text.OSTimeTickHook,"ax",%progbits
+ 917              		.align	1
+ 918              		.global	OSTimeTickHook
+ 919              		.syntax unified
+ 920              		.thumb
+ 921              		.thumb_func
+ 923              	OSTimeTickHook:
+ 924              	.LFB13:
+ 605:./ucOSII/Port/os_cpu_c.c **** #endif
+ 606:./ucOSII/Port/os_cpu_c.c **** 
+ 607:./ucOSII/Port/os_cpu_c.c **** 
+ 608:./ucOSII/Port/os_cpu_c.c **** /*
+ 609:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 610:./ucOSII/Port/os_cpu_c.c **** *                                               TICK HOOK
+ 611:./ucOSII/Port/os_cpu_c.c **** *
+ 612:./ucOSII/Port/os_cpu_c.c **** * Description: This function is called every tick.
+ 613:./ucOSII/Port/os_cpu_c.c **** *
+ 614:./ucOSII/Port/os_cpu_c.c **** * Arguments  : none
+ 615:./ucOSII/Port/os_cpu_c.c **** *
+ 616:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) Interrupts may or may not be ENABLED during this call.
+ 617:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 618:./ucOSII/Port/os_cpu_c.c **** */
+ 619:./ucOSII/Port/os_cpu_c.c **** #if (OS_CPU_HOOKS_EN > 0u) && (OS_TIME_TICK_HOOK_EN > 0u)
+ 620:./ucOSII/Port/os_cpu_c.c **** void  OSTimeTickHook (void)
+ 621:./ucOSII/Port/os_cpu_c.c **** {
+ 925              		.loc 1 621 1
+ 926              		.cfi_startproc
+ 927              		@ args = 0, pretend = 0, frame = 0
+ 928              		@ frame_needed = 1, uses_anonymous_args = 0
+ 929 0000 80B5     		push	{r7, lr}
+ 930              	.LCFI42:
+ 931              		.cfi_def_cfa_offset 8
+ 932              		.cfi_offset 7, -8
+ 933              		.cfi_offset 14, -4
+ 934 0002 00AF     		add	r7, sp, #0
+ 935              	.LCFI43:
+ 936              		.cfi_def_cfa_register 7
+ 622:./ucOSII/Port/os_cpu_c.c **** #if OS_APP_HOOKS_EN > 0u
+ 623:./ucOSII/Port/os_cpu_c.c ****     App_TimeTickHook();
+ 937              		.loc 1 623 5
+ 938 0004 FFF7FEFF 		bl	App_TimeTickHook
+ 624:./ucOSII/Port/os_cpu_c.c **** #endif
+ 625:./ucOSII/Port/os_cpu_c.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 28
+
+
+ 626:./ucOSII/Port/os_cpu_c.c **** #if OS_TMR_EN > 0u
+ 627:./ucOSII/Port/os_cpu_c.c ****     OSTmrCtr++;
+ 939              		.loc 1 627 13
+ 940 0008 084B     		ldr	r3, .L28
+ 941 000a 1B88     		ldrh	r3, [r3]
+ 942 000c 0133     		adds	r3, r3, #1
+ 943 000e 9AB2     		uxth	r2, r3
+ 944 0010 064B     		ldr	r3, .L28
+ 945 0012 1A80     		strh	r2, [r3]	@ movhi
+ 628:./ucOSII/Port/os_cpu_c.c ****     if (OSTmrCtr >= (OS_TICKS_PER_SEC / OS_TMR_CFG_TICKS_PER_SEC)) {
+ 946              		.loc 1 628 18
+ 947 0014 054B     		ldr	r3, .L28
+ 948 0016 1B88     		ldrh	r3, [r3]
+ 949              		.loc 1 628 8
+ 950 0018 092B     		cmp	r3, #9
+ 951 001a 04D9     		bls	.L27
+ 629:./ucOSII/Port/os_cpu_c.c ****         OSTmrCtr = 0u;
+ 952              		.loc 1 629 18
+ 953 001c 034B     		ldr	r3, .L28
+ 954 001e 0022     		movs	r2, #0
+ 955 0020 1A80     		strh	r2, [r3]	@ movhi
+ 630:./ucOSII/Port/os_cpu_c.c ****         OSTmrSignal();
+ 956              		.loc 1 630 9
+ 957 0022 FFF7FEFF 		bl	OSTmrSignal
+ 958              	.L27:
+ 631:./ucOSII/Port/os_cpu_c.c ****     }
+ 632:./ucOSII/Port/os_cpu_c.c **** #endif
+ 633:./ucOSII/Port/os_cpu_c.c **** }
+ 959              		.loc 1 633 1
+ 960 0026 00BF     		nop
+ 961 0028 80BD     		pop	{r7, pc}
+ 962              	.L29:
+ 963 002a 00BF     		.align	2
+ 964              	.L28:
+ 965 002c 00000000 		.word	OSTmrCtr
+ 966              		.cfi_endproc
+ 967              	.LFE13:
+ 969              		.section	.text.OS_CPU_SysTickHandler,"ax",%progbits
+ 970              		.align	1
+ 971              		.global	OS_CPU_SysTickHandler
+ 972              		.syntax unified
+ 973              		.thumb
+ 974              		.thumb_func
+ 976              	OS_CPU_SysTickHandler:
+ 977              	.LFB14:
+ 634:./ucOSII/Port/os_cpu_c.c **** #endif
+ 635:./ucOSII/Port/os_cpu_c.c **** 
+ 636:./ucOSII/Port/os_cpu_c.c **** 
+ 637:./ucOSII/Port/os_cpu_c.c **** /*
+ 638:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 639:./ucOSII/Port/os_cpu_c.c **** *                                          SYS TICK HANDLER
+ 640:./ucOSII/Port/os_cpu_c.c **** *
+ 641:./ucOSII/Port/os_cpu_c.c **** * Description: Handle the system tick (SysTick) interrupt, which is used to generate the uC/OS-II t
+ 642:./ucOSII/Port/os_cpu_c.c **** *              interrupt.
+ 643:./ucOSII/Port/os_cpu_c.c **** *
+ 644:./ucOSII/Port/os_cpu_c.c **** * Arguments  : None.
+ 645:./ucOSII/Port/os_cpu_c.c **** *
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 29
+
+
+ 646:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) This function MUST be placed on entry 15 of the Cortex-M vector table.
+ 647:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 648:./ucOSII/Port/os_cpu_c.c **** */
+ 649:./ucOSII/Port/os_cpu_c.c **** 
+ 650:./ucOSII/Port/os_cpu_c.c **** void  OS_CPU_SysTickHandler (void)
+ 651:./ucOSII/Port/os_cpu_c.c **** {
+ 978              		.loc 1 651 1
+ 979              		.cfi_startproc
+ 980              		@ args = 0, pretend = 0, frame = 8
+ 981              		@ frame_needed = 1, uses_anonymous_args = 0
+ 982 0000 80B5     		push	{r7, lr}
+ 983              	.LCFI44:
+ 984              		.cfi_def_cfa_offset 8
+ 985              		.cfi_offset 7, -8
+ 986              		.cfi_offset 14, -4
+ 987 0002 82B0     		sub	sp, sp, #8
+ 988              	.LCFI45:
+ 989              		.cfi_def_cfa_offset 16
+ 990 0004 00AF     		add	r7, sp, #0
+ 991              	.LCFI46:
+ 992              		.cfi_def_cfa_register 7
+ 652:./ucOSII/Port/os_cpu_c.c **** #if OS_CRITICAL_METHOD == 3u                                    /* Allocate storage for CPU status 
+ 653:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_SR  cpu_sr;
+ 654:./ucOSII/Port/os_cpu_c.c **** #endif
+ 655:./ucOSII/Port/os_cpu_c.c **** 
+ 656:./ucOSII/Port/os_cpu_c.c **** 
+ 657:./ucOSII/Port/os_cpu_c.c ****     OS_ENTER_CRITICAL();
+ 993              		.loc 1 657 5
+ 994 0006 4020     		movs	r0, #64
+ 995 0008 FFF7FEFF 		bl	OS_CPU_SR_Save
+ 996 000c 7860     		str	r0, [r7, #4]
+ 658:./ucOSII/Port/os_cpu_c.c ****     OSIntEnter();                                               /* Tell uC/OS-II that we are starti
+ 997              		.loc 1 658 5
+ 998 000e FFF7FEFF 		bl	OSIntEnter
+ 659:./ucOSII/Port/os_cpu_c.c ****     OS_EXIT_CRITICAL();
+ 999              		.loc 1 659 5
+ 1000 0012 7868     		ldr	r0, [r7, #4]
+ 1001 0014 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 660:./ucOSII/Port/os_cpu_c.c **** 
+ 661:./ucOSII/Port/os_cpu_c.c ****     OSTimeTick();                                               /* Call uC/OS-II's OSTimeTick()    
+ 1002              		.loc 1 661 5
+ 1003 0018 FFF7FEFF 		bl	OSTimeTick
+ 662:./ucOSII/Port/os_cpu_c.c **** 
+ 663:./ucOSII/Port/os_cpu_c.c ****     OSIntExit();                                                /* Tell uC/OS-II that we are leavin
+ 1004              		.loc 1 663 5
+ 1005 001c FFF7FEFF 		bl	OSIntExit
+ 664:./ucOSII/Port/os_cpu_c.c **** }
+ 1006              		.loc 1 664 1
+ 1007 0020 00BF     		nop
+ 1008 0022 0837     		adds	r7, r7, #8
+ 1009              	.LCFI47:
+ 1010              		.cfi_def_cfa_offset 8
+ 1011 0024 BD46     		mov	sp, r7
+ 1012              	.LCFI48:
+ 1013              		.cfi_def_cfa_register 13
+ 1014              		@ sp needed
+ 1015 0026 80BD     		pop	{r7, pc}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 30
+
+
+ 1016              		.cfi_endproc
+ 1017              	.LFE14:
+ 1019              		.section	.text.OS_CPU_SysTickInitFreq,"ax",%progbits
+ 1020              		.align	1
+ 1021              		.global	OS_CPU_SysTickInitFreq
+ 1022              		.syntax unified
+ 1023              		.thumb
+ 1024              		.thumb_func
+ 1026              	OS_CPU_SysTickInitFreq:
+ 1027              	.LFB15:
+ 665:./ucOSII/Port/os_cpu_c.c **** 
+ 666:./ucOSII/Port/os_cpu_c.c **** 
+ 667:./ucOSII/Port/os_cpu_c.c **** /*
+ 668:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 669:./ucOSII/Port/os_cpu_c.c **** *                                         INITIALIZE SYS TICK
+ 670:./ucOSII/Port/os_cpu_c.c **** *
+ 671:./ucOSII/Port/os_cpu_c.c **** * Description: Initialize the SysTick using the CPU clock frequency.
+ 672:./ucOSII/Port/os_cpu_c.c **** *
+ 673:./ucOSII/Port/os_cpu_c.c **** * Arguments  : cpu_freq     CPU clock frequency.
+ 674:./ucOSII/Port/os_cpu_c.c **** *
+ 675:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) This function MUST be called after OSStart() & after processor initialization.
+ 676:./ucOSII/Port/os_cpu_c.c **** *
+ 677:./ucOSII/Port/os_cpu_c.c **** *              2) Either OS_CPU_SysTickInitFreq or OS_CPU_SysTickInit() can be called.
+ 678:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 679:./ucOSII/Port/os_cpu_c.c **** */
+ 680:./ucOSII/Port/os_cpu_c.c **** 
+ 681:./ucOSII/Port/os_cpu_c.c **** void  OS_CPU_SysTickInitFreq (INT32U  cpu_freq)
+ 682:./ucOSII/Port/os_cpu_c.c **** {
+ 1028              		.loc 1 682 1
+ 1029              		.cfi_startproc
+ 1030              		@ args = 0, pretend = 0, frame = 16
+ 1031              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1032 0000 80B5     		push	{r7, lr}
+ 1033              	.LCFI49:
+ 1034              		.cfi_def_cfa_offset 8
+ 1035              		.cfi_offset 7, -8
+ 1036              		.cfi_offset 14, -4
+ 1037 0002 84B0     		sub	sp, sp, #16
+ 1038              	.LCFI50:
+ 1039              		.cfi_def_cfa_offset 24
+ 1040 0004 00AF     		add	r7, sp, #0
+ 1041              	.LCFI51:
+ 1042              		.cfi_def_cfa_register 7
+ 1043 0006 7860     		str	r0, [r7, #4]
+ 683:./ucOSII/Port/os_cpu_c.c ****     INT32U  cnts;
+ 684:./ucOSII/Port/os_cpu_c.c **** 
+ 685:./ucOSII/Port/os_cpu_c.c **** 
+ 686:./ucOSII/Port/os_cpu_c.c ****     cnts = (cpu_freq / (INT32U)OS_TICKS_PER_SEC);               /* Determine nbr SysTick cnts betwe
+ 1044              		.loc 1 686 10
+ 1045 0008 7B68     		ldr	r3, [r7, #4]
+ 1046 000a 064A     		ldr	r2, .L32
+ 1047 000c A2FB0323 		umull	r2, r3, r2, r3
+ 1048 0010 5B09     		lsrs	r3, r3, #5
+ 1049 0012 FB60     		str	r3, [r7, #12]
+ 687:./ucOSII/Port/os_cpu_c.c **** 
+ 688:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_SysTickInit(cnts);
+ 1050              		.loc 1 688 5
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 31
+
+
+ 1051 0014 F868     		ldr	r0, [r7, #12]
+ 1052 0016 FFF7FEFF 		bl	OS_CPU_SysTickInit
+ 689:./ucOSII/Port/os_cpu_c.c **** }
+ 1053              		.loc 1 689 1
+ 1054 001a 00BF     		nop
+ 1055 001c 1037     		adds	r7, r7, #16
+ 1056              	.LCFI52:
+ 1057              		.cfi_def_cfa_offset 8
+ 1058 001e BD46     		mov	sp, r7
+ 1059              	.LCFI53:
+ 1060              		.cfi_def_cfa_register 13
+ 1061              		@ sp needed
+ 1062 0020 80BD     		pop	{r7, pc}
+ 1063              	.L33:
+ 1064 0022 00BF     		.align	2
+ 1065              	.L32:
+ 1066 0024 1F85EB51 		.word	1374389535
+ 1067              		.cfi_endproc
+ 1068              	.LFE15:
+ 1070              		.section	.text.OS_CPU_SysTickInit,"ax",%progbits
+ 1071              		.align	1
+ 1072              		.global	OS_CPU_SysTickInit
+ 1073              		.syntax unified
+ 1074              		.thumb
+ 1075              		.thumb_func
+ 1077              	OS_CPU_SysTickInit:
+ 1078              	.LFB16:
+ 690:./ucOSII/Port/os_cpu_c.c **** 
+ 691:./ucOSII/Port/os_cpu_c.c **** 
+ 692:./ucOSII/Port/os_cpu_c.c **** /*
+ 693:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 694:./ucOSII/Port/os_cpu_c.c **** *                                         INITIALIZE SYS TICK
+ 695:./ucOSII/Port/os_cpu_c.c **** *
+ 696:./ucOSII/Port/os_cpu_c.c **** * Description: Initialize the SysTick using the number of counts between two ticks.
+ 697:./ucOSII/Port/os_cpu_c.c **** *
+ 698:./ucOSII/Port/os_cpu_c.c **** * Arguments  : cnts     Number of SysTick counts between two OS tick interrupts.
+ 699:./ucOSII/Port/os_cpu_c.c **** *
+ 700:./ucOSII/Port/os_cpu_c.c **** * Note(s)    : 1) This function MUST be called after OSStart() & after processor initialization.
+ 701:./ucOSII/Port/os_cpu_c.c **** *
+ 702:./ucOSII/Port/os_cpu_c.c **** *              2) Either OS_CPU_SysTickInitFreq or OS_CPU_SysTickInit() can be called.
+ 703:./ucOSII/Port/os_cpu_c.c **** ***************************************************************************************************
+ 704:./ucOSII/Port/os_cpu_c.c **** */
+ 705:./ucOSII/Port/os_cpu_c.c **** 
+ 706:./ucOSII/Port/os_cpu_c.c **** void  OS_CPU_SysTickInit (INT32U  cnts)
+ 707:./ucOSII/Port/os_cpu_c.c **** {
+ 1079              		.loc 1 707 1
+ 1080              		.cfi_startproc
+ 1081              		@ args = 0, pretend = 0, frame = 16
+ 1082              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1083              		@ link register save eliminated.
+ 1084 0000 80B4     		push	{r7}
+ 1085              	.LCFI54:
+ 1086              		.cfi_def_cfa_offset 4
+ 1087              		.cfi_offset 7, -4
+ 1088 0002 85B0     		sub	sp, sp, #20
+ 1089              	.LCFI55:
+ 1090              		.cfi_def_cfa_offset 24
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 32
+
+
+ 1091 0004 00AF     		add	r7, sp, #0
+ 1092              	.LCFI56:
+ 1093              		.cfi_def_cfa_register 7
+ 1094 0006 7860     		str	r0, [r7, #4]
+ 708:./ucOSII/Port/os_cpu_c.c ****     INT32U  prio;
+ 709:./ucOSII/Port/os_cpu_c.c ****     INT32U  basepri;
+ 710:./ucOSII/Port/os_cpu_c.c **** 
+ 711:./ucOSII/Port/os_cpu_c.c **** 
+ 712:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Set BASEPRI boundary from the co
+ 713:./ucOSII/Port/os_cpu_c.c ****     basepri               = (INT32U)(CPU_CFG_KA_IPL_BOUNDARY << (8u - CPU_CFG_NVIC_PRIO_BITS));
+ 1095              		.loc 1 713 27
+ 1096 0008 4023     		movs	r3, #64
+ 1097 000a FB60     		str	r3, [r7, #12]
+ 714:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_CM_SYST_RVR    = cnts - 1u;                          /* Set Reload register.            
+ 1098              		.loc 1 714 5
+ 1099 000c 124A     		ldr	r2, .L35
+ 1100              		.loc 1 714 34
+ 1101 000e 7B68     		ldr	r3, [r7, #4]
+ 1102 0010 013B     		subs	r3, r3, #1
+ 1103              		.loc 1 714 27
+ 1104 0012 1360     		str	r3, [r2]
+ 715:./ucOSII/Port/os_cpu_c.c **** 
+ 716:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Set SysTick handler prio.       
+ 717:./ucOSII/Port/os_cpu_c.c ****     prio                  =  OS_CPU_CM_SCB_SHPRI3;
+ 1105              		.loc 1 717 30
+ 1106 0014 114B     		ldr	r3, .L35+4
+ 1107              		.loc 1 717 27
+ 1108 0016 1B68     		ldr	r3, [r3]
+ 1109 0018 BB60     		str	r3, [r7, #8]
+ 718:./ucOSII/Port/os_cpu_c.c ****     prio                 &=  0x00FFFFFFu;
+ 1110              		.loc 1 718 26
+ 1111 001a BB68     		ldr	r3, [r7, #8]
+ 1112 001c 23F07F43 		bic	r3, r3, #-16777216
+ 1113 0020 BB60     		str	r3, [r7, #8]
+ 719:./ucOSII/Port/os_cpu_c.c ****     prio                 |= (basepri << 24u);
+ 1114              		.loc 1 719 38
+ 1115 0022 FB68     		ldr	r3, [r7, #12]
+ 1116 0024 1B06     		lsls	r3, r3, #24
+ 1117              		.loc 1 719 26
+ 1118 0026 BA68     		ldr	r2, [r7, #8]
+ 1119 0028 1343     		orrs	r3, r3, r2
+ 1120 002a BB60     		str	r3, [r7, #8]
+ 720:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_CM_SCB_SHPRI3  = prio;
+ 1121              		.loc 1 720 5
+ 1122 002c 0B4A     		ldr	r2, .L35+4
+ 1123              		.loc 1 720 27
+ 1124 002e BB68     		ldr	r3, [r7, #8]
+ 1125 0030 1360     		str	r3, [r2]
+ 721:./ucOSII/Port/os_cpu_c.c **** 
+ 722:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Enable timer.                   
+ 723:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_CM_SYST_CSR   |= OS_CPU_CM_SYST_CSR_CLKSOURCE |
+ 1126              		.loc 1 723 26
+ 1127 0032 0B4B     		ldr	r3, .L35+8
+ 1128 0034 1B68     		ldr	r3, [r3]
+ 1129 0036 0A4A     		ldr	r2, .L35+8
+ 1130 0038 43F00503 		orr	r3, r3, #5
+ 1131 003c 1360     		str	r3, [r2]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 33
+
+
+ 724:./ucOSII/Port/os_cpu_c.c ****                             OS_CPU_CM_SYST_CSR_ENABLE;
+ 725:./ucOSII/Port/os_cpu_c.c ****                                                                 /* Enable timer interrupt.         
+ 726:./ucOSII/Port/os_cpu_c.c ****     OS_CPU_CM_SYST_CSR   |= OS_CPU_CM_SYST_CSR_TICKINT;
+ 1132              		.loc 1 726 26
+ 1133 003e 084B     		ldr	r3, .L35+8
+ 1134 0040 1B68     		ldr	r3, [r3]
+ 1135 0042 074A     		ldr	r2, .L35+8
+ 1136 0044 43F00203 		orr	r3, r3, #2
+ 1137 0048 1360     		str	r3, [r2]
+ 727:./ucOSII/Port/os_cpu_c.c **** }
+ 1138              		.loc 1 727 1
+ 1139 004a 00BF     		nop
+ 1140 004c 1437     		adds	r7, r7, #20
+ 1141              	.LCFI57:
+ 1142              		.cfi_def_cfa_offset 4
+ 1143 004e BD46     		mov	sp, r7
+ 1144              	.LCFI58:
+ 1145              		.cfi_def_cfa_register 13
+ 1146              		@ sp needed
+ 1147 0050 5DF8047B 		ldr	r7, [sp], #4
+ 1148              	.LCFI59:
+ 1149              		.cfi_restore 7
+ 1150              		.cfi_def_cfa_offset 0
+ 1151 0054 7047     		bx	lr
+ 1152              	.L36:
+ 1153 0056 00BF     		.align	2
+ 1154              	.L35:
+ 1155 0058 14E000E0 		.word	-536813548
+ 1156 005c 20ED00E0 		.word	-536810208
+ 1157 0060 10E000E0 		.word	-536813552
+ 1158              		.cfi_endproc
+ 1159              	.LFE16:
+ 1161              		.text
+ 1162              	.Letext0:
+ 1163              		.file 2 "./ucOSII/Port/os_cpu.h"
+ 1164              		.file 3 "./ucOSII/Core/ucos_ii.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 34
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 os_cpu_c.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:24     .bss.OS_CPU_ExceptStk:0000000000000000 OS_CPU_ExceptStk
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:21     .bss.OS_CPU_ExceptStk:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:31     .bss.OS_CPU_ExceptStkBase:0000000000000000 OS_CPU_ExceptStkBase
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:28     .bss.OS_CPU_ExceptStkBase:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:34     .bss.OSTmrCtr:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:37     .bss.OSTmrCtr:0000000000000000 OSTmrCtr
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:44     .bss.OS_KA_BASEPRI_Boundary:0000000000000000 OS_KA_BASEPRI_Boundary
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:41     .bss.OS_KA_BASEPRI_Boundary:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:47     .text.OSInitHookBegin:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:53     .text.OSInitHookBegin:0000000000000000 OSInitHookBegin
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:150    .text.OSInitHookBegin:0000000000000068 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:160    .text.OSInitHookEnd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:166    .text.OSInitHookEnd:0000000000000000 OSInitHookEnd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:195    .text.OSTaskCreateHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:201    .text.OSTaskCreateHook:0000000000000000 OSTaskCreateHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:236    .text.OSTaskDelHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:242    .text.OSTaskDelHook:0000000000000000 OSTaskDelHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:277    .text.OSTaskIdleHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:283    .text.OSTaskIdleHook:0000000000000000 OSTaskIdleHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:306    .text.OSTaskReturnHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:312    .text.OSTaskReturnHook:0000000000000000 OSTaskReturnHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:347    .text.OSTaskStatHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:353    .text.OSTaskStatHook:0000000000000000 OSTaskStatHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:376    .text.OSTaskStkInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:382    .text.OSTaskStkInit:0000000000000000 OSTaskStkInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:761    .text.OSTaskStkInit:0000000000000288 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:787    .text.OSTaskStkInit:00000000000002ec $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:822    .text.OSTaskStkInit:0000000000000318 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:828    .text.OSTaskSwHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:834    .text.OSTaskSwHook:0000000000000000 OSTaskSwHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:870    .text.OSTaskSwHook:0000000000000024 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:876    .text.OSTCBInitHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:882    .text.OSTCBInitHook:0000000000000000 OSTCBInitHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:917    .text.OSTimeTickHook:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:923    .text.OSTimeTickHook:0000000000000000 OSTimeTickHook
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:965    .text.OSTimeTickHook:000000000000002c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:970    .text.OS_CPU_SysTickHandler:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:976    .text.OS_CPU_SysTickHandler:0000000000000000 OS_CPU_SysTickHandler
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:1020   .text.OS_CPU_SysTickInitFreq:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:1026   .text.OS_CPU_SysTickInitFreq:0000000000000000 OS_CPU_SysTickInitFreq
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:1077   .text.OS_CPU_SysTickInit:0000000000000000 OS_CPU_SysTickInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:1066   .text.OS_CPU_SysTickInitFreq:0000000000000024 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:1071   .text.OS_CPU_SysTickInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s:1155   .text.OS_CPU_SysTickInit:0000000000000058 $d
+
+UNDEFINED SYMBOLS
+App_TaskCreateHook
+App_TaskDelHook
+App_TaskIdleHook
+App_TaskReturnHook
+App_TaskStatHook
+OS_TaskReturn
+OS_CPU_FP_Reg_Push
+App_TaskSwHook
+OS_CPU_FP_Reg_Pop
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaggBg0.s 			page 35
+
+
+OSTCBCur
+OSTCBHighRdy
+App_TCBInitHook
+App_TimeTickHook
+OSTmrSignal
+OS_CPU_SR_Save
+OSIntEnter
+OS_CPU_SR_Restore
+OSTimeTick
+OSIntExit
