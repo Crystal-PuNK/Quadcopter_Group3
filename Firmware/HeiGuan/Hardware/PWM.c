@@ -2,15 +2,15 @@
 
 
 /******************************************
- *PWMµÄ³õÊ¼»¯£¬°üÀ¨TIM3µÄÉè¶¨Óë¶ÔÓ¦CH1µÄGPIO¿ÚÉèÖÃ
+ *PWMï¿½Ä³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½TIM3ï¿½ï¿½ï¿½è¶¨ï¿½ï¿½ï¿½Ó¦CH1ï¿½ï¿½GPIOï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  *****************************************/
 void PWM_Init()
 {
-	//¿ªÆô¶ÔÓ¦Ê±ÖÓ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ê±ï¿½ï¿½
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,  ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB,  ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,   ENABLE);
-	//³õÊ¼»¯PA6PA7
+	//ï¿½ï¿½Ê¼ï¿½ï¿½PA6PA7
 	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
@@ -20,7 +20,7 @@ void PWM_Init()
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource6,GPIO_AF_TIM3);
 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource7,GPIO_AF_TIM3);
-	//³õÊ¼»¯PB0PB1
+	//ï¿½ï¿½Ê¼ï¿½ï¿½PB0PB1
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -29,14 +29,14 @@ void PWM_Init()
 	GPIO_Init(GPIOB,&GPIO_InitStructure);
 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource0,GPIO_AF_TIM3);
 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource1,GPIO_AF_TIM3);
-	//³õÊ¼»¯TIM3µÄÊ±»ùµ¥Ôª,PWMÖÜÆÚÎª20ms£¬¼´50HzÆµÂÊ.Ã¿0.02Ãë¼ÆÊý2000ÏÂ
+	//ï¿½ï¿½Ê¼ï¿½ï¿½TIM3ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ôª,PWMï¿½ï¿½ï¿½ï¿½Îª20msï¿½ï¿½ï¿½ï¿½50HzÆµï¿½ï¿½.Ã¿0.02ï¿½ï¿½ï¿½ï¿½ï¿½2000ï¿½ï¿½
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	TIM_TimeBaseStructure.TIM_Prescaler = 161 -1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseStructure.TIM_Period = 2000 -1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);
-	//³õÊ¼»¯TIM3CH1~4µÄPWMÊä³öÄ£Ê½
+	//ï¿½ï¿½Ê¼ï¿½ï¿½TIM3CH1~4ï¿½ï¿½PWMï¿½ï¿½ï¿½Ä£Ê½
 	TIM_OCInitTypeDef TIM_OCInitStructure;
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
@@ -45,7 +45,7 @@ void PWM_Init()
 	TIM_OC2Init(TIM3,&TIM_OCInitStructure);
 	TIM_OC3Init(TIM3,&TIM_OCInitStructure);
 	TIM_OC4Init(TIM3,&TIM_OCInitStructure);
-	//Ê¹ÄÜÔ¤×°ÔØÆ÷
+	//Ê¹ï¿½ï¿½Ô¤×°ï¿½ï¿½ï¿½ï¿½
 	TIM_OC1PreloadConfig(TIM3,TIM_OCPreload_Enable);
 	TIM_OC2PreloadConfig(TIM3,TIM_OCPreload_Enable);
 	TIM_OC3PreloadConfig(TIM3,TIM_OCPreload_Enable);
@@ -68,6 +68,8 @@ void PWM_SetCompareAll(uint16_t Compare)
 void Motor_Init()
 {
 	PWM_Init();
+	Motor_SetSpeed_All(0);
+	// Delay_s(3);
 }
 
 void Motor_SetSpeed_All(int8_t speed)

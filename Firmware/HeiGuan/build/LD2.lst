@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -19,263 +19,292 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s 			page 1
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.section	.text.LD2_init,"ax",%progbits
-  20              		.align	1
-  21              		.global	LD2_init
-  22              		.syntax unified
-  23              		.thumb
-  24              		.thumb_func
-  26              	LD2_init:
-  27              	.LFB123:
-  28              		.file 1 "./Hardware/LD2.c"
+  19              		.global	Global_a_UnInitial
+  20              		.section	.bss.Global_a_UnInitial,"aw",%nobits
+  21              		.align	1
+  24              	Global_a_UnInitial:
+  25 0000 0000     		.space	2
+  26              		.global	Global_b_Initial
+  27              		.section	.data.Global_b_Initial,"aw"
+  28              		.align	1
+  31              	Global_b_Initial:
+  32 0000 0100     		.short	1
+  33              		.global	Global_c_ZInitial
+  34              		.section	.bss.Global_c_ZInitial,"aw",%nobits
+  35              		.align	1
+  38              	Global_c_ZInitial:
+  39 0000 0000     		.space	2
+  40              		.section	.text.LD2_init,"ax",%progbits
+  41              		.align	1
+  42              		.global	LD2_init
+  43              		.syntax unified
+  44              		.thumb
+  45              		.thumb_func
+  47              	LD2_init:
+  48              	.LFB123:
+  49              		.file 1 "./Hardware/LD2.c"
    1:./Hardware/LD2.c **** /* Inculdes -------------------------------------------------------------------*/ 
    2:./Hardware/LD2.c **** #include "LD2.h"
    3:./Hardware/LD2.c **** 
    4:./Hardware/LD2.c **** /* Functions -------------------------------------------------------------------*/ 
-   5:./Hardware/LD2.c **** 
-   6:./Hardware/LD2.c **** /*********************************************************************************
-   7:./Hardware/LD2.c ****  *°åÔØÂÌÉ«LED£¨LD2£©µÄ³õÊ¼»¯£¬°üÀ¨
-   8:./Hardware/LD2.c ****  * - PA5µÄ³õÊ¼»¯
-   9:./Hardware/LD2.c ****  *     - ÍÆÍìÊä³ö
-  10:./Hardware/LD2.c ****  ********************************************************************************/
-  11:./Hardware/LD2.c **** void LD2_init(void)
-  12:./Hardware/LD2.c **** {
-  29              		.loc 1 12 1
-  30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 8
-  32              		@ frame_needed = 1, uses_anonymous_args = 0
-  33 0000 80B5     		push	{r7, lr}
-  34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 8
-  36              		.cfi_offset 7, -8
-  37              		.cfi_offset 14, -4
-  38 0002 82B0     		sub	sp, sp, #8
-  39              	.LCFI1:
-  40              		.cfi_def_cfa_offset 16
-  41 0004 00AF     		add	r7, sp, #0
-  42              	.LCFI2:
-  43              		.cfi_def_cfa_register 7
-  13:./Hardware/LD2.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-  44              		.loc 1 13 2
-  45 0006 0121     		movs	r1, #1
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s 			page 2
+   5:./Hardware/LD2.c **** uint16_t Global_a_UnInitial;
+   6:./Hardware/LD2.c **** uint16_t Global_b_Initial = 1;
+   7:./Hardware/LD2.c **** uint16_t Global_c_ZInitial = 0;
+   8:./Hardware/LD2.c **** /*********************************************************************************
+   9:./Hardware/LD2.c ****  *ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«LEDï¿½ï¿½LD2ï¿½ï¿½ï¿½Ä³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  10:./Hardware/LD2.c ****  * - PA5ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
+  11:./Hardware/LD2.c ****  *     - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  12:./Hardware/LD2.c ****  ********************************************************************************/
+  13:./Hardware/LD2.c **** void LD2_init(void)
+  14:./Hardware/LD2.c **** {
+  50              		.loc 1 14 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s 			page 2
 
 
-  46 0008 0120     		movs	r0, #1
-  47 000a FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
-  14:./Hardware/LD2.c ****     GPIO_InitTypeDef GPIO_InitStructure;
-  15:./Hardware/LD2.c **** 	GPIO_InitStructure.GPIO_Pin = LD2_PIN;
-  48              		.loc 1 15 30
-  49 000e 2023     		movs	r3, #32
-  50 0010 3B60     		str	r3, [r7]
-  16:./Hardware/LD2.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  51              		.loc 1 16 32
-  52 0012 0323     		movs	r3, #3
-  53 0014 7B71     		strb	r3, [r7, #5]
-  17:./Hardware/LD2.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  54              		.loc 1 17 31
-  55 0016 0123     		movs	r3, #1
-  56 0018 3B71     		strb	r3, [r7, #4]
-  18:./Hardware/LD2.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  57              		.loc 1 18 32
-  58 001a 0023     		movs	r3, #0
-  59 001c BB71     		strb	r3, [r7, #6]
-  19:./Hardware/LD2.c **** 	GPIO_Init(LD2_PORT, &GPIO_InitStructure);
-  60              		.loc 1 19 2
-  61 001e 3B46     		mov	r3, r7
-  62 0020 1946     		mov	r1, r3
-  63 0022 0348     		ldr	r0, .L2
-  64 0024 FFF7FEFF 		bl	GPIO_Init
-  20:./Hardware/LD2.c **** }
-  65              		.loc 1 20 1
-  66 0028 00BF     		nop
-  67 002a 0837     		adds	r7, r7, #8
-  68              	.LCFI3:
-  69              		.cfi_def_cfa_offset 8
-  70 002c BD46     		mov	sp, r7
-  71              	.LCFI4:
-  72              		.cfi_def_cfa_register 13
-  73              		@ sp needed
-  74 002e 80BD     		pop	{r7, pc}
-  75              	.L3:
-  76              		.align	2
-  77              	.L2:
-  78 0030 00000240 		.word	1073872896
-  79              		.cfi_endproc
-  80              	.LFE123:
-  82              		.section	.text.LD2_ON,"ax",%progbits
-  83              		.align	1
-  84              		.global	LD2_ON
-  85              		.syntax unified
-  86              		.thumb
-  87              		.thumb_func
-  89              	LD2_ON:
-  90              	.LFB124:
-  21:./Hardware/LD2.c **** 
-  22:./Hardware/LD2.c **** /*********************************************************************************
-  23:./Hardware/LD2.c ****  *µãÁÁ/Ï¨Ãð¸ÃµÆ
-  24:./Hardware/LD2.c ****  ********************************************************************************/
-  25:./Hardware/LD2.c **** void LD2_ON(void)
-  26:./Hardware/LD2.c **** {
-  91              		.loc 1 26 1
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s 			page 3
+  51              		.cfi_startproc
+  52              		@ args = 0, pretend = 0, frame = 8
+  53              		@ frame_needed = 1, uses_anonymous_args = 0
+  54 0000 80B5     		push	{r7, lr}
+  55              	.LCFI0:
+  56              		.cfi_def_cfa_offset 8
+  57              		.cfi_offset 7, -8
+  58              		.cfi_offset 14, -4
+  59 0002 82B0     		sub	sp, sp, #8
+  60              	.LCFI1:
+  61              		.cfi_def_cfa_offset 16
+  62 0004 00AF     		add	r7, sp, #0
+  63              	.LCFI2:
+  64              		.cfi_def_cfa_register 7
+  15:./Hardware/LD2.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+  65              		.loc 1 15 2
+  66 0006 0121     		movs	r1, #1
+  67 0008 0120     		movs	r0, #1
+  68 000a FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+  16:./Hardware/LD2.c ****     GPIO_InitTypeDef GPIO_InitStructure;
+  17:./Hardware/LD2.c **** 	GPIO_InitStructure.GPIO_Pin = LD2_PIN;
+  69              		.loc 1 17 30
+  70 000e 2023     		movs	r3, #32
+  71 0010 3B60     		str	r3, [r7]
+  18:./Hardware/LD2.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  72              		.loc 1 18 32
+  73 0012 0323     		movs	r3, #3
+  74 0014 7B71     		strb	r3, [r7, #5]
+  19:./Hardware/LD2.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  75              		.loc 1 19 31
+  76 0016 0123     		movs	r3, #1
+  77 0018 3B71     		strb	r3, [r7, #4]
+  20:./Hardware/LD2.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  78              		.loc 1 20 32
+  79 001a 0023     		movs	r3, #0
+  80 001c BB71     		strb	r3, [r7, #6]
+  21:./Hardware/LD2.c **** 	GPIO_Init(LD2_PORT, &GPIO_InitStructure);
+  81              		.loc 1 21 2
+  82 001e 3B46     		mov	r3, r7
+  83 0020 1946     		mov	r1, r3
+  84 0022 0348     		ldr	r0, .L2
+  85 0024 FFF7FEFF 		bl	GPIO_Init
+  22:./Hardware/LD2.c **** }
+  86              		.loc 1 22 1
+  87 0028 00BF     		nop
+  88 002a 0837     		adds	r7, r7, #8
+  89              	.LCFI3:
+  90              		.cfi_def_cfa_offset 8
+  91 002c BD46     		mov	sp, r7
+  92              	.LCFI4:
+  93              		.cfi_def_cfa_register 13
+  94              		@ sp needed
+  95 002e 80BD     		pop	{r7, pc}
+  96              	.L3:
+  97              		.align	2
+  98              	.L2:
+  99 0030 00000240 		.word	1073872896
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s 			page 3
 
 
-  92              		.cfi_startproc
-  93              		@ args = 0, pretend = 0, frame = 0
-  94              		@ frame_needed = 1, uses_anonymous_args = 0
-  95 0000 80B5     		push	{r7, lr}
-  96              	.LCFI5:
-  97              		.cfi_def_cfa_offset 8
-  98              		.cfi_offset 7, -8
-  99              		.cfi_offset 14, -4
- 100 0002 00AF     		add	r7, sp, #0
- 101              	.LCFI6:
- 102              		.cfi_def_cfa_register 7
-  27:./Hardware/LD2.c **** 	GPIO_SetBits(LD2_PORT,LD2_PIN);
- 103              		.loc 1 27 2
- 104 0004 2021     		movs	r1, #32
- 105 0006 0248     		ldr	r0, .L5
- 106 0008 FFF7FEFF 		bl	GPIO_SetBits
-  28:./Hardware/LD2.c **** }
- 107              		.loc 1 28 1
- 108 000c 00BF     		nop
- 109 000e 80BD     		pop	{r7, pc}
- 110              	.L6:
- 111              		.align	2
- 112              	.L5:
- 113 0010 00000240 		.word	1073872896
- 114              		.cfi_endproc
- 115              	.LFE124:
- 117              		.section	.text.LD2_OFF,"ax",%progbits
- 118              		.align	1
- 119              		.global	LD2_OFF
- 120              		.syntax unified
- 121              		.thumb
- 122              		.thumb_func
- 124              	LD2_OFF:
- 125              	.LFB125:
-  29:./Hardware/LD2.c **** 
-  30:./Hardware/LD2.c **** void LD2_OFF(void)
-  31:./Hardware/LD2.c **** {
- 126              		.loc 1 31 1
- 127              		.cfi_startproc
- 128              		@ args = 0, pretend = 0, frame = 0
- 129              		@ frame_needed = 1, uses_anonymous_args = 0
- 130 0000 80B5     		push	{r7, lr}
- 131              	.LCFI7:
- 132              		.cfi_def_cfa_offset 8
- 133              		.cfi_offset 7, -8
- 134              		.cfi_offset 14, -4
- 135 0002 00AF     		add	r7, sp, #0
- 136              	.LCFI8:
- 137              		.cfi_def_cfa_register 7
-  32:./Hardware/LD2.c **** 	GPIO_ResetBits(LD2_PORT,LD2_PIN);
- 138              		.loc 1 32 2
- 139 0004 2021     		movs	r1, #32
- 140 0006 0248     		ldr	r0, .L8
- 141 0008 FFF7FEFF 		bl	GPIO_ResetBits
-  33:./Hardware/LD2.c **** }
- 142              		.loc 1 33 1
- 143 000c 00BF     		nop
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s 			page 4
+ 100              		.cfi_endproc
+ 101              	.LFE123:
+ 103              		.section	.text.LD2_ON,"ax",%progbits
+ 104              		.align	1
+ 105              		.global	LD2_ON
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	LD2_ON:
+ 111              	.LFB124:
+  23:./Hardware/LD2.c **** 
+  24:./Hardware/LD2.c **** /*********************************************************************************
+  25:./Hardware/LD2.c ****  *ï¿½ï¿½ï¿½ï¿½/Ï¨ï¿½ï¿½Ãµï¿½
+  26:./Hardware/LD2.c ****  ********************************************************************************/
+  27:./Hardware/LD2.c **** void LD2_ON(void)
+  28:./Hardware/LD2.c **** {
+ 112              		.loc 1 28 1
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 1, uses_anonymous_args = 0
+ 116 0000 80B5     		push	{r7, lr}
+ 117              	.LCFI5:
+ 118              		.cfi_def_cfa_offset 8
+ 119              		.cfi_offset 7, -8
+ 120              		.cfi_offset 14, -4
+ 121 0002 00AF     		add	r7, sp, #0
+ 122              	.LCFI6:
+ 123              		.cfi_def_cfa_register 7
+  29:./Hardware/LD2.c **** 	GPIO_SetBits(LD2_PORT,LD2_PIN);
+ 124              		.loc 1 29 2
+ 125 0004 2021     		movs	r1, #32
+ 126 0006 0248     		ldr	r0, .L5
+ 127 0008 FFF7FEFF 		bl	GPIO_SetBits
+  30:./Hardware/LD2.c **** }
+ 128              		.loc 1 30 1
+ 129 000c 00BF     		nop
+ 130 000e 80BD     		pop	{r7, pc}
+ 131              	.L6:
+ 132              		.align	2
+ 133              	.L5:
+ 134 0010 00000240 		.word	1073872896
+ 135              		.cfi_endproc
+ 136              	.LFE124:
+ 138              		.section	.text.LD2_OFF,"ax",%progbits
+ 139              		.align	1
+ 140              		.global	LD2_OFF
+ 141              		.syntax unified
+ 142              		.thumb
+ 143              		.thumb_func
+ 145              	LD2_OFF:
+ 146              	.LFB125:
+  31:./Hardware/LD2.c **** 
+  32:./Hardware/LD2.c **** void LD2_OFF(void)
+  33:./Hardware/LD2.c **** {
+ 147              		.loc 1 33 1
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s 			page 4
 
 
- 144 000e 80BD     		pop	{r7, pc}
- 145              	.L9:
- 146              		.align	2
- 147              	.L8:
- 148 0010 00000240 		.word	1073872896
- 149              		.cfi_endproc
- 150              	.LFE125:
- 152              		.section	.text.LD2_Toggle,"ax",%progbits
- 153              		.align	1
- 154              		.global	LD2_Toggle
- 155              		.syntax unified
- 156              		.thumb
- 157              		.thumb_func
- 159              	LD2_Toggle:
- 160              	.LFB126:
-  34:./Hardware/LD2.c **** 
-  35:./Hardware/LD2.c **** 
-  36:./Hardware/LD2.c **** /*********************************************************************************
-  37:./Hardware/LD2.c ****  *ÒÔÒ»¶¨Ê±¼ä¼ä¸ôÉÁË¸¸ÃµÆ
-  38:./Hardware/LD2.c ****  *  -²ÎÊý£ºÉÁË¸¼ä¸ô µ¥Î» ms
-  39:./Hardware/LD2.c ****  ********************************************************************************/
-  40:./Hardware/LD2.c **** void LD2_Toggle(uint64_t interval)
-  41:./Hardware/LD2.c **** {
- 161              		.loc 1 41 1
- 162              		.cfi_startproc
- 163              		@ args = 0, pretend = 0, frame = 8
- 164              		@ frame_needed = 1, uses_anonymous_args = 0
- 165 0000 80B5     		push	{r7, lr}
- 166              	.LCFI9:
- 167              		.cfi_def_cfa_offset 8
- 168              		.cfi_offset 7, -8
- 169              		.cfi_offset 14, -4
- 170 0002 82B0     		sub	sp, sp, #8
- 171              	.LCFI10:
- 172              		.cfi_def_cfa_offset 16
- 173 0004 00AF     		add	r7, sp, #0
- 174              	.LCFI11:
- 175              		.cfi_def_cfa_register 7
- 176 0006 C7E90001 		strd	r0, [r7]
-  42:./Hardware/LD2.c **** 	LD2_ON();
- 177              		.loc 1 42 2
- 178 000a FFF7FEFF 		bl	LD2_ON
-  43:./Hardware/LD2.c **** 	Delay_ms(interval);
- 179              		.loc 1 43 2
- 180 000e D7E90001 		ldrd	r0, [r7]
- 181 0012 FFF7FEFF 		bl	Delay_ms
-  44:./Hardware/LD2.c **** 	LD2_OFF();
- 182              		.loc 1 44 2
- 183 0016 FFF7FEFF 		bl	LD2_OFF
+ 150              		@ frame_needed = 1, uses_anonymous_args = 0
+ 151 0000 80B5     		push	{r7, lr}
+ 152              	.LCFI7:
+ 153              		.cfi_def_cfa_offset 8
+ 154              		.cfi_offset 7, -8
+ 155              		.cfi_offset 14, -4
+ 156 0002 00AF     		add	r7, sp, #0
+ 157              	.LCFI8:
+ 158              		.cfi_def_cfa_register 7
+  34:./Hardware/LD2.c **** 	GPIO_ResetBits(LD2_PORT,LD2_PIN);
+ 159              		.loc 1 34 2
+ 160 0004 2021     		movs	r1, #32
+ 161 0006 0248     		ldr	r0, .L8
+ 162 0008 FFF7FEFF 		bl	GPIO_ResetBits
+  35:./Hardware/LD2.c **** }
+ 163              		.loc 1 35 1
+ 164 000c 00BF     		nop
+ 165 000e 80BD     		pop	{r7, pc}
+ 166              	.L9:
+ 167              		.align	2
+ 168              	.L8:
+ 169 0010 00000240 		.word	1073872896
+ 170              		.cfi_endproc
+ 171              	.LFE125:
+ 173              		.section	.text.LD2_Toggle,"ax",%progbits
+ 174              		.align	1
+ 175              		.global	LD2_Toggle
+ 176              		.syntax unified
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	LD2_Toggle:
+ 181              	.LFB126:
+  36:./Hardware/LD2.c **** 
+  37:./Hardware/LD2.c **** 
+  38:./Hardware/LD2.c **** /*********************************************************************************
+  39:./Hardware/LD2.c ****  *ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¸ï¿½Ãµï¿½
+  40:./Hardware/LD2.c ****  *  -ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¸ï¿½ï¿½ï¿½ ï¿½ï¿½Î» ms
+  41:./Hardware/LD2.c ****  ********************************************************************************/
+  42:./Hardware/LD2.c **** void LD2_Toggle(uint64_t interval)
+  43:./Hardware/LD2.c **** {
+ 182              		.loc 1 43 1
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 8
+ 185              		@ frame_needed = 1, uses_anonymous_args = 0
+ 186 0000 80B5     		push	{r7, lr}
+ 187              	.LCFI9:
+ 188              		.cfi_def_cfa_offset 8
+ 189              		.cfi_offset 7, -8
+ 190              		.cfi_offset 14, -4
+ 191 0002 82B0     		sub	sp, sp, #8
+ 192              	.LCFI10:
+ 193              		.cfi_def_cfa_offset 16
+ 194 0004 00AF     		add	r7, sp, #0
+ 195              	.LCFI11:
+ 196              		.cfi_def_cfa_register 7
+ 197 0006 C7E90001 		strd	r0, [r7]
+  44:./Hardware/LD2.c **** 	LD2_ON();
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s 			page 5
+
+
+ 198              		.loc 1 44 2
+ 199 000a FFF7FEFF 		bl	LD2_ON
   45:./Hardware/LD2.c **** 	Delay_ms(interval);
- 184              		.loc 1 45 2
- 185 001a D7E90001 		ldrd	r0, [r7]
- 186 001e FFF7FEFF 		bl	Delay_ms
-  46:./Hardware/LD2.c **** }
- 187              		.loc 1 46 1
- 188 0022 00BF     		nop
- 189 0024 0837     		adds	r7, r7, #8
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s 			page 5
-
-
- 190              	.LCFI12:
- 191              		.cfi_def_cfa_offset 8
- 192 0026 BD46     		mov	sp, r7
- 193              	.LCFI13:
- 194              		.cfi_def_cfa_register 13
- 195              		@ sp needed
- 196 0028 80BD     		pop	{r7, pc}
- 197              		.cfi_endproc
- 198              	.LFE126:
- 200              		.text
- 201              	.Letext0:
- 202              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 203              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 204              		.file 4 "./CORE/stm32f4xx.h"
- 205              		.file 5 "./Library/stm32f4xx_gpio.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s 			page 6
+ 200              		.loc 1 45 2
+ 201 000e 3B68     		ldr	r3, [r7]
+ 202 0010 4FF47A72 		mov	r2, #1000
+ 203 0014 02FB03F3 		mul	r3, r2, r3
+ 204 0018 1846     		mov	r0, r3
+ 205 001a FFF7FEFF 		bl	CPU_TS_Tmr_Delay_US
+  46:./Hardware/LD2.c **** 	LD2_OFF();
+ 206              		.loc 1 46 2
+ 207 001e FFF7FEFF 		bl	LD2_OFF
+  47:./Hardware/LD2.c **** 	Delay_ms(interval);
+ 208              		.loc 1 47 2
+ 209 0022 3B68     		ldr	r3, [r7]
+ 210 0024 4FF47A72 		mov	r2, #1000
+ 211 0028 02FB03F3 		mul	r3, r2, r3
+ 212 002c 1846     		mov	r0, r3
+ 213 002e FFF7FEFF 		bl	CPU_TS_Tmr_Delay_US
+  48:./Hardware/LD2.c **** }
+ 214              		.loc 1 48 1
+ 215 0032 00BF     		nop
+ 216 0034 0837     		adds	r7, r7, #8
+ 217              	.LCFI12:
+ 218              		.cfi_def_cfa_offset 8
+ 219 0036 BD46     		mov	sp, r7
+ 220              	.LCFI13:
+ 221              		.cfi_def_cfa_register 13
+ 222              		@ sp needed
+ 223 0038 80BD     		pop	{r7, pc}
+ 224              		.cfi_endproc
+ 225              	.LFE126:
+ 227              		.text
+ 228              	.Letext0:
+ 229              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 230              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 231              		.file 4 "./CORE/stm32f4xx.h"
+ 232              		.file 5 "./Library/stm32f4xx_gpio.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 LD2.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:20     .text.LD2_init:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:26     .text.LD2_init:0000000000000000 LD2_init
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:78     .text.LD2_init:0000000000000030 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:83     .text.LD2_ON:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:89     .text.LD2_ON:0000000000000000 LD2_ON
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:113    .text.LD2_ON:0000000000000010 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:118    .text.LD2_OFF:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:124    .text.LD2_OFF:0000000000000000 LD2_OFF
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:148    .text.LD2_OFF:0000000000000010 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:153    .text.LD2_Toggle:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cch0ZV5J.s:159    .text.LD2_Toggle:0000000000000000 LD2_Toggle
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:24     .bss.Global_a_UnInitial:0000000000000000 Global_a_UnInitial
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:21     .bss.Global_a_UnInitial:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:31     .data.Global_b_Initial:0000000000000000 Global_b_Initial
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:28     .data.Global_b_Initial:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:38     .bss.Global_c_ZInitial:0000000000000000 Global_c_ZInitial
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:35     .bss.Global_c_ZInitial:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:41     .text.LD2_init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:47     .text.LD2_init:0000000000000000 LD2_init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:99     .text.LD2_init:0000000000000030 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:104    .text.LD2_ON:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:110    .text.LD2_ON:0000000000000000 LD2_ON
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:134    .text.LD2_ON:0000000000000010 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:139    .text.LD2_OFF:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:145    .text.LD2_OFF:0000000000000000 LD2_OFF
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:169    .text.LD2_OFF:0000000000000010 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:174    .text.LD2_Toggle:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczwGbzV.s:180    .text.LD2_Toggle:0000000000000000 LD2_Toggle
 
 UNDEFINED SYMBOLS
 RCC_AHB1PeriphClockCmd
 GPIO_Init
 GPIO_SetBits
 GPIO_ResetBits
-Delay_ms
+CPU_TS_Tmr_Delay_US

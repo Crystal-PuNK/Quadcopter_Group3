@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -19,16 +19,15 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 1
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.global	__aeabi_uldivmod
-  20              		.section	.text.Delay_us,"ax",%progbits
-  21              		.align	1
-  22              		.global	Delay_us
-  23              		.syntax unified
-  24              		.thumb
-  25              		.thumb_func
-  27              	Delay_us:
-  28              	.LFB123:
-  29              		.file 1 "./User/Delay.c"
+  19              		.section	.text.CPU_TS_TmrInit,"ax",%progbits
+  20              		.align	1
+  21              		.global	CPU_TS_TmrInit
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	CPU_TS_TmrInit:
+  27              	.LFB123:
+  28              		.file 1 "./User/Delay.c"
    1:./User/Delay.c **** /**
    2:./User/Delay.c ****   ******************************************************************************
    3:./User/Delay.c ****   * @file    Delay.c
@@ -58,631 +57,347 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 1
   27:./User/Delay.c ****   */
   28:./User/Delay.c **** 
   29:./User/Delay.c **** /* Header includes -----------------------------------------------------------*/
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 2
-
-
   30:./User/Delay.c **** #include "Delay.h"
-  31:./User/Delay.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s 			page 2
+
+
+  31:./User/Delay.c **** #define OS_TICKS_PER_SEC 1
   32:./User/Delay.c **** /* Macro definitions ---------------------------------------------------------*/
-  33:./User/Delay.c **** /* Type definitions ----------------------------------------------------------*/
-  34:./User/Delay.c **** /* Variable declarations -----------------------------------------------------*/
-  35:./User/Delay.c **** /* Variable definitions ------------------------------------------------------*/
-  36:./User/Delay.c **** /* Function declarations -----------------------------------------------------*/
-  37:./User/Delay.c **** /* Function definitions ------------------------------------------------------*/
+  33:./User/Delay.c ****   //# USE DWT Peripherl
+  34:./User/Delay.c ****   #define  DWT_CR      *(__IO uint32_t *)0xE0001000
+  35:./User/Delay.c ****   #define  DWT_CYCCNT  *(__IO uint32_t *)0xE0001004
+  36:./User/Delay.c ****   #define  DEM_CR      *(__IO uint32_t *)0xE000EDFC
+  37:./User/Delay.c **** 
   38:./User/Delay.c **** 
-  39:./User/Delay.c **** /**
-  40:./User/Delay.c ****   * @brief  Microsecond delay.
-  41:./User/Delay.c ****   * @param  [in] nus: The number of microseconds delay.
-  42:./User/Delay.c ****   * @return None.
-  43:./User/Delay.c ****   */
-  44:./User/Delay.c **** void Delay_us(uint64_t nus)
-  45:./User/Delay.c **** {
-  30              		.loc 1 45 1
-  31              		.cfi_startproc
-  32              		@ args = 0, pretend = 0, frame = 32
-  33              		@ frame_needed = 1, uses_anonymous_args = 0
-  34 0000 80B5     		push	{r7, lr}
+  39:./User/Delay.c ****   #define  DEM_CR_TRCENA                   (1 << 24)
+  40:./User/Delay.c ****   #define  DWT_CR_CYCCNTENA                (1 <<  0)  
+  41:./User/Delay.c **** /* Type definitions ----------------------------------------------------------*/
+  42:./User/Delay.c **** /* Variable declarations -----------------------------------------------------*/
+  43:./User/Delay.c **** /* Variable definitions ------------------------------------------------------*/
+  44:./User/Delay.c **** /* Function declarations -----------------------------------------------------*/
+  45:./User/Delay.c **** /* Function definitions ------------------------------------------------------*/
+  46:./User/Delay.c **** // /**
+  47:./User/Delay.c **** //  * @brief 初始化延迟函数
+  48:./User/Delay.c **** //  * 当使用OS的时候,此函数会初始化OS的时钟节拍
+  49:./User/Delay.c **** //  * SYSTICK的时钟固定为AHB时钟的1/8
+  50:./User/Delay.c **** //  * SYSCLK:系统时钟频率
+  51:./User/Delay.c **** //  * @param SYSCLK 
+  52:./User/Delay.c **** //  */
+  53:./User/Delay.c **** // void SysTick_Init(u8 SYSCLK) {
+  54:./User/Delay.c **** //     u32 reload;
+  55:./User/Delay.c **** //     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+  56:./User/Delay.c **** //     reload = SYSCLK / 8;                   //每秒钟的计数次数 单位为M
+  57:./User/Delay.c **** //     reload *= 1000000 / OS_TICKS_PER_SEC;  //根据OS_TICKS_PER_SEC设定溢出时间
+  58:./User/Delay.c **** //                                            // reload为24位寄存器,最大值:16777216
+  59:./User/Delay.c **** //     SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;  //开启SYSTICK中断
+  60:./User/Delay.c **** //     SysTick->LOAD = reload;  //每1/OS_TICKS_PER_SEC秒中断一次
+  61:./User/Delay.c **** //     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //开启SYSTICK
+  62:./User/Delay.c **** // }
+  63:./User/Delay.c **** /**
+  64:./User/Delay.c ****   * @brief  初始化时间戳
+  65:./User/Delay.c ****   * @param  无
+  66:./User/Delay.c ****   * @retval 无
+  67:./User/Delay.c ****   * @note   使用延时函数前，必须调用本函数
+  68:./User/Delay.c ****   */
+  69:./User/Delay.c **** void CPU_TS_TmrInit(void)
+  70:./User/Delay.c **** {
+  29              		.loc 1 70 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
   35              	.LCFI0:
-  36              		.cfi_def_cfa_offset 8
-  37              		.cfi_offset 7, -8
-  38              		.cfi_offset 14, -4
-  39 0002 88B0     		sub	sp, sp, #32
-  40              	.LCFI1:
-  41              		.cfi_def_cfa_offset 40
-  42 0004 00AF     		add	r7, sp, #0
-  43              	.LCFI2:
-  44              		.cfi_def_cfa_register 7
-  45 0006 C7E90001 		strd	r0, [r7]
-  46:./User/Delay.c ****   uint64_t nms = 0;
-  46              		.loc 1 46 12
-  47 000a 4FF00002 		mov	r2, #0
-  48 000e 4FF00003 		mov	r3, #0
-  49 0012 C7E90623 		strd	r2, [r7, #24]
-  47:./User/Delay.c ****   
-  48:./User/Delay.c ****   if(nus == 0)
-  50              		.loc 1 48 5
-  51 0016 D7E90023 		ldrd	r2, [r7]
-  52 001a 1343     		orrs	r3, r2, r3
-  53 001c 63D0     		beq	.L8
-  49:./User/Delay.c ****   {
-  50:./User/Delay.c ****     return;
-  51:./User/Delay.c ****   }
-  52:./User/Delay.c ****   
-  53:./User/Delay.c ****   nms = nus / 1000;
-  54              		.loc 1 53 7
-  55 001e D7E90001 		ldrd	r0, [r7]
-  56 0022 4FF47A72 		mov	r2, #1000
-  57 0026 4FF00003 		mov	r3, #0
-  58 002a FFF7FEFF 		bl	__aeabi_uldivmod
-  59 002e 0246     		mov	r2, r0
-  60 0030 0B46     		mov	r3, r1
-  61 0032 C7E90623 		strd	r2, [r7, #24]
-  54:./User/Delay.c ****   nus = nus % 1000;
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 3
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 00AF     		add	r7, sp, #0
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_register 7
+  71:./User/Delay.c ****     /* 使能DWT外设 */
+  72:./User/Delay.c ****     DEM_CR |= (uint32_t)DEM_CR_TRCENA;
+  41              		.loc 1 72 12
+  42 0004 094B     		ldr	r3, .L2
+  43 0006 1B68     		ldr	r3, [r3]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s 			page 3
 
 
-  62              		.loc 1 54 7
-  63 0036 D7E90001 		ldrd	r0, [r7]
-  64 003a 4FF47A72 		mov	r2, #1000
-  65 003e 4FF00003 		mov	r3, #0
-  66 0042 FFF7FEFF 		bl	__aeabi_uldivmod
-  67 0046 C7E90023 		strd	r2, [r7]
-  55:./User/Delay.c ****   
-  56:./User/Delay.c ****   if(nms > 0)
-  68              		.loc 1 56 5
-  69 004a D7E90623 		ldrd	r2, [r7, #24]
-  70 004e 1343     		orrs	r3, r2, r3
-  71 0050 03D0     		beq	.L4
-  57:./User/Delay.c ****   {
-  58:./User/Delay.c ****     Delay_ms(nms);
-  72              		.loc 1 58 5
-  73 0052 D7E90601 		ldrd	r0, [r7, #24]
-  74 0056 FFF7FEFF 		bl	Delay_ms
-  75              	.L4:
-  59:./User/Delay.c ****   }
-  60:./User/Delay.c ****   
-  61:./User/Delay.c ****   if(nus > 0)
-  76              		.loc 1 61 5
-  77 005a D7E90023 		ldrd	r2, [r7]
-  78 005e 1343     		orrs	r3, r2, r3
-  79 0060 42D0     		beq	.L1
-  80              	.LBB2:
-  62:./User/Delay.c ****   {
-  63:./User/Delay.c ****     RCC_ClocksTypeDef RCC_ClockFreq;
-  64:./User/Delay.c ****     
-  65:./User/Delay.c ****     RCC_GetClocksFreq(&RCC_ClockFreq);                              /* Get the frequencies of diffe
-  81              		.loc 1 65 5
-  82 0062 07F10803 		add	r3, r7, #8
-  83 0066 1846     		mov	r0, r3
-  84 0068 FFF7FEFF 		bl	RCC_GetClocksFreq
-  66:./User/Delay.c ****     
-  67:./User/Delay.c ****     if(RCC_ClockFreq.HCLK_Frequency < 8000000)
-  85              		.loc 1 67 21
-  86 006c FB68     		ldr	r3, [r7, #12]
-  87              		.loc 1 67 7
-  88 006e 204A     		ldr	r2, .L9
-  89 0070 9342     		cmp	r3, r2
-  90 0072 10D2     		bcs	.L5
-  68:./User/Delay.c ****     {
-  69:./User/Delay.c ****       SysTick->CTRL |= SysTick_CLKSource_HCLK;                      /* Configures the SysTick clock
-  91              		.loc 1 69 21
-  92 0074 1F4B     		ldr	r3, .L9+4
-  93 0076 1B68     		ldr	r3, [r3]
-  94 0078 1E4A     		ldr	r2, .L9+4
-  95 007a 43F00403 		orr	r3, r3, #4
-  96 007e 1360     		str	r3, [r2]
-  70:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000000 * nus; /* Time load (SysTick-> LOAD is
-  97              		.loc 1 70 36
-  98 0080 FB68     		ldr	r3, [r7, #12]
-  99              		.loc 1 70 52
- 100 0082 1D4A     		ldr	r2, .L9+8
- 101 0084 A2FB0323 		umull	r2, r3, r2, r3
- 102 0088 9B0C     		lsrs	r3, r3, #18
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 4
+  44 0008 084A     		ldr	r2, .L2
+  45 000a 43F08073 		orr	r3, r3, #16777216
+  46 000e 1360     		str	r3, [r2]
+  73:./User/Delay.c **** 
+  74:./User/Delay.c ****     /* DWT CYCCNT寄存器计数清0 */
+  75:./User/Delay.c ****     DWT_CYCCNT = (uint32_t)0u;
+  47              		.loc 1 75 5
+  48 0010 074B     		ldr	r3, .L2+4
+  49              		.loc 1 75 16
+  50 0012 0022     		movs	r2, #0
+  51 0014 1A60     		str	r2, [r3]
+  76:./User/Delay.c **** 
+  77:./User/Delay.c ****     /* 使能Cortex-M DWT CYCCNT寄存器 */
+  78:./User/Delay.c ****     DWT_CR |= (uint32_t)DWT_CR_CYCCNTENA;
+  52              		.loc 1 78 12
+  53 0016 074B     		ldr	r3, .L2+8
+  54 0018 1B68     		ldr	r3, [r3]
+  55 001a 064A     		ldr	r2, .L2+8
+  56 001c 43F00103 		orr	r3, r3, #1
+  57 0020 1360     		str	r3, [r2]
+  79:./User/Delay.c **** }
+  58              		.loc 1 79 1
+  59 0022 00BF     		nop
+  60 0024 BD46     		mov	sp, r7
+  61              	.LCFI2:
+  62              		.cfi_def_cfa_register 13
+  63              		@ sp needed
+  64 0026 5DF8047B 		ldr	r7, [sp], #4
+  65              	.LCFI3:
+  66              		.cfi_restore 7
+  67              		.cfi_def_cfa_offset 0
+  68 002a 7047     		bx	lr
+  69              	.L3:
+  70              		.align	2
+  71              	.L2:
+  72 002c FCED00E0 		.word	-536809988
+  73 0030 041000E0 		.word	-536866812
+  74 0034 001000E0 		.word	-536866816
+  75              		.cfi_endproc
+  76              	.LFE123:
+  78              		.section	.text.CPU_TS_TmrRd,"ax",%progbits
+  79              		.align	1
+  80              		.global	CPU_TS_TmrRd
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  85              	CPU_TS_TmrRd:
+  86              	.LFB124:
+  80:./User/Delay.c **** 
+  81:./User/Delay.c **** /**
+  82:./User/Delay.c ****   * @brief  读取当前时间戳
+  83:./User/Delay.c ****   * @param  无
+  84:./User/Delay.c ****   * @retval 当前时间戳，即DWT_CYCCNT寄存器的值
+  85:./User/Delay.c ****   */
+  86:./User/Delay.c **** uint32_t CPU_TS_TmrRd(void)
+  87:./User/Delay.c **** {
+  87              		.loc 1 87 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s 			page 4
 
 
- 103              		.loc 1 70 21
- 104 008a 3A68     		ldr	r2, [r7]
- 105              		.loc 1 70 14
- 106 008c 1949     		ldr	r1, .L9+4
- 107              		.loc 1 70 21
- 108 008e 02FB03F3 		mul	r3, r2, r3
- 109 0092 4B60     		str	r3, [r1, #4]
- 110 0094 0FE0     		b	.L6
- 111              	.L5:
-  71:./User/Delay.c ****     }
-  72:./User/Delay.c ****     else
-  73:./User/Delay.c ****     {
-  74:./User/Delay.c ****       SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;                 /* Configures the SysTick clock
- 112              		.loc 1 74 21
- 113 0096 174B     		ldr	r3, .L9+4
- 114 0098 1B68     		ldr	r3, [r3]
- 115 009a 164A     		ldr	r2, .L9+4
- 116 009c 23F00403 		bic	r3, r3, #4
- 117 00a0 1360     		str	r3, [r2]
-  75:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000000 * nus; /* Time load (SysTick-> LOAD is
- 118              		.loc 1 75 36
- 119 00a2 FB68     		ldr	r3, [r7, #12]
- 120              		.loc 1 75 52
- 121 00a4 144A     		ldr	r2, .L9+8
- 122 00a6 A2FB0323 		umull	r2, r3, r2, r3
- 123 00aa 5B0D     		lsrs	r3, r3, #21
- 124              		.loc 1 75 21
- 125 00ac 3A68     		ldr	r2, [r7]
- 126              		.loc 1 75 14
- 127 00ae 1149     		ldr	r1, .L9+4
- 128              		.loc 1 75 21
- 129 00b0 02FB03F3 		mul	r3, r2, r3
- 130 00b4 4B60     		str	r3, [r1, #4]
- 131              	.L6:
-  76:./User/Delay.c ****     }
-  77:./User/Delay.c ****     
-  78:./User/Delay.c ****     SysTick->VAL = 0;                                               /* Empty counter. */
- 132              		.loc 1 78 12
- 133 00b6 0F4B     		ldr	r3, .L9+4
- 134              		.loc 1 78 18
- 135 00b8 0022     		movs	r2, #0
- 136 00ba 9A60     		str	r2, [r3, #8]
-  79:./User/Delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
- 137              		.loc 1 79 19
- 138 00bc 0D4B     		ldr	r3, .L9+4
- 139 00be 1B68     		ldr	r3, [r3]
- 140 00c0 0C4A     		ldr	r2, .L9+4
- 141 00c2 43F00103 		orr	r3, r3, #1
- 142 00c6 1360     		str	r3, [r2]
-  80:./User/Delay.c ****     
-  81:./User/Delay.c ****     while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                  /* Wait time is reached. */
- 143              		.loc 1 81 10
- 144 00c8 00BF     		nop
- 145              	.L7:
- 146              		.loc 1 81 19 discriminator 1
- 147 00ca 0A4B     		ldr	r3, .L9+4
- 148 00cc 1B68     		ldr	r3, [r3]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 5
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 1, uses_anonymous_args = 0
+  91              		@ link register save eliminated.
+  92 0000 80B4     		push	{r7}
+  93              	.LCFI4:
+  94              		.cfi_def_cfa_offset 4
+  95              		.cfi_offset 7, -4
+  96 0002 00AF     		add	r7, sp, #0
+  97              	.LCFI5:
+  98              		.cfi_def_cfa_register 7
+  88:./User/Delay.c ****     return ((uint32_t)DWT_CYCCNT);
+  99              		.loc 1 88 13
+ 100 0004 034B     		ldr	r3, .L6
+ 101 0006 1B68     		ldr	r3, [r3]
+  89:./User/Delay.c **** }
+ 102              		.loc 1 89 1
+ 103 0008 1846     		mov	r0, r3
+ 104 000a BD46     		mov	sp, r7
+ 105              	.LCFI6:
+ 106              		.cfi_def_cfa_register 13
+ 107              		@ sp needed
+ 108 000c 5DF8047B 		ldr	r7, [sp], #4
+ 109              	.LCFI7:
+ 110              		.cfi_restore 7
+ 111              		.cfi_def_cfa_offset 0
+ 112 0010 7047     		bx	lr
+ 113              	.L7:
+ 114 0012 00BF     		.align	2
+ 115              	.L6:
+ 116 0014 041000E0 		.word	-536866812
+ 117              		.cfi_endproc
+ 118              	.LFE124:
+ 120              		.section	.text.CPU_TS_Tmr_Delay_US,"ax",%progbits
+ 121              		.align	1
+ 122              		.global	CPU_TS_Tmr_Delay_US
+ 123              		.syntax unified
+ 124              		.thumb
+ 125              		.thumb_func
+ 127              	CPU_TS_Tmr_Delay_US:
+ 128              	.LFB125:
+  90:./User/Delay.c **** 
+  91:./User/Delay.c **** /**
+  92:./User/Delay.c ****   * @brief  采用CPU的内部计数实现精确延时，32位计数器
+  93:./User/Delay.c ****   * @param  us : 延迟长度，单位1 us
+  94:./User/Delay.c ****   * @retval 无
+  95:./User/Delay.c ****   * @note   使用本函数前必须先调用CPU_TS_TmrInit函数使能计数器，
+  96:./User/Delay.c ****             或使能宏CPU_TS_INIT_IN_DELAY_FUNCTION
+  97:./User/Delay.c ****             最大延时值为8秒，即8*1000*1000
+  98:./User/Delay.c ****   */
+  99:./User/Delay.c **** void CPU_TS_Tmr_Delay_US(__IO uint32_t us)
+ 100:./User/Delay.c **** {
+ 129              		.loc 1 100 1
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 24
+ 132              		@ frame_needed = 1, uses_anonymous_args = 0
+ 133 0000 80B5     		push	{r7, lr}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s 			page 5
 
 
- 149              		.loc 1 81 25 discriminator 1
- 150 00ce 03F48033 		and	r3, r3, #65536
- 151              		.loc 1 81 10 discriminator 1
- 152 00d2 B3F5803F 		cmp	r3, #65536
- 153 00d6 F8D1     		bne	.L7
-  82:./User/Delay.c ****     
-  83:./User/Delay.c ****     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                      /* Close counter. */
- 154              		.loc 1 83 19
- 155 00d8 064B     		ldr	r3, .L9+4
- 156 00da 1B68     		ldr	r3, [r3]
- 157 00dc 054A     		ldr	r2, .L9+4
- 158 00de 23F00103 		bic	r3, r3, #1
- 159 00e2 1360     		str	r3, [r2]
- 160 00e4 00E0     		b	.L1
- 161              	.L8:
- 162              	.LBE2:
-  50:./User/Delay.c ****   }
- 163              		.loc 1 50 5
- 164 00e6 00BF     		nop
- 165              	.L1:
-  84:./User/Delay.c ****   }
-  85:./User/Delay.c **** }
- 166              		.loc 1 85 1
- 167 00e8 2037     		adds	r7, r7, #32
- 168              	.LCFI3:
- 169              		.cfi_def_cfa_offset 8
- 170 00ea BD46     		mov	sp, r7
- 171              	.LCFI4:
- 172              		.cfi_def_cfa_register 13
- 173              		@ sp needed
- 174 00ec 80BD     		pop	{r7, pc}
- 175              	.L10:
- 176 00ee 00BF     		.align	2
- 177              	.L9:
- 178 00f0 00127A00 		.word	8000000
- 179 00f4 10E000E0 		.word	-536813552
- 180 00f8 83DE1B43 		.word	1125899907
- 181              		.cfi_endproc
- 182              	.LFE123:
- 184              		.section	.text.Delay_ms,"ax",%progbits
- 185              		.align	1
- 186              		.global	Delay_ms
- 187              		.syntax unified
- 188              		.thumb
- 189              		.thumb_func
- 191              	Delay_ms:
- 192              	.LFB124:
-  86:./User/Delay.c **** 
-  87:./User/Delay.c **** /**
-  88:./User/Delay.c ****   * @brief  Millisecond delay.
-  89:./User/Delay.c ****   * @param  [in] nms: The number of millisecond delay.
-  90:./User/Delay.c ****   * @return None.
-  91:./User/Delay.c ****   */
-  92:./User/Delay.c **** void Delay_ms(uint64_t nms)
-  93:./User/Delay.c **** {
- 193              		.loc 1 93 1
- 194              		.cfi_startproc
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 6
+ 134              	.LCFI8:
+ 135              		.cfi_def_cfa_offset 8
+ 136              		.cfi_offset 7, -8
+ 137              		.cfi_offset 14, -4
+ 138 0002 86B0     		sub	sp, sp, #24
+ 139              	.LCFI9:
+ 140              		.cfi_def_cfa_offset 32
+ 141 0004 00AF     		add	r7, sp, #0
+ 142              	.LCFI10:
+ 143              		.cfi_def_cfa_register 7
+ 144 0006 7860     		str	r0, [r7, #4]
+ 101:./User/Delay.c ****     uint32_t ticks;
+ 102:./User/Delay.c ****     uint32_t told,tnow,tcnt=0;
+ 145              		.loc 1 102 24
+ 146 0008 0023     		movs	r3, #0
+ 147 000a 3B61     		str	r3, [r7, #16]
+ 103:./User/Delay.c **** 
+ 104:./User/Delay.c ****     /* 在函数内部初始化时间戳寄存器， */
+ 105:./User/Delay.c **** #if (CPU_TS_INIT_IN_DELAY_FUNCTION)
+ 106:./User/Delay.c ****     /* 初始化时间戳并清零 */
+ 107:./User/Delay.c ****   CPU_TS_TmrInit();
+ 108:./User/Delay.c **** #endif
+ 109:./User/Delay.c **** 
+ 110:./User/Delay.c ****     ticks = us * (GET_CPU_ClkFreq() / 1000000);  /* 需要的节拍数 */
+ 148              		.loc 1 110 37
+ 149 000c 194B     		ldr	r3, .L16
+ 150 000e 1B68     		ldr	r3, [r3]
+ 151 0010 194A     		ldr	r2, .L16+4
+ 152 0012 A2FB0323 		umull	r2, r3, r2, r3
+ 153 0016 9B0C     		lsrs	r3, r3, #18
+ 154              		.loc 1 110 16
+ 155 0018 7A68     		ldr	r2, [r7, #4]
+ 156              		.loc 1 110 11
+ 157 001a 02FB03F3 		mul	r3, r2, r3
+ 158 001e FB60     		str	r3, [r7, #12]
+ 111:./User/Delay.c ****     tcnt = 0;
+ 159              		.loc 1 111 10
+ 160 0020 0023     		movs	r3, #0
+ 161 0022 3B61     		str	r3, [r7, #16]
+ 112:./User/Delay.c ****     told = (uint32_t)CPU_TS_TmrRd();         /* 刚进入时的计数器值 */
+ 162              		.loc 1 112 22
+ 163 0024 FFF7FEFF 		bl	CPU_TS_TmrRd
+ 164 0028 7861     		str	r0, [r7, #20]
+ 165              	.L13:
+ 113:./User/Delay.c **** 
+ 114:./User/Delay.c ****     while(1)
+ 115:./User/Delay.c ****     {
+ 116:./User/Delay.c ****         tnow = (uint32_t)CPU_TS_TmrRd();
+ 166              		.loc 1 116 26
+ 167 002a FFF7FEFF 		bl	CPU_TS_TmrRd
+ 168 002e B860     		str	r0, [r7, #8]
+ 117:./User/Delay.c ****         if(tnow != told)
+ 169              		.loc 1 117 11
+ 170 0030 BA68     		ldr	r2, [r7, #8]
+ 171 0032 7B69     		ldr	r3, [r7, #20]
+ 172 0034 9A42     		cmp	r2, r3
+ 173 0036 F8D0     		beq	.L13
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s 			page 6
 
 
- 195              		@ args = 0, pretend = 0, frame = 40
- 196              		@ frame_needed = 1, uses_anonymous_args = 0
- 197 0000 B0B5     		push	{r4, r5, r7, lr}
- 198              	.LCFI5:
- 199              		.cfi_def_cfa_offset 16
- 200              		.cfi_offset 4, -16
- 201              		.cfi_offset 5, -12
- 202              		.cfi_offset 7, -8
- 203              		.cfi_offset 14, -4
- 204 0002 8AB0     		sub	sp, sp, #40
- 205              	.LCFI6:
- 206              		.cfi_def_cfa_offset 56
- 207 0004 00AF     		add	r7, sp, #0
- 208              	.LCFI7:
- 209              		.cfi_def_cfa_register 7
- 210 0006 C7E90001 		strd	r0, [r7]
-  94:./User/Delay.c ****   if(nms == 0)
- 211              		.loc 1 94 5
- 212 000a D7E90023 		ldrd	r2, [r7]
- 213 000e 1343     		orrs	r3, r2, r3
- 214 0010 00F09680 		beq	.L22
-  95:./User/Delay.c ****   {
-  96:./User/Delay.c ****     return;
-  97:./User/Delay.c ****   }
-  98:./User/Delay.c ****   
-  99:./User/Delay.c ****   while(nms > 500)
- 215              		.loc 1 99 8
- 216 0014 4AE0     		b	.L14
- 217              	.L18:
- 218              	.LBB3:
- 100:./User/Delay.c ****   {
- 101:./User/Delay.c ****     RCC_ClocksTypeDef RCC_ClockFreq;
- 102:./User/Delay.c ****     
- 103:./User/Delay.c ****     RCC_GetClocksFreq(&RCC_ClockFreq);                            /* Get the frequencies of differe
- 219              		.loc 1 103 5
- 220 0016 07F10803 		add	r3, r7, #8
- 221 001a 1846     		mov	r0, r3
- 222 001c FFF7FEFF 		bl	RCC_GetClocksFreq
- 104:./User/Delay.c ****     
- 105:./User/Delay.c ****     if(RCC_ClockFreq.HCLK_Frequency < 8000000)
- 223              		.loc 1 105 21
- 224 0020 FB68     		ldr	r3, [r7, #12]
- 225              		.loc 1 105 7
- 226 0022 494A     		ldr	r2, .L23
- 227 0024 9342     		cmp	r3, r2
- 228 0026 11D2     		bcs	.L15
- 106:./User/Delay.c ****     {
- 107:./User/Delay.c ****       SysTick->CTRL |= SysTick_CLKSource_HCLK;                    /* Configures the SysTick clock s
- 229              		.loc 1 107 21
- 230 0028 484B     		ldr	r3, .L23+4
- 231 002a 1B68     		ldr	r3, [r3]
- 232 002c 474A     		ldr	r2, .L23+4
- 233 002e 43F00403 		orr	r3, r3, #4
- 234 0032 1360     		str	r3, [r2]
- 108:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000 * 500;  /* Time load (SysTick-> LOAD is 2
- 235              		.loc 1 108 36
- 236 0034 FB68     		ldr	r3, [r7, #12]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 7
+ 118:./User/Delay.c ****         {
+ 119:./User/Delay.c ****             /* 32位计数器是递增计数器 */
+ 120:./User/Delay.c ****             if(tnow > told)
+ 174              		.loc 1 120 15
+ 175 0038 BA68     		ldr	r2, [r7, #8]
+ 176 003a 7B69     		ldr	r3, [r7, #20]
+ 177 003c 9A42     		cmp	r2, r3
+ 178 003e 06D9     		bls	.L10
+ 121:./User/Delay.c ****             {
+ 122:./User/Delay.c ****                 tcnt += tnow - told;
+ 179              		.loc 1 122 30
+ 180 0040 BA68     		ldr	r2, [r7, #8]
+ 181 0042 7B69     		ldr	r3, [r7, #20]
+ 182 0044 D31A     		subs	r3, r2, r3
+ 183              		.loc 1 122 22
+ 184 0046 3A69     		ldr	r2, [r7, #16]
+ 185 0048 1344     		add	r3, r3, r2
+ 186 004a 3B61     		str	r3, [r7, #16]
+ 187 004c 06E0     		b	.L11
+ 188              	.L10:
+ 123:./User/Delay.c ****             }
+ 124:./User/Delay.c ****                 /* 重新装载 */
+ 125:./User/Delay.c ****             else
+ 126:./User/Delay.c ****             {
+ 127:./User/Delay.c ****                 tcnt += UINT32_MAX - told + tnow;
+ 189              		.loc 1 127 43
+ 190 004e BA68     		ldr	r2, [r7, #8]
+ 191 0050 7B69     		ldr	r3, [r7, #20]
+ 192 0052 D21A     		subs	r2, r2, r3
+ 193              		.loc 1 127 22
+ 194 0054 3B69     		ldr	r3, [r7, #16]
+ 195 0056 1344     		add	r3, r3, r2
+ 196 0058 013B     		subs	r3, r3, #1
+ 197 005a 3B61     		str	r3, [r7, #16]
+ 198              	.L11:
+ 128:./User/Delay.c ****             }
+ 129:./User/Delay.c **** 
+ 130:./User/Delay.c ****             told = tnow;
+ 199              		.loc 1 130 18
+ 200 005c BB68     		ldr	r3, [r7, #8]
+ 201 005e 7B61     		str	r3, [r7, #20]
+ 131:./User/Delay.c **** 
+ 132:./User/Delay.c ****             /*时间超过/等于要延迟的时间,则退出 */
+ 133:./User/Delay.c ****             if(tcnt >= ticks)break;
+ 202              		.loc 1 133 15
+ 203 0060 3A69     		ldr	r2, [r7, #16]
+ 204 0062 FB68     		ldr	r3, [r7, #12]
+ 205 0064 9A42     		cmp	r2, r3
+ 206 0066 00D2     		bcs	.L15
+ 116:./User/Delay.c ****         if(tnow != told)
+ 207              		.loc 1 116 14
+ 208 0068 DFE7     		b	.L13
+ 209              	.L15:
+ 210              		.loc 1 133 13
+ 211 006a 00BF     		nop
+ 134:./User/Delay.c ****         }
+ 135:./User/Delay.c ****     }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s 			page 7
 
 
- 237              		.loc 1 108 52
- 238 0036 464A     		ldr	r2, .L23+8
- 239 0038 A2FB0323 		umull	r2, r3, r2, r3
- 240 003c 9B09     		lsrs	r3, r3, #6
- 241              		.loc 1 108 14
- 242 003e 434A     		ldr	r2, .L23+4
- 243              		.loc 1 108 59
- 244 0040 4FF4FA71 		mov	r1, #500
- 245 0044 01FB03F3 		mul	r3, r1, r3
- 246              		.loc 1 108 21
- 247 0048 5360     		str	r3, [r2, #4]
- 248 004a 10E0     		b	.L16
- 249              	.L15:
- 109:./User/Delay.c ****     }
- 110:./User/Delay.c ****     else
- 111:./User/Delay.c ****     {
- 112:./User/Delay.c ****       SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;               /* Configures the SysTick clock s
- 250              		.loc 1 112 21
- 251 004c 3F4B     		ldr	r3, .L23+4
- 252 004e 1B68     		ldr	r3, [r3]
- 253 0050 3E4A     		ldr	r2, .L23+4
- 254 0052 23F00403 		bic	r3, r3, #4
- 255 0056 1360     		str	r3, [r2]
- 113:./User/Delay.c ****       SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000 * 500;  /* Time load (SysTick-> LOAD is 2
- 256              		.loc 1 113 36
- 257 0058 FB68     		ldr	r3, [r7, #12]
- 258              		.loc 1 113 52
- 259 005a 3D4A     		ldr	r2, .L23+8
- 260 005c A2FB0323 		umull	r2, r3, r2, r3
- 261 0060 5B0A     		lsrs	r3, r3, #9
- 262              		.loc 1 113 14
- 263 0062 3A4A     		ldr	r2, .L23+4
- 264              		.loc 1 113 59
- 265 0064 4FF4FA71 		mov	r1, #500
- 266 0068 01FB03F3 		mul	r3, r1, r3
- 267              		.loc 1 113 21
- 268 006c 5360     		str	r3, [r2, #4]
- 269              	.L16:
- 114:./User/Delay.c ****     }
- 115:./User/Delay.c ****     
- 116:./User/Delay.c ****     SysTick->VAL = 0;                                             /* Empty counter. */
- 270              		.loc 1 116 12
- 271 006e 374B     		ldr	r3, .L23+4
- 272              		.loc 1 116 18
- 273 0070 0022     		movs	r2, #0
- 274 0072 9A60     		str	r2, [r3, #8]
- 117:./User/Delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                     /* Start the countdown. */
- 275              		.loc 1 117 19
- 276 0074 354B     		ldr	r3, .L23+4
- 277 0076 1B68     		ldr	r3, [r3]
- 278 0078 344A     		ldr	r2, .L23+4
- 279 007a 43F00103 		orr	r3, r3, #1
- 280 007e 1360     		str	r3, [r2]
- 118:./User/Delay.c ****     
- 119:./User/Delay.c ****     while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                /* Wait time is reached. */
- 281              		.loc 1 119 10
- 282 0080 00BF     		nop
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 8
-
-
- 283              	.L17:
- 284              		.loc 1 119 19 discriminator 1
- 285 0082 324B     		ldr	r3, .L23+4
- 286 0084 1B68     		ldr	r3, [r3]
- 287              		.loc 1 119 25 discriminator 1
- 288 0086 03F48033 		and	r3, r3, #65536
- 289              		.loc 1 119 10 discriminator 1
- 290 008a B3F5803F 		cmp	r3, #65536
- 291 008e F8D1     		bne	.L17
- 120:./User/Delay.c ****     
- 121:./User/Delay.c ****     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                    /* Close counter. */
- 292              		.loc 1 121 19
- 293 0090 2E4B     		ldr	r3, .L23+4
- 294 0092 1B68     		ldr	r3, [r3]
- 295 0094 2D4A     		ldr	r2, .L23+4
- 296 0096 23F00103 		bic	r3, r3, #1
- 297 009a 1360     		str	r3, [r2]
- 122:./User/Delay.c ****     
- 123:./User/Delay.c ****     nms -= 500;
- 298              		.loc 1 123 9
- 299 009c D7E90023 		ldrd	r2, [r7]
- 300 00a0 B2F5FA74 		subs	r4, r2, #500
- 301 00a4 43F1FF35 		adc	r5, r3, #-1
- 302 00a8 C7E90045 		strd	r4, [r7]
- 303              	.L14:
- 304              	.LBE3:
-  99:./User/Delay.c ****   {
- 305              		.loc 1 99 8
- 306 00ac D7E90023 		ldrd	r2, [r7]
- 307 00b0 40F2F511 		movw	r1, #501
- 308 00b4 8A42     		cmp	r2, r1
- 309 00b6 73F10003 		sbcs	r3, r3, #0
- 310 00ba ACD2     		bcs	.L18
- 124:./User/Delay.c ****   }
- 125:./User/Delay.c ****   
- 126:./User/Delay.c ****   RCC_ClocksTypeDef RCC_ClockFreq;
- 127:./User/Delay.c ****   
- 128:./User/Delay.c ****   RCC_GetClocksFreq(&RCC_ClockFreq);                              /* Get the frequencies of differe
- 311              		.loc 1 128 3
- 312 00bc 07F11803 		add	r3, r7, #24
- 313 00c0 1846     		mov	r0, r3
- 314 00c2 FFF7FEFF 		bl	RCC_GetClocksFreq
- 129:./User/Delay.c ****   
- 130:./User/Delay.c ****   if(RCC_ClockFreq.HCLK_Frequency < 8000000)
- 315              		.loc 1 130 19
- 316 00c6 FB69     		ldr	r3, [r7, #28]
- 317              		.loc 1 130 5
- 318 00c8 1F4A     		ldr	r2, .L23
- 319 00ca 9342     		cmp	r3, r2
- 320 00cc 10D2     		bcs	.L19
- 131:./User/Delay.c ****   {
- 132:./User/Delay.c ****     SysTick->CTRL |= SysTick_CLKSource_HCLK;                      /* Configures the SysTick clock s
- 321              		.loc 1 132 19
- 322 00ce 1F4B     		ldr	r3, .L23+4
- 323 00d0 1B68     		ldr	r3, [r3]
- 324 00d2 1E4A     		ldr	r2, .L23+4
- 325 00d4 43F00403 		orr	r3, r3, #4
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 9
-
-
- 326 00d8 1360     		str	r3, [r2]
- 133:./User/Delay.c ****     SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000 * nms;    /* Time load (SysTick-> LOAD is 2
- 327              		.loc 1 133 34
- 328 00da FB69     		ldr	r3, [r7, #28]
- 329              		.loc 1 133 50
- 330 00dc 1C4A     		ldr	r2, .L23+8
- 331 00de A2FB0323 		umull	r2, r3, r2, r3
- 332 00e2 9B09     		lsrs	r3, r3, #6
- 333              		.loc 1 133 19
- 334 00e4 3A68     		ldr	r2, [r7]
- 335              		.loc 1 133 12
- 336 00e6 1949     		ldr	r1, .L23+4
- 337              		.loc 1 133 19
- 338 00e8 02FB03F3 		mul	r3, r2, r3
- 339 00ec 4B60     		str	r3, [r1, #4]
- 340 00ee 0FE0     		b	.L20
- 341              	.L19:
- 134:./User/Delay.c ****   }
- 135:./User/Delay.c ****   else
- 136:./User/Delay.c ****   {
- 137:./User/Delay.c ****     SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;                 /* Configures the SysTick clock s
- 342              		.loc 1 137 19
- 343 00f0 164B     		ldr	r3, .L23+4
- 344 00f2 1B68     		ldr	r3, [r3]
- 345 00f4 154A     		ldr	r2, .L23+4
- 346 00f6 23F00403 		bic	r3, r3, #4
- 347 00fa 1360     		str	r3, [r2]
- 138:./User/Delay.c ****     SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000 * nms;    /* Time load (SysTick-> LOAD is 2
- 348              		.loc 1 138 34
- 349 00fc FB69     		ldr	r3, [r7, #28]
- 350              		.loc 1 138 50
- 351 00fe 144A     		ldr	r2, .L23+8
- 352 0100 A2FB0323 		umull	r2, r3, r2, r3
- 353 0104 5B0A     		lsrs	r3, r3, #9
- 354              		.loc 1 138 19
- 355 0106 3A68     		ldr	r2, [r7]
- 356              		.loc 1 138 12
- 357 0108 1049     		ldr	r1, .L23+4
- 358              		.loc 1 138 19
- 359 010a 02FB03F3 		mul	r3, r2, r3
- 360 010e 4B60     		str	r3, [r1, #4]
- 361              	.L20:
- 139:./User/Delay.c ****   }
- 140:./User/Delay.c ****   
- 141:./User/Delay.c ****   SysTick->VAL = 0;                                               /* Empty counter. */
- 362              		.loc 1 141 10
- 363 0110 0E4B     		ldr	r3, .L23+4
- 364              		.loc 1 141 16
- 365 0112 0022     		movs	r2, #0
- 366 0114 9A60     		str	r2, [r3, #8]
- 142:./User/Delay.c ****   SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
- 367              		.loc 1 142 17
- 368 0116 0D4B     		ldr	r3, .L23+4
- 369 0118 1B68     		ldr	r3, [r3]
- 370 011a 0C4A     		ldr	r2, .L23+4
- 371 011c 43F00103 		orr	r3, r3, #1
- 372 0120 1360     		str	r3, [r2]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 10
-
-
- 143:./User/Delay.c ****   
- 144:./User/Delay.c ****   while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                  /* Wait time is reached. */
- 373              		.loc 1 144 8
- 374 0122 00BF     		nop
- 375              	.L21:
- 376              		.loc 1 144 17 discriminator 1
- 377 0124 094B     		ldr	r3, .L23+4
- 378 0126 1B68     		ldr	r3, [r3]
- 379              		.loc 1 144 23 discriminator 1
- 380 0128 03F48033 		and	r3, r3, #65536
- 381              		.loc 1 144 8 discriminator 1
- 382 012c B3F5803F 		cmp	r3, #65536
- 383 0130 F8D1     		bne	.L21
- 145:./User/Delay.c ****   
- 146:./User/Delay.c ****   SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                      /* Close counter. */
- 384              		.loc 1 146 17
- 385 0132 064B     		ldr	r3, .L23+4
- 386 0134 1B68     		ldr	r3, [r3]
- 387 0136 054A     		ldr	r2, .L23+4
- 388 0138 23F00103 		bic	r3, r3, #1
- 389 013c 1360     		str	r3, [r2]
- 390 013e 00E0     		b	.L11
- 391              	.L22:
-  96:./User/Delay.c ****   }
- 392              		.loc 1 96 5
- 393 0140 00BF     		nop
- 394              	.L11:
- 147:./User/Delay.c **** }
- 395              		.loc 1 147 1
- 396 0142 2837     		adds	r7, r7, #40
- 397              	.LCFI8:
- 398              		.cfi_def_cfa_offset 16
- 399 0144 BD46     		mov	sp, r7
- 400              	.LCFI9:
- 401              		.cfi_def_cfa_register 13
- 402              		@ sp needed
- 403 0146 B0BD     		pop	{r4, r5, r7, pc}
- 404              	.L24:
- 405              		.align	2
- 406              	.L23:
- 407 0148 00127A00 		.word	8000000
- 408 014c 10E000E0 		.word	-536813552
- 409 0150 D34D6210 		.word	274877907
- 410              		.cfi_endproc
- 411              	.LFE124:
- 413              		.section	.text.Delay_s,"ax",%progbits
- 414              		.align	1
- 415              		.global	Delay_s
- 416              		.syntax unified
- 417              		.thumb
- 418              		.thumb_func
- 420              	Delay_s:
- 421              	.LFB125:
- 148:./User/Delay.c **** 
- 149:./User/Delay.c **** /**
- 150:./User/Delay.c ****   * @brief  Second delay.
- 151:./User/Delay.c ****   * @param  [in] ns: The number of second delay.
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 11
-
-
- 152:./User/Delay.c ****   * @return None.
- 153:./User/Delay.c ****   */
- 154:./User/Delay.c **** void Delay_s(uint64_t ns)
- 155:./User/Delay.c **** {
- 422              		.loc 1 155 1
- 423              		.cfi_startproc
- 424              		@ args = 0, pretend = 0, frame = 8
- 425              		@ frame_needed = 1, uses_anonymous_args = 0
- 426 0000 B0B5     		push	{r4, r5, r7, lr}
- 427              	.LCFI10:
- 428              		.cfi_def_cfa_offset 16
- 429              		.cfi_offset 4, -16
- 430              		.cfi_offset 5, -12
- 431              		.cfi_offset 7, -8
- 432              		.cfi_offset 14, -4
- 433 0002 82B0     		sub	sp, sp, #8
- 434              	.LCFI11:
- 435              		.cfi_def_cfa_offset 24
- 436 0004 00AF     		add	r7, sp, #0
- 437              	.LCFI12:
- 438              		.cfi_def_cfa_register 7
- 439 0006 C7E90001 		strd	r0, [r7]
- 156:./User/Delay.c ****   while(ns > 0)
- 440              		.loc 1 156 8
- 441 000a 0CE0     		b	.L26
- 442              	.L27:
- 157:./User/Delay.c ****   {
- 158:./User/Delay.c ****     Delay_ms(1000);
- 443              		.loc 1 158 5
- 444 000c 4FF47A70 		mov	r0, #1000
- 445 0010 4FF00001 		mov	r1, #0
- 446 0014 FFF7FEFF 		bl	Delay_ms
- 159:./User/Delay.c ****     ns--;
- 447              		.loc 1 159 7
- 448 0018 D7E90023 		ldrd	r2, [r7]
- 449 001c 541E     		subs	r4, r2, #1
- 450 001e 43F1FF35 		adc	r5, r3, #-1
- 451 0022 C7E90045 		strd	r4, [r7]
- 452              	.L26:
- 156:./User/Delay.c ****   while(ns > 0)
- 453              		.loc 1 156 8
- 454 0026 D7E90023 		ldrd	r2, [r7]
- 455 002a 1343     		orrs	r3, r2, r3
- 456 002c EED1     		bne	.L27
- 160:./User/Delay.c ****   }
- 161:./User/Delay.c **** }
- 457              		.loc 1 161 1
- 458 002e 00BF     		nop
- 459 0030 00BF     		nop
- 460 0032 0837     		adds	r7, r7, #8
- 461              	.LCFI13:
- 462              		.cfi_def_cfa_offset 16
- 463 0034 BD46     		mov	sp, r7
- 464              	.LCFI14:
- 465              		.cfi_def_cfa_register 13
- 466              		@ sp needed
- 467 0036 B0BD     		pop	{r4, r5, r7, pc}
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 12
-
-
- 468              		.cfi_endproc
- 469              	.LFE125:
- 471              		.text
- 472              	.Letext0:
- 473              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 474              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 475              		.file 4 "./CORE/core_cm4.h"
- 476              		.file 5 "./Library/stm32f4xx_rcc.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s 			page 13
+ 136:./User/Delay.c **** }
+ 212              		.loc 1 136 1
+ 213 006c 00BF     		nop
+ 214 006e 1837     		adds	r7, r7, #24
+ 215              	.LCFI11:
+ 216              		.cfi_def_cfa_offset 8
+ 217 0070 BD46     		mov	sp, r7
+ 218              	.LCFI12:
+ 219              		.cfi_def_cfa_register 13
+ 220              		@ sp needed
+ 221 0072 80BD     		pop	{r7, pc}
+ 222              	.L17:
+ 223              		.align	2
+ 224              	.L16:
+ 225 0074 00000000 		.word	SystemCoreClock
+ 226 0078 83DE1B43 		.word	1125899907
+ 227              		.cfi_endproc
+ 228              	.LFE125:
+ 230              		.text
+ 231              	.Letext0:
+ 232              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 233              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 234              		.file 4 "./CORE/system_stm32f4xx.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 Delay.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s:21     .text.Delay_us:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s:27     .text.Delay_us:0000000000000000 Delay_us
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s:191    .text.Delay_ms:0000000000000000 Delay_ms
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s:178    .text.Delay_us:00000000000000f0 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s:185    .text.Delay_ms:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s:407    .text.Delay_ms:0000000000000148 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s:414    .text.Delay_s:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccmW0622.s:420    .text.Delay_s:0000000000000000 Delay_s
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:20     .text.CPU_TS_TmrInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:26     .text.CPU_TS_TmrInit:0000000000000000 CPU_TS_TmrInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:72     .text.CPU_TS_TmrInit:000000000000002c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:79     .text.CPU_TS_TmrRd:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:85     .text.CPU_TS_TmrRd:0000000000000000 CPU_TS_TmrRd
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:116    .text.CPU_TS_TmrRd:0000000000000014 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:121    .text.CPU_TS_Tmr_Delay_US:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:127    .text.CPU_TS_Tmr_Delay_US:0000000000000000 CPU_TS_Tmr_Delay_US
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccX6Eqmn.s:225    .text.CPU_TS_Tmr_Delay_US:0000000000000074 $d
 
 UNDEFINED SYMBOLS
-__aeabi_uldivmod
-RCC_GetClocksFreq
+SystemCoreClock

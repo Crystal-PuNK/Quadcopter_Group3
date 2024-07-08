@@ -28,134 +28,109 @@
 
 /* Header includes -----------------------------------------------------------*/
 #include "Delay.h"
-
+#define OS_TICKS_PER_SEC 1
 /* Macro definitions ---------------------------------------------------------*/
+  //# USE DWT Peripherl
+  #define  DWT_CR      *(__IO uint32_t *)0xE0001000
+  #define  DWT_CYCCNT  *(__IO uint32_t *)0xE0001004
+  #define  DEM_CR      *(__IO uint32_t *)0xE000EDFC
+
+
+  #define  DEM_CR_TRCENA                   (1 << 24)
+  #define  DWT_CR_CYCCNTENA                (1 <<  0)  
 /* Type definitions ----------------------------------------------------------*/
 /* Variable declarations -----------------------------------------------------*/
 /* Variable definitions ------------------------------------------------------*/
 /* Function declarations -----------------------------------------------------*/
 /* Function definitions ------------------------------------------------------*/
-
+// /**
+//  * @brief 初始化延迟函数
+//  * 当使用OS的时候,此函数会初始化OS的时钟节拍
+//  * SYSTICK的时钟固定为AHB时钟的1/8
+//  * SYSCLK:系统时钟频率
+//  * @param SYSCLK 
+//  */
+// void SysTick_Init(u8 SYSCLK) {
+//     u32 reload;
+//     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+//     reload = SYSCLK / 8;                   //每秒钟的计数次数 单位为M
+//     reload *= 1000000 / OS_TICKS_PER_SEC;  //根据OS_TICKS_PER_SEC设定溢出时间
+//                                            // reload为24位寄存器,最大值:16777216
+//     SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;  //开启SYSTICK中断
+//     SysTick->LOAD = reload;  //每1/OS_TICKS_PER_SEC秒中断一次
+//     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //开启SYSTICK
+// }
 /**
-  * @brief  Microsecond delay.
-  * @param  [in] nus: The number of microseconds delay.
-  * @return None.
+  * @brief  初始化时间戳
+  * @param  无
+  * @retval 无
+  * @note   使用延时函数前，必须调用本函数
   */
-void Delay_us(uint64_t nus)
+void CPU_TS_TmrInit(void)
 {
-  uint64_t nms = 0;
-  
-  if(nus == 0)
-  {
-    return;
-  }
-  
-  nms = nus / 1000;
-  nus = nus % 1000;
-  
-  if(nms > 0)
-  {
-    Delay_ms(nms);
-  }
-  
-  if(nus > 0)
-  {
-    RCC_ClocksTypeDef RCC_ClockFreq;
-    
-    RCC_GetClocksFreq(&RCC_ClockFreq);                              /* Get the frequencies of different on chip clocks. */
-    
-    if(RCC_ClockFreq.HCLK_Frequency < 8000000)
-    {
-      SysTick->CTRL |= SysTick_CLKSource_HCLK;                      /* Configures the SysTick clock source. */
-      SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000000 * nus; /* Time load (SysTick-> LOAD is 24bit). */
-    }
-    else
-    {
-      SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;                 /* Configures the SysTick clock source. */
-      SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000000 * nus; /* Time load (SysTick-> LOAD is 24bit). */
-    }
-    
-    SysTick->VAL = 0;                                               /* Empty counter. */
-    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
-    
-    while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                  /* Wait time is reached. */
-    
-    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                      /* Close counter. */
-  }
+    /* 使能DWT外设 */
+    DEM_CR |= (uint32_t)DEM_CR_TRCENA;
+
+    /* DWT CYCCNT寄存器计数清0 */
+    DWT_CYCCNT = (uint32_t)0u;
+
+    /* 使能Cortex-M DWT CYCCNT寄存器 */
+    DWT_CR |= (uint32_t)DWT_CR_CYCCNTENA;
 }
 
 /**
-  * @brief  Millisecond delay.
-  * @param  [in] nms: The number of millisecond delay.
-  * @return None.
+  * @brief  读取当前时间戳
+  * @param  无
+  * @retval 当前时间戳，即DWT_CYCCNT寄存器的值
   */
-void Delay_ms(uint64_t nms)
+uint32_t CPU_TS_TmrRd(void)
 {
-  if(nms == 0)
-  {
-    return;
-  }
-  
-  while(nms > 500)
-  {
-    RCC_ClocksTypeDef RCC_ClockFreq;
-    
-    RCC_GetClocksFreq(&RCC_ClockFreq);                            /* Get the frequencies of different on chip clocks. */
-    
-    if(RCC_ClockFreq.HCLK_Frequency < 8000000)
-    {
-      SysTick->CTRL |= SysTick_CLKSource_HCLK;                    /* Configures the SysTick clock source. */
-      SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000 * 500;  /* Time load (SysTick-> LOAD is 24bit). */
-    }
-    else
-    {
-      SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;               /* Configures the SysTick clock source. */
-      SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000 * 500;  /* Time load (SysTick-> LOAD is 24bit). */
-    }
-    
-    SysTick->VAL = 0;                                             /* Empty counter. */
-    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                     /* Start the countdown. */
-    
-    while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                /* Wait time is reached. */
-    
-    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                    /* Close counter. */
-    
-    nms -= 500;
-  }
-  
-  RCC_ClocksTypeDef RCC_ClockFreq;
-  
-  RCC_GetClocksFreq(&RCC_ClockFreq);                              /* Get the frequencies of different on chip clocks. */
-  
-  if(RCC_ClockFreq.HCLK_Frequency < 8000000)
-  {
-    SysTick->CTRL |= SysTick_CLKSource_HCLK;                      /* Configures the SysTick clock source. */
-    SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 1000 * nms;    /* Time load (SysTick-> LOAD is 24bit). */
-  }
-  else
-  {
-    SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;                 /* Configures the SysTick clock source. */
-    SysTick->LOAD = RCC_ClockFreq.HCLK_Frequency / 8000 * nms;    /* Time load (SysTick-> LOAD is 24bit). */
-  }
-  
-  SysTick->VAL = 0;                                               /* Empty counter. */
-  SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
-  
-  while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                  /* Wait time is reached. */
-  
-  SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                      /* Close counter. */
+    return ((uint32_t)DWT_CYCCNT);
 }
 
 /**
-  * @brief  Second delay.
-  * @param  [in] ns: The number of second delay.
-  * @return None.
+  * @brief  采用CPU的内部计数实现精确延时，32位计数器
+  * @param  us : 延迟长度，单位1 us
+  * @retval 无
+  * @note   使用本函数前必须先调用CPU_TS_TmrInit函数使能计数器，
+            或使能宏CPU_TS_INIT_IN_DELAY_FUNCTION
+            最大延时值为8秒，即8*1000*1000
   */
-void Delay_s(uint64_t ns)
+void CPU_TS_Tmr_Delay_US(__IO uint32_t us)
 {
-  while(ns > 0)
-  {
-    Delay_ms(1000);
-    ns--;
-  }
+    uint32_t ticks;
+    uint32_t told,tnow,tcnt=0;
+
+    /* 在函数内部初始化时间戳寄存器， */
+#if (CPU_TS_INIT_IN_DELAY_FUNCTION)
+    /* 初始化时间戳并清零 */
+  CPU_TS_TmrInit();
+#endif
+
+    ticks = us * (GET_CPU_ClkFreq() / 1000000);  /* 需要的节拍数 */
+    tcnt = 0;
+    told = (uint32_t)CPU_TS_TmrRd();         /* 刚进入时的计数器值 */
+
+    while(1)
+    {
+        tnow = (uint32_t)CPU_TS_TmrRd();
+        if(tnow != told)
+        {
+            /* 32位计数器是递增计数器 */
+            if(tnow > told)
+            {
+                tcnt += tnow - told;
+            }
+                /* 重新装载 */
+            else
+            {
+                tcnt += UINT32_MAX - told + tnow;
+            }
+
+            told = tnow;
+
+            /*时间超过/等于要延迟的时间,则退出 */
+            if(tcnt >= ticks)break;
+        }
+    }
 }

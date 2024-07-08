@@ -39,7 +39,7 @@
 /** @addtogroup STM32F4xx_System_Includes
   * @{
   */
-
+#include <stdint.h>
 /**
   * @}
   */

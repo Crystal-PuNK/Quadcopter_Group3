@@ -23,7 +23,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 #include "main.h"
-
+#include "ucos_ii.h"
 /** @addtogroup Template_Project
   * @{
   */
@@ -119,23 +119,25 @@ void DebugMon_Handler(void)
 }
 
 /**
-  * @brief  This function handles PendSVC exception.
+  * @brief  This function handles PendSVC exception.BUT it is commended casue we use PendSV() in 
   * @param  None
   * @retval None
   */
-void PendSV_Handler(void)
-{
-}
+// void PendSV_Handler(void)
+// {
+// }
 
 /**
   * @brief  This function handles SysTick Handler.
   * @param  None
   * @retval None
   */
-void SysTick_Handler(void)
-{
-  TimingDelay_Decrement();
-}
+// void SysTick_Handler(void)
+// {
+//   OSIntEnter();
+//   // OSTimeTick();
+//   OSIntExit();
+// }
 
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */

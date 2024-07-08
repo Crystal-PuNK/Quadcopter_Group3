@@ -1,195 +1,122 @@
-/**
-  ******************************************************************************
-  * @file    Project/STM32F4xx_StdPeriph_Templates/main.c 
-  * @author  MCD Application Team
-  * @version V1.8.1
-  * @date    27-January-2022
-  * @brief   Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2016 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
-
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "os_cpu.h"
+#include "os.h"
+// #define DEBUG
 
-/** @addtogroup Template_Project
-  * @{
-  */ 
+//@ Task Priority  ------------------------------------------------------------*/
+#ifdef DEBUG
+  #define TEST_TASK_PRIO 10
+  #define TEST1_TASK_PRIO 20
+#endif
+  #define TMP_TASK_PRIO 5
+//@ Tasks' Stake   ------------------------------------------------------------*/
+#ifdef DEBUG
+  #define TEST_STK_SIZE  64
+  OS_STK TEST_TASK_STK[TEST_STK_SIZE];
+  #define TEST1_STK_SIZE  64
+  OS_STK TEST1_TASK_STK[TEST1_STK_SIZE];
+#endif
+  #define TMP_STK_SIZE  64
+  OS_STK TMP_TASK_STK[TMP_STK_SIZE];
+//# Private define ------------------------------------------------------------*/
 
-/* Private typedef -----------------------------------------------------------*/
-
-/* Private define ------------------------------------------------------------*/
-
-/* Private macro -------------------------------------------------------------*/
-
-/* Private variables ---------------------------------------------------------*/
-static __IO uint32_t uwTimingDelay;
+//# Private variables ---------------------------------------------------------*/
 RCC_ClocksTypeDef RCC_Clocks;
-
-/* Private function prototypes -----------------------------------------------*/
-
-
-/* Private functions ---------------------------------------------------------*/
-
+//# Private function prototypes -----------------------------------------------*/
+#ifdef DEBUG
+  void test_task(void *pdata);
+  void test1_task(void *pdata);
+#endif
+  void tmp_task(void *pdata);
+//# Private functions ---------------------------------------------------------*/
 /**
-  * @brief  Main program
-  * @param  None
-  * @retval None
-  */
+ * @brief main Function
+ * 
+ * @return int 
+ */
 int main(void)
 {
-	
-	
-	
-/* System -------------------------------------------------------------------*/ 
- 
-  /*!< At this stage the microcontroller clock setting is already configured, 
-       this is done through SystemInit() function which is called from startup
-       files before to branch to application main.
-       To reconfigure the default setting of SystemInit() function, 
-       refer to system_stm32f4xx.c file */
-
-  /* SysTick end of count event each 10ms */
+//* SysTick Config  
   RCC_GetClocksFreq(&RCC_Clocks);
-  SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
-  
-  /* Add your application code here */
-  /* Insert 50 ms delay */
-  Delay(5);
-  
-	
-	
-	
-	
-	
-/* Initials -------------------------------------------------------------------*/ 
+  SysTick_Config(RCC_Clocks.HCLK_Frequency / 1); /* SysTick end of count event each 1000ms */
+//* Initial
+  CPU_TS_TmrInit();
   LD2_init();
-  LD2_ON();
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-  GPIO_InitTypeDef GPIO_InitStructure;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
-  int counter = 0;
-	while(1)
-	{
-    counter ++;
-    GPIO_SetBits(GPIOA,GPIO_Pin_1);
-
-    if (counter == 71 || counter ==76|| counter ==77|| counter ==82|| counter ==83)
-    { 
-      GPIO_ResetBits(GPIOA,GPIO_Pin_2);
-      LD2_OFF();
-    }
-    else 
-    {
-      GPIO_SetBits(GPIOA,GPIO_Pin_2);
-      LD2_ON();
-    }
-
-    Delay_ms(10);
-
-
-
-    GPIO_ResetBits(GPIOA,GPIO_Pin_1);
-    Delay_ms(10);
-
-	}
-
-
-//	LD2_OFF();
-//	PWM_SetCompare1(140-1);
-
+  BLE_Init();
+  GY86_init();
+  OLED_Init();
+  OLED2_Init();
+  Motor_Init();
+  REC_Init2();
+  OSInit();
+  OS_TRACE_INIT();   // 初始化 SystemView
+#ifdef DEBUG
+  OSTaskCreate(test_task,(void*)0,(OS_STK*)&TEST_TASK_STK[TEST_STK_SIZE-1],TEST_TASK_PRIO);
+  OSTaskCreate(test1_task,(void*)0,(OS_STK*)&TEST1_TASK_STK[TEST1_STK_SIZE-1],TEST1_TASK_PRIO);
+#endif
+  OSTaskCreate(tmp_task,(void*)0,(OS_STK*)&TMP_TASK_STK[TMP_STK_SIZE-1],TMP_TASK_PRIO);
+  OSStart();
+  return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-  * @brief  Inserts a delay time.
-  * @param  nTime: specifies the delay time length, in milliseconds.
-  * @retval None
-  */
-void Delay(__IO uint32_t nTime)
-{ 
-  uwTimingDelay = nTime;
-
-  while(uwTimingDelay != 0);
-}
-
-/**
-  * @brief  Decrements the TimingDelay variable.
-  * @param  None
-  * @retval None
-  */
-void TimingDelay_Decrement(void)
+void tmp_task(void *pdata)
 {
-  if (uwTimingDelay != 0x00)
-  { 
-    uwTimingDelay--;
+  while(1)
+  {
+    GY86_GetData();
+		OLED_ShowSignedNum(1,1,GY86DataList.AX,5);
+		OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
+		OLED_ShowSignedNum(3,1,GY86DataList.AZ,5);
+		OLED_ShowSignedNum(1,8,GY86DataList.GX,5);
+		OLED_ShowSignedNum(2,8,GY86DataList.GY,5);
+		OLED_ShowSignedNum(3,8,GY86DataList.GZ,5);
+		
+		OLED_ShowSignedNum(4,1,GY86DataList.GaX,5);
+		OLED_ShowSignedNum(4,8,GY86DataList.GaY,5);
+		
+		OLED2_ShowString(1,1,"Group3 LCCZD");
+		
+		OLED2_ShowNum(2,1,CH2[1],5);
+		OLED2_ShowNum(2,8,CH2[2],5);
+		
+		OLED2_ShowNum(3,1,CH2[3],5);
+		OLED2_ShowNum(3,8,CH2[4],5);
+		
+		OLED2_ShowNum(4,1,CH2[5],5);
+		OLED2_ShowNum(4,8,CH2[6],5);
+		
+		// BLE_Printf("Acc:%d-%d-%d\n",GY86DataList.AX,GY86DataList.AY,GY86DataList.AZ);
+		// BLE_Printf("G:%d-%d-%d\n",GY86DataList.GX,GY86DataList.GY,GY86DataList.GZ);
+
+//		BLE_Printf("CH[1]:%d  CH[2]:%d\n",CH2[1],CH2[2]);
+//		BLE_Printf("CH[3]:%d  CH[4]:%d\n",CH2[3],CH2[4]);
+//		BLE_Printf("CH[5]:%d  CH[6]:%d\n",CH2[5],CH2[6]);
+//		BLE_Printf("CH[7]:%d  CH[8]:%d\n",CH2[7],CH2[8]);
+
+		Motor_SetSpeed_All((CH2[3]/10)-100);
   }
 }
 
-#ifdef  USE_FULL_ASSERT
 
-/**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t* file, uint32_t line)
-{ 
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
+#ifdef DEBUG
+void test_task(void *pdata)
+{
+  while(1)
   {
+    Delay_ms(100);
+    LD2_ON();
+    OSTimeDly(5);
+  }
+}
+
+void test1_task(void *pdata)
+{
+  while(1)
+  {
+    Delay_ms(100);
+    LD2_OFF();
+    OSTimeDly(10);
   }
 }
 #endif
-
-/**
-  * @}
-  */
-
-

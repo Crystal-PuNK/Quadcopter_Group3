@@ -647,7 +647,7 @@ void  OSTimeTickHook (void)
 *********************************************************************************************************
 */
 
-void  OS_CPU_SysTickHandler (void)
+void  SysTick_Handler (void)
 {
 #if OS_CRITICAL_METHOD == 3u                                    /* Allocate storage for CPU status register             */
     OS_CPU_SR  cpu_sr;

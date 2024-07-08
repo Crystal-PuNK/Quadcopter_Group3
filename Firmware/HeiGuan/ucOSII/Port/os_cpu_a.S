@@ -49,7 +49,7 @@
     .global  OS_CPU_SR_Restore
     .global  OSCtxSw
     .global  OSIntCtxSw
-    .global  OS_CPU_PendSVHandler
+    .global  PendSV_Handler
 
 #if (defined(__VFP_FP__) && !defined(__SOFTFP__))
     .global  OS_CPU_FP_Reg_Push
@@ -289,7 +289,7 @@ OSIntCtxSw:
     LDR     R1, =NVIC_PENDSVSET
     STR     R1, [R0]
     BX      LR
-
+//! 好奇怪的OSIntCtxSw和OSCtxSw,和2440A逻辑不太一样,难道是PendSV的出现导致的吗?
 
 @********************************************************************************************************
 @                                       HANDLE PendSV EXCEPTION
@@ -339,7 +339,7 @@ OSIntCtxSw:
 @********************************************************************************************************
 
 .thumb_func
-OS_CPU_PendSVHandler:
+PendSV_Handler:
     CPSID   I                                                   @ Cortex-M7 errata notice. See Note #5
     MOVW    R2, #:lower16:OS_KA_BASEPRI_Boundary                @ Set BASEPRI priority level required for exception preemption
     MOVT    R2, #:upper16:OS_KA_BASEPRI_Boundary

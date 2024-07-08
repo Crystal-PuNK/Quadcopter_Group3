@@ -10,7 +10,14 @@ build/main.o: User/main.c User/main.h CORE/stm32f4xx.h CORE/core_cm4.h \
  Library/stm32f4xx_tim.h Library/stm32f4xx_usart.h \
  Library/stm32f4xx_wwdg.h Library/misc.h User/Delay.h Hardware/GY86.h \
  User/Delay.h Hardware/MyIIC.h Hardware/LD2.h Hardware/OLED.h \
- Hardware/OLED2.h Hardware/ATKBLE01.h Hardware/PWM.h Hardware/Receiver.h
+ Hardware/OLED2.h Hardware/ATKBLE01.h Hardware/PWM.h Hardware/Receiver.h \
+ ucOSII/Port/os_cpu.h ucOSII/Config/app_cfg.h ucOSII/Core/os.h \
+ ucOSII/Core/ucos_ii.h ucOSII/Config/os_cfg.h ucOSII/Core/os_trace.h \
+ SystemView/os_trace_events.h SystemView/SEGGER_SYSVIEW.h \
+ SystemView/SEGGER.h SystemView/Global.h \
+ SystemView/SEGGER_SYSVIEW_ConfDefaults.h \
+ SystemView/SEGGER_SYSVIEW_Conf.h SystemView/SEGGER_RTT_Conf.h \
+ ucOSII/Core/ucos_ii.h SystemView/os_cfg_trace.h
 User/main.h:
 CORE/stm32f4xx.h:
 CORE/core_cm4.h:
@@ -48,3 +55,18 @@ Hardware/OLED2.h:
 Hardware/ATKBLE01.h:
 Hardware/PWM.h:
 Hardware/Receiver.h:
+ucOSII/Port/os_cpu.h:
+ucOSII/Config/app_cfg.h:
+ucOSII/Core/os.h:
+ucOSII/Core/ucos_ii.h:
+ucOSII/Config/os_cfg.h:
+ucOSII/Core/os_trace.h:
+SystemView/os_trace_events.h:
+SystemView/SEGGER_SYSVIEW.h:
+SystemView/SEGGER.h:
+SystemView/Global.h:
+SystemView/SEGGER_SYSVIEW_ConfDefaults.h:
+SystemView/SEGGER_SYSVIEW_Conf.h:
+SystemView/SEGGER_RTT_Conf.h:
+ucOSII/Core/ucos_ii.h:
+SystemView/os_cfg_trace.h:

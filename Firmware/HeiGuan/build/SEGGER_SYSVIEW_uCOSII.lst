@@ -1,0 +1,1784 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"SEGGER_SYSVIEW_uCOSII.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.bss._aTasks,"aw",%nobits
+  20              		.align	2
+  23              	_aTasks:
+  24 0000 00000000 		.space	640
+  24      00000000 
+  24      00000000 
+  24      00000000 
+  24      00000000 
+  25              		.section	.bss._NumTasks,"aw",%nobits
+  26              		.align	2
+  29              	_NumTasks:
+  30 0000 00000000 		.space	4
+  31              		.section	.bss._aResources,"aw",%nobits
+  32              		.align	2
+  35              	_aResources:
+  36 0000 00000000 		.space	1536
+  36      00000000 
+  36      00000000 
+  36      00000000 
+  36      00000000 
+  37              		.section	.bss._NumResources,"aw",%nobits
+  38              		.align	2
+  41              	_NumResources:
+  42 0000 00000000 		.space	4
+  43              		.section	.text._cbSendTaskList,"ax",%progbits
+  44              		.align	1
+  45              		.syntax unified
+  46              		.thumb
+  47              		.thumb_func
+  49              	_cbSendTaskList:
+  50              	.LFB3:
+  51              		.file 1 "./SystemView/SEGGER_SYSVIEW_uCOSII.c"
+   1:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+   2:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                    SEGGER Microcontroller GmbH                     *
+   3:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                        The Embedded Experts                        *
+   4:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** **********************************************************************
+   5:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+   6:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *            (c) 1995 - 2024 SEGGER Microcontroller GmbH             *
+   7:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 2
+
+
+   8:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       www.segger.com     Support: support@segger.com               *
+   9:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  10:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** **********************************************************************
+  11:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  12:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SEGGER SystemView * Real-time application analysis           *
+  13:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  14:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** **********************************************************************
+  15:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  16:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * All rights reserved.                                               *
+  17:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  18:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * SEGGER strongly recommends to not make any changes                 *
+  19:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * to or modify the source code of this software in order to stay     *
+  20:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * compatible with the SystemView and RTT protocol, and J-Link.       *
+  21:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  22:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * Redistribution and use in source and binary forms, with or         *
+  23:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * without modification, are permitted provided that the following    *
+  24:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * condition is met:                                                  *
+  25:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  26:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * o Redistributions of source code must retain the above copyright   *
+  27:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *   notice, this condition and the following disclaimer.             *
+  28:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  29:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND             *
+  30:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,        *
+  31:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF           *
+  32:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE           *
+  33:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * DISCLAIMED. IN NO EVENT SHALL SEGGER Microcontroller BE LIABLE FOR *
+  34:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR           *
+  35:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT  *
+  36:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;    *
+  37:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF      *
+  38:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT          *
+  39:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE  *
+  40:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH   *
+  41:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** * DAMAGE.                                                            *
+  42:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  43:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** **********************************************************************
+  44:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  45:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SystemView version: 3.54                                    *
+  46:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *                                                                    *
+  47:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** **********************************************************************
+  48:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** -------------------------- END-OF-HEADER -----------------------------
+  49:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  50:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** File    : SEGGER_SYSVIEW_uCOSII.c
+  51:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** Purpose : Interface between Micrium uC/OS-II and SystemView.
+  52:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** Revision: $Rev: 9599 $
+  53:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+  54:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  55:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #include <os_trace_events.h>
+  56:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  57:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #ifndef SYSVIEW_MEMSET
+  58:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   #include <string.h>
+  59:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   #define SYSVIEW_MEMSET(p, v, n)   memset(p, v, n)
+  60:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #endif
+  61:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  62:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #ifndef  OS_CFG_TRACE_MAX_RESOURCES
+  63:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #define  OS_CFG_TRACE_MAX_RESOURCES              0
+  64:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #endif
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 3
+
+
+  65:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  66:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** typedef struct SYSVIEW_UCOSII_TASK_STATUS SYSVIEW_UCOSII_TASK_STATUS;
+  67:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  68:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** struct SYSVIEW_UCOSII_TASK_STATUS {
+  69:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   U32          TaskID;
+  70:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   const char*  OSTCBTaskName;
+  71:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   INT8U        OSTCBPrio;
+  72:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   OS_STK*      OSTCBStkBottom;
+  73:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   INT32U       OSTCBStkSize;
+  74:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** };
+  75:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  76:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** typedef struct SYSVIEW_UCOSII_RESOURCE SYSVIEW_UCOSII_RESOURCE;
+  77:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  78:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** struct SYSVIEW_UCOSII_RESOURCE {
+  79:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   U32         ResourceId;
+  80:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   const char* sResource;
+  81:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   U32         Registered;
+  82:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** };
+  83:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  84:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** static SYSVIEW_UCOSII_TASK_STATUS _aTasks[OS_CFG_TRACE_MAX_TASK];
+  85:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** static unsigned _NumTasks;
+  86:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  87:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #if OS_CFG_TRACE_MAX_RESOURCES > 0
+  88:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** static SYSVIEW_UCOSII_RESOURCE _aResources[OS_CFG_TRACE_MAX_RESOURCES];
+  89:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** static unsigned                _NumResources;
+  90:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #endif
+  91:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+  92:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+  93:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+  94:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       _cbSendTaskList()
+  95:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+  96:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+  97:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    This function is part of the link between FreeRTOS and SYSVIEW.
+  98:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Called from SystemView when asked by the host, it uses SYSVIEW
+  99:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    functions to send the entire task list to the host.
+ 100:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 101:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** static void _cbSendTaskList(void) {
+  52              		.loc 1 101 35
+  53              		.cfi_startproc
+  54              		@ args = 0, pretend = 0, frame = 8
+  55              		@ frame_needed = 1, uses_anonymous_args = 0
+  56 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  57              	.LCFI0:
+  58              		.cfi_def_cfa_offset 20
+  59              		.cfi_offset 4, -20
+  60              		.cfi_offset 5, -16
+  61              		.cfi_offset 6, -12
+  62              		.cfi_offset 7, -8
+  63              		.cfi_offset 14, -4
+  64 0002 85B0     		sub	sp, sp, #20
+  65              	.LCFI1:
+  66              		.cfi_def_cfa_offset 40
+  67 0004 02AF     		add	r7, sp, #8
+  68              	.LCFI2:
+  69              		.cfi_def_cfa 7, 32
+ 102:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   unsigned n;
+ 103:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 4
+
+
+ 104:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   for (n = 0; n < _NumTasks; n++) {
+  70              		.loc 1 104 10
+  71 0006 0023     		movs	r3, #0
+  72 0008 7B60     		str	r3, [r7, #4]
+  73              		.loc 1 104 3
+  74 000a 35E0     		b	.L2
+  75              	.L3:
+ 105:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SYSVIEW_SendTaskInfo((U32)_aTasks[n].TaskID, _aTasks[n].OSTCBTaskName, (unsigned)_aTasks[n].OST
+  76              		.loc 1 105 5 discriminator 3
+  77 000c 1F49     		ldr	r1, .L4
+  78 000e 7A68     		ldr	r2, [r7, #4]
+  79 0010 1346     		mov	r3, r2
+  80 0012 9B00     		lsls	r3, r3, #2
+  81 0014 1344     		add	r3, r3, r2
+  82 0016 9B00     		lsls	r3, r3, #2
+  83 0018 0B44     		add	r3, r3, r1
+  84 001a 1868     		ldr	r0, [r3]
+  85 001c 1B49     		ldr	r1, .L4
+  86 001e 7A68     		ldr	r2, [r7, #4]
+  87 0020 1346     		mov	r3, r2
+  88 0022 9B00     		lsls	r3, r3, #2
+  89 0024 1344     		add	r3, r3, r2
+  90 0026 9B00     		lsls	r3, r3, #2
+  91 0028 0B44     		add	r3, r3, r1
+  92 002a 0433     		adds	r3, r3, #4
+  93 002c 1968     		ldr	r1, [r3]
+  94              		.loc 1 105 96 discriminator 3
+  95 002e 174C     		ldr	r4, .L4
+  96 0030 7A68     		ldr	r2, [r7, #4]
+  97 0032 1346     		mov	r3, r2
+  98 0034 9B00     		lsls	r3, r3, #2
+  99 0036 1344     		add	r3, r3, r2
+ 100 0038 9B00     		lsls	r3, r3, #2
+ 101 003a 2344     		add	r3, r3, r4
+ 102 003c 0833     		adds	r3, r3, #8
+ 103 003e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 104              		.loc 1 105 5 discriminator 3
+ 105 0040 1D46     		mov	r5, r3
+ 106              		.loc 1 105 123 discriminator 3
+ 107 0042 124C     		ldr	r4, .L4
+ 108 0044 7A68     		ldr	r2, [r7, #4]
+ 109 0046 1346     		mov	r3, r2
+ 110 0048 9B00     		lsls	r3, r3, #2
+ 111 004a 1344     		add	r3, r3, r2
+ 112 004c 9B00     		lsls	r3, r3, #2
+ 113 004e 2344     		add	r3, r3, r4
+ 114 0050 0C33     		adds	r3, r3, #12
+ 115 0052 1B68     		ldr	r3, [r3]
+ 116              		.loc 1 105 5 discriminator 3
+ 117 0054 1E46     		mov	r6, r3
+ 118              		.loc 1 105 160 discriminator 3
+ 119 0056 0D4C     		ldr	r4, .L4
+ 120 0058 7A68     		ldr	r2, [r7, #4]
+ 121 005a 1346     		mov	r3, r2
+ 122 005c 9B00     		lsls	r3, r3, #2
+ 123 005e 1344     		add	r3, r3, r2
+ 124 0060 9B00     		lsls	r3, r3, #2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 5
+
+
+ 125 0062 2344     		add	r3, r3, r4
+ 126 0064 1033     		adds	r3, r3, #16
+ 127 0066 1B68     		ldr	r3, [r3]
+ 128              		.loc 1 105 5 discriminator 3
+ 129 0068 0093     		str	r3, [sp]
+ 130 006a 3346     		mov	r3, r6
+ 131 006c 2A46     		mov	r2, r5
+ 132 006e FFF7FEFF 		bl	SYSVIEW_SendTaskInfo
+ 104:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SYSVIEW_SendTaskInfo((U32)_aTasks[n].TaskID, _aTasks[n].OSTCBTaskName, (unsigned)_aTasks[n].OST
+ 133              		.loc 1 104 31 discriminator 3
+ 134 0072 7B68     		ldr	r3, [r7, #4]
+ 135 0074 0133     		adds	r3, r3, #1
+ 136 0076 7B60     		str	r3, [r7, #4]
+ 137              	.L2:
+ 104:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SYSVIEW_SendTaskInfo((U32)_aTasks[n].TaskID, _aTasks[n].OSTCBTaskName, (unsigned)_aTasks[n].OST
+ 138              		.loc 1 104 17 discriminator 1
+ 139 0078 054B     		ldr	r3, .L4+4
+ 140 007a 1B68     		ldr	r3, [r3]
+ 104:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SYSVIEW_SendTaskInfo((U32)_aTasks[n].TaskID, _aTasks[n].OSTCBTaskName, (unsigned)_aTasks[n].OST
+ 141              		.loc 1 104 3 discriminator 1
+ 142 007c 7A68     		ldr	r2, [r7, #4]
+ 143 007e 9A42     		cmp	r2, r3
+ 144 0080 C4D3     		bcc	.L3
+ 106:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ 107:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 145              		.loc 1 107 1
+ 146 0082 00BF     		nop
+ 147 0084 00BF     		nop
+ 148 0086 0C37     		adds	r7, r7, #12
+ 149              	.LCFI3:
+ 150              		.cfi_def_cfa_offset 20
+ 151 0088 BD46     		mov	sp, r7
+ 152              	.LCFI4:
+ 153              		.cfi_def_cfa_register 13
+ 154              		@ sp needed
+ 155 008a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 156              	.L5:
+ 157              		.align	2
+ 158              	.L4:
+ 159 008c 00000000 		.word	_aTasks
+ 160 0090 00000000 		.word	_NumTasks
+ 161              		.cfi_endproc
+ 162              	.LFE3:
+ 164              		.section	.text._cbGetTime,"ax",%progbits
+ 165              		.align	1
+ 166              		.syntax unified
+ 167              		.thumb
+ 168              		.thumb_func
+ 170              	_cbGetTime:
+ 171              	.LFB4:
+ 108:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 109:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 110:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 111:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       _cbGetTime()
+ 112:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 113:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 114:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    This function is part of the link between FreeRTOS and SYSVIEW.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 6
+
+
+ 115:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Called from SystemView when asked by the host, returns the
+ 116:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    current system time in micro seconds.
+ 117:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 118:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** static U64 _cbGetTime(void) {
+ 172              		.loc 1 118 29
+ 173              		.cfi_startproc
+ 174              		@ args = 0, pretend = 0, frame = 8
+ 175              		@ frame_needed = 1, uses_anonymous_args = 0
+ 176 0000 B0B5     		push	{r4, r5, r7, lr}
+ 177              	.LCFI5:
+ 178              		.cfi_def_cfa_offset 16
+ 179              		.cfi_offset 4, -16
+ 180              		.cfi_offset 5, -12
+ 181              		.cfi_offset 7, -8
+ 182              		.cfi_offset 14, -4
+ 183 0002 82B0     		sub	sp, sp, #8
+ 184              	.LCFI6:
+ 185              		.cfi_def_cfa_offset 24
+ 186 0004 00AF     		add	r7, sp, #0
+ 187              	.LCFI7:
+ 188              		.cfi_def_cfa_register 7
+ 119:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   INT32U Tick;
+ 120:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 121:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   Tick = OSTimeGet();
+ 189              		.loc 1 121 10
+ 190 0006 FFF7FEFF 		bl	OSTimeGet
+ 191 000a 7860     		str	r0, [r7, #4]
+ 122:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 123:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   return Tick * 1000;
+ 192              		.loc 1 123 15
+ 193 000c 7B68     		ldr	r3, [r7, #4]
+ 194 000e 4FF47A72 		mov	r2, #1000
+ 195 0012 02FB03F3 		mul	r3, r2, r3
+ 196 0016 0022     		movs	r2, #0
+ 197 0018 1C46     		mov	r4, r3
+ 198 001a 1546     		mov	r5, r2
+ 199 001c 2246     		mov	r2, r4
+ 200 001e 2B46     		mov	r3, r5
+ 124:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 201              		.loc 1 124 1
+ 202 0020 1046     		mov	r0, r2
+ 203 0022 1946     		mov	r1, r3
+ 204 0024 0837     		adds	r7, r7, #8
+ 205              	.LCFI8:
+ 206              		.cfi_def_cfa_offset 16
+ 207 0026 BD46     		mov	sp, r7
+ 208              	.LCFI9:
+ 209              		.cfi_def_cfa_register 13
+ 210              		@ sp needed
+ 211 0028 B0BD     		pop	{r4, r5, r7, pc}
+ 212              		.cfi_endproc
+ 213              	.LFE4:
+ 215              		.section	.text.SYSVIEW_TaskReady,"ax",%progbits
+ 216              		.align	1
+ 217              		.global	SYSVIEW_TaskReady
+ 218              		.syntax unified
+ 219              		.thumb
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 7
+
+
+ 220              		.thumb_func
+ 222              	SYSVIEW_TaskReady:
+ 223              	.LFB5:
+ 125:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 126:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 127:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 128:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       Global functions
+ 129:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 130:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** **********************************************************************
+ 131:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 132:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 133:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 134:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 135:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_TaskReady()
+ 136:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 137:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 138:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Record when a task is ready for execution.
+ 139:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 140:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_TaskReady(U32 TaskID) {
+ 224              		.loc 1 140 36
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 8
+ 227              		@ frame_needed = 1, uses_anonymous_args = 0
+ 228 0000 80B5     		push	{r7, lr}
+ 229              	.LCFI10:
+ 230              		.cfi_def_cfa_offset 8
+ 231              		.cfi_offset 7, -8
+ 232              		.cfi_offset 14, -4
+ 233 0002 82B0     		sub	sp, sp, #8
+ 234              	.LCFI11:
+ 235              		.cfi_def_cfa_offset 16
+ 236 0004 00AF     		add	r7, sp, #0
+ 237              	.LCFI12:
+ 238              		.cfi_def_cfa_register 7
+ 239 0006 7860     		str	r0, [r7, #4]
+ 141:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   if (TaskID != (U32)OSTCBPrioTbl[OS_TASK_IDLE_PRIO]) {
+ 240              		.loc 1 141 34
+ 241 0008 064B     		ldr	r3, .L11
+ 242 000a D3F8FC30 		ldr	r3, [r3, #252]
+ 243              		.loc 1 141 17
+ 244 000e 1A46     		mov	r2, r3
+ 245              		.loc 1 141 6
+ 246 0010 7B68     		ldr	r3, [r7, #4]
+ 247 0012 9342     		cmp	r3, r2
+ 248 0014 02D0     		beq	.L10
+ 142:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SEGGER_SYSVIEW_OnTaskStartReady(TaskID);
+ 249              		.loc 1 142 5
+ 250 0016 7868     		ldr	r0, [r7, #4]
+ 251 0018 FFF7FEFF 		bl	SEGGER_SYSVIEW_OnTaskStartReady
+ 252              	.L10:
+ 143:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ 144:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 253              		.loc 1 144 1
+ 254 001c 00BF     		nop
+ 255 001e 0837     		adds	r7, r7, #8
+ 256              	.LCFI13:
+ 257              		.cfi_def_cfa_offset 8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 8
+
+
+ 258 0020 BD46     		mov	sp, r7
+ 259              	.LCFI14:
+ 260              		.cfi_def_cfa_register 13
+ 261              		@ sp needed
+ 262 0022 80BD     		pop	{r7, pc}
+ 263              	.L12:
+ 264              		.align	2
+ 265              	.L11:
+ 266 0024 00000000 		.word	OSTCBPrioTbl
+ 267              		.cfi_endproc
+ 268              	.LFE5:
+ 270              		.section	.text.SYSVIEW_TaskSwitchedIn,"ax",%progbits
+ 271              		.align	1
+ 272              		.global	SYSVIEW_TaskSwitchedIn
+ 273              		.syntax unified
+ 274              		.thumb
+ 275              		.thumb_func
+ 277              	SYSVIEW_TaskSwitchedIn:
+ 278              	.LFB6:
+ 145:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 146:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 147:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 148:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_TaskSwitchedIn()
+ 149:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 150:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 151:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Record when a task starts/continues execution.
+ 152:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    If the idle task continues, record an on idle event.
+ 153:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 154:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_TaskSwitchedIn(U32 TaskID) {
+ 279              		.loc 1 154 41
+ 280              		.cfi_startproc
+ 281              		@ args = 0, pretend = 0, frame = 8
+ 282              		@ frame_needed = 1, uses_anonymous_args = 0
+ 283 0000 80B5     		push	{r7, lr}
+ 284              	.LCFI15:
+ 285              		.cfi_def_cfa_offset 8
+ 286              		.cfi_offset 7, -8
+ 287              		.cfi_offset 14, -4
+ 288 0002 82B0     		sub	sp, sp, #8
+ 289              	.LCFI16:
+ 290              		.cfi_def_cfa_offset 16
+ 291 0004 00AF     		add	r7, sp, #0
+ 292              	.LCFI17:
+ 293              		.cfi_def_cfa_register 7
+ 294 0006 7860     		str	r0, [r7, #4]
+ 155:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   if (TaskID != (U32)OSTCBPrioTbl[OS_TASK_IDLE_PRIO]) {
+ 295              		.loc 1 155 34
+ 296 0008 084B     		ldr	r3, .L17
+ 297 000a D3F8FC30 		ldr	r3, [r3, #252]
+ 298              		.loc 1 155 17
+ 299 000e 1A46     		mov	r2, r3
+ 300              		.loc 1 155 6
+ 301 0010 7B68     		ldr	r3, [r7, #4]
+ 302 0012 9342     		cmp	r3, r2
+ 303 0014 03D0     		beq	.L14
+ 156:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SEGGER_SYSVIEW_OnTaskStartExec(TaskID);
+ 304              		.loc 1 156 5
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 9
+
+
+ 305 0016 7868     		ldr	r0, [r7, #4]
+ 306 0018 FFF7FEFF 		bl	SEGGER_SYSVIEW_OnTaskStartExec
+ 157:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   } else {
+ 158:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SEGGER_SYSVIEW_OnIdle();
+ 159:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ 160:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 307              		.loc 1 160 1
+ 308 001c 01E0     		b	.L16
+ 309              	.L14:
+ 158:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ 310              		.loc 1 158 5
+ 311 001e FFF7FEFF 		bl	SEGGER_SYSVIEW_OnIdle
+ 312              	.L16:
+ 313              		.loc 1 160 1
+ 314 0022 00BF     		nop
+ 315 0024 0837     		adds	r7, r7, #8
+ 316              	.LCFI18:
+ 317              		.cfi_def_cfa_offset 8
+ 318 0026 BD46     		mov	sp, r7
+ 319              	.LCFI19:
+ 320              		.cfi_def_cfa_register 13
+ 321              		@ sp needed
+ 322 0028 80BD     		pop	{r7, pc}
+ 323              	.L18:
+ 324 002a 00BF     		.align	2
+ 325              	.L17:
+ 326 002c 00000000 		.word	OSTCBPrioTbl
+ 327              		.cfi_endproc
+ 328              	.LFE6:
+ 330              		.section	.text.SYSVIEW_TaskSuspend,"ax",%progbits
+ 331              		.align	1
+ 332              		.global	SYSVIEW_TaskSuspend
+ 333              		.syntax unified
+ 334              		.thumb
+ 335              		.thumb_func
+ 337              	SYSVIEW_TaskSuspend:
+ 338              	.LFB7:
+ 161:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 162:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 163:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 164:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_TaskSuspend()
+ 165:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 166:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 167:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Record when a task is suspended.
+ 168:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 169:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_TaskSuspend(U32 TaskID) {
+ 339              		.loc 1 169 38
+ 340              		.cfi_startproc
+ 341              		@ args = 0, pretend = 0, frame = 8
+ 342              		@ frame_needed = 1, uses_anonymous_args = 0
+ 343 0000 80B5     		push	{r7, lr}
+ 344              	.LCFI20:
+ 345              		.cfi_def_cfa_offset 8
+ 346              		.cfi_offset 7, -8
+ 347              		.cfi_offset 14, -4
+ 348 0002 82B0     		sub	sp, sp, #8
+ 349              	.LCFI21:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 10
+
+
+ 350              		.cfi_def_cfa_offset 16
+ 351 0004 00AF     		add	r7, sp, #0
+ 352              	.LCFI22:
+ 353              		.cfi_def_cfa_register 7
+ 354 0006 7860     		str	r0, [r7, #4]
+ 170:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   if (TaskID != (U32)OSTCBPrioTbl[OS_TASK_IDLE_PRIO]) {
+ 355              		.loc 1 170 34
+ 356 0008 074B     		ldr	r3, .L22
+ 357 000a D3F8FC30 		ldr	r3, [r3, #252]
+ 358              		.loc 1 170 17
+ 359 000e 1A46     		mov	r2, r3
+ 360              		.loc 1 170 6
+ 361 0010 7B68     		ldr	r3, [r7, #4]
+ 362 0012 9342     		cmp	r3, r2
+ 363 0014 03D0     		beq	.L21
+ 171:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SEGGER_SYSVIEW_OnTaskStopReady(TaskID,  (1u << 2));
+ 364              		.loc 1 171 5
+ 365 0016 0421     		movs	r1, #4
+ 366 0018 7868     		ldr	r0, [r7, #4]
+ 367 001a FFF7FEFF 		bl	SEGGER_SYSVIEW_OnTaskStopReady
+ 368              	.L21:
+ 172:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ 173:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 369              		.loc 1 173 1
+ 370 001e 00BF     		nop
+ 371 0020 0837     		adds	r7, r7, #8
+ 372              	.LCFI23:
+ 373              		.cfi_def_cfa_offset 8
+ 374 0022 BD46     		mov	sp, r7
+ 375              	.LCFI24:
+ 376              		.cfi_def_cfa_register 13
+ 377              		@ sp needed
+ 378 0024 80BD     		pop	{r7, pc}
+ 379              	.L23:
+ 380 0026 00BF     		.align	2
+ 381              	.L22:
+ 382 0028 00000000 		.word	OSTCBPrioTbl
+ 383              		.cfi_endproc
+ 384              	.LFE7:
+ 386              		.section	.rodata
+ 387              		.align	2
+ 388              	.LC0:
+ 389 0000 53595354 		.ascii	"SYSTEMVIEW: Could not record task information. Maxi"
+ 389      454D5649 
+ 389      45573A20 
+ 389      436F756C 
+ 389      64206E6F 
+ 390 0033 6D756D20 		.ascii	"mum number of tasks reached.\000"
+ 390      6E756D62 
+ 390      6572206F 
+ 390      66207461 
+ 390      736B7320 
+ 391              		.section	.text.SYSVIEW_AddTask,"ax",%progbits
+ 392              		.align	1
+ 393              		.global	SYSVIEW_AddTask
+ 394              		.syntax unified
+ 395              		.thumb
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 11
+
+
+ 396              		.thumb_func
+ 398              	SYSVIEW_AddTask:
+ 399              	.LFB8:
+ 174:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 175:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 176:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 177:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_AddTask()
+ 178:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 179:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 180:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Add a task to the internal list and record its information.
+ 181:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 182:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_AddTask(U32 TaskID, const char* OSTCBTaskName, INT8U OSTCBPrio, OS_STK* OSTCBStkBottom
+ 400              		.loc 1 182 123
+ 401              		.cfi_startproc
+ 402              		@ args = 4, pretend = 0, frame = 16
+ 403              		@ frame_needed = 1, uses_anonymous_args = 0
+ 404 0000 80B5     		push	{r7, lr}
+ 405              	.LCFI25:
+ 406              		.cfi_def_cfa_offset 8
+ 407              		.cfi_offset 7, -8
+ 408              		.cfi_offset 14, -4
+ 409 0002 86B0     		sub	sp, sp, #24
+ 410              	.LCFI26:
+ 411              		.cfi_def_cfa_offset 32
+ 412 0004 02AF     		add	r7, sp, #8
+ 413              	.LCFI27:
+ 414              		.cfi_def_cfa 7, 24
+ 415 0006 F860     		str	r0, [r7, #12]
+ 416 0008 B960     		str	r1, [r7, #8]
+ 417 000a 3B60     		str	r3, [r7]
+ 418 000c 1346     		mov	r3, r2
+ 419 000e FB71     		strb	r3, [r7, #7]
+ 183:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   if (TaskID != (U32)OSTCBPrioTbl[OS_TASK_IDLE_PRIO]) {
+ 420              		.loc 1 183 34
+ 421 0010 2A4B     		ldr	r3, .L27
+ 422 0012 D3F8FC30 		ldr	r3, [r3, #252]
+ 423              		.loc 1 183 17
+ 424 0016 1A46     		mov	r2, r3
+ 425              		.loc 1 183 6
+ 426 0018 FB68     		ldr	r3, [r7, #12]
+ 427 001a 9342     		cmp	r3, r2
+ 428 001c 4BD0     		beq	.L24
+ 184:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     if (_NumTasks >= OS_CFG_TRACE_MAX_TASK) {
+ 429              		.loc 1 184 19
+ 430 001e 284B     		ldr	r3, .L27+4
+ 431 0020 1B68     		ldr	r3, [r3]
+ 432              		.loc 1 184 8
+ 433 0022 1F2B     		cmp	r3, #31
+ 434 0024 03D9     		bls	.L26
+ 185:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       SEGGER_SYSVIEW_Warn("SYSTEMVIEW: Could not record task information. Maximum number of tasks r
+ 435              		.loc 1 185 7
+ 436 0026 2748     		ldr	r0, .L27+8
+ 437 0028 FFF7FEFF 		bl	SEGGER_SYSVIEW_Warn
+ 186:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       return;
+ 438              		.loc 1 186 7
+ 439 002c 43E0     		b	.L24
+ 440              	.L26:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 12
+
+
+ 187:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     }
+ 188:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 189:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     _aTasks[_NumTasks].TaskID         = TaskID;
+ 441              		.loc 1 189 23
+ 442 002e 244B     		ldr	r3, .L27+4
+ 443 0030 1A68     		ldr	r2, [r3]
+ 444              		.loc 1 189 39
+ 445 0032 2549     		ldr	r1, .L27+12
+ 446 0034 1346     		mov	r3, r2
+ 447 0036 9B00     		lsls	r3, r3, #2
+ 448 0038 1344     		add	r3, r3, r2
+ 449 003a 9B00     		lsls	r3, r3, #2
+ 450 003c 0B44     		add	r3, r3, r1
+ 451 003e FA68     		ldr	r2, [r7, #12]
+ 452 0040 1A60     		str	r2, [r3]
+ 190:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     _aTasks[_NumTasks].OSTCBTaskName  = OSTCBTaskName;
+ 453              		.loc 1 190 23
+ 454 0042 1F4B     		ldr	r3, .L27+4
+ 455 0044 1A68     		ldr	r2, [r3]
+ 456              		.loc 1 190 39
+ 457 0046 2049     		ldr	r1, .L27+12
+ 458 0048 1346     		mov	r3, r2
+ 459 004a 9B00     		lsls	r3, r3, #2
+ 460 004c 1344     		add	r3, r3, r2
+ 461 004e 9B00     		lsls	r3, r3, #2
+ 462 0050 0B44     		add	r3, r3, r1
+ 463 0052 0433     		adds	r3, r3, #4
+ 464 0054 BA68     		ldr	r2, [r7, #8]
+ 465 0056 1A60     		str	r2, [r3]
+ 191:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     _aTasks[_NumTasks].OSTCBPrio      = OSTCBPrio;
+ 466              		.loc 1 191 23
+ 467 0058 194B     		ldr	r3, .L27+4
+ 468 005a 1A68     		ldr	r2, [r3]
+ 469              		.loc 1 191 39
+ 470 005c 1A49     		ldr	r1, .L27+12
+ 471 005e 1346     		mov	r3, r2
+ 472 0060 9B00     		lsls	r3, r3, #2
+ 473 0062 1344     		add	r3, r3, r2
+ 474 0064 9B00     		lsls	r3, r3, #2
+ 475 0066 0B44     		add	r3, r3, r1
+ 476 0068 0833     		adds	r3, r3, #8
+ 477 006a FA79     		ldrb	r2, [r7, #7]
+ 478 006c 1A70     		strb	r2, [r3]
+ 192:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     _aTasks[_NumTasks].OSTCBStkBottom = OSTCBStkBottom;
+ 479              		.loc 1 192 23
+ 480 006e 144B     		ldr	r3, .L27+4
+ 481 0070 1A68     		ldr	r2, [r3]
+ 482              		.loc 1 192 39
+ 483 0072 1549     		ldr	r1, .L27+12
+ 484 0074 1346     		mov	r3, r2
+ 485 0076 9B00     		lsls	r3, r3, #2
+ 486 0078 1344     		add	r3, r3, r2
+ 487 007a 9B00     		lsls	r3, r3, #2
+ 488 007c 0B44     		add	r3, r3, r1
+ 489 007e 0C33     		adds	r3, r3, #12
+ 490 0080 3A68     		ldr	r2, [r7]
+ 491 0082 1A60     		str	r2, [r3]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 13
+
+
+ 193:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     _aTasks[_NumTasks].OSTCBStkSize   = OSTCBStkSize;
+ 492              		.loc 1 193 23
+ 493 0084 0E4B     		ldr	r3, .L27+4
+ 494 0086 1A68     		ldr	r2, [r3]
+ 495              		.loc 1 193 39
+ 496 0088 0F49     		ldr	r1, .L27+12
+ 497 008a 1346     		mov	r3, r2
+ 498 008c 9B00     		lsls	r3, r3, #2
+ 499 008e 1344     		add	r3, r3, r2
+ 500 0090 9B00     		lsls	r3, r3, #2
+ 501 0092 0B44     		add	r3, r3, r1
+ 502 0094 1033     		adds	r3, r3, #16
+ 503 0096 BA69     		ldr	r2, [r7, #24]
+ 504 0098 1A60     		str	r2, [r3]
+ 194:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 195:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     _NumTasks++;
+ 505              		.loc 1 195 14
+ 506 009a 094B     		ldr	r3, .L27+4
+ 507 009c 1B68     		ldr	r3, [r3]
+ 508 009e 0133     		adds	r3, r3, #1
+ 509 00a0 074A     		ldr	r2, .L27+4
+ 510 00a2 1360     		str	r3, [r2]
+ 196:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 197:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SYSVIEW_SendTaskInfo(TaskID, OSTCBTaskName, (unsigned)OSTCBPrio, (U32)OSTCBStkBottom, (unsigned
+ 511              		.loc 1 197 5
+ 512 00a4 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 513 00a6 3968     		ldr	r1, [r7]
+ 514 00a8 BB69     		ldr	r3, [r7, #24]
+ 515 00aa 0093     		str	r3, [sp]
+ 516 00ac 0B46     		mov	r3, r1
+ 517 00ae B968     		ldr	r1, [r7, #8]
+ 518 00b0 F868     		ldr	r0, [r7, #12]
+ 519 00b2 FFF7FEFF 		bl	SYSVIEW_SendTaskInfo
+ 520              	.L24:
+ 198:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ 199:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 521              		.loc 1 199 1
+ 522 00b6 1037     		adds	r7, r7, #16
+ 523              	.LCFI28:
+ 524              		.cfi_def_cfa_offset 8
+ 525 00b8 BD46     		mov	sp, r7
+ 526              	.LCFI29:
+ 527              		.cfi_def_cfa_register 13
+ 528              		@ sp needed
+ 529 00ba 80BD     		pop	{r7, pc}
+ 530              	.L28:
+ 531              		.align	2
+ 532              	.L27:
+ 533 00bc 00000000 		.word	OSTCBPrioTbl
+ 534 00c0 00000000 		.word	_NumTasks
+ 535 00c4 00000000 		.word	.LC0
+ 536 00c8 00000000 		.word	_aTasks
+ 537              		.cfi_endproc
+ 538              	.LFE8:
+ 540              		.section	.text.SYSVIEW_UpdateTask,"ax",%progbits
+ 541              		.align	1
+ 542              		.global	SYSVIEW_UpdateTask
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 14
+
+
+ 543              		.syntax unified
+ 544              		.thumb
+ 545              		.thumb_func
+ 547              	SYSVIEW_UpdateTask:
+ 548              	.LFB9:
+ 200:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 201:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 202:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 203:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_UpdateTask()
+ 204:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 205:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 206:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Update a task in the internal list and record its information.
+ 207:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 208:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_UpdateTask(U32 TaskID, const char* OSTCBTaskName, INT8U OSTCBPrio, OS_STK* OSTCBStkBot
+ 549              		.loc 1 208 126
+ 550              		.cfi_startproc
+ 551              		@ args = 4, pretend = 0, frame = 24
+ 552              		@ frame_needed = 1, uses_anonymous_args = 0
+ 553 0000 80B5     		push	{r7, lr}
+ 554              	.LCFI30:
+ 555              		.cfi_def_cfa_offset 8
+ 556              		.cfi_offset 7, -8
+ 557              		.cfi_offset 14, -4
+ 558 0002 88B0     		sub	sp, sp, #32
+ 559              	.LCFI31:
+ 560              		.cfi_def_cfa_offset 40
+ 561 0004 02AF     		add	r7, sp, #8
+ 562              	.LCFI32:
+ 563              		.cfi_def_cfa 7, 32
+ 564 0006 F860     		str	r0, [r7, #12]
+ 565 0008 B960     		str	r1, [r7, #8]
+ 566 000a 3B60     		str	r3, [r7]
+ 567 000c 1346     		mov	r3, r2
+ 568 000e FB71     		strb	r3, [r7, #7]
+ 209:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   unsigned n;
+ 210:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 211:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   if (TaskID != (U32)OSTCBPrioTbl[OS_TASK_IDLE_PRIO]) {
+ 569              		.loc 1 211 34
+ 570 0010 304B     		ldr	r3, .L38
+ 571 0012 D3F8FC30 		ldr	r3, [r3, #252]
+ 572              		.loc 1 211 17
+ 573 0016 1A46     		mov	r2, r3
+ 574              		.loc 1 211 6
+ 575 0018 FB68     		ldr	r3, [r7, #12]
+ 576 001a 9342     		cmp	r3, r2
+ 577 001c 56D0     		beq	.L36
+ 212:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     for (n = 0; n < _NumTasks; n++) {
+ 578              		.loc 1 212 12
+ 579 001e 0023     		movs	r3, #0
+ 580 0020 7B61     		str	r3, [r7, #20]
+ 581              		.loc 1 212 5
+ 582 0022 0DE0     		b	.L31
+ 583              	.L34:
+ 213:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       if (_aTasks[n].TaskID == TaskID) {
+ 584              		.loc 1 213 21
+ 585 0024 2C49     		ldr	r1, .L38+4
+ 586 0026 7A69     		ldr	r2, [r7, #20]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 15
+
+
+ 587 0028 1346     		mov	r3, r2
+ 588 002a 9B00     		lsls	r3, r3, #2
+ 589 002c 1344     		add	r3, r3, r2
+ 590 002e 9B00     		lsls	r3, r3, #2
+ 591 0030 0B44     		add	r3, r3, r1
+ 592 0032 1B68     		ldr	r3, [r3]
+ 593              		.loc 1 213 10
+ 594 0034 FA68     		ldr	r2, [r7, #12]
+ 595 0036 9A42     		cmp	r2, r3
+ 596 0038 08D0     		beq	.L37
+ 212:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     for (n = 0; n < _NumTasks; n++) {
+ 597              		.loc 1 212 33 discriminator 2
+ 598 003a 7B69     		ldr	r3, [r7, #20]
+ 599 003c 0133     		adds	r3, r3, #1
+ 600 003e 7B61     		str	r3, [r7, #20]
+ 601              	.L31:
+ 212:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     for (n = 0; n < _NumTasks; n++) {
+ 602              		.loc 1 212 19 discriminator 1
+ 603 0040 264B     		ldr	r3, .L38+8
+ 604 0042 1B68     		ldr	r3, [r3]
+ 212:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     for (n = 0; n < _NumTasks; n++) {
+ 605              		.loc 1 212 5 discriminator 1
+ 606 0044 7A69     		ldr	r2, [r7, #20]
+ 607 0046 9A42     		cmp	r2, r3
+ 608 0048 ECD3     		bcc	.L34
+ 609 004a 00E0     		b	.L33
+ 610              	.L37:
+ 214:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****         break;
+ 611              		.loc 1 214 9
+ 612 004c 00BF     		nop
+ 613              	.L33:
+ 215:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       }
+ 216:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     }
+ 217:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     if (n < _NumTasks) {
+ 614              		.loc 1 217 11
+ 615 004e 234B     		ldr	r3, .L38+8
+ 616 0050 1B68     		ldr	r3, [r3]
+ 617              		.loc 1 217 8
+ 618 0052 7A69     		ldr	r2, [r7, #20]
+ 619 0054 9A42     		cmp	r2, r3
+ 620 0056 31D2     		bcs	.L35
+ 218:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       _aTasks[n].OSTCBTaskName  = OSTCBTaskName;
+ 621              		.loc 1 218 33
+ 622 0058 1F49     		ldr	r1, .L38+4
+ 623 005a 7A69     		ldr	r2, [r7, #20]
+ 624 005c 1346     		mov	r3, r2
+ 625 005e 9B00     		lsls	r3, r3, #2
+ 626 0060 1344     		add	r3, r3, r2
+ 627 0062 9B00     		lsls	r3, r3, #2
+ 628 0064 0B44     		add	r3, r3, r1
+ 629 0066 0433     		adds	r3, r3, #4
+ 630 0068 BA68     		ldr	r2, [r7, #8]
+ 631 006a 1A60     		str	r2, [r3]
+ 219:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       _aTasks[n].OSTCBPrio      = OSTCBPrio;
+ 632              		.loc 1 219 33
+ 633 006c 1A49     		ldr	r1, .L38+4
+ 634 006e 7A69     		ldr	r2, [r7, #20]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 16
+
+
+ 635 0070 1346     		mov	r3, r2
+ 636 0072 9B00     		lsls	r3, r3, #2
+ 637 0074 1344     		add	r3, r3, r2
+ 638 0076 9B00     		lsls	r3, r3, #2
+ 639 0078 0B44     		add	r3, r3, r1
+ 640 007a 0833     		adds	r3, r3, #8
+ 641 007c FA79     		ldrb	r2, [r7, #7]
+ 642 007e 1A70     		strb	r2, [r3]
+ 220:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       _aTasks[n].OSTCBStkBottom = OSTCBStkBottom;
+ 643              		.loc 1 220 33
+ 644 0080 1549     		ldr	r1, .L38+4
+ 645 0082 7A69     		ldr	r2, [r7, #20]
+ 646 0084 1346     		mov	r3, r2
+ 647 0086 9B00     		lsls	r3, r3, #2
+ 648 0088 1344     		add	r3, r3, r2
+ 649 008a 9B00     		lsls	r3, r3, #2
+ 650 008c 0B44     		add	r3, r3, r1
+ 651 008e 0C33     		adds	r3, r3, #12
+ 652 0090 3A68     		ldr	r2, [r7]
+ 653 0092 1A60     		str	r2, [r3]
+ 221:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       _aTasks[n].OSTCBStkSize   = OSTCBStkSize;
+ 654              		.loc 1 221 33
+ 655 0094 1049     		ldr	r1, .L38+4
+ 656 0096 7A69     		ldr	r2, [r7, #20]
+ 657 0098 1346     		mov	r3, r2
+ 658 009a 9B00     		lsls	r3, r3, #2
+ 659 009c 1344     		add	r3, r3, r2
+ 660 009e 9B00     		lsls	r3, r3, #2
+ 661 00a0 0B44     		add	r3, r3, r1
+ 662 00a2 1033     		adds	r3, r3, #16
+ 663 00a4 3A6A     		ldr	r2, [r7, #32]
+ 664 00a6 1A60     		str	r2, [r3]
+ 222:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 223:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       SYSVIEW_SendTaskInfo(TaskID, OSTCBTaskName, (unsigned)OSTCBPrio, (U32)OSTCBStkBottom, (unsign
+ 665              		.loc 1 223 7
+ 666 00a8 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 667 00aa 3968     		ldr	r1, [r7]
+ 668 00ac 3B6A     		ldr	r3, [r7, #32]
+ 669 00ae 0093     		str	r3, [sp]
+ 670 00b0 0B46     		mov	r3, r1
+ 671 00b2 B968     		ldr	r1, [r7, #8]
+ 672 00b4 F868     		ldr	r0, [r7, #12]
+ 673 00b6 FFF7FEFF 		bl	SYSVIEW_SendTaskInfo
+ 224:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     } else {
+ 225:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       SYSVIEW_AddTask(TaskID, OSTCBTaskName, OSTCBPrio, OSTCBStkBottom, OSTCBStkSize);
+ 226:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     }
+ 227:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ 228:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 674              		.loc 1 228 1
+ 675 00ba 07E0     		b	.L36
+ 676              	.L35:
+ 225:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     }
+ 677              		.loc 1 225 7
+ 678 00bc FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 679 00be 3B6A     		ldr	r3, [r7, #32]
+ 680 00c0 0093     		str	r3, [sp]
+ 681 00c2 3B68     		ldr	r3, [r7]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 17
+
+
+ 682 00c4 B968     		ldr	r1, [r7, #8]
+ 683 00c6 F868     		ldr	r0, [r7, #12]
+ 684 00c8 FFF7FEFF 		bl	SYSVIEW_AddTask
+ 685              	.L36:
+ 686              		.loc 1 228 1
+ 687 00cc 00BF     		nop
+ 688 00ce 1837     		adds	r7, r7, #24
+ 689              	.LCFI33:
+ 690              		.cfi_def_cfa_offset 8
+ 691 00d0 BD46     		mov	sp, r7
+ 692              	.LCFI34:
+ 693              		.cfi_def_cfa_register 13
+ 694              		@ sp needed
+ 695 00d2 80BD     		pop	{r7, pc}
+ 696              	.L39:
+ 697              		.align	2
+ 698              	.L38:
+ 699 00d4 00000000 		.word	OSTCBPrioTbl
+ 700 00d8 00000000 		.word	_aTasks
+ 701 00dc 00000000 		.word	_NumTasks
+ 702              		.cfi_endproc
+ 703              	.LFE9:
+ 705              		.section	.text.SYSVIEW_SendTaskInfo,"ax",%progbits
+ 706              		.align	1
+ 707              		.global	SYSVIEW_SendTaskInfo
+ 708              		.syntax unified
+ 709              		.thumb
+ 710              		.thumb_func
+ 712              	SYSVIEW_SendTaskInfo:
+ 713              	.LFB10:
+ 229:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 230:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 231:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 232:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_SendTaskInfo()
+ 233:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 234:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 235:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Record task information.
+ 236:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 237:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_SendTaskInfo(U32 TaskID, const char* sName, unsigned Prio, U32 StackBase, unsigned Sta
+ 714              		.loc 1 237 108
+ 715              		.cfi_startproc
+ 716              		@ args = 4, pretend = 0, frame = 40
+ 717              		@ frame_needed = 1, uses_anonymous_args = 0
+ 718 0000 80B5     		push	{r7, lr}
+ 719              	.LCFI35:
+ 720              		.cfi_def_cfa_offset 8
+ 721              		.cfi_offset 7, -8
+ 722              		.cfi_offset 14, -4
+ 723 0002 8AB0     		sub	sp, sp, #40
+ 724              	.LCFI36:
+ 725              		.cfi_def_cfa_offset 48
+ 726 0004 00AF     		add	r7, sp, #0
+ 727              	.LCFI37:
+ 728              		.cfi_def_cfa_register 7
+ 729 0006 F860     		str	r0, [r7, #12]
+ 730 0008 B960     		str	r1, [r7, #8]
+ 731 000a 7A60     		str	r2, [r7, #4]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 18
+
+
+ 732 000c 3B60     		str	r3, [r7]
+ 238:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   SEGGER_SYSVIEW_TASKINFO TaskInfo;
+ 239:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 240:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   //
+ 241:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   // Fill all elements with 0 to allow extending the structure in future version without breaking t
+ 242:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   //
+ 243:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   SYSVIEW_MEMSET(&TaskInfo, 0, sizeof(TaskInfo));
+ 733              		.loc 1 243 3
+ 734 000e 07F11003 		add	r3, r7, #16
+ 735 0012 1822     		movs	r2, #24
+ 736 0014 0021     		movs	r1, #0
+ 737 0016 1846     		mov	r0, r3
+ 738 0018 FFF7FEFF 		bl	memset
+ 244:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   TaskInfo.TaskID     = TaskID;
+ 739              		.loc 1 244 23
+ 740 001c FB68     		ldr	r3, [r7, #12]
+ 741 001e 3B61     		str	r3, [r7, #16]
+ 245:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   TaskInfo.sName      = sName;
+ 742              		.loc 1 245 23
+ 743 0020 BB68     		ldr	r3, [r7, #8]
+ 744 0022 7B61     		str	r3, [r7, #20]
+ 246:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   TaskInfo.Prio       = Prio;
+ 745              		.loc 1 246 23
+ 746 0024 7B68     		ldr	r3, [r7, #4]
+ 747 0026 BB61     		str	r3, [r7, #24]
+ 247:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   TaskInfo.StackBase  = StackBase;
+ 748              		.loc 1 247 23
+ 749 0028 3B68     		ldr	r3, [r7]
+ 750 002a FB61     		str	r3, [r7, #28]
+ 248:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   TaskInfo.StackSize  = StackSize;
+ 751              		.loc 1 248 23
+ 752 002c 3B6B     		ldr	r3, [r7, #48]
+ 753 002e 3B62     		str	r3, [r7, #32]
+ 249:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   SEGGER_SYSVIEW_SendTaskInfo(&TaskInfo);
+ 754              		.loc 1 249 3
+ 755 0030 07F11003 		add	r3, r7, #16
+ 756 0034 1846     		mov	r0, r3
+ 757 0036 FFF7FEFF 		bl	SEGGER_SYSVIEW_SendTaskInfo
+ 250:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 758              		.loc 1 250 1
+ 759 003a 00BF     		nop
+ 760 003c 2837     		adds	r7, r7, #40
+ 761              	.LCFI38:
+ 762              		.cfi_def_cfa_offset 8
+ 763 003e BD46     		mov	sp, r7
+ 764              	.LCFI39:
+ 765              		.cfi_def_cfa_register 13
+ 766              		@ sp needed
+ 767 0040 80BD     		pop	{r7, pc}
+ 768              		.cfi_endproc
+ 769              	.LFE10:
+ 771              		.section	.text.SYSVIEW_UpdateResource,"ax",%progbits
+ 772              		.align	1
+ 773              		.global	SYSVIEW_UpdateResource
+ 774              		.syntax unified
+ 775              		.thumb
+ 776              		.thumb_func
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 19
+
+
+ 778              	SYSVIEW_UpdateResource:
+ 779              	.LFB11:
+ 251:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 252:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 253:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 254:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 255:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_UpdateResource()
+ 256:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 257:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 258:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Update a kernel object in the internal list and record its information.
+ 259:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 260:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_UpdateResource(U32 EventID, const char* OSEventName) {
+ 780              		.loc 1 260 67
+ 781              		.cfi_startproc
+ 782              		@ args = 0, pretend = 0, frame = 16
+ 783              		@ frame_needed = 1, uses_anonymous_args = 0
+ 784 0000 80B5     		push	{r7, lr}
+ 785              	.LCFI40:
+ 786              		.cfi_def_cfa_offset 8
+ 787              		.cfi_offset 7, -8
+ 788              		.cfi_offset 14, -4
+ 789 0002 84B0     		sub	sp, sp, #16
+ 790              	.LCFI41:
+ 791              		.cfi_def_cfa_offset 24
+ 792 0004 00AF     		add	r7, sp, #0
+ 793              	.LCFI42:
+ 794              		.cfi_def_cfa_register 7
+ 795 0006 7860     		str	r0, [r7, #4]
+ 796 0008 3960     		str	r1, [r7]
+ 261:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   unsigned n;
+ 262:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 263:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   for (n = 0; n < _NumResources; n++) {
+ 797              		.loc 1 263 10
+ 798 000a 0023     		movs	r3, #0
+ 799 000c FB60     		str	r3, [r7, #12]
+ 800              		.loc 1 263 3
+ 801 000e 0DE0     		b	.L42
+ 802              	.L45:
+ 264:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       if (_aResources[n].ResourceId == EventID) {
+ 803              		.loc 1 264 25
+ 804 0010 1D49     		ldr	r1, .L49
+ 805 0012 FA68     		ldr	r2, [r7, #12]
+ 806 0014 1346     		mov	r3, r2
+ 807 0016 5B00     		lsls	r3, r3, #1
+ 808 0018 1344     		add	r3, r3, r2
+ 809 001a 9B00     		lsls	r3, r3, #2
+ 810 001c 0B44     		add	r3, r3, r1
+ 811 001e 1B68     		ldr	r3, [r3]
+ 812              		.loc 1 264 10
+ 813 0020 7A68     		ldr	r2, [r7, #4]
+ 814 0022 9A42     		cmp	r2, r3
+ 815 0024 08D0     		beq	.L47
+ 263:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       if (_aResources[n].ResourceId == EventID) {
+ 816              		.loc 1 263 35 discriminator 2
+ 817 0026 FB68     		ldr	r3, [r7, #12]
+ 818 0028 0133     		adds	r3, r3, #1
+ 819 002a FB60     		str	r3, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 20
+
+
+ 820              	.L42:
+ 263:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       if (_aResources[n].ResourceId == EventID) {
+ 821              		.loc 1 263 17 discriminator 1
+ 822 002c 174B     		ldr	r3, .L49+4
+ 823 002e 1B68     		ldr	r3, [r3]
+ 263:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       if (_aResources[n].ResourceId == EventID) {
+ 824              		.loc 1 263 3 discriminator 1
+ 825 0030 FA68     		ldr	r2, [r7, #12]
+ 826 0032 9A42     		cmp	r2, r3
+ 827 0034 ECD3     		bcc	.L45
+ 828 0036 00E0     		b	.L44
+ 829              	.L47:
+ 265:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****         break;
+ 830              		.loc 1 265 9
+ 831 0038 00BF     		nop
+ 832              	.L44:
+ 266:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       }
+ 267:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     }
+ 268:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     if (n < _NumResources) {
+ 833              		.loc 1 268 11
+ 834 003a 144B     		ldr	r3, .L49+4
+ 835 003c 1B68     		ldr	r3, [r3]
+ 836              		.loc 1 268 8
+ 837 003e FA68     		ldr	r2, [r7, #12]
+ 838 0040 9A42     		cmp	r2, r3
+ 839 0042 1DD2     		bcs	.L48
+ 269:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       _aResources[n].sResource  = OSEventName;
+ 840              		.loc 1 269 33
+ 841 0044 1049     		ldr	r1, .L49
+ 842 0046 FA68     		ldr	r2, [r7, #12]
+ 843 0048 1346     		mov	r3, r2
+ 844 004a 5B00     		lsls	r3, r3, #1
+ 845 004c 1344     		add	r3, r3, r2
+ 846 004e 9B00     		lsls	r3, r3, #2
+ 847 0050 0B44     		add	r3, r3, r1
+ 848 0052 0433     		adds	r3, r3, #4
+ 849 0054 3A68     		ldr	r2, [r7]
+ 850 0056 1A60     		str	r2, [r3]
+ 270:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 271:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       SEGGER_SYSVIEW_NameResource(_aResources[n].ResourceId, _aResources[n].sResource);
+ 851              		.loc 1 271 7
+ 852 0058 0B49     		ldr	r1, .L49
+ 853 005a FA68     		ldr	r2, [r7, #12]
+ 854 005c 1346     		mov	r3, r2
+ 855 005e 5B00     		lsls	r3, r3, #1
+ 856 0060 1344     		add	r3, r3, r2
+ 857 0062 9B00     		lsls	r3, r3, #2
+ 858 0064 0B44     		add	r3, r3, r1
+ 859 0066 1868     		ldr	r0, [r3]
+ 860 0068 0749     		ldr	r1, .L49
+ 861 006a FA68     		ldr	r2, [r7, #12]
+ 862 006c 1346     		mov	r3, r2
+ 863 006e 5B00     		lsls	r3, r3, #1
+ 864 0070 1344     		add	r3, r3, r2
+ 865 0072 9B00     		lsls	r3, r3, #2
+ 866 0074 0B44     		add	r3, r3, r1
+ 867 0076 0433     		adds	r3, r3, #4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 21
+
+
+ 868 0078 1B68     		ldr	r3, [r3]
+ 869 007a 1946     		mov	r1, r3
+ 870 007c FFF7FEFF 		bl	SEGGER_SYSVIEW_NameResource
+ 871              	.L48:
+ 272:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     } 
+ 273:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 872              		.loc 1 273 1
+ 873 0080 00BF     		nop
+ 874 0082 1037     		adds	r7, r7, #16
+ 875              	.LCFI43:
+ 876              		.cfi_def_cfa_offset 8
+ 877 0084 BD46     		mov	sp, r7
+ 878              	.LCFI44:
+ 879              		.cfi_def_cfa_register 13
+ 880              		@ sp needed
+ 881 0086 80BD     		pop	{r7, pc}
+ 882              	.L50:
+ 883              		.align	2
+ 884              	.L49:
+ 885 0088 00000000 		.word	_aResources
+ 886 008c 00000000 		.word	_NumResources
+ 887              		.cfi_endproc
+ 888              	.LFE11:
+ 890              		.section	.text.SYSVIEW_RecordU32x4,"ax",%progbits
+ 891              		.align	1
+ 892              		.global	SYSVIEW_RecordU32x4
+ 893              		.syntax unified
+ 894              		.thumb
+ 895              		.thumb_func
+ 897              	SYSVIEW_RecordU32x4:
+ 898              	.LFB12:
+ 274:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 275:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 276:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 277:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 278:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_RecordU32x4()
+ 279:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 280:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 281:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Record an event with 4 parameters
+ 282:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 283:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_RecordU32x4(unsigned Id, U32 Para0, U32 Para1, U32 Para2, U32 Para3) {
+ 899              		.loc 1 283 83
+ 900              		.cfi_startproc
+ 901              		@ args = 4, pretend = 0, frame = 56
+ 902              		@ frame_needed = 1, uses_anonymous_args = 0
+ 903 0000 80B5     		push	{r7, lr}
+ 904              	.LCFI45:
+ 905              		.cfi_def_cfa_offset 8
+ 906              		.cfi_offset 7, -8
+ 907              		.cfi_offset 14, -4
+ 908 0002 8EB0     		sub	sp, sp, #56
+ 909              	.LCFI46:
+ 910              		.cfi_def_cfa_offset 64
+ 911 0004 00AF     		add	r7, sp, #0
+ 912              	.LCFI47:
+ 913              		.cfi_def_cfa_register 7
+ 914 0006 F860     		str	r0, [r7, #12]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 22
+
+
+ 915 0008 B960     		str	r1, [r7, #8]
+ 916 000a 7A60     		str	r2, [r7, #4]
+ 917 000c 3B60     		str	r3, [r7]
+ 284:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       U8  aPacket[SEGGER_SYSVIEW_INFO_SIZE + 4 * SEGGER_SYSVIEW_QUANTA_U32];
+ 285:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       U8* pPayload;
+ 286:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       //
+ 287:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_PREPARE_PACKET(aPacket);                // Prepare the packet for S
+ 918              		.loc 1 287 16
+ 919 000e 07F11403 		add	r3, r7, #20
+ 920 0012 0433     		adds	r3, r3, #4
+ 921 0014 7B63     		str	r3, [r7, #52]
+ 288:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para0);             // Add the first parameter 
+ 922              		.loc 1 288 18
+ 923 0016 B968     		ldr	r1, [r7, #8]
+ 924 0018 786B     		ldr	r0, [r7, #52]
+ 925 001a FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 926 001e 7863     		str	r0, [r7, #52]
+ 289:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para1);             // Add the second parameter
+ 927              		.loc 1 289 18
+ 928 0020 7968     		ldr	r1, [r7, #4]
+ 929 0022 786B     		ldr	r0, [r7, #52]
+ 930 0024 FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 931 0028 7863     		str	r0, [r7, #52]
+ 290:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para2);             // Add the third parameter 
+ 932              		.loc 1 290 18
+ 933 002a 3968     		ldr	r1, [r7]
+ 934 002c 786B     		ldr	r0, [r7, #52]
+ 935 002e FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 936 0032 7863     		str	r0, [r7, #52]
+ 291:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para3);             // Add the fourth parameter
+ 937              		.loc 1 291 18
+ 938 0034 396C     		ldr	r1, [r7, #64]
+ 939 0036 786B     		ldr	r0, [r7, #52]
+ 940 0038 FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 941 003c 7863     		str	r0, [r7, #52]
+ 292:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       //
+ 293:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       SEGGER_SYSVIEW_SendPacket(&aPacket[0], pPayload, Id);             // Send the packet
+ 942              		.loc 1 293 7
+ 943 003e 07F11403 		add	r3, r7, #20
+ 944 0042 FA68     		ldr	r2, [r7, #12]
+ 945 0044 796B     		ldr	r1, [r7, #52]
+ 946 0046 1846     		mov	r0, r3
+ 947 0048 FFF7FEFF 		bl	SEGGER_SYSVIEW_SendPacket
+ 294:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 948              		.loc 1 294 1
+ 949 004c 00BF     		nop
+ 950 004e 3837     		adds	r7, r7, #56
+ 951              	.LCFI48:
+ 952              		.cfi_def_cfa_offset 8
+ 953 0050 BD46     		mov	sp, r7
+ 954              	.LCFI49:
+ 955              		.cfi_def_cfa_register 13
+ 956              		@ sp needed
+ 957 0052 80BD     		pop	{r7, pc}
+ 958              		.cfi_endproc
+ 959              	.LFE12:
+ 961              		.section	.text.SYSVIEW_RecordU32x5,"ax",%progbits
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 23
+
+
+ 962              		.align	1
+ 963              		.global	SYSVIEW_RecordU32x5
+ 964              		.syntax unified
+ 965              		.thumb
+ 966              		.thumb_func
+ 968              	SYSVIEW_RecordU32x5:
+ 969              	.LFB13:
+ 295:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 296:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 297:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 298:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_RecordU32x5()
+ 299:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 300:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 301:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Record an event with 5 parameters
+ 302:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 303:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_RecordU32x5(unsigned Id, U32 Para0, U32 Para1, U32 Para2, U32 Para3, U32 Para4) {
+ 970              		.loc 1 303 94
+ 971              		.cfi_startproc
+ 972              		@ args = 8, pretend = 0, frame = 56
+ 973              		@ frame_needed = 1, uses_anonymous_args = 0
+ 974 0000 80B5     		push	{r7, lr}
+ 975              	.LCFI50:
+ 976              		.cfi_def_cfa_offset 8
+ 977              		.cfi_offset 7, -8
+ 978              		.cfi_offset 14, -4
+ 979 0002 8EB0     		sub	sp, sp, #56
+ 980              	.LCFI51:
+ 981              		.cfi_def_cfa_offset 64
+ 982 0004 00AF     		add	r7, sp, #0
+ 983              	.LCFI52:
+ 984              		.cfi_def_cfa_register 7
+ 985 0006 F860     		str	r0, [r7, #12]
+ 986 0008 B960     		str	r1, [r7, #8]
+ 987 000a 7A60     		str	r2, [r7, #4]
+ 988 000c 3B60     		str	r3, [r7]
+ 304:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       U8  aPacket[SEGGER_SYSVIEW_INFO_SIZE + 5 * SEGGER_SYSVIEW_QUANTA_U32];
+ 305:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       U8* pPayload;
+ 306:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       //
+ 307:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_PREPARE_PACKET(aPacket);                // Prepare the packet for S
+ 989              		.loc 1 307 16
+ 990 000e 07F11003 		add	r3, r7, #16
+ 991 0012 0433     		adds	r3, r3, #4
+ 992 0014 7B63     		str	r3, [r7, #52]
+ 308:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para0);             // Add the first parameter 
+ 993              		.loc 1 308 18
+ 994 0016 B968     		ldr	r1, [r7, #8]
+ 995 0018 786B     		ldr	r0, [r7, #52]
+ 996 001a FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 997 001e 7863     		str	r0, [r7, #52]
+ 309:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para1);             // Add the second parameter
+ 998              		.loc 1 309 18
+ 999 0020 7968     		ldr	r1, [r7, #4]
+ 1000 0022 786B     		ldr	r0, [r7, #52]
+ 1001 0024 FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 1002 0028 7863     		str	r0, [r7, #52]
+ 310:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para2);             // Add the third parameter 
+ 1003              		.loc 1 310 18
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 24
+
+
+ 1004 002a 3968     		ldr	r1, [r7]
+ 1005 002c 786B     		ldr	r0, [r7, #52]
+ 1006 002e FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 1007 0032 7863     		str	r0, [r7, #52]
+ 311:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para3);             // Add the fourth parameter
+ 1008              		.loc 1 311 18
+ 1009 0034 396C     		ldr	r1, [r7, #64]
+ 1010 0036 786B     		ldr	r0, [r7, #52]
+ 1011 0038 FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 1012 003c 7863     		str	r0, [r7, #52]
+ 312:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       pPayload = SEGGER_SYSVIEW_EncodeU32(pPayload, Para4);             // Add the fifth parameter 
+ 1013              		.loc 1 312 18
+ 1014 003e 796C     		ldr	r1, [r7, #68]
+ 1015 0040 786B     		ldr	r0, [r7, #52]
+ 1016 0042 FFF7FEFF 		bl	SEGGER_SYSVIEW_EncodeU32
+ 1017 0046 7863     		str	r0, [r7, #52]
+ 313:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       //
+ 314:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       SEGGER_SYSVIEW_SendPacket(&aPacket[0], pPayload, Id);             // Send the packet
+ 1018              		.loc 1 314 7
+ 1019 0048 07F11003 		add	r3, r7, #16
+ 1020 004c FA68     		ldr	r2, [r7, #12]
+ 1021 004e 796B     		ldr	r1, [r7, #52]
+ 1022 0050 1846     		mov	r0, r3
+ 1023 0052 FFF7FEFF 		bl	SEGGER_SYSVIEW_SendPacket
+ 315:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 1024              		.loc 1 315 1
+ 1025 0056 00BF     		nop
+ 1026 0058 3837     		adds	r7, r7, #56
+ 1027              	.LCFI53:
+ 1028              		.cfi_def_cfa_offset 8
+ 1029 005a BD46     		mov	sp, r7
+ 1030              	.LCFI54:
+ 1031              		.cfi_def_cfa_register 13
+ 1032              		@ sp needed
+ 1033 005c 80BD     		pop	{r7, pc}
+ 1034              		.cfi_endproc
+ 1035              	.LFE13:
+ 1037              		.section	.rodata
+ 1038              		.align	2
+ 1039              	.LC1:
+ 1040 0050 53595354 		.ascii	"SYSTEMVIEW: Could not register resource name. Maxim"
+ 1040      454D5649 
+ 1040      45573A20 
+ 1040      436F756C 
+ 1040      64206E6F 
+ 1041 0083 756D206E 		.ascii	"um number of resources reached.\000"
+ 1041      756D6265 
+ 1041      72206F66 
+ 1041      20726573 
+ 1041      6F757263 
+ 1042              		.section	.text.SYSVIEW_RecordU32Register,"ax",%progbits
+ 1043              		.align	1
+ 1044              		.global	SYSVIEW_RecordU32Register
+ 1045              		.syntax unified
+ 1046              		.thumb
+ 1047              		.thumb_func
+ 1049              	SYSVIEW_RecordU32Register:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 25
+
+
+ 1050              	.LFB14:
+ 316:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** /*********************************************************************
+ 317:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 318:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *       SYSVIEW_RecordU32Register()
+ 319:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *
+ 320:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *  Function description
+ 321:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    Record an event with 1 parameter and register the resource to be 
+ 322:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** *    sent in the system description.
+ 323:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** */
+ 324:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_RecordU32Register(unsigned EventId, U32 ResourceId, const char* sResource) {  
+ 1051              		.loc 1 324 89
+ 1052              		.cfi_startproc
+ 1053              		@ args = 0, pretend = 0, frame = 16
+ 1054              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1055 0000 80B5     		push	{r7, lr}
+ 1056              	.LCFI55:
+ 1057              		.cfi_def_cfa_offset 8
+ 1058              		.cfi_offset 7, -8
+ 1059              		.cfi_offset 14, -4
+ 1060 0002 84B0     		sub	sp, sp, #16
+ 1061              	.LCFI56:
+ 1062              		.cfi_def_cfa_offset 24
+ 1063 0004 00AF     		add	r7, sp, #0
+ 1064              	.LCFI57:
+ 1065              		.cfi_def_cfa_register 7
+ 1066 0006 F860     		str	r0, [r7, #12]
+ 1067 0008 B960     		str	r1, [r7, #8]
+ 1068 000a 7A60     		str	r2, [r7, #4]
+ 325:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   SEGGER_SYSVIEW_NameResource(ResourceId, sResource);
+ 1069              		.loc 1 325 3
+ 1070 000c 7968     		ldr	r1, [r7, #4]
+ 1071 000e B868     		ldr	r0, [r7, #8]
+ 1072 0010 FFF7FEFF 		bl	SEGGER_SYSVIEW_NameResource
+ 326:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   SEGGER_SYSVIEW_RecordU32(EventId, SEGGER_SYSVIEW_ShrinkId(ResourceId));
+ 1073              		.loc 1 326 3
+ 1074 0014 B868     		ldr	r0, [r7, #8]
+ 1075 0016 FFF7FEFF 		bl	SEGGER_SYSVIEW_ShrinkId
+ 1076 001a 0346     		mov	r3, r0
+ 1077 001c 1946     		mov	r1, r3
+ 1078 001e F868     		ldr	r0, [r7, #12]
+ 1079 0020 FFF7FEFF 		bl	SEGGER_SYSVIEW_RecordU32
+ 327:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #if OS_CFG_TRACE_MAX_RESOURCES > 0
+ 328:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   if (_NumResources >= OS_CFG_TRACE_MAX_RESOURCES) {
+ 1080              		.loc 1 328 21
+ 1081 0024 174B     		ldr	r3, .L56
+ 1082 0026 1B68     		ldr	r3, [r3]
+ 1083              		.loc 1 328 6
+ 1084 0028 7F2B     		cmp	r3, #127
+ 1085 002a 03D9     		bls	.L54
+ 329:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     SEGGER_SYSVIEW_Warn("SYSTEMVIEW: Could not register resource name. Maximum number of resources 
+ 1086              		.loc 1 329 5
+ 1087 002c 1648     		ldr	r0, .L56+4
+ 1088 002e FFF7FEFF 		bl	SEGGER_SYSVIEW_Warn
+ 330:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     return;
+ 1089              		.loc 1 330 5
+ 1090 0032 24E0     		b	.L53
+ 1091              	.L54:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 26
+
+
+ 331:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ 332:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 333:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   _aResources[_NumResources].ResourceId = ResourceId;
+ 1092              		.loc 1 333 29
+ 1093 0034 134B     		ldr	r3, .L56
+ 1094 0036 1A68     		ldr	r2, [r3]
+ 1095              		.loc 1 333 41
+ 1096 0038 1449     		ldr	r1, .L56+8
+ 1097 003a 1346     		mov	r3, r2
+ 1098 003c 5B00     		lsls	r3, r3, #1
+ 1099 003e 1344     		add	r3, r3, r2
+ 1100 0040 9B00     		lsls	r3, r3, #2
+ 1101 0042 0B44     		add	r3, r3, r1
+ 1102 0044 BA68     		ldr	r2, [r7, #8]
+ 1103 0046 1A60     		str	r2, [r3]
+ 334:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   _aResources[_NumResources].sResource  = sResource;
+ 1104              		.loc 1 334 29
+ 1105 0048 0E4B     		ldr	r3, .L56
+ 1106 004a 1A68     		ldr	r2, [r3]
+ 1107              		.loc 1 334 41
+ 1108 004c 0F49     		ldr	r1, .L56+8
+ 1109 004e 1346     		mov	r3, r2
+ 1110 0050 5B00     		lsls	r3, r3, #1
+ 1111 0052 1344     		add	r3, r3, r2
+ 1112 0054 9B00     		lsls	r3, r3, #2
+ 1113 0056 0B44     		add	r3, r3, r1
+ 1114 0058 0433     		adds	r3, r3, #4
+ 1115 005a 7A68     		ldr	r2, [r7, #4]
+ 1116 005c 1A60     		str	r2, [r3]
+ 335:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   _aResources[_NumResources].Registered = 0;
+ 1117              		.loc 1 335 29
+ 1118 005e 094B     		ldr	r3, .L56
+ 1119 0060 1A68     		ldr	r2, [r3]
+ 1120              		.loc 1 335 41
+ 1121 0062 0A49     		ldr	r1, .L56+8
+ 1122 0064 1346     		mov	r3, r2
+ 1123 0066 5B00     		lsls	r3, r3, #1
+ 1124 0068 1344     		add	r3, r3, r2
+ 1125 006a 9B00     		lsls	r3, r3, #2
+ 1126 006c 0B44     		add	r3, r3, r1
+ 1127 006e 0833     		adds	r3, r3, #8
+ 1128 0070 0022     		movs	r2, #0
+ 1129 0072 1A60     		str	r2, [r3]
+ 336:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 337:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   _NumResources++;
+ 1130              		.loc 1 337 16
+ 1131 0074 034B     		ldr	r3, .L56
+ 1132 0076 1B68     		ldr	r3, [r3]
+ 1133 0078 0133     		adds	r3, r3, #1
+ 1134 007a 024A     		ldr	r2, .L56
+ 1135 007c 1360     		str	r3, [r2]
+ 1136              	.L53:
+ 338:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #endif
+ 339:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 1137              		.loc 1 339 1
+ 1138 007e 1037     		adds	r7, r7, #16
+ 1139              	.LCFI58:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 27
+
+
+ 1140              		.cfi_def_cfa_offset 8
+ 1141 0080 BD46     		mov	sp, r7
+ 1142              	.LCFI59:
+ 1143              		.cfi_def_cfa_register 13
+ 1144              		@ sp needed
+ 1145 0082 80BD     		pop	{r7, pc}
+ 1146              	.L57:
+ 1147              		.align	2
+ 1148              	.L56:
+ 1149 0084 00000000 		.word	_NumResources
+ 1150 0088 50000000 		.word	.LC1
+ 1151 008c 00000000 		.word	_aResources
+ 1152              		.cfi_endproc
+ 1153              	.LFE14:
+ 1155              		.section	.text.SYSVIEW_SendResourceList,"ax",%progbits
+ 1156              		.align	1
+ 1157              		.global	SYSVIEW_SendResourceList
+ 1158              		.syntax unified
+ 1159              		.thumb
+ 1160              		.thumb_func
+ 1162              	SYSVIEW_SendResourceList:
+ 1163              	.LFB15:
+ 340:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 341:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** void SYSVIEW_SendResourceList(void) {
+ 1164              		.loc 1 341 37
+ 1165              		.cfi_startproc
+ 1166              		@ args = 0, pretend = 0, frame = 8
+ 1167              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1168 0000 80B5     		push	{r7, lr}
+ 1169              	.LCFI60:
+ 1170              		.cfi_def_cfa_offset 8
+ 1171              		.cfi_offset 7, -8
+ 1172              		.cfi_offset 14, -4
+ 1173 0002 82B0     		sub	sp, sp, #8
+ 1174              	.LCFI61:
+ 1175              		.cfi_def_cfa_offset 16
+ 1176 0004 00AF     		add	r7, sp, #0
+ 1177              	.LCFI62:
+ 1178              		.cfi_def_cfa_register 7
+ 342:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #if OS_CFG_TRACE_MAX_RESOURCES > 0
+ 343:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   unsigned int n;
+ 344:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** 
+ 345:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   for (n = 0; n < _NumResources; n++) {
+ 1179              		.loc 1 345 10
+ 1180 0006 0023     		movs	r3, #0
+ 1181 0008 7B60     		str	r3, [r7, #4]
+ 1182              		.loc 1 345 3
+ 1183 000a 2BE0     		b	.L59
+ 1184              	.L61:
+ 346:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     if (_aResources[n].Registered == 0) {
+ 1185              		.loc 1 346 23
+ 1186 000c 1A49     		ldr	r1, .L62
+ 1187 000e 7A68     		ldr	r2, [r7, #4]
+ 1188 0010 1346     		mov	r3, r2
+ 1189 0012 5B00     		lsls	r3, r3, #1
+ 1190 0014 1344     		add	r3, r3, r2
+ 1191 0016 9B00     		lsls	r3, r3, #2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 28
+
+
+ 1192 0018 0B44     		add	r3, r3, r1
+ 1193 001a 0833     		adds	r3, r3, #8
+ 1194 001c 1B68     		ldr	r3, [r3]
+ 1195              		.loc 1 346 8
+ 1196 001e 002B     		cmp	r3, #0
+ 1197 0020 1DD1     		bne	.L60
+ 347:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       SEGGER_SYSVIEW_NameResource(_aResources[n].ResourceId, _aResources[n].sResource);
+ 1198              		.loc 1 347 7
+ 1199 0022 1549     		ldr	r1, .L62
+ 1200 0024 7A68     		ldr	r2, [r7, #4]
+ 1201 0026 1346     		mov	r3, r2
+ 1202 0028 5B00     		lsls	r3, r3, #1
+ 1203 002a 1344     		add	r3, r3, r2
+ 1204 002c 9B00     		lsls	r3, r3, #2
+ 1205 002e 0B44     		add	r3, r3, r1
+ 1206 0030 1868     		ldr	r0, [r3]
+ 1207 0032 1149     		ldr	r1, .L62
+ 1208 0034 7A68     		ldr	r2, [r7, #4]
+ 1209 0036 1346     		mov	r3, r2
+ 1210 0038 5B00     		lsls	r3, r3, #1
+ 1211 003a 1344     		add	r3, r3, r2
+ 1212 003c 9B00     		lsls	r3, r3, #2
+ 1213 003e 0B44     		add	r3, r3, r1
+ 1214 0040 0433     		adds	r3, r3, #4
+ 1215 0042 1B68     		ldr	r3, [r3]
+ 1216 0044 1946     		mov	r1, r3
+ 1217 0046 FFF7FEFF 		bl	SEGGER_SYSVIEW_NameResource
+ 348:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****       _aResources[n].Registered = 1;
+ 1218              		.loc 1 348 33
+ 1219 004a 0B49     		ldr	r1, .L62
+ 1220 004c 7A68     		ldr	r2, [r7, #4]
+ 1221 004e 1346     		mov	r3, r2
+ 1222 0050 5B00     		lsls	r3, r3, #1
+ 1223 0052 1344     		add	r3, r3, r2
+ 1224 0054 9B00     		lsls	r3, r3, #2
+ 1225 0056 0B44     		add	r3, r3, r1
+ 1226 0058 0833     		adds	r3, r3, #8
+ 1227 005a 0122     		movs	r2, #1
+ 1228 005c 1A60     		str	r2, [r3]
+ 1229              	.L60:
+ 345:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     if (_aResources[n].Registered == 0) {
+ 1230              		.loc 1 345 35 discriminator 2
+ 1231 005e 7B68     		ldr	r3, [r7, #4]
+ 1232 0060 0133     		adds	r3, r3, #1
+ 1233 0062 7B60     		str	r3, [r7, #4]
+ 1234              	.L59:
+ 345:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     if (_aResources[n].Registered == 0) {
+ 1235              		.loc 1 345 17 discriminator 1
+ 1236 0064 054B     		ldr	r3, .L62+4
+ 1237 0066 1B68     		ldr	r3, [r3]
+ 345:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     if (_aResources[n].Registered == 0) {
+ 1238              		.loc 1 345 3 discriminator 1
+ 1239 0068 7A68     		ldr	r2, [r7, #4]
+ 1240 006a 9A42     		cmp	r2, r3
+ 1241 006c CED3     		bcc	.L61
+ 349:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****     }
+ 350:./SystemView/SEGGER_SYSVIEW_uCOSII.c ****   }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 29
+
+
+ 351:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** #endif
+ 352:./SystemView/SEGGER_SYSVIEW_uCOSII.c **** }
+ 1242              		.loc 1 352 1
+ 1243 006e 00BF     		nop
+ 1244 0070 00BF     		nop
+ 1245 0072 0837     		adds	r7, r7, #8
+ 1246              	.LCFI63:
+ 1247              		.cfi_def_cfa_offset 8
+ 1248 0074 BD46     		mov	sp, r7
+ 1249              	.LCFI64:
+ 1250              		.cfi_def_cfa_register 13
+ 1251              		@ sp needed
+ 1252 0076 80BD     		pop	{r7, pc}
+ 1253              	.L63:
+ 1254              		.align	2
+ 1255              	.L62:
+ 1256 0078 00000000 		.word	_aResources
+ 1257 007c 00000000 		.word	_NumResources
+ 1258              		.cfi_endproc
+ 1259              	.LFE15:
+ 1261              		.global	SYSVIEW_X_OS_TraceAPI
+ 1262              		.section	.rodata.SYSVIEW_X_OS_TraceAPI,"a"
+ 1263              		.align	2
+ 1266              	SYSVIEW_X_OS_TraceAPI:
+ 1267 0000 00000000 		.word	_cbGetTime
+ 1268 0004 00000000 		.word	_cbSendTaskList
+ 1269              		.text
+ 1270              	.Letext0:
+ 1271              		.file 2 "./SystemView/SEGGER_SYSVIEW.h"
+ 1272              		.file 3 "./ucOSII/Port/os_cpu.h"
+ 1273              		.file 4 "./ucOSII/Core/ucos_ii.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 30
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 SEGGER_SYSVIEW_uCOSII.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:20     .bss._aTasks:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:23     .bss._aTasks:0000000000000000 _aTasks
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:26     .bss._NumTasks:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:29     .bss._NumTasks:0000000000000000 _NumTasks
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:32     .bss._aResources:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:35     .bss._aResources:0000000000000000 _aResources
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:38     .bss._NumResources:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:41     .bss._NumResources:0000000000000000 _NumResources
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:44     .text._cbSendTaskList:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:49     .text._cbSendTaskList:0000000000000000 _cbSendTaskList
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:712    .text.SYSVIEW_SendTaskInfo:0000000000000000 SYSVIEW_SendTaskInfo
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:159    .text._cbSendTaskList:000000000000008c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:165    .text._cbGetTime:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:170    .text._cbGetTime:0000000000000000 _cbGetTime
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:216    .text.SYSVIEW_TaskReady:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:222    .text.SYSVIEW_TaskReady:0000000000000000 SYSVIEW_TaskReady
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:266    .text.SYSVIEW_TaskReady:0000000000000024 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:271    .text.SYSVIEW_TaskSwitchedIn:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:277    .text.SYSVIEW_TaskSwitchedIn:0000000000000000 SYSVIEW_TaskSwitchedIn
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:326    .text.SYSVIEW_TaskSwitchedIn:000000000000002c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:331    .text.SYSVIEW_TaskSuspend:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:337    .text.SYSVIEW_TaskSuspend:0000000000000000 SYSVIEW_TaskSuspend
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:382    .text.SYSVIEW_TaskSuspend:0000000000000028 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:387    .rodata:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:392    .text.SYSVIEW_AddTask:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:398    .text.SYSVIEW_AddTask:0000000000000000 SYSVIEW_AddTask
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:533    .text.SYSVIEW_AddTask:00000000000000bc $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:541    .text.SYSVIEW_UpdateTask:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:547    .text.SYSVIEW_UpdateTask:0000000000000000 SYSVIEW_UpdateTask
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:699    .text.SYSVIEW_UpdateTask:00000000000000d4 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:706    .text.SYSVIEW_SendTaskInfo:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:772    .text.SYSVIEW_UpdateResource:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:778    .text.SYSVIEW_UpdateResource:0000000000000000 SYSVIEW_UpdateResource
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:885    .text.SYSVIEW_UpdateResource:0000000000000088 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:891    .text.SYSVIEW_RecordU32x4:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:897    .text.SYSVIEW_RecordU32x4:0000000000000000 SYSVIEW_RecordU32x4
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:962    .text.SYSVIEW_RecordU32x5:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:968    .text.SYSVIEW_RecordU32x5:0000000000000000 SYSVIEW_RecordU32x5
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:1043   .text.SYSVIEW_RecordU32Register:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:1049   .text.SYSVIEW_RecordU32Register:0000000000000000 SYSVIEW_RecordU32Register
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:1149   .text.SYSVIEW_RecordU32Register:0000000000000084 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:1156   .text.SYSVIEW_SendResourceList:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:1162   .text.SYSVIEW_SendResourceList:0000000000000000 SYSVIEW_SendResourceList
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:1256   .text.SYSVIEW_SendResourceList:0000000000000078 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:1266   .rodata.SYSVIEW_X_OS_TraceAPI:0000000000000000 SYSVIEW_X_OS_TraceAPI
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s:1263   .rodata.SYSVIEW_X_OS_TraceAPI:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+OSTimeGet
+SEGGER_SYSVIEW_OnTaskStartReady
+OSTCBPrioTbl
+SEGGER_SYSVIEW_OnTaskStartExec
+SEGGER_SYSVIEW_OnIdle
+SEGGER_SYSVIEW_OnTaskStopReady
+SEGGER_SYSVIEW_Warn
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccUwX3hO.s 			page 31
+
+
+memset
+SEGGER_SYSVIEW_SendTaskInfo
+SEGGER_SYSVIEW_NameResource
+SEGGER_SYSVIEW_EncodeU32
+SEGGER_SYSVIEW_SendPacket
+SEGGER_SYSVIEW_ShrinkId
+SEGGER_SYSVIEW_RecordU32

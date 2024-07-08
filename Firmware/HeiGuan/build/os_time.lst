@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
   28:./ucOSII/Core/os_time.c **** #ifndef  OS_TIME_C
   29:./ucOSII/Core/os_time.c **** #define  OS_TIME_C
   30:./ucOSII/Core/os_time.c **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 2
 
 
   31:./ucOSII/Core/os_time.c **** #define  MICRIUM_SOURCE
@@ -113,30 +113,30 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
   61:./ucOSII/Core/os_time.c **** 
   62:./ucOSII/Core/os_time.c ****     if (OSIntNesting > 0u) {                     /* See if trying to call from an ISR              
   48              		.loc 1 62 22
-  49 000c 214B     		ldr	r3, .L8
+  49 000c 234B     		ldr	r3, .L8
   50 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
   51              		.loc 1 62 8
   52 0010 002B     		cmp	r3, #0
-  53 0012 38D1     		bne	.L6
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 3
+  53 0012 3DD1     		bne	.L6
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 3
 
 
   63:./ucOSII/Core/os_time.c ****         return;
   64:./ucOSII/Core/os_time.c ****     }
   65:./ucOSII/Core/os_time.c ****     if (OSLockNesting > 0u) {                    /* See if called with scheduler locked            
   54              		.loc 1 65 23
-  55 0014 204B     		ldr	r3, .L8+4
+  55 0014 224B     		ldr	r3, .L8+4
   56 0016 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
   57              		.loc 1 65 8
   58 0018 002B     		cmp	r3, #0
-  59 001a 36D1     		bne	.L7
+  59 001a 3BD1     		bne	.L7
   66:./ucOSII/Core/os_time.c ****         return;
   67:./ucOSII/Core/os_time.c ****     }
   68:./ucOSII/Core/os_time.c ****     if (ticks > 0u) {                            /* 0 means no delay!                              
   60              		.loc 1 68 8
   61 001c 7B68     		ldr	r3, [r7, #4]
   62 001e 002B     		cmp	r3, #0
-  63 0020 34D0     		beq	.L1
+  63 0020 39D0     		beq	.L1
   69:./ucOSII/Core/os_time.c ****         OS_ENTER_CRITICAL();
   64              		.loc 1 69 9
   65 0022 4020     		movs	r0, #64
@@ -144,7 +144,7 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
   67 0028 F860     		str	r0, [r7, #12]
   70:./ucOSII/Core/os_time.c ****         y            =  OSTCBCur->OSTCBY;        /* Delay current task                             
   68              		.loc 1 70 33
-  69 002a 1C4B     		ldr	r3, .L8+8
+  69 002a 1E4B     		ldr	r3, .L8+8
   70 002c 1B68     		ldr	r3, [r3]
   71              		.loc 1 70 22
   72 002e 93F83C30 		ldrb	r3, [r3, #60]
@@ -152,10 +152,10 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
   71:./ucOSII/Core/os_time.c ****         OSRdyTbl[y] &= (OS_PRIO)~OSTCBCur->OSTCBBitX;
   74              		.loc 1 71 21
   75 0034 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
-  76 0036 1A4A     		ldr	r2, .L8+12
+  76 0036 1C4A     		ldr	r2, .L8+12
   77 0038 D15C     		ldrb	r1, [r2, r3]	@ zero_extendqisi2
   78              		.loc 1 71 42
-  79 003a 184B     		ldr	r3, .L8+8
+  79 003a 1A4B     		ldr	r3, .L8+8
   80 003c 1B68     		ldr	r3, [r3]
   81 003e 93F83D30 		ldrb	r3, [r3, #61]	@ zero_extendqisi2
   82              		.loc 1 71 24
@@ -165,95 +165,100 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
   86 0046 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
   87 0048 0A40     		ands	r2, r2, r1
   88 004a D1B2     		uxtb	r1, r2
-  89 004c 144A     		ldr	r2, .L8+12
+  89 004c 164A     		ldr	r2, .L8+12
   90 004e D154     		strb	r1, [r2, r3]
   72:./ucOSII/Core/os_time.c ****         OS_TRACE_TASK_SUSPENDED(OSTCBCur);
+  91              		.loc 1 72 9
+  92 0050 144B     		ldr	r3, .L8+8
+  93 0052 1B68     		ldr	r3, [r3]
+  94 0054 1846     		mov	r0, r3
+  95 0056 FFF7FEFF 		bl	SYSVIEW_TaskSuspend
   73:./ucOSII/Core/os_time.c ****         if (OSRdyTbl[y] == 0u) {
-  91              		.loc 1 73 21
-  92 0050 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
-  93 0052 134A     		ldr	r2, .L8+12
-  94 0054 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
-  95              		.loc 1 73 12
-  96 0056 002B     		cmp	r3, #0
-  97 0058 0BD1     		bne	.L5
+  96              		.loc 1 73 21
+  97 005a FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+  98 005c 124A     		ldr	r2, .L8+12
+  99 005e D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 4
+
+
+ 100              		.loc 1 73 12
+ 101 0060 002B     		cmp	r3, #0
+ 102 0062 0BD1     		bne	.L5
   74:./ucOSII/Core/os_time.c ****             OSRdyGrp &= (OS_PRIO)~OSTCBCur->OSTCBBitY;
-  98              		.loc 1 74 43
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 4
-
-
-  99 005a 104B     		ldr	r3, .L8+8
- 100 005c 1B68     		ldr	r3, [r3]
- 101 005e 93F83E30 		ldrb	r3, [r3, #62]	@ zero_extendqisi2
- 102              		.loc 1 74 25
- 103 0062 DB43     		mvns	r3, r3
- 104 0064 DAB2     		uxtb	r2, r3
- 105              		.loc 1 74 22
- 106 0066 0F4B     		ldr	r3, .L8+16
- 107 0068 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 108 006a 1340     		ands	r3, r3, r2
- 109 006c DAB2     		uxtb	r2, r3
- 110 006e 0D4B     		ldr	r3, .L8+16
- 111 0070 1A70     		strb	r2, [r3]
- 112              	.L5:
+ 103              		.loc 1 74 43
+ 104 0064 0F4B     		ldr	r3, .L8+8
+ 105 0066 1B68     		ldr	r3, [r3]
+ 106 0068 93F83E30 		ldrb	r3, [r3, #62]	@ zero_extendqisi2
+ 107              		.loc 1 74 25
+ 108 006c DB43     		mvns	r3, r3
+ 109 006e DAB2     		uxtb	r2, r3
+ 110              		.loc 1 74 22
+ 111 0070 0E4B     		ldr	r3, .L8+16
+ 112 0072 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 113 0074 1340     		ands	r3, r3, r2
+ 114 0076 DAB2     		uxtb	r2, r3
+ 115 0078 0C4B     		ldr	r3, .L8+16
+ 116 007a 1A70     		strb	r2, [r3]
+ 117              	.L5:
   75:./ucOSII/Core/os_time.c ****         }
   76:./ucOSII/Core/os_time.c ****         OSTCBCur->OSTCBDly = ticks;              /* Load ticks in TCB                              
- 113              		.loc 1 76 17
- 114 0072 0A4B     		ldr	r3, .L8+8
- 115 0074 1B68     		ldr	r3, [r3]
- 116              		.loc 1 76 28
- 117 0076 7A68     		ldr	r2, [r7, #4]
- 118 0078 5A63     		str	r2, [r3, #52]
+ 118              		.loc 1 76 17
+ 119 007c 094B     		ldr	r3, .L8+8
+ 120 007e 1B68     		ldr	r3, [r3]
+ 121              		.loc 1 76 28
+ 122 0080 7A68     		ldr	r2, [r7, #4]
+ 123 0082 5A63     		str	r2, [r3, #52]
   77:./ucOSII/Core/os_time.c ****         OS_TRACE_TASK_DLY(ticks);
   78:./ucOSII/Core/os_time.c ****         OS_EXIT_CRITICAL();
- 119              		.loc 1 78 9
- 120 007a F868     		ldr	r0, [r7, #12]
- 121 007c FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 124              		.loc 1 78 9
+ 125 0084 F868     		ldr	r0, [r7, #12]
+ 126 0086 FFF7FEFF 		bl	OS_CPU_SR_Restore
   79:./ucOSII/Core/os_time.c ****         OS_Sched();                              /* Find next task to run!                         
- 122              		.loc 1 79 9
- 123 0080 FFF7FEFF 		bl	OS_Sched
- 124 0084 02E0     		b	.L1
- 125              	.L6:
+ 127              		.loc 1 79 9
+ 128 008a FFF7FEFF 		bl	OS_Sched
+ 129 008e 02E0     		b	.L1
+ 130              	.L6:
   63:./ucOSII/Core/os_time.c ****     }
- 126              		.loc 1 63 9
- 127 0086 00BF     		nop
- 128 0088 00E0     		b	.L1
- 129              	.L7:
+ 131              		.loc 1 63 9
+ 132 0090 00BF     		nop
+ 133 0092 00E0     		b	.L1
+ 134              	.L7:
   66:./ucOSII/Core/os_time.c ****     }
- 130              		.loc 1 66 9
- 131 008a 00BF     		nop
- 132              	.L1:
+ 135              		.loc 1 66 9
+ 136 0094 00BF     		nop
+ 137              	.L1:
   80:./ucOSII/Core/os_time.c ****     }
   81:./ucOSII/Core/os_time.c **** }
- 133              		.loc 1 81 1
- 134 008c 1037     		adds	r7, r7, #16
- 135              	.LCFI3:
- 136              		.cfi_def_cfa_offset 8
- 137 008e BD46     		mov	sp, r7
- 138              	.LCFI4:
- 139              		.cfi_def_cfa_register 13
- 140              		@ sp needed
- 141 0090 80BD     		pop	{r7, pc}
- 142              	.L9:
- 143 0092 00BF     		.align	2
- 144              	.L8:
- 145 0094 00000000 		.word	OSIntNesting
- 146 0098 00000000 		.word	OSLockNesting
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 5
+ 138              		.loc 1 81 1
+ 139 0096 1037     		adds	r7, r7, #16
+ 140              	.LCFI3:
+ 141              		.cfi_def_cfa_offset 8
+ 142 0098 BD46     		mov	sp, r7
+ 143              	.LCFI4:
+ 144              		.cfi_def_cfa_register 13
+ 145              		@ sp needed
+ 146 009a 80BD     		pop	{r7, pc}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 5
 
 
- 147 009c 00000000 		.word	OSTCBCur
- 148 00a0 00000000 		.word	OSRdyTbl
- 149 00a4 00000000 		.word	OSRdyGrp
- 150              		.cfi_endproc
- 151              	.LFE3:
- 153              		.section	.text.OSTimeDlyHMSM,"ax",%progbits
- 154              		.align	1
- 155              		.global	OSTimeDlyHMSM
- 156              		.syntax unified
- 157              		.thumb
- 158              		.thumb_func
- 160              	OSTimeDlyHMSM:
- 161              	.LFB4:
+ 147              	.L9:
+ 148              		.align	2
+ 149              	.L8:
+ 150 009c 00000000 		.word	OSIntNesting
+ 151 00a0 00000000 		.word	OSLockNesting
+ 152 00a4 00000000 		.word	OSTCBCur
+ 153 00a8 00000000 		.word	OSRdyTbl
+ 154 00ac 00000000 		.word	OSRdyGrp
+ 155              		.cfi_endproc
+ 156              	.LFE3:
+ 158              		.section	.text.OSTimeDlyHMSM,"ax",%progbits
+ 159              		.align	1
+ 160              		.global	OSTimeDlyHMSM
+ 161              		.syntax unified
+ 162              		.thumb
+ 163              		.thumb_func
+ 165              	OSTimeDlyHMSM:
+ 166              	.LFB4:
   82:./ucOSII/Core/os_time.c **** 
   83:./ucOSII/Core/os_time.c **** 
   84:./ucOSII/Core/os_time.c **** /*
@@ -288,213 +293,213 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
  113:./ucOSII/Core/os_time.c ****                       INT8U   seconds,
  114:./ucOSII/Core/os_time.c ****                       INT16U  ms)
  115:./ucOSII/Core/os_time.c **** {
- 162              		.loc 1 115 1
- 163              		.cfi_startproc
- 164              		@ args = 0, pretend = 0, frame = 16
- 165              		@ frame_needed = 1, uses_anonymous_args = 0
- 166 0000 90B5     		push	{r4, r7, lr}
- 167              	.LCFI5:
- 168              		.cfi_def_cfa_offset 12
- 169              		.cfi_offset 4, -12
- 170              		.cfi_offset 7, -8
- 171              		.cfi_offset 14, -4
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 6
+ 167              		.loc 1 115 1
+ 168              		.cfi_startproc
+ 169              		@ args = 0, pretend = 0, frame = 16
+ 170              		@ frame_needed = 1, uses_anonymous_args = 0
+ 171 0000 90B5     		push	{r4, r7, lr}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 6
 
 
- 172 0002 85B0     		sub	sp, sp, #20
- 173              	.LCFI6:
- 174              		.cfi_def_cfa_offset 32
- 175 0004 00AF     		add	r7, sp, #0
- 176              	.LCFI7:
- 177              		.cfi_def_cfa_register 7
- 178 0006 0446     		mov	r4, r0
- 179 0008 0846     		mov	r0, r1
- 180 000a 1146     		mov	r1, r2
- 181 000c 1A46     		mov	r2, r3
- 182 000e 2346     		mov	r3, r4
- 183 0010 FB71     		strb	r3, [r7, #7]
- 184 0012 0346     		mov	r3, r0
- 185 0014 BB71     		strb	r3, [r7, #6]
- 186 0016 0B46     		mov	r3, r1
- 187 0018 7B71     		strb	r3, [r7, #5]
- 188 001a 1346     		mov	r3, r2	@ movhi
- 189 001c 7B80     		strh	r3, [r7, #2]	@ movhi
+ 172              	.LCFI5:
+ 173              		.cfi_def_cfa_offset 12
+ 174              		.cfi_offset 4, -12
+ 175              		.cfi_offset 7, -8
+ 176              		.cfi_offset 14, -4
+ 177 0002 85B0     		sub	sp, sp, #20
+ 178              	.LCFI6:
+ 179              		.cfi_def_cfa_offset 32
+ 180 0004 00AF     		add	r7, sp, #0
+ 181              	.LCFI7:
+ 182              		.cfi_def_cfa_register 7
+ 183 0006 0446     		mov	r4, r0
+ 184 0008 0846     		mov	r0, r1
+ 185 000a 1146     		mov	r1, r2
+ 186 000c 1A46     		mov	r2, r3
+ 187 000e 2346     		mov	r3, r4
+ 188 0010 FB71     		strb	r3, [r7, #7]
+ 189 0012 0346     		mov	r3, r0
+ 190 0014 BB71     		strb	r3, [r7, #6]
+ 191 0016 0B46     		mov	r3, r1
+ 192 0018 7B71     		strb	r3, [r7, #5]
+ 193 001a 1346     		mov	r3, r2	@ movhi
+ 194 001c 7B80     		strh	r3, [r7, #2]	@ movhi
  116:./ucOSII/Core/os_time.c ****     INT32U ticks;
  117:./ucOSII/Core/os_time.c **** 
  118:./ucOSII/Core/os_time.c **** 
  119:./ucOSII/Core/os_time.c ****     if (OSIntNesting > 0u) {                     /* See if trying to call from an ISR              
- 190              		.loc 1 119 22
- 191 001e 274B     		ldr	r3, .L18
- 192 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 193              		.loc 1 119 8
- 194 0022 002B     		cmp	r3, #0
- 195 0024 01D0     		beq	.L11
+ 195              		.loc 1 119 22
+ 196 001e 274B     		ldr	r3, .L18
+ 197 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 198              		.loc 1 119 8
+ 199 0022 002B     		cmp	r3, #0
+ 200 0024 01D0     		beq	.L11
  120:./ucOSII/Core/os_time.c ****         return (OS_ERR_TIME_DLY_ISR);
- 196              		.loc 1 120 16
- 197 0026 5523     		movs	r3, #85
- 198 0028 43E0     		b	.L12
- 199              	.L11:
+ 201              		.loc 1 120 16
+ 202 0026 5523     		movs	r3, #85
+ 203 0028 43E0     		b	.L12
+ 204              	.L11:
  121:./ucOSII/Core/os_time.c ****     }
  122:./ucOSII/Core/os_time.c ****     if (OSLockNesting > 0u) {                    /* See if called with scheduler locked            
- 200              		.loc 1 122 23
- 201 002a 254B     		ldr	r3, .L18+4
- 202 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 203              		.loc 1 122 8
- 204 002e 002B     		cmp	r3, #0
- 205 0030 01D0     		beq	.L13
+ 205              		.loc 1 122 23
+ 206 002a 254B     		ldr	r3, .L18+4
+ 207 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 208              		.loc 1 122 8
+ 209 002e 002B     		cmp	r3, #0
+ 210 0030 01D0     		beq	.L13
  123:./ucOSII/Core/os_time.c ****         return (OS_ERR_SCHED_LOCKED);
- 206              		.loc 1 123 16
- 207 0032 3223     		movs	r3, #50
- 208 0034 3DE0     		b	.L12
- 209              	.L13:
+ 211              		.loc 1 123 16
+ 212 0032 3223     		movs	r3, #50
+ 213 0034 3DE0     		b	.L12
+ 214              	.L13:
  124:./ucOSII/Core/os_time.c ****     }
  125:./ucOSII/Core/os_time.c **** #if OS_ARG_CHK_EN > 0u
  126:./ucOSII/Core/os_time.c ****     if (hours == 0u) {
- 210              		.loc 1 126 8
- 211 0036 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 212 0038 002B     		cmp	r3, #0
- 213 003a 0AD1     		bne	.L14
+ 215              		.loc 1 126 8
+ 216 0036 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 217 0038 002B     		cmp	r3, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 7
+
+
+ 218 003a 0AD1     		bne	.L14
  127:./ucOSII/Core/os_time.c ****         if (minutes == 0u) {
- 214              		.loc 1 127 12
- 215 003c BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
- 216 003e 002B     		cmp	r3, #0
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 7
-
-
- 217 0040 07D1     		bne	.L14
+ 219              		.loc 1 127 12
+ 220 003c BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 221 003e 002B     		cmp	r3, #0
+ 222 0040 07D1     		bne	.L14
  128:./ucOSII/Core/os_time.c ****             if (seconds == 0u) {
- 218              		.loc 1 128 16
- 219 0042 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
- 220 0044 002B     		cmp	r3, #0
- 221 0046 04D1     		bne	.L14
+ 223              		.loc 1 128 16
+ 224 0042 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 225 0044 002B     		cmp	r3, #0
+ 226 0046 04D1     		bne	.L14
  129:./ucOSII/Core/os_time.c ****                 if (ms == 0u) {
- 222              		.loc 1 129 20
- 223 0048 7B88     		ldrh	r3, [r7, #2]
- 224 004a 002B     		cmp	r3, #0
- 225 004c 01D1     		bne	.L14
+ 227              		.loc 1 129 20
+ 228 0048 7B88     		ldrh	r3, [r7, #2]
+ 229 004a 002B     		cmp	r3, #0
+ 230 004c 01D1     		bne	.L14
  130:./ucOSII/Core/os_time.c ****                     return (OS_ERR_TIME_ZERO_DLY);
- 226              		.loc 1 130 28
- 227 004e 5423     		movs	r3, #84
- 228 0050 2FE0     		b	.L12
- 229              	.L14:
+ 231              		.loc 1 130 28
+ 232 004e 5423     		movs	r3, #84
+ 233 0050 2FE0     		b	.L12
+ 234              	.L14:
  131:./ucOSII/Core/os_time.c ****                 }
  132:./ucOSII/Core/os_time.c ****             }
  133:./ucOSII/Core/os_time.c ****         }
  134:./ucOSII/Core/os_time.c ****     }
  135:./ucOSII/Core/os_time.c ****     if (minutes > 59u) {
- 230              		.loc 1 135 8
- 231 0052 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
- 232 0054 3B2B     		cmp	r3, #59
- 233 0056 01D9     		bls	.L15
+ 235              		.loc 1 135 8
+ 236 0052 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 237 0054 3B2B     		cmp	r3, #59
+ 238 0056 01D9     		bls	.L15
  136:./ucOSII/Core/os_time.c ****         return (OS_ERR_TIME_INVALID_MINUTES);    /* Validate arguments to be within range          
- 234              		.loc 1 136 16
- 235 0058 5123     		movs	r3, #81
- 236 005a 2AE0     		b	.L12
- 237              	.L15:
+ 239              		.loc 1 136 16
+ 240 0058 5123     		movs	r3, #81
+ 241 005a 2AE0     		b	.L12
+ 242              	.L15:
  137:./ucOSII/Core/os_time.c ****     }
  138:./ucOSII/Core/os_time.c ****     if (seconds > 59u) {
- 238              		.loc 1 138 8
- 239 005c 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
- 240 005e 3B2B     		cmp	r3, #59
- 241 0060 01D9     		bls	.L16
+ 243              		.loc 1 138 8
+ 244 005c 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 245 005e 3B2B     		cmp	r3, #59
+ 246 0060 01D9     		bls	.L16
  139:./ucOSII/Core/os_time.c ****         return (OS_ERR_TIME_INVALID_SECONDS);
- 242              		.loc 1 139 16
- 243 0062 5223     		movs	r3, #82
- 244 0064 25E0     		b	.L12
- 245              	.L16:
+ 247              		.loc 1 139 16
+ 248 0062 5223     		movs	r3, #82
+ 249 0064 25E0     		b	.L12
+ 250              	.L16:
  140:./ucOSII/Core/os_time.c ****     }
  141:./ucOSII/Core/os_time.c ****     if (ms > 999u) {
- 246              		.loc 1 141 8
- 247 0066 7B88     		ldrh	r3, [r7, #2]
- 248 0068 B3F57A7F 		cmp	r3, #1000
- 249 006c 01D3     		bcc	.L17
+ 251              		.loc 1 141 8
+ 252 0066 7B88     		ldrh	r3, [r7, #2]
+ 253 0068 B3F57A7F 		cmp	r3, #1000
+ 254 006c 01D3     		bcc	.L17
  142:./ucOSII/Core/os_time.c ****         return (OS_ERR_TIME_INVALID_MS);
- 250              		.loc 1 142 16
- 251 006e 5323     		movs	r3, #83
- 252 0070 1FE0     		b	.L12
- 253              	.L17:
+ 255              		.loc 1 142 16
+ 256 006e 5323     		movs	r3, #83
+ 257 0070 1FE0     		b	.L12
+ 258              	.L17:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 8
+
+
  143:./ucOSII/Core/os_time.c ****     }
  144:./ucOSII/Core/os_time.c **** #endif
  145:./ucOSII/Core/os_time.c ****                                                  /* Compute the total number of clock ticks require
  146:./ucOSII/Core/os_time.c ****                                                  /* .. (rounded to the nearest tick)               
  147:./ucOSII/Core/os_time.c ****     ticks = ((INT32U)hours * 3600uL + (INT32U)minutes * 60uL + (INT32U)seconds) * OS_TICKS_PER_SEC
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 8
-
-
- 254              		.loc 1 147 14
- 255 0072 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 256              		.loc 1 147 28
- 257 0074 4FF46162 		mov	r2, #3600
- 258 0078 02FB03F1 		mul	r1, r2, r3
- 259              		.loc 1 147 39
- 260 007c BA79     		ldrb	r2, [r7, #6]	@ zero_extendqisi2
- 261              		.loc 1 147 55
- 262 007e 1346     		mov	r3, r2
- 263 0080 1B01     		lsls	r3, r3, #4
- 264 0082 9B1A     		subs	r3, r3, r2
- 265 0084 9B00     		lsls	r3, r3, #2
- 266              		.loc 1 147 37
- 267 0086 CA18     		adds	r2, r1, r3
- 268              		.loc 1 147 64
- 269 0088 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
- 270              		.loc 1 147 62
- 271 008a 1344     		add	r3, r3, r2
- 272              		.loc 1 147 81
- 273 008c 6422     		movs	r2, #100
- 274 008e 03FB02F2 		mul	r2, r3, r2
+ 259              		.loc 1 147 14
+ 260 0072 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 261              		.loc 1 147 28
+ 262 0074 4FF46162 		mov	r2, #3600
+ 263 0078 02FB03F1 		mul	r1, r2, r3
+ 264              		.loc 1 147 39
+ 265 007c BA79     		ldrb	r2, [r7, #6]	@ zero_extendqisi2
+ 266              		.loc 1 147 55
+ 267 007e 1346     		mov	r3, r2
+ 268 0080 1B01     		lsls	r3, r3, #4
+ 269 0082 9B1A     		subs	r3, r3, r2
+ 270 0084 9B00     		lsls	r3, r3, #2
+ 271              		.loc 1 147 37
+ 272 0086 CA18     		adds	r2, r1, r3
+ 273              		.loc 1 147 64
+ 274 0088 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 275              		.loc 1 147 62
+ 276 008a 1344     		add	r3, r3, r2
+ 277              		.loc 1 147 81
+ 278 008c 6422     		movs	r2, #100
+ 279 008e 03FB02F2 		mul	r2, r3, r2
  148:./ucOSII/Core/os_time.c ****           + OS_TICKS_PER_SEC * ((INT32U)ms + 500uL / OS_TICKS_PER_SEC) / 1000uL;
- 275              		.loc 1 148 33
- 276 0092 7B88     		ldrh	r3, [r7, #2]
- 277              		.loc 1 148 30
- 278 0094 6421     		movs	r1, #100
- 279 0096 01FB03F3 		mul	r3, r1, r3
- 280 009a 03F5FA73 		add	r3, r3, #500
- 281              		.loc 1 148 72
- 282 009e 0949     		ldr	r1, .L18+8
- 283 00a0 A1FB0313 		umull	r1, r3, r1, r3
- 284 00a4 9B09     		lsrs	r3, r3, #6
+ 280              		.loc 1 148 33
+ 281 0092 7B88     		ldrh	r3, [r7, #2]
+ 282              		.loc 1 148 30
+ 283 0094 6421     		movs	r1, #100
+ 284 0096 01FB03F3 		mul	r3, r1, r3
+ 285 009a 03F5FA73 		add	r3, r3, #500
+ 286              		.loc 1 148 72
+ 287 009e 0949     		ldr	r1, .L18+8
+ 288 00a0 A1FB0313 		umull	r1, r3, r1, r3
+ 289 00a4 9B09     		lsrs	r3, r3, #6
  147:./ucOSII/Core/os_time.c ****           + OS_TICKS_PER_SEC * ((INT32U)ms + 500uL / OS_TICKS_PER_SEC) / 1000uL;
- 285              		.loc 1 147 11
- 286 00a6 1344     		add	r3, r3, r2
- 287 00a8 FB60     		str	r3, [r7, #12]
+ 290              		.loc 1 147 11
+ 291 00a6 1344     		add	r3, r3, r2
+ 292 00a8 FB60     		str	r3, [r7, #12]
  149:./ucOSII/Core/os_time.c ****     OSTimeDly(ticks);
- 288              		.loc 1 149 5
- 289 00aa F868     		ldr	r0, [r7, #12]
- 290 00ac FFF7FEFF 		bl	OSTimeDly
+ 293              		.loc 1 149 5
+ 294 00aa F868     		ldr	r0, [r7, #12]
+ 295 00ac FFF7FEFF 		bl	OSTimeDly
  150:./ucOSII/Core/os_time.c ****     return (OS_ERR_NONE);
- 291              		.loc 1 150 12
- 292 00b0 0023     		movs	r3, #0
- 293              	.L12:
+ 296              		.loc 1 150 12
+ 297 00b0 0023     		movs	r3, #0
+ 298              	.L12:
  151:./ucOSII/Core/os_time.c **** }
- 294              		.loc 1 151 1
- 295 00b2 1846     		mov	r0, r3
- 296 00b4 1437     		adds	r7, r7, #20
- 297              	.LCFI8:
- 298              		.cfi_def_cfa_offset 12
- 299 00b6 BD46     		mov	sp, r7
- 300              	.LCFI9:
- 301              		.cfi_def_cfa_register 13
- 302              		@ sp needed
- 303 00b8 90BD     		pop	{r4, r7, pc}
- 304              	.L19:
- 305 00ba 00BF     		.align	2
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 9
+ 299              		.loc 1 151 1
+ 300 00b2 1846     		mov	r0, r3
+ 301 00b4 1437     		adds	r7, r7, #20
+ 302              	.LCFI8:
+ 303              		.cfi_def_cfa_offset 12
+ 304 00b6 BD46     		mov	sp, r7
+ 305              	.LCFI9:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 9
 
 
- 306              	.L18:
- 307 00bc 00000000 		.word	OSIntNesting
- 308 00c0 00000000 		.word	OSLockNesting
- 309 00c4 D34D6210 		.word	274877907
- 310              		.cfi_endproc
- 311              	.LFE4:
- 313              		.section	.text.OSTimeDlyResume,"ax",%progbits
- 314              		.align	1
- 315              		.global	OSTimeDlyResume
- 316              		.syntax unified
- 317              		.thumb
- 318              		.thumb_func
- 320              	OSTimeDlyResume:
- 321              	.LFB5:
+ 306              		.cfi_def_cfa_register 13
+ 307              		@ sp needed
+ 308 00b8 90BD     		pop	{r4, r7, pc}
+ 309              	.L19:
+ 310 00ba 00BF     		.align	2
+ 311              	.L18:
+ 312 00bc 00000000 		.word	OSIntNesting
+ 313 00c0 00000000 		.word	OSLockNesting
+ 314 00c4 D34D6210 		.word	274877907
+ 315              		.cfi_endproc
+ 316              	.LFE4:
+ 318              		.section	.text.OSTimeDlyResume,"ax",%progbits
+ 319              		.align	1
+ 320              		.global	OSTimeDlyResume
+ 321              		.syntax unified
+ 322              		.thumb
+ 323              		.thumb_func
+ 325              	OSTimeDlyResume:
+ 326              	.LFB5:
  152:./ucOSII/Core/os_time.c **** #endif
  153:./ucOSII/Core/os_time.c **** 
  154:./ucOSII/Core/os_time.c **** 
@@ -520,240 +525,244 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
  174:./ucOSII/Core/os_time.c **** #if OS_TIME_DLY_RESUME_EN > 0u
  175:./ucOSII/Core/os_time.c **** INT8U  OSTimeDlyResume (INT8U prio)
  176:./ucOSII/Core/os_time.c **** {
- 322              		.loc 1 176 1
- 323              		.cfi_startproc
- 324              		@ args = 0, pretend = 0, frame = 16
- 325              		@ frame_needed = 1, uses_anonymous_args = 0
- 326 0000 80B5     		push	{r7, lr}
- 327              	.LCFI10:
- 328              		.cfi_def_cfa_offset 8
- 329              		.cfi_offset 7, -8
- 330              		.cfi_offset 14, -4
- 331 0002 84B0     		sub	sp, sp, #16
- 332              	.LCFI11:
- 333              		.cfi_def_cfa_offset 24
- 334 0004 00AF     		add	r7, sp, #0
- 335              	.LCFI12:
- 336              		.cfi_def_cfa_register 7
- 337 0006 0346     		mov	r3, r0
- 338 0008 FB71     		strb	r3, [r7, #7]
+ 327              		.loc 1 176 1
+ 328              		.cfi_startproc
+ 329              		@ args = 0, pretend = 0, frame = 16
+ 330              		@ frame_needed = 1, uses_anonymous_args = 0
+ 331 0000 80B5     		push	{r7, lr}
+ 332              	.LCFI10:
+ 333              		.cfi_def_cfa_offset 8
+ 334              		.cfi_offset 7, -8
+ 335              		.cfi_offset 14, -4
+ 336 0002 84B0     		sub	sp, sp, #16
+ 337              	.LCFI11:
+ 338              		.cfi_def_cfa_offset 24
+ 339 0004 00AF     		add	r7, sp, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 10
+
+
+ 340              	.LCFI12:
+ 341              		.cfi_def_cfa_register 7
+ 342 0006 0346     		mov	r3, r0
+ 343 0008 FB71     		strb	r3, [r7, #7]
  177:./ucOSII/Core/os_time.c ****     OS_TCB    *ptcb;
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 10
-
-
  178:./ucOSII/Core/os_time.c **** #if OS_CRITICAL_METHOD == 3u                                   /* Storage for CPU status register  
  179:./ucOSII/Core/os_time.c ****     OS_CPU_SR  cpu_sr = 0u;
- 339              		.loc 1 179 16
- 340 000a 0023     		movs	r3, #0
- 341 000c FB60     		str	r3, [r7, #12]
+ 344              		.loc 1 179 16
+ 345 000a 0023     		movs	r3, #0
+ 346 000c FB60     		str	r3, [r7, #12]
  180:./ucOSII/Core/os_time.c **** #endif
  181:./ucOSII/Core/os_time.c **** 
  182:./ucOSII/Core/os_time.c **** 
  183:./ucOSII/Core/os_time.c **** 
  184:./ucOSII/Core/os_time.c ****     if (prio >= OS_LOWEST_PRIO) {
- 342              		.loc 1 184 8
- 343 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 344 0010 3E2B     		cmp	r3, #62
- 345 0012 01D9     		bls	.L21
+ 347              		.loc 1 184 8
+ 348 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 349 0010 3E2B     		cmp	r3, #62
+ 350 0012 01D9     		bls	.L21
  185:./ucOSII/Core/os_time.c ****         return (OS_ERR_PRIO_INVALID);
- 346              		.loc 1 185 16
- 347 0014 2A23     		movs	r3, #42
- 348 0016 67E0     		b	.L22
- 349              	.L21:
+ 351              		.loc 1 185 16
+ 352 0014 2A23     		movs	r3, #42
+ 353 0016 6BE0     		b	.L22
+ 354              	.L21:
  186:./ucOSII/Core/os_time.c ****     }
  187:./ucOSII/Core/os_time.c ****     OS_ENTER_CRITICAL();
- 350              		.loc 1 187 5
- 351 0018 4020     		movs	r0, #64
- 352 001a FFF7FEFF 		bl	OS_CPU_SR_Save
- 353 001e F860     		str	r0, [r7, #12]
+ 355              		.loc 1 187 5
+ 356 0018 4020     		movs	r0, #64
+ 357 001a FFF7FEFF 		bl	OS_CPU_SR_Save
+ 358 001e F860     		str	r0, [r7, #12]
  188:./ucOSII/Core/os_time.c ****     ptcb = OSTCBPrioTbl[prio];                                 /* Make sure that task exist        
- 354              		.loc 1 188 24
- 355 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 356              		.loc 1 188 10
- 357 0022 334A     		ldr	r2, .L30
- 358 0024 52F82330 		ldr	r3, [r2, r3, lsl #2]
- 359 0028 BB60     		str	r3, [r7, #8]
+ 359              		.loc 1 188 24
+ 360 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 361              		.loc 1 188 10
+ 362 0022 354A     		ldr	r2, .L30
+ 363 0024 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 364 0028 BB60     		str	r3, [r7, #8]
  189:./ucOSII/Core/os_time.c ****     if (ptcb == (OS_TCB *)0) {
- 360              		.loc 1 189 8
- 361 002a BB68     		ldr	r3, [r7, #8]
- 362 002c 002B     		cmp	r3, #0
- 363 002e 04D1     		bne	.L23
+ 365              		.loc 1 189 8
+ 366 002a BB68     		ldr	r3, [r7, #8]
+ 367 002c 002B     		cmp	r3, #0
+ 368 002e 04D1     		bne	.L23
  190:./ucOSII/Core/os_time.c ****         OS_EXIT_CRITICAL();
- 364              		.loc 1 190 9
- 365 0030 F868     		ldr	r0, [r7, #12]
- 366 0032 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 369              		.loc 1 190 9
+ 370 0030 F868     		ldr	r0, [r7, #12]
+ 371 0032 FFF7FEFF 		bl	OS_CPU_SR_Restore
  191:./ucOSII/Core/os_time.c ****         return (OS_ERR_TASK_NOT_EXIST);                        /* The task does not exist          
- 367              		.loc 1 191 16
- 368 0036 4323     		movs	r3, #67
- 369 0038 56E0     		b	.L22
- 370              	.L23:
+ 372              		.loc 1 191 16
+ 373 0036 4323     		movs	r3, #67
+ 374 0038 5AE0     		b	.L22
+ 375              	.L23:
  192:./ucOSII/Core/os_time.c ****     }
  193:./ucOSII/Core/os_time.c ****     if (ptcb == OS_TCB_RESERVED) {
- 371              		.loc 1 193 8
- 372 003a BB68     		ldr	r3, [r7, #8]
- 373 003c 012B     		cmp	r3, #1
- 374 003e 04D1     		bne	.L24
+ 376              		.loc 1 193 8
+ 377 003a BB68     		ldr	r3, [r7, #8]
+ 378 003c 012B     		cmp	r3, #1
+ 379 003e 04D1     		bne	.L24
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 11
+
+
  194:./ucOSII/Core/os_time.c ****         OS_EXIT_CRITICAL();
- 375              		.loc 1 194 9
- 376 0040 F868     		ldr	r0, [r7, #12]
- 377 0042 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 380              		.loc 1 194 9
+ 381 0040 F868     		ldr	r0, [r7, #12]
+ 382 0042 FFF7FEFF 		bl	OS_CPU_SR_Restore
  195:./ucOSII/Core/os_time.c ****         return (OS_ERR_TASK_NOT_EXIST);                        /* The task does not exist          
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 11
-
-
- 378              		.loc 1 195 16
- 379 0046 4323     		movs	r3, #67
- 380 0048 4EE0     		b	.L22
- 381              	.L24:
+ 383              		.loc 1 195 16
+ 384 0046 4323     		movs	r3, #67
+ 385 0048 52E0     		b	.L22
+ 386              	.L24:
  196:./ucOSII/Core/os_time.c ****     }
  197:./ucOSII/Core/os_time.c ****     if (ptcb->OSTCBDly == 0u) {                                /* See if task is delayed           
- 382              		.loc 1 197 13
- 383 004a BB68     		ldr	r3, [r7, #8]
- 384 004c 5B6B     		ldr	r3, [r3, #52]
- 385              		.loc 1 197 8
- 386 004e 002B     		cmp	r3, #0
- 387 0050 04D1     		bne	.L25
+ 387              		.loc 1 197 13
+ 388 004a BB68     		ldr	r3, [r7, #8]
+ 389 004c 5B6B     		ldr	r3, [r3, #52]
+ 390              		.loc 1 197 8
+ 391 004e 002B     		cmp	r3, #0
+ 392 0050 04D1     		bne	.L25
  198:./ucOSII/Core/os_time.c ****         OS_EXIT_CRITICAL();
- 388              		.loc 1 198 9
- 389 0052 F868     		ldr	r0, [r7, #12]
- 390 0054 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 393              		.loc 1 198 9
+ 394 0052 F868     		ldr	r0, [r7, #12]
+ 395 0054 FFF7FEFF 		bl	OS_CPU_SR_Restore
  199:./ucOSII/Core/os_time.c ****         return (OS_ERR_TIME_NOT_DLY);                          /* Indicate that task was not delaye
- 391              		.loc 1 199 16
- 392 0058 5023     		movs	r3, #80
- 393 005a 45E0     		b	.L22
- 394              	.L25:
+ 396              		.loc 1 199 16
+ 397 0058 5023     		movs	r3, #80
+ 398 005a 49E0     		b	.L22
+ 399              	.L25:
  200:./ucOSII/Core/os_time.c ****     }
  201:./ucOSII/Core/os_time.c **** 
  202:./ucOSII/Core/os_time.c ****     ptcb->OSTCBDly = 0u;                                       /* Clear the time delay             
- 395              		.loc 1 202 20
- 396 005c BB68     		ldr	r3, [r7, #8]
- 397 005e 0022     		movs	r2, #0
- 398 0060 5A63     		str	r2, [r3, #52]
+ 400              		.loc 1 202 20
+ 401 005c BB68     		ldr	r3, [r7, #8]
+ 402 005e 0022     		movs	r2, #0
+ 403 0060 5A63     		str	r2, [r3, #52]
  203:./ucOSII/Core/os_time.c ****     if ((ptcb->OSTCBStat & OS_STAT_PEND_ANY) != OS_STAT_RDY) {
- 399              		.loc 1 203 14
- 400 0062 BB68     		ldr	r3, [r7, #8]
- 401 0064 93F83830 		ldrb	r3, [r3, #56]	@ zero_extendqisi2
- 402              		.loc 1 203 26
- 403 0068 03F03703 		and	r3, r3, #55
- 404              		.loc 1 203 8
- 405 006c 002B     		cmp	r3, #0
- 406 006e 0DD0     		beq	.L26
+ 404              		.loc 1 203 14
+ 405 0062 BB68     		ldr	r3, [r7, #8]
+ 406 0064 93F83830 		ldrb	r3, [r3, #56]	@ zero_extendqisi2
+ 407              		.loc 1 203 26
+ 408 0068 03F03703 		and	r3, r3, #55
+ 409              		.loc 1 203 8
+ 410 006c 002B     		cmp	r3, #0
+ 411 006e 0DD0     		beq	.L26
  204:./ucOSII/Core/os_time.c ****         ptcb->OSTCBStat     &= ~OS_STAT_PEND_ANY;              /* Yes, Clear status flag           
- 407              		.loc 1 204 29
- 408 0070 BB68     		ldr	r3, [r7, #8]
- 409 0072 93F83830 		ldrb	r3, [r3, #56]	@ zero_extendqisi2
- 410 0076 23F03703 		bic	r3, r3, #55
- 411 007a DAB2     		uxtb	r2, r3
- 412 007c BB68     		ldr	r3, [r7, #8]
- 413 007e 83F83820 		strb	r2, [r3, #56]
+ 412              		.loc 1 204 29
+ 413 0070 BB68     		ldr	r3, [r7, #8]
+ 414 0072 93F83830 		ldrb	r3, [r3, #56]	@ zero_extendqisi2
+ 415 0076 23F03703 		bic	r3, r3, #55
+ 416 007a DAB2     		uxtb	r2, r3
+ 417 007c BB68     		ldr	r3, [r7, #8]
+ 418 007e 83F83820 		strb	r2, [r3, #56]
  205:./ucOSII/Core/os_time.c ****         ptcb->OSTCBStatPend  =  OS_STAT_PEND_TO;               /* Indicate PEND timeout            
- 414              		.loc 1 205 30
- 415 0082 BB68     		ldr	r3, [r7, #8]
- 416 0084 0122     		movs	r2, #1
- 417 0086 83F83920 		strb	r2, [r3, #57]
- 418 008a 03E0     		b	.L27
- 419              	.L26:
+ 419              		.loc 1 205 30
+ 420 0082 BB68     		ldr	r3, [r7, #8]
+ 421 0084 0122     		movs	r2, #1
+ 422 0086 83F83920 		strb	r2, [r3, #57]
+ 423 008a 03E0     		b	.L27
+ 424              	.L26:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 12
+
+
  206:./ucOSII/Core/os_time.c ****     } else {
  207:./ucOSII/Core/os_time.c ****         ptcb->OSTCBStatPend  =  OS_STAT_PEND_OK;
- 420              		.loc 1 207 30
- 421 008c BB68     		ldr	r3, [r7, #8]
- 422 008e 0022     		movs	r2, #0
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 12
-
-
- 423 0090 83F83920 		strb	r2, [r3, #57]
- 424              	.L27:
+ 425              		.loc 1 207 30
+ 426 008c BB68     		ldr	r3, [r7, #8]
+ 427 008e 0022     		movs	r2, #0
+ 428 0090 83F83920 		strb	r2, [r3, #57]
+ 429              	.L27:
  208:./ucOSII/Core/os_time.c ****     }
  209:./ucOSII/Core/os_time.c ****     if ((ptcb->OSTCBStat & OS_STAT_SUSPEND) == OS_STAT_RDY) {  /* Is task suspended?               
- 425              		.loc 1 209 14
- 426 0094 BB68     		ldr	r3, [r7, #8]
- 427 0096 93F83830 		ldrb	r3, [r3, #56]	@ zero_extendqisi2
- 428              		.loc 1 209 26
- 429 009a 03F00803 		and	r3, r3, #8
- 430              		.loc 1 209 8
- 431 009e 002B     		cmp	r3, #0
- 432 00a0 1ED1     		bne	.L28
+ 430              		.loc 1 209 14
+ 431 0094 BB68     		ldr	r3, [r7, #8]
+ 432 0096 93F83830 		ldrb	r3, [r3, #56]	@ zero_extendqisi2
+ 433              		.loc 1 209 26
+ 434 009a 03F00803 		and	r3, r3, #8
+ 435              		.loc 1 209 8
+ 436 009e 002B     		cmp	r3, #0
+ 437 00a0 22D1     		bne	.L28
  210:./ucOSII/Core/os_time.c ****         OSRdyGrp               |= ptcb->OSTCBBitY;             /* No,  Make ready                  
- 433              		.loc 1 210 39
- 434 00a2 BB68     		ldr	r3, [r7, #8]
- 435 00a4 93F83E20 		ldrb	r2, [r3, #62]	@ zero_extendqisi2
- 436              		.loc 1 210 32
- 437 00a8 124B     		ldr	r3, .L30+4
- 438 00aa 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 439 00ac 1343     		orrs	r3, r3, r2
- 440 00ae DAB2     		uxtb	r2, r3
- 441 00b0 104B     		ldr	r3, .L30+4
- 442 00b2 1A70     		strb	r2, [r3]
+ 438              		.loc 1 210 39
+ 439 00a2 BB68     		ldr	r3, [r7, #8]
+ 440 00a4 93F83E20 		ldrb	r2, [r3, #62]	@ zero_extendqisi2
+ 441              		.loc 1 210 32
+ 442 00a8 144B     		ldr	r3, .L30+4
+ 443 00aa 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 444 00ac 1343     		orrs	r3, r3, r2
+ 445 00ae DAB2     		uxtb	r2, r3
+ 446 00b0 124B     		ldr	r3, .L30+4
+ 447 00b2 1A70     		strb	r2, [r3]
  211:./ucOSII/Core/os_time.c ****         OSRdyTbl[ptcb->OSTCBY] |= ptcb->OSTCBBitX;
- 443              		.loc 1 211 22
- 444 00b4 BB68     		ldr	r3, [r7, #8]
- 445 00b6 93F83C30 		ldrb	r3, [r3, #60]	@ zero_extendqisi2
- 446              		.loc 1 211 32
- 447 00ba 1A46     		mov	r2, r3
- 448 00bc 0E4B     		ldr	r3, .L30+8
- 449 00be 9A5C     		ldrb	r2, [r3, r2]	@ zero_extendqisi2
- 450              		.loc 1 211 39
- 451 00c0 BB68     		ldr	r3, [r7, #8]
- 452 00c2 93F83D30 		ldrb	r3, [r3, #61]	@ zero_extendqisi2
- 453              		.loc 1 211 22
- 454 00c6 B968     		ldr	r1, [r7, #8]
- 455 00c8 91F83C10 		ldrb	r1, [r1, #60]	@ zero_extendqisi2
- 456              		.loc 1 211 32
- 457 00cc 1343     		orrs	r3, r3, r2
- 458 00ce DAB2     		uxtb	r2, r3
- 459 00d0 094B     		ldr	r3, .L30+8
- 460 00d2 5A54     		strb	r2, [r3, r1]
+ 448              		.loc 1 211 22
+ 449 00b4 BB68     		ldr	r3, [r7, #8]
+ 450 00b6 93F83C30 		ldrb	r3, [r3, #60]	@ zero_extendqisi2
+ 451              		.loc 1 211 32
+ 452 00ba 1A46     		mov	r2, r3
+ 453 00bc 104B     		ldr	r3, .L30+8
+ 454 00be 9A5C     		ldrb	r2, [r3, r2]	@ zero_extendqisi2
+ 455              		.loc 1 211 39
+ 456 00c0 BB68     		ldr	r3, [r7, #8]
+ 457 00c2 93F83D30 		ldrb	r3, [r3, #61]	@ zero_extendqisi2
+ 458              		.loc 1 211 22
+ 459 00c6 B968     		ldr	r1, [r7, #8]
+ 460 00c8 91F83C10 		ldrb	r1, [r1, #60]	@ zero_extendqisi2
+ 461              		.loc 1 211 32
+ 462 00cc 1343     		orrs	r3, r3, r2
+ 463 00ce DAB2     		uxtb	r2, r3
+ 464 00d0 0B4B     		ldr	r3, .L30+8
+ 465 00d2 5A54     		strb	r2, [r3, r1]
  212:./ucOSII/Core/os_time.c ****         OS_TRACE_TASK_READY(ptcb);
+ 466              		.loc 1 212 9
+ 467 00d4 BB68     		ldr	r3, [r7, #8]
+ 468 00d6 1846     		mov	r0, r3
+ 469 00d8 FFF7FEFF 		bl	SYSVIEW_TaskReady
  213:./ucOSII/Core/os_time.c ****         OS_EXIT_CRITICAL();
- 461              		.loc 1 213 9
- 462 00d4 F868     		ldr	r0, [r7, #12]
- 463 00d6 FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 470              		.loc 1 213 9
+ 471 00dc F868     		ldr	r0, [r7, #12]
+ 472 00de FFF7FEFF 		bl	OS_CPU_SR_Restore
  214:./ucOSII/Core/os_time.c ****         OS_Sched();                                            /* See if this is new highest priori
- 464              		.loc 1 214 9
- 465 00da FFF7FEFF 		bl	OS_Sched
- 466 00de 02E0     		b	.L29
- 467              	.L28:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 13
+
+
+ 473              		.loc 1 214 9
+ 474 00e2 FFF7FEFF 		bl	OS_Sched
+ 475 00e6 02E0     		b	.L29
+ 476              	.L28:
  215:./ucOSII/Core/os_time.c ****     } else {
  216:./ucOSII/Core/os_time.c ****         OS_EXIT_CRITICAL();                                    /* Task may be suspended            
- 468              		.loc 1 216 9
- 469 00e0 F868     		ldr	r0, [r7, #12]
- 470 00e2 FFF7FEFF 		bl	OS_CPU_SR_Restore
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 13
-
-
- 471              	.L29:
+ 477              		.loc 1 216 9
+ 478 00e8 F868     		ldr	r0, [r7, #12]
+ 479 00ea FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 480              	.L29:
  217:./ucOSII/Core/os_time.c ****     }
  218:./ucOSII/Core/os_time.c ****     return (OS_ERR_NONE);
- 472              		.loc 1 218 12
- 473 00e6 0023     		movs	r3, #0
- 474              	.L22:
+ 481              		.loc 1 218 12
+ 482 00ee 0023     		movs	r3, #0
+ 483              	.L22:
  219:./ucOSII/Core/os_time.c **** }
- 475              		.loc 1 219 1
- 476 00e8 1846     		mov	r0, r3
- 477 00ea 1037     		adds	r7, r7, #16
- 478              	.LCFI13:
- 479              		.cfi_def_cfa_offset 8
- 480 00ec BD46     		mov	sp, r7
- 481              	.LCFI14:
- 482              		.cfi_def_cfa_register 13
- 483              		@ sp needed
- 484 00ee 80BD     		pop	{r7, pc}
- 485              	.L31:
- 486              		.align	2
- 487              	.L30:
- 488 00f0 00000000 		.word	OSTCBPrioTbl
- 489 00f4 00000000 		.word	OSRdyGrp
- 490 00f8 00000000 		.word	OSRdyTbl
- 491              		.cfi_endproc
- 492              	.LFE5:
- 494              		.section	.text.OSTimeGet,"ax",%progbits
- 495              		.align	1
- 496              		.global	OSTimeGet
- 497              		.syntax unified
- 498              		.thumb
- 499              		.thumb_func
- 501              	OSTimeGet:
- 502              	.LFB6:
+ 484              		.loc 1 219 1
+ 485 00f0 1846     		mov	r0, r3
+ 486 00f2 1037     		adds	r7, r7, #16
+ 487              	.LCFI13:
+ 488              		.cfi_def_cfa_offset 8
+ 489 00f4 BD46     		mov	sp, r7
+ 490              	.LCFI14:
+ 491              		.cfi_def_cfa_register 13
+ 492              		@ sp needed
+ 493 00f6 80BD     		pop	{r7, pc}
+ 494              	.L31:
+ 495              		.align	2
+ 496              	.L30:
+ 497 00f8 00000000 		.word	OSTCBPrioTbl
+ 498 00fc 00000000 		.word	OSRdyGrp
+ 499 0100 00000000 		.word	OSRdyTbl
+ 500              		.cfi_endproc
+ 501              	.LFE5:
+ 503              		.section	.text.OSTimeGet,"ax",%progbits
+ 504              		.align	1
+ 505              		.global	OSTimeGet
+ 506              		.syntax unified
+ 507              		.thumb
+ 508              		.thumb_func
+ 510              	OSTimeGet:
+ 511              	.LFB6:
  220:./ucOSII/Core/os_time.c **** #endif
  221:./ucOSII/Core/os_time.c **** 
  222:./ucOSII/Core/os_time.c **** 
@@ -769,83 +778,83 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
  232:./ucOSII/Core/os_time.c **** * Returns    : The current value of OSTime
  233:./ucOSII/Core/os_time.c **** ***************************************************************************************************
  234:./ucOSII/Core/os_time.c **** */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 14
+
+
  235:./ucOSII/Core/os_time.c **** 
  236:./ucOSII/Core/os_time.c **** #if OS_TIME_GET_SET_EN > 0u
  237:./ucOSII/Core/os_time.c **** INT32U  OSTimeGet (void)
  238:./ucOSII/Core/os_time.c **** {
- 503              		.loc 1 238 1
- 504              		.cfi_startproc
- 505              		@ args = 0, pretend = 0, frame = 8
- 506              		@ frame_needed = 1, uses_anonymous_args = 0
- 507 0000 80B5     		push	{r7, lr}
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 14
-
-
- 508              	.LCFI15:
- 509              		.cfi_def_cfa_offset 8
- 510              		.cfi_offset 7, -8
- 511              		.cfi_offset 14, -4
- 512 0002 82B0     		sub	sp, sp, #8
- 513              	.LCFI16:
- 514              		.cfi_def_cfa_offset 16
- 515 0004 00AF     		add	r7, sp, #0
- 516              	.LCFI17:
- 517              		.cfi_def_cfa_register 7
+ 512              		.loc 1 238 1
+ 513              		.cfi_startproc
+ 514              		@ args = 0, pretend = 0, frame = 8
+ 515              		@ frame_needed = 1, uses_anonymous_args = 0
+ 516 0000 80B5     		push	{r7, lr}
+ 517              	.LCFI15:
+ 518              		.cfi_def_cfa_offset 8
+ 519              		.cfi_offset 7, -8
+ 520              		.cfi_offset 14, -4
+ 521 0002 82B0     		sub	sp, sp, #8
+ 522              	.LCFI16:
+ 523              		.cfi_def_cfa_offset 16
+ 524 0004 00AF     		add	r7, sp, #0
+ 525              	.LCFI17:
+ 526              		.cfi_def_cfa_register 7
  239:./ucOSII/Core/os_time.c ****     INT32U     ticks;
  240:./ucOSII/Core/os_time.c **** #if OS_CRITICAL_METHOD == 3u                     /* Allocate storage for CPU status register       
  241:./ucOSII/Core/os_time.c ****     OS_CPU_SR  cpu_sr = 0u;
- 518              		.loc 1 241 16
- 519 0006 0023     		movs	r3, #0
- 520 0008 7B60     		str	r3, [r7, #4]
+ 527              		.loc 1 241 16
+ 528 0006 0023     		movs	r3, #0
+ 529 0008 7B60     		str	r3, [r7, #4]
  242:./ucOSII/Core/os_time.c **** #endif
  243:./ucOSII/Core/os_time.c **** 
  244:./ucOSII/Core/os_time.c **** 
  245:./ucOSII/Core/os_time.c **** 
  246:./ucOSII/Core/os_time.c ****     OS_ENTER_CRITICAL();
- 521              		.loc 1 246 5
- 522 000a 4020     		movs	r0, #64
- 523 000c FFF7FEFF 		bl	OS_CPU_SR_Save
- 524 0010 7860     		str	r0, [r7, #4]
+ 530              		.loc 1 246 5
+ 531 000a 4020     		movs	r0, #64
+ 532 000c FFF7FEFF 		bl	OS_CPU_SR_Save
+ 533 0010 7860     		str	r0, [r7, #4]
  247:./ucOSII/Core/os_time.c ****     ticks = OSTime;
- 525              		.loc 1 247 11
- 526 0012 054B     		ldr	r3, .L34
- 527 0014 1B68     		ldr	r3, [r3]
- 528 0016 3B60     		str	r3, [r7]
+ 534              		.loc 1 247 11
+ 535 0012 054B     		ldr	r3, .L34
+ 536 0014 1B68     		ldr	r3, [r3]
+ 537 0016 3B60     		str	r3, [r7]
  248:./ucOSII/Core/os_time.c ****     OS_EXIT_CRITICAL();
- 529              		.loc 1 248 5
- 530 0018 7868     		ldr	r0, [r7, #4]
- 531 001a FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 538              		.loc 1 248 5
+ 539 0018 7868     		ldr	r0, [r7, #4]
+ 540 001a FFF7FEFF 		bl	OS_CPU_SR_Restore
  249:./ucOSII/Core/os_time.c ****     return (ticks);
- 532              		.loc 1 249 12
- 533 001e 3B68     		ldr	r3, [r7]
+ 541              		.loc 1 249 12
+ 542 001e 3B68     		ldr	r3, [r7]
  250:./ucOSII/Core/os_time.c **** }
- 534              		.loc 1 250 1
- 535 0020 1846     		mov	r0, r3
- 536 0022 0837     		adds	r7, r7, #8
- 537              	.LCFI18:
- 538              		.cfi_def_cfa_offset 8
- 539 0024 BD46     		mov	sp, r7
- 540              	.LCFI19:
- 541              		.cfi_def_cfa_register 13
- 542              		@ sp needed
- 543 0026 80BD     		pop	{r7, pc}
- 544              	.L35:
- 545              		.align	2
- 546              	.L34:
- 547 0028 00000000 		.word	OSTime
- 548              		.cfi_endproc
- 549              	.LFE6:
- 551              		.section	.text.OSTimeSet,"ax",%progbits
- 552              		.align	1
- 553              		.global	OSTimeSet
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 15
+ 543              		.loc 1 250 1
+ 544 0020 1846     		mov	r0, r3
+ 545 0022 0837     		adds	r7, r7, #8
+ 546              	.LCFI18:
+ 547              		.cfi_def_cfa_offset 8
+ 548 0024 BD46     		mov	sp, r7
+ 549              	.LCFI19:
+ 550              		.cfi_def_cfa_register 13
+ 551              		@ sp needed
+ 552 0026 80BD     		pop	{r7, pc}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 15
 
 
- 554              		.syntax unified
- 555              		.thumb
- 556              		.thumb_func
- 558              	OSTimeSet:
- 559              	.LFB7:
+ 553              	.L35:
+ 554              		.align	2
+ 555              	.L34:
+ 556 0028 00000000 		.word	OSTime
+ 557              		.cfi_endproc
+ 558              	.LFE6:
+ 560              		.section	.text.OSTimeSet,"ax",%progbits
+ 561              		.align	1
+ 562              		.global	OSTimeSet
+ 563              		.syntax unified
+ 564              		.thumb
+ 565              		.thumb_func
+ 567              	OSTimeSet:
+ 568              	.LFB7:
  251:./ucOSII/Core/os_time.c **** #endif
  252:./ucOSII/Core/os_time.c **** 
  253:./ucOSII/Core/os_time.c **** 
@@ -864,92 +873,93 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 1
  266:./ucOSII/Core/os_time.c **** #if OS_TIME_GET_SET_EN > 0u
  267:./ucOSII/Core/os_time.c **** void  OSTimeSet (INT32U ticks)
  268:./ucOSII/Core/os_time.c **** {
- 560              		.loc 1 268 1
- 561              		.cfi_startproc
- 562              		@ args = 0, pretend = 0, frame = 16
- 563              		@ frame_needed = 1, uses_anonymous_args = 0
- 564 0000 80B5     		push	{r7, lr}
- 565              	.LCFI20:
- 566              		.cfi_def_cfa_offset 8
- 567              		.cfi_offset 7, -8
- 568              		.cfi_offset 14, -4
- 569 0002 84B0     		sub	sp, sp, #16
- 570              	.LCFI21:
- 571              		.cfi_def_cfa_offset 24
- 572 0004 00AF     		add	r7, sp, #0
- 573              	.LCFI22:
- 574              		.cfi_def_cfa_register 7
- 575 0006 7860     		str	r0, [r7, #4]
+ 569              		.loc 1 268 1
+ 570              		.cfi_startproc
+ 571              		@ args = 0, pretend = 0, frame = 16
+ 572              		@ frame_needed = 1, uses_anonymous_args = 0
+ 573 0000 80B5     		push	{r7, lr}
+ 574              	.LCFI20:
+ 575              		.cfi_def_cfa_offset 8
+ 576              		.cfi_offset 7, -8
+ 577              		.cfi_offset 14, -4
+ 578 0002 84B0     		sub	sp, sp, #16
+ 579              	.LCFI21:
+ 580              		.cfi_def_cfa_offset 24
+ 581 0004 00AF     		add	r7, sp, #0
+ 582              	.LCFI22:
+ 583              		.cfi_def_cfa_register 7
+ 584 0006 7860     		str	r0, [r7, #4]
  269:./ucOSII/Core/os_time.c **** #if OS_CRITICAL_METHOD == 3u                     /* Allocate storage for CPU status register       
  270:./ucOSII/Core/os_time.c ****     OS_CPU_SR  cpu_sr = 0u;
- 576              		.loc 1 270 16
- 577 0008 0023     		movs	r3, #0
- 578 000a FB60     		str	r3, [r7, #12]
+ 585              		.loc 1 270 16
+ 586 0008 0023     		movs	r3, #0
+ 587 000a FB60     		str	r3, [r7, #12]
  271:./ucOSII/Core/os_time.c **** #endif
  272:./ucOSII/Core/os_time.c **** 
  273:./ucOSII/Core/os_time.c **** 
  274:./ucOSII/Core/os_time.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 16
+
+
  275:./ucOSII/Core/os_time.c ****     OS_ENTER_CRITICAL();
- 579              		.loc 1 275 5
- 580 000c 4020     		movs	r0, #64
- 581 000e FFF7FEFF 		bl	OS_CPU_SR_Save
- 582 0012 F860     		str	r0, [r7, #12]
+ 588              		.loc 1 275 5
+ 589 000c 4020     		movs	r0, #64
+ 590 000e FFF7FEFF 		bl	OS_CPU_SR_Save
+ 591 0012 F860     		str	r0, [r7, #12]
  276:./ucOSII/Core/os_time.c ****     OSTime = ticks;
- 583              		.loc 1 276 12
- 584 0014 044A     		ldr	r2, .L37
- 585 0016 7B68     		ldr	r3, [r7, #4]
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 16
-
-
- 586 0018 1360     		str	r3, [r2]
+ 592              		.loc 1 276 12
+ 593 0014 044A     		ldr	r2, .L37
+ 594 0016 7B68     		ldr	r3, [r7, #4]
+ 595 0018 1360     		str	r3, [r2]
  277:./ucOSII/Core/os_time.c ****     OS_EXIT_CRITICAL();
- 587              		.loc 1 277 5
- 588 001a F868     		ldr	r0, [r7, #12]
- 589 001c FFF7FEFF 		bl	OS_CPU_SR_Restore
+ 596              		.loc 1 277 5
+ 597 001a F868     		ldr	r0, [r7, #12]
+ 598 001c FFF7FEFF 		bl	OS_CPU_SR_Restore
  278:./ucOSII/Core/os_time.c **** }
- 590              		.loc 1 278 1
- 591 0020 00BF     		nop
- 592 0022 1037     		adds	r7, r7, #16
- 593              	.LCFI23:
- 594              		.cfi_def_cfa_offset 8
- 595 0024 BD46     		mov	sp, r7
- 596              	.LCFI24:
- 597              		.cfi_def_cfa_register 13
- 598              		@ sp needed
- 599 0026 80BD     		pop	{r7, pc}
- 600              	.L38:
- 601              		.align	2
- 602              	.L37:
- 603 0028 00000000 		.word	OSTime
- 604              		.cfi_endproc
- 605              	.LFE7:
- 607              		.text
- 608              	.Letext0:
- 609              		.file 2 "./ucOSII/Port/os_cpu.h"
- 610              		.file 3 "./ucOSII/Core/ucos_ii.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s 			page 17
+ 599              		.loc 1 278 1
+ 600 0020 00BF     		nop
+ 601 0022 1037     		adds	r7, r7, #16
+ 602              	.LCFI23:
+ 603              		.cfi_def_cfa_offset 8
+ 604 0024 BD46     		mov	sp, r7
+ 605              	.LCFI24:
+ 606              		.cfi_def_cfa_register 13
+ 607              		@ sp needed
+ 608 0026 80BD     		pop	{r7, pc}
+ 609              	.L38:
+ 610              		.align	2
+ 611              	.L37:
+ 612 0028 00000000 		.word	OSTime
+ 613              		.cfi_endproc
+ 614              	.LFE7:
+ 616              		.text
+ 617              	.Letext0:
+ 618              		.file 2 "./ucOSII/Port/os_cpu.h"
+ 619              		.file 3 "./ucOSII/Core/ucos_ii.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s 			page 17
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 os_time.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:20     .text.OSTimeDly:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:26     .text.OSTimeDly:0000000000000000 OSTimeDly
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:145    .text.OSTimeDly:0000000000000094 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:154    .text.OSTimeDlyHMSM:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:160    .text.OSTimeDlyHMSM:0000000000000000 OSTimeDlyHMSM
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:307    .text.OSTimeDlyHMSM:00000000000000bc $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:314    .text.OSTimeDlyResume:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:320    .text.OSTimeDlyResume:0000000000000000 OSTimeDlyResume
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:488    .text.OSTimeDlyResume:00000000000000f0 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:495    .text.OSTimeGet:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:501    .text.OSTimeGet:0000000000000000 OSTimeGet
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:547    .text.OSTimeGet:0000000000000028 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:552    .text.OSTimeSet:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:558    .text.OSTimeSet:0000000000000000 OSTimeSet
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQq6snz.s:603    .text.OSTimeSet:0000000000000028 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:20     .text.OSTimeDly:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:26     .text.OSTimeDly:0000000000000000 OSTimeDly
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:150    .text.OSTimeDly:000000000000009c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:159    .text.OSTimeDlyHMSM:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:165    .text.OSTimeDlyHMSM:0000000000000000 OSTimeDlyHMSM
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:312    .text.OSTimeDlyHMSM:00000000000000bc $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:319    .text.OSTimeDlyResume:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:325    .text.OSTimeDlyResume:0000000000000000 OSTimeDlyResume
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:497    .text.OSTimeDlyResume:00000000000000f8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:504    .text.OSTimeGet:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:510    .text.OSTimeGet:0000000000000000 OSTimeGet
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:556    .text.OSTimeGet:0000000000000028 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:561    .text.OSTimeSet:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:567    .text.OSTimeSet:0000000000000000 OSTimeSet
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccaQRxAD.s:612    .text.OSTimeSet:0000000000000028 $d
 
 UNDEFINED SYMBOLS
 OS_CPU_SR_Save
+SYSVIEW_TaskSuspend
 OS_CPU_SR_Restore
 OS_Sched
 OSIntNesting
@@ -957,5 +967,6 @@ OSLockNesting
 OSTCBCur
 OSRdyTbl
 OSRdyGrp
+SYSVIEW_TaskReady
 OSTCBPrioTbl
 OSTime

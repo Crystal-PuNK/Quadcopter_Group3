@@ -39,11 +39,13 @@ C_SOURCES = $(shell find . -name '*.c')
 
 # ASM sources
 ASM_SOURCES =  \
-startup_stm32f401xe.s
+CORE/startup_stm32f401xe.s \
+
 
 # ASM sources
 ASMM_SOURCES = \
-ucOSII/Port/os_cpu_a.S
+ucOSII/Port/os_cpu_a.S \
+SystemView/SEGGER_RTT_ASM_ARMv7M.S
 
 #######################################
 # binaries
@@ -101,7 +103,9 @@ C_INCLUDES =  \
 -I./ucOSII/Config/${wildcard *.h} \
 -I./ucOSII/Core/${wildcard *.h} \
 -I./ucOSII/Port/${wildcard *.h} \
--I./User/${wildcard *.h} 
+-I./User/${wildcard *.h} \
+-I./SystemView/${wildcard *.h}
+
 
 
 # compile gcc flags
@@ -123,7 +127,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = STM32F401RETx_FLASH.ld
+LDSCRIPT = Script/STM32F401RETx_FLASH.ld
 
 # libraries
 LIBS = -lc -lm -lnosys 

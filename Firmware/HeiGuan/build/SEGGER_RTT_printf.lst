@@ -1,0 +1,1923 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"SEGGER_RTT_printf.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text._StoreChar,"ax",%progbits
+  20              		.align	1
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	_StoreChar:
+  26              	.LFB0:
+  27              		.file 1 "./SystemView/SEGGER_RTT_printf.c"
+   1:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+   2:./SystemView/SEGGER_RTT_printf.c **** *                    SEGGER Microcontroller GmbH                     *
+   3:./SystemView/SEGGER_RTT_printf.c **** *                        The Embedded Experts                        *
+   4:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+   5:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+   6:./SystemView/SEGGER_RTT_printf.c **** *            (c) 1995 - 2024 SEGGER Microcontroller GmbH             *
+   7:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+   8:./SystemView/SEGGER_RTT_printf.c **** *       www.segger.com     Support: support@segger.com               *
+   9:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  10:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+  11:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  12:./SystemView/SEGGER_RTT_printf.c **** *       SEGGER SystemView * Real-time application analysis           *
+  13:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  14:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+  15:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  16:./SystemView/SEGGER_RTT_printf.c **** * All rights reserved.                                               *
+  17:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  18:./SystemView/SEGGER_RTT_printf.c **** * SEGGER strongly recommends to not make any changes                 *
+  19:./SystemView/SEGGER_RTT_printf.c **** * to or modify the source code of this software in order to stay     *
+  20:./SystemView/SEGGER_RTT_printf.c **** * compatible with the SystemView and RTT protocol, and J-Link.       *
+  21:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  22:./SystemView/SEGGER_RTT_printf.c **** * Redistribution and use in source and binary forms, with or         *
+  23:./SystemView/SEGGER_RTT_printf.c **** * without modification, are permitted provided that the following    *
+  24:./SystemView/SEGGER_RTT_printf.c **** * condition is met:                                                  *
+  25:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  26:./SystemView/SEGGER_RTT_printf.c **** * o Redistributions of source code must retain the above copyright   *
+  27:./SystemView/SEGGER_RTT_printf.c **** *   notice, this condition and the following disclaimer.             *
+  28:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  29:./SystemView/SEGGER_RTT_printf.c **** * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND             *
+  30:./SystemView/SEGGER_RTT_printf.c **** * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,        *
+  31:./SystemView/SEGGER_RTT_printf.c **** * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF           *
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 2
+
+
+  32:./SystemView/SEGGER_RTT_printf.c **** * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE           *
+  33:./SystemView/SEGGER_RTT_printf.c **** * DISCLAIMED. IN NO EVENT SHALL SEGGER Microcontroller BE LIABLE FOR *
+  34:./SystemView/SEGGER_RTT_printf.c **** * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR           *
+  35:./SystemView/SEGGER_RTT_printf.c **** * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT  *
+  36:./SystemView/SEGGER_RTT_printf.c **** * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;    *
+  37:./SystemView/SEGGER_RTT_printf.c **** * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF      *
+  38:./SystemView/SEGGER_RTT_printf.c **** * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT          *
+  39:./SystemView/SEGGER_RTT_printf.c **** * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE  *
+  40:./SystemView/SEGGER_RTT_printf.c **** * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH   *
+  41:./SystemView/SEGGER_RTT_printf.c **** * DAMAGE.                                                            *
+  42:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  43:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+  44:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  45:./SystemView/SEGGER_RTT_printf.c **** *       SystemView version: 3.54                                    *
+  46:./SystemView/SEGGER_RTT_printf.c **** *                                                                    *
+  47:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+  48:./SystemView/SEGGER_RTT_printf.c **** ---------------------------END-OF-HEADER------------------------------
+  49:./SystemView/SEGGER_RTT_printf.c **** File    : SEGGER_RTT_printf.c
+  50:./SystemView/SEGGER_RTT_printf.c **** Purpose : Replacement for printf to write formatted data via RTT
+  51:./SystemView/SEGGER_RTT_printf.c **** Revision: $Rev: 17697 $
+  52:./SystemView/SEGGER_RTT_printf.c **** ----------------------------------------------------------------------
+  53:./SystemView/SEGGER_RTT_printf.c **** */
+  54:./SystemView/SEGGER_RTT_printf.c **** #include "SEGGER_RTT.h"
+  55:./SystemView/SEGGER_RTT_printf.c **** #include "SEGGER_RTT_Conf.h"
+  56:./SystemView/SEGGER_RTT_printf.c **** 
+  57:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+  58:./SystemView/SEGGER_RTT_printf.c **** *
+  59:./SystemView/SEGGER_RTT_printf.c **** *       Defines, configurable
+  60:./SystemView/SEGGER_RTT_printf.c **** *
+  61:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+  62:./SystemView/SEGGER_RTT_printf.c **** */
+  63:./SystemView/SEGGER_RTT_printf.c **** 
+  64:./SystemView/SEGGER_RTT_printf.c **** #ifndef SEGGER_RTT_PRINTF_BUFFER_SIZE
+  65:./SystemView/SEGGER_RTT_printf.c ****   #define SEGGER_RTT_PRINTF_BUFFER_SIZE (64)
+  66:./SystemView/SEGGER_RTT_printf.c **** #endif
+  67:./SystemView/SEGGER_RTT_printf.c **** 
+  68:./SystemView/SEGGER_RTT_printf.c **** #include <stdlib.h>
+  69:./SystemView/SEGGER_RTT_printf.c **** #include <stdarg.h>
+  70:./SystemView/SEGGER_RTT_printf.c **** 
+  71:./SystemView/SEGGER_RTT_printf.c **** 
+  72:./SystemView/SEGGER_RTT_printf.c **** #define FORMAT_FLAG_LEFT_JUSTIFY   (1u << 0)
+  73:./SystemView/SEGGER_RTT_printf.c **** #define FORMAT_FLAG_PAD_ZERO       (1u << 1)
+  74:./SystemView/SEGGER_RTT_printf.c **** #define FORMAT_FLAG_PRINT_SIGN     (1u << 2)
+  75:./SystemView/SEGGER_RTT_printf.c **** #define FORMAT_FLAG_ALTERNATE      (1u << 3)
+  76:./SystemView/SEGGER_RTT_printf.c **** 
+  77:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+  78:./SystemView/SEGGER_RTT_printf.c **** *
+  79:./SystemView/SEGGER_RTT_printf.c **** *       Types
+  80:./SystemView/SEGGER_RTT_printf.c **** *
+  81:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+  82:./SystemView/SEGGER_RTT_printf.c **** */
+  83:./SystemView/SEGGER_RTT_printf.c **** 
+  84:./SystemView/SEGGER_RTT_printf.c **** typedef struct {
+  85:./SystemView/SEGGER_RTT_printf.c ****   char*     pBuffer;
+  86:./SystemView/SEGGER_RTT_printf.c ****   unsigned  BufferSize;
+  87:./SystemView/SEGGER_RTT_printf.c ****   unsigned  Cnt;
+  88:./SystemView/SEGGER_RTT_printf.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 3
+
+
+  89:./SystemView/SEGGER_RTT_printf.c ****   int   ReturnValue;
+  90:./SystemView/SEGGER_RTT_printf.c **** 
+  91:./SystemView/SEGGER_RTT_printf.c ****   unsigned RTTBufferIndex;
+  92:./SystemView/SEGGER_RTT_printf.c **** } SEGGER_RTT_PRINTF_DESC;
+  93:./SystemView/SEGGER_RTT_printf.c **** 
+  94:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+  95:./SystemView/SEGGER_RTT_printf.c **** *
+  96:./SystemView/SEGGER_RTT_printf.c **** *       Function prototypes
+  97:./SystemView/SEGGER_RTT_printf.c **** *
+  98:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+  99:./SystemView/SEGGER_RTT_printf.c **** */
+ 100:./SystemView/SEGGER_RTT_printf.c **** 
+ 101:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+ 102:./SystemView/SEGGER_RTT_printf.c **** *
+ 103:./SystemView/SEGGER_RTT_printf.c **** *       Static code
+ 104:./SystemView/SEGGER_RTT_printf.c **** *
+ 105:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+ 106:./SystemView/SEGGER_RTT_printf.c **** */
+ 107:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+ 108:./SystemView/SEGGER_RTT_printf.c **** *
+ 109:./SystemView/SEGGER_RTT_printf.c **** *       _StoreChar
+ 110:./SystemView/SEGGER_RTT_printf.c **** */
+ 111:./SystemView/SEGGER_RTT_printf.c **** static void _StoreChar(SEGGER_RTT_PRINTF_DESC * p, char c) {
+  28              		.loc 1 111 60
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 84B0     		sub	sp, sp, #16
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 24
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 7860     		str	r0, [r7, #4]
+  44 0008 0B46     		mov	r3, r1
+  45 000a FB70     		strb	r3, [r7, #3]
+ 112:./SystemView/SEGGER_RTT_printf.c ****   unsigned Cnt;
+ 113:./SystemView/SEGGER_RTT_printf.c **** 
+ 114:./SystemView/SEGGER_RTT_printf.c ****   Cnt = p->Cnt;
+  46              		.loc 1 114 7
+  47 000c 7B68     		ldr	r3, [r7, #4]
+  48 000e 9B68     		ldr	r3, [r3, #8]
+  49 0010 FB60     		str	r3, [r7, #12]
+ 115:./SystemView/SEGGER_RTT_printf.c ****   if ((Cnt + 1u) <= p->BufferSize) {
+  50              		.loc 1 115 12
+  51 0012 FB68     		ldr	r3, [r7, #12]
+  52 0014 5A1C     		adds	r2, r3, #1
+  53              		.loc 1 115 22
+  54 0016 7B68     		ldr	r3, [r7, #4]
+  55 0018 5B68     		ldr	r3, [r3, #4]
+  56              		.loc 1 115 6
+  57 001a 9A42     		cmp	r2, r3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 4
+
+
+  58 001c 0ED8     		bhi	.L2
+ 116:./SystemView/SEGGER_RTT_printf.c ****     *(p->pBuffer + Cnt) = c;
+  59              		.loc 1 116 8
+  60 001e 7B68     		ldr	r3, [r7, #4]
+  61 0020 1A68     		ldr	r2, [r3]
+  62              		.loc 1 116 18
+  63 0022 FB68     		ldr	r3, [r7, #12]
+  64 0024 1344     		add	r3, r3, r2
+  65              		.loc 1 116 25
+  66 0026 FA78     		ldrb	r2, [r7, #3]
+  67 0028 1A70     		strb	r2, [r3]
+ 117:./SystemView/SEGGER_RTT_printf.c ****     p->Cnt = Cnt + 1u;
+  68              		.loc 1 117 18
+  69 002a FB68     		ldr	r3, [r7, #12]
+  70 002c 5A1C     		adds	r2, r3, #1
+  71              		.loc 1 117 12
+  72 002e 7B68     		ldr	r3, [r7, #4]
+  73 0030 9A60     		str	r2, [r3, #8]
+ 118:./SystemView/SEGGER_RTT_printf.c ****     p->ReturnValue++;
+  74              		.loc 1 118 6
+  75 0032 7B68     		ldr	r3, [r7, #4]
+  76 0034 DB68     		ldr	r3, [r3, #12]
+  77              		.loc 1 118 19
+  78 0036 5A1C     		adds	r2, r3, #1
+  79 0038 7B68     		ldr	r3, [r7, #4]
+  80 003a DA60     		str	r2, [r3, #12]
+  81              	.L2:
+ 119:./SystemView/SEGGER_RTT_printf.c ****   }
+ 120:./SystemView/SEGGER_RTT_printf.c ****   //
+ 121:./SystemView/SEGGER_RTT_printf.c ****   // Write part of string, when the buffer is full
+ 122:./SystemView/SEGGER_RTT_printf.c ****   //
+ 123:./SystemView/SEGGER_RTT_printf.c ****   if (p->Cnt == p->BufferSize) {
+  82              		.loc 1 123 8
+  83 003c 7B68     		ldr	r3, [r7, #4]
+  84 003e 9A68     		ldr	r2, [r3, #8]
+  85              		.loc 1 123 18
+  86 0040 7B68     		ldr	r3, [r7, #4]
+  87 0042 5B68     		ldr	r3, [r3, #4]
+  88              		.loc 1 123 6
+  89 0044 9A42     		cmp	r2, r3
+  90 0046 15D1     		bne	.L5
+ 124:./SystemView/SEGGER_RTT_printf.c ****     if (SEGGER_RTT_Write(p->RTTBufferIndex, p->pBuffer, p->Cnt) != p->Cnt) {
+  91              		.loc 1 124 9
+  92 0048 7B68     		ldr	r3, [r7, #4]
+  93 004a 1869     		ldr	r0, [r3, #16]
+  94              		.loc 1 124 46
+  95 004c 7B68     		ldr	r3, [r7, #4]
+  96 004e 1968     		ldr	r1, [r3]
+  97              		.loc 1 124 9
+  98 0050 7B68     		ldr	r3, [r7, #4]
+  99 0052 9B68     		ldr	r3, [r3, #8]
+ 100 0054 1A46     		mov	r2, r3
+ 101 0056 FFF7FEFF 		bl	SEGGER_RTT_Write
+ 102 005a 0246     		mov	r2, r0
+ 103              		.loc 1 124 69
+ 104 005c 7B68     		ldr	r3, [r7, #4]
+ 105 005e 9B68     		ldr	r3, [r3, #8]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 5
+
+
+ 106              		.loc 1 124 8
+ 107 0060 9A42     		cmp	r2, r3
+ 108 0062 04D0     		beq	.L4
+ 125:./SystemView/SEGGER_RTT_printf.c ****       p->ReturnValue = -1;
+ 109              		.loc 1 125 22
+ 110 0064 7B68     		ldr	r3, [r7, #4]
+ 111 0066 4FF0FF32 		mov	r2, #-1
+ 112 006a DA60     		str	r2, [r3, #12]
+ 126:./SystemView/SEGGER_RTT_printf.c ****     } else {
+ 127:./SystemView/SEGGER_RTT_printf.c ****       p->Cnt = 0u;
+ 128:./SystemView/SEGGER_RTT_printf.c ****     }
+ 129:./SystemView/SEGGER_RTT_printf.c ****   }
+ 130:./SystemView/SEGGER_RTT_printf.c **** }
+ 113              		.loc 1 130 1
+ 114 006c 02E0     		b	.L5
+ 115              	.L4:
+ 127:./SystemView/SEGGER_RTT_printf.c ****     }
+ 116              		.loc 1 127 14
+ 117 006e 7B68     		ldr	r3, [r7, #4]
+ 118 0070 0022     		movs	r2, #0
+ 119 0072 9A60     		str	r2, [r3, #8]
+ 120              	.L5:
+ 121              		.loc 1 130 1
+ 122 0074 00BF     		nop
+ 123 0076 1037     		adds	r7, r7, #16
+ 124              	.LCFI3:
+ 125              		.cfi_def_cfa_offset 8
+ 126 0078 BD46     		mov	sp, r7
+ 127              	.LCFI4:
+ 128              		.cfi_def_cfa_register 13
+ 129              		@ sp needed
+ 130 007a 80BD     		pop	{r7, pc}
+ 131              		.cfi_endproc
+ 132              	.LFE0:
+ 134              		.section	.text._PrintUnsigned,"ax",%progbits
+ 135              		.align	1
+ 136              		.syntax unified
+ 137              		.thumb
+ 138              		.thumb_func
+ 140              	_PrintUnsigned:
+ 141              	.LFB1:
+ 131:./SystemView/SEGGER_RTT_printf.c **** 
+ 132:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+ 133:./SystemView/SEGGER_RTT_printf.c **** *
+ 134:./SystemView/SEGGER_RTT_printf.c **** *       _PrintUnsigned
+ 135:./SystemView/SEGGER_RTT_printf.c **** */
+ 136:./SystemView/SEGGER_RTT_printf.c **** static void _PrintUnsigned(SEGGER_RTT_PRINTF_DESC * pBufferDesc, unsigned v, unsigned Base, unsigne
+ 142              		.loc 1 136 156
+ 143              		.cfi_startproc
+ 144              		@ args = 8, pretend = 0, frame = 40
+ 145              		@ frame_needed = 1, uses_anonymous_args = 0
+ 146 0000 80B5     		push	{r7, lr}
+ 147              	.LCFI5:
+ 148              		.cfi_def_cfa_offset 8
+ 149              		.cfi_offset 7, -8
+ 150              		.cfi_offset 14, -4
+ 151 0002 8AB0     		sub	sp, sp, #40
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 6
+
+
+ 152              	.LCFI6:
+ 153              		.cfi_def_cfa_offset 48
+ 154 0004 00AF     		add	r7, sp, #0
+ 155              	.LCFI7:
+ 156              		.cfi_def_cfa_register 7
+ 157 0006 F860     		str	r0, [r7, #12]
+ 158 0008 B960     		str	r1, [r7, #8]
+ 159 000a 7A60     		str	r2, [r7, #4]
+ 160 000c 3B60     		str	r3, [r7]
+ 137:./SystemView/SEGGER_RTT_printf.c ****   static const char _aV2C[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', '
+ 138:./SystemView/SEGGER_RTT_printf.c ****   unsigned Div;
+ 139:./SystemView/SEGGER_RTT_printf.c ****   unsigned Digit;
+ 140:./SystemView/SEGGER_RTT_printf.c ****   unsigned Number;
+ 141:./SystemView/SEGGER_RTT_printf.c ****   unsigned Width;
+ 142:./SystemView/SEGGER_RTT_printf.c ****   char c;
+ 143:./SystemView/SEGGER_RTT_printf.c **** 
+ 144:./SystemView/SEGGER_RTT_printf.c ****   Number = v;
+ 161              		.loc 1 144 10
+ 162 000e BB68     		ldr	r3, [r7, #8]
+ 163 0010 3B62     		str	r3, [r7, #32]
+ 145:./SystemView/SEGGER_RTT_printf.c ****   Digit = 1u;
+ 164              		.loc 1 145 9
+ 165 0012 0123     		movs	r3, #1
+ 166 0014 7B62     		str	r3, [r7, #36]
+ 146:./SystemView/SEGGER_RTT_printf.c ****   //
+ 147:./SystemView/SEGGER_RTT_printf.c ****   // Get actual field width
+ 148:./SystemView/SEGGER_RTT_printf.c ****   //
+ 149:./SystemView/SEGGER_RTT_printf.c ****   Width = 1u;
+ 167              		.loc 1 149 9
+ 168 0016 0123     		movs	r3, #1
+ 169 0018 FB61     		str	r3, [r7, #28]
+ 150:./SystemView/SEGGER_RTT_printf.c ****   while (Number >= Base) {
+ 170              		.loc 1 150 9
+ 171 001a 07E0     		b	.L7
+ 172              	.L8:
+ 151:./SystemView/SEGGER_RTT_printf.c ****     Number = (Number / Base);
+ 173              		.loc 1 151 12
+ 174 001c 3A6A     		ldr	r2, [r7, #32]
+ 175 001e 7B68     		ldr	r3, [r7, #4]
+ 176 0020 B2FBF3F3 		udiv	r3, r2, r3
+ 177 0024 3B62     		str	r3, [r7, #32]
+ 152:./SystemView/SEGGER_RTT_printf.c ****     Width++;
+ 178              		.loc 1 152 10
+ 179 0026 FB69     		ldr	r3, [r7, #28]
+ 180 0028 0133     		adds	r3, r3, #1
+ 181 002a FB61     		str	r3, [r7, #28]
+ 182              	.L7:
+ 150:./SystemView/SEGGER_RTT_printf.c ****   while (Number >= Base) {
+ 183              		.loc 1 150 9
+ 184 002c 3A6A     		ldr	r2, [r7, #32]
+ 185 002e 7B68     		ldr	r3, [r7, #4]
+ 186 0030 9A42     		cmp	r2, r3
+ 187 0032 F3D2     		bcs	.L8
+ 153:./SystemView/SEGGER_RTT_printf.c ****   }
+ 154:./SystemView/SEGGER_RTT_printf.c ****   if (NumDigits > Width) {
+ 188              		.loc 1 154 6
+ 189 0034 3A68     		ldr	r2, [r7]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 7
+
+
+ 190 0036 FB69     		ldr	r3, [r7, #28]
+ 191 0038 9A42     		cmp	r2, r3
+ 192 003a 01D9     		bls	.L9
+ 155:./SystemView/SEGGER_RTT_printf.c ****     Width = NumDigits;
+ 193              		.loc 1 155 11
+ 194 003c 3B68     		ldr	r3, [r7]
+ 195 003e FB61     		str	r3, [r7, #28]
+ 196              	.L9:
+ 156:./SystemView/SEGGER_RTT_printf.c ****   }
+ 157:./SystemView/SEGGER_RTT_printf.c ****   //
+ 158:./SystemView/SEGGER_RTT_printf.c ****   // Print leading chars if necessary
+ 159:./SystemView/SEGGER_RTT_printf.c ****   //
+ 160:./SystemView/SEGGER_RTT_printf.c ****   if ((FormatFlags & FORMAT_FLAG_LEFT_JUSTIFY) == 0u) {
+ 197              		.loc 1 160 20
+ 198 0040 7B6B     		ldr	r3, [r7, #52]
+ 199 0042 03F00103 		and	r3, r3, #1
+ 200              		.loc 1 160 6
+ 201 0046 002B     		cmp	r3, #0
+ 202 0048 25D1     		bne	.L10
+ 161:./SystemView/SEGGER_RTT_printf.c ****     if (FieldWidth != 0u) {
+ 203              		.loc 1 161 8
+ 204 004a 3B6B     		ldr	r3, [r7, #48]
+ 205 004c 002B     		cmp	r3, #0
+ 206 004e 22D0     		beq	.L10
+ 162:./SystemView/SEGGER_RTT_printf.c ****       if (((FormatFlags & FORMAT_FLAG_PAD_ZERO) == FORMAT_FLAG_PAD_ZERO) && (NumDigits == 0u)) {
+ 207              		.loc 1 162 25
+ 208 0050 7B6B     		ldr	r3, [r7, #52]
+ 209 0052 03F00203 		and	r3, r3, #2
+ 210              		.loc 1 162 10
+ 211 0056 002B     		cmp	r3, #0
+ 212 0058 05D0     		beq	.L11
+ 213              		.loc 1 162 74 discriminator 1
+ 214 005a 3B68     		ldr	r3, [r7]
+ 215 005c 002B     		cmp	r3, #0
+ 216 005e 02D1     		bne	.L11
+ 163:./SystemView/SEGGER_RTT_printf.c ****         c = '0';
+ 217              		.loc 1 163 11
+ 218 0060 3023     		movs	r3, #48
+ 219 0062 FB76     		strb	r3, [r7, #27]
+ 220 0064 01E0     		b	.L12
+ 221              	.L11:
+ 164:./SystemView/SEGGER_RTT_printf.c ****       } else {
+ 165:./SystemView/SEGGER_RTT_printf.c ****         c = ' ';
+ 222              		.loc 1 165 11
+ 223 0066 2023     		movs	r3, #32
+ 224 0068 FB76     		strb	r3, [r7, #27]
+ 225              	.L12:
+ 166:./SystemView/SEGGER_RTT_printf.c ****       }
+ 167:./SystemView/SEGGER_RTT_printf.c ****       while ((FieldWidth != 0u) && (Width < FieldWidth)) {
+ 226              		.loc 1 167 13
+ 227 006a 0BE0     		b	.L13
+ 228              	.L14:
+ 168:./SystemView/SEGGER_RTT_printf.c ****         FieldWidth--;
+ 229              		.loc 1 168 19
+ 230 006c 3B6B     		ldr	r3, [r7, #48]
+ 231 006e 013B     		subs	r3, r3, #1
+ 232 0070 3B63     		str	r3, [r7, #48]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 8
+
+
+ 169:./SystemView/SEGGER_RTT_printf.c ****         _StoreChar(pBufferDesc, c);
+ 233              		.loc 1 169 9
+ 234 0072 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 235 0074 1946     		mov	r1, r3
+ 236 0076 F868     		ldr	r0, [r7, #12]
+ 237 0078 FFF7FEFF 		bl	_StoreChar
+ 170:./SystemView/SEGGER_RTT_printf.c ****         if (pBufferDesc->ReturnValue < 0) {
+ 238              		.loc 1 170 24
+ 239 007c FB68     		ldr	r3, [r7, #12]
+ 240 007e DB68     		ldr	r3, [r3, #12]
+ 241              		.loc 1 170 12
+ 242 0080 002B     		cmp	r3, #0
+ 243 0082 07DB     		blt	.L25
+ 244              	.L13:
+ 167:./SystemView/SEGGER_RTT_printf.c ****         FieldWidth--;
+ 245              		.loc 1 167 13
+ 246 0084 3B6B     		ldr	r3, [r7, #48]
+ 247 0086 002B     		cmp	r3, #0
+ 248 0088 05D0     		beq	.L10
+ 167:./SystemView/SEGGER_RTT_printf.c ****         FieldWidth--;
+ 249              		.loc 1 167 33 discriminator 1
+ 250 008a FA69     		ldr	r2, [r7, #28]
+ 251 008c 3B6B     		ldr	r3, [r7, #48]
+ 252 008e 9A42     		cmp	r2, r3
+ 253 0090 ECD3     		bcc	.L14
+ 254 0092 00E0     		b	.L10
+ 255              	.L25:
+ 171:./SystemView/SEGGER_RTT_printf.c ****           break;
+ 256              		.loc 1 171 11
+ 257 0094 00BF     		nop
+ 258              	.L10:
+ 172:./SystemView/SEGGER_RTT_printf.c ****         }
+ 173:./SystemView/SEGGER_RTT_printf.c ****       }
+ 174:./SystemView/SEGGER_RTT_printf.c ****     }
+ 175:./SystemView/SEGGER_RTT_printf.c ****   }
+ 176:./SystemView/SEGGER_RTT_printf.c ****   if (pBufferDesc->ReturnValue >= 0) {
+ 259              		.loc 1 176 18
+ 260 0096 FB68     		ldr	r3, [r7, #12]
+ 261 0098 DB68     		ldr	r3, [r3, #12]
+ 262              		.loc 1 176 6
+ 263 009a 002B     		cmp	r3, #0
+ 264 009c 55DB     		blt	.L26
+ 265              	.L19:
+ 177:./SystemView/SEGGER_RTT_printf.c ****     //
+ 178:./SystemView/SEGGER_RTT_printf.c ****     // Compute Digit.
+ 179:./SystemView/SEGGER_RTT_printf.c ****     // Loop until Digit has the value of the highest digit required.
+ 180:./SystemView/SEGGER_RTT_printf.c ****     // Example: If the output is 345 (Base 10), loop 2 times until Digit is 100.
+ 181:./SystemView/SEGGER_RTT_printf.c ****     //
+ 182:./SystemView/SEGGER_RTT_printf.c ****     while (1) {
+ 183:./SystemView/SEGGER_RTT_printf.c ****       if (NumDigits > 1u) {       // User specified a min number of digits to print? => Make sure w
+ 266              		.loc 1 183 10
+ 267 009e 3B68     		ldr	r3, [r7]
+ 268 00a0 012B     		cmp	r3, #1
+ 269 00a2 03D9     		bls	.L16
+ 184:./SystemView/SEGGER_RTT_printf.c ****         NumDigits--;
+ 270              		.loc 1 184 18
+ 271 00a4 3B68     		ldr	r3, [r7]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 9
+
+
+ 272 00a6 013B     		subs	r3, r3, #1
+ 273 00a8 3B60     		str	r3, [r7]
+ 274 00aa 09E0     		b	.L17
+ 275              	.L16:
+ 185:./SystemView/SEGGER_RTT_printf.c ****       } else {
+ 186:./SystemView/SEGGER_RTT_printf.c ****         Div = v / Digit;
+ 276              		.loc 1 186 13
+ 277 00ac BA68     		ldr	r2, [r7, #8]
+ 278 00ae 7B6A     		ldr	r3, [r7, #36]
+ 279 00b0 B2FBF3F3 		udiv	r3, r2, r3
+ 280 00b4 7B61     		str	r3, [r7, #20]
+ 187:./SystemView/SEGGER_RTT_printf.c ****         if (Div < Base) {        // Is our divider big enough to extract the highest digit from val
+ 281              		.loc 1 187 12
+ 282 00b6 7A69     		ldr	r2, [r7, #20]
+ 283 00b8 7B68     		ldr	r3, [r7, #4]
+ 284 00ba 9A42     		cmp	r2, r3
+ 285 00bc 00D2     		bcs	.L17
+ 188:./SystemView/SEGGER_RTT_printf.c ****           break;
+ 286              		.loc 1 188 11
+ 287 00be 05E0     		b	.L18
+ 288              	.L17:
+ 189:./SystemView/SEGGER_RTT_printf.c ****         }
+ 190:./SystemView/SEGGER_RTT_printf.c ****       }
+ 191:./SystemView/SEGGER_RTT_printf.c ****       Digit *= Base;
+ 289              		.loc 1 191 13
+ 290 00c0 7B6A     		ldr	r3, [r7, #36]
+ 291 00c2 7A68     		ldr	r2, [r7, #4]
+ 292 00c4 02FB03F3 		mul	r3, r2, r3
+ 293 00c8 7B62     		str	r3, [r7, #36]
+ 183:./SystemView/SEGGER_RTT_printf.c ****         NumDigits--;
+ 294              		.loc 1 183 10
+ 295 00ca E8E7     		b	.L19
+ 296              	.L18:
+ 192:./SystemView/SEGGER_RTT_printf.c ****     }
+ 193:./SystemView/SEGGER_RTT_printf.c ****     //
+ 194:./SystemView/SEGGER_RTT_printf.c ****     // Output digits
+ 195:./SystemView/SEGGER_RTT_printf.c ****     //
+ 196:./SystemView/SEGGER_RTT_printf.c ****     do {
+ 197:./SystemView/SEGGER_RTT_printf.c ****       Div = v / Digit;
+ 297              		.loc 1 197 11
+ 298 00cc BA68     		ldr	r2, [r7, #8]
+ 299 00ce 7B6A     		ldr	r3, [r7, #36]
+ 300 00d0 B2FBF3F3 		udiv	r3, r2, r3
+ 301 00d4 7B61     		str	r3, [r7, #20]
+ 198:./SystemView/SEGGER_RTT_printf.c ****       v -= Div * Digit;
+ 302              		.loc 1 198 16
+ 303 00d6 7B69     		ldr	r3, [r7, #20]
+ 304 00d8 7A6A     		ldr	r2, [r7, #36]
+ 305 00da 02FB03F3 		mul	r3, r2, r3
+ 306              		.loc 1 198 9
+ 307 00de BA68     		ldr	r2, [r7, #8]
+ 308 00e0 D31A     		subs	r3, r2, r3
+ 309 00e2 BB60     		str	r3, [r7, #8]
+ 199:./SystemView/SEGGER_RTT_printf.c ****       _StoreChar(pBufferDesc, _aV2C[Div]);
+ 310              		.loc 1 199 7
+ 311 00e4 1B4A     		ldr	r2, .L29
+ 312 00e6 7B69     		ldr	r3, [r7, #20]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 10
+
+
+ 313 00e8 1344     		add	r3, r3, r2
+ 314 00ea 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 315 00ec 1946     		mov	r1, r3
+ 316 00ee F868     		ldr	r0, [r7, #12]
+ 317 00f0 FFF7FEFF 		bl	_StoreChar
+ 200:./SystemView/SEGGER_RTT_printf.c ****       if (pBufferDesc->ReturnValue < 0) {
+ 318              		.loc 1 200 22
+ 319 00f4 FB68     		ldr	r3, [r7, #12]
+ 320 00f6 DB68     		ldr	r3, [r3, #12]
+ 321              		.loc 1 200 10
+ 322 00f8 002B     		cmp	r3, #0
+ 323 00fa 08DB     		blt	.L27
+ 201:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 202:./SystemView/SEGGER_RTT_printf.c ****       }
+ 203:./SystemView/SEGGER_RTT_printf.c ****       Digit /= Base;
+ 324              		.loc 1 203 13
+ 325 00fc 7A6A     		ldr	r2, [r7, #36]
+ 326 00fe 7B68     		ldr	r3, [r7, #4]
+ 327 0100 B2FBF3F3 		udiv	r3, r2, r3
+ 328 0104 7B62     		str	r3, [r7, #36]
+ 204:./SystemView/SEGGER_RTT_printf.c ****     } while (Digit);
+ 329              		.loc 1 204 5
+ 330 0106 7B6A     		ldr	r3, [r7, #36]
+ 331 0108 002B     		cmp	r3, #0
+ 332 010a DFD1     		bne	.L18
+ 333 010c 00E0     		b	.L21
+ 334              	.L27:
+ 201:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 335              		.loc 1 201 9
+ 336 010e 00BF     		nop
+ 337              	.L21:
+ 205:./SystemView/SEGGER_RTT_printf.c ****     //
+ 206:./SystemView/SEGGER_RTT_printf.c ****     // Print trailing spaces if necessary
+ 207:./SystemView/SEGGER_RTT_printf.c ****     //
+ 208:./SystemView/SEGGER_RTT_printf.c ****     if ((FormatFlags & FORMAT_FLAG_LEFT_JUSTIFY) == FORMAT_FLAG_LEFT_JUSTIFY) {
+ 338              		.loc 1 208 22
+ 339 0110 7B6B     		ldr	r3, [r7, #52]
+ 340 0112 03F00103 		and	r3, r3, #1
+ 341              		.loc 1 208 8
+ 342 0116 002B     		cmp	r3, #0
+ 343 0118 17D0     		beq	.L26
+ 209:./SystemView/SEGGER_RTT_printf.c ****       if (FieldWidth != 0u) {
+ 344              		.loc 1 209 10
+ 345 011a 3B6B     		ldr	r3, [r7, #48]
+ 346 011c 002B     		cmp	r3, #0
+ 347 011e 14D0     		beq	.L26
+ 210:./SystemView/SEGGER_RTT_printf.c ****         while ((FieldWidth != 0u) && (Width < FieldWidth)) {
+ 348              		.loc 1 210 15
+ 349 0120 0AE0     		b	.L22
+ 350              	.L23:
+ 211:./SystemView/SEGGER_RTT_printf.c ****           FieldWidth--;
+ 351              		.loc 1 211 21
+ 352 0122 3B6B     		ldr	r3, [r7, #48]
+ 353 0124 013B     		subs	r3, r3, #1
+ 354 0126 3B63     		str	r3, [r7, #48]
+ 212:./SystemView/SEGGER_RTT_printf.c ****           _StoreChar(pBufferDesc, ' ');
+ 355              		.loc 1 212 11
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 11
+
+
+ 356 0128 2021     		movs	r1, #32
+ 357 012a F868     		ldr	r0, [r7, #12]
+ 358 012c FFF7FEFF 		bl	_StoreChar
+ 213:./SystemView/SEGGER_RTT_printf.c ****           if (pBufferDesc->ReturnValue < 0) {
+ 359              		.loc 1 213 26
+ 360 0130 FB68     		ldr	r3, [r7, #12]
+ 361 0132 DB68     		ldr	r3, [r3, #12]
+ 362              		.loc 1 213 14
+ 363 0134 002B     		cmp	r3, #0
+ 364 0136 07DB     		blt	.L28
+ 365              	.L22:
+ 210:./SystemView/SEGGER_RTT_printf.c ****           FieldWidth--;
+ 366              		.loc 1 210 15
+ 367 0138 3B6B     		ldr	r3, [r7, #48]
+ 368 013a 002B     		cmp	r3, #0
+ 369 013c 05D0     		beq	.L26
+ 210:./SystemView/SEGGER_RTT_printf.c ****           FieldWidth--;
+ 370              		.loc 1 210 35 discriminator 1
+ 371 013e FA69     		ldr	r2, [r7, #28]
+ 372 0140 3B6B     		ldr	r3, [r7, #48]
+ 373 0142 9A42     		cmp	r2, r3
+ 374 0144 EDD3     		bcc	.L23
+ 214:./SystemView/SEGGER_RTT_printf.c ****             break;
+ 215:./SystemView/SEGGER_RTT_printf.c ****           }
+ 216:./SystemView/SEGGER_RTT_printf.c ****         }
+ 217:./SystemView/SEGGER_RTT_printf.c ****       }
+ 218:./SystemView/SEGGER_RTT_printf.c ****     }
+ 219:./SystemView/SEGGER_RTT_printf.c ****   }
+ 220:./SystemView/SEGGER_RTT_printf.c **** }
+ 375              		.loc 1 220 1
+ 376 0146 00E0     		b	.L26
+ 377              	.L28:
+ 214:./SystemView/SEGGER_RTT_printf.c ****             break;
+ 378              		.loc 1 214 13
+ 379 0148 00BF     		nop
+ 380              	.L26:
+ 381              		.loc 1 220 1
+ 382 014a 00BF     		nop
+ 383 014c 2837     		adds	r7, r7, #40
+ 384              	.LCFI8:
+ 385              		.cfi_def_cfa_offset 8
+ 386 014e BD46     		mov	sp, r7
+ 387              	.LCFI9:
+ 388              		.cfi_def_cfa_register 13
+ 389              		@ sp needed
+ 390 0150 80BD     		pop	{r7, pc}
+ 391              	.L30:
+ 392 0152 00BF     		.align	2
+ 393              	.L29:
+ 394 0154 00000000 		.word	_aV2C.0
+ 395              		.cfi_endproc
+ 396              	.LFE1:
+ 398              		.section	.text._PrintInt,"ax",%progbits
+ 399              		.align	1
+ 400              		.syntax unified
+ 401              		.thumb
+ 402              		.thumb_func
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 12
+
+
+ 404              	_PrintInt:
+ 405              	.LFB2:
+ 221:./SystemView/SEGGER_RTT_printf.c **** 
+ 222:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+ 223:./SystemView/SEGGER_RTT_printf.c **** *
+ 224:./SystemView/SEGGER_RTT_printf.c **** *       _PrintInt
+ 225:./SystemView/SEGGER_RTT_printf.c **** */
+ 226:./SystemView/SEGGER_RTT_printf.c **** static void _PrintInt(SEGGER_RTT_PRINTF_DESC * pBufferDesc, int v, unsigned Base, unsigned NumDigit
+ 406              		.loc 1 226 146
+ 407              		.cfi_startproc
+ 408              		@ args = 8, pretend = 0, frame = 24
+ 409              		@ frame_needed = 1, uses_anonymous_args = 0
+ 410 0000 80B5     		push	{r7, lr}
+ 411              	.LCFI10:
+ 412              		.cfi_def_cfa_offset 8
+ 413              		.cfi_offset 7, -8
+ 414              		.cfi_offset 14, -4
+ 415 0002 88B0     		sub	sp, sp, #32
+ 416              	.LCFI11:
+ 417              		.cfi_def_cfa_offset 40
+ 418 0004 02AF     		add	r7, sp, #8
+ 419              	.LCFI12:
+ 420              		.cfi_def_cfa 7, 32
+ 421 0006 F860     		str	r0, [r7, #12]
+ 422 0008 B960     		str	r1, [r7, #8]
+ 423 000a 7A60     		str	r2, [r7, #4]
+ 424 000c 3B60     		str	r3, [r7]
+ 227:./SystemView/SEGGER_RTT_printf.c ****   unsigned Width;
+ 228:./SystemView/SEGGER_RTT_printf.c ****   int Number;
+ 229:./SystemView/SEGGER_RTT_printf.c **** 
+ 230:./SystemView/SEGGER_RTT_printf.c ****   Number = (v < 0) ? -v : v;
+ 425              		.loc 1 230 10
+ 426 000e BB68     		ldr	r3, [r7, #8]
+ 427 0010 002B     		cmp	r3, #0
+ 428 0012 B8BF     		it	lt
+ 429 0014 5B42     		rsblt	r3, r3, #0
+ 430 0016 3B61     		str	r3, [r7, #16]
+ 231:./SystemView/SEGGER_RTT_printf.c **** 
+ 232:./SystemView/SEGGER_RTT_printf.c ****   //
+ 233:./SystemView/SEGGER_RTT_printf.c ****   // Get actual field width
+ 234:./SystemView/SEGGER_RTT_printf.c ****   //
+ 235:./SystemView/SEGGER_RTT_printf.c ****   Width = 1u;
+ 431              		.loc 1 235 9
+ 432 0018 0123     		movs	r3, #1
+ 433 001a 7B61     		str	r3, [r7, #20]
+ 236:./SystemView/SEGGER_RTT_printf.c ****   while (Number >= (int)Base) {
+ 434              		.loc 1 236 9
+ 435 001c 07E0     		b	.L32
+ 436              	.L33:
+ 237:./SystemView/SEGGER_RTT_printf.c ****     Number = (Number / (int)Base);
+ 437              		.loc 1 237 24
+ 438 001e 7B68     		ldr	r3, [r7, #4]
+ 439              		.loc 1 237 12
+ 440 0020 3A69     		ldr	r2, [r7, #16]
+ 441 0022 92FBF3F3 		sdiv	r3, r2, r3
+ 442 0026 3B61     		str	r3, [r7, #16]
+ 238:./SystemView/SEGGER_RTT_printf.c ****     Width++;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 13
+
+
+ 443              		.loc 1 238 10
+ 444 0028 7B69     		ldr	r3, [r7, #20]
+ 445 002a 0133     		adds	r3, r3, #1
+ 446 002c 7B61     		str	r3, [r7, #20]
+ 447              	.L32:
+ 236:./SystemView/SEGGER_RTT_printf.c ****   while (Number >= (int)Base) {
+ 448              		.loc 1 236 20
+ 449 002e 7B68     		ldr	r3, [r7, #4]
+ 236:./SystemView/SEGGER_RTT_printf.c ****   while (Number >= (int)Base) {
+ 450              		.loc 1 236 9
+ 451 0030 3A69     		ldr	r2, [r7, #16]
+ 452 0032 9A42     		cmp	r2, r3
+ 453 0034 F3DA     		bge	.L33
+ 239:./SystemView/SEGGER_RTT_printf.c ****   }
+ 240:./SystemView/SEGGER_RTT_printf.c ****   if (NumDigits > Width) {
+ 454              		.loc 1 240 6
+ 455 0036 3A68     		ldr	r2, [r7]
+ 456 0038 7B69     		ldr	r3, [r7, #20]
+ 457 003a 9A42     		cmp	r2, r3
+ 458 003c 01D9     		bls	.L34
+ 241:./SystemView/SEGGER_RTT_printf.c ****     Width = NumDigits;
+ 459              		.loc 1 241 11
+ 460 003e 3B68     		ldr	r3, [r7]
+ 461 0040 7B61     		str	r3, [r7, #20]
+ 462              	.L34:
+ 242:./SystemView/SEGGER_RTT_printf.c ****   }
+ 243:./SystemView/SEGGER_RTT_printf.c ****   if ((FieldWidth > 0u) && ((v < 0) || ((FormatFlags & FORMAT_FLAG_PRINT_SIGN) == FORMAT_FLAG_PRINT
+ 463              		.loc 1 243 6
+ 464 0042 3B6A     		ldr	r3, [r7, #32]
+ 465 0044 002B     		cmp	r3, #0
+ 466 0046 0AD0     		beq	.L35
+ 467              		.loc 1 243 25 discriminator 1
+ 468 0048 BB68     		ldr	r3, [r7, #8]
+ 469 004a 002B     		cmp	r3, #0
+ 470 004c 04DB     		blt	.L36
+ 471              		.loc 1 243 54 discriminator 2
+ 472 004e 7B6A     		ldr	r3, [r7, #36]
+ 473 0050 03F00403 		and	r3, r3, #4
+ 474              		.loc 1 243 37 discriminator 2
+ 475 0054 002B     		cmp	r3, #0
+ 476 0056 02D0     		beq	.L35
+ 477              	.L36:
+ 244:./SystemView/SEGGER_RTT_printf.c ****     FieldWidth--;
+ 478              		.loc 1 244 15
+ 479 0058 3B6A     		ldr	r3, [r7, #32]
+ 480 005a 013B     		subs	r3, r3, #1
+ 481 005c 3B62     		str	r3, [r7, #32]
+ 482              	.L35:
+ 245:./SystemView/SEGGER_RTT_printf.c ****   }
+ 246:./SystemView/SEGGER_RTT_printf.c **** 
+ 247:./SystemView/SEGGER_RTT_printf.c ****   //
+ 248:./SystemView/SEGGER_RTT_printf.c ****   // Print leading spaces if necessary
+ 249:./SystemView/SEGGER_RTT_printf.c ****   //
+ 250:./SystemView/SEGGER_RTT_printf.c ****   if ((((FormatFlags & FORMAT_FLAG_PAD_ZERO) == 0u) || (NumDigits != 0u)) && ((FormatFlags & FORMAT
+ 483              		.loc 1 250 22
+ 484 005e 7B6A     		ldr	r3, [r7, #36]
+ 485 0060 03F00203 		and	r3, r3, #2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 14
+
+
+ 486              		.loc 1 250 6
+ 487 0064 002B     		cmp	r3, #0
+ 488 0066 02D0     		beq	.L37
+ 489              		.loc 1 250 53 discriminator 2
+ 490 0068 3B68     		ldr	r3, [r7]
+ 491 006a 002B     		cmp	r3, #0
+ 492 006c 1CD0     		beq	.L38
+ 493              	.L37:
+ 494              		.loc 1 250 92 discriminator 3
+ 495 006e 7B6A     		ldr	r3, [r7, #36]
+ 496 0070 03F00103 		and	r3, r3, #1
+ 497              		.loc 1 250 75 discriminator 3
+ 498 0074 002B     		cmp	r3, #0
+ 499 0076 17D1     		bne	.L38
+ 251:./SystemView/SEGGER_RTT_printf.c ****     if (FieldWidth != 0u) {
+ 500              		.loc 1 251 8
+ 501 0078 3B6A     		ldr	r3, [r7, #32]
+ 502 007a 002B     		cmp	r3, #0
+ 503 007c 14D0     		beq	.L38
+ 252:./SystemView/SEGGER_RTT_printf.c ****       while ((FieldWidth != 0u) && (Width < FieldWidth)) {
+ 504              		.loc 1 252 13
+ 505 007e 0AE0     		b	.L39
+ 506              	.L40:
+ 253:./SystemView/SEGGER_RTT_printf.c ****         FieldWidth--;
+ 507              		.loc 1 253 19
+ 508 0080 3B6A     		ldr	r3, [r7, #32]
+ 509 0082 013B     		subs	r3, r3, #1
+ 510 0084 3B62     		str	r3, [r7, #32]
+ 254:./SystemView/SEGGER_RTT_printf.c ****         _StoreChar(pBufferDesc, ' ');
+ 511              		.loc 1 254 9
+ 512 0086 2021     		movs	r1, #32
+ 513 0088 F868     		ldr	r0, [r7, #12]
+ 514 008a FFF7FEFF 		bl	_StoreChar
+ 255:./SystemView/SEGGER_RTT_printf.c ****         if (pBufferDesc->ReturnValue < 0) {
+ 515              		.loc 1 255 24
+ 516 008e FB68     		ldr	r3, [r7, #12]
+ 517 0090 DB68     		ldr	r3, [r3, #12]
+ 518              		.loc 1 255 12
+ 519 0092 002B     		cmp	r3, #0
+ 520 0094 07DB     		blt	.L47
+ 521              	.L39:
+ 252:./SystemView/SEGGER_RTT_printf.c ****         FieldWidth--;
+ 522              		.loc 1 252 13
+ 523 0096 3B6A     		ldr	r3, [r7, #32]
+ 524 0098 002B     		cmp	r3, #0
+ 525 009a 05D0     		beq	.L38
+ 252:./SystemView/SEGGER_RTT_printf.c ****         FieldWidth--;
+ 526              		.loc 1 252 33 discriminator 1
+ 527 009c 7A69     		ldr	r2, [r7, #20]
+ 528 009e 3B6A     		ldr	r3, [r7, #32]
+ 529 00a0 9A42     		cmp	r2, r3
+ 530 00a2 EDD3     		bcc	.L40
+ 531 00a4 00E0     		b	.L38
+ 532              	.L47:
+ 256:./SystemView/SEGGER_RTT_printf.c ****           break;
+ 533              		.loc 1 256 11
+ 534 00a6 00BF     		nop
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 15
+
+
+ 535              	.L38:
+ 257:./SystemView/SEGGER_RTT_printf.c ****         }
+ 258:./SystemView/SEGGER_RTT_printf.c ****       }
+ 259:./SystemView/SEGGER_RTT_printf.c ****     }
+ 260:./SystemView/SEGGER_RTT_printf.c ****   }
+ 261:./SystemView/SEGGER_RTT_printf.c ****   //
+ 262:./SystemView/SEGGER_RTT_printf.c ****   // Print sign if necessary
+ 263:./SystemView/SEGGER_RTT_printf.c ****   //
+ 264:./SystemView/SEGGER_RTT_printf.c ****   if (pBufferDesc->ReturnValue >= 0) {
+ 536              		.loc 1 264 18
+ 537 00a8 FB68     		ldr	r3, [r7, #12]
+ 538 00aa DB68     		ldr	r3, [r3, #12]
+ 539              		.loc 1 264 6
+ 540 00ac 002B     		cmp	r3, #0
+ 541 00ae 4ADB     		blt	.L48
+ 265:./SystemView/SEGGER_RTT_printf.c ****     if (v < 0) {
+ 542              		.loc 1 265 8
+ 543 00b0 BB68     		ldr	r3, [r7, #8]
+ 544 00b2 002B     		cmp	r3, #0
+ 545 00b4 07DA     		bge	.L42
+ 266:./SystemView/SEGGER_RTT_printf.c ****       v = -v;
+ 546              		.loc 1 266 9
+ 547 00b6 BB68     		ldr	r3, [r7, #8]
+ 548 00b8 5B42     		rsbs	r3, r3, #0
+ 549 00ba BB60     		str	r3, [r7, #8]
+ 267:./SystemView/SEGGER_RTT_printf.c ****       _StoreChar(pBufferDesc, '-');
+ 550              		.loc 1 267 7
+ 551 00bc 2D21     		movs	r1, #45
+ 552 00be F868     		ldr	r0, [r7, #12]
+ 553 00c0 FFF7FEFF 		bl	_StoreChar
+ 554 00c4 08E0     		b	.L43
+ 555              	.L42:
+ 268:./SystemView/SEGGER_RTT_printf.c ****     } else if ((FormatFlags & FORMAT_FLAG_PRINT_SIGN) == FORMAT_FLAG_PRINT_SIGN) {
+ 556              		.loc 1 268 29
+ 557 00c6 7B6A     		ldr	r3, [r7, #36]
+ 558 00c8 03F00403 		and	r3, r3, #4
+ 559              		.loc 1 268 15
+ 560 00cc 002B     		cmp	r3, #0
+ 561 00ce 03D0     		beq	.L43
+ 269:./SystemView/SEGGER_RTT_printf.c ****       _StoreChar(pBufferDesc, '+');
+ 562              		.loc 1 269 7
+ 563 00d0 2B21     		movs	r1, #43
+ 564 00d2 F868     		ldr	r0, [r7, #12]
+ 565 00d4 FFF7FEFF 		bl	_StoreChar
+ 566              	.L43:
+ 270:./SystemView/SEGGER_RTT_printf.c ****     } else {
+ 271:./SystemView/SEGGER_RTT_printf.c **** 
+ 272:./SystemView/SEGGER_RTT_printf.c ****     }
+ 273:./SystemView/SEGGER_RTT_printf.c ****     if (pBufferDesc->ReturnValue >= 0) {
+ 567              		.loc 1 273 20
+ 568 00d8 FB68     		ldr	r3, [r7, #12]
+ 569 00da DB68     		ldr	r3, [r3, #12]
+ 570              		.loc 1 273 8
+ 571 00dc 002B     		cmp	r3, #0
+ 572 00de 32DB     		blt	.L48
+ 274:./SystemView/SEGGER_RTT_printf.c ****       //
+ 275:./SystemView/SEGGER_RTT_printf.c ****       // Print leading zeros if necessary
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 16
+
+
+ 276:./SystemView/SEGGER_RTT_printf.c ****       //
+ 277:./SystemView/SEGGER_RTT_printf.c ****       if (((FormatFlags & FORMAT_FLAG_PAD_ZERO) == FORMAT_FLAG_PAD_ZERO) && ((FormatFlags & FORMAT_
+ 573              		.loc 1 277 25
+ 574 00e0 7B6A     		ldr	r3, [r7, #36]
+ 575 00e2 03F00203 		and	r3, r3, #2
+ 576              		.loc 1 277 10
+ 577 00e6 002B     		cmp	r3, #0
+ 578 00e8 1FD0     		beq	.L44
+ 579              		.loc 1 277 91 discriminator 1
+ 580 00ea 7B6A     		ldr	r3, [r7, #36]
+ 581 00ec 03F00103 		and	r3, r3, #1
+ 582              		.loc 1 277 74 discriminator 1
+ 583 00f0 002B     		cmp	r3, #0
+ 584 00f2 1AD1     		bne	.L44
+ 585              		.loc 1 277 126 discriminator 2
+ 586 00f4 3B68     		ldr	r3, [r7]
+ 587 00f6 002B     		cmp	r3, #0
+ 588 00f8 17D1     		bne	.L44
+ 278:./SystemView/SEGGER_RTT_printf.c ****         if (FieldWidth != 0u) {
+ 589              		.loc 1 278 12
+ 590 00fa 3B6A     		ldr	r3, [r7, #32]
+ 591 00fc 002B     		cmp	r3, #0
+ 592 00fe 14D0     		beq	.L44
+ 279:./SystemView/SEGGER_RTT_printf.c ****           while ((FieldWidth != 0u) && (Width < FieldWidth)) {
+ 593              		.loc 1 279 17
+ 594 0100 0AE0     		b	.L45
+ 595              	.L46:
+ 280:./SystemView/SEGGER_RTT_printf.c ****             FieldWidth--;
+ 596              		.loc 1 280 23
+ 597 0102 3B6A     		ldr	r3, [r7, #32]
+ 598 0104 013B     		subs	r3, r3, #1
+ 599 0106 3B62     		str	r3, [r7, #32]
+ 281:./SystemView/SEGGER_RTT_printf.c ****             _StoreChar(pBufferDesc, '0');
+ 600              		.loc 1 281 13
+ 601 0108 3021     		movs	r1, #48
+ 602 010a F868     		ldr	r0, [r7, #12]
+ 603 010c FFF7FEFF 		bl	_StoreChar
+ 282:./SystemView/SEGGER_RTT_printf.c ****             if (pBufferDesc->ReturnValue < 0) {
+ 604              		.loc 1 282 28
+ 605 0110 FB68     		ldr	r3, [r7, #12]
+ 606 0112 DB68     		ldr	r3, [r3, #12]
+ 607              		.loc 1 282 16
+ 608 0114 002B     		cmp	r3, #0
+ 609 0116 07DB     		blt	.L49
+ 610              	.L45:
+ 279:./SystemView/SEGGER_RTT_printf.c ****             FieldWidth--;
+ 611              		.loc 1 279 17
+ 612 0118 3B6A     		ldr	r3, [r7, #32]
+ 613 011a 002B     		cmp	r3, #0
+ 614 011c 05D0     		beq	.L44
+ 279:./SystemView/SEGGER_RTT_printf.c ****             FieldWidth--;
+ 615              		.loc 1 279 37 discriminator 1
+ 616 011e 7A69     		ldr	r2, [r7, #20]
+ 617 0120 3B6A     		ldr	r3, [r7, #32]
+ 618 0122 9A42     		cmp	r2, r3
+ 619 0124 EDD3     		bcc	.L46
+ 620 0126 00E0     		b	.L44
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 17
+
+
+ 621              	.L49:
+ 283:./SystemView/SEGGER_RTT_printf.c ****               break;
+ 622              		.loc 1 283 15
+ 623 0128 00BF     		nop
+ 624              	.L44:
+ 284:./SystemView/SEGGER_RTT_printf.c ****             }
+ 285:./SystemView/SEGGER_RTT_printf.c ****           }
+ 286:./SystemView/SEGGER_RTT_printf.c ****         }
+ 287:./SystemView/SEGGER_RTT_printf.c ****       }
+ 288:./SystemView/SEGGER_RTT_printf.c ****       if (pBufferDesc->ReturnValue >= 0) {
+ 625              		.loc 1 288 22
+ 626 012a FB68     		ldr	r3, [r7, #12]
+ 627 012c DB68     		ldr	r3, [r3, #12]
+ 628              		.loc 1 288 10
+ 629 012e 002B     		cmp	r3, #0
+ 630 0130 09DB     		blt	.L48
+ 289:./SystemView/SEGGER_RTT_printf.c ****         //
+ 290:./SystemView/SEGGER_RTT_printf.c ****         // Print number without sign
+ 291:./SystemView/SEGGER_RTT_printf.c ****         //
+ 292:./SystemView/SEGGER_RTT_printf.c ****         _PrintUnsigned(pBufferDesc, (unsigned)v, Base, NumDigits, FieldWidth, FormatFlags);
+ 631              		.loc 1 292 9
+ 632 0132 B968     		ldr	r1, [r7, #8]
+ 633 0134 7B6A     		ldr	r3, [r7, #36]
+ 634 0136 0193     		str	r3, [sp, #4]
+ 635 0138 3B6A     		ldr	r3, [r7, #32]
+ 636 013a 0093     		str	r3, [sp]
+ 637 013c 3B68     		ldr	r3, [r7]
+ 638 013e 7A68     		ldr	r2, [r7, #4]
+ 639 0140 F868     		ldr	r0, [r7, #12]
+ 640 0142 FFF7FEFF 		bl	_PrintUnsigned
+ 641              	.L48:
+ 293:./SystemView/SEGGER_RTT_printf.c ****       }
+ 294:./SystemView/SEGGER_RTT_printf.c ****     }
+ 295:./SystemView/SEGGER_RTT_printf.c ****   }
+ 296:./SystemView/SEGGER_RTT_printf.c **** }
+ 642              		.loc 1 296 1
+ 643 0146 00BF     		nop
+ 644 0148 1837     		adds	r7, r7, #24
+ 645              	.LCFI13:
+ 646              		.cfi_def_cfa_offset 8
+ 647 014a BD46     		mov	sp, r7
+ 648              	.LCFI14:
+ 649              		.cfi_def_cfa_register 13
+ 650              		@ sp needed
+ 651 014c 80BD     		pop	{r7, pc}
+ 652              		.cfi_endproc
+ 653              	.LFE2:
+ 655              		.section	.rodata
+ 656              		.align	2
+ 657              	.LC0:
+ 658 0000 284E554C 		.ascii	"(NULL)\000"
+ 658      4C2900
+ 659              		.section	.text.SEGGER_RTT_vprintf,"ax",%progbits
+ 660              		.align	1
+ 661              		.global	SEGGER_RTT_vprintf
+ 662              		.syntax unified
+ 663              		.thumb
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 18
+
+
+ 664              		.thumb_func
+ 666              	SEGGER_RTT_vprintf:
+ 667              	.LFB3:
+ 297:./SystemView/SEGGER_RTT_printf.c **** 
+ 298:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+ 299:./SystemView/SEGGER_RTT_printf.c **** *
+ 300:./SystemView/SEGGER_RTT_printf.c **** *       Public code
+ 301:./SystemView/SEGGER_RTT_printf.c **** *
+ 302:./SystemView/SEGGER_RTT_printf.c **** **********************************************************************
+ 303:./SystemView/SEGGER_RTT_printf.c **** */
+ 304:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+ 305:./SystemView/SEGGER_RTT_printf.c **** *
+ 306:./SystemView/SEGGER_RTT_printf.c **** *       SEGGER_RTT_vprintf
+ 307:./SystemView/SEGGER_RTT_printf.c **** *
+ 308:./SystemView/SEGGER_RTT_printf.c **** *  Function description
+ 309:./SystemView/SEGGER_RTT_printf.c **** *    Stores a formatted string in SEGGER RTT control block.
+ 310:./SystemView/SEGGER_RTT_printf.c **** *    This data is read by the host.
+ 311:./SystemView/SEGGER_RTT_printf.c **** *
+ 312:./SystemView/SEGGER_RTT_printf.c **** *  Parameters
+ 313:./SystemView/SEGGER_RTT_printf.c **** *    BufferIndex  Index of "Up"-buffer to be used. (e.g. 0 for "Terminal")
+ 314:./SystemView/SEGGER_RTT_printf.c **** *    sFormat      Pointer to format string
+ 315:./SystemView/SEGGER_RTT_printf.c **** *    pParamList   Pointer to the list of arguments for the format string
+ 316:./SystemView/SEGGER_RTT_printf.c **** *
+ 317:./SystemView/SEGGER_RTT_printf.c **** *  Return values
+ 318:./SystemView/SEGGER_RTT_printf.c **** *    >= 0:  Number of bytes which have been stored in the "Up"-buffer.
+ 319:./SystemView/SEGGER_RTT_printf.c **** *     < 0:  Error
+ 320:./SystemView/SEGGER_RTT_printf.c **** */
+ 321:./SystemView/SEGGER_RTT_printf.c **** int SEGGER_RTT_vprintf(unsigned BufferIndex, const char * sFormat, va_list * pParamList) {
+ 668              		.loc 1 321 90
+ 669              		.cfi_startproc
+ 670              		@ args = 0, pretend = 0, frame = 128
+ 671              		@ frame_needed = 1, uses_anonymous_args = 0
+ 672 0000 80B5     		push	{r7, lr}
+ 673              	.LCFI15:
+ 674              		.cfi_def_cfa_offset 8
+ 675              		.cfi_offset 7, -8
+ 676              		.cfi_offset 14, -4
+ 677 0002 A2B0     		sub	sp, sp, #136
+ 678              	.LCFI16:
+ 679              		.cfi_def_cfa_offset 144
+ 680 0004 02AF     		add	r7, sp, #8
+ 681              	.LCFI17:
+ 682              		.cfi_def_cfa 7, 136
+ 683 0006 F860     		str	r0, [r7, #12]
+ 684 0008 B960     		str	r1, [r7, #8]
+ 685 000a 7A60     		str	r2, [r7, #4]
+ 322:./SystemView/SEGGER_RTT_printf.c ****   char c;
+ 323:./SystemView/SEGGER_RTT_printf.c ****   SEGGER_RTT_PRINTF_DESC BufferDesc;
+ 324:./SystemView/SEGGER_RTT_printf.c ****   int v;
+ 325:./SystemView/SEGGER_RTT_printf.c ****   unsigned NumDigits;
+ 326:./SystemView/SEGGER_RTT_printf.c ****   unsigned FormatFlags;
+ 327:./SystemView/SEGGER_RTT_printf.c ****   unsigned FieldWidth;
+ 328:./SystemView/SEGGER_RTT_printf.c ****   char acBuffer[SEGGER_RTT_PRINTF_BUFFER_SIZE];
+ 329:./SystemView/SEGGER_RTT_printf.c **** 
+ 330:./SystemView/SEGGER_RTT_printf.c ****   BufferDesc.pBuffer        = acBuffer;
+ 686              		.loc 1 330 29
+ 687 000c 07F11003 		add	r3, r7, #16
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 19
+
+
+ 688 0010 3B65     		str	r3, [r7, #80]
+ 331:./SystemView/SEGGER_RTT_printf.c ****   BufferDesc.BufferSize     = SEGGER_RTT_PRINTF_BUFFER_SIZE;
+ 689              		.loc 1 331 29
+ 690 0012 4023     		movs	r3, #64
+ 691 0014 7B65     		str	r3, [r7, #84]
+ 332:./SystemView/SEGGER_RTT_printf.c ****   BufferDesc.Cnt            = 0u;
+ 692              		.loc 1 332 29
+ 693 0016 0023     		movs	r3, #0
+ 694 0018 BB65     		str	r3, [r7, #88]
+ 333:./SystemView/SEGGER_RTT_printf.c ****   BufferDesc.RTTBufferIndex = BufferIndex;
+ 695              		.loc 1 333 29
+ 696 001a FB68     		ldr	r3, [r7, #12]
+ 697 001c 3B66     		str	r3, [r7, #96]
+ 334:./SystemView/SEGGER_RTT_printf.c ****   BufferDesc.ReturnValue    = 0;
+ 698              		.loc 1 334 29
+ 699 001e 0023     		movs	r3, #0
+ 700 0020 FB65     		str	r3, [r7, #92]
+ 701              	.L84:
+ 335:./SystemView/SEGGER_RTT_printf.c **** 
+ 336:./SystemView/SEGGER_RTT_printf.c ****   do {
+ 337:./SystemView/SEGGER_RTT_printf.c ****     c = *sFormat;
+ 702              		.loc 1 337 7
+ 703 0022 BB68     		ldr	r3, [r7, #8]
+ 704 0024 1B78     		ldrb	r3, [r3]
+ 705 0026 87F87F30 		strb	r3, [r7, #127]
+ 338:./SystemView/SEGGER_RTT_printf.c ****     sFormat++;
+ 706              		.loc 1 338 12
+ 707 002a BB68     		ldr	r3, [r7, #8]
+ 708 002c 0133     		adds	r3, r3, #1
+ 709 002e BB60     		str	r3, [r7, #8]
+ 339:./SystemView/SEGGER_RTT_printf.c ****     if (c == 0u) {
+ 710              		.loc 1 339 8
+ 711 0030 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 712 0034 002B     		cmp	r3, #0
+ 713 0036 00F0A481 		beq	.L89
+ 340:./SystemView/SEGGER_RTT_printf.c ****       break;
+ 341:./SystemView/SEGGER_RTT_printf.c ****     }
+ 342:./SystemView/SEGGER_RTT_printf.c ****     if (c == '%') {
+ 714              		.loc 1 342 8
+ 715 003a 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 716 003e 252B     		cmp	r3, #37
+ 717 0040 40F09281 		bne	.L53
+ 343:./SystemView/SEGGER_RTT_printf.c ****       //
+ 344:./SystemView/SEGGER_RTT_printf.c ****       // Filter out flags
+ 345:./SystemView/SEGGER_RTT_printf.c ****       //
+ 346:./SystemView/SEGGER_RTT_printf.c ****       FormatFlags = 0u;
+ 718              		.loc 1 346 19
+ 719 0044 0023     		movs	r3, #0
+ 720 0046 3B67     		str	r3, [r7, #112]
+ 347:./SystemView/SEGGER_RTT_printf.c ****       v = 1;
+ 721              		.loc 1 347 9
+ 722 0048 0123     		movs	r3, #1
+ 723 004a BB67     		str	r3, [r7, #120]
+ 724              	.L61:
+ 348:./SystemView/SEGGER_RTT_printf.c ****       do {
+ 349:./SystemView/SEGGER_RTT_printf.c ****         c = *sFormat;
+ 725              		.loc 1 349 11
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 20
+
+
+ 726 004c BB68     		ldr	r3, [r7, #8]
+ 727 004e 1B78     		ldrb	r3, [r3]
+ 728 0050 87F87F30 		strb	r3, [r7, #127]
+ 350:./SystemView/SEGGER_RTT_printf.c ****         switch (c) {
+ 729              		.loc 1 350 9
+ 730 0054 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 731 0058 233B     		subs	r3, r3, #35
+ 732 005a 0D2B     		cmp	r3, #13
+ 733 005c 3ED8     		bhi	.L54
+ 734 005e 01A2     		adr	r2, .L56
+ 735 0060 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 736              		.p2align 2
+ 737              	.L56:
+ 738 0064 CD000000 		.word	.L59+1
+ 739 0068 DD000000 		.word	.L54+1
+ 740 006c DD000000 		.word	.L54+1
+ 741 0070 DD000000 		.word	.L54+1
+ 742 0074 DD000000 		.word	.L54+1
+ 743 0078 DD000000 		.word	.L54+1
+ 744 007c DD000000 		.word	.L54+1
+ 745 0080 DD000000 		.word	.L54+1
+ 746 0084 BD000000 		.word	.L58+1
+ 747 0088 DD000000 		.word	.L54+1
+ 748 008c 9D000000 		.word	.L57+1
+ 749 0090 DD000000 		.word	.L54+1
+ 750 0094 DD000000 		.word	.L54+1
+ 751 0098 AD000000 		.word	.L55+1
+ 752              		.p2align 1
+ 753              	.L57:
+ 351:./SystemView/SEGGER_RTT_printf.c ****         case '-': FormatFlags |= FORMAT_FLAG_LEFT_JUSTIFY; sFormat++; break;
+ 754              		.loc 1 351 31
+ 755 009c 3B6F     		ldr	r3, [r7, #112]
+ 756 009e 43F00103 		orr	r3, r3, #1
+ 757 00a2 3B67     		str	r3, [r7, #112]
+ 758              		.loc 1 351 67
+ 759 00a4 BB68     		ldr	r3, [r7, #8]
+ 760 00a6 0133     		adds	r3, r3, #1
+ 761 00a8 BB60     		str	r3, [r7, #8]
+ 762              		.loc 1 351 9
+ 763 00aa 1AE0     		b	.L60
+ 764              	.L55:
+ 352:./SystemView/SEGGER_RTT_printf.c ****         case '0': FormatFlags |= FORMAT_FLAG_PAD_ZERO;     sFormat++; break;
+ 765              		.loc 1 352 31
+ 766 00ac 3B6F     		ldr	r3, [r7, #112]
+ 767 00ae 43F00203 		orr	r3, r3, #2
+ 768 00b2 3B67     		str	r3, [r7, #112]
+ 769              		.loc 1 352 67
+ 770 00b4 BB68     		ldr	r3, [r7, #8]
+ 771 00b6 0133     		adds	r3, r3, #1
+ 772 00b8 BB60     		str	r3, [r7, #8]
+ 773              		.loc 1 352 9
+ 774 00ba 12E0     		b	.L60
+ 775              	.L58:
+ 353:./SystemView/SEGGER_RTT_printf.c ****         case '+': FormatFlags |= FORMAT_FLAG_PRINT_SIGN;   sFormat++; break;
+ 776              		.loc 1 353 31
+ 777 00bc 3B6F     		ldr	r3, [r7, #112]
+ 778 00be 43F00403 		orr	r3, r3, #4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 21
+
+
+ 779 00c2 3B67     		str	r3, [r7, #112]
+ 780              		.loc 1 353 67
+ 781 00c4 BB68     		ldr	r3, [r7, #8]
+ 782 00c6 0133     		adds	r3, r3, #1
+ 783 00c8 BB60     		str	r3, [r7, #8]
+ 784              		.loc 1 353 9
+ 785 00ca 0AE0     		b	.L60
+ 786              	.L59:
+ 354:./SystemView/SEGGER_RTT_printf.c ****         case '#': FormatFlags |= FORMAT_FLAG_ALTERNATE;    sFormat++; break;
+ 787              		.loc 1 354 31
+ 788 00cc 3B6F     		ldr	r3, [r7, #112]
+ 789 00ce 43F00803 		orr	r3, r3, #8
+ 790 00d2 3B67     		str	r3, [r7, #112]
+ 791              		.loc 1 354 67
+ 792 00d4 BB68     		ldr	r3, [r7, #8]
+ 793 00d6 0133     		adds	r3, r3, #1
+ 794 00d8 BB60     		str	r3, [r7, #8]
+ 795              		.loc 1 354 9
+ 796 00da 02E0     		b	.L60
+ 797              	.L54:
+ 355:./SystemView/SEGGER_RTT_printf.c ****         default:  v = 0; break;
+ 798              		.loc 1 355 21
+ 799 00dc 0023     		movs	r3, #0
+ 800 00de BB67     		str	r3, [r7, #120]
+ 801              		.loc 1 355 9
+ 802 00e0 00BF     		nop
+ 803              	.L60:
+ 356:./SystemView/SEGGER_RTT_printf.c ****         }
+ 357:./SystemView/SEGGER_RTT_printf.c ****       } while (v);
+ 804              		.loc 1 357 7
+ 805 00e2 BB6F     		ldr	r3, [r7, #120]
+ 806 00e4 002B     		cmp	r3, #0
+ 807 00e6 B1D1     		bne	.L61
+ 358:./SystemView/SEGGER_RTT_printf.c ****       //
+ 359:./SystemView/SEGGER_RTT_printf.c ****       // filter out field with
+ 360:./SystemView/SEGGER_RTT_printf.c ****       //
+ 361:./SystemView/SEGGER_RTT_printf.c ****       FieldWidth = 0u;
+ 808              		.loc 1 361 18
+ 809 00e8 0023     		movs	r3, #0
+ 810 00ea FB66     		str	r3, [r7, #108]
+ 811              	.L63:
+ 362:./SystemView/SEGGER_RTT_printf.c ****       do {
+ 363:./SystemView/SEGGER_RTT_printf.c ****         c = *sFormat;
+ 812              		.loc 1 363 11
+ 813 00ec BB68     		ldr	r3, [r7, #8]
+ 814 00ee 1B78     		ldrb	r3, [r3]
+ 815 00f0 87F87F30 		strb	r3, [r7, #127]
+ 364:./SystemView/SEGGER_RTT_printf.c ****         if ((c < '0') || (c > '9')) {
+ 816              		.loc 1 364 12
+ 817 00f4 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 818 00f8 2F2B     		cmp	r3, #47
+ 819 00fa 12D9     		bls	.L62
+ 820              		.loc 1 364 23 discriminator 1
+ 821 00fc 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 822 0100 392B     		cmp	r3, #57
+ 823 0102 0ED8     		bhi	.L62
+ 365:./SystemView/SEGGER_RTT_printf.c ****           break;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 22
+
+
+ 366:./SystemView/SEGGER_RTT_printf.c ****         }
+ 367:./SystemView/SEGGER_RTT_printf.c ****         sFormat++;
+ 824              		.loc 1 367 16
+ 825 0104 BB68     		ldr	r3, [r7, #8]
+ 826 0106 0133     		adds	r3, r3, #1
+ 827 0108 BB60     		str	r3, [r7, #8]
+ 368:./SystemView/SEGGER_RTT_printf.c ****         FieldWidth = (FieldWidth * 10u) + ((unsigned)c - '0');
+ 828              		.loc 1 368 34
+ 829 010a FA6E     		ldr	r2, [r7, #108]
+ 830 010c 1346     		mov	r3, r2
+ 831 010e 9B00     		lsls	r3, r3, #2
+ 832 0110 1344     		add	r3, r3, r2
+ 833 0112 5B00     		lsls	r3, r3, #1
+ 834 0114 1A46     		mov	r2, r3
+ 835              		.loc 1 368 44
+ 836 0116 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 837              		.loc 1 368 41
+ 838 011a 1344     		add	r3, r3, r2
+ 839              		.loc 1 368 20
+ 840 011c 303B     		subs	r3, r3, #48
+ 841 011e FB66     		str	r3, [r7, #108]
+ 363:./SystemView/SEGGER_RTT_printf.c ****         if ((c < '0') || (c > '9')) {
+ 842              		.loc 1 363 11
+ 843 0120 E4E7     		b	.L63
+ 844              	.L62:
+ 369:./SystemView/SEGGER_RTT_printf.c ****       } while (1);
+ 370:./SystemView/SEGGER_RTT_printf.c **** 
+ 371:./SystemView/SEGGER_RTT_printf.c ****       //
+ 372:./SystemView/SEGGER_RTT_printf.c ****       // Filter out precision (number of digits to display)
+ 373:./SystemView/SEGGER_RTT_printf.c ****       //
+ 374:./SystemView/SEGGER_RTT_printf.c ****       NumDigits = 0u;
+ 845              		.loc 1 374 17
+ 846 0122 0023     		movs	r3, #0
+ 847 0124 7B67     		str	r3, [r7, #116]
+ 375:./SystemView/SEGGER_RTT_printf.c ****       c = *sFormat;
+ 848              		.loc 1 375 9
+ 849 0126 BB68     		ldr	r3, [r7, #8]
+ 850 0128 1B78     		ldrb	r3, [r3]
+ 851 012a 87F87F30 		strb	r3, [r7, #127]
+ 376:./SystemView/SEGGER_RTT_printf.c ****       if (c == '.') {
+ 852              		.loc 1 376 10
+ 853 012e 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 854 0132 2E2B     		cmp	r3, #46
+ 855 0134 1DD1     		bne	.L64
+ 377:./SystemView/SEGGER_RTT_printf.c ****         sFormat++;
+ 856              		.loc 1 377 16
+ 857 0136 BB68     		ldr	r3, [r7, #8]
+ 858 0138 0133     		adds	r3, r3, #1
+ 859 013a BB60     		str	r3, [r7, #8]
+ 860              	.L65:
+ 378:./SystemView/SEGGER_RTT_printf.c ****         do {
+ 379:./SystemView/SEGGER_RTT_printf.c ****           c = *sFormat;
+ 861              		.loc 1 379 13
+ 862 013c BB68     		ldr	r3, [r7, #8]
+ 863 013e 1B78     		ldrb	r3, [r3]
+ 864 0140 87F87F30 		strb	r3, [r7, #127]
+ 380:./SystemView/SEGGER_RTT_printf.c ****           if ((c < '0') || (c > '9')) {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 23
+
+
+ 865              		.loc 1 380 14
+ 866 0144 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 867 0148 2F2B     		cmp	r3, #47
+ 868 014a 12D9     		bls	.L64
+ 869              		.loc 1 380 25 discriminator 1
+ 870 014c 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 871 0150 392B     		cmp	r3, #57
+ 872 0152 0ED8     		bhi	.L64
+ 381:./SystemView/SEGGER_RTT_printf.c ****             break;
+ 382:./SystemView/SEGGER_RTT_printf.c ****           }
+ 383:./SystemView/SEGGER_RTT_printf.c ****           sFormat++;
+ 873              		.loc 1 383 18
+ 874 0154 BB68     		ldr	r3, [r7, #8]
+ 875 0156 0133     		adds	r3, r3, #1
+ 876 0158 BB60     		str	r3, [r7, #8]
+ 384:./SystemView/SEGGER_RTT_printf.c ****           NumDigits = NumDigits * 10u + ((unsigned)c - '0');
+ 877              		.loc 1 384 33
+ 878 015a 7A6F     		ldr	r2, [r7, #116]
+ 879 015c 1346     		mov	r3, r2
+ 880 015e 9B00     		lsls	r3, r3, #2
+ 881 0160 1344     		add	r3, r3, r2
+ 882 0162 5B00     		lsls	r3, r3, #1
+ 883 0164 1A46     		mov	r2, r3
+ 884              		.loc 1 384 42
+ 885 0166 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 886              		.loc 1 384 39
+ 887 016a 1344     		add	r3, r3, r2
+ 888              		.loc 1 384 21
+ 889 016c 303B     		subs	r3, r3, #48
+ 890 016e 7B67     		str	r3, [r7, #116]
+ 379:./SystemView/SEGGER_RTT_printf.c ****           if ((c < '0') || (c > '9')) {
+ 891              		.loc 1 379 13
+ 892 0170 E4E7     		b	.L65
+ 893              	.L64:
+ 385:./SystemView/SEGGER_RTT_printf.c ****         } while (1);
+ 386:./SystemView/SEGGER_RTT_printf.c ****       }
+ 387:./SystemView/SEGGER_RTT_printf.c ****       //
+ 388:./SystemView/SEGGER_RTT_printf.c ****       // Filter out length modifier
+ 389:./SystemView/SEGGER_RTT_printf.c ****       //
+ 390:./SystemView/SEGGER_RTT_printf.c ****       c = *sFormat;
+ 894              		.loc 1 390 9
+ 895 0172 BB68     		ldr	r3, [r7, #8]
+ 896 0174 1B78     		ldrb	r3, [r3]
+ 897 0176 87F87F30 		strb	r3, [r7, #127]
+ 898              	.L68:
+ 391:./SystemView/SEGGER_RTT_printf.c ****       do {
+ 392:./SystemView/SEGGER_RTT_printf.c ****         if ((c == 'l') || (c == 'h')) {
+ 899              		.loc 1 392 12
+ 900 017a 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 901 017e 6C2B     		cmp	r3, #108
+ 902 0180 03D0     		beq	.L66
+ 903              		.loc 1 392 24 discriminator 1
+ 904 0182 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 905 0186 682B     		cmp	r3, #104
+ 906 0188 07D1     		bne	.L67
+ 907              	.L66:
+ 393:./SystemView/SEGGER_RTT_printf.c ****           sFormat++;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 24
+
+
+ 908              		.loc 1 393 18
+ 909 018a BB68     		ldr	r3, [r7, #8]
+ 910 018c 0133     		adds	r3, r3, #1
+ 911 018e BB60     		str	r3, [r7, #8]
+ 394:./SystemView/SEGGER_RTT_printf.c ****           c = *sFormat;
+ 912              		.loc 1 394 13
+ 913 0190 BB68     		ldr	r3, [r7, #8]
+ 914 0192 1B78     		ldrb	r3, [r3]
+ 915 0194 87F87F30 		strb	r3, [r7, #127]
+ 392:./SystemView/SEGGER_RTT_printf.c ****           sFormat++;
+ 916              		.loc 1 392 12
+ 917 0198 EFE7     		b	.L68
+ 918              	.L67:
+ 395:./SystemView/SEGGER_RTT_printf.c ****         } else {
+ 396:./SystemView/SEGGER_RTT_printf.c ****           break;
+ 397:./SystemView/SEGGER_RTT_printf.c ****         }
+ 398:./SystemView/SEGGER_RTT_printf.c ****       } while (1);
+ 399:./SystemView/SEGGER_RTT_printf.c ****       //
+ 400:./SystemView/SEGGER_RTT_printf.c ****       // Handle specifiers
+ 401:./SystemView/SEGGER_RTT_printf.c ****       //
+ 402:./SystemView/SEGGER_RTT_printf.c ****       switch (c) {
+ 919              		.loc 1 402 7
+ 920 019a 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 921 019e 252B     		cmp	r3, #37
+ 922 01a0 00F0D680 		beq	.L69
+ 923 01a4 252B     		cmp	r3, #37
+ 924 01a6 C0F2DA80 		blt	.L90
+ 925 01aa 782B     		cmp	r3, #120
+ 926 01ac 00F3D780 		bgt	.L90
+ 927 01b0 582B     		cmp	r3, #88
+ 928 01b2 C0F2D480 		blt	.L90
+ 929 01b6 583B     		subs	r3, r3, #88
+ 930 01b8 202B     		cmp	r3, #32
+ 931 01ba 00F2D080 		bhi	.L90
+ 932 01be 01A2     		adr	r2, .L72
+ 933 01c0 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 934              		.p2align 2
+ 935              	.L72:
+ 936 01c4 BB020000 		.word	.L71+1
+ 937 01c8 5F030000 		.word	.L90+1
+ 938 01cc 5F030000 		.word	.L90+1
+ 939 01d0 5F030000 		.word	.L90+1
+ 940 01d4 5F030000 		.word	.L90+1
+ 941 01d8 5F030000 		.word	.L90+1
+ 942 01dc 5F030000 		.word	.L90+1
+ 943 01e0 5F030000 		.word	.L90+1
+ 944 01e4 5F030000 		.word	.L90+1
+ 945 01e8 5F030000 		.word	.L90+1
+ 946 01ec 5F030000 		.word	.L90+1
+ 947 01f0 49020000 		.word	.L77+1
+ 948 01f4 6F020000 		.word	.L76+1
+ 949 01f8 5F030000 		.word	.L90+1
+ 950 01fc 5F030000 		.word	.L90+1
+ 951 0200 5F030000 		.word	.L90+1
+ 952 0204 5F030000 		.word	.L90+1
+ 953 0208 5F030000 		.word	.L90+1
+ 954 020c 5F030000 		.word	.L90+1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 25
+
+
+ 955 0210 5F030000 		.word	.L90+1
+ 956 0214 5F030000 		.word	.L90+1
+ 957 0218 5F030000 		.word	.L90+1
+ 958 021c 5F030000 		.word	.L90+1
+ 959 0220 5F030000 		.word	.L90+1
+ 960 0224 2B030000 		.word	.L75+1
+ 961 0228 5F030000 		.word	.L90+1
+ 962 022c 5F030000 		.word	.L90+1
+ 963 0230 E1020000 		.word	.L74+1
+ 964 0234 5F030000 		.word	.L90+1
+ 965 0238 95020000 		.word	.L73+1
+ 966 023c 5F030000 		.word	.L90+1
+ 967 0240 5F030000 		.word	.L90+1
+ 968 0244 BB020000 		.word	.L71+1
+ 969              		.p2align 1
+ 970              	.L77:
+ 971              	.LBB2:
+ 403:./SystemView/SEGGER_RTT_printf.c ****       case 'c': {
+ 404:./SystemView/SEGGER_RTT_printf.c ****         char c0;
+ 405:./SystemView/SEGGER_RTT_printf.c ****         v = va_arg(*pParamList, int);
+ 972              		.loc 1 405 11
+ 973 0248 7B68     		ldr	r3, [r7, #4]
+ 974 024a 1B68     		ldr	r3, [r3]
+ 975 024c 191D     		adds	r1, r3, #4
+ 976 024e 7A68     		ldr	r2, [r7, #4]
+ 977 0250 1160     		str	r1, [r2]
+ 978 0252 1B68     		ldr	r3, [r3]
+ 979 0254 BB67     		str	r3, [r7, #120]
+ 406:./SystemView/SEGGER_RTT_printf.c ****         c0 = (char)v;
+ 980              		.loc 1 406 12
+ 981 0256 BB6F     		ldr	r3, [r7, #120]
+ 982 0258 87F86730 		strb	r3, [r7, #103]
+ 407:./SystemView/SEGGER_RTT_printf.c ****         _StoreChar(&BufferDesc, c0);
+ 983              		.loc 1 407 9
+ 984 025c 97F86720 		ldrb	r2, [r7, #103]	@ zero_extendqisi2
+ 985 0260 07F15003 		add	r3, r7, #80
+ 986 0264 1146     		mov	r1, r2
+ 987 0266 1846     		mov	r0, r3
+ 988 0268 FFF7FEFF 		bl	_StoreChar
+ 408:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 989              		.loc 1 408 9
+ 990 026c 78E0     		b	.L78
+ 991              	.L76:
+ 992              	.LBE2:
+ 409:./SystemView/SEGGER_RTT_printf.c ****       }
+ 410:./SystemView/SEGGER_RTT_printf.c ****       case 'd':
+ 411:./SystemView/SEGGER_RTT_printf.c ****         v = va_arg(*pParamList, int);
+ 993              		.loc 1 411 11
+ 994 026e 7B68     		ldr	r3, [r7, #4]
+ 995 0270 1B68     		ldr	r3, [r3]
+ 996 0272 191D     		adds	r1, r3, #4
+ 997 0274 7A68     		ldr	r2, [r7, #4]
+ 998 0276 1160     		str	r1, [r2]
+ 999 0278 1B68     		ldr	r3, [r3]
+ 1000 027a BB67     		str	r3, [r7, #120]
+ 412:./SystemView/SEGGER_RTT_printf.c ****         _PrintInt(&BufferDesc, v, 10u, NumDigits, FieldWidth, FormatFlags);
+ 1001              		.loc 1 412 9
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 26
+
+
+ 1002 027c 07F15000 		add	r0, r7, #80
+ 1003 0280 3B6F     		ldr	r3, [r7, #112]
+ 1004 0282 0193     		str	r3, [sp, #4]
+ 1005 0284 FB6E     		ldr	r3, [r7, #108]
+ 1006 0286 0093     		str	r3, [sp]
+ 1007 0288 7B6F     		ldr	r3, [r7, #116]
+ 1008 028a 0A22     		movs	r2, #10
+ 1009 028c B96F     		ldr	r1, [r7, #120]
+ 1010 028e FFF7FEFF 		bl	_PrintInt
+ 413:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 1011              		.loc 1 413 9
+ 1012 0292 65E0     		b	.L78
+ 1013              	.L73:
+ 414:./SystemView/SEGGER_RTT_printf.c ****       case 'u':
+ 415:./SystemView/SEGGER_RTT_printf.c ****         v = va_arg(*pParamList, int);
+ 1014              		.loc 1 415 11
+ 1015 0294 7B68     		ldr	r3, [r7, #4]
+ 1016 0296 1B68     		ldr	r3, [r3]
+ 1017 0298 191D     		adds	r1, r3, #4
+ 1018 029a 7A68     		ldr	r2, [r7, #4]
+ 1019 029c 1160     		str	r1, [r2]
+ 1020 029e 1B68     		ldr	r3, [r3]
+ 1021 02a0 BB67     		str	r3, [r7, #120]
+ 416:./SystemView/SEGGER_RTT_printf.c ****         _PrintUnsigned(&BufferDesc, (unsigned)v, 10u, NumDigits, FieldWidth, FormatFlags);
+ 1022              		.loc 1 416 9
+ 1023 02a2 B96F     		ldr	r1, [r7, #120]
+ 1024 02a4 07F15000 		add	r0, r7, #80
+ 1025 02a8 3B6F     		ldr	r3, [r7, #112]
+ 1026 02aa 0193     		str	r3, [sp, #4]
+ 1027 02ac FB6E     		ldr	r3, [r7, #108]
+ 1028 02ae 0093     		str	r3, [sp]
+ 1029 02b0 7B6F     		ldr	r3, [r7, #116]
+ 1030 02b2 0A22     		movs	r2, #10
+ 1031 02b4 FFF7FEFF 		bl	_PrintUnsigned
+ 417:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 1032              		.loc 1 417 9
+ 1033 02b8 52E0     		b	.L78
+ 1034              	.L71:
+ 418:./SystemView/SEGGER_RTT_printf.c ****       case 'x':
+ 419:./SystemView/SEGGER_RTT_printf.c ****       case 'X':
+ 420:./SystemView/SEGGER_RTT_printf.c ****         v = va_arg(*pParamList, int);
+ 1035              		.loc 1 420 11
+ 1036 02ba 7B68     		ldr	r3, [r7, #4]
+ 1037 02bc 1B68     		ldr	r3, [r3]
+ 1038 02be 191D     		adds	r1, r3, #4
+ 1039 02c0 7A68     		ldr	r2, [r7, #4]
+ 1040 02c2 1160     		str	r1, [r2]
+ 1041 02c4 1B68     		ldr	r3, [r3]
+ 1042 02c6 BB67     		str	r3, [r7, #120]
+ 421:./SystemView/SEGGER_RTT_printf.c ****         _PrintUnsigned(&BufferDesc, (unsigned)v, 16u, NumDigits, FieldWidth, FormatFlags);
+ 1043              		.loc 1 421 9
+ 1044 02c8 B96F     		ldr	r1, [r7, #120]
+ 1045 02ca 07F15000 		add	r0, r7, #80
+ 1046 02ce 3B6F     		ldr	r3, [r7, #112]
+ 1047 02d0 0193     		str	r3, [sp, #4]
+ 1048 02d2 FB6E     		ldr	r3, [r7, #108]
+ 1049 02d4 0093     		str	r3, [sp]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 27
+
+
+ 1050 02d6 7B6F     		ldr	r3, [r7, #116]
+ 1051 02d8 1022     		movs	r2, #16
+ 1052 02da FFF7FEFF 		bl	_PrintUnsigned
+ 422:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 1053              		.loc 1 422 9
+ 1054 02de 3FE0     		b	.L78
+ 1055              	.L74:
+ 1056              	.LBB3:
+ 423:./SystemView/SEGGER_RTT_printf.c ****       case 's':
+ 424:./SystemView/SEGGER_RTT_printf.c ****         {
+ 425:./SystemView/SEGGER_RTT_printf.c ****           const char * s = va_arg(*pParamList, const char *);
+ 1057              		.loc 1 425 24
+ 1058 02e0 7B68     		ldr	r3, [r7, #4]
+ 1059 02e2 1B68     		ldr	r3, [r3]
+ 1060 02e4 191D     		adds	r1, r3, #4
+ 1061 02e6 7A68     		ldr	r2, [r7, #4]
+ 1062 02e8 1160     		str	r1, [r2]
+ 1063 02ea 1B68     		ldr	r3, [r3]
+ 1064 02ec BB66     		str	r3, [r7, #104]
+ 426:./SystemView/SEGGER_RTT_printf.c ****           if (s == NULL) {
+ 1065              		.loc 1 426 14
+ 1066 02ee BB6E     		ldr	r3, [r7, #104]
+ 1067 02f0 002B     		cmp	r3, #0
+ 1068 02f2 01D1     		bne	.L82
+ 427:./SystemView/SEGGER_RTT_printf.c ****             s = "(NULL)";  // Print (NULL) instead of crashing or breaking, as it is more informati
+ 1069              		.loc 1 427 15
+ 1070 02f4 2E4B     		ldr	r3, .L92
+ 1071 02f6 BB66     		str	r3, [r7, #104]
+ 1072              	.L82:
+ 428:./SystemView/SEGGER_RTT_printf.c ****           }
+ 429:./SystemView/SEGGER_RTT_printf.c ****           do {
+ 430:./SystemView/SEGGER_RTT_printf.c ****             c = *s;
+ 1073              		.loc 1 430 15
+ 1074 02f8 BB6E     		ldr	r3, [r7, #104]
+ 1075 02fa 1B78     		ldrb	r3, [r3]
+ 1076 02fc 87F87F30 		strb	r3, [r7, #127]
+ 431:./SystemView/SEGGER_RTT_printf.c ****             s++;
+ 1077              		.loc 1 431 14
+ 1078 0300 BB6E     		ldr	r3, [r7, #104]
+ 1079 0302 0133     		adds	r3, r3, #1
+ 1080 0304 BB66     		str	r3, [r7, #104]
+ 432:./SystemView/SEGGER_RTT_printf.c ****             if (c == '\0') {
+ 1081              		.loc 1 432 16
+ 1082 0306 97F87F30 		ldrb	r3, [r7, #127]	@ zero_extendqisi2
+ 1083 030a 002B     		cmp	r3, #0
+ 1084 030c 0BD0     		beq	.L91
+ 433:./SystemView/SEGGER_RTT_printf.c ****               break;
+ 434:./SystemView/SEGGER_RTT_printf.c ****             }
+ 435:./SystemView/SEGGER_RTT_printf.c ****            _StoreChar(&BufferDesc, c);
+ 1085              		.loc 1 435 12
+ 1086 030e 97F87F20 		ldrb	r2, [r7, #127]	@ zero_extendqisi2
+ 1087 0312 07F15003 		add	r3, r7, #80
+ 1088 0316 1146     		mov	r1, r2
+ 1089 0318 1846     		mov	r0, r3
+ 1090 031a FFF7FEFF 		bl	_StoreChar
+ 436:./SystemView/SEGGER_RTT_printf.c ****           } while (BufferDesc.ReturnValue >= 0);
+ 1091              		.loc 1 436 30
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 28
+
+
+ 1092 031e FB6D     		ldr	r3, [r7, #92]
+ 1093              		.loc 1 436 11
+ 1094 0320 002B     		cmp	r3, #0
+ 1095 0322 E9DA     		bge	.L82
+ 1096              	.LBE3:
+ 437:./SystemView/SEGGER_RTT_printf.c ****         }
+ 438:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 1097              		.loc 1 438 9
+ 1098 0324 1CE0     		b	.L78
+ 1099              	.L91:
+ 1100              	.LBB4:
+ 433:./SystemView/SEGGER_RTT_printf.c ****             }
+ 1101              		.loc 1 433 15
+ 1102 0326 00BF     		nop
+ 1103              	.LBE4:
+ 1104              		.loc 1 438 9
+ 1105 0328 1AE0     		b	.L78
+ 1106              	.L75:
+ 439:./SystemView/SEGGER_RTT_printf.c ****       case 'p':
+ 440:./SystemView/SEGGER_RTT_printf.c ****         v = va_arg(*pParamList, int);
+ 1107              		.loc 1 440 11
+ 1108 032a 7B68     		ldr	r3, [r7, #4]
+ 1109 032c 1B68     		ldr	r3, [r3]
+ 1110 032e 191D     		adds	r1, r3, #4
+ 1111 0330 7A68     		ldr	r2, [r7, #4]
+ 1112 0332 1160     		str	r1, [r2]
+ 1113 0334 1B68     		ldr	r3, [r3]
+ 1114 0336 BB67     		str	r3, [r7, #120]
+ 441:./SystemView/SEGGER_RTT_printf.c ****         _PrintUnsigned(&BufferDesc, (unsigned)v, 16u, 8u, 8u, 0u);
+ 1115              		.loc 1 441 9
+ 1116 0338 B96F     		ldr	r1, [r7, #120]
+ 1117 033a 07F15000 		add	r0, r7, #80
+ 1118 033e 0023     		movs	r3, #0
+ 1119 0340 0193     		str	r3, [sp, #4]
+ 1120 0342 0823     		movs	r3, #8
+ 1121 0344 0093     		str	r3, [sp]
+ 1122 0346 0823     		movs	r3, #8
+ 1123 0348 1022     		movs	r2, #16
+ 1124 034a FFF7FEFF 		bl	_PrintUnsigned
+ 442:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 1125              		.loc 1 442 9
+ 1126 034e 07E0     		b	.L78
+ 1127              	.L69:
+ 443:./SystemView/SEGGER_RTT_printf.c ****       case '%':
+ 444:./SystemView/SEGGER_RTT_printf.c ****         _StoreChar(&BufferDesc, '%');
+ 1128              		.loc 1 444 9
+ 1129 0350 07F15003 		add	r3, r7, #80
+ 1130 0354 2521     		movs	r1, #37
+ 1131 0356 1846     		mov	r0, r3
+ 1132 0358 FFF7FEFF 		bl	_StoreChar
+ 445:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 1133              		.loc 1 445 9
+ 1134 035c 00E0     		b	.L78
+ 1135              	.L90:
+ 446:./SystemView/SEGGER_RTT_printf.c ****       default:
+ 447:./SystemView/SEGGER_RTT_printf.c ****         break;
+ 1136              		.loc 1 447 9
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 29
+
+
+ 1137 035e 00BF     		nop
+ 1138              	.L78:
+ 448:./SystemView/SEGGER_RTT_printf.c ****       }
+ 449:./SystemView/SEGGER_RTT_printf.c ****       sFormat++;
+ 1139              		.loc 1 449 14
+ 1140 0360 BB68     		ldr	r3, [r7, #8]
+ 1141 0362 0133     		adds	r3, r3, #1
+ 1142 0364 BB60     		str	r3, [r7, #8]
+ 1143 0366 07E0     		b	.L83
+ 1144              	.L53:
+ 450:./SystemView/SEGGER_RTT_printf.c ****     } else {
+ 451:./SystemView/SEGGER_RTT_printf.c ****       _StoreChar(&BufferDesc, c);
+ 1145              		.loc 1 451 7
+ 1146 0368 97F87F20 		ldrb	r2, [r7, #127]	@ zero_extendqisi2
+ 1147 036c 07F15003 		add	r3, r7, #80
+ 1148 0370 1146     		mov	r1, r2
+ 1149 0372 1846     		mov	r0, r3
+ 1150 0374 FFF7FEFF 		bl	_StoreChar
+ 1151              	.L83:
+ 452:./SystemView/SEGGER_RTT_printf.c ****     }
+ 453:./SystemView/SEGGER_RTT_printf.c ****   } while (BufferDesc.ReturnValue >= 0);
+ 1152              		.loc 1 453 22
+ 1153 0378 FB6D     		ldr	r3, [r7, #92]
+ 1154              		.loc 1 453 3
+ 1155 037a 002B     		cmp	r3, #0
+ 1156 037c BFF651AE 		bge	.L84
+ 1157 0380 00E0     		b	.L52
+ 1158              	.L89:
+ 340:./SystemView/SEGGER_RTT_printf.c ****     }
+ 1159              		.loc 1 340 7
+ 1160 0382 00BF     		nop
+ 1161              	.L52:
+ 454:./SystemView/SEGGER_RTT_printf.c **** 
+ 455:./SystemView/SEGGER_RTT_printf.c ****   if (BufferDesc.ReturnValue > 0) {
+ 1162              		.loc 1 455 17
+ 1163 0384 FB6D     		ldr	r3, [r7, #92]
+ 1164              		.loc 1 455 6
+ 1165 0386 002B     		cmp	r3, #0
+ 1166 0388 0DDD     		ble	.L85
+ 456:./SystemView/SEGGER_RTT_printf.c ****     //
+ 457:./SystemView/SEGGER_RTT_printf.c ****     // Write remaining data, if any
+ 458:./SystemView/SEGGER_RTT_printf.c ****     //
+ 459:./SystemView/SEGGER_RTT_printf.c ****     if (BufferDesc.Cnt != 0u) {
+ 1167              		.loc 1 459 19
+ 1168 038a BB6D     		ldr	r3, [r7, #88]
+ 1169              		.loc 1 459 8
+ 1170 038c 002B     		cmp	r3, #0
+ 1171 038e 06D0     		beq	.L86
+ 460:./SystemView/SEGGER_RTT_printf.c ****       SEGGER_RTT_Write(BufferIndex, acBuffer, BufferDesc.Cnt);
+ 1172              		.loc 1 460 7
+ 1173 0390 BA6D     		ldr	r2, [r7, #88]
+ 1174 0392 07F11003 		add	r3, r7, #16
+ 1175 0396 1946     		mov	r1, r3
+ 1176 0398 F868     		ldr	r0, [r7, #12]
+ 1177 039a FFF7FEFF 		bl	SEGGER_RTT_Write
+ 1178              	.L86:
+ 461:./SystemView/SEGGER_RTT_printf.c ****     }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 30
+
+
+ 462:./SystemView/SEGGER_RTT_printf.c ****     BufferDesc.ReturnValue += (int)BufferDesc.Cnt;
+ 1179              		.loc 1 462 28
+ 1180 039e FB6D     		ldr	r3, [r7, #92]
+ 1181              		.loc 1 462 46
+ 1182 03a0 BA6D     		ldr	r2, [r7, #88]
+ 1183              		.loc 1 462 28
+ 1184 03a2 1344     		add	r3, r3, r2
+ 1185 03a4 FB65     		str	r3, [r7, #92]
+ 1186              	.L85:
+ 463:./SystemView/SEGGER_RTT_printf.c ****   }
+ 464:./SystemView/SEGGER_RTT_printf.c ****   return BufferDesc.ReturnValue;
+ 1187              		.loc 1 464 20
+ 1188 03a6 FB6D     		ldr	r3, [r7, #92]
+ 465:./SystemView/SEGGER_RTT_printf.c **** }
+ 1189              		.loc 1 465 1
+ 1190 03a8 1846     		mov	r0, r3
+ 1191 03aa 8037     		adds	r7, r7, #128
+ 1192              	.LCFI18:
+ 1193              		.cfi_def_cfa_offset 8
+ 1194 03ac BD46     		mov	sp, r7
+ 1195              	.LCFI19:
+ 1196              		.cfi_def_cfa_register 13
+ 1197              		@ sp needed
+ 1198 03ae 80BD     		pop	{r7, pc}
+ 1199              	.L93:
+ 1200              		.align	2
+ 1201              	.L92:
+ 1202 03b0 00000000 		.word	.LC0
+ 1203              		.cfi_endproc
+ 1204              	.LFE3:
+ 1206              		.section	.text.SEGGER_RTT_printf,"ax",%progbits
+ 1207              		.align	1
+ 1208              		.global	SEGGER_RTT_printf
+ 1209              		.syntax unified
+ 1210              		.thumb
+ 1211              		.thumb_func
+ 1213              	SEGGER_RTT_printf:
+ 1214              	.LFB4:
+ 466:./SystemView/SEGGER_RTT_printf.c **** 
+ 467:./SystemView/SEGGER_RTT_printf.c **** /*********************************************************************
+ 468:./SystemView/SEGGER_RTT_printf.c **** *
+ 469:./SystemView/SEGGER_RTT_printf.c **** *       SEGGER_RTT_printf
+ 470:./SystemView/SEGGER_RTT_printf.c **** *
+ 471:./SystemView/SEGGER_RTT_printf.c **** *  Function description
+ 472:./SystemView/SEGGER_RTT_printf.c **** *    Stores a formatted string in SEGGER RTT control block.
+ 473:./SystemView/SEGGER_RTT_printf.c **** *    This data is read by the host.
+ 474:./SystemView/SEGGER_RTT_printf.c **** *
+ 475:./SystemView/SEGGER_RTT_printf.c **** *  Parameters
+ 476:./SystemView/SEGGER_RTT_printf.c **** *    BufferIndex  Index of "Up"-buffer to be used. (e.g. 0 for "Terminal")
+ 477:./SystemView/SEGGER_RTT_printf.c **** *    sFormat      Pointer to format string, followed by the arguments for conversion
+ 478:./SystemView/SEGGER_RTT_printf.c **** *
+ 479:./SystemView/SEGGER_RTT_printf.c **** *  Return values
+ 480:./SystemView/SEGGER_RTT_printf.c **** *    >= 0:  Number of bytes which have been stored in the "Up"-buffer.
+ 481:./SystemView/SEGGER_RTT_printf.c **** *     < 0:  Error
+ 482:./SystemView/SEGGER_RTT_printf.c **** *
+ 483:./SystemView/SEGGER_RTT_printf.c **** *  Notes
+ 484:./SystemView/SEGGER_RTT_printf.c **** *    (1) Conversion specifications have following syntax:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 31
+
+
+ 485:./SystemView/SEGGER_RTT_printf.c **** *          %[flags][FieldWidth][.Precision]ConversionSpecifier
+ 486:./SystemView/SEGGER_RTT_printf.c **** *    (2) Supported flags:
+ 487:./SystemView/SEGGER_RTT_printf.c **** *          -: Left justify within the field width
+ 488:./SystemView/SEGGER_RTT_printf.c **** *          +: Always print sign extension for signed conversions
+ 489:./SystemView/SEGGER_RTT_printf.c **** *          0: Pad with 0 instead of spaces. Ignored when using '-'-flag or precision
+ 490:./SystemView/SEGGER_RTT_printf.c **** *        Supported conversion specifiers:
+ 491:./SystemView/SEGGER_RTT_printf.c **** *          c: Print the argument as one char
+ 492:./SystemView/SEGGER_RTT_printf.c **** *          d: Print the argument as a signed integer
+ 493:./SystemView/SEGGER_RTT_printf.c **** *          u: Print the argument as an unsigned integer
+ 494:./SystemView/SEGGER_RTT_printf.c **** *          x: Print the argument as an hexadecimal integer
+ 495:./SystemView/SEGGER_RTT_printf.c **** *          s: Print the string pointed to by the argument
+ 496:./SystemView/SEGGER_RTT_printf.c **** *          p: Print the argument as an 8-digit hexadecimal integer. (Argument shall be a pointer to
+ 497:./SystemView/SEGGER_RTT_printf.c **** */
+ 498:./SystemView/SEGGER_RTT_printf.c **** int SEGGER_RTT_printf(unsigned BufferIndex, const char * sFormat, ...) {
+ 1215              		.loc 1 498 72
+ 1216              		.cfi_startproc
+ 1217              		@ args = 4, pretend = 12, frame = 16
+ 1218              		@ frame_needed = 1, uses_anonymous_args = 1
+ 1219 0000 0EB4     		push	{r1, r2, r3}
+ 1220              	.LCFI20:
+ 1221              		.cfi_def_cfa_offset 12
+ 1222              		.cfi_offset 1, -12
+ 1223              		.cfi_offset 2, -8
+ 1224              		.cfi_offset 3, -4
+ 1225 0002 80B5     		push	{r7, lr}
+ 1226              	.LCFI21:
+ 1227              		.cfi_def_cfa_offset 20
+ 1228              		.cfi_offset 7, -20
+ 1229              		.cfi_offset 14, -16
+ 1230 0004 85B0     		sub	sp, sp, #20
+ 1231              	.LCFI22:
+ 1232              		.cfi_def_cfa_offset 40
+ 1233 0006 00AF     		add	r7, sp, #0
+ 1234              	.LCFI23:
+ 1235              		.cfi_def_cfa_register 7
+ 1236 0008 7860     		str	r0, [r7, #4]
+ 499:./SystemView/SEGGER_RTT_printf.c ****   int r;
+ 500:./SystemView/SEGGER_RTT_printf.c ****   va_list ParamList;
+ 501:./SystemView/SEGGER_RTT_printf.c **** 
+ 502:./SystemView/SEGGER_RTT_printf.c ****   va_start(ParamList, sFormat);
+ 1237              		.loc 1 502 3
+ 1238 000a 07F12003 		add	r3, r7, #32
+ 1239 000e BB60     		str	r3, [r7, #8]
+ 503:./SystemView/SEGGER_RTT_printf.c ****   r = SEGGER_RTT_vprintf(BufferIndex, sFormat, &ParamList);
+ 1240              		.loc 1 503 7
+ 1241 0010 07F10803 		add	r3, r7, #8
+ 1242 0014 1A46     		mov	r2, r3
+ 1243 0016 F969     		ldr	r1, [r7, #28]
+ 1244 0018 7868     		ldr	r0, [r7, #4]
+ 1245 001a FFF7FEFF 		bl	SEGGER_RTT_vprintf
+ 1246 001e F860     		str	r0, [r7, #12]
+ 504:./SystemView/SEGGER_RTT_printf.c ****   va_end(ParamList);
+ 505:./SystemView/SEGGER_RTT_printf.c ****   return r;
+ 1247              		.loc 1 505 10
+ 1248 0020 FB68     		ldr	r3, [r7, #12]
+ 506:./SystemView/SEGGER_RTT_printf.c **** }
+ 1249              		.loc 1 506 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 32
+
+
+ 1250 0022 1846     		mov	r0, r3
+ 1251 0024 1437     		adds	r7, r7, #20
+ 1252              	.LCFI24:
+ 1253              		.cfi_def_cfa_offset 20
+ 1254 0026 BD46     		mov	sp, r7
+ 1255              	.LCFI25:
+ 1256              		.cfi_def_cfa_register 13
+ 1257              		@ sp needed
+ 1258 0028 BDE88040 		pop	{r7, lr}
+ 1259              	.LCFI26:
+ 1260              		.cfi_restore 14
+ 1261              		.cfi_restore 7
+ 1262              		.cfi_def_cfa_offset 12
+ 1263 002c 03B0     		add	sp, sp, #12
+ 1264              	.LCFI27:
+ 1265              		.cfi_restore 3
+ 1266              		.cfi_restore 2
+ 1267              		.cfi_restore 1
+ 1268              		.cfi_def_cfa_offset 0
+ 1269 002e 7047     		bx	lr
+ 1270              		.cfi_endproc
+ 1271              	.LFE4:
+ 1273              		.section	.rodata._aV2C.0,"a"
+ 1274              		.align	2
+ 1277              	_aV2C.0:
+ 1278 0000 30313233 		.ascii	"0123456789ABCDEF"
+ 1278      34353637 
+ 1278      38394142 
+ 1278      43444546 
+ 1279              		.text
+ 1280              	.Letext0:
+ 1281              		.file 2 "/Applications/ARM/lib/gcc/arm-none-eabi/10.3.1/include/stdarg.h"
+ 1282              		.file 3 "<built-in>"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s 			page 33
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 SEGGER_RTT_printf.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:20     .text._StoreChar:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:25     .text._StoreChar:0000000000000000 _StoreChar
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:135    .text._PrintUnsigned:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:140    .text._PrintUnsigned:0000000000000000 _PrintUnsigned
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:394    .text._PrintUnsigned:0000000000000154 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:1277   .rodata._aV2C.0:0000000000000000 _aV2C.0
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:399    .text._PrintInt:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:404    .text._PrintInt:0000000000000000 _PrintInt
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:656    .rodata:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:660    .text.SEGGER_RTT_vprintf:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:666    .text.SEGGER_RTT_vprintf:0000000000000000 SEGGER_RTT_vprintf
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:738    .text.SEGGER_RTT_vprintf:0000000000000064 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:752    .text.SEGGER_RTT_vprintf:000000000000009c $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:936    .text.SEGGER_RTT_vprintf:00000000000001c4 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:969    .text.SEGGER_RTT_vprintf:0000000000000248 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:1202   .text.SEGGER_RTT_vprintf:00000000000003b0 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:1207   .text.SEGGER_RTT_printf:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:1213   .text.SEGGER_RTT_printf:0000000000000000 SEGGER_RTT_printf
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccDWgBb0.s:1274   .rodata._aV2C.0:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+SEGGER_RTT_Write
