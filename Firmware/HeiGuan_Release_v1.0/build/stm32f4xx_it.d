@@ -11,7 +11,7 @@ build/stm32f4xx_it.o: User/stm32f4xx_it.c User/stm32f4xx_it.h \
  Library/stm32f4xx_usart.h Library/stm32f4xx_wwdg.h Library/misc.h \
  User/main.h User/Delay.h Hardware/GY86.h User/Delay.h Hardware/MyIIC.h \
  Hardware/LD2.h Hardware/OLED.h Hardware/OLED2.h Hardware/ATKBLE01.h \
- Hardware/PWM.h Hardware/Receiver.h
+ Hardware/PWM.h Hardware/Receiver.h User/Parameters.h
 User/stm32f4xx_it.h:
 CORE/stm32f4xx.h:
 CORE/core_cm4.h:
@@ -50,3 +50,4 @@ Hardware/OLED2.h:
 Hardware/ATKBLE01.h:
 Hardware/PWM.h:
 Hardware/Receiver.h:
+User/Parameters.h:

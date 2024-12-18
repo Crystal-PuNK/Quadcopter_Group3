@@ -8,7 +8,7 @@
 
 
 /* Public Variables -------------------------------------------------------------------*/
-extern struct GY86_Data{
+struct GY86_Data{
 	int16_t AX;
 	int16_t AY;
 	int16_t AZ;
@@ -20,7 +20,9 @@ extern struct GY86_Data{
 	int16_t GaY;
 	int16_t GaZ;
 	int32_t Height;
-}GY86DataList;
+};
+
+extern struct GY86_Data GY86DataList;
 
 /* Public Functions -------------------------------------------------------------------*/
 

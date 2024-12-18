@@ -62,7 +62,8 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 MEMORY
 {
 RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 96K
-FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 512K
+FLASH (rx)     : ORIGIN = 0x8000000, LENGTH = 384K    /* sector 0~6 */
+PARAM_STORAGE (r)      : ORIGIN = 0x08060000 , LENGTH = 128K  /* sector 7 */
 }
 
 /* Define output sections */
@@ -92,6 +93,11 @@ SECTIONS
     . = ALIGN(4);
     _etext = .;        /* define a global symbols at end of code */
   } >FLASH
+
+  .param_section :
+    {
+        KEEP(*(.param_section*)) /* 确保 .param_section 变量不会被优化掉 */
+    } > PARAM_STORAGE
 
   /* Constant data goes into FLASH */
   .rodata :

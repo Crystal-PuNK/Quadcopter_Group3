@@ -1,0 +1,277 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Parameters.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.LoadParameters,"ax",%progbits
+  20              		.align	1
+  21              		.global	LoadParameters
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	LoadParameters:
+  27              	.LFB123:
+  28              		.file 1 "./User/Parameters.c"
+   1:./User/Parameters.c **** #include "Parameters.h"
+   2:./User/Parameters.c **** #include <stm32f4xx_flash.h>
+   3:./User/Parameters.c **** #include <string.h>
+   4:./User/Parameters.c **** // 定义参数列表（位于 Flash 的 .param_section 段中）
+   5:./User/Parameters.c **** __attribute__((section(".param_section"))) const FlightParams flight_params = {
+   6:./User/Parameters.c ****     .test = 114514,
+   7:./User/Parameters.c ****     .accel_offset = {0.0f, 0.0f, 0.0f},
+   8:./User/Parameters.c ****     .gyro_offset = {0.0f, 0.0f, 0.0f},
+   9:./User/Parameters.c ****     .kp = 1.0f,
+  10:./User/Parameters.c ****     .ki = 0.5f,
+  11:./User/Parameters.c ****     .kd = 1.0f,
+  12:./User/Parameters.c ****     // .checksum = 0xDEADBEEF  // 示例校验值
+  13:./User/Parameters.c **** };
+  14:./User/Parameters.c **** 
+  15:./User/Parameters.c **** FlightParams params_ram;
+  16:./User/Parameters.c **** 
+  17:./User/Parameters.c **** void LoadParameters() {
+  29              		.loc 1 17 23 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 30B4     		push	{r4, r5}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 4, -8
+  38              		.cfi_offset 5, -4
+  18:./User/Parameters.c ****     // 从 Flash 中读取参数到 RAM
+  19:./User/Parameters.c ****     memcpy(&params_ram, (void *)&flight_params, sizeof(FlightParams));
+  39              		.loc 1 19 5 view .LVU1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s 			page 2
+
+
+  40 0002 064C     		ldr	r4, .L3
+  41 0004 064D     		ldr	r5, .L3+4
+  42 0006 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  43 0008 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  44 000a 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  45 000c 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  46 000e 95E80300 		ldm	r5, {r0, r1}
+  47 0012 84E80300 		stm	r4, {r0, r1}
+  20:./User/Parameters.c **** }
+  48              		.loc 1 20 1 is_stmt 0 view .LVU2
+  49 0016 30BC     		pop	{r4, r5}
+  50              	.LCFI1:
+  51              		.cfi_restore 5
+  52              		.cfi_restore 4
+  53              		.cfi_def_cfa_offset 0
+  54 0018 7047     		bx	lr
+  55              	.L4:
+  56 001a 00BF     		.align	2
+  57              	.L3:
+  58 001c 00000000 		.word	.LANCHOR0
+  59 0020 00000000 		.word	.LANCHOR1
+  60              		.cfi_endproc
+  61              	.LFE123:
+  63              		.section	.text.StoreParameters,"ax",%progbits
+  64              		.align	1
+  65              		.global	StoreParameters
+  66              		.syntax unified
+  67              		.thumb
+  68              		.thumb_func
+  70              	StoreParameters:
+  71              	.LFB124:
+  21:./User/Parameters.c **** 
+  22:./User/Parameters.c **** void StoreParameters(){
+  72              		.loc 1 22 23 is_stmt 1 view -0
+  73              		.cfi_startproc
+  74              		@ args = 0, pretend = 0, frame = 0
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  76 0000 38B5     		push	{r3, r4, r5, lr}
+  77              	.LCFI2:
+  78              		.cfi_def_cfa_offset 16
+  79              		.cfi_offset 3, -16
+  80              		.cfi_offset 4, -12
+  81              		.cfi_offset 5, -8
+  82              		.cfi_offset 14, -4
+  23:./User/Parameters.c ****     u32 addrx = FLASH_SECTOR_7_ORIGIN;
+  83              		.loc 1 23 5 view .LVU4
+  84              	.LVL0:
+  24:./User/Parameters.c ****     u32 endaddr = FLASH_SECTOR_7_ORIGIN + sizeof(FlightParams);
+  85              		.loc 1 24 5 view .LVU5
+  25:./User/Parameters.c ****     u32* pBuffer =  (u32 *)&params_ram;
+  86              		.loc 1 25 5 view .LVU6
+  26:./User/Parameters.c ****     FLASH_Status status = FLASH_COMPLETE;
+  87              		.loc 1 26 5 view .LVU7
+  27:./User/Parameters.c ****     FLASH_Unlock();//解锁
+  88              		.loc 1 27 5 view .LVU8
+  89 0002 FFF7FEFF 		bl	FLASH_Unlock
+  90              	.LVL1:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s 			page 3
+
+
+  28:./User/Parameters.c ****     FLASH_DataCacheCmd(DISABLE);//FLASH 擦除期间,必须禁止数据缓存
+  91              		.loc 1 28 5 view .LVU9
+  92 0006 0020     		movs	r0, #0
+  93 0008 FFF7FEFF 		bl	FLASH_DataCacheCmd
+  94              	.LVL2:
+  29:./User/Parameters.c **** 
+  30:./User/Parameters.c ****     status = FLASH_EraseSector(FLASH_Sector_7,VoltageRange_3);//VCC=2.7~3.6V 之间!!
+  95              		.loc 1 30 5 view .LVU10
+  96              		.loc 1 30 14 is_stmt 0 view .LVU11
+  97 000c 0221     		movs	r1, #2
+  98 000e 3820     		movs	r0, #56
+  99 0010 FFF7FEFF 		bl	FLASH_EraseSector
+ 100              	.LVL3:
+  31:./User/Parameters.c **** 
+  32:./User/Parameters.c ****     if(status==FLASH_COMPLETE){
+ 101              		.loc 1 32 5 is_stmt 1 view .LVU12
+ 102              		.loc 1 32 7 is_stmt 0 view .LVU13
+ 103 0014 0928     		cmp	r0, #9
+ 104 0016 11D0     		beq	.L11
+ 105              	.LVL4:
+ 106              	.L7:
+  33:./User/Parameters.c ****         while(addrx<endaddr)//写数据
+  34:./User/Parameters.c ****         {
+  35:./User/Parameters.c ****         if(FLASH_ProgramWord(addrx,*pBuffer)!=FLASH_COMPLETE)//写入数据
+  36:./User/Parameters.c ****             {
+  37:./User/Parameters.c ****                 break; //写入异常
+  38:./User/Parameters.c ****             }
+  39:./User/Parameters.c ****         addrx+=4; pBuffer++;
+  40:./User/Parameters.c ****         }
+  41:./User/Parameters.c **** 
+  42:./User/Parameters.c ****     }
+  43:./User/Parameters.c **** 
+  44:./User/Parameters.c ****     FLASH_DataCacheCmd(ENABLE); //FLASH 擦除结束,开启数据缓存
+ 107              		.loc 1 44 5 is_stmt 1 view .LVU14
+ 108 0018 0120     		movs	r0, #1
+ 109 001a FFF7FEFF 		bl	FLASH_DataCacheCmd
+ 110              	.LVL5:
+  45:./User/Parameters.c ****     FLASH_Lock();//上锁
+ 111              		.loc 1 45 5 view .LVU15
+ 112 001e FFF7FEFF 		bl	FLASH_Lock
+ 113              	.LVL6:
+  46:./User/Parameters.c **** }...
+ 114              		.loc 1 46 1 is_stmt 0 view .LVU16
+ 115 0022 38BD     		pop	{r3, r4, r5, pc}
+ 116              	.LVL7:
+ 117              	.L12:
+  39:./User/Parameters.c ****         addrx+=4; pBuffer++;
+ 118              		.loc 1 39 9 is_stmt 1 view .LVU17
+  39:./User/Parameters.c ****         addrx+=4; pBuffer++;
+ 119              		.loc 1 39 14 is_stmt 0 view .LVU18
+ 120 0024 0434     		adds	r4, r4, #4
+ 121              	.LVL8:
+  39:./User/Parameters.c ****         addrx+=4; pBuffer++;
+ 122              		.loc 1 39 19 is_stmt 1 view .LVU19
+  39:./User/Parameters.c ****         addrx+=4; pBuffer++;
+ 123              		.loc 1 39 26 is_stmt 0 view .LVU20
+ 124 0026 0435     		adds	r5, r5, #4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s 			page 4
+
+
+ 125              	.LVL9:
+ 126              	.L6:
+  33:./User/Parameters.c ****         while(addrx<endaddr)//写数据
+ 127              		.loc 1 33 14 is_stmt 1 view .LVU21
+ 128 0028 064B     		ldr	r3, .L13
+ 129 002a 9C42     		cmp	r4, r3
+ 130 002c F4D8     		bhi	.L7
+  35:./User/Parameters.c ****         if(FLASH_ProgramWord(addrx,*pBuffer)!=FLASH_COMPLETE)//写入数据
+ 131              		.loc 1 35 9 view .LVU22
+  35:./User/Parameters.c ****         if(FLASH_ProgramWord(addrx,*pBuffer)!=FLASH_COMPLETE)//写入数据
+ 132              		.loc 1 35 12 is_stmt 0 view .LVU23
+ 133 002e 2968     		ldr	r1, [r5]
+ 134 0030 2046     		mov	r0, r4
+ 135 0032 FFF7FEFF 		bl	FLASH_ProgramWord
+ 136              	.LVL10:
+  35:./User/Parameters.c ****         if(FLASH_ProgramWord(addrx,*pBuffer)!=FLASH_COMPLETE)//写入数据
+ 137              		.loc 1 35 11 view .LVU24
+ 138 0036 0928     		cmp	r0, #9
+ 139 0038 F4D0     		beq	.L12
+ 140 003a EDE7     		b	.L7
+ 141              	.LVL11:
+ 142              	.L11:
+  25:./User/Parameters.c ****     u32* pBuffer =  (u32 *)&params_ram;
+ 143              		.loc 1 25 10 view .LVU25
+ 144 003c 024D     		ldr	r5, .L13+4
+  23:./User/Parameters.c ****     u32 addrx = FLASH_SECTOR_7_ORIGIN;
+ 145              		.loc 1 23 9 view .LVU26
+ 146 003e 034C     		ldr	r4, .L13+8
+ 147 0040 F2E7     		b	.L6
+ 148              	.L14:
+ 149 0042 00BF     		.align	2
+ 150              	.L13:
+ 151 0044 27000608 		.word	134610983
+ 152 0048 00000000 		.word	.LANCHOR0
+ 153 004c 00000608 		.word	134610944
+ 154              		.cfi_endproc
+ 155              	.LFE124:
+ 157              		.global	params_ram
+ 158              		.global	flight_params
+ 159              		.section	.bss.params_ram,"aw",%nobits
+ 160              		.align	2
+ 161              		.set	.LANCHOR0,. + 0
+ 164              	params_ram:
+ 165 0000 00000000 		.space	40
+ 165      00000000 
+ 165      00000000 
+ 165      00000000 
+ 165      00000000 
+ 166              		.section	.param_section,"a"
+ 167              		.align	2
+ 168              		.set	.LANCHOR1,. + 0
+ 171              	flight_params:
+ 172 0000 52BF0100 		.word	114514
+ 173 0004 00000000 		.word	0
+ 174 0008 00000000 		.word	0
+ 175 000c 00000000 		.word	0
+ 176 0010 00000000 		.word	0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s 			page 5
+
+
+ 177 0014 00000000 		.word	0
+ 178 0018 00000000 		.word	0
+ 179 001c 0000803F 		.word	1065353216
+ 180 0020 0000003F 		.word	1056964608
+ 181 0024 0000803F 		.word	1065353216
+ 182              		.text
+ 183              	.Letext0:
+ 184              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 185              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 186              		.file 4 "./User/Parameters.h"
+ 187              		.file 5 "./CORE/stm32f4xx.h"
+ 188              		.file 6 "./Library/stm32f4xx_flash.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Parameters.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:20     .text.LoadParameters:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:26     .text.LoadParameters:0000000000000000 LoadParameters
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:58     .text.LoadParameters:000000000000001c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:64     .text.StoreParameters:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:70     .text.StoreParameters:0000000000000000 StoreParameters
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:151    .text.StoreParameters:0000000000000044 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:164    .bss.params_ram:0000000000000000 params_ram
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:171    .param_section:0000000000000000 flight_params
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:160    .bss.params_ram:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccqAVGQu.s:167    .param_section:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+FLASH_Unlock
+FLASH_DataCacheCmd
+FLASH_EraseSector
+FLASH_Lock
+FLASH_ProgramWord

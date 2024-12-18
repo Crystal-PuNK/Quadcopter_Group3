@@ -32,6 +32,7 @@
 #include "ATKBLE01.h"
 #include "PWM.h"
 #include "Receiver.h"
+#include "Parameters.h"
 
 /* Exported types ------------------------------------------------------------*/
 
@@ -39,6 +40,6 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void TimingDelay_Decrement(void);
-static void Delay(__IO uint32_t nTime);
+// static void Delay(__IO uint32_t nTime);
 #endif /* __MAIN_H */
 

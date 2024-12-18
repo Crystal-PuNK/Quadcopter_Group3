@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -21,13 +21,14 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
   18              		.cfi_sections	.debug_frame
   19              		.section	.text.Delay,"ax",%progbits
   20              		.align	1
-  21              		.syntax unified
-  22              		.thumb
-  23              		.thumb_func
-  25              	Delay:
-  26              	.LVL0:
-  27              	.LFB127:
-  28              		.file 1 "./User/main.c"
+  21              		.global	Delay
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	Delay:
+  27              	.LVL0:
+  28              	.LFB127:
+  29              		.file 1 "./User/main.c"
    1:./User/main.c **** /**
    2:./User/main.c ****   ******************************************************************************
    3:./User/main.c ****   * @file    Project/STM32F4xx_StdPeriph_Templates/main.c 
@@ -57,10 +58,10 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
   27:./User/main.c **** 
   28:./User/main.c **** /* Private typedef -----------------------------------------------------------*/
   29:./User/main.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 2
+
+
   30:./User/main.c **** /* Private define ------------------------------------------------------------*/
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 2
-
-
   31:./User/main.c **** 
   32:./User/main.c **** /* Private macro -------------------------------------------------------------*/
   33:./User/main.c **** 
@@ -111,266 +112,181 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
   78:./User/main.c **** 	OLED2_Init();
   79:./User/main.c **** 	BLE_Init();
   80:./User/main.c **** 	REC_Init2();
-  81:./User/main.c **** 	
-  82:./User/main.c **** /* IIC_test-----SUCCESS--------------------------------------------------------------*/ 	
-  83:./User/main.c **** 
-  84:./User/main.c **** //	MyIIC_Start();
-  85:./User/main.c **** //	MyIIC_SendByte(0xD2);  //1101 000 0
-  86:./User/main.c **** //	uint8_t Ack = MyIIC_ReceiveACK();
-  87:./User/main.c **** //	MyIIC_Stop();
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 3
+  81:./User/main.c **** 	Motor_Init();
+  82:./User/main.c **** 	LD2_ON();
+  83:./User/main.c ****   LoadParameters();
+  84:./User/main.c **** 	// while(1)
+  85:./User/main.c **** 	{
+  86:./User/main.c **** 		// GY86_GetData();
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 3
 
 
-  88:./User/main.c **** //	OLED_ShowString(1,1,"MPU6050");
-  89:./User/main.c **** //	OLED_ShowString(2,1,"ACK:");
-  90:./User/main.c **** //	OLED_ShowNum(2,5,Ack,1);
-  91:./User/main.c **** 
-  92:./User/main.c **** 
-  93:./User/main.c **** /* MPU6050_test-----SUCCESS--------------------------------------------------------------*/ 
-  94:./User/main.c **** //	uint8_t ID_MPU6050 = MPU6050_ReadRegister(0x75);
-  95:./User/main.c **** //	OLED_ShowString(1,1,"MPU6050_ID");
-  96:./User/main.c **** //	OLED_ShowHexNum(2,1,ID_MPU6050,2);
-  97:./User/main.c **** 
-  98:./User/main.c **** /* USART_test-----SUCCESS--------------------------------------------------------------*/ 
-  99:./User/main.c **** 
- 100:./User/main.c **** 
- 101:./User/main.c **** 
- 102:./User/main.c **** /* GY-86 TEST--------------------SUCCESS------------------------------------------------*/ 
- 103:./User/main.c **** /*	
- 104:./User/main.c ****   while (1)0
- 105:./User/main.c ****   {
- 106:./User/main.c **** 	GY86_GetData();
- 107:./User/main.c **** 	LD2_ON();
- 108:./User/main.c **** //	  
- 109:./User/main.c **** //	 
- 110:./User/main.c **** //	OLED_ShowString(1,1,"Acc");	
- 111:./User/main.c **** //	OLED_ShowString(1,8,"Gyro");
- 112:./User/main.c **** //	OLED_ShowSignedNum(2,1,GY86DataList.AX,5);
- 113:./User/main.c **** //	OLED_ShowSignedNum(3,1,GY86DataList.AY,5);
- 114:./User/main.c **** //	OLED_ShowSignedNum(4,1,GY86DataList.AZ,5);
- 115:./User/main.c **** //	OLED_ShowSignedNum(2,8,GY86DataList.GX,5);
- 116:./User/main.c **** //	OLED_ShowSignedNum(3,8,GY86DataList.GY,5);
- 117:./User/main.c **** //	OLED_ShowSignedNum(4,8,GY86DataList.GZ,5);
- 118:./User/main.c **** 
- 119:./User/main.c **** //	Delay_ms(1000);
- 120:./User/main.c **** //	OLED_Clear();
- 121:./User/main.c **** //	
- 122:./User/main.c **** 	OLED_ShowString(1,1,"Temperature");
- 123:./User/main.c **** 	OLED_ShowSignedNum(2,1,GY86DataList.CORE_Temperature,5);
- 124:./User/main.c **** 	OLED_ShowString(3,1,"Pressure");
- 125:./User/main.c **** 	OLED_ShowSignedNum(4,1,GY86DataList.Height,5);
- 126:./User/main.c **** 	Delay_ms(100);
- 127:./User/main.c **** //	OLED_Clear();
- 128:./User/main.c **** //	
- 129:./User/main.c **** //	OLED_ShowString(1,1,"Gauss");
- 130:./User/main.c **** //	OLED_ShowSignedNum(2,1,GY86DataList.GaX,5);
- 131:./User/main.c **** //	OLED_ShowSignedNum(3,1,GY86DataList.GaY,5);
- 132:./User/main.c **** //	OLED_ShowSignedNum(4,1,GY86DataList.GaZ,5);
- 133:./User/main.c **** //	
- 134:./User/main.c **** //	Delay_ms(1000);
- 135:./User/main.c **** //	OLED_Clear();
- 136:./User/main.c **** 	
- 137:./User/main.c **** 	LD2_OFF();
- 138:./User/main.c **** //	Delay_ms(2000);
- 139:./User/main.c ****   }
- 140:./User/main.c **** 	
- 141:./User/main.c **** */
+  87:./User/main.c ****     OLED_ShowSignedNum(1,1,params_ram.test,6);
+  88:./User/main.c **** 		// OLED_ShowSignedNum(1,1,GY86DataList.AX,5);
+  89:./User/main.c **** 		// OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
+  90:./User/main.c **** 		// OLED_ShowSignedNum(3,1,GY86DataList.AZ,5);
+  91:./User/main.c **** 		// OLED_ShowSignedNum(1,8,GY86DataList.GX,5);
+  92:./User/main.c **** 		// OLED_ShowSignedNum(2,8,GY86DataList.GY,5);
+  93:./User/main.c **** 		// OLED_ShowSignedNum(3,8,GY86DataList.GZ,5);
+  94:./User/main.c **** 		
+  95:./User/main.c **** 		// OLED_ShowSignedNum(4,1,GY86DataList.GaX,5);
+  96:./User/main.c **** 		// OLED_ShowSignedNum(4,8,GY86DataList.GaY,5);
+  97:./User/main.c **** 	
+  98:./User/main.c **** 		Delay_s(3);
+  99:./User/main.c ****     params_ram.test = 19198;
+ 100:./User/main.c ****     StoreParameters();
+ 101:./User/main.c ****     LoadParameters();
+ 102:./User/main.c ****     OLED_ShowSignedNum(1,1,params_ram.test,6);
+ 103:./User/main.c **** 		// OLED2_ShowNum(1,1,CH2[1],5);
+ 104:./User/main.c **** 		// OLED2_ShowNum(1,8,CH2[2],5);
+ 105:./User/main.c **** 		
+ 106:./User/main.c **** 		// OLED2_ShowNum(2,1,CH2[3],5);
+ 107:./User/main.c **** 		// OLED2_ShowNum(2,8,CH2[4],5);
+ 108:./User/main.c **** 		
+ 109:./User/main.c **** 		// OLED2_ShowNum(3,1,CH2[5],5);
+ 110:./User/main.c **** 		// OLED2_ShowNum(3,8,CH2[6],5);
+ 111:./User/main.c **** 
+ 112:./User/main.c ****     // OLED2_ShowNum(4,1,CH2[7],5);
+ 113:./User/main.c **** 		// OLED2_ShowNum(4,8,CH2[8],5);
+ 114:./User/main.c **** 		
+ 115:./User/main.c **** 		// BLE_Printf("Acc:%d-%d-%d\n",GY86DataList.AX,GY86DataList.AY,GY86DataList.AZ);
+ 116:./User/main.c **** 		// BLE_Printf("G:%d-%d-%d\n",GY86DataList.GX,GY86DataList.GY,GY86DataList.GZ);
+ 117:./User/main.c **** 
+ 118:./User/main.c **** //		BLE_Printf("CH[1]:%d  CH[2]:%d\n",CH2[1],CH2[2]);
+ 119:./User/main.c **** //		BLE_Printf("CH[3]:%d  CH[4]:%d\n",CH2[3],CH2[4]);
+ 120:./User/main.c **** //		BLE_Printf("CH[5]:%d  CH[6]:%d\n",CH2[5],CH2[6]);
+ 121:./User/main.c **** //		BLE_Printf("CH[7]:%d  CH[8]:%d\n",CH2[7],CH2[8]);
+ 122:./User/main.c **** 
+ 123:./User/main.c **** 		// Motor_SetSpeed_All((CH2[3]/10)-100);
+ 124:./User/main.c **** 		
+ 125:./User/main.c **** 	}
+ 126:./User/main.c **** 
+ 127:./User/main.c **** //	LD2_OFF();
+ 128:./User/main.c **** //	PWM_SetCompare1(140-1);
+ 129:./User/main.c **** 
+ 130:./User/main.c **** }
+ 131:./User/main.c **** 
+ 132:./User/main.c **** 
+ 133:./User/main.c **** 
+ 134:./User/main.c **** 
+ 135:./User/main.c **** 
+ 136:./User/main.c **** 
+ 137:./User/main.c **** 
+ 138:./User/main.c **** 
+ 139:./User/main.c **** 
+ 140:./User/main.c **** 
+ 141:./User/main.c **** 
  142:./User/main.c **** 
  143:./User/main.c **** 
- 144:./User/main.c **** /* PWM TEST -------------SUCCESS-------------------------------------------------*/ 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 4
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 4
 
 
+ 144:./User/main.c **** 
  145:./User/main.c **** 
  146:./User/main.c **** 
- 147:./User/main.c **** //½âËøµçµ÷
- 148:./User/main.c **** //2ms(2000= 1s)
- 149:./User/main.c **** 	Motor_Init();
- 150:./User/main.c **** 	LD2_ON();
- 151:./User/main.c **** 	while(1)
- 152:./User/main.c **** 	{
- 153:./User/main.c **** 		GY86_GetData();
- 154:./User/main.c **** 		OLED_ShowSignedNum(1,1,GY86DataList.AX,5);
- 155:./User/main.c **** 		OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
- 156:./User/main.c **** 		OLED_ShowSignedNum(3,1,GY86DataList.AZ,5);
- 157:./User/main.c **** 		OLED_ShowSignedNum(1,8,GY86DataList.GX,5);
- 158:./User/main.c **** 		OLED_ShowSignedNum(2,8,GY86DataList.GY,5);
- 159:./User/main.c **** 		OLED_ShowSignedNum(3,8,GY86DataList.GZ,5);
- 160:./User/main.c **** 		
- 161:./User/main.c **** 		OLED_ShowSignedNum(4,1,GY86DataList.GaX,5);
- 162:./User/main.c **** 		OLED_ShowSignedNum(4,8,GY86DataList.GaY,5);
- 163:./User/main.c **** 		
- 164:./User/main.c **** 		OLED2_ShowString(1,1,"Group3 LCCZD");
- 165:./User/main.c **** 		
- 166:./User/main.c **** 		OLED2_ShowNum(2,1,CH2[1],5);
- 167:./User/main.c **** 		OLED2_ShowNum(2,8,CH2[2],5);
- 168:./User/main.c **** 		
- 169:./User/main.c **** 		OLED2_ShowNum(3,1,CH2[3],5);
- 170:./User/main.c **** 		OLED2_ShowNum(3,8,CH2[4],5);
- 171:./User/main.c **** 		
- 172:./User/main.c **** 		OLED2_ShowNum(4,1,CH2[5],5);
- 173:./User/main.c **** 		OLED2_ShowNum(4,8,CH2[6],5);
- 174:./User/main.c **** 		
- 175:./User/main.c **** 		BLE_Printf("Acc:%d-%d-%d\n",GY86DataList.AX,GY86DataList.AY,GY86DataList.AZ);
- 176:./User/main.c **** 		BLE_Printf("G:%d-%d-%d\n",GY86DataList.GX,GY86DataList.GY,GY86DataList.GZ);
- 177:./User/main.c **** 
- 178:./User/main.c **** //		BLE_Printf("CH[1]:%d  CH[2]:%d\n",CH2[1],CH2[2]);
- 179:./User/main.c **** //		BLE_Printf("CH[3]:%d  CH[4]:%d\n",CH2[3],CH2[4]);
- 180:./User/main.c **** //		BLE_Printf("CH[5]:%d  CH[6]:%d\n",CH2[5],CH2[6]);
- 181:./User/main.c **** //		BLE_Printf("CH[7]:%d  CH[8]:%d\n",CH2[7],CH2[8]);
- 182:./User/main.c **** 
- 183:./User/main.c **** 		Motor_SetSpeed_All((CH2[3]/10)-100);
- 184:./User/main.c **** 		
- 185:./User/main.c **** 	}
- 186:./User/main.c **** 
- 187:./User/main.c **** //	LD2_OFF();
- 188:./User/main.c **** //	PWM_SetCompare1(140-1);
- 189:./User/main.c **** 
- 190:./User/main.c **** }
- 191:./User/main.c **** 
- 192:./User/main.c **** 
- 193:./User/main.c **** 
- 194:./User/main.c **** 
- 195:./User/main.c **** 
- 196:./User/main.c **** 
- 197:./User/main.c **** 
- 198:./User/main.c **** 
- 199:./User/main.c **** 
- 200:./User/main.c **** 
- 201:./User/main.c **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 5
+ 147:./User/main.c **** 
+ 148:./User/main.c **** 
+ 149:./User/main.c **** 
+ 150:./User/main.c **** 
+ 151:./User/main.c **** 
+ 152:./User/main.c **** 
+ 153:./User/main.c **** 
+ 154:./User/main.c **** 
+ 155:./User/main.c **** 
+ 156:./User/main.c **** 
+ 157:./User/main.c **** 
+ 158:./User/main.c **** 
+ 159:./User/main.c **** 
+ 160:./User/main.c **** 
+ 161:./User/main.c **** /**
+ 162:./User/main.c ****   * @brief  Inserts a delay time.
+ 163:./User/main.c ****   * @param  nTime: specifies the delay time length, in milliseconds.
+ 164:./User/main.c ****   * @retval None
+ 165:./User/main.c ****   */
+ 166:./User/main.c **** void Delay(__IO uint32_t nTime)
+ 167:./User/main.c **** { 
+  30              		.loc 1 167 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              		.loc 1 167 1 is_stmt 0 view .LVU1
+  36 0000 82B0     		sub	sp, sp, #8
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39 0002 0190     		str	r0, [sp, #4]
+ 168:./User/main.c ****   uwTimingDelay = nTime;
+  40              		.loc 1 168 3 is_stmt 1 view .LVU2
+  41              		.loc 1 168 17 is_stmt 0 view .LVU3
+  42 0004 019A     		ldr	r2, [sp, #4]
+  43 0006 044B     		ldr	r3, .L4
+  44 0008 1A60     		str	r2, [r3]
+ 169:./User/main.c **** 
+ 170:./User/main.c ****   while(uwTimingDelay != 0);
+  45              		.loc 1 170 3 is_stmt 1 view .LVU4
+  46              	.L2:
+  47              		.loc 1 170 28 discriminator 1 view .LVU5
+  48              		.loc 1 170 8 discriminator 1 view .LVU6
+  49              		.loc 1 170 23 is_stmt 0 discriminator 1 view .LVU7
+  50 000a 034B     		ldr	r3, .L4
+  51 000c 1B68     		ldr	r3, [r3]
+  52              		.loc 1 170 8 discriminator 1 view .LVU8
+  53 000e 002B     		cmp	r3, #0
+  54 0010 FBD1     		bne	.L2
+ 171:./User/main.c **** }
+  55              		.loc 1 171 1 view .LVU9
+  56 0012 02B0     		add	sp, sp, #8
+  57              	.LCFI1:
+  58              		.cfi_def_cfa_offset 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 5
 
 
- 202:./User/main.c **** 
- 203:./User/main.c **** 
- 204:./User/main.c **** 
- 205:./User/main.c **** 
- 206:./User/main.c **** 
- 207:./User/main.c **** 
- 208:./User/main.c **** 
- 209:./User/main.c **** 
- 210:./User/main.c **** 
- 211:./User/main.c **** 
- 212:./User/main.c **** 
- 213:./User/main.c **** 
- 214:./User/main.c **** 
- 215:./User/main.c **** 
- 216:./User/main.c **** 
- 217:./User/main.c **** 
- 218:./User/main.c **** 
- 219:./User/main.c **** 
- 220:./User/main.c **** 
- 221:./User/main.c **** /**
- 222:./User/main.c ****   * @brief  Inserts a delay time.
- 223:./User/main.c ****   * @param  nTime: specifies the delay time length, in milliseconds.
- 224:./User/main.c ****   * @retval None
- 225:./User/main.c ****   */
- 226:./User/main.c **** void Delay(__IO uint32_t nTime)
- 227:./User/main.c **** { 
-  29              		.loc 1 227 1 view -0
-  30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 8
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33              		@ link register save eliminated.
-  34              		.loc 1 227 1 is_stmt 0 view .LVU1
-  35 0000 82B0     		sub	sp, sp, #8
-  36              	.LCFI0:
-  37              		.cfi_def_cfa_offset 8
-  38 0002 0190     		str	r0, [sp, #4]
- 228:./User/main.c ****   uwTimingDelay = nTime;
-  39              		.loc 1 228 3 is_stmt 1 view .LVU2
-  40              		.loc 1 228 17 is_stmt 0 view .LVU3
-  41 0004 019A     		ldr	r2, [sp, #4]
-  42 0006 044B     		ldr	r3, .L4
-  43 0008 1A60     		str	r2, [r3]
- 229:./User/main.c **** 
- 230:./User/main.c ****   while(uwTimingDelay != 0);
-  44              		.loc 1 230 3 is_stmt 1 view .LVU4
-  45              	.L2:
-  46              		.loc 1 230 28 discriminator 1 view .LVU5
-  47              		.loc 1 230 8 discriminator 1 view .LVU6
-  48              		.loc 1 230 23 is_stmt 0 discriminator 1 view .LVU7
-  49 000a 034B     		ldr	r3, .L4
-  50 000c 1B68     		ldr	r3, [r3]
-  51              		.loc 1 230 8 discriminator 1 view .LVU8
-  52 000e 002B     		cmp	r3, #0
-  53 0010 FBD1     		bne	.L2
- 231:./User/main.c **** }
-  54              		.loc 1 231 1 view .LVU9
-  55 0012 02B0     		add	sp, sp, #8
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 6
-
-
-  56              	.LCFI1:
-  57              		.cfi_def_cfa_offset 0
-  58              		@ sp needed
-  59 0014 7047     		bx	lr
-  60              	.L5:
-  61 0016 00BF     		.align	2
-  62              	.L4:
-  63 0018 00000000 		.word	.LANCHOR0
-  64              		.cfi_endproc
-  65              	.LFE127:
-  67              		.section	.rodata.main.str1.4,"aMS",%progbits,1
-  68              		.align	2
-  69              	.LC0:
-  70 0000 47726F75 		.ascii	"Group3 LCCZD\000"
-  70      7033204C 
-  70      43435A44 
-  70      00
-  71 000d 000000   		.align	2
-  72              	.LC1:
-  73 0010 4163633A 		.ascii	"Acc:%d-%d-%d\012\000"
-  73      25642D25 
-  73      642D2564 
-  73      0A00
-  74 001e 0000     		.align	2
-  75              	.LC2:
-  76 0020 473A2564 		.ascii	"G:%d-%d-%d\012\000"
-  76      2D25642D 
-  76      25640A00 
-  77              		.section	.text.main,"ax",%progbits
-  78              		.align	1
-  79              		.global	main
-  80              		.syntax unified
-  81              		.thumb
-  82              		.thumb_func
-  84              	main:
-  85              	.LFB126:
+  59              		@ sp needed
+  60 0014 7047     		bx	lr
+  61              	.L5:
+  62 0016 00BF     		.align	2
+  63              	.L4:
+  64 0018 00000000 		.word	.LANCHOR0
+  65              		.cfi_endproc
+  66              	.LFE127:
+  68              		.section	.text.main,"ax",%progbits
+  69              		.align	1
+  70              		.global	main
+  71              		.syntax unified
+  72              		.thumb
+  73              		.thumb_func
+  75              	main:
+  76              	.LFB126:
   49:./User/main.c **** 	
-  86              		.loc 1 49 1 is_stmt 1 view -0
-  87              		.cfi_startproc
-  88              		@ Volatile: function does not return.
-  89              		@ args = 0, pretend = 0, frame = 0
-  90              		@ frame_needed = 0, uses_anonymous_args = 0
-  91 0000 08B5     		push	{r3, lr}
-  92              	.LCFI2:
-  93              		.cfi_def_cfa_offset 8
-  94              		.cfi_offset 3, -8
-  95              		.cfi_offset 14, -4
+  77              		.loc 1 49 1 is_stmt 1 view -0
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81 0000 10B5     		push	{r4, lr}
+  82              	.LCFI2:
+  83              		.cfi_def_cfa_offset 8
+  84              		.cfi_offset 4, -8
+  85              		.cfi_offset 14, -4
   62:./User/main.c ****   SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
-  96              		.loc 1 62 3 view .LVU11
-  97 0002 564C     		ldr	r4, .L10
-  98 0004 2046     		mov	r0, r4
-  99 0006 FFF7FEFF 		bl	RCC_GetClocksFreq
- 100              	.LVL1:
+  86              		.loc 1 62 3 view .LVU11
+  87 0002 234C     		ldr	r4, .L9
+  88 0004 2046     		mov	r0, r4
+  89 0006 FFF7FEFF 		bl	RCC_GetClocksFreq
+  90              	.LVL1:
   63:./User/main.c ****   
- 101              		.loc 1 63 3 view .LVU12
+  91              		.loc 1 63 3 view .LVU12
   63:./User/main.c ****   
- 102              		.loc 1 63 28 is_stmt 0 view .LVU13
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 7
-
-
- 103 000a 6368     		ldr	r3, [r4, #4]
+  92              		.loc 1 63 28 is_stmt 0 view .LVU13
+  93 000a 6368     		ldr	r3, [r4, #4]
   63:./User/main.c ****   
- 104              		.loc 1 63 3 view .LVU14
- 105 000c 544A     		ldr	r2, .L10+4
- 106 000e A2FB0323 		umull	r2, r3, r2, r3
- 107 0012 5B09     		lsrs	r3, r3, #5
- 108              	.LVL2:
- 109              	.LBB8:
- 110              	.LBI8:
- 111              		.file 2 "./CORE/core_cm4.h"
+  94              		.loc 1 63 3 view .LVU14
+  95 000c 214A     		ldr	r2, .L9+4
+  96 000e A2FB0323 		umull	r2, r3, r2, r3
+  97 0012 5B09     		lsrs	r3, r3, #5
+  98              	.LVL2:
+  99              	.LBB8:
+ 100              	.LBI8:
+ 101              		.file 2 "./CORE/core_cm4.h"
    1:./CORE/core_cm4.h **** /**************************************************************************//**
    2:./CORE/core_cm4.h ****  * @file     core_cm4.h
    3:./CORE/core_cm4.h ****  * @brief    CMSIS Cortex-M4 Core Peripheral Access Layer Header File
@@ -382,6 +298,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
    9:./CORE/core_cm4.h ****  ******************************************************************************/
   10:./CORE/core_cm4.h **** /* Copyright (c) 2009 - 2015 ARM LIMITED
   11:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 6
+
+
   12:./CORE/core_cm4.h ****    All rights reserved.
   13:./CORE/core_cm4.h ****    Redistribution and use in source and binary forms, with or without
   14:./CORE/core_cm4.h ****    modification, are permitted provided that the following conditions are met:
@@ -418,9 +337,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
   45:./CORE/core_cm4.h **** #ifdef __cplusplus
   46:./CORE/core_cm4.h ****  extern "C" {
   47:./CORE/core_cm4.h **** #endif
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 8
-
-
   48:./CORE/core_cm4.h **** 
   49:./CORE/core_cm4.h **** /** \page CMSIS_MISRA_Exceptions  MISRA-C:2004 Compliance Exceptions
   50:./CORE/core_cm4.h ****   CMSIS violates the following MISRA-C:2004 rules:
@@ -442,6 +358,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
   66:./CORE/core_cm4.h **** /** \ingroup Cortex_M4
   67:./CORE/core_cm4.h ****   @{
   68:./CORE/core_cm4.h ****  */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 7
+
+
   69:./CORE/core_cm4.h **** 
   70:./CORE/core_cm4.h **** /*  CMSIS CM4 definitions */
   71:./CORE/core_cm4.h **** #define __CM4_CMSIS_VERSION_MAIN  (0x04)                                   /*!< [31:16] CMSIS HAL m
@@ -478,9 +397,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  102:./CORE/core_cm4.h **** 
  103:./CORE/core_cm4.h **** #elif defined ( __CSMC__ )
  104:./CORE/core_cm4.h ****   #define __packed
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 9
-
-
  105:./CORE/core_cm4.h ****   #define __ASM            _asm                                      /*!< asm keyword for COSMIC Co
  106:./CORE/core_cm4.h ****   #define __INLINE         inline                                    /*use -pc99 on compile line !<
  107:./CORE/core_cm4.h ****   #define __STATIC_INLINE  static inline
@@ -502,6 +418,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  123:./CORE/core_cm4.h ****     #define __FPU_USED         0
  124:./CORE/core_cm4.h ****   #endif
  125:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 8
+
+
  126:./CORE/core_cm4.h **** #elif defined ( __GNUC__ )
  127:./CORE/core_cm4.h ****   #if defined (__VFP_FP__) && !defined(__SOFTFP__)
  128:./CORE/core_cm4.h ****     #if (__FPU_PRESENT == 1)
@@ -538,9 +457,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  159:./CORE/core_cm4.h ****     #define __FPU_USED         0
  160:./CORE/core_cm4.h ****   #endif
  161:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 10
-
-
  162:./CORE/core_cm4.h **** #elif defined ( __TASKING__ )
  163:./CORE/core_cm4.h ****   #if defined __FPU_VFP__
  164:./CORE/core_cm4.h ****     #if (__FPU_PRESENT == 1)
@@ -562,6 +478,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  180:./CORE/core_cm4.h ****       #define __FPU_USED       0
  181:./CORE/core_cm4.h ****     #endif
  182:./CORE/core_cm4.h ****   #else
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 9
+
+
  183:./CORE/core_cm4.h ****     #define __FPU_USED         0
  184:./CORE/core_cm4.h ****   #endif
  185:./CORE/core_cm4.h **** #endif
@@ -598,9 +517,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  216:./CORE/core_cm4.h ****     #warning "__FPU_PRESENT not defined in device header file; using default!"
  217:./CORE/core_cm4.h ****   #endif
  218:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 11
-
-
  219:./CORE/core_cm4.h ****   #ifndef __MPU_PRESENT
  220:./CORE/core_cm4.h ****     #define __MPU_PRESENT             0
  221:./CORE/core_cm4.h ****     #warning "__MPU_PRESENT not defined in device header file; using default!"
@@ -622,6 +538,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  237:./CORE/core_cm4.h ****     \defgroup CMSIS_glob_defs CMSIS Global Defines
  238:./CORE/core_cm4.h **** 
  239:./CORE/core_cm4.h ****     <strong>IO Type Qualifiers</strong> are used
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 10
+
+
  240:./CORE/core_cm4.h ****     \li to specify the access to peripheral variables.
  241:./CORE/core_cm4.h ****     \li for automatic generation of peripheral register debug information.
  242:./CORE/core_cm4.h **** */
@@ -658,9 +577,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  273:./CORE/core_cm4.h ****   @{
  274:./CORE/core_cm4.h ****  */
  275:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 12
-
-
  276:./CORE/core_cm4.h **** /** \brief  Union type to access the Application Program Status Register (APSR).
  277:./CORE/core_cm4.h ****  */
  278:./CORE/core_cm4.h **** typedef union
@@ -682,6 +598,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  294:./CORE/core_cm4.h **** /* APSR Register Definitions */
  295:./CORE/core_cm4.h **** #define APSR_N_Pos                         31                                             /*!< APSR
  296:./CORE/core_cm4.h **** #define APSR_N_Msk                         (1UL << APSR_N_Pos)                            /*!< APSR
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 11
+
+
  297:./CORE/core_cm4.h **** 
  298:./CORE/core_cm4.h **** #define APSR_Z_Pos                         30                                             /*!< APSR
  299:./CORE/core_cm4.h **** #define APSR_Z_Msk                         (1UL << APSR_Z_Pos)                            /*!< APSR
@@ -718,9 +637,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  330:./CORE/core_cm4.h **** 
  331:./CORE/core_cm4.h **** /** \brief  Union type to access the Special-Purpose Program Status Registers (xPSR).
  332:./CORE/core_cm4.h ****  */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 13
-
-
  333:./CORE/core_cm4.h **** typedef union
  334:./CORE/core_cm4.h **** {
  335:./CORE/core_cm4.h ****   struct
@@ -742,6 +658,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  351:./CORE/core_cm4.h **** 
  352:./CORE/core_cm4.h **** /* xPSR Register Definitions */
  353:./CORE/core_cm4.h **** #define xPSR_N_Pos                         31                                             /*!< xPSR
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 12
+
+
  354:./CORE/core_cm4.h **** #define xPSR_N_Msk                         (1UL << xPSR_N_Pos)                            /*!< xPSR
  355:./CORE/core_cm4.h **** 
  356:./CORE/core_cm4.h **** #define xPSR_Z_Pos                         30                                             /*!< xPSR
@@ -778,9 +697,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  387:./CORE/core_cm4.h ****     uint32_t nPRIV:1;                    /*!< bit:      0  Execution privilege in Thread mode */
  388:./CORE/core_cm4.h ****     uint32_t SPSEL:1;                    /*!< bit:      1  Stack to be used                   */
  389:./CORE/core_cm4.h ****     uint32_t FPCA:1;                     /*!< bit:      2  FP extension active flag           */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 14
-
-
  390:./CORE/core_cm4.h ****     uint32_t _reserved0:29;              /*!< bit:  3..31  Reserved                           */
  391:./CORE/core_cm4.h ****   } b;                                   /*!< Structure used for bit  access                  */
  392:./CORE/core_cm4.h ****   uint32_t w;                            /*!< Type      used for word access                  */
@@ -802,6 +718,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  408:./CORE/core_cm4.h **** /** \ingroup    CMSIS_core_register
  409:./CORE/core_cm4.h ****     \defgroup   CMSIS_NVIC  Nested Vectored Interrupt Controller (NVIC)
  410:./CORE/core_cm4.h ****     \brief      Type definitions for the NVIC Registers
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 13
+
+
  411:./CORE/core_cm4.h ****   @{
  412:./CORE/core_cm4.h ****  */
  413:./CORE/core_cm4.h **** 
@@ -838,9 +757,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  444:./CORE/core_cm4.h ****  */
  445:./CORE/core_cm4.h **** 
  446:./CORE/core_cm4.h **** /** \brief  Structure type to access the System Control Block (SCB).
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 15
-
-
  447:./CORE/core_cm4.h ****  */
  448:./CORE/core_cm4.h **** typedef struct
  449:./CORE/core_cm4.h **** {
@@ -862,6 +778,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  465:./CORE/core_cm4.h ****   __I  uint32_t DFR;                     /*!< Offset: 0x048 (R/ )  Debug Feature Register          
  466:./CORE/core_cm4.h ****   __I  uint32_t ADR;                     /*!< Offset: 0x04C (R/ )  Auxiliary Feature Register      
  467:./CORE/core_cm4.h ****   __I  uint32_t MMFR[4];                 /*!< Offset: 0x050 (R/ )  Memory Model Feature Register   
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 14
+
+
  468:./CORE/core_cm4.h ****   __I  uint32_t ISAR[5];                 /*!< Offset: 0x060 (R/ )  Instruction Set Attributes Regis
  469:./CORE/core_cm4.h ****        uint32_t RESERVED0[5];
  470:./CORE/core_cm4.h ****   __IO uint32_t CPACR;                   /*!< Offset: 0x088 (R/W)  Coprocessor Access Control Regis
@@ -898,9 +817,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  501:./CORE/core_cm4.h **** 
  502:./CORE/core_cm4.h **** #define SCB_ICSR_PENDSTCLR_Pos             25                                             /*!< SCB 
  503:./CORE/core_cm4.h **** #define SCB_ICSR_PENDSTCLR_Msk             (1UL << SCB_ICSR_PENDSTCLR_Pos)                /*!< SCB 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 16
-
-
  504:./CORE/core_cm4.h **** 
  505:./CORE/core_cm4.h **** #define SCB_ICSR_ISRPREEMPT_Pos            23                                             /*!< SCB 
  506:./CORE/core_cm4.h **** #define SCB_ICSR_ISRPREEMPT_Msk            (1UL << SCB_ICSR_ISRPREEMPT_Pos)               /*!< SCB 
@@ -922,6 +838,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  522:./CORE/core_cm4.h **** #define SCB_VTOR_TBLOFF_Msk                (0x1FFFFFFUL << SCB_VTOR_TBLOFF_Pos)           /*!< SCB 
  523:./CORE/core_cm4.h **** 
  524:./CORE/core_cm4.h **** /* SCB Application Interrupt and Reset Control Register Definitions */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 15
+
+
  525:./CORE/core_cm4.h **** #define SCB_AIRCR_VECTKEY_Pos              16                                             /*!< SCB 
  526:./CORE/core_cm4.h **** #define SCB_AIRCR_VECTKEY_Msk              (0xFFFFUL << SCB_AIRCR_VECTKEY_Pos)            /*!< SCB 
  527:./CORE/core_cm4.h **** 
@@ -958,9 +877,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  558:./CORE/core_cm4.h **** #define SCB_CCR_STKALIGN_Msk               (1UL << SCB_CCR_STKALIGN_Pos)                  /*!< SCB 
  559:./CORE/core_cm4.h **** 
  560:./CORE/core_cm4.h **** #define SCB_CCR_BFHFNMIGN_Pos               8                                             /*!< SCB 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 17
-
-
  561:./CORE/core_cm4.h **** #define SCB_CCR_BFHFNMIGN_Msk              (1UL << SCB_CCR_BFHFNMIGN_Pos)                 /*!< SCB 
  562:./CORE/core_cm4.h **** 
  563:./CORE/core_cm4.h **** #define SCB_CCR_DIV_0_TRP_Pos               4                                             /*!< SCB 
@@ -982,6 +898,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  579:./CORE/core_cm4.h **** #define SCB_SHCSR_BUSFAULTENA_Pos          17                                             /*!< SCB 
  580:./CORE/core_cm4.h **** #define SCB_SHCSR_BUSFAULTENA_Msk          (1UL << SCB_SHCSR_BUSFAULTENA_Pos)             /*!< SCB 
  581:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 16
+
+
  582:./CORE/core_cm4.h **** #define SCB_SHCSR_MEMFAULTENA_Pos          16                                             /*!< SCB 
  583:./CORE/core_cm4.h **** #define SCB_SHCSR_MEMFAULTENA_Msk          (1UL << SCB_SHCSR_MEMFAULTENA_Pos)             /*!< SCB 
  584:./CORE/core_cm4.h **** 
@@ -1018,9 +937,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  615:./CORE/core_cm4.h **** #define SCB_SHCSR_MEMFAULTACT_Pos           0                                             /*!< SCB 
  616:./CORE/core_cm4.h **** #define SCB_SHCSR_MEMFAULTACT_Msk          (1UL /*<< SCB_SHCSR_MEMFAULTACT_Pos*/)         /*!< SCB 
  617:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 18
-
-
  618:./CORE/core_cm4.h **** /* SCB Configurable Fault Status Registers Definitions */
  619:./CORE/core_cm4.h **** #define SCB_CFSR_USGFAULTSR_Pos            16                                             /*!< SCB 
  620:./CORE/core_cm4.h **** #define SCB_CFSR_USGFAULTSR_Msk            (0xFFFFUL << SCB_CFSR_USGFAULTSR_Pos)          /*!< SCB 
@@ -1042,6 +958,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  636:./CORE/core_cm4.h **** #define SCB_HFSR_VECTTBL_Msk               (1UL << SCB_HFSR_VECTTBL_Pos)                  /*!< SCB 
  637:./CORE/core_cm4.h **** 
  638:./CORE/core_cm4.h **** /* SCB Debug Fault Status Register Definitions */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 17
+
+
  639:./CORE/core_cm4.h **** #define SCB_DFSR_EXTERNAL_Pos               4                                             /*!< SCB 
  640:./CORE/core_cm4.h **** #define SCB_DFSR_EXTERNAL_Msk              (1UL << SCB_DFSR_EXTERNAL_Pos)                 /*!< SCB 
  641:./CORE/core_cm4.h **** 
@@ -1078,9 +997,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  672:./CORE/core_cm4.h **** /* Interrupt Controller Type Register Definitions */
  673:./CORE/core_cm4.h **** #define SCnSCB_ICTR_INTLINESNUM_Pos         0                                          /*!< ICTR: I
  674:./CORE/core_cm4.h **** #define SCnSCB_ICTR_INTLINESNUM_Msk        (0xFUL /*<< SCnSCB_ICTR_INTLINESNUM_Pos*/)  /*!< ICTR: I
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 19
-
-
  675:./CORE/core_cm4.h **** 
  676:./CORE/core_cm4.h **** /* Auxiliary Control Register Definitions */
  677:./CORE/core_cm4.h **** #define SCnSCB_ACTLR_DISOOFP_Pos            9                                          /*!< ACTLR: 
@@ -1102,6 +1018,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  693:./CORE/core_cm4.h **** 
  694:./CORE/core_cm4.h **** 
  695:./CORE/core_cm4.h **** /** \ingroup  CMSIS_core_register
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 18
+
+
  696:./CORE/core_cm4.h ****     \defgroup CMSIS_SysTick     System Tick Timer (SysTick)
  697:./CORE/core_cm4.h ****     \brief      Type definitions for the System Timer Registers.
  698:./CORE/core_cm4.h ****   @{
@@ -1138,9 +1057,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  729:./CORE/core_cm4.h **** #define SysTick_VAL_CURRENT_Pos             0                                             /*!< SysT
  730:./CORE/core_cm4.h **** #define SysTick_VAL_CURRENT_Msk            (0xFFFFFFUL /*<< SysTick_VAL_CURRENT_Pos*/)    /*!< SysT
  731:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 20
-
-
  732:./CORE/core_cm4.h **** /* SysTick Calibration Register Definitions */
  733:./CORE/core_cm4.h **** #define SysTick_CALIB_NOREF_Pos            31                                             /*!< SysT
  734:./CORE/core_cm4.h **** #define SysTick_CALIB_NOREF_Msk            (1UL << SysTick_CALIB_NOREF_Pos)               /*!< SysT
@@ -1162,6 +1078,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  750:./CORE/core_cm4.h **** 
  751:./CORE/core_cm4.h **** /** \brief  Structure type to access the Instrumentation Trace Macrocell Register (ITM).
  752:./CORE/core_cm4.h ****  */
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 19
+
+
  753:./CORE/core_cm4.h **** typedef struct
  754:./CORE/core_cm4.h **** {
  755:./CORE/core_cm4.h ****   __O  union
@@ -1198,9 +1117,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  786:./CORE/core_cm4.h ****   __I  uint32_t CID3;                    /*!< Offset: 0xFFC (R/ )  ITM Component  Identification Re
  787:./CORE/core_cm4.h **** } ITM_Type;
  788:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 21
-
-
  789:./CORE/core_cm4.h **** /* ITM Trace Privilege Register Definitions */
  790:./CORE/core_cm4.h **** #define ITM_TPR_PRIVMASK_Pos                0                                             /*!< ITM 
  791:./CORE/core_cm4.h **** #define ITM_TPR_PRIVMASK_Msk               (0xFUL /*<< ITM_TPR_PRIVMASK_Pos*/)            /*!< ITM 
@@ -1222,6 +1138,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  807:./CORE/core_cm4.h **** #define ITM_TCR_SWOENA_Msk                 (1UL << ITM_TCR_SWOENA_Pos)                    /*!< ITM 
  808:./CORE/core_cm4.h **** 
  809:./CORE/core_cm4.h **** #define ITM_TCR_DWTENA_Pos                  3                                             /*!< ITM 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 20
+
+
  810:./CORE/core_cm4.h **** #define ITM_TCR_DWTENA_Msk                 (1UL << ITM_TCR_DWTENA_Pos)                    /*!< ITM 
  811:./CORE/core_cm4.h **** 
  812:./CORE/core_cm4.h **** #define ITM_TCR_SYNCENA_Pos                 2                                             /*!< ITM 
@@ -1258,9 +1177,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  843:./CORE/core_cm4.h **** /*@}*/ /* end of group CMSIS_ITM */
  844:./CORE/core_cm4.h **** 
  845:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 22
-
-
  846:./CORE/core_cm4.h **** /** \ingroup  CMSIS_core_register
  847:./CORE/core_cm4.h ****     \defgroup CMSIS_DWT     Data Watchpoint and Trace (DWT)
  848:./CORE/core_cm4.h ****     \brief      Type definitions for the Data Watchpoint and Trace (DWT)
@@ -1282,6 +1198,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  864:./CORE/core_cm4.h ****   __IO uint32_t COMP0;                   /*!< Offset: 0x020 (R/W)  Comparator Register 0           
  865:./CORE/core_cm4.h ****   __IO uint32_t MASK0;                   /*!< Offset: 0x024 (R/W)  Mask Register 0                 
  866:./CORE/core_cm4.h ****   __IO uint32_t FUNCTION0;               /*!< Offset: 0x028 (R/W)  Function Register 0             
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 21
+
+
  867:./CORE/core_cm4.h ****        uint32_t RESERVED0[1];
  868:./CORE/core_cm4.h ****   __IO uint32_t COMP1;                   /*!< Offset: 0x030 (R/W)  Comparator Register 1           
  869:./CORE/core_cm4.h ****   __IO uint32_t MASK1;                   /*!< Offset: 0x034 (R/W)  Mask Register 1                 
@@ -1318,9 +1237,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  900:./CORE/core_cm4.h **** #define DWT_CTRL_FOLDEVTENA_Pos            21                                          /*!< DWT CTR
  901:./CORE/core_cm4.h **** #define DWT_CTRL_FOLDEVTENA_Msk            (0x1UL << DWT_CTRL_FOLDEVTENA_Pos)          /*!< DWT CTR
  902:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 23
-
-
  903:./CORE/core_cm4.h **** #define DWT_CTRL_LSUEVTENA_Pos             20                                          /*!< DWT CTR
  904:./CORE/core_cm4.h **** #define DWT_CTRL_LSUEVTENA_Msk             (0x1UL << DWT_CTRL_LSUEVTENA_Pos)           /*!< DWT CTR
  905:./CORE/core_cm4.h **** 
@@ -1342,6 +1258,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  921:./CORE/core_cm4.h **** #define DWT_CTRL_SYNCTAP_Pos               10                                          /*!< DWT CTR
  922:./CORE/core_cm4.h **** #define DWT_CTRL_SYNCTAP_Msk               (0x3UL << DWT_CTRL_SYNCTAP_Pos)             /*!< DWT CTR
  923:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 22
+
+
  924:./CORE/core_cm4.h **** #define DWT_CTRL_CYCTAP_Pos                 9                                          /*!< DWT CTR
  925:./CORE/core_cm4.h **** #define DWT_CTRL_CYCTAP_Msk                (0x1UL << DWT_CTRL_CYCTAP_Pos)              /*!< DWT CTR
  926:./CORE/core_cm4.h **** 
@@ -1378,9 +1297,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  957:./CORE/core_cm4.h **** #define DWT_MASK_MASK_Pos                   0                                          /*!< DWT MAS
  958:./CORE/core_cm4.h **** #define DWT_MASK_MASK_Msk                  (0x1FUL /*<< DWT_MASK_MASK_Pos*/)           /*!< DWT MAS
  959:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 24
-
-
  960:./CORE/core_cm4.h **** /* DWT Comparator Function Register Definitions */
  961:./CORE/core_cm4.h **** #define DWT_FUNCTION_MATCHED_Pos           24                                          /*!< DWT FUN
  962:./CORE/core_cm4.h **** #define DWT_FUNCTION_MATCHED_Msk           (0x1UL << DWT_FUNCTION_MATCHED_Pos)         /*!< DWT FUN
@@ -1402,6 +1318,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
  978:./CORE/core_cm4.h **** 
  979:./CORE/core_cm4.h **** #define DWT_FUNCTION_CYCMATCH_Pos           7                                          /*!< DWT FUN
  980:./CORE/core_cm4.h **** #define DWT_FUNCTION_CYCMATCH_Msk          (0x1UL << DWT_FUNCTION_CYCMATCH_Pos)        /*!< DWT FUN
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 23
+
+
  981:./CORE/core_cm4.h **** 
  982:./CORE/core_cm4.h **** #define DWT_FUNCTION_EMITRANGE_Pos          5                                          /*!< DWT FUN
  983:./CORE/core_cm4.h **** #define DWT_FUNCTION_EMITRANGE_Msk         (0x1UL << DWT_FUNCTION_EMITRANGE_Pos)       /*!< DWT FUN
@@ -1438,9 +1357,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1014:./CORE/core_cm4.h ****   __I  uint32_t ITATBCTR2;               /*!< Offset: 0xEF0 (R/ )  ITATBCTR2 */
 1015:./CORE/core_cm4.h ****        uint32_t RESERVED4[1];
 1016:./CORE/core_cm4.h ****   __I  uint32_t ITATBCTR0;               /*!< Offset: 0xEF8 (R/ )  ITATBCTR0 */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 25
-
-
 1017:./CORE/core_cm4.h ****   __I  uint32_t FIFO1;                   /*!< Offset: 0xEFC (R/ )  Integration ITM Data */
 1018:./CORE/core_cm4.h ****   __IO uint32_t ITCTRL;                  /*!< Offset: 0xF00 (R/W)  Integration Mode Control */
 1019:./CORE/core_cm4.h ****        uint32_t RESERVED5[39];
@@ -1462,6 +1378,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1035:./CORE/core_cm4.h **** /* TPI Formatter and Flush Status Register Definitions */
 1036:./CORE/core_cm4.h **** #define TPI_FFSR_FtNonStop_Pos              3                                          /*!< TPI FFS
 1037:./CORE/core_cm4.h **** #define TPI_FFSR_FtNonStop_Msk             (0x1UL << TPI_FFSR_FtNonStop_Pos)           /*!< TPI FFS
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 24
+
+
 1038:./CORE/core_cm4.h **** 
 1039:./CORE/core_cm4.h **** #define TPI_FFSR_TCPresent_Pos              2                                          /*!< TPI FFS
 1040:./CORE/core_cm4.h **** #define TPI_FFSR_TCPresent_Msk             (0x1UL << TPI_FFSR_TCPresent_Pos)           /*!< TPI FFS
@@ -1498,9 +1417,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1071:./CORE/core_cm4.h **** 
 1072:./CORE/core_cm4.h **** #define TPI_FIFO0_ETM2_Pos                 16                                          /*!< TPI FIF
 1073:./CORE/core_cm4.h **** #define TPI_FIFO0_ETM2_Msk                 (0xFFUL << TPI_FIFO0_ETM2_Pos)              /*!< TPI FIF
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 26
-
-
 1074:./CORE/core_cm4.h **** 
 1075:./CORE/core_cm4.h **** #define TPI_FIFO0_ETM1_Pos                  8                                          /*!< TPI FIF
 1076:./CORE/core_cm4.h **** #define TPI_FIFO0_ETM1_Msk                 (0xFFUL << TPI_FIFO0_ETM1_Pos)              /*!< TPI FIF
@@ -1522,6 +1438,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1092:./CORE/core_cm4.h **** #define TPI_FIFO1_ETM_ATVALID_Pos          26                                          /*!< TPI FIF
 1093:./CORE/core_cm4.h **** #define TPI_FIFO1_ETM_ATVALID_Msk          (0x3UL << TPI_FIFO1_ETM_ATVALID_Pos)        /*!< TPI FIF
 1094:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 25
+
+
 1095:./CORE/core_cm4.h **** #define TPI_FIFO1_ETM_bytecount_Pos        24                                          /*!< TPI FIF
 1096:./CORE/core_cm4.h **** #define TPI_FIFO1_ETM_bytecount_Msk        (0x3UL << TPI_FIFO1_ETM_bytecount_Pos)      /*!< TPI FIF
 1097:./CORE/core_cm4.h **** 
@@ -1558,9 +1477,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1128:./CORE/core_cm4.h **** #define TPI_DEVID_AsynClkIn_Pos             5                                          /*!< TPI DEV
 1129:./CORE/core_cm4.h **** #define TPI_DEVID_AsynClkIn_Msk            (0x1UL << TPI_DEVID_AsynClkIn_Pos)          /*!< TPI DEV
 1130:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 27
-
-
 1131:./CORE/core_cm4.h **** #define TPI_DEVID_NrTraceInput_Pos          0                                          /*!< TPI DEV
 1132:./CORE/core_cm4.h **** #define TPI_DEVID_NrTraceInput_Msk         (0x1FUL /*<< TPI_DEVID_NrTraceInput_Pos*/)  /*!< TPI DEV
 1133:./CORE/core_cm4.h **** 
@@ -1582,6 +1498,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1149:./CORE/core_cm4.h ****  */
 1150:./CORE/core_cm4.h **** 
 1151:./CORE/core_cm4.h **** /** \brief  Structure type to access the Memory Protection Unit (MPU).
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 26
+
+
 1152:./CORE/core_cm4.h ****  */
 1153:./CORE/core_cm4.h **** typedef struct
 1154:./CORE/core_cm4.h **** {
@@ -1618,9 +1537,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1185:./CORE/core_cm4.h **** #define MPU_CTRL_ENABLE_Pos                 0                                             /*!< MPU 
 1186:./CORE/core_cm4.h **** #define MPU_CTRL_ENABLE_Msk                (1UL /*<< MPU_CTRL_ENABLE_Pos*/)               /*!< MPU 
 1187:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 28
-
-
 1188:./CORE/core_cm4.h **** /* MPU Region Number Register */
 1189:./CORE/core_cm4.h **** #define MPU_RNR_REGION_Pos                  0                                             /*!< MPU 
 1190:./CORE/core_cm4.h **** #define MPU_RNR_REGION_Msk                 (0xFFUL /*<< MPU_RNR_REGION_Pos*/)             /*!< MPU 
@@ -1642,6 +1558,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1206:./CORE/core_cm4.h **** #define MPU_RASR_XN_Pos                    28                                             /*!< MPU 
 1207:./CORE/core_cm4.h **** #define MPU_RASR_XN_Msk                    (1UL << MPU_RASR_XN_Pos)                       /*!< MPU 
 1208:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 27
+
+
 1209:./CORE/core_cm4.h **** #define MPU_RASR_AP_Pos                    24                                             /*!< MPU 
 1210:./CORE/core_cm4.h **** #define MPU_RASR_AP_Msk                    (0x7UL << MPU_RASR_AP_Pos)                     /*!< MPU 
 1211:./CORE/core_cm4.h **** 
@@ -1678,9 +1597,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1242:./CORE/core_cm4.h ****  */
 1243:./CORE/core_cm4.h **** 
 1244:./CORE/core_cm4.h **** /** \brief  Structure type to access the Floating Point Unit (FPU).
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 29
-
-
 1245:./CORE/core_cm4.h ****  */
 1246:./CORE/core_cm4.h **** typedef struct
 1247:./CORE/core_cm4.h **** {
@@ -1702,6 +1618,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1263:./CORE/core_cm4.h **** #define FPU_FPCCR_MONRDY_Pos                8                                             /*!< FPCC
 1264:./CORE/core_cm4.h **** #define FPU_FPCCR_MONRDY_Msk               (1UL << FPU_FPCCR_MONRDY_Pos)                  /*!< FPCC
 1265:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 28
+
+
 1266:./CORE/core_cm4.h **** #define FPU_FPCCR_BFRDY_Pos                 6                                             /*!< FPCC
 1267:./CORE/core_cm4.h **** #define FPU_FPCCR_BFRDY_Msk                (1UL << FPU_FPCCR_BFRDY_Pos)                   /*!< FPCC
 1268:./CORE/core_cm4.h **** 
@@ -1738,9 +1657,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1299:./CORE/core_cm4.h **** #define FPU_FPDSCR_RMode_Msk               (3UL << FPU_FPDSCR_RMode_Pos)                  /*!< FPDS
 1300:./CORE/core_cm4.h **** 
 1301:./CORE/core_cm4.h **** /* Media and FP Feature Register 0 */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 30
-
-
 1302:./CORE/core_cm4.h **** #define FPU_MVFR0_FP_rounding_modes_Pos    28                                             /*!< MVFR
 1303:./CORE/core_cm4.h **** #define FPU_MVFR0_FP_rounding_modes_Msk    (0xFUL << FPU_MVFR0_FP_rounding_modes_Pos)     /*!< MVFR
 1304:./CORE/core_cm4.h **** 
@@ -1762,6 +1678,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1320:./CORE/core_cm4.h **** #define FPU_MVFR0_Single_precision_Pos      4                                             /*!< MVFR
 1321:./CORE/core_cm4.h **** #define FPU_MVFR0_Single_precision_Msk     (0xFUL << FPU_MVFR0_Single_precision_Pos)      /*!< MVFR
 1322:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 29
+
+
 1323:./CORE/core_cm4.h **** #define FPU_MVFR0_A_SIMD_registers_Pos      0                                             /*!< MVFR
 1324:./CORE/core_cm4.h **** #define FPU_MVFR0_A_SIMD_registers_Msk     (0xFUL /*<< FPU_MVFR0_A_SIMD_registers_Pos*/)  /*!< MVFR
 1325:./CORE/core_cm4.h **** 
@@ -1798,9 +1717,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1356:./CORE/core_cm4.h ****   __IO uint32_t DEMCR;                   /*!< Offset: 0x00C (R/W)  Debug Exception and Monitor Cont
 1357:./CORE/core_cm4.h **** } CoreDebug_Type;
 1358:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 31
-
-
 1359:./CORE/core_cm4.h **** /* Debug Halting Control and Status Register */
 1360:./CORE/core_cm4.h **** #define CoreDebug_DHCSR_DBGKEY_Pos         16                                             /*!< Core
 1361:./CORE/core_cm4.h **** #define CoreDebug_DHCSR_DBGKEY_Msk         (0xFFFFUL << CoreDebug_DHCSR_DBGKEY_Pos)       /*!< Core
@@ -1822,6 +1738,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1377:./CORE/core_cm4.h **** 
 1378:./CORE/core_cm4.h **** #define CoreDebug_DHCSR_S_REGRDY_Pos       16                                             /*!< Core
 1379:./CORE/core_cm4.h **** #define CoreDebug_DHCSR_S_REGRDY_Msk       (1UL << CoreDebug_DHCSR_S_REGRDY_Pos)          /*!< Core
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 30
+
+
 1380:./CORE/core_cm4.h **** 
 1381:./CORE/core_cm4.h **** #define CoreDebug_DHCSR_C_SNAPSTALL_Pos     5                                             /*!< Core
 1382:./CORE/core_cm4.h **** #define CoreDebug_DHCSR_C_SNAPSTALL_Msk    (1UL << CoreDebug_DHCSR_C_SNAPSTALL_Pos)       /*!< Core
@@ -1858,9 +1777,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1413:./CORE/core_cm4.h **** #define CoreDebug_DEMCR_MON_PEND_Pos       17                                             /*!< Core
 1414:./CORE/core_cm4.h **** #define CoreDebug_DEMCR_MON_PEND_Msk       (1UL << CoreDebug_DEMCR_MON_PEND_Pos)          /*!< Core
 1415:./CORE/core_cm4.h **** 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 32
-
-
 1416:./CORE/core_cm4.h **** #define CoreDebug_DEMCR_MON_EN_Pos         16                                             /*!< Core
 1417:./CORE/core_cm4.h **** #define CoreDebug_DEMCR_MON_EN_Msk         (1UL << CoreDebug_DEMCR_MON_EN_Pos)            /*!< Core
 1418:./CORE/core_cm4.h **** 
@@ -1882,6 +1798,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1434:./CORE/core_cm4.h **** #define CoreDebug_DEMCR_VC_NOCPERR_Pos      5                                             /*!< Core
 1435:./CORE/core_cm4.h **** #define CoreDebug_DEMCR_VC_NOCPERR_Msk     (1UL << CoreDebug_DEMCR_VC_NOCPERR_Pos)        /*!< Core
 1436:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 31
+
+
 1437:./CORE/core_cm4.h **** #define CoreDebug_DEMCR_VC_MMERR_Pos        4                                             /*!< Core
 1438:./CORE/core_cm4.h **** #define CoreDebug_DEMCR_VC_MMERR_Msk       (1UL << CoreDebug_DEMCR_VC_MMERR_Pos)          /*!< Core
 1439:./CORE/core_cm4.h **** 
@@ -1918,9 +1837,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1470:./CORE/core_cm4.h **** 
 1471:./CORE/core_cm4.h **** #if (__MPU_PRESENT == 1)
 1472:./CORE/core_cm4.h ****   #define MPU_BASE          (SCS_BASE +  0x0D90UL)                    /*!< Memory Protection Unit  
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 33
-
-
 1473:./CORE/core_cm4.h ****   #define MPU               ((MPU_Type       *)     MPU_BASE      )   /*!< Memory Protection Unit  
 1474:./CORE/core_cm4.h **** #endif
 1475:./CORE/core_cm4.h **** 
@@ -1942,6 +1858,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1491:./CORE/core_cm4.h ****   - Core Register Access Functions
 1492:./CORE/core_cm4.h ****  ******************************************************************************/
 1493:./CORE/core_cm4.h **** /** \defgroup CMSIS_Core_FunctionInterface Functions and Instructions Reference
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 32
+
+
 1494:./CORE/core_cm4.h **** */
 1495:./CORE/core_cm4.h **** 
 1496:./CORE/core_cm4.h **** 
@@ -1978,9 +1897,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1527:./CORE/core_cm4.h **** 
 1528:./CORE/core_cm4.h **** 
 1529:./CORE/core_cm4.h **** /** \brief  Get Priority Grouping
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 34
-
-
 1530:./CORE/core_cm4.h **** 
 1531:./CORE/core_cm4.h ****   The function reads the priority grouping field from the NVIC Interrupt Controller.
 1532:./CORE/core_cm4.h **** 
@@ -2002,6 +1918,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1548:./CORE/core_cm4.h **** {
 1549:./CORE/core_cm4.h ****   NVIC->ISER[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0
 1550:./CORE/core_cm4.h **** }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 33
+
+
 1551:./CORE/core_cm4.h **** 
 1552:./CORE/core_cm4.h **** 
 1553:./CORE/core_cm4.h **** /** \brief  Disable External Interrupt
@@ -2038,9 +1957,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1584:./CORE/core_cm4.h **** 
 1585:./CORE/core_cm4.h ****     \param [in]      IRQn  Interrupt number. Value cannot be negative.
 1586:./CORE/core_cm4.h ****  */
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 35
-
-
 1587:./CORE/core_cm4.h **** __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
 1588:./CORE/core_cm4.h **** {
 1589:./CORE/core_cm4.h ****   NVIC->ISPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0
@@ -2062,6 +1978,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1605:./CORE/core_cm4.h **** /** \brief  Get Active Interrupt
 1606:./CORE/core_cm4.h **** 
 1607:./CORE/core_cm4.h ****     The function reads the active register in NVIC and returns the active bit.
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 34
+
+
 1608:./CORE/core_cm4.h **** 
 1609:./CORE/core_cm4.h ****     \param [in]      IRQn  Interrupt number.
 1610:./CORE/core_cm4.h **** 
@@ -2098,9 +2017,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1641:./CORE/core_cm4.h **** 
 1642:./CORE/core_cm4.h ****     The function reads the priority of an interrupt. The interrupt
 1643:./CORE/core_cm4.h ****     number can be positive to specify an external (device specific)
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 36
-
-
 1644:./CORE/core_cm4.h ****     interrupt, or negative to specify an internal (core) interrupt.
 1645:./CORE/core_cm4.h **** 
 1646:./CORE/core_cm4.h **** 
@@ -2122,6 +2038,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1662:./CORE/core_cm4.h **** 
 1663:./CORE/core_cm4.h **** /** \brief  Encode Priority
 1664:./CORE/core_cm4.h **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 35
+
+
 1665:./CORE/core_cm4.h ****     The function encodes the priority for an interrupt with the given priority group,
 1666:./CORE/core_cm4.h ****     preemptive priority value, and subpriority value.
 1667:./CORE/core_cm4.h ****     In case of a conflict between priority grouping and available
@@ -2158,9 +2077,6 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1698:./CORE/core_cm4.h ****     \param [in]         Priority   Priority value, which can be retrieved with the function \ref NV
 1699:./CORE/core_cm4.h ****     \param [in]     PriorityGroup  Used priority group.
 1700:./CORE/core_cm4.h ****     \param [out] pPreemptPriority  Preemptive priority value (starting from 0).
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 37
-
-
 1701:./CORE/core_cm4.h ****     \param [out]     pSubPriority  Subpriority value (starting from 0).
 1702:./CORE/core_cm4.h ****  */
 1703:./CORE/core_cm4.h **** __STATIC_INLINE void NVIC_DecodePriority (uint32_t Priority, uint32_t PriorityGroup, uint32_t* pPre
@@ -2182,6 +2098,9 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1719:./CORE/core_cm4.h ****     The function initiates a system reset request to reset the MCU.
 1720:./CORE/core_cm4.h ****  */
 1721:./CORE/core_cm4.h **** __STATIC_INLINE void NVIC_SystemReset(void)
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 36
+
+
 1722:./CORE/core_cm4.h **** {
 1723:./CORE/core_cm4.h ****   __DSB();                                                          /* Ensure all outstanding memor
 1724:./CORE/core_cm4.h ****                                                                        buffered write are completed
@@ -2218,406 +2137,267 @@ ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 1
 1755:./CORE/core_cm4.h ****     \note     When the variable <b>__Vendor_SysTickConfig</b> is set to 1, then the
 1756:./CORE/core_cm4.h ****     function <b>SysTick_Config</b> is not included. In this case, the file <b><i>device</i>.h</b>
 1757:./CORE/core_cm4.h ****     must contain a vendor-specific implementation of this function.
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 38
-
-
 1758:./CORE/core_cm4.h **** 
 1759:./CORE/core_cm4.h ****  */
 1760:./CORE/core_cm4.h **** __STATIC_INLINE uint32_t SysTick_Config(uint32_t ticks)
- 112              		.loc 2 1760 26 is_stmt 1 view .LVU15
- 113              	.LBB9:
+ 102              		.loc 2 1760 26 is_stmt 1 view .LVU15
+ 103              	.LBB9:
 1761:./CORE/core_cm4.h **** {
 1762:./CORE/core_cm4.h ****   if ((ticks - 1UL) > SysTick_LOAD_RELOAD_Msk) { return (1UL); }    /* Reload value impossible */
- 114              		.loc 2 1762 3 view .LVU16
- 115              		.loc 2 1762 14 is_stmt 0 view .LVU17
- 116 0014 013B     		subs	r3, r3, #1
- 117              	.LVL3:
- 118              		.loc 2 1762 6 view .LVU18
- 119 0016 B3F1807F 		cmp	r3, #16777216
- 120 001a 0AD2     		bcs	.L7
+ 104              		.loc 2 1762 3 view .LVU16
+ 105              		.loc 2 1762 14 is_stmt 0 view .LVU17
+ 106 0014 013B     		subs	r3, r3, #1
+ 107              	.LVL3:
+ 108              		.loc 2 1762 6 view .LVU18
+ 109 0016 B3F1807F 		cmp	r3, #16777216
+ 110 001a 0AD2     		bcs	.L7
 1763:./CORE/core_cm4.h **** 
 1764:./CORE/core_cm4.h ****   SysTick->LOAD  = (uint32_t)(ticks - 1UL);                         /* set reload register */
- 121              		.loc 2 1764 3 is_stmt 1 view .LVU19
- 122              		.loc 2 1764 18 is_stmt 0 view .LVU20
- 123 001c 4FF0E022 		mov	r2, #-536813568
- 124 0020 5361     		str	r3, [r2, #20]
+ 111              		.loc 2 1764 3 is_stmt 1 view .LVU19
+ 112              		.loc 2 1764 18 is_stmt 0 view .LVU20
+ 113 001c 4FF0E022 		mov	r2, #-536813568
+ 114 0020 5361     		str	r3, [r2, #20]
 1765:./CORE/core_cm4.h ****   NVIC_SetPriority (SysTick_IRQn, (1UL << __NVIC_PRIO_BITS) - 1UL); /* set Priority for Systick Int
- 125              		.loc 2 1765 3 is_stmt 1 view .LVU21
- 126              	.LVL4:
- 127              	.LBB10:
- 128              	.LBI10:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 37
+
+
+ 115              		.loc 2 1765 3 is_stmt 1 view .LVU21
+ 116              	.LVL4:
+ 117              	.LBB10:
+ 118              	.LBI10:
 1629:./CORE/core_cm4.h **** {
- 129              		.loc 2 1629 22 view .LVU22
- 130              	.LBB11:
+ 119              		.loc 2 1629 22 view .LVU22
+ 120              	.LBB11:
 1631:./CORE/core_cm4.h ****     SCB->SHP[(((uint32_t)(int32_t)IRQn) & 0xFUL)-4UL] = (uint8_t)((priority << (8 - __NVIC_PRIO_BIT
- 131              		.loc 2 1631 3 view .LVU23
+ 121              		.loc 2 1631 3 view .LVU23
 1632:./CORE/core_cm4.h ****   }
- 132              		.loc 2 1632 5 view .LVU24
+ 122              		.loc 2 1632 5 view .LVU24
 1632:./CORE/core_cm4.h ****   }
- 133              		.loc 2 1632 55 is_stmt 0 view .LVU25
- 134 0022 504B     		ldr	r3, .L10+8
- 135              	.LVL5:
+ 123              		.loc 2 1632 55 is_stmt 0 view .LVU25
+ 124 0022 1D4B     		ldr	r3, .L9+8
+ 125              	.LVL5:
 1632:./CORE/core_cm4.h ****   }
- 136              		.loc 2 1632 55 view .LVU26
- 137 0024 F021     		movs	r1, #240
- 138 0026 83F82310 		strb	r1, [r3, #35]
- 139              	.LVL6:
+ 126              		.loc 2 1632 55 view .LVU26
+ 127 0024 F021     		movs	r1, #240
+ 128 0026 83F82310 		strb	r1, [r3, #35]
+ 129              	.LVL6:
 1632:./CORE/core_cm4.h ****   }
- 140              		.loc 2 1632 55 view .LVU27
- 141              	.LBE11:
- 142              	.LBE10:
+ 130              		.loc 2 1632 55 view .LVU27
+ 131              	.LBE11:
+ 132              	.LBE10:
 1766:./CORE/core_cm4.h ****   SysTick->VAL   = 0UL;                                             /* Load the SysTick Counter Val
- 143              		.loc 2 1766 3 is_stmt 1 view .LVU28
- 144              		.loc 2 1766 18 is_stmt 0 view .LVU29
- 145 002a 0023     		movs	r3, #0
- 146 002c 9361     		str	r3, [r2, #24]
+ 133              		.loc 2 1766 3 is_stmt 1 view .LVU28
+ 134              		.loc 2 1766 18 is_stmt 0 view .LVU29
+ 135 002a 0023     		movs	r3, #0
+ 136 002c 9361     		str	r3, [r2, #24]
 1767:./CORE/core_cm4.h ****   SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk |
- 147              		.loc 2 1767 3 is_stmt 1 view .LVU30
- 148              		.loc 2 1767 18 is_stmt 0 view .LVU31
- 149 002e 0723     		movs	r3, #7
- 150 0030 1361     		str	r3, [r2, #16]
+ 137              		.loc 2 1767 3 is_stmt 1 view .LVU30
+ 138              		.loc 2 1767 18 is_stmt 0 view .LVU31
+ 139 002e 0723     		movs	r3, #7
+ 140 0030 1361     		str	r3, [r2, #16]
 1768:./CORE/core_cm4.h ****                    SysTick_CTRL_TICKINT_Msk   |
 1769:./CORE/core_cm4.h ****                    SysTick_CTRL_ENABLE_Msk;                         /* Enable SysTick IRQ and SysTi
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 39
-
-
 1770:./CORE/core_cm4.h ****   return (0UL);                                                     /* Function successful */
- 151              		.loc 2 1770 3 is_stmt 1 view .LVU32
- 152              	.L7:
- 153              	.LVL7:
- 154              		.loc 2 1770 3 is_stmt 0 view .LVU33
- 155              	.LBE9:
- 156              	.LBE8:
+ 141              		.loc 2 1770 3 is_stmt 1 view .LVU32
+ 142              	.L7:
+ 143              	.LVL7:
+ 144              		.loc 2 1770 3 is_stmt 0 view .LVU33
+ 145              	.LBE9:
+ 146              	.LBE8:
   67:./User/main.c ****   
- 157              		.loc 1 67 3 is_stmt 1 view .LVU34
- 158 0032 0520     		movs	r0, #5
- 159 0034 FFF7FEFF 		bl	Delay
- 160              	.LVL8:
+ 147              		.loc 1 67 3 is_stmt 1 view .LVU34
+ 148 0032 0520     		movs	r0, #5
+ 149 0034 FFF7FEFF 		bl	Delay
+ 150              	.LVL8:
   75:./User/main.c **** 	GY86_init();
- 161              		.loc 1 75 2 view .LVU35
- 162 0038 FFF7FEFF 		bl	LD2_init
- 163              	.LVL9:
+ 151              		.loc 1 75 2 view .LVU35
+ 152 0038 FFF7FEFF 		bl	LD2_init
+ 153              	.LVL9:
   76:./User/main.c **** 	OLED_Init();
- 164              		.loc 1 76 2 view .LVU36
- 165 003c FFF7FEFF 		bl	GY86_init
- 166              	.LVL10:
+ 154              		.loc 1 76 2 view .LVU36
+ 155 003c FFF7FEFF 		bl	GY86_init
+ 156              	.LVL10:
   77:./User/main.c **** 	OLED2_Init();
- 167              		.loc 1 77 2 view .LVU37
- 168 0040 FFF7FEFF 		bl	OLED_Init
- 169              	.LVL11:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 38
+
+
+ 157              		.loc 1 77 2 view .LVU37
+ 158 0040 FFF7FEFF 		bl	OLED_Init
+ 159              	.LVL11:
   78:./User/main.c **** 	BLE_Init();
- 170              		.loc 1 78 2 view .LVU38
- 171 0044 FFF7FEFF 		bl	OLED2_Init
- 172              	.LVL12:
+ 160              		.loc 1 78 2 view .LVU38
+ 161 0044 FFF7FEFF 		bl	OLED2_Init
+ 162              	.LVL12:
   79:./User/main.c **** 	REC_Init2();
- 173              		.loc 1 79 2 view .LVU39
- 174 0048 FFF7FEFF 		bl	BLE_Init
- 175              	.LVL13:
-  80:./User/main.c **** 	
- 176              		.loc 1 80 2 view .LVU40
- 177 004c FFF7FEFF 		bl	REC_Init2
- 178              	.LVL14:
- 149:./User/main.c **** 	LD2_ON();
- 179              		.loc 1 149 2 view .LVU41
- 180 0050 FFF7FEFF 		bl	Motor_Init
- 181              	.LVL15:
- 150:./User/main.c **** 	while(1)
- 182              		.loc 1 150 2 view .LVU42
- 183 0054 FFF7FEFF 		bl	LD2_ON
- 184              	.LVL16:
- 185              	.L8:
- 151:./User/main.c **** 	{
- 186              		.loc 1 151 2 discriminator 1 view .LVU43
- 153:./User/main.c **** 		OLED_ShowSignedNum(1,1,GY86DataList.AX,5);
- 187              		.loc 1 153 3 discriminator 1 view .LVU44
- 188 0058 FFF7FEFF 		bl	GY86_GetData
- 189              	.LVL17:
- 154:./User/main.c **** 		OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
- 190              		.loc 1 154 3 discriminator 1 view .LVU45
- 154:./User/main.c **** 		OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
- 191              		.loc 1 154 38 is_stmt 0 discriminator 1 view .LVU46
- 192 005c 424C     		ldr	r4, .L10+12
- 154:./User/main.c **** 		OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 40
+ 163              		.loc 1 79 2 view .LVU39
+ 164 0048 FFF7FEFF 		bl	BLE_Init
+ 165              	.LVL13:
+  80:./User/main.c **** 	Motor_Init();
+ 166              		.loc 1 80 2 view .LVU40
+ 167 004c FFF7FEFF 		bl	REC_Init2
+ 168              	.LVL14:
+  81:./User/main.c **** 	LD2_ON();
+ 169              		.loc 1 81 2 view .LVU41
+ 170 0050 FFF7FEFF 		bl	Motor_Init
+ 171              	.LVL15:
+  82:./User/main.c ****   LoadParameters();
+ 172              		.loc 1 82 2 view .LVU42
+ 173 0054 FFF7FEFF 		bl	LD2_ON
+ 174              	.LVL16:
+  83:./User/main.c **** 	// while(1)
+ 175              		.loc 1 83 3 view .LVU43
+ 176 0058 FFF7FEFF 		bl	LoadParameters
+ 177              	.LVL17:
+  87:./User/main.c **** 		// OLED_ShowSignedNum(1,1,GY86DataList.AX,5);
+ 178              		.loc 1 87 5 view .LVU44
+ 179 005c 0F4C     		ldr	r4, .L9+12
+ 180 005e 0623     		movs	r3, #6
+ 181 0060 2268     		ldr	r2, [r4]
+ 182 0062 0121     		movs	r1, #1
+ 183 0064 0846     		mov	r0, r1
+ 184 0066 FFF7FEFF 		bl	OLED_ShowSignedNum
+ 185              	.LVL18:
+  98:./User/main.c ****     params_ram.test = 19198;
+ 186              		.loc 1 98 3 view .LVU45
+ 187 006a 0320     		movs	r0, #3
+ 188 006c 0021     		movs	r1, #0
+ 189 006e FFF7FEFF 		bl	Delay_s
+ 190              	.LVL19:
+  99:./User/main.c ****     StoreParameters();
+ 191              		.loc 1 99 5 view .LVU46
+  99:./User/main.c ****     StoreParameters();
+ 192              		.loc 1 99 21 is_stmt 0 view .LVU47
+ 193 0072 44F6FE23 		movw	r3, #19198
+ 194 0076 2360     		str	r3, [r4]
+ 100:./User/main.c ****     LoadParameters();
+ 195              		.loc 1 100 5 is_stmt 1 view .LVU48
+ 196 0078 FFF7FEFF 		bl	StoreParameters
+ 197              	.LVL20:
+ 101:./User/main.c ****     OLED_ShowSignedNum(1,1,params_ram.test,6);
+ 198              		.loc 1 101 5 view .LVU49
+ 199 007c FFF7FEFF 		bl	LoadParameters
+ 200              	.LVL21:
+ 102:./User/main.c **** 		// OLED2_ShowNum(1,1,CH2[1],5);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 39
 
 
- 193              		.loc 1 154 3 discriminator 1 view .LVU47
- 194 005e 0523     		movs	r3, #5
- 195 0060 B4F90020 		ldrsh	r2, [r4]
- 196 0064 0121     		movs	r1, #1
- 197 0066 0846     		mov	r0, r1
- 198 0068 FFF7FEFF 		bl	OLED_ShowSignedNum
- 199              	.LVL18:
- 155:./User/main.c **** 		OLED_ShowSignedNum(3,1,GY86DataList.AZ,5);
- 200              		.loc 1 155 3 is_stmt 1 discriminator 1 view .LVU48
- 201 006c 0523     		movs	r3, #5
- 202 006e B4F90220 		ldrsh	r2, [r4, #2]
- 203 0072 0121     		movs	r1, #1
- 204 0074 0220     		movs	r0, #2
- 205 0076 FFF7FEFF 		bl	OLED_ShowSignedNum
- 206              	.LVL19:
- 156:./User/main.c **** 		OLED_ShowSignedNum(1,8,GY86DataList.GX,5);
- 207              		.loc 1 156 3 discriminator 1 view .LVU49
- 208 007a 0523     		movs	r3, #5
- 209 007c B4F90420 		ldrsh	r2, [r4, #4]
- 210 0080 0121     		movs	r1, #1
- 211 0082 0320     		movs	r0, #3
- 212 0084 FFF7FEFF 		bl	OLED_ShowSignedNum
- 213              	.LVL20:
- 157:./User/main.c **** 		OLED_ShowSignedNum(2,8,GY86DataList.GY,5);
- 214              		.loc 1 157 3 discriminator 1 view .LVU50
- 215 0088 0523     		movs	r3, #5
- 216 008a B4F90820 		ldrsh	r2, [r4, #8]
- 217 008e 0821     		movs	r1, #8
- 218 0090 0120     		movs	r0, #1
- 219 0092 FFF7FEFF 		bl	OLED_ShowSignedNum
- 220              	.LVL21:
- 158:./User/main.c **** 		OLED_ShowSignedNum(3,8,GY86DataList.GZ,5);
- 221              		.loc 1 158 3 discriminator 1 view .LVU51
- 222 0096 0523     		movs	r3, #5
- 223 0098 B4F90A20 		ldrsh	r2, [r4, #10]
- 224 009c 0821     		movs	r1, #8
- 225 009e 0220     		movs	r0, #2
- 226 00a0 FFF7FEFF 		bl	OLED_ShowSignedNum
- 227              	.LVL22:
- 159:./User/main.c **** 		
- 228              		.loc 1 159 3 discriminator 1 view .LVU52
- 229 00a4 0523     		movs	r3, #5
- 230 00a6 B4F90C20 		ldrsh	r2, [r4, #12]
- 231 00aa 0821     		movs	r1, #8
- 232 00ac 0320     		movs	r0, #3
- 233 00ae FFF7FEFF 		bl	OLED_ShowSignedNum
- 234              	.LVL23:
- 161:./User/main.c **** 		OLED_ShowSignedNum(4,8,GY86DataList.GaY,5);
- 235              		.loc 1 161 3 discriminator 1 view .LVU53
- 236 00b2 0523     		movs	r3, #5
- 237 00b4 B4F90E20 		ldrsh	r2, [r4, #14]
- 238 00b8 0121     		movs	r1, #1
- 239 00ba 0420     		movs	r0, #4
- 240 00bc FFF7FEFF 		bl	OLED_ShowSignedNum
- 241              	.LVL24:
- 162:./User/main.c **** 		
- 242              		.loc 1 162 3 discriminator 1 view .LVU54
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 41
+ 201              		.loc 1 102 5 view .LVU50
+ 202 0080 0623     		movs	r3, #6
+ 203 0082 2268     		ldr	r2, [r4]
+ 204 0084 0121     		movs	r1, #1
+ 205 0086 0846     		mov	r0, r1
+ 206 0088 FFF7FEFF 		bl	OLED_ShowSignedNum
+ 207              	.LVL22:
+ 130:./User/main.c **** 
+ 208              		.loc 1 130 1 is_stmt 0 view .LVU51
+ 209 008c 0020     		movs	r0, #0
+ 210 008e 10BD     		pop	{r4, pc}
+ 211              	.L10:
+ 212              		.align	2
+ 213              	.L9:
+ 214 0090 00000000 		.word	.LANCHOR1
+ 215 0094 1F85EB51 		.word	1374389535
+ 216 0098 00ED00E0 		.word	-536810240
+ 217 009c 00000000 		.word	params_ram
+ 218              		.cfi_endproc
+ 219              	.LFE126:
+ 221              		.section	.text.TimingDelay_Decrement,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	TimingDelay_Decrement
+ 224              		.syntax unified
+ 225              		.thumb
+ 226              		.thumb_func
+ 228              	TimingDelay_Decrement:
+ 229              	.LFB128:
+ 172:./User/main.c **** 
+ 173:./User/main.c **** /**
+ 174:./User/main.c ****   * @brief  Decrements the TimingDelay variable.
+ 175:./User/main.c ****   * @param  None
+ 176:./User/main.c ****   * @retval None
+ 177:./User/main.c ****   */
+ 178:./User/main.c **** void TimingDelay_Decrement(void)
+ 179:./User/main.c **** {
+ 230              		.loc 1 179 1 is_stmt 1 view -0
+ 231              		.cfi_startproc
+ 232              		@ args = 0, pretend = 0, frame = 0
+ 233              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234              		@ link register save eliminated.
+ 180:./User/main.c ****   if (uwTimingDelay != 0x00)
+ 235              		.loc 1 180 3 view .LVU53
+ 236              		.loc 1 180 21 is_stmt 0 view .LVU54
+ 237 0000 034B     		ldr	r3, .L13
+ 238 0002 1B68     		ldr	r3, [r3]
+ 239              		.loc 1 180 6 view .LVU55
+ 240 0004 1BB1     		cbz	r3, .L11
+ 181:./User/main.c ****   { 
+ 182:./User/main.c ****     uwTimingDelay--;
+ 241              		.loc 1 182 5 is_stmt 1 view .LVU56
+ 242              		.loc 1 182 18 is_stmt 0 view .LVU57
+ 243 0006 024A     		ldr	r2, .L13
+ 244 0008 1368     		ldr	r3, [r2]
+ 245 000a 013B     		subs	r3, r3, #1
+ 246 000c 1360     		str	r3, [r2]
+ 247              	.L11:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 40
 
 
- 243 00c0 0523     		movs	r3, #5
- 244 00c2 B4F91020 		ldrsh	r2, [r4, #16]
- 245 00c6 0821     		movs	r1, #8
- 246 00c8 0420     		movs	r0, #4
- 247 00ca FFF7FEFF 		bl	OLED_ShowSignedNum
- 248              	.LVL25:
- 164:./User/main.c **** 		
- 249              		.loc 1 164 3 discriminator 1 view .LVU55
- 250 00ce 274A     		ldr	r2, .L10+16
- 251 00d0 0121     		movs	r1, #1
- 252 00d2 0846     		mov	r0, r1
- 253 00d4 FFF7FEFF 		bl	OLED2_ShowString
- 254              	.LVL26:
- 166:./User/main.c **** 		OLED2_ShowNum(2,8,CH2[2],5);
- 255              		.loc 1 166 3 discriminator 1 view .LVU56
- 166:./User/main.c **** 		OLED2_ShowNum(2,8,CH2[2],5);
- 256              		.loc 1 166 24 is_stmt 0 discriminator 1 view .LVU57
- 257 00d8 254D     		ldr	r5, .L10+20
- 166:./User/main.c **** 		OLED2_ShowNum(2,8,CH2[2],5);
- 258              		.loc 1 166 3 discriminator 1 view .LVU58
- 259 00da 0523     		movs	r3, #5
- 260 00dc 6A88     		ldrh	r2, [r5, #2]
- 261 00de 0121     		movs	r1, #1
- 262 00e0 0220     		movs	r0, #2
- 263 00e2 FFF7FEFF 		bl	OLED2_ShowNum
- 264              	.LVL27:
- 167:./User/main.c **** 		
- 265              		.loc 1 167 3 is_stmt 1 discriminator 1 view .LVU59
- 266 00e6 0523     		movs	r3, #5
- 267 00e8 AA88     		ldrh	r2, [r5, #4]
- 268 00ea 0821     		movs	r1, #8
- 269 00ec 0220     		movs	r0, #2
- 270 00ee FFF7FEFF 		bl	OLED2_ShowNum
- 271              	.LVL28:
- 169:./User/main.c **** 		OLED2_ShowNum(3,8,CH2[4],5);
- 272              		.loc 1 169 3 discriminator 1 view .LVU60
- 273 00f2 0523     		movs	r3, #5
- 274 00f4 EA88     		ldrh	r2, [r5, #6]
- 275 00f6 0121     		movs	r1, #1
- 276 00f8 0320     		movs	r0, #3
- 277 00fa FFF7FEFF 		bl	OLED2_ShowNum
- 278              	.LVL29:
- 170:./User/main.c **** 		
- 279              		.loc 1 170 3 discriminator 1 view .LVU61
- 280 00fe 0523     		movs	r3, #5
- 281 0100 2A89     		ldrh	r2, [r5, #8]
- 282 0102 0821     		movs	r1, #8
- 283 0104 0320     		movs	r0, #3
- 284 0106 FFF7FEFF 		bl	OLED2_ShowNum
- 285              	.LVL30:
- 172:./User/main.c **** 		OLED2_ShowNum(4,8,CH2[6],5);
- 286              		.loc 1 172 3 discriminator 1 view .LVU62
- 287 010a 0523     		movs	r3, #5
- 288 010c 6A89     		ldrh	r2, [r5, #10]
- 289 010e 0121     		movs	r1, #1
- 290 0110 0420     		movs	r0, #4
- 291 0112 FFF7FEFF 		bl	OLED2_ShowNum
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 42
-
-
- 292              	.LVL31:
- 173:./User/main.c **** 		
- 293              		.loc 1 173 3 discriminator 1 view .LVU63
- 294 0116 0523     		movs	r3, #5
- 295 0118 AA89     		ldrh	r2, [r5, #12]
- 296 011a 0821     		movs	r1, #8
- 297 011c 0420     		movs	r0, #4
- 298 011e FFF7FEFF 		bl	OLED2_ShowNum
- 299              	.LVL32:
- 175:./User/main.c **** 		BLE_Printf("G:%d-%d-%d\n",GY86DataList.GX,GY86DataList.GY,GY86DataList.GZ);
- 300              		.loc 1 175 3 discriminator 1 view .LVU64
- 301 0122 B4F90430 		ldrsh	r3, [r4, #4]
- 302 0126 B4F90220 		ldrsh	r2, [r4, #2]
- 303 012a B4F90010 		ldrsh	r1, [r4]
- 304 012e 1148     		ldr	r0, .L10+24
- 305 0130 FFF7FEFF 		bl	BLE_Printf
- 306              	.LVL33:
- 176:./User/main.c **** 
- 307              		.loc 1 176 3 discriminator 1 view .LVU65
- 308 0134 B4F90C30 		ldrsh	r3, [r4, #12]
- 309 0138 B4F90A20 		ldrsh	r2, [r4, #10]
- 310 013c B4F90810 		ldrsh	r1, [r4, #8]
- 311 0140 0D48     		ldr	r0, .L10+28
- 312 0142 FFF7FEFF 		bl	BLE_Printf
- 313              	.LVL34:
- 183:./User/main.c **** 		
- 314              		.loc 1 183 3 discriminator 1 view .LVU66
- 183:./User/main.c **** 		
- 315              		.loc 1 183 26 is_stmt 0 discriminator 1 view .LVU67
- 316 0146 E888     		ldrh	r0, [r5, #6]
- 183:./User/main.c **** 		
- 317              		.loc 1 183 33 discriminator 1 view .LVU68
- 318 0148 0C4B     		ldr	r3, .L10+32
- 319 014a A3FB0030 		umull	r3, r0, r3, r0
- 320 014e C008     		lsrs	r0, r0, #3
- 321 0150 6438     		subs	r0, r0, #100
- 183:./User/main.c **** 		
- 322              		.loc 1 183 3 discriminator 1 view .LVU69
- 323 0152 40B2     		sxtb	r0, r0
- 324 0154 FFF7FEFF 		bl	Motor_SetSpeed_All
- 325              	.LVL35:
- 151:./User/main.c **** 	{
- 326              		.loc 1 151 7 is_stmt 1 discriminator 1 view .LVU70
- 327 0158 7EE7     		b	.L8
- 328              	.L11:
- 329 015a 00BF     		.align	2
- 330              	.L10:
- 331 015c 00000000 		.word	.LANCHOR1
- 332 0160 1F85EB51 		.word	1374389535
- 333 0164 00ED00E0 		.word	-536810240
- 334 0168 00000000 		.word	GY86DataList
- 335 016c 00000000 		.word	.LC0
- 336 0170 00000000 		.word	CH2
- 337 0174 10000000 		.word	.LC1
- 338 0178 20000000 		.word	.LC2
- 339 017c CDCCCCCC 		.word	-858993459
- 340              		.cfi_endproc
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 43
-
-
- 341              	.LFE126:
- 343              		.section	.text.TimingDelay_Decrement,"ax",%progbits
- 344              		.align	1
- 345              		.global	TimingDelay_Decrement
- 346              		.syntax unified
- 347              		.thumb
- 348              		.thumb_func
- 350              	TimingDelay_Decrement:
- 351              	.LFB128:
- 232:./User/main.c **** 
- 233:./User/main.c **** /**
- 234:./User/main.c ****   * @brief  Decrements the TimingDelay variable.
- 235:./User/main.c ****   * @param  None
- 236:./User/main.c ****   * @retval None
- 237:./User/main.c ****   */
- 238:./User/main.c **** void TimingDelay_Decrement(void)
- 239:./User/main.c **** {
- 352              		.loc 1 239 1 view -0
- 353              		.cfi_startproc
- 354              		@ args = 0, pretend = 0, frame = 0
- 355              		@ frame_needed = 0, uses_anonymous_args = 0
- 356              		@ link register save eliminated.
- 240:./User/main.c ****   if (uwTimingDelay != 0x00)
- 357              		.loc 1 240 3 view .LVU72
- 358              		.loc 1 240 21 is_stmt 0 view .LVU73
- 359 0000 034B     		ldr	r3, .L14
- 360 0002 1B68     		ldr	r3, [r3]
- 361              		.loc 1 240 6 view .LVU74
- 362 0004 1BB1     		cbz	r3, .L12
- 241:./User/main.c ****   { 
- 242:./User/main.c ****     uwTimingDelay--;
- 363              		.loc 1 242 5 is_stmt 1 view .LVU75
- 364              		.loc 1 242 18 is_stmt 0 view .LVU76
- 365 0006 024A     		ldr	r2, .L14
- 366 0008 1368     		ldr	r3, [r2]
- 367 000a 013B     		subs	r3, r3, #1
- 368 000c 1360     		str	r3, [r2]
- 369              	.L12:
- 243:./User/main.c ****   }
- 244:./User/main.c **** }
- 370              		.loc 1 244 1 view .LVU77
- 371 000e 7047     		bx	lr
- 372              	.L15:
- 373              		.align	2
- 374              	.L14:
- 375 0010 00000000 		.word	.LANCHOR0
- 376              		.cfi_endproc
- 377              	.LFE128:
- 379              		.global	RCC_Clocks
- 380              		.section	.bss.RCC_Clocks,"aw",%nobits
- 381              		.align	2
- 382              		.set	.LANCHOR1,. + 0
- 385              	RCC_Clocks:
- 386 0000 00000000 		.space	16
- 386      00000000 
- 386      00000000 
- 386      00000000 
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 44
-
-
- 387              		.section	.bss.uwTimingDelay,"aw",%nobits
- 388              		.align	2
- 389              		.set	.LANCHOR0,. + 0
- 392              	uwTimingDelay:
- 393 0000 00000000 		.space	4
- 394              		.text
- 395              	.Letext0:
- 396              		.file 3 "./CORE/stm32f4xx.h"
- 397              		.file 4 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
- 398              		.file 5 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
- 399              		.file 6 "./Library/stm32f4xx_rcc.h"
- 400              		.file 7 "./Hardware/GY86.h"
- 401              		.file 8 "./Hardware/LD2.h"
- 402              		.file 9 "./Hardware/OLED.h"
- 403              		.file 10 "./Hardware/OLED2.h"
- 404              		.file 11 "./Hardware/ATKBLE01.h"
- 405              		.file 12 "./Hardware/Receiver.h"
- 406              		.file 13 "./Hardware/PWM.h"
-ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s 			page 45
+ 183:./User/main.c ****   }
+ 184:./User/main.c **** }
+ 248              		.loc 1 184 1 view .LVU58
+ 249 000e 7047     		bx	lr
+ 250              	.L14:
+ 251              		.align	2
+ 252              	.L13:
+ 253 0010 00000000 		.word	.LANCHOR0
+ 254              		.cfi_endproc
+ 255              	.LFE128:
+ 257              		.global	RCC_Clocks
+ 258              		.section	.bss.RCC_Clocks,"aw",%nobits
+ 259              		.align	2
+ 260              		.set	.LANCHOR1,. + 0
+ 263              	RCC_Clocks:
+ 264 0000 00000000 		.space	16
+ 264      00000000 
+ 264      00000000 
+ 264      00000000 
+ 265              		.section	.bss.uwTimingDelay,"aw",%nobits
+ 266              		.align	2
+ 267              		.set	.LANCHOR0,. + 0
+ 270              	uwTimingDelay:
+ 271 0000 00000000 		.space	4
+ 272              		.text
+ 273              	.Letext0:
+ 274              		.file 3 "./CORE/stm32f4xx.h"
+ 275              		.file 4 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 276              		.file 5 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 277              		.file 6 "./Library/stm32f4xx_rcc.h"
+ 278              		.file 7 "./User/Parameters.h"
+ 279              		.file 8 "./Hardware/LD2.h"
+ 280              		.file 9 "./Hardware/GY86.h"
+ 281              		.file 10 "./Hardware/OLED.h"
+ 282              		.file 11 "./Hardware/OLED2.h"
+ 283              		.file 12 "./Hardware/ATKBLE01.h"
+ 284              		.file 13 "./Hardware/Receiver.h"
+ 285              		.file 14 "./Hardware/PWM.h"
+ 286              		.file 15 "./User/Delay.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s 			page 41
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:20     .text.Delay:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:25     .text.Delay:0000000000000000 Delay
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:63     .text.Delay:0000000000000018 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:68     .rodata.main.str1.4:0000000000000000 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:78     .text.main:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:84     .text.main:0000000000000000 main
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:331    .text.main:000000000000015c $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:344    .text.TimingDelay_Decrement:0000000000000000 $t
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:350    .text.TimingDelay_Decrement:0000000000000000 TimingDelay_Decrement
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:375    .text.TimingDelay_Decrement:0000000000000010 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:385    .bss.RCC_Clocks:0000000000000000 RCC_Clocks
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:381    .bss.RCC_Clocks:0000000000000000 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:388    .bss.uwTimingDelay:0000000000000000 $d
-/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccfFj4cm.s:392    .bss.uwTimingDelay:0000000000000000 uwTimingDelay
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:20     .text.Delay:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:26     .text.Delay:0000000000000000 Delay
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:64     .text.Delay:0000000000000018 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:69     .text.main:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:75     .text.main:0000000000000000 main
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:214    .text.main:0000000000000090 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:222    .text.TimingDelay_Decrement:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:228    .text.TimingDelay_Decrement:0000000000000000 TimingDelay_Decrement
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:253    .text.TimingDelay_Decrement:0000000000000010 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:263    .bss.RCC_Clocks:0000000000000000 RCC_Clocks
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:259    .bss.RCC_Clocks:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:266    .bss.uwTimingDelay:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccMvptYQ.s:270    .bss.uwTimingDelay:0000000000000000 uwTimingDelay
 
 UNDEFINED SYMBOLS
 RCC_GetClocksFreq
@@ -2629,11 +2409,8 @@ BLE_Init
 REC_Init2
 Motor_Init
 LD2_ON
-GY86_GetData
+LoadParameters
 OLED_ShowSignedNum
-OLED2_ShowString
-OLED2_ShowNum
-BLE_Printf
-Motor_SetSpeed_All
-GY86DataList
-CH2
+Delay_s
+StoreParameters
+params_ram
