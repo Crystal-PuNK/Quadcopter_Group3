@@ -12,7 +12,7 @@ void OLED2_ShowNum(uint8_t Line, uint8_t Column, uint32_t Number, uint8_t Length
 void OLED2_ShowSignedNum(uint8_t Line, uint8_t Column, int32_t Number, uint8_t Length);
 void OLED2_ShowHexNum(uint8_t Line, uint8_t Column, uint32_t Number, uint8_t Length);
 void OLED2_ShowBinNum(uint8_t Line, uint8_t Column, uint32_t Number, uint8_t Length);
-
+void OLED2_ShowFNum(uint8_t Line, uint8_t Column, float Number, uint8_t Length,uint8_t Flength);
 #endif
 
 

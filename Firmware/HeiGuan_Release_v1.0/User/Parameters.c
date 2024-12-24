@@ -1,14 +1,20 @@
 #include "Parameters.h"
-#include <stm32f4xx_flash.h>
-#include <string.h>
+
 // 定义参数列表（位于 Flash 的 .param_section 段中）
 __attribute__((section(".param_section"))) const FlightParams flight_params = {
     .test = 114514,
-    .accel_offset = {0.0f, 0.0f, 0.0f},
-    .gyro_offset = {0.0f, 0.0f, 0.0f},
+    .accel_offset = {0.02f, -0.01f, 0.0f,},
+    .accel_scale = {1.0f,1.003f,1.0f,},
+    .gyro_offset = {0.05f, 0.01f, 0.017f,},
+    .gyro_scale = {1.0f,1.0f,1.0f,},
+    .mag_offset = {0.0f,0.0f,0.0f,},
+    .mag_scale = {1.0f,1.0f,1.0f,},
     .kp = 1.0f,
     .ki = 0.5f,
     .kd = 1.0f,
+    .rollOffset = {0.0f},
+    .pitchOffset = {0.0f},
+    
     // .checksum = 0xDEADBEEF  // 示例校验值
 };
 

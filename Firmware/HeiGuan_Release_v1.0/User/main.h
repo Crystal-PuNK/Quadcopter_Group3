@@ -24,6 +24,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
+#include <math.h>
 #include "Delay.h"
 #include "GY86.h"
 #include "LD2.h"
@@ -33,7 +34,10 @@
 #include "PWM.h"
 #include "Receiver.h"
 #include "Parameters.h"
-
+#include "GuassNewton.h"
+#include "AHRS.h"
+#include "PID.h"
+#include "ANO.h"
 /* Exported types ------------------------------------------------------------*/
 
 /* Exported constants --------------------------------------------------------*/

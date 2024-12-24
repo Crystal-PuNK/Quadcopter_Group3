@@ -1,6 +1,6 @@
 build/stm32f4xx_rng.o: Library/stm32f4xx_rng.c Library/stm32f4xx_rng.h \
  CORE/stm32f4xx.h CORE/core_cm4.h CORE/core_cmInstr.h CORE/core_cmFunc.h \
- CORE/core_cmSimd.h CORE/system_stm32f4xx.h User/stm32f4xx_conf.h \
+ CORE/core_cmSimd.h CORE/system_stm32f4xx.h CORE/stm32f4xx_conf.h \
  Library/stm32f4xx_adc.h Library/stm32f4xx_crc.h \
  Library/stm32f4xx_dbgmcu.h Library/stm32f4xx_dma.h \
  Library/stm32f4xx_exti.h Library/stm32f4xx_flash.h \
@@ -17,7 +17,7 @@ CORE/core_cmInstr.h:
 CORE/core_cmFunc.h:
 CORE/core_cmSimd.h:
 CORE/system_stm32f4xx.h:
-User/stm32f4xx_conf.h:
+CORE/stm32f4xx_conf.h:
 Library/stm32f4xx_adc.h:
 Library/stm32f4xx_crc.h:
 Library/stm32f4xx_dbgmcu.h:

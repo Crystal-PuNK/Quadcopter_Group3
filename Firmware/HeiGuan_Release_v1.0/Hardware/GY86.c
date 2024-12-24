@@ -41,10 +41,10 @@
 
 #define HMC5883L_GA_XOUT_H             0x03
 #define HMC5883L_GA_XOUT_L             0x04
-#define HMC5883L_GA_YOUT_H             0x05
-#define HMC5883L_GA_YOUT_L             0x06
-#define HMC5883L_GA_ZOUT_H             0x07
-#define HMC5883L_GA_ZOUT_L             0x08
+#define HMC5883L_GA_ZOUT_H             0x05
+#define HMC5883L_GA_ZOUT_L             0x06
+#define HMC5883L_GA_YOUT_H             0x07
+#define HMC5883L_GA_YOUT_L             0x08
 #define HMC5883L_STATUS                0x09
 #define HMC5883L_IDENTIFY_A            0x0A
 #define HMC5883L_IDENTIFY_B            0x0B
@@ -81,6 +81,7 @@ uint8_t  GY86_ReadRegister(uint8_t GY86_DeviceAddress,uint8_t RegAddress);
 void     MS5611_SendCommand(uint8_t Command);
 uint32_t MS5611_ReadADC();
 uint16_t MS5611_ReadC_x(uint8_t MS5611_PROM_Cx_ADDRESS);
+static const float PI = 3.1415926535897932384626433f;
 
 void MS5611_GetTemperature(uint8_t MS5611_D2_OSR_xxxx);
 void MS5611_GetPressure(uint8_t MS5611_D1_OSR_xxxx);
@@ -88,9 +89,9 @@ void MS5611_GetPressure(uint8_t MS5611_D1_OSR_xxxx);
 
 /* Variables -------------------------------------------------------------------*/
 // Public
-struct GY86_Data GY86DataList={1,2,3,0,0,0,0,0,0,0,0};
+volatile GY86_Data GY86DataList={1,2,3,0,0,0,0,0,0,0,0};
 // Private
-struct GY86_Data* Original_Data_List = &GY86DataList;
+// struct GY86_Data* Original_Data_List = &GY86DataList;
 
 //Pressure sensitivity
 uint16_t SENS_T1 = 0;
@@ -142,10 +143,10 @@ void MPU6050_init(void)
 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_SMPLRT_DIV  ,0x09);
 	//�ⲿͬ���Լ���ͨ�˲�
 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_CONFIG      ,0x06);
-	//������ �Բⲻʹ�ܣ��������ѡ��
+	//������ �Բⲻʹ�ܣ��������ѡ�� ±2000º/s
 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_GYRO_CONFIG ,0x18);
-	//���ٶ� �Բⲻʹ�ܣ��������ѡ�񣬸�ͨ�˲���
-	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_ACCEL_CONFIG,0x18);
+	//���ٶ� �Բⲻʹ�ܣ��������ѡ�񣬸�ͨ�˲��� ±8g
+	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_ACCEL_CONFIG,0x10);
 	//ʹ��AUXIIC-BYPASS
 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_INT_PIN_CFG ,0x02);
 	//�ر�IICMASTERmode
@@ -186,50 +187,50 @@ void MS5611_init(void)
 
 void GY86_GetData(void)
 {
-	int16_t DataH,DataL;
+	uint16_t DataH,DataL;
 	
 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_XOUT_H);
 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_XOUT_L);
-	Original_Data_List->AX = ((DataH << 8) | DataL)/16;
+	GY86DataList.AX = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[0])*params_ram.accel_scale[0];
 	
 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_YOUT_H);
 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_YOUT_L);
-	Original_Data_List->AY = ((DataH << 8) | DataL)/16;
+	GY86DataList.AY = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[1])*params_ram.accel_scale[1];
 	
 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_ZOUT_H);
 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_ZOUT_L);
-	Original_Data_List->AZ = ((DataH << 8) | DataL)/16;
+	GY86DataList.AZ = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[2])*params_ram.accel_scale[2];
 	
 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_TEMP_OUT_H);
 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_TEMP_OUT_L);
-	Original_Data_List->CORE_Temperature = (DataH << 8) | DataL;
+	GY86DataList.CORE_Temperature = (DataH << 8) | DataL;
 	
 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_XOUT_H);
 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_XOUT_L);
-	Original_Data_List->GX = ((DataH << 8) | DataL)/2000;
+	GY86DataList.GX = (((int16_t)(DataH << 8) | DataL)/16.4f - params_ram.gyro_offset[0]) * params_ram.gyro_scale[0] * (PI / 180.0f);
 	
 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_YOUT_H);
 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_YOUT_L);
-	Original_Data_List->GY = ((DataH << 8) | DataL)/2000;
+	GY86DataList.GY = (((int16_t)(DataH << 8) | DataL)/16.4f - params_ram.gyro_offset[1]) * params_ram.gyro_scale[1] * (PI / 180.0f);
 	
 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_ZOUT_H);
 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_ZOUT_L);
-	Original_Data_List->GZ = ((DataH << 8) | DataL)/2000;
+	GY86DataList.GZ = (((int16_t)(DataH << 8) | DataL)/16.4f - params_ram.gyro_offset[2]) * params_ram.gyro_scale[2] * (PI / 180.0f);
 	
 	DataH = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_XOUT_H);
 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_XOUT_L);
-	Original_Data_List->GaX = (DataH << 8) | DataL;
+	GY86DataList.GaX = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[0]) * params_ram.mag_scale[0];
 	
 	DataH = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_YOUT_H);
 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_YOUT_L);
-	Original_Data_List->GaY = (DataH << 8) | DataL;
+	GY86DataList.GaY = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[1]) * params_ram.mag_scale[1];
 	
 	DataH = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_ZOUT_H);
 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_ZOUT_L);
-	Original_Data_List->GaZ = (DataH << 8) | DataL;
+	GY86DataList.GaZ = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[2]) * params_ram.mag_scale[2];
 	
 	MS5611_GetPressure(MS5611_D2_OSR_4096);
-	Original_Data_List->Height = P_100times;
+	GY86DataList.Height = P_100times;
 	
 
 }

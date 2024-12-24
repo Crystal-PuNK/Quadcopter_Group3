@@ -1,0 +1,1508 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"ANO.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text._write,"ax",%progbits
+  20              		.align	1
+  21              		.global	_write
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	_write:
+  27              	.LVL0:
+  28              	.LFB126:
+  29              		.file 1 "./User/ANO.c"
+   1:./User/ANO.c  **** #include"stm32f4xx.h"
+   2:./User/ANO.c  **** #include <stdio.h>
+   3:./User/ANO.c  **** #include <string.h>
+   4:./User/ANO.c  **** #include "AHRS.h"
+   5:./User/ANO.c  **** #include "PID.h"
+   6:./User/ANO.c  **** #include"stm32f4xx_usart.h"
+   7:./User/ANO.c  **** #include "GY86.h"
+   8:./User/ANO.c  **** 
+   9:./User/ANO.c  **** extern Angle angle;
+  10:./User/ANO.c  **** extern float height;
+  11:./User/ANO.c  **** extern volatile float q0, q1, q2, q3;
+  12:./User/ANO.c  **** extern PID_t rollInner, rollOuter, pitchInner, pitchOuter, yawInner, heightSingle;
+  13:./User/ANO.c  **** 
+  14:./User/ANO.c  **** int _write(int fd, char *pBuffer, int size) {
+  30              		.loc 1 14 45 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 14 45 is_stmt 0 view .LVU1
+  35 0000 70B5     		push	{r4, r5, r6, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 4, -16
+  39              		.cfi_offset 5, -12
+  40              		.cfi_offset 6, -8
+  41              		.cfi_offset 14, -4
+  42 0002 0E46     		mov	r6, r1
+  43 0004 1546     		mov	r5, r2
+  15:./User/ANO.c  ****     for (int i = 0; i < size; i++) {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 2
+
+
+  44              		.loc 1 15 5 is_stmt 1 view .LVU2
+  45              	.LBB2:
+  46              		.loc 1 15 10 view .LVU3
+  47              	.LVL1:
+  48              		.loc 1 15 14 is_stmt 0 view .LVU4
+  49 0006 0024     		movs	r4, #0
+  50              		.loc 1 15 5 view .LVU5
+  51 0008 0AE0     		b	.L2
+  52              	.LVL2:
+  53              	.L3:
+  16:./User/ANO.c  ****         while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET) {};
+  54              		.loc 1 16 70 is_stmt 1 discriminator 1 view .LVU6
+  55              		.loc 1 16 15 discriminator 1 view .LVU7
+  56              		.loc 1 16 16 is_stmt 0 discriminator 1 view .LVU8
+  57 000a 4021     		movs	r1, #64
+  58 000c 0648     		ldr	r0, .L5
+  59 000e FFF7FEFF 		bl	USART_GetFlagStatus
+  60              	.LVL3:
+  61              		.loc 1 16 15 discriminator 1 view .LVU9
+  62 0012 0028     		cmp	r0, #0
+  63 0014 F9D0     		beq	.L3
+  64              		.loc 1 16 71 is_stmt 1 discriminator 2 view .LVU10
+  17:./User/ANO.c  ****         USART_SendData(USART1, (u16)pBuffer[i]);
+  65              		.loc 1 17 9 discriminator 2 view .LVU11
+  66 0016 315D     		ldrb	r1, [r6, r4]	@ zero_extendqisi2
+  67 0018 0348     		ldr	r0, .L5
+  68 001a FFF7FEFF 		bl	USART_SendData
+  69              	.LVL4:
+  15:./User/ANO.c  ****     for (int i = 0; i < size; i++) {
+  70              		.loc 1 15 31 discriminator 2 view .LVU12
+  15:./User/ANO.c  ****     for (int i = 0; i < size; i++) {
+  71              		.loc 1 15 32 is_stmt 0 discriminator 2 view .LVU13
+  72 001e 0134     		adds	r4, r4, #1
+  73              	.LVL5:
+  74              	.L2:
+  15:./User/ANO.c  ****     for (int i = 0; i < size; i++) {
+  75              		.loc 1 15 21 is_stmt 1 discriminator 2 view .LVU14
+  15:./User/ANO.c  ****     for (int i = 0; i < size; i++) {
+  76              		.loc 1 15 5 is_stmt 0 discriminator 2 view .LVU15
+  77 0020 AC42     		cmp	r4, r5
+  78 0022 F2DB     		blt	.L3
+  79              	.LBE2:
+  18:./User/ANO.c  ****     }
+  19:./User/ANO.c  ****     return size;
+  80              		.loc 1 19 5 is_stmt 1 view .LVU16
+  20:./User/ANO.c  **** }
+  81              		.loc 1 20 1 is_stmt 0 view .LVU17
+  82 0024 2846     		mov	r0, r5
+  83 0026 70BD     		pop	{r4, r5, r6, pc}
+  84              	.LVL6:
+  85              	.L6:
+  86              		.loc 1 20 1 view .LVU18
+  87              		.align	2
+  88              	.L5:
+  89 0028 00100140 		.word	1073811456
+  90              		.cfi_endproc
+  91              	.LFE126:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 3
+
+
+  93              		.section	.text.addCheckSum,"ax",%progbits
+  94              		.align	1
+  95              		.global	addCheckSum
+  96              		.syntax unified
+  97              		.thumb
+  98              		.thumb_func
+ 100              	addCheckSum:
+ 101              	.LVL7:
+ 102              	.LFB127:
+  21:./User/ANO.c  **** 
+  22:./User/ANO.c  **** void addCheckSum(uint8_t *data) {
+ 103              		.loc 1 22 33 is_stmt 1 view -0
+ 104              		.cfi_startproc
+ 105              		@ args = 0, pretend = 0, frame = 0
+ 106              		@ frame_needed = 0, uses_anonymous_args = 0
+ 107              		.loc 1 22 33 is_stmt 0 view .LVU20
+ 108 0000 00B5     		push	{lr}
+ 109              	.LCFI1:
+ 110              		.cfi_def_cfa_offset 4
+ 111              		.cfi_offset 14, -4
+  23:./User/ANO.c  **** 	uint8_t sumCheck = 0;
+ 112              		.loc 1 23 2 is_stmt 1 view .LVU21
+ 113              	.LVL8:
+  24:./User/ANO.c  **** 	uint8_t addCheck = 0;
+ 114              		.loc 1 24 2 view .LVU22
+  25:./User/ANO.c  **** 	for (uint8_t i = 0; i < data[3] + 4; ++i) {
+ 115              		.loc 1 25 2 view .LVU23
+ 116              	.LBB3:
+ 117              		.loc 1 25 7 view .LVU24
+ 118              		.loc 1 25 15 is_stmt 0 view .LVU25
+ 119 0002 0023     		movs	r3, #0
+ 120              	.LBE3:
+  24:./User/ANO.c  **** 	uint8_t addCheck = 0;
+ 121              		.loc 1 24 10 view .LVU26
+ 122 0004 1946     		mov	r1, r3
+  23:./User/ANO.c  **** 	uint8_t sumCheck = 0;
+ 123              		.loc 1 23 10 view .LVU27
+ 124 0006 1A46     		mov	r2, r3
+ 125              	.LBB4:
+ 126              		.loc 1 25 2 view .LVU28
+ 127 0008 07E0     		b	.L8
+ 128              	.LVL9:
+ 129              	.L9:
+  26:./User/ANO.c  **** 		sumCheck += data[i];  	   // 从帧头开始，对每一字节进行求和，直到DATA区结束
+ 130              		.loc 1 26 3 is_stmt 1 discriminator 3 view .LVU29
+ 131              		.loc 1 26 19 is_stmt 0 discriminator 3 view .LVU30
+ 132 000a 10F803C0 		ldrb	ip, [r0, r3]	@ zero_extendqisi2
+ 133              		.loc 1 26 12 discriminator 3 view .LVU31
+ 134 000e 6244     		add	r2, r2, ip
+ 135              	.LVL10:
+ 136              		.loc 1 26 12 discriminator 3 view .LVU32
+ 137 0010 D2B2     		uxtb	r2, r2
+ 138              	.LVL11:
+  27:./User/ANO.c  **** 		addCheck += sumCheck;      // 每一字节的求和操作，进行一次sumcheck的累加
+ 139              		.loc 1 27 3 is_stmt 1 discriminator 3 view .LVU33
+ 140              		.loc 1 27 12 is_stmt 0 discriminator 3 view .LVU34
+ 141 0012 1144     		add	r1, r1, r2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 4
+
+
+ 142              	.LVL12:
+ 143              		.loc 1 27 12 discriminator 3 view .LVU35
+ 144 0014 C9B2     		uxtb	r1, r1
+ 145              	.LVL13:
+  25:./User/ANO.c  **** 	for (uint8_t i = 0; i < data[3] + 4; ++i) {
+ 146              		.loc 1 25 39 is_stmt 1 discriminator 3 view .LVU36
+ 147 0016 0133     		adds	r3, r3, #1
+ 148              	.LVL14:
+  25:./User/ANO.c  **** 	for (uint8_t i = 0; i < data[3] + 4; ++i) {
+ 149              		.loc 1 25 39 is_stmt 0 discriminator 3 view .LVU37
+ 150 0018 DBB2     		uxtb	r3, r3
+ 151              	.LVL15:
+ 152              	.L8:
+  25:./User/ANO.c  **** 	for (uint8_t i = 0; i < data[3] + 4; ++i) {
+ 153              		.loc 1 25 22 is_stmt 1 discriminator 1 view .LVU38
+  25:./User/ANO.c  **** 	for (uint8_t i = 0; i < data[3] + 4; ++i) {
+ 154              		.loc 1 25 30 is_stmt 0 discriminator 1 view .LVU39
+ 155 001a 90F803C0 		ldrb	ip, [r0, #3]	@ zero_extendqisi2
+  25:./User/ANO.c  **** 	for (uint8_t i = 0; i < data[3] + 4; ++i) {
+ 156              		.loc 1 25 24 discriminator 1 view .LVU40
+ 157 001e 0CF1030E 		add	lr, ip, #3
+  25:./User/ANO.c  **** 	for (uint8_t i = 0; i < data[3] + 4; ++i) {
+ 158              		.loc 1 25 2 discriminator 1 view .LVU41
+ 159 0022 9E45     		cmp	lr, r3
+ 160 0024 F1DA     		bge	.L9
+ 161              	.LBE4:
+  28:./User/ANO.c  **** 	}
+  29:./User/ANO.c  **** 	data[data[3] + 4] = sumCheck;  // 将 sumcheck 的值赋给帧尾的第一个字节
+ 162              		.loc 1 29 2 is_stmt 1 view .LVU42
+ 163              		.loc 1 29 6 is_stmt 0 view .LVU43
+ 164 0026 0CF1040C 		add	ip, ip, #4
+ 165              		.loc 1 29 20 view .LVU44
+ 166 002a 00F80C20 		strb	r2, [r0, ip]
+  30:./User/ANO.c  **** 	data[data[3] + 5] = addCheck;  // 将 addcheck 的值赋给帧尾的第二个字节
+ 167              		.loc 1 30 2 is_stmt 1 view .LVU45
+ 168              		.loc 1 30 11 is_stmt 0 view .LVU46
+ 169 002e C378     		ldrb	r3, [r0, #3]	@ zero_extendqisi2
+ 170              	.LVL16:
+ 171              		.loc 1 30 6 view .LVU47
+ 172 0030 0533     		adds	r3, r3, #5
+ 173              		.loc 1 30 20 view .LVU48
+ 174 0032 C154     		strb	r1, [r0, r3]
+  31:./User/ANO.c  **** }
+ 175              		.loc 1 31 1 view .LVU49
+ 176 0034 5DF804FB 		ldr	pc, [sp], #4
+ 177              		.cfi_endproc
+ 178              	.LFE127:
+ 180              		.section	.text.sendQuaternion,"ax",%progbits
+ 181              		.align	1
+ 182              		.global	sendQuaternion
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 187              	sendQuaternion:
+ 188              	.LFB128:
+  32:./User/ANO.c  **** 
+  33:./User/ANO.c  **** void sendQuaternion () {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 5
+
+
+ 189              		.loc 1 33 24 is_stmt 1 view -0
+ 190              		.cfi_startproc
+ 191              		@ args = 0, pretend = 0, frame = 16
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193 0000 10B5     		push	{r4, lr}
+ 194              	.LCFI2:
+ 195              		.cfi_def_cfa_offset 8
+ 196              		.cfi_offset 4, -8
+ 197              		.cfi_offset 14, -4
+ 198 0002 84B0     		sub	sp, sp, #16
+ 199              	.LCFI3:
+ 200              		.cfi_def_cfa_offset 24
+  34:./User/ANO.c  **** 	uint8_t data[15];
+ 201              		.loc 1 34 2 view .LVU51
+  35:./User/ANO.c  **** 	data[0] = 0xAA, data[1] = 0xFF, data[2] = 0x04;
+ 202              		.loc 1 35 2 view .LVU52
+ 203              		.loc 1 35 10 is_stmt 0 view .LVU53
+ 204 0004 AA23     		movs	r3, #170
+ 205 0006 8DF80030 		strb	r3, [sp]
+ 206              		.loc 1 35 26 view .LVU54
+ 207 000a FF23     		movs	r3, #255
+ 208 000c 8DF80130 		strb	r3, [sp, #1]
+ 209              		.loc 1 35 42 view .LVU55
+ 210 0010 0423     		movs	r3, #4
+ 211 0012 8DF80230 		strb	r3, [sp, #2]
+  36:./User/ANO.c  **** 	data[3] = 9; // 数据长度
+ 212              		.loc 1 36 2 is_stmt 1 view .LVU56
+ 213              		.loc 1 36 10 is_stmt 0 view .LVU57
+ 214 0016 0923     		movs	r3, #9
+ 215 0018 8DF80330 		strb	r3, [sp, #3]
+  37:./User/ANO.c  **** 	int16_t t = q0 * 10000;
+ 216              		.loc 1 37 2 is_stmt 1 view .LVU58
+ 217              		.loc 1 37 17 is_stmt 0 view .LVU59
+ 218 001c 1D4B     		ldr	r3, .L13
+ 219 001e 93ED007A 		vldr.32	s14, [r3]
+ 220 0022 DFED1D6A 		vldr.32	s13, .L13+4
+ 221 0026 27EE267A 		vmul.f32	s14, s14, s13
+ 222              		.loc 1 37 10 view .LVU60
+ 223 002a BDEEC77A 		vcvt.s32.f32	s14, s14
+ 224              	.LVL17:
+  38:./User/ANO.c  **** 	*((int16_t*)&data[4]) = t; 
+ 225              		.loc 1 38 2 is_stmt 1 view .LVU61
+ 226              		.loc 1 38 24 is_stmt 0 view .LVU62
+ 227 002e 17EE103A 		vmov	r3, s14	@ int
+ 228 0032 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  39:./User/ANO.c  **** 	t = q1 * 10000;
+ 229              		.loc 1 39 2 is_stmt 1 view .LVU63
+ 230              		.loc 1 39 9 is_stmt 0 view .LVU64
+ 231 0036 194B     		ldr	r3, .L13+8
+ 232 0038 93ED007A 		vldr.32	s14, [r3]
+ 233              	.LVL18:
+ 234              		.loc 1 39 9 view .LVU65
+ 235 003c 27EE267A 		vmul.f32	s14, s14, s13
+ 236              		.loc 1 39 4 view .LVU66
+ 237 0040 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 238              	.LVL19:
+  40:./User/ANO.c  **** 	*((int16_t*)&data[6]) = t;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 6
+
+
+ 239              		.loc 1 40 2 is_stmt 1 view .LVU67
+ 240              		.loc 1 40 24 is_stmt 0 view .LVU68
+ 241 0044 17EE103A 		vmov	r3, s14	@ int
+ 242 0048 ADF80630 		strh	r3, [sp, #6]	@ movhi
+  41:./User/ANO.c  **** 	t = q2 * 10000;
+ 243              		.loc 1 41 2 is_stmt 1 view .LVU69
+ 244              		.loc 1 41 9 is_stmt 0 view .LVU70
+ 245 004c 144B     		ldr	r3, .L13+12
+ 246 004e 93ED007A 		vldr.32	s14, [r3]
+ 247              	.LVL20:
+ 248              		.loc 1 41 9 view .LVU71
+ 249 0052 27EE267A 		vmul.f32	s14, s14, s13
+ 250              		.loc 1 41 4 view .LVU72
+ 251 0056 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 252              	.LVL21:
+  42:./User/ANO.c  **** 	*((int16_t*)&data[8]) = t;
+ 253              		.loc 1 42 2 is_stmt 1 view .LVU73
+ 254              		.loc 1 42 24 is_stmt 0 view .LVU74
+ 255 005a 17EE103A 		vmov	r3, s14	@ int
+ 256 005e ADF80830 		strh	r3, [sp, #8]	@ movhi
+  43:./User/ANO.c  **** 	t = q3 * 10000;
+ 257              		.loc 1 43 2 is_stmt 1 view .LVU75
+ 258              		.loc 1 43 9 is_stmt 0 view .LVU76
+ 259 0062 104B     		ldr	r3, .L13+16
+ 260 0064 D3ED007A 		vldr.32	s15, [r3]
+ 261 0068 67EEA67A 		vmul.f32	s15, s15, s13
+ 262              		.loc 1 43 4 view .LVU77
+ 263 006c FDEEE77A 		vcvt.s32.f32	s15, s15
+ 264              	.LVL22:
+  44:./User/ANO.c  **** 	*((int16_t*)&data[10]) = t;
+ 265              		.loc 1 44 2 is_stmt 1 view .LVU78
+ 266              		.loc 1 44 25 is_stmt 0 view .LVU79
+ 267 0070 17EE903A 		vmov	r3, s15	@ int
+ 268 0074 ADF80A30 		strh	r3, [sp, #10]	@ movhi
+  45:./User/ANO.c  **** 	data[12] = 0;
+ 269              		.loc 1 45 2 is_stmt 1 view .LVU80
+ 270              		.loc 1 45 11 is_stmt 0 view .LVU81
+ 271 0078 0024     		movs	r4, #0
+ 272 007a 8DF80C40 		strb	r4, [sp, #12]
+  46:./User/ANO.c  **** 	addCheckSum(data);
+ 273              		.loc 1 46 2 is_stmt 1 view .LVU82
+ 274 007e 6846     		mov	r0, sp
+ 275 0080 FFF7FEFF 		bl	addCheckSum
+ 276              	.LVL23:
+  47:./User/ANO.c  **** 	_write(0, (char*)data, sizeof(data));
+ 277              		.loc 1 47 2 view .LVU83
+ 278 0084 0F22     		movs	r2, #15
+ 279 0086 6946     		mov	r1, sp
+ 280 0088 2046     		mov	r0, r4
+ 281 008a FFF7FEFF 		bl	_write
+ 282              	.LVL24:
+  48:./User/ANO.c  **** }
+ 283              		.loc 1 48 1 is_stmt 0 view .LVU84
+ 284 008e 04B0     		add	sp, sp, #16
+ 285              	.LCFI4:
+ 286              		.cfi_def_cfa_offset 8
+ 287              		@ sp needed
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 7
+
+
+ 288 0090 10BD     		pop	{r4, pc}
+ 289              	.L14:
+ 290 0092 00BF     		.align	2
+ 291              	.L13:
+ 292 0094 00000000 		.word	q0
+ 293 0098 00401C46 		.word	1176256512
+ 294 009c 00000000 		.word	q1
+ 295 00a0 00000000 		.word	q2
+ 296 00a4 00000000 		.word	q3
+ 297              		.cfi_endproc
+ 298              	.LFE128:
+ 300              		.section	.text.sendAttitudeInEulerAngle,"ax",%progbits
+ 301              		.align	1
+ 302              		.global	sendAttitudeInEulerAngle
+ 303              		.syntax unified
+ 304              		.thumb
+ 305              		.thumb_func
+ 307              	sendAttitudeInEulerAngle:
+ 308              	.LFB129:
+  49:./User/ANO.c  **** 
+  50:./User/ANO.c  **** void sendAttitudeInEulerAngle() {
+ 309              		.loc 1 50 33 is_stmt 1 view -0
+ 310              		.cfi_startproc
+ 311              		@ args = 0, pretend = 0, frame = 16
+ 312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 313 0000 10B5     		push	{r4, lr}
+ 314              	.LCFI5:
+ 315              		.cfi_def_cfa_offset 8
+ 316              		.cfi_offset 4, -8
+ 317              		.cfi_offset 14, -4
+ 318 0002 84B0     		sub	sp, sp, #16
+ 319              	.LCFI6:
+ 320              		.cfi_def_cfa_offset 24
+  51:./User/ANO.c  ****     uint8_t data[13];
+ 321              		.loc 1 51 5 view .LVU86
+  52:./User/ANO.c  ****     data[0] = 0xAA, data[1] = 0xFF, data[2] = 0x03;
+ 322              		.loc 1 52 5 view .LVU87
+ 323              		.loc 1 52 13 is_stmt 0 view .LVU88
+ 324 0004 AA23     		movs	r3, #170
+ 325 0006 8DF80030 		strb	r3, [sp]
+ 326              		.loc 1 52 29 view .LVU89
+ 327 000a FF23     		movs	r3, #255
+ 328 000c 8DF80130 		strb	r3, [sp, #1]
+ 329              		.loc 1 52 45 view .LVU90
+ 330 0010 0323     		movs	r3, #3
+ 331 0012 8DF80230 		strb	r3, [sp, #2]
+  53:./User/ANO.c  ****     data[3] = 7; // 数据长度
+ 332              		.loc 1 53 5 is_stmt 1 view .LVU91
+ 333              		.loc 1 53 13 is_stmt 0 view .LVU92
+ 334 0016 0723     		movs	r3, #7
+ 335 0018 8DF80330 		strb	r3, [sp, #3]
+  54:./User/ANO.c  ****     int16_t t = angle.roll * 100;
+ 336              		.loc 1 54 5 is_stmt 1 view .LVU93
+ 337              		.loc 1 54 22 is_stmt 0 view .LVU94
+ 338 001c 164B     		ldr	r3, .L17
+ 339 001e 93ED027A 		vldr.32	s14, [r3, #8]
+ 340              		.loc 1 54 28 view .LVU95
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 8
+
+
+ 341 0022 DFED166A 		vldr.32	s13, .L17+4
+ 342 0026 27EE267A 		vmul.f32	s14, s14, s13
+ 343              		.loc 1 54 13 view .LVU96
+ 344 002a BDEEC77A 		vcvt.s32.f32	s14, s14
+ 345              	.LVL25:
+  55:./User/ANO.c  ****     *((int16_t*)&data[4]) = t;
+ 346              		.loc 1 55 5 is_stmt 1 view .LVU97
+ 347              		.loc 1 55 27 is_stmt 0 view .LVU98
+ 348 002e 17EE102A 		vmov	r2, s14	@ int
+ 349 0032 ADF80420 		strh	r2, [sp, #4]	@ movhi
+  56:./User/ANO.c  ****     t = -angle.pitch * 100;
+ 350              		.loc 1 56 5 is_stmt 1 view .LVU99
+ 351              		.loc 1 56 15 is_stmt 0 view .LVU100
+ 352 0036 93ED017A 		vldr.32	s14, [r3, #4]
+ 353              	.LVL26:
+ 354              		.loc 1 56 22 view .LVU101
+ 355 003a 27EE667A 		vnmul.f32	s14, s14, s13
+ 356              		.loc 1 56 7 view .LVU102
+ 357 003e BDEEC77A 		vcvt.s32.f32	s14, s14
+ 358              	.LVL27:
+  57:./User/ANO.c  ****     *((int16_t*)&data[6]) = t;
+ 359              		.loc 1 57 5 is_stmt 1 view .LVU103
+ 360              		.loc 1 57 27 is_stmt 0 view .LVU104
+ 361 0042 17EE102A 		vmov	r2, s14	@ int
+ 362 0046 ADF80620 		strh	r2, [sp, #6]	@ movhi
+  58:./User/ANO.c  ****     t = -angle.yaw * 100;
+ 363              		.loc 1 58 5 is_stmt 1 view .LVU105
+ 364              		.loc 1 58 15 is_stmt 0 view .LVU106
+ 365 004a D3ED007A 		vldr.32	s15, [r3]
+ 366              		.loc 1 58 20 view .LVU107
+ 367 004e 67EEE67A 		vnmul.f32	s15, s15, s13
+ 368              		.loc 1 58 7 view .LVU108
+ 369 0052 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 370              	.LVL28:
+  59:./User/ANO.c  ****     *((int16_t*)&data[8]) = t;
+ 371              		.loc 1 59 5 is_stmt 1 view .LVU109
+ 372              		.loc 1 59 27 is_stmt 0 view .LVU110
+ 373 0056 17EE903A 		vmov	r3, s15	@ int
+ 374 005a ADF80830 		strh	r3, [sp, #8]	@ movhi
+  60:./User/ANO.c  ****     data[10] = 0;
+ 375              		.loc 1 60 5 is_stmt 1 view .LVU111
+ 376              		.loc 1 60 14 is_stmt 0 view .LVU112
+ 377 005e 0024     		movs	r4, #0
+ 378 0060 8DF80A40 		strb	r4, [sp, #10]
+  61:./User/ANO.c  ****     addCheckSum(data);
+ 379              		.loc 1 61 5 is_stmt 1 view .LVU113
+ 380 0064 6846     		mov	r0, sp
+ 381 0066 FFF7FEFF 		bl	addCheckSum
+ 382              	.LVL29:
+  62:./User/ANO.c  ****     _write(0, (char*)data, sizeof(data));
+ 383              		.loc 1 62 5 view .LVU114
+ 384 006a 0D22     		movs	r2, #13
+ 385 006c 6946     		mov	r1, sp
+ 386 006e 2046     		mov	r0, r4
+ 387 0070 FFF7FEFF 		bl	_write
+ 388              	.LVL30:
+  63:./User/ANO.c  **** }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 9
+
+
+ 389              		.loc 1 63 1 is_stmt 0 view .LVU115
+ 390 0074 04B0     		add	sp, sp, #16
+ 391              	.LCFI7:
+ 392              		.cfi_def_cfa_offset 8
+ 393              		@ sp needed
+ 394 0076 10BD     		pop	{r4, pc}
+ 395              	.L18:
+ 396              		.align	2
+ 397              	.L17:
+ 398 0078 00000000 		.word	angle
+ 399 007c 0000C842 		.word	1120403456
+ 400              		.cfi_endproc
+ 401              	.LFE129:
+ 403              		.section	.text.sendMotorState,"ax",%progbits
+ 404              		.align	1
+ 405              		.global	sendMotorState
+ 406              		.syntax unified
+ 407              		.thumb
+ 408              		.thumb_func
+ 410              	sendMotorState:
+ 411              	.LFB130:
+  64:./User/ANO.c  **** 
+  65:./User/ANO.c  **** void sendMotorState() {
+ 412              		.loc 1 65 23 is_stmt 1 view -0
+ 413              		.cfi_startproc
+ 414              		@ args = 0, pretend = 0, frame = 16
+ 415              		@ frame_needed = 0, uses_anonymous_args = 0
+ 416 0000 00B5     		push	{lr}
+ 417              	.LCFI8:
+ 418              		.cfi_def_cfa_offset 4
+ 419              		.cfi_offset 14, -4
+ 420 0002 85B0     		sub	sp, sp, #20
+ 421              	.LCFI9:
+ 422              		.cfi_def_cfa_offset 24
+  66:./User/ANO.c  **** 	uint8_t data[14];
+ 423              		.loc 1 66 2 view .LVU117
+  67:./User/ANO.c  **** 	data[0] = 0xAA, data[1] = 0xFF, data[2] = 0x20;
+ 424              		.loc 1 67 2 view .LVU118
+ 425              		.loc 1 67 10 is_stmt 0 view .LVU119
+ 426 0004 AA23     		movs	r3, #170
+ 427 0006 8DF80030 		strb	r3, [sp]
+ 428              		.loc 1 67 26 view .LVU120
+ 429 000a FF23     		movs	r3, #255
+ 430 000c 8DF80130 		strb	r3, [sp, #1]
+ 431              		.loc 1 67 42 view .LVU121
+ 432 0010 2023     		movs	r3, #32
+ 433 0012 8DF80230 		strb	r3, [sp, #2]
+  68:./User/ANO.c  **** 	data[3] = 8; // 数据长度
+ 434              		.loc 1 68 2 is_stmt 1 view .LVU122
+ 435              		.loc 1 68 10 is_stmt 0 view .LVU123
+ 436 0016 0823     		movs	r3, #8
+ 437 0018 8DF80330 		strb	r3, [sp, #3]
+  69:./User/ANO.c  **** 	uint16_t t = TIM3->CCR1;
+ 438              		.loc 1 69 2 is_stmt 1 view .LVU124
+ 439              		.loc 1 69 19 is_stmt 0 view .LVU125
+ 440 001c 0B4B     		ldr	r3, .L21
+ 441 001e 5A6B     		ldr	r2, [r3, #52]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 10
+
+
+ 442              	.LVL31:
+  70:./User/ANO.c  **** 	*((uint16_t*)&data[4]) = t;
+ 443              		.loc 1 70 2 is_stmt 1 view .LVU126
+ 444              		.loc 1 70 25 is_stmt 0 view .LVU127
+ 445 0020 ADF80420 		strh	r2, [sp, #4]	@ movhi
+  71:./User/ANO.c  **** 	t = TIM3->CCR2;
+ 446              		.loc 1 71 2 is_stmt 1 view .LVU128
+ 447              		.loc 1 71 10 is_stmt 0 view .LVU129
+ 448 0024 9A6B     		ldr	r2, [r3, #56]
+ 449              	.LVL32:
+  72:./User/ANO.c  **** 	*((uint16_t*)&data[6]) = t;
+ 450              		.loc 1 72 2 is_stmt 1 view .LVU130
+ 451              		.loc 1 72 25 is_stmt 0 view .LVU131
+ 452 0026 ADF80620 		strh	r2, [sp, #6]	@ movhi
+  73:./User/ANO.c  **** 	t = TIM3->CCR3;
+ 453              		.loc 1 73 2 is_stmt 1 view .LVU132
+ 454              		.loc 1 73 10 is_stmt 0 view .LVU133
+ 455 002a DA6B     		ldr	r2, [r3, #60]
+ 456              	.LVL33:
+  74:./User/ANO.c  **** 	*((uint16_t*)&data[8]) = t;
+ 457              		.loc 1 74 2 is_stmt 1 view .LVU134
+ 458              		.loc 1 74 25 is_stmt 0 view .LVU135
+ 459 002c ADF80820 		strh	r2, [sp, #8]	@ movhi
+  75:./User/ANO.c  **** 	t = TIM3->CCR4;
+ 460              		.loc 1 75 2 is_stmt 1 view .LVU136
+ 461              		.loc 1 75 10 is_stmt 0 view .LVU137
+ 462 0030 1B6C     		ldr	r3, [r3, #64]
+ 463              	.LVL34:
+  76:./User/ANO.c  **** 	*((uint16_t*)&data[10]) = t;
+ 464              		.loc 1 76 2 is_stmt 1 view .LVU138
+ 465              		.loc 1 76 26 is_stmt 0 view .LVU139
+ 466 0032 ADF80A30 		strh	r3, [sp, #10]	@ movhi
+  77:./User/ANO.c  **** 	addCheckSum(data);
+ 467              		.loc 1 77 2 is_stmt 1 view .LVU140
+ 468 0036 6846     		mov	r0, sp
+ 469 0038 FFF7FEFF 		bl	addCheckSum
+ 470              	.LVL35:
+  78:./User/ANO.c  **** 	_write(0, (char*)data, sizeof(data));
+ 471              		.loc 1 78 2 view .LVU141
+ 472 003c 0E22     		movs	r2, #14
+ 473 003e 6946     		mov	r1, sp
+ 474 0040 0020     		movs	r0, #0
+ 475 0042 FFF7FEFF 		bl	_write
+ 476              	.LVL36:
+  79:./User/ANO.c  **** }
+ 477              		.loc 1 79 1 is_stmt 0 view .LVU142
+ 478 0046 05B0     		add	sp, sp, #20
+ 479              	.LCFI10:
+ 480              		.cfi_def_cfa_offset 4
+ 481              		@ sp needed
+ 482 0048 5DF804FB 		ldr	pc, [sp], #4
+ 483              	.L22:
+ 484              		.align	2
+ 485              	.L21:
+ 486 004c 00040040 		.word	1073742848
+ 487              		.cfi_endproc
+ 488              	.LFE130:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 11
+
+
+ 490              		.section	.text.sendIMUstate2,"ax",%progbits
+ 491              		.align	1
+ 492              		.global	sendIMUstate2
+ 493              		.syntax unified
+ 494              		.thumb
+ 495              		.thumb_func
+ 497              	sendIMUstate2:
+ 498              	.LFB131:
+  80:./User/ANO.c  **** 
+  81:./User/ANO.c  **** void sendIMUstate2() {
+ 499              		.loc 1 81 22 is_stmt 1 view -0
+ 500              		.cfi_startproc
+ 501              		@ args = 0, pretend = 0, frame = 24
+ 502              		@ frame_needed = 0, uses_anonymous_args = 0
+ 503 0000 10B5     		push	{r4, lr}
+ 504              	.LCFI11:
+ 505              		.cfi_def_cfa_offset 8
+ 506              		.cfi_offset 4, -8
+ 507              		.cfi_offset 14, -4
+ 508 0002 86B0     		sub	sp, sp, #24
+ 509              	.LCFI12:
+ 510              		.cfi_def_cfa_offset 32
+  82:./User/ANO.c  ****     uint8_t data[20];
+ 511              		.loc 1 82 5 view .LVU144
+  83:./User/ANO.c  ****     data[0] = 0xAA, data[1] = 0xFF, data[2] = 0x02;
+ 512              		.loc 1 83 5 view .LVU145
+ 513              		.loc 1 83 13 is_stmt 0 view .LVU146
+ 514 0004 AA23     		movs	r3, #170
+ 515 0006 8DF80430 		strb	r3, [sp, #4]
+ 516              		.loc 1 83 29 view .LVU147
+ 517 000a FF23     		movs	r3, #255
+ 518 000c 8DF80530 		strb	r3, [sp, #5]
+ 519              		.loc 1 83 45 view .LVU148
+ 520 0010 0223     		movs	r3, #2
+ 521 0012 8DF80630 		strb	r3, [sp, #6]
+  84:./User/ANO.c  ****     data[3] = 14; // 数据长度
+ 522              		.loc 1 84 5 is_stmt 1 view .LVU149
+ 523              		.loc 1 84 13 is_stmt 0 view .LVU150
+ 524 0016 0E23     		movs	r3, #14
+ 525 0018 8DF80730 		strb	r3, [sp, #7]
+  85:./User/ANO.c  ****     int16_t t = (int16_t)GY86DataList.GaX * 100;
+ 526              		.loc 1 85 5 is_stmt 1 view .LVU151
+ 527              		.loc 1 85 38 is_stmt 0 view .LVU152
+ 528 001c 224A     		ldr	r2, .L25
+ 529 001e D2ED077A 		vldr.32	s15, [r2, #28]
+ 530              		.loc 1 85 17 view .LVU153
+ 531 0022 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 532 0026 17EE903A 		vmov	r3, s15	@ int
+ 533 002a 9BB2     		uxth	r3, r3
+ 534              		.loc 1 85 43 view .LVU154
+ 535 002c 03EB8303 		add	r3, r3, r3, lsl #2
+ 536 0030 03EB8303 		add	r3, r3, r3, lsl #2
+ 537 0034 9900     		lsls	r1, r3, #2
+ 538              	.LVL37:
+  86:./User/ANO.c  ****     *((int16_t*)&data[4]) = t;
+ 539              		.loc 1 86 5 is_stmt 1 view .LVU155
+ 540              		.loc 1 86 27 is_stmt 0 view .LVU156
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 12
+
+
+ 541 0036 ADF80810 		strh	r1, [sp, #8]	@ movhi
+  87:./User/ANO.c  ****     t = (int16_t)GY86DataList.GaY * 100;
+ 542              		.loc 1 87 5 is_stmt 1 view .LVU157
+ 543              		.loc 1 87 30 is_stmt 0 view .LVU158
+ 544 003a D2ED087A 		vldr.32	s15, [r2, #32]
+ 545              		.loc 1 87 9 view .LVU159
+ 546 003e FDEEE77A 		vcvt.s32.f32	s15, s15
+ 547 0042 17EE903A 		vmov	r3, s15	@ int
+ 548 0046 9BB2     		uxth	r3, r3
+ 549              		.loc 1 87 35 view .LVU160
+ 550 0048 03EB8303 		add	r3, r3, r3, lsl #2
+ 551 004c 03EB8303 		add	r3, r3, r3, lsl #2
+ 552 0050 9900     		lsls	r1, r3, #2
+ 553              	.LVL38:
+  88:./User/ANO.c  ****     *((int16_t*)&data[6]) = t;
+ 554              		.loc 1 88 5 is_stmt 1 view .LVU161
+ 555              		.loc 1 88 27 is_stmt 0 view .LVU162
+ 556 0052 ADF80A10 		strh	r1, [sp, #10]	@ movhi
+  89:./User/ANO.c  ****     t = (int16_t)GY86DataList.GaZ * 100;
+ 557              		.loc 1 89 5 is_stmt 1 view .LVU163
+ 558              		.loc 1 89 30 is_stmt 0 view .LVU164
+ 559 0056 D2ED097A 		vldr.32	s15, [r2, #36]
+ 560              		.loc 1 89 9 view .LVU165
+ 561 005a FDEEE77A 		vcvt.s32.f32	s15, s15
+ 562 005e 17EE903A 		vmov	r3, s15	@ int
+ 563 0062 9BB2     		uxth	r3, r3
+ 564              		.loc 1 89 35 view .LVU166
+ 565 0064 03EB8303 		add	r3, r3, r3, lsl #2
+ 566 0068 03EB8303 		add	r3, r3, r3, lsl #2
+ 567 006c 9900     		lsls	r1, r3, #2
+ 568              	.LVL39:
+  90:./User/ANO.c  ****     *((int16_t*)&data[8]) = t;
+ 569              		.loc 1 90 5 is_stmt 1 view .LVU167
+ 570              		.loc 1 90 27 is_stmt 0 view .LVU168
+ 571 006e ADF80C10 		strh	r1, [sp, #12]	@ movhi
+  91:./User/ANO.c  ****     *((int32_t*)&data[10]) = 0;
+ 572              		.loc 1 91 5 is_stmt 1 view .LVU169
+ 573              		.loc 1 91 28 is_stmt 0 view .LVU170
+ 574 0072 0024     		movs	r4, #0
+ 575 0074 CDF80E40 		str	r4, [sp, #14]	@ unaligned
+  92:./User/ANO.c  ****     t = (int16_t)(GY86DataList.CORE_Temperature * 100);
+ 576              		.loc 1 92 5 is_stmt 1 view .LVU171
+ 577              		.loc 1 92 31 is_stmt 0 view .LVU172
+ 578 0078 9389     		ldrh	r3, [r2, #12]
+ 579 007a 9BB2     		uxth	r3, r3
+ 580              		.loc 1 92 49 view .LVU173
+ 581 007c 03EB8303 		add	r3, r3, r3, lsl #2
+ 582 0080 03EB8303 		add	r3, r3, r3, lsl #2
+ 583 0084 9A00     		lsls	r2, r3, #2
+ 584              	.LVL40:
+  93:./User/ANO.c  ****     *((int16_t*)&data[14]) = t;
+ 585              		.loc 1 93 5 is_stmt 1 view .LVU174
+ 586              		.loc 1 93 28 is_stmt 0 view .LVU175
+ 587 0086 ADF81220 		strh	r2, [sp, #18]	@ movhi
+  94:./User/ANO.c  ****     *((uint8_t*)&data[16]) = 0;
+ 588              		.loc 1 94 5 is_stmt 1 view .LVU176
+ 589              		.loc 1 94 28 is_stmt 0 view .LVU177
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 13
+
+
+ 590 008a 8DF81440 		strb	r4, [sp, #20]
+  95:./User/ANO.c  ****     *((uint8_t*)&data[17]) = 0;
+ 591              		.loc 1 95 5 is_stmt 1 view .LVU178
+ 592              		.loc 1 95 28 is_stmt 0 view .LVU179
+ 593 008e 8DF81540 		strb	r4, [sp, #21]
+  96:./User/ANO.c  ****     addCheckSum(data);
+ 594              		.loc 1 96 5 is_stmt 1 view .LVU180
+ 595 0092 01A8     		add	r0, sp, #4
+ 596 0094 FFF7FEFF 		bl	addCheckSum
+ 597              	.LVL41:
+  97:./User/ANO.c  ****     _write(0, (char*)data, sizeof(data));
+ 598              		.loc 1 97 5 view .LVU181
+ 599 0098 1422     		movs	r2, #20
+ 600 009a 01A9     		add	r1, sp, #4
+ 601 009c 2046     		mov	r0, r4
+ 602 009e FFF7FEFF 		bl	_write
+ 603              	.LVL42:
+  98:./User/ANO.c  **** }
+ 604              		.loc 1 98 1 is_stmt 0 view .LVU182
+ 605 00a2 06B0     		add	sp, sp, #24
+ 606              	.LCFI13:
+ 607              		.cfi_def_cfa_offset 8
+ 608              		@ sp needed
+ 609 00a4 10BD     		pop	{r4, pc}
+ 610              	.L26:
+ 611 00a6 00BF     		.align	2
+ 612              	.L25:
+ 613 00a8 00000000 		.word	GY86DataList
+ 614              		.cfi_endproc
+ 615              	.LFE131:
+ 617              		.section	.text.sendIMUstate1,"ax",%progbits
+ 618              		.align	1
+ 619              		.global	sendIMUstate1
+ 620              		.syntax unified
+ 621              		.thumb
+ 622              		.thumb_func
+ 624              	sendIMUstate1:
+ 625              	.LFB132:
+  99:./User/ANO.c  **** 
+ 100:./User/ANO.c  **** extern float deltaT, targetYaw;
+ 101:./User/ANO.c  **** void sendIMUstate1() {
+ 626              		.loc 1 101 22 is_stmt 1 view -0
+ 627              		.cfi_startproc
+ 628              		@ args = 0, pretend = 0, frame = 24
+ 629              		@ frame_needed = 0, uses_anonymous_args = 0
+ 630 0000 10B5     		push	{r4, lr}
+ 631              	.LCFI14:
+ 632              		.cfi_def_cfa_offset 8
+ 633              		.cfi_offset 4, -8
+ 634              		.cfi_offset 14, -4
+ 635 0002 86B0     		sub	sp, sp, #24
+ 636              	.LCFI15:
+ 637              		.cfi_def_cfa_offset 32
+ 102:./User/ANO.c  ****     uint8_t data[19];
+ 638              		.loc 1 102 5 view .LVU184
+ 103:./User/ANO.c  ****     data[0] = 0xAA, data[1] = 0xFF, data[2] = 0x01;
+ 639              		.loc 1 103 5 view .LVU185
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 14
+
+
+ 640              		.loc 1 103 13 is_stmt 0 view .LVU186
+ 641 0004 AA23     		movs	r3, #170
+ 642 0006 8DF80430 		strb	r3, [sp, #4]
+ 643              		.loc 1 103 29 view .LVU187
+ 644 000a FF23     		movs	r3, #255
+ 645 000c 8DF80530 		strb	r3, [sp, #5]
+ 646              		.loc 1 103 45 view .LVU188
+ 647 0010 0123     		movs	r3, #1
+ 648 0012 8DF80630 		strb	r3, [sp, #6]
+ 104:./User/ANO.c  ****     data[3] = 13; // 数据长度
+ 649              		.loc 1 104 5 is_stmt 1 view .LVU189
+ 650              		.loc 1 104 13 is_stmt 0 view .LVU190
+ 651 0016 0D23     		movs	r3, #13
+ 652 0018 8DF80730 		strb	r3, [sp, #7]
+ 105:./User/ANO.c  ****     int16_t t = GY86DataList.AX;
+ 653              		.loc 1 105 5 is_stmt 1 view .LVU191
+ 654              		.loc 1 105 29 is_stmt 0 view .LVU192
+ 655 001c 234B     		ldr	r3, .L29
+ 656 001e D3ED007A 		vldr.32	s15, [r3]
+ 657              		.loc 1 105 13 view .LVU193
+ 658 0022 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 659              	.LVL43:
+ 106:./User/ANO.c  ****     *((int16_t*)&data[4]) = t;
+ 660              		.loc 1 106 5 is_stmt 1 view .LVU194
+ 661              		.loc 1 106 27 is_stmt 0 view .LVU195
+ 662 0026 17EE902A 		vmov	r2, s15	@ int
+ 663 002a ADF80820 		strh	r2, [sp, #8]	@ movhi
+ 107:./User/ANO.c  ****     t = GY86DataList.AY;
+ 664              		.loc 1 107 5 is_stmt 1 view .LVU196
+ 665              		.loc 1 107 21 is_stmt 0 view .LVU197
+ 666 002e D3ED017A 		vldr.32	s15, [r3, #4]
+ 667              	.LVL44:
+ 668              		.loc 1 107 7 view .LVU198
+ 669 0032 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 670              	.LVL45:
+ 108:./User/ANO.c  ****     *((int16_t*)&data[6]) = t;
+ 671              		.loc 1 108 5 is_stmt 1 view .LVU199
+ 672              		.loc 1 108 27 is_stmt 0 view .LVU200
+ 673 0036 17EE902A 		vmov	r2, s15	@ int
+ 674 003a ADF80A20 		strh	r2, [sp, #10]	@ movhi
+ 109:./User/ANO.c  ****     t = GY86DataList.AZ;
+ 675              		.loc 1 109 5 is_stmt 1 view .LVU201
+ 676              		.loc 1 109 21 is_stmt 0 view .LVU202
+ 677 003e D3ED027A 		vldr.32	s15, [r3, #8]
+ 678              	.LVL46:
+ 679              		.loc 1 109 7 view .LVU203
+ 680 0042 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 681              	.LVL47:
+ 110:./User/ANO.c  ****     *((int16_t*)&data[8]) = t;
+ 682              		.loc 1 110 5 is_stmt 1 view .LVU204
+ 683              		.loc 1 110 27 is_stmt 0 view .LVU205
+ 684 0046 17EE902A 		vmov	r2, s15	@ int
+ 685 004a ADF80C20 		strh	r2, [sp, #12]	@ movhi
+ 111:./User/ANO.c  ****     t = GY86DataList.GX * RAD_TO_DEGREE;
+ 686              		.loc 1 111 5 is_stmt 1 view .LVU206
+ 687              		.loc 1 111 21 is_stmt 0 view .LVU207
+ 688 004e 93ED047A 		vldr.32	s14, [r3, #16]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 15
+
+
+ 689              		.loc 1 111 25 view .LVU208
+ 690 0052 174A     		ldr	r2, .L29+4
+ 691 0054 D2ED007A 		vldr.32	s15, [r2]
+ 692              	.LVL48:
+ 693              		.loc 1 111 25 view .LVU209
+ 694 0058 27EE277A 		vmul.f32	s14, s14, s15
+ 695              		.loc 1 111 7 view .LVU210
+ 696 005c BDEEC77A 		vcvt.s32.f32	s14, s14
+ 697              	.LVL49:
+ 112:./User/ANO.c  ****     *((int16_t*)&data[10]) = t;
+ 698              		.loc 1 112 5 is_stmt 1 view .LVU211
+ 699              		.loc 1 112 28 is_stmt 0 view .LVU212
+ 700 0060 17EE102A 		vmov	r2, s14	@ int
+ 701 0064 ADF80E20 		strh	r2, [sp, #14]	@ movhi
+ 113:./User/ANO.c  ****     t = GY86DataList.GY * RAD_TO_DEGREE;
+ 702              		.loc 1 113 5 is_stmt 1 view .LVU213
+ 703              		.loc 1 113 21 is_stmt 0 view .LVU214
+ 704 0068 93ED057A 		vldr.32	s14, [r3, #20]
+ 705              	.LVL50:
+ 706              		.loc 1 113 25 view .LVU215
+ 707 006c 27EE877A 		vmul.f32	s14, s15, s14
+ 708              		.loc 1 113 7 view .LVU216
+ 709 0070 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 710              	.LVL51:
+ 114:./User/ANO.c  ****     *((int16_t*)&data[12]) = t;
+ 711              		.loc 1 114 5 is_stmt 1 view .LVU217
+ 712              		.loc 1 114 28 is_stmt 0 view .LVU218
+ 713 0074 17EE102A 		vmov	r2, s14	@ int
+ 714 0078 ADF81020 		strh	r2, [sp, #16]	@ movhi
+ 115:./User/ANO.c  ****     t = GY86DataList.GZ * RAD_TO_DEGREE;
+ 715              		.loc 1 115 5 is_stmt 1 view .LVU219
+ 716              		.loc 1 115 21 is_stmt 0 view .LVU220
+ 717 007c 93ED067A 		vldr.32	s14, [r3, #24]
+ 718              	.LVL52:
+ 719              		.loc 1 115 25 view .LVU221
+ 720 0080 67EE877A 		vmul.f32	s15, s15, s14
+ 721              		.loc 1 115 7 view .LVU222
+ 722 0084 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 723              	.LVL53:
+ 116:./User/ANO.c  ****     *((int16_t*)&data[14]) = t;
+ 724              		.loc 1 116 5 is_stmt 1 view .LVU223
+ 725              		.loc 1 116 28 is_stmt 0 view .LVU224
+ 726 0088 17EE903A 		vmov	r3, s15	@ int
+ 727 008c ADF81230 		strh	r3, [sp, #18]	@ movhi
+ 117:./User/ANO.c  ****     *((uint8_t*)&data[15]) = 0;
+ 728              		.loc 1 117 5 is_stmt 1 view .LVU225
+ 729              		.loc 1 117 28 is_stmt 0 view .LVU226
+ 730 0090 0024     		movs	r4, #0
+ 731 0092 8DF81340 		strb	r4, [sp, #19]
+ 118:./User/ANO.c  ****     addCheckSum(data);
+ 732              		.loc 1 118 5 is_stmt 1 view .LVU227
+ 733 0096 01A8     		add	r0, sp, #4
+ 734 0098 FFF7FEFF 		bl	addCheckSum
+ 735              	.LVL54:
+ 119:./User/ANO.c  ****     _write(0, (char*)data, sizeof(data));
+ 736              		.loc 1 119 5 view .LVU228
+ 737 009c 1322     		movs	r2, #19
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 16
+
+
+ 738 009e 01A9     		add	r1, sp, #4
+ 739 00a0 2046     		mov	r0, r4
+ 740 00a2 FFF7FEFF 		bl	_write
+ 741              	.LVL55:
+ 120:./User/ANO.c  **** }
+ 742              		.loc 1 120 1 is_stmt 0 view .LVU229
+ 743 00a6 06B0     		add	sp, sp, #24
+ 744              	.LCFI16:
+ 745              		.cfi_def_cfa_offset 8
+ 746              		@ sp needed
+ 747 00a8 10BD     		pop	{r4, pc}
+ 748              	.L30:
+ 749 00aa 00BF     		.align	2
+ 750              	.L29:
+ 751 00ac 00000000 		.word	GY86DataList
+ 752 00b0 00000000 		.word	RAD_TO_DEGREE
+ 753              		.cfi_endproc
+ 754              	.LFE132:
+ 756              		.section	.text.sendPidInfo,"ax",%progbits
+ 757              		.align	1
+ 758              		.global	sendPidInfo
+ 759              		.syntax unified
+ 760              		.thumb
+ 761              		.thumb_func
+ 763              	sendPidInfo:
+ 764              	.LFB133:
+ 121:./User/ANO.c  **** 
+ 122:./User/ANO.c  **** extern float expRoll, expPitch, expMode, expYaw;
+ 123:./User/ANO.c  **** extern float pidRoll, pidPitch, pidThr, targetHeight;
+ 124:./User/ANO.c  **** void sendPidInfo() {
+ 765              		.loc 1 124 20 is_stmt 1 view -0
+ 766              		.cfi_startproc
+ 767              		@ args = 0, pretend = 0, frame = 32
+ 768              		@ frame_needed = 0, uses_anonymous_args = 0
+ 769 0000 00B5     		push	{lr}
+ 770              	.LCFI17:
+ 771              		.cfi_def_cfa_offset 4
+ 772              		.cfi_offset 14, -4
+ 773 0002 89B0     		sub	sp, sp, #36
+ 774              	.LCFI18:
+ 775              		.cfi_def_cfa_offset 40
+ 125:./User/ANO.c  ****     uint8_t data[26];
+ 776              		.loc 1 125 5 view .LVU231
+ 126:./User/ANO.c  ****     data[0] = 0xAA, data[1] = 0xFF, data[2] = 0xF2;
+ 777              		.loc 1 126 5 view .LVU232
+ 778              		.loc 1 126 13 is_stmt 0 view .LVU233
+ 779 0004 AA23     		movs	r3, #170
+ 780 0006 8DF80430 		strb	r3, [sp, #4]
+ 781              		.loc 1 126 29 view .LVU234
+ 782 000a FF23     		movs	r3, #255
+ 783 000c 8DF80530 		strb	r3, [sp, #5]
+ 784              		.loc 1 126 45 view .LVU235
+ 785 0010 F223     		movs	r3, #242
+ 786 0012 8DF80630 		strb	r3, [sp, #6]
+ 127:./User/ANO.c  ****     data[3] = 20; // 数据长度
+ 787              		.loc 1 127 5 is_stmt 1 view .LVU236
+ 788              		.loc 1 127 13 is_stmt 0 view .LVU237
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 17
+
+
+ 789 0016 1423     		movs	r3, #20
+ 790 0018 8DF80730 		strb	r3, [sp, #7]
+ 128:./User/ANO.c  ****     int16_t t = angle.roll * 10.0f;
+ 791              		.loc 1 128 5 is_stmt 1 view .LVU238
+ 792              		.loc 1 128 22 is_stmt 0 view .LVU239
+ 793 001c 3C4B     		ldr	r3, .L33
+ 794 001e 93ED027A 		vldr.32	s14, [r3, #8]
+ 795              		.loc 1 128 28 view .LVU240
+ 796 0022 F2EE047A 		vmov.f32	s15, #1.0e+1
+ 797 0026 27EE277A 		vmul.f32	s14, s14, s15
+ 798              		.loc 1 128 13 view .LVU241
+ 799 002a BDEEC77A 		vcvt.s32.f32	s14, s14
+ 800              	.LVL56:
+ 129:./User/ANO.c  ****     *((int16_t*)&data[4]) = t;
+ 801              		.loc 1 129 5 is_stmt 1 view .LVU242
+ 802              		.loc 1 129 27 is_stmt 0 view .LVU243
+ 803 002e 17EE102A 		vmov	r2, s14	@ int
+ 804 0032 ADF80820 		strh	r2, [sp, #8]	@ movhi
+ 130:./User/ANO.c  ****     t = angle.pitch * 10.0f;
+ 805              		.loc 1 130 5 is_stmt 1 view .LVU244
+ 806              		.loc 1 130 14 is_stmt 0 view .LVU245
+ 807 0036 93ED017A 		vldr.32	s14, [r3, #4]
+ 808              	.LVL57:
+ 809              		.loc 1 130 21 view .LVU246
+ 810 003a 27EE277A 		vmul.f32	s14, s14, s15
+ 811              		.loc 1 130 7 view .LVU247
+ 812 003e BDEEC77A 		vcvt.s32.f32	s14, s14
+ 813              	.LVL58:
+ 131:./User/ANO.c  ****     *((int16_t*)&data[6]) = t;
+ 814              		.loc 1 131 5 is_stmt 1 view .LVU248
+ 815              		.loc 1 131 27 is_stmt 0 view .LVU249
+ 816 0042 17EE102A 		vmov	r2, s14	@ int
+ 817 0046 ADF80A20 		strh	r2, [sp, #10]	@ movhi
+ 132:./User/ANO.c  ****     t = angle.yaw * 10.0f;
+ 818              		.loc 1 132 5 is_stmt 1 view .LVU250
+ 819              		.loc 1 132 14 is_stmt 0 view .LVU251
+ 820 004a 93ED007A 		vldr.32	s14, [r3]
+ 821              	.LVL59:
+ 822              		.loc 1 132 19 view .LVU252
+ 823 004e 27EE277A 		vmul.f32	s14, s14, s15
+ 824              		.loc 1 132 7 view .LVU253
+ 825 0052 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 826              	.LVL60:
+ 133:./User/ANO.c  ****     *((int16_t*)&data[8]) = t;
+ 827              		.loc 1 133 5 is_stmt 1 view .LVU254
+ 828              		.loc 1 133 27 is_stmt 0 view .LVU255
+ 829 0056 17EE103A 		vmov	r3, s14	@ int
+ 830 005a ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 134:./User/ANO.c  ****     t = expRoll * 10.0f;
+ 831              		.loc 1 134 5 is_stmt 1 view .LVU256
+ 832              		.loc 1 134 17 is_stmt 0 view .LVU257
+ 833 005e 2D4B     		ldr	r3, .L33+4
+ 834 0060 93ED007A 		vldr.32	s14, [r3]
+ 835              	.LVL61:
+ 836              		.loc 1 134 17 view .LVU258
+ 837 0064 27EE277A 		vmul.f32	s14, s14, s15
+ 838              		.loc 1 134 7 view .LVU259
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 18
+
+
+ 839 0068 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 840              	.LVL62:
+ 135:./User/ANO.c  ****     *((int16_t*)&data[10]) = t;
+ 841              		.loc 1 135 5 is_stmt 1 view .LVU260
+ 842              		.loc 1 135 28 is_stmt 0 view .LVU261
+ 843 006c 17EE103A 		vmov	r3, s14	@ int
+ 844 0070 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 136:./User/ANO.c  ****     t = expPitch * 10.0f;
+ 845              		.loc 1 136 5 is_stmt 1 view .LVU262
+ 846              		.loc 1 136 18 is_stmt 0 view .LVU263
+ 847 0074 284B     		ldr	r3, .L33+8
+ 848 0076 93ED007A 		vldr.32	s14, [r3]
+ 849              	.LVL63:
+ 850              		.loc 1 136 18 view .LVU264
+ 851 007a 27EE277A 		vmul.f32	s14, s14, s15
+ 852              		.loc 1 136 7 view .LVU265
+ 853 007e BDEEC77A 		vcvt.s32.f32	s14, s14
+ 854              	.LVL64:
+ 137:./User/ANO.c  ****     *((int16_t*)&data[12]) = t;
+ 855              		.loc 1 137 5 is_stmt 1 view .LVU266
+ 856              		.loc 1 137 28 is_stmt 0 view .LVU267
+ 857 0082 17EE103A 		vmov	r3, s14	@ int
+ 858 0086 ADF81030 		strh	r3, [sp, #16]	@ movhi
+ 138:./User/ANO.c  ****     t = pidRoll * 10.0f;
+ 859              		.loc 1 138 5 is_stmt 1 view .LVU268
+ 860              		.loc 1 138 17 is_stmt 0 view .LVU269
+ 861 008a 244B     		ldr	r3, .L33+12
+ 862 008c 93ED007A 		vldr.32	s14, [r3]
+ 863              	.LVL65:
+ 864              		.loc 1 138 17 view .LVU270
+ 865 0090 27EE277A 		vmul.f32	s14, s14, s15
+ 866              		.loc 1 138 7 view .LVU271
+ 867 0094 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 868              	.LVL66:
+ 139:./User/ANO.c  ****     *((int16_t*)&data[14]) = t;
+ 869              		.loc 1 139 5 is_stmt 1 view .LVU272
+ 870              		.loc 1 139 28 is_stmt 0 view .LVU273
+ 871 0098 17EE103A 		vmov	r3, s14	@ int
+ 872 009c ADF81230 		strh	r3, [sp, #18]	@ movhi
+ 140:./User/ANO.c  ****     t = pidPitch * 10.0f;
+ 873              		.loc 1 140 5 is_stmt 1 view .LVU274
+ 874              		.loc 1 140 18 is_stmt 0 view .LVU275
+ 875 00a0 1F4B     		ldr	r3, .L33+16
+ 876 00a2 93ED007A 		vldr.32	s14, [r3]
+ 877              	.LVL67:
+ 878              		.loc 1 140 18 view .LVU276
+ 879 00a6 27EE277A 		vmul.f32	s14, s14, s15
+ 880              		.loc 1 140 7 view .LVU277
+ 881 00aa BDEEC77A 		vcvt.s32.f32	s14, s14
+ 882              	.LVL68:
+ 141:./User/ANO.c  ****     *((int16_t*)&data[16]) = t;
+ 883              		.loc 1 141 5 is_stmt 1 view .LVU278
+ 884              		.loc 1 141 28 is_stmt 0 view .LVU279
+ 885 00ae 17EE103A 		vmov	r3, s14	@ int
+ 886 00b2 ADF81430 		strh	r3, [sp, #20]	@ movhi
+ 142:./User/ANO.c  ****     t = rollOuter.errSum * 10.0f;
+ 887              		.loc 1 142 5 is_stmt 1 view .LVU280
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 19
+
+
+ 888              		.loc 1 142 18 is_stmt 0 view .LVU281
+ 889 00b6 1B4B     		ldr	r3, .L33+20
+ 890 00b8 93ED027A 		vldr.32	s14, [r3, #8]
+ 891              	.LVL69:
+ 892              		.loc 1 142 26 view .LVU282
+ 893 00bc 27EE277A 		vmul.f32	s14, s14, s15
+ 894              		.loc 1 142 7 view .LVU283
+ 895 00c0 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 896              	.LVL70:
+ 143:./User/ANO.c  ****     *((int16_t*)&data[18]) = t;
+ 897              		.loc 1 143 5 is_stmt 1 view .LVU284
+ 898              		.loc 1 143 28 is_stmt 0 view .LVU285
+ 899 00c4 17EE103A 		vmov	r3, s14	@ int
+ 900 00c8 ADF81630 		strh	r3, [sp, #22]	@ movhi
+ 144:./User/ANO.c  ****     t = targetHeight * 10.0f;
+ 901              		.loc 1 144 5 is_stmt 1 view .LVU286
+ 902              		.loc 1 144 22 is_stmt 0 view .LVU287
+ 903 00cc 164B     		ldr	r3, .L33+24
+ 904 00ce 93ED007A 		vldr.32	s14, [r3]
+ 905              	.LVL71:
+ 906              		.loc 1 144 22 view .LVU288
+ 907 00d2 27EE277A 		vmul.f32	s14, s14, s15
+ 908              		.loc 1 144 7 view .LVU289
+ 909 00d6 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 910              	.LVL72:
+ 145:./User/ANO.c  ****     *((int16_t*)&data[20]) = t;
+ 911              		.loc 1 145 5 is_stmt 1 view .LVU290
+ 912              		.loc 1 145 28 is_stmt 0 view .LVU291
+ 913 00da 17EE103A 		vmov	r3, s14	@ int
+ 914 00de ADF81830 		strh	r3, [sp, #24]	@ movhi
+ 146:./User/ANO.c  ****     t = yawInner.output * 10.0f;
+ 915              		.loc 1 146 5 is_stmt 1 view .LVU292
+ 916              		.loc 1 146 17 is_stmt 0 view .LVU293
+ 917 00e2 124B     		ldr	r3, .L33+28
+ 918 00e4 93ED067A 		vldr.32	s14, [r3, #24]
+ 919              	.LVL73:
+ 920              		.loc 1 146 25 view .LVU294
+ 921 00e8 67EE277A 		vmul.f32	s15, s14, s15
+ 922              	.LVL74:
+ 923              		.loc 1 146 7 view .LVU295
+ 924 00ec FDEEE77A 		vcvt.s32.f32	s15, s15
+ 925              	.LVL75:
+ 147:./User/ANO.c  ****     *((int16_t*)&data[22]) = t;
+ 926              		.loc 1 147 5 is_stmt 1 view .LVU296
+ 927              		.loc 1 147 28 is_stmt 0 view .LVU297
+ 928 00f0 17EE903A 		vmov	r3, s15	@ int
+ 929 00f4 ADF81A30 		strh	r3, [sp, #26]	@ movhi
+ 148:./User/ANO.c  ****     addCheckSum(data);
+ 930              		.loc 1 148 5 is_stmt 1 view .LVU298
+ 931 00f8 01A8     		add	r0, sp, #4
+ 932 00fa FFF7FEFF 		bl	addCheckSum
+ 933              	.LVL76:
+ 149:./User/ANO.c  ****     _write(0, (char*)data, sizeof(data));
+ 934              		.loc 1 149 5 view .LVU299
+ 935 00fe 1A22     		movs	r2, #26
+ 936 0100 01A9     		add	r1, sp, #4
+ 937 0102 0020     		movs	r0, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 20
+
+
+ 938 0104 FFF7FEFF 		bl	_write
+ 939              	.LVL77:
+ 150:./User/ANO.c  **** }
+ 940              		.loc 1 150 1 is_stmt 0 view .LVU300
+ 941 0108 09B0     		add	sp, sp, #36
+ 942              	.LCFI19:
+ 943              		.cfi_def_cfa_offset 4
+ 944              		@ sp needed
+ 945 010a 5DF804FB 		ldr	pc, [sp], #4
+ 946              	.L34:
+ 947 010e 00BF     		.align	2
+ 948              	.L33:
+ 949 0110 00000000 		.word	angle
+ 950 0114 00000000 		.word	expRoll
+ 951 0118 00000000 		.word	expPitch
+ 952 011c 00000000 		.word	pidRoll
+ 953 0120 00000000 		.word	pidPitch
+ 954 0124 00000000 		.word	rollOuter
+ 955 0128 00000000 		.word	targetHeight
+ 956 012c 00000000 		.word	yawInner
+ 957              		.cfi_endproc
+ 958              	.LFE133:
+ 960              		.section	.text.sendPidInfo2,"ax",%progbits
+ 961              		.align	1
+ 962              		.global	sendPidInfo2
+ 963              		.syntax unified
+ 964              		.thumb
+ 965              		.thumb_func
+ 967              	sendPidInfo2:
+ 968              	.LFB134:
+ 151:./User/ANO.c  **** 
+ 152:./User/ANO.c  **** void sendPidInfo2() {
+ 969              		.loc 1 152 21 is_stmt 1 view -0
+ 970              		.cfi_startproc
+ 971              		@ args = 0, pretend = 0, frame = 32
+ 972              		@ frame_needed = 0, uses_anonymous_args = 0
+ 973 0000 00B5     		push	{lr}
+ 974              	.LCFI20:
+ 975              		.cfi_def_cfa_offset 4
+ 976              		.cfi_offset 14, -4
+ 977 0002 89B0     		sub	sp, sp, #36
+ 978              	.LCFI21:
+ 979              		.cfi_def_cfa_offset 40
+ 153:./User/ANO.c  ****     uint8_t data[26];
+ 980              		.loc 1 153 5 view .LVU302
+ 154:./User/ANO.c  ****     data[0] = 0xAA, data[1] = 0xFF, data[2] = 0xF3;
+ 981              		.loc 1 154 5 view .LVU303
+ 982              		.loc 1 154 13 is_stmt 0 view .LVU304
+ 983 0004 AA23     		movs	r3, #170
+ 984 0006 8DF80430 		strb	r3, [sp, #4]
+ 985              		.loc 1 154 29 view .LVU305
+ 986 000a FF23     		movs	r3, #255
+ 987 000c 8DF80530 		strb	r3, [sp, #5]
+ 988              		.loc 1 154 45 view .LVU306
+ 989 0010 F323     		movs	r3, #243
+ 990 0012 8DF80630 		strb	r3, [sp, #6]
+ 155:./User/ANO.c  ****     data[3] = 20; // 数据长度
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 21
+
+
+ 991              		.loc 1 155 5 is_stmt 1 view .LVU307
+ 992              		.loc 1 155 13 is_stmt 0 view .LVU308
+ 993 0016 1423     		movs	r3, #20
+ 994 0018 8DF80730 		strb	r3, [sp, #7]
+ 156:./User/ANO.c  ****     int16_t t = rollInner.outputP * 10.0f;
+ 995              		.loc 1 156 5 is_stmt 1 view .LVU309
+ 996              		.loc 1 156 26 is_stmt 0 view .LVU310
+ 997 001c 3A4B     		ldr	r3, .L37
+ 998 001e 93ED077A 		vldr.32	s14, [r3, #28]
+ 999              		.loc 1 156 35 view .LVU311
+ 1000 0022 F2EE047A 		vmov.f32	s15, #1.0e+1
+ 1001 0026 27EE277A 		vmul.f32	s14, s14, s15
+ 1002              		.loc 1 156 13 view .LVU312
+ 1003 002a BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1004              	.LVL78:
+ 157:./User/ANO.c  ****     *((int16_t*)&data[4]) = t;
+ 1005              		.loc 1 157 5 is_stmt 1 view .LVU313
+ 1006              		.loc 1 157 27 is_stmt 0 view .LVU314
+ 1007 002e 17EE102A 		vmov	r2, s14	@ int
+ 1008 0032 ADF80820 		strh	r2, [sp, #8]	@ movhi
+ 158:./User/ANO.c  ****     t = expYaw * 10.0f;
+ 1009              		.loc 1 158 5 is_stmt 1 view .LVU315
+ 1010              		.loc 1 158 16 is_stmt 0 view .LVU316
+ 1011 0036 354A     		ldr	r2, .L37+4
+ 1012 0038 92ED007A 		vldr.32	s14, [r2]
+ 1013              	.LVL79:
+ 1014              		.loc 1 158 16 view .LVU317
+ 1015 003c 27EE277A 		vmul.f32	s14, s14, s15
+ 1016              		.loc 1 158 7 view .LVU318
+ 1017 0040 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1018              	.LVL80:
+ 159:./User/ANO.c  ****     *((int16_t*)&data[6]) = t;
+ 1019              		.loc 1 159 5 is_stmt 1 view .LVU319
+ 1020              		.loc 1 159 27 is_stmt 0 view .LVU320
+ 1021 0044 17EE102A 		vmov	r2, s14	@ int
+ 1022 0048 ADF80A20 		strh	r2, [sp, #10]	@ movhi
+ 160:./User/ANO.c  ****     t = rollInner.outputD * 10.0f;
+ 1023              		.loc 1 160 5 is_stmt 1 view .LVU321
+ 1024              		.loc 1 160 18 is_stmt 0 view .LVU322
+ 1025 004c 93ED097A 		vldr.32	s14, [r3, #36]
+ 1026              	.LVL81:
+ 1027              		.loc 1 160 27 view .LVU323
+ 1028 0050 27EE277A 		vmul.f32	s14, s14, s15
+ 1029              		.loc 1 160 7 view .LVU324
+ 1030 0054 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1031              	.LVL82:
+ 161:./User/ANO.c  ****     *((int16_t*)&data[8]) = t;
+ 1032              		.loc 1 161 5 is_stmt 1 view .LVU325
+ 1033              		.loc 1 161 27 is_stmt 0 view .LVU326
+ 1034 0058 17EE102A 		vmov	r2, s14	@ int
+ 1035 005c ADF80C20 		strh	r2, [sp, #12]	@ movhi
+ 162:./User/ANO.c  ****     t = rollOuter.outputP * 10.0f;
+ 1036              		.loc 1 162 5 is_stmt 1 view .LVU327
+ 1037              		.loc 1 162 18 is_stmt 0 view .LVU328
+ 1038 0060 2B4A     		ldr	r2, .L37+8
+ 1039 0062 92ED077A 		vldr.32	s14, [r2, #28]
+ 1040              	.LVL83:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 22
+
+
+ 1041              		.loc 1 162 27 view .LVU329
+ 1042 0066 27EE277A 		vmul.f32	s14, s14, s15
+ 1043              		.loc 1 162 7 view .LVU330
+ 1044 006a BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1045              	.LVL84:
+ 163:./User/ANO.c  ****     *((int16_t*)&data[10]) = t;
+ 1046              		.loc 1 163 5 is_stmt 1 view .LVU331
+ 1047              		.loc 1 163 28 is_stmt 0 view .LVU332
+ 1048 006e 17EE101A 		vmov	r1, s14	@ int
+ 1049 0072 ADF80E10 		strh	r1, [sp, #14]	@ movhi
+ 164:./User/ANO.c  ****     t = rollOuter.outputI * 10.0f;
+ 1050              		.loc 1 164 5 is_stmt 1 view .LVU333
+ 1051              		.loc 1 164 18 is_stmt 0 view .LVU334
+ 1052 0076 92ED087A 		vldr.32	s14, [r2, #32]
+ 1053              	.LVL85:
+ 1054              		.loc 1 164 27 view .LVU335
+ 1055 007a 27EE277A 		vmul.f32	s14, s14, s15
+ 1056              		.loc 1 164 7 view .LVU336
+ 1057 007e BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1058              	.LVL86:
+ 165:./User/ANO.c  ****     *((int16_t*)&data[12]) = t;
+ 1059              		.loc 1 165 5 is_stmt 1 view .LVU337
+ 1060              		.loc 1 165 28 is_stmt 0 view .LVU338
+ 1061 0082 17EE101A 		vmov	r1, s14	@ int
+ 1062 0086 ADF81010 		strh	r1, [sp, #16]	@ movhi
+ 166:./User/ANO.c  ****     t = pidThr * 10.0f;
+ 1063              		.loc 1 166 5 is_stmt 1 view .LVU339
+ 1064              		.loc 1 166 16 is_stmt 0 view .LVU340
+ 1065 008a 2249     		ldr	r1, .L37+12
+ 1066 008c 91ED007A 		vldr.32	s14, [r1]
+ 1067              	.LVL87:
+ 1068              		.loc 1 166 16 view .LVU341
+ 1069 0090 27EE277A 		vmul.f32	s14, s14, s15
+ 1070              		.loc 1 166 7 view .LVU342
+ 1071 0094 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1072              	.LVL88:
+ 167:./User/ANO.c  ****     *((int16_t*)&data[14]) = t;
+ 1073              		.loc 1 167 5 is_stmt 1 view .LVU343
+ 1074              		.loc 1 167 28 is_stmt 0 view .LVU344
+ 1075 0098 17EE101A 		vmov	r1, s14	@ int
+ 1076 009c ADF81210 		strh	r1, [sp, #18]	@ movhi
+ 168:./User/ANO.c  ****     t = rollOuter.output * 10.0f;
+ 1077              		.loc 1 168 5 is_stmt 1 view .LVU345
+ 1078              		.loc 1 168 18 is_stmt 0 view .LVU346
+ 1079 00a0 92ED067A 		vldr.32	s14, [r2, #24]
+ 1080              	.LVL89:
+ 1081              		.loc 1 168 26 view .LVU347
+ 1082 00a4 27EE277A 		vmul.f32	s14, s14, s15
+ 1083              		.loc 1 168 7 view .LVU348
+ 1084 00a8 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1085              	.LVL90:
+ 169:./User/ANO.c  ****     *((int16_t*)&data[16]) = t;
+ 1086              		.loc 1 169 5 is_stmt 1 view .LVU349
+ 1087              		.loc 1 169 28 is_stmt 0 view .LVU350
+ 1088 00ac 17EE102A 		vmov	r2, s14	@ int
+ 1089 00b0 ADF81420 		strh	r2, [sp, #20]	@ movhi
+ 170:./User/ANO.c  ****     t = rollInner.err * 10.0f;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 23
+
+
+ 1090              		.loc 1 170 5 is_stmt 1 view .LVU351
+ 1091              		.loc 1 170 18 is_stmt 0 view .LVU352
+ 1092 00b4 93ED007A 		vldr.32	s14, [r3]
+ 1093              	.LVL91:
+ 1094              		.loc 1 170 23 view .LVU353
+ 1095 00b8 27EE277A 		vmul.f32	s14, s14, s15
+ 1096              		.loc 1 170 7 view .LVU354
+ 1097 00bc BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1098              	.LVL92:
+ 171:./User/ANO.c  ****     *((int16_t*)&data[18]) = t;
+ 1099              		.loc 1 171 5 is_stmt 1 view .LVU355
+ 1100              		.loc 1 171 28 is_stmt 0 view .LVU356
+ 1101 00c0 17EE102A 		vmov	r2, s14	@ int
+ 1102 00c4 ADF81620 		strh	r2, [sp, #22]	@ movhi
+ 172:./User/ANO.c  ****     t = rollInner.errLast * 10.0f;
+ 1103              		.loc 1 172 5 is_stmt 1 view .LVU357
+ 1104              		.loc 1 172 18 is_stmt 0 view .LVU358
+ 1105 00c8 93ED017A 		vldr.32	s14, [r3, #4]
+ 1106              	.LVL93:
+ 1107              		.loc 1 172 27 view .LVU359
+ 1108 00cc 27EE277A 		vmul.f32	s14, s14, s15
+ 1109              		.loc 1 172 7 view .LVU360
+ 1110 00d0 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 1111              	.LVL94:
+ 173:./User/ANO.c  ****     *((int16_t*)&data[20]) = t;
+ 1112              		.loc 1 173 5 is_stmt 1 view .LVU361
+ 1113              		.loc 1 173 28 is_stmt 0 view .LVU362
+ 1114 00d4 17EE103A 		vmov	r3, s14	@ int
+ 1115 00d8 ADF81830 		strh	r3, [sp, #24]	@ movhi
+ 174:./User/ANO.c  ****     t = expMode * 10.0f;
+ 1116              		.loc 1 174 5 is_stmt 1 view .LVU363
+ 1117              		.loc 1 174 17 is_stmt 0 view .LVU364
+ 1118 00dc 0E4B     		ldr	r3, .L37+16
+ 1119 00de 93ED007A 		vldr.32	s14, [r3]
+ 1120              	.LVL95:
+ 1121              		.loc 1 174 17 view .LVU365
+ 1122 00e2 67EE277A 		vmul.f32	s15, s14, s15
+ 1123              	.LVL96:
+ 1124              		.loc 1 174 7 view .LVU366
+ 1125 00e6 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 1126              	.LVL97:
+ 175:./User/ANO.c  ****     *((int16_t*)&data[22]) = t;
+ 1127              		.loc 1 175 5 is_stmt 1 view .LVU367
+ 1128              		.loc 1 175 28 is_stmt 0 view .LVU368
+ 1129 00ea 17EE903A 		vmov	r3, s15	@ int
+ 1130 00ee ADF81A30 		strh	r3, [sp, #26]	@ movhi
+ 176:./User/ANO.c  ****     addCheckSum(data);
+ 1131              		.loc 1 176 5 is_stmt 1 view .LVU369
+ 1132 00f2 01A8     		add	r0, sp, #4
+ 1133 00f4 FFF7FEFF 		bl	addCheckSum
+ 1134              	.LVL98:
+ 177:./User/ANO.c  ****     _write(0, (char*)data, sizeof(data));
+ 1135              		.loc 1 177 5 view .LVU370
+ 1136 00f8 1A22     		movs	r2, #26
+ 1137 00fa 01A9     		add	r1, sp, #4
+ 1138 00fc 0020     		movs	r0, #0
+ 1139 00fe FFF7FEFF 		bl	_write
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 24
+
+
+ 1140              	.LVL99:
+ 178:./User/ANO.c  **** }
+ 1141              		.loc 1 178 1 is_stmt 0 view .LVU371
+ 1142 0102 09B0     		add	sp, sp, #36
+ 1143              	.LCFI22:
+ 1144              		.cfi_def_cfa_offset 4
+ 1145              		@ sp needed
+ 1146 0104 5DF804FB 		ldr	pc, [sp], #4
+ 1147              	.L38:
+ 1148              		.align	2
+ 1149              	.L37:
+ 1150 0108 00000000 		.word	rollInner
+ 1151 010c 00000000 		.word	expYaw
+ 1152 0110 00000000 		.word	rollOuter
+ 1153 0114 00000000 		.word	pidThr
+ 1154 0118 00000000 		.word	expMode
+ 1155              		.cfi_endproc
+ 1156              	.LFE134:
+ 1158              		.section	.text.sendInfo,"ax",%progbits
+ 1159              		.align	1
+ 1160              		.global	sendInfo
+ 1161              		.syntax unified
+ 1162              		.thumb
+ 1163              		.thumb_func
+ 1165              	sendInfo:
+ 1166              	.LFB135:
+ 179:./User/ANO.c  **** 
+ 180:./User/ANO.c  **** void sendInfo() {
+ 1167              		.loc 1 180 17 is_stmt 1 view -0
+ 1168              		.cfi_startproc
+ 1169              		@ args = 0, pretend = 0, frame = 0
+ 1170              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1171 0000 08B5     		push	{r3, lr}
+ 1172              	.LCFI23:
+ 1173              		.cfi_def_cfa_offset 8
+ 1174              		.cfi_offset 3, -8
+ 1175              		.cfi_offset 14, -4
+ 181:./User/ANO.c  **** 	sendQuaternion();
+ 1176              		.loc 1 181 2 view .LVU373
+ 1177 0002 FFF7FEFF 		bl	sendQuaternion
+ 1178              	.LVL100:
+ 182:./User/ANO.c  ****     // sendEulerAngle();
+ 183:./User/ANO.c  ****     sendIMUstate1();
+ 1179              		.loc 1 183 5 view .LVU374
+ 1180 0006 FFF7FEFF 		bl	sendIMUstate1
+ 1181              	.LVL101:
+ 184:./User/ANO.c  ****     sendIMUstate2();
+ 1182              		.loc 1 184 5 view .LVU375
+ 1183 000a FFF7FEFF 		bl	sendIMUstate2
+ 1184              	.LVL102:
+ 185:./User/ANO.c  ****     // sendPidInfo();
+ 186:./User/ANO.c  ****     // sendPidInfo2();
+ 187:./User/ANO.c  **** 	// sendMotorState();
+ 188:./User/ANO.c  **** }
+ 1185              		.loc 1 188 1 is_stmt 0 view .LVU376
+ 1186 000e 08BD     		pop	{r3, pc}
+ 1187              		.cfi_endproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 25
+
+
+ 1188              	.LFE135:
+ 1190              		.text
+ 1191              	.Letext0:
+ 1192              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1193              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 1194              		.file 4 "./CORE/stm32f4xx.h"
+ 1195              		.file 5 "./User/AHRS.h"
+ 1196              		.file 6 "./User/PID.h"
+ 1197              		.file 7 "./Hardware/GY86.h"
+ 1198              		.file 8 "./Library/stm32f4xx_usart.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 ANO.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:20     .text._write:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:26     .text._write:0000000000000000 _write
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:89     .text._write:0000000000000028 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:94     .text.addCheckSum:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:100    .text.addCheckSum:0000000000000000 addCheckSum
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:181    .text.sendQuaternion:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:187    .text.sendQuaternion:0000000000000000 sendQuaternion
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:292    .text.sendQuaternion:0000000000000094 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:301    .text.sendAttitudeInEulerAngle:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:307    .text.sendAttitudeInEulerAngle:0000000000000000 sendAttitudeInEulerAngle
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:398    .text.sendAttitudeInEulerAngle:0000000000000078 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:404    .text.sendMotorState:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:410    .text.sendMotorState:0000000000000000 sendMotorState
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:486    .text.sendMotorState:000000000000004c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:491    .text.sendIMUstate2:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:497    .text.sendIMUstate2:0000000000000000 sendIMUstate2
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:613    .text.sendIMUstate2:00000000000000a8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:618    .text.sendIMUstate1:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:624    .text.sendIMUstate1:0000000000000000 sendIMUstate1
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:751    .text.sendIMUstate1:00000000000000ac $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:757    .text.sendPidInfo:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:763    .text.sendPidInfo:0000000000000000 sendPidInfo
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:949    .text.sendPidInfo:0000000000000110 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:961    .text.sendPidInfo2:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:967    .text.sendPidInfo2:0000000000000000 sendPidInfo2
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:1150   .text.sendPidInfo2:0000000000000108 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:1159   .text.sendInfo:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccQgvgRb.s:1165   .text.sendInfo:0000000000000000 sendInfo
+
+UNDEFINED SYMBOLS
+USART_GetFlagStatus
+USART_SendData
+q0
+q1
+q2
+q3
+angle
+GY86DataList
+RAD_TO_DEGREE
+expRoll
+expPitch
+pidRoll
+pidPitch
+rollOuter
+targetHeight
+yawInner
+rollInner
+expYaw
+pidThr
+expMode

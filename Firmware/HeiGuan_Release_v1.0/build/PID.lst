@@ -1,0 +1,1961 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"PID.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.limit,"ax",%progbits
+  20              		.align	1
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	limit:
+  26              	.LVL0:
+  27              	.LFB127:
+  28              		.file 1 "./User/PID.c"
+   1:./User/PID.c  **** #include "PID.h"
+   2:./User/PID.c  **** #include <math.h>
+   3:./User/PID.c  **** #include <stdio.h>
+   4:./User/PID.c  **** #include "Receiver.h"
+   5:./User/PID.c  **** #include "AHRS.h"
+   6:./User/PID.c  **** #include "stm32f4xx.h"
+   7:./User/PID.c  **** #include "stm32f4xx_tim.h"
+   8:./User/PID.c  **** #include "stm32f4xx_rcc.h"
+   9:./User/PID.c  **** #include "GY86.h"
+  10:./User/PID.c  **** #include "OLED.h"
+  11:./User/PID.c  **** #include "ATKBLE01.h"
+  12:./User/PID.c  **** 
+  13:./User/PID.c  **** #define innerkP 3.0
+  14:./User/PID.c  **** #define innerkI 0.0
+  15:./User/PID.c  **** #define innerkD 0.0
+  16:./User/PID.c  **** 
+  17:./User/PID.c  **** #define outterkP 5.0
+  18:./User/PID.c  **** #define outterkI 2.0
+  19:./User/PID.c  **** #define outterkD 0.3
+  20:./User/PID.c  **** 
+  21:./User/PID.c  **** const float OUTER_INT_MAX = 40.0f;      // 外环积分限幅，对应角度误差累积和
+  22:./User/PID.c  **** const float INNER_INT_MAX = 40.0f;      // 内环积分限幅，对应角速度误差累积和
+  23:./User/PID.c  **** const float PWM_OUT_MAX = 300.0f;       // PWM 输出限幅，300.0 对应 30% 的油门
+  24:./User/PID.c  **** const float TAKEOFF_THROTTLE = 1450.0f; // 起飞油门，飞行时的油门应大于此值
+  25:./User/PID.c  **** 
+  26:./User/PID.c  **** // 对应 roll 内环、 roll 外环、 pitch 内环、 pitch 外环、 yaw 外环、 yaw 内环
+  27:./User/PID.c  **** PID_t rollInner, rollOuter, pitchInner, pitchOuter, yawOuter, yawInner;
+  28:./User/PID.c  **** // 期望的 roll, pitch, yaw 角速度和油门（即遥控器发出的信号）
+  29:./User/PID.c  **** float expRoll, expPitch, expYaw, expMode;
+  30:./User/PID.c  **** // PID 输出的油门控制量（范围在 [-PWM_OUT_MAX, PWM_OUT_MAX]）
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 2
+
+
+  31:./User/PID.c  **** float pidRoll, pidPitch, pidYaw, pidThr;
+  32:./User/PID.c  **** enum YAW_STATE {
+  33:./User/PID.c  ****     YAW_STABLE, // 油门大于 TAKEOFF_THROTTLE 且期望角速度为 0，此时采用串级 PID �
+  34:./User/PID.c  ****     YAW_ROTATE  // 否则为此状态，此时采用单环 PID 控制
+  35:./User/PID.c  **** };
+  36:./User/PID.c  **** enum FLY_STATE {
+  37:./User/PID.c  ****     HOVER,      // 悬停
+  38:./User/PID.c  ****     NOT_HOVER   // 非悬停
+  39:./User/PID.c  **** };
+  40:./User/PID.c  **** enum CH5_STATE { // 遥控器 CH5 三档开关状态，状态发生改变则进行机械校准
+  41:./User/PID.c  ****     CH5_DOWN,
+  42:./User/PID.c  ****     CH5_MIDDLE,
+  43:./User/PID.c  ****     CH5_UP
+  44:./User/PID.c  **** };
+  45:./User/PID.c  **** enum YAW_STATE yawState = YAW_STABLE;
+  46:./User/PID.c  **** enum FLY_STATE flyState = NOT_HOVER;
+  47:./User/PID.c  **** enum CH5_STATE ch5State = CH5_DOWN;
+  48:./User/PID.c  **** float targetYaw = 0.0f, targetHeight = 200.0f;
+  49:./User/PID.c  **** 
+  50:./User/PID.c  **** 
+  51:./User/PID.c  **** 
+  52:./User/PID.c  **** extern Angle angle;
+  53:./User/PID.c  **** extern float deltaT, height;
+  54:./User/PID.c  **** extern int correctFlag;
+  55:./User/PID.c  **** void TIM4_Init();
+  56:./User/PID.c  **** void pidInit() {
+  57:./User/PID.c  ****     // roll
+  58:./User/PID.c  ****     rollOuter.Kp = outterkP;
+  59:./User/PID.c  ****     rollOuter.Ki = outterkI;
+  60:./User/PID.c  ****     rollOuter.Kd = outterkD;
+  61:./User/PID.c  **** 
+  62:./User/PID.c  ****     rollInner.Kp = innerkP;
+  63:./User/PID.c  ****     rollInner.Ki = innerkI;
+  64:./User/PID.c  ****     rollInner.Kd = innerkD;
+  65:./User/PID.c  **** 
+  66:./User/PID.c  ****     // pitch
+  67:./User/PID.c  ****     pitchOuter.Kp = outterkP;
+  68:./User/PID.c  ****     pitchOuter.Ki = outterkI;
+  69:./User/PID.c  ****     pitchOuter.Kd = outterkD;
+  70:./User/PID.c  **** 
+  71:./User/PID.c  ****     pitchInner.Kp = innerkP;
+  72:./User/PID.c  ****     pitchInner.Ki = innerkI;
+  73:./User/PID.c  ****     pitchInner.Kd = innerkD;
+  74:./User/PID.c  **** 
+  75:./User/PID.c  ****     // Yaw
+  76:./User/PID.c  ****     yawOuter.Kp = outterkP;
+  77:./User/PID.c  ****     yawOuter.Ki = outterkI;
+  78:./User/PID.c  ****     yawOuter.Kd = outterkD;
+  79:./User/PID.c  **** 
+  80:./User/PID.c  ****     yawInner.Kp = innerkP;
+  81:./User/PID.c  ****     yawInner.Ki = innerkI;
+  82:./User/PID.c  ****     yawInner.Kd = innerkD;
+  83:./User/PID.c  **** 
+  84:./User/PID.c  ****     TIM4_Init();
+  85:./User/PID.c  **** }
+  86:./User/PID.c  **** 
+  87:./User/PID.c  **** static float limit(float x, float minv, float maxv) {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 3
+
+
+  29              		.loc 1 87 53 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              		.loc 1 87 53 is_stmt 0 view .LVU1
+  35 0000 F0EE407A 		vmov.f32	s15, s0
+  36 0004 B0EE600A 		vmov.f32	s0, s1
+  37              	.LVL1:
+  88:./User/PID.c  ****     return x < minv ? minv : (x > maxv ? maxv : x);
+  38              		.loc 1 88 5 is_stmt 1 view .LVU2
+  39              		.loc 1 88 28 is_stmt 0 view .LVU3
+  40 0008 F4EEE07A 		vcmpe.f32	s15, s1
+  41 000c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  42 0010 09D4     		bmi	.L2
+  43              		.loc 1 88 47 discriminator 2 view .LVU4
+  44 0012 F4EEC17A 		vcmpe.f32	s15, s2
+  45 0016 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  46 001a 02DD     		ble	.L6
+  47              		.loc 1 88 47 view .LVU5
+  48 001c B0EE410A 		vmov.f32	s0, s2
+  49 0020 7047     		bx	lr
+  50              	.LVL2:
+  51              	.L6:
+  52              		.loc 1 88 47 view .LVU6
+  53 0022 B0EE670A 		vmov.f32	s0, s15
+  54              	.LVL3:
+  55              	.L2:
+  89:./User/PID.c  **** }
+  56              		.loc 1 89 1 discriminator 8 view .LVU7
+  57 0026 7047     		bx	lr
+  58              		.cfi_endproc
+  59              	.LFE127:
+  61              		.section	.text.serialPIDcontrol,"ax",%progbits
+  62              		.align	1
+  63              		.global	serialPIDcontrol
+  64              		.syntax unified
+  65              		.thumb
+  66              		.thumb_func
+  68              	serialPIDcontrol:
+  69              	.LVL4:
+  70              	.LFB128:
+  90:./User/PID.c  **** 
+  91:./User/PID.c  **** /**
+  92:./User/PID.c  ****  * @brief 串级 PID 控制
+  93:./User/PID.c  ****  * 
+  94:./User/PID.c  ****  * @param errTheta 误差角度
+  95:./User/PID.c  ****  * @param omega 对应轴的角速度（单位：度/秒）
+  96:./User/PID.c  ****  * @param outer 外环 PID
+  97:./User/PID.c  ****  * @param inner 内环 PID
+  98:./User/PID.c  ****  * @return float 电机输出
+  99:./User/PID.c  ****  */
+ 100:./User/PID.c  **** float serialPIDcontrol(float errTheta, float omega, PID_t *outer, PID_t *inner) {
+  71              		.loc 1 100 81 is_stmt 1 view -0
+  72              		.cfi_startproc
+  73              		@ args = 0, pretend = 0, frame = 0
+  74              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 4
+
+
+  75              		.loc 1 100 81 is_stmt 0 view .LVU9
+  76 0000 38B5     		push	{r3, r4, r5, lr}
+  77              	.LCFI0:
+  78              		.cfi_def_cfa_offset 16
+  79              		.cfi_offset 3, -16
+  80              		.cfi_offset 4, -12
+  81              		.cfi_offset 5, -8
+  82              		.cfi_offset 14, -4
+  83 0002 2DED028B 		vpush.64	{d8}
+  84              	.LCFI1:
+  85              		.cfi_def_cfa_offset 24
+  86              		.cfi_offset 80, -24
+  87              		.cfi_offset 81, -20
+  88 0006 B0EE408A 		vmov.f32	s16, s0
+  89 000a F0EE608A 		vmov.f32	s17, s1
+  90 000e 0546     		mov	r5, r0
+  91 0010 0C46     		mov	r4, r1
+ 101:./User/PID.c  ****     outer->err = errTheta;
+  92              		.loc 1 101 5 is_stmt 1 view .LVU10
+  93              		.loc 1 101 16 is_stmt 0 view .LVU11
+  94 0012 80ED000A 		vstr.32	s0, [r0]
+ 102:./User/PID.c  ****     if (expMode > TAKEOFF_THROTTLE) {
+  95              		.loc 1 102 5 is_stmt 1 view .LVU12
+  96              		.loc 1 102 17 is_stmt 0 view .LVU13
+  97 0016 464B     		ldr	r3, .L21
+  98 0018 93ED007A 		vldr.32	s14, [r3]
+  99              		.loc 1 102 8 view .LVU14
+ 100 001c DFED457A 		vldr.32	s15, .L21+4
+ 101 0020 B4EEE77A 		vcmpe.f32	s14, s15
+ 102 0024 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 103 0028 79DD     		ble	.L17
+ 103:./User/PID.c  ****         outer->errSum = limit(outer->errSum + outer->err * deltaT, -OUTER_INT_MAX, OUTER_INT_MAX);
+ 104              		.loc 1 103 9 is_stmt 1 view .LVU15
+ 105              		.loc 1 103 36 is_stmt 0 view .LVU16
+ 106 002a 90ED020A 		vldr.32	s0, [r0, #8]
+ 107              	.LVL5:
+ 108              		.loc 1 103 58 view .LVU17
+ 109 002e 424B     		ldr	r3, .L21+8
+ 110 0030 D3ED007A 		vldr.32	s15, [r3]
+ 111 0034 68EE277A 		vmul.f32	s15, s16, s15
+ 112              		.loc 1 103 25 view .LVU18
+ 113 0038 9FED401A 		vldr.32	s2, .L21+12
+ 114 003c DFED400A 		vldr.32	s1, .L21+16
+ 115              	.LVL6:
+ 116              		.loc 1 103 25 view .LVU19
+ 117 0040 30EE270A 		vadd.f32	s0, s0, s15
+ 118 0044 FFF7FEFF 		bl	limit
+ 119              	.LVL7:
+ 120              		.loc 1 103 23 view .LVU20
+ 121 0048 85ED020A 		vstr.32	s0, [r5, #8]
+ 122              	.L10:
+ 104:./User/PID.c  ****     } else {
+ 105:./User/PID.c  ****         outer->errSum = 0.0f;
+ 106:./User/PID.c  ****     }
+ 107:./User/PID.c  ****     outer->outputP = outer->Kp * outer->err;
+ 123              		.loc 1 107 5 is_stmt 1 view .LVU21
+ 124              		.loc 1 107 27 is_stmt 0 view .LVU22
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 5
+
+
+ 125 004c D5ED037A 		vldr.32	s15, [r5, #12]
+ 126              		.loc 1 107 32 view .LVU23
+ 127 0050 27EE880A 		vmul.f32	s0, s15, s16
+ 128              		.loc 1 107 20 view .LVU24
+ 129 0054 85ED070A 		vstr.32	s0, [r5, #28]
+ 108:./User/PID.c  ****     outer->outputI = outer->Ki * outer->errSum;
+ 130              		.loc 1 108 5 is_stmt 1 view .LVU25
+ 131              		.loc 1 108 27 is_stmt 0 view .LVU26
+ 132 0058 95ED047A 		vldr.32	s14, [r5, #16]
+ 133              		.loc 1 108 39 view .LVU27
+ 134 005c D5ED027A 		vldr.32	s15, [r5, #8]
+ 135              		.loc 1 108 32 view .LVU28
+ 136 0060 27EE277A 		vmul.f32	s14, s14, s15
+ 137              		.loc 1 108 20 view .LVU29
+ 138 0064 85ED087A 		vstr.32	s14, [r5, #32]
+ 109:./User/PID.c  ****     outer->outputD = -outer->Kd * omega;
+ 139              		.loc 1 109 5 is_stmt 1 view .LVU30
+ 140              		.loc 1 109 28 is_stmt 0 view .LVU31
+ 141 0068 D5ED057A 		vldr.32	s15, [r5, #20]
+ 142              		.loc 1 109 33 view .LVU32
+ 143 006c 67EEE87A 		vnmul.f32	s15, s15, s17
+ 144              		.loc 1 109 20 view .LVU33
+ 145 0070 C5ED097A 		vstr.32	s15, [r5, #36]
+ 110:./User/PID.c  ****     outer->output = outer->outputP + outer->outputI + outer->outputD;
+ 146              		.loc 1 110 5 is_stmt 1 view .LVU34
+ 147              		.loc 1 110 36 is_stmt 0 view .LVU35
+ 148 0074 30EE070A 		vadd.f32	s0, s0, s14
+ 149              		.loc 1 110 53 view .LVU36
+ 150 0078 77EE807A 		vadd.f32	s15, s15, s0
+ 151              		.loc 1 110 19 view .LVU37
+ 152 007c C5ED067A 		vstr.32	s15, [r5, #24]
+ 111:./User/PID.c  **** 
+ 112:./User/PID.c  ****     inner->err = outer->output - omega;
+ 153              		.loc 1 112 5 is_stmt 1 view .LVU38
+ 154              		.loc 1 112 32 is_stmt 0 view .LVU39
+ 155 0080 77EEE88A 		vsub.f32	s17, s15, s17
+ 156              	.LVL8:
+ 157              		.loc 1 112 16 view .LVU40
+ 158 0084 C4ED008A 		vstr.32	s17, [r4]
+ 113:./User/PID.c  ****     if (expMode > TAKEOFF_THROTTLE) {
+ 159              		.loc 1 113 5 is_stmt 1 view .LVU41
+ 160              		.loc 1 113 17 is_stmt 0 view .LVU42
+ 161 0088 294B     		ldr	r3, .L21
+ 162 008a 93ED007A 		vldr.32	s14, [r3]
+ 163              		.loc 1 113 8 view .LVU43
+ 164 008e DFED297A 		vldr.32	s15, .L21+4
+ 165 0092 B4EEE77A 		vcmpe.f32	s14, s15
+ 166 0096 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 167 009a 43DD     		ble	.L18
+ 114:./User/PID.c  ****         inner->errSum = limit(inner->errSum + inner->err * deltaT, -INNER_INT_MAX, INNER_INT_MAX);
+ 168              		.loc 1 114 9 is_stmt 1 view .LVU44
+ 169              		.loc 1 114 36 is_stmt 0 view .LVU45
+ 170 009c 94ED020A 		vldr.32	s0, [r4, #8]
+ 171              		.loc 1 114 58 view .LVU46
+ 172 00a0 254B     		ldr	r3, .L21+8
+ 173 00a2 D3ED007A 		vldr.32	s15, [r3]
+ 174 00a6 68EEA77A 		vmul.f32	s15, s17, s15
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 6
+
+
+ 175              		.loc 1 114 25 view .LVU47
+ 176 00aa 9FED241A 		vldr.32	s2, .L21+12
+ 177 00ae DFED240A 		vldr.32	s1, .L21+16
+ 178 00b2 30EE270A 		vadd.f32	s0, s0, s15
+ 179 00b6 FFF7FEFF 		bl	limit
+ 180              	.LVL9:
+ 181              		.loc 1 114 23 view .LVU48
+ 182 00ba 84ED020A 		vstr.32	s0, [r4, #8]
+ 183              	.L13:
+ 115:./User/PID.c  ****     } else {
+ 116:./User/PID.c  ****         inner->errSum = 0.0f;
+ 117:./User/PID.c  ****     }
+ 118:./User/PID.c  ****     // inner->output = inner->Kp * inner->err + inner->Ki * inner->errSum + inner->Kd * (inner->err
+ 119:./User/PID.c  ****     inner->outputP = inner->Kp * inner->err;
+ 184              		.loc 1 119 5 is_stmt 1 view .LVU49
+ 185              		.loc 1 119 27 is_stmt 0 view .LVU50
+ 186 00be D4ED037A 		vldr.32	s15, [r4, #12]
+ 187              		.loc 1 119 32 view .LVU51
+ 188 00c2 68EEA77A 		vmul.f32	s15, s17, s15
+ 189              		.loc 1 119 20 view .LVU52
+ 190 00c6 C4ED077A 		vstr.32	s15, [r4, #28]
+ 120:./User/PID.c  ****     inner->outputI = inner->Ki * inner->errSum;
+ 191              		.loc 1 120 5 is_stmt 1 view .LVU53
+ 192              		.loc 1 120 27 is_stmt 0 view .LVU54
+ 193 00ca 94ED047A 		vldr.32	s14, [r4, #16]
+ 194              		.loc 1 120 39 view .LVU55
+ 195 00ce 94ED020A 		vldr.32	s0, [r4, #8]
+ 196              		.loc 1 120 32 view .LVU56
+ 197 00d2 27EE007A 		vmul.f32	s14, s14, s0
+ 198              		.loc 1 120 20 view .LVU57
+ 199 00d6 84ED087A 		vstr.32	s14, [r4, #32]
+ 121:./User/PID.c  ****     inner->outputD = inner->Kd * (inner->err - inner->errLast);
+ 200              		.loc 1 121 5 is_stmt 1 view .LVU58
+ 201              		.loc 1 121 27 is_stmt 0 view .LVU59
+ 202 00da 94ED050A 		vldr.32	s0, [r4, #20]
+ 203              		.loc 1 121 53 view .LVU60
+ 204 00de D4ED016A 		vldr.32	s13, [r4, #4]
+ 205              		.loc 1 121 46 view .LVU61
+ 206 00e2 78EEE66A 		vsub.f32	s13, s17, s13
+ 207              		.loc 1 121 32 view .LVU62
+ 208 00e6 20EE260A 		vmul.f32	s0, s0, s13
+ 209              		.loc 1 121 20 view .LVU63
+ 210 00ea 84ED090A 		vstr.32	s0, [r4, #36]
+ 122:./User/PID.c  ****     // inner->outputD = inner->Kd * (inner->errLast - omega);
+ 123:./User/PID.c  ****     inner->output = inner->outputP + inner->outputI + inner->outputD;
+ 211              		.loc 1 123 5 is_stmt 1 view .LVU64
+ 212              		.loc 1 123 36 is_stmt 0 view .LVU65
+ 213 00ee 77EE877A 		vadd.f32	s15, s15, s14
+ 214              		.loc 1 123 53 view .LVU66
+ 215 00f2 30EE270A 		vadd.f32	s0, s0, s15
+ 216              		.loc 1 123 19 view .LVU67
+ 217 00f6 84ED060A 		vstr.32	s0, [r4, #24]
+ 124:./User/PID.c  ****     inner->errLast = inner->err;
+ 218              		.loc 1 124 5 is_stmt 1 view .LVU68
+ 219              		.loc 1 124 20 is_stmt 0 view .LVU69
+ 220 00fa C4ED018A 		vstr.32	s17, [r4, #4]
+ 125:./User/PID.c  ****     if (++inner->cnt == 10) {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 7
+
+
+ 221              		.loc 1 125 5 is_stmt 1 view .LVU70
+ 222              		.loc 1 125 16 is_stmt 0 view .LVU71
+ 223 00fe A36A     		ldr	r3, [r4, #40]
+ 224              		.loc 1 125 9 view .LVU72
+ 225 0100 0133     		adds	r3, r3, #1
+ 226              		.loc 1 125 8 view .LVU73
+ 227 0102 A362     		str	r3, [r4, #40]
+ 228 0104 0A2B     		cmp	r3, #10
+ 229 0106 10D0     		beq	.L20
+ 230              	.L14:
+ 126:./User/PID.c  ****         inner->errLast = inner->err;
+ 127:./User/PID.c  ****         // inner->errLast = omega;
+ 128:./User/PID.c  ****         inner->cnt = 0;
+ 129:./User/PID.c  ****     }
+ 130:./User/PID.c  ****     // printf("outer->output = %f omega = %f errLast = %f err = %f outputD = %f\r\n", outer->output
+ 131:./User/PID.c  ****     inner->output = limit(inner->output, -PWM_OUT_MAX, PWM_OUT_MAX);
+ 231              		.loc 1 131 5 is_stmt 1 view .LVU74
+ 232              		.loc 1 131 21 is_stmt 0 view .LVU75
+ 233 0108 9FED0E1A 		vldr.32	s2, .L21+20
+ 234 010c DFED0E0A 		vldr.32	s1, .L21+24
+ 235 0110 FFF7FEFF 		bl	limit
+ 236              	.LVL10:
+ 237              		.loc 1 131 19 view .LVU76
+ 238 0114 84ED060A 		vstr.32	s0, [r4, #24]
+ 132:./User/PID.c  **** 
+ 133:./User/PID.c  ****     return inner->output;
+ 239              		.loc 1 133 5 is_stmt 1 view .LVU77
+ 134:./User/PID.c  **** }
+ 240              		.loc 1 134 1 is_stmt 0 view .LVU78
+ 241 0118 BDEC028B 		vldm	sp!, {d8}
+ 242              	.LCFI2:
+ 243              		.cfi_remember_state
+ 244              		.cfi_restore 80
+ 245              		.cfi_restore 81
+ 246              		.cfi_def_cfa_offset 16
+ 247              	.LVL11:
+ 248              		.loc 1 134 1 view .LVU79
+ 249 011c 38BD     		pop	{r3, r4, r5, pc}
+ 250              	.LVL12:
+ 251              	.L17:
+ 252              	.LCFI3:
+ 253              		.cfi_restore_state
+ 105:./User/PID.c  ****     }
+ 254              		.loc 1 105 9 is_stmt 1 view .LVU80
+ 105:./User/PID.c  ****     }
+ 255              		.loc 1 105 23 is_stmt 0 view .LVU81
+ 256 011e 0023     		movs	r3, #0
+ 257 0120 8360     		str	r3, [r0, #8]	@ float
+ 258 0122 93E7     		b	.L10
+ 259              	.LVL13:
+ 260              	.L18:
+ 116:./User/PID.c  ****     }
+ 261              		.loc 1 116 9 is_stmt 1 view .LVU82
+ 116:./User/PID.c  ****     }
+ 262              		.loc 1 116 23 is_stmt 0 view .LVU83
+ 263 0124 0023     		movs	r3, #0
+ 264 0126 A360     		str	r3, [r4, #8]	@ float
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 8
+
+
+ 265 0128 C9E7     		b	.L13
+ 266              	.L20:
+ 126:./User/PID.c  ****         // inner->errLast = omega;
+ 267              		.loc 1 126 9 is_stmt 1 view .LVU84
+ 128:./User/PID.c  ****     }
+ 268              		.loc 1 128 9 view .LVU85
+ 128:./User/PID.c  ****     }
+ 269              		.loc 1 128 20 is_stmt 0 view .LVU86
+ 270 012a 0023     		movs	r3, #0
+ 271 012c A362     		str	r3, [r4, #40]
+ 272 012e EBE7     		b	.L14
+ 273              	.L22:
+ 274              		.align	2
+ 275              	.L21:
+ 276 0130 00000000 		.word	.LANCHOR0
+ 277 0134 0040B544 		.word	1152729088
+ 278 0138 00000000 		.word	deltaT
+ 279 013c 00002042 		.word	1109393408
+ 280 0140 000020C2 		.word	-1038090240
+ 281 0144 00009643 		.word	1133903872
+ 282 0148 000096C3 		.word	-1013579776
+ 283              		.cfi_endproc
+ 284              	.LFE128:
+ 286              		.section	.text.singlePIDcontrol,"ax",%progbits
+ 287              		.align	1
+ 288              		.global	singlePIDcontrol
+ 289              		.syntax unified
+ 290              		.thumb
+ 291              		.thumb_func
+ 293              	singlePIDcontrol:
+ 294              	.LVL14:
+ 295              	.LFB129:
+ 135:./User/PID.c  **** 
+ 136:./User/PID.c  **** float singlePIDcontrol(float omega, PID_t *pid) {
+ 296              		.loc 1 136 49 is_stmt 1 view -0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 0
+ 299              		@ frame_needed = 0, uses_anonymous_args = 0
+ 300              		.loc 1 136 49 is_stmt 0 view .LVU88
+ 301 0000 10B5     		push	{r4, lr}
+ 302              	.LCFI4:
+ 303              		.cfi_def_cfa_offset 8
+ 304              		.cfi_offset 4, -8
+ 305              		.cfi_offset 14, -4
+ 306 0002 2DED028B 		vpush.64	{d8}
+ 307              	.LCFI5:
+ 308              		.cfi_def_cfa_offset 16
+ 309              		.cfi_offset 80, -16
+ 310              		.cfi_offset 81, -12
+ 311 0006 0446     		mov	r4, r0
+ 137:./User/PID.c  ****     pid->err = expYaw - omega;
+ 312              		.loc 1 137 5 is_stmt 1 view .LVU89
+ 313              		.loc 1 137 23 is_stmt 0 view .LVU90
+ 314 0008 2B4B     		ldr	r3, .L32
+ 315 000a 93ED008A 		vldr.32	s16, [r3]
+ 316 000e 38EE408A 		vsub.f32	s16, s16, s0
+ 317              		.loc 1 137 14 view .LVU91
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 9
+
+
+ 318 0012 80ED008A 		vstr.32	s16, [r0]
+ 138:./User/PID.c  ****     if (expMode > TAKEOFF_THROTTLE) {
+ 319              		.loc 1 138 5 is_stmt 1 view .LVU92
+ 320              		.loc 1 138 17 is_stmt 0 view .LVU93
+ 321 0016 294B     		ldr	r3, .L32+4
+ 322 0018 93ED007A 		vldr.32	s14, [r3]
+ 323              		.loc 1 138 8 view .LVU94
+ 324 001c DFED287A 		vldr.32	s15, .L32+8
+ 325 0020 B4EEE77A 		vcmpe.f32	s14, s15
+ 326 0024 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 327 0028 3EDD     		ble	.L29
+ 139:./User/PID.c  ****         pid->errSum = limit(pid->errSum + pid->err * deltaT, -OUTER_INT_MAX, OUTER_INT_MAX);
+ 328              		.loc 1 139 9 is_stmt 1 view .LVU95
+ 329              		.loc 1 139 32 is_stmt 0 view .LVU96
+ 330 002a 90ED020A 		vldr.32	s0, [r0, #8]
+ 331              	.LVL15:
+ 332              		.loc 1 139 52 view .LVU97
+ 333 002e 254B     		ldr	r3, .L32+12
+ 334 0030 D3ED007A 		vldr.32	s15, [r3]
+ 335 0034 68EE277A 		vmul.f32	s15, s16, s15
+ 336              		.loc 1 139 23 view .LVU98
+ 337 0038 9FED231A 		vldr.32	s2, .L32+16
+ 338 003c DFED230A 		vldr.32	s1, .L32+20
+ 339 0040 30EE270A 		vadd.f32	s0, s0, s15
+ 340 0044 FFF7FEFF 		bl	limit
+ 341              	.LVL16:
+ 342              		.loc 1 139 21 view .LVU99
+ 343 0048 84ED020A 		vstr.32	s0, [r4, #8]
+ 344              	.L26:
+ 140:./User/PID.c  ****     } else {
+ 141:./User/PID.c  ****         pid->errSum = 0.0f;
+ 142:./User/PID.c  ****     }
+ 143:./User/PID.c  ****     pid->outputP = pid->Kp * pid->err;
+ 345              		.loc 1 143 5 is_stmt 1 view .LVU100
+ 346              		.loc 1 143 23 is_stmt 0 view .LVU101
+ 347 004c D4ED037A 		vldr.32	s15, [r4, #12]
+ 348              		.loc 1 143 28 view .LVU102
+ 349 0050 68EE277A 		vmul.f32	s15, s16, s15
+ 350              		.loc 1 143 18 view .LVU103
+ 351 0054 C4ED077A 		vstr.32	s15, [r4, #28]
+ 144:./User/PID.c  ****     pid->outputI = pid->Ki * pid->errSum;
+ 352              		.loc 1 144 5 is_stmt 1 view .LVU104
+ 353              		.loc 1 144 23 is_stmt 0 view .LVU105
+ 354 0058 94ED047A 		vldr.32	s14, [r4, #16]
+ 355              		.loc 1 144 33 view .LVU106
+ 356 005c 94ED020A 		vldr.32	s0, [r4, #8]
+ 357              		.loc 1 144 28 view .LVU107
+ 358 0060 27EE007A 		vmul.f32	s14, s14, s0
+ 359              		.loc 1 144 18 view .LVU108
+ 360 0064 84ED087A 		vstr.32	s14, [r4, #32]
+ 145:./User/PID.c  ****     pid->outputD = pid->Kd * (pid->err - pid->errLast);
+ 361              		.loc 1 145 5 is_stmt 1 view .LVU109
+ 362              		.loc 1 145 23 is_stmt 0 view .LVU110
+ 363 0068 94ED050A 		vldr.32	s0, [r4, #20]
+ 364              		.loc 1 145 45 view .LVU111
+ 365 006c D4ED016A 		vldr.32	s13, [r4, #4]
+ 366              		.loc 1 145 40 view .LVU112
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 10
+
+
+ 367 0070 78EE666A 		vsub.f32	s13, s16, s13
+ 368              		.loc 1 145 28 view .LVU113
+ 369 0074 20EE260A 		vmul.f32	s0, s0, s13
+ 370              		.loc 1 145 18 view .LVU114
+ 371 0078 84ED090A 		vstr.32	s0, [r4, #36]
+ 146:./User/PID.c  ****     if (++pid->cnt == 10) {
+ 372              		.loc 1 146 5 is_stmt 1 view .LVU115
+ 373              		.loc 1 146 14 is_stmt 0 view .LVU116
+ 374 007c A36A     		ldr	r3, [r4, #40]
+ 375              		.loc 1 146 9 view .LVU117
+ 376 007e 0133     		adds	r3, r3, #1
+ 377              		.loc 1 146 8 view .LVU118
+ 378 0080 A362     		str	r3, [r4, #40]
+ 379 0082 0A2B     		cmp	r3, #10
+ 380 0084 13D0     		beq	.L31
+ 381              	.L27:
+ 147:./User/PID.c  ****         pid->errLast = pid->err;
+ 148:./User/PID.c  ****         pid->cnt = 0;
+ 149:./User/PID.c  ****     }
+ 150:./User/PID.c  ****     pid->output = pid->outputP + pid->outputI + pid->outputD;
+ 382              		.loc 1 150 5 is_stmt 1 view .LVU119
+ 383              		.loc 1 150 32 is_stmt 0 view .LVU120
+ 384 0086 77EE877A 		vadd.f32	s15, s15, s14
+ 385              		.loc 1 150 47 view .LVU121
+ 386 008a 30EE270A 		vadd.f32	s0, s0, s15
+ 387              		.loc 1 150 17 view .LVU122
+ 388 008e 84ED060A 		vstr.32	s0, [r4, #24]
+ 151:./User/PID.c  ****     pid->output = limit(pid->output, -PWM_OUT_MAX, PWM_OUT_MAX);
+ 389              		.loc 1 151 5 is_stmt 1 view .LVU123
+ 390              		.loc 1 151 19 is_stmt 0 view .LVU124
+ 391 0092 9FED0F1A 		vldr.32	s2, .L32+24
+ 392 0096 DFED0F0A 		vldr.32	s1, .L32+28
+ 393 009a FFF7FEFF 		bl	limit
+ 394              	.LVL17:
+ 395              		.loc 1 151 17 view .LVU125
+ 396 009e 84ED060A 		vstr.32	s0, [r4, #24]
+ 152:./User/PID.c  **** 
+ 153:./User/PID.c  ****     return pid->output;
+ 397              		.loc 1 153 5 is_stmt 1 view .LVU126
+ 154:./User/PID.c  **** }
+ 398              		.loc 1 154 1 is_stmt 0 view .LVU127
+ 399 00a2 BDEC028B 		vldm	sp!, {d8}
+ 400              	.LCFI6:
+ 401              		.cfi_remember_state
+ 402              		.cfi_restore 80
+ 403              		.cfi_restore 81
+ 404              		.cfi_def_cfa_offset 8
+ 405 00a6 10BD     		pop	{r4, pc}
+ 406              	.LVL18:
+ 407              	.L29:
+ 408              	.LCFI7:
+ 409              		.cfi_restore_state
+ 141:./User/PID.c  ****     }
+ 410              		.loc 1 141 9 is_stmt 1 view .LVU128
+ 141:./User/PID.c  ****     }
+ 411              		.loc 1 141 21 is_stmt 0 view .LVU129
+ 412 00a8 0023     		movs	r3, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 11
+
+
+ 413 00aa 8360     		str	r3, [r0, #8]	@ float
+ 414 00ac CEE7     		b	.L26
+ 415              	.LVL19:
+ 416              	.L31:
+ 147:./User/PID.c  ****         pid->cnt = 0;
+ 417              		.loc 1 147 9 is_stmt 1 view .LVU130
+ 147:./User/PID.c  ****         pid->cnt = 0;
+ 418              		.loc 1 147 22 is_stmt 0 view .LVU131
+ 419 00ae 84ED018A 		vstr.32	s16, [r4, #4]
+ 148:./User/PID.c  ****     }
+ 420              		.loc 1 148 9 is_stmt 1 view .LVU132
+ 148:./User/PID.c  ****     }
+ 421              		.loc 1 148 18 is_stmt 0 view .LVU133
+ 422 00b2 0023     		movs	r3, #0
+ 423 00b4 A362     		str	r3, [r4, #40]
+ 424 00b6 E6E7     		b	.L27
+ 425              	.L33:
+ 426              		.align	2
+ 427              	.L32:
+ 428 00b8 00000000 		.word	.LANCHOR1
+ 429 00bc 00000000 		.word	.LANCHOR0
+ 430 00c0 0040B544 		.word	1152729088
+ 431 00c4 00000000 		.word	deltaT
+ 432 00c8 00002042 		.word	1109393408
+ 433 00cc 000020C2 		.word	-1038090240
+ 434 00d0 00009643 		.word	1133903872
+ 435 00d4 000096C3 		.word	-1013579776
+ 436              		.cfi_endproc
+ 437              	.LFE129:
+ 439              		.section	.text.pidControl,"ax",%progbits
+ 440              		.align	1
+ 441              		.global	pidControl
+ 442              		.syntax unified
+ 443              		.thumb
+ 444              		.thumb_func
+ 446              	pidControl:
+ 447              	.LFB130:
+ 155:./User/PID.c  **** 
+ 156:./User/PID.c  **** /**
+ 157:./User/PID.c  ****  * @brief PID 控制入口
+ 158:./User/PID.c  ****  * 
+ 159:./User/PID.c  ****  * @param gyroFilterd 滤波后的陀螺仪数据（单位：弧度/秒）
+ 160:./User/PID.c  ****  */
+ 161:./User/PID.c  **** void pidControl() {
+ 448              		.loc 1 161 19 is_stmt 1 view -0
+ 449              		.cfi_startproc
+ 450              		@ args = 0, pretend = 0, frame = 0
+ 451              		@ frame_needed = 0, uses_anonymous_args = 0
+ 452 0000 38B5     		push	{r3, r4, r5, lr}
+ 453              	.LCFI8:
+ 454              		.cfi_def_cfa_offset 16
+ 455              		.cfi_offset 3, -16
+ 456              		.cfi_offset 4, -12
+ 457              		.cfi_offset 5, -8
+ 458              		.cfi_offset 14, -4
+ 459 0002 2DED0C8B 		vpush.64	{d8, d9, d10, d11, d12, d13}
+ 460              	.LCFI9:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 12
+
+
+ 461              		.cfi_def_cfa_offset 64
+ 462              		.cfi_offset 80, -64
+ 463              		.cfi_offset 81, -60
+ 464              		.cfi_offset 82, -56
+ 465              		.cfi_offset 83, -52
+ 466              		.cfi_offset 84, -48
+ 467              		.cfi_offset 85, -44
+ 468              		.cfi_offset 86, -40
+ 469              		.cfi_offset 87, -36
+ 470              		.cfi_offset 88, -32
+ 471              		.cfi_offset 89, -28
+ 472              		.cfi_offset 90, -24
+ 473              		.cfi_offset 91, -20
+ 162:./User/PID.c  ****     float motor1, motor2, motor3, motor4;
+ 474              		.loc 1 162 5 view .LVU135
+ 163:./User/PID.c  **** 
+ 164:./User/PID.c  ****     // 接收机信号解析，范围均在 [1000, 2000]
+ 165:./User/PID.c  ****     // expRoll = limit((CH2[1] - 1500) * 0.02f, -10, 10);   // roll 在 [-10, 10] 度
+ 166:./User/PID.c  ****     // expPitch = limit(-(CH2[2] - 1500) * 0.02f, -10, 10); // pitch 在 [-10, 10] 度
+ 167:./User/PID.c  ****     // expYaw = limit(-(CH2[4] - 1500) * 0.1f, -50, 50);    // yaw 在 [-50, 50] 度/秒
+ 168:./User/PID.c  ****     // expMode = limit(CH2[3], 1000, 1800);                 // 油门在 [1000, 1800]
+ 169:./User/PID.c  ****         // 1. Roll 计算并限制范围
+ 170:./User/PID.c  ****     float rollInput = (float)(CH2[1] - 1500);  // 中间变量：计算偏移量
+ 475              		.loc 1 170 5 view .LVU136
+ 476              		.loc 1 170 34 is_stmt 0 view .LVU137
+ 477 0006 C94B     		ldr	r3, .L86
+ 478 0008 5B88     		ldrh	r3, [r3, #2]
+ 479              		.loc 1 170 38 view .LVU138
+ 480 000a A3F2DC53 		subw	r3, r3, #1500
+ 481 000e 07EE903A 		vmov	s15, r3	@ int
+ 482              		.loc 1 170 11 view .LVU139
+ 483 0012 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 484              	.LVL20:
+ 171:./User/PID.c  ****     float rollScaled = rollInput * 0.02f;      // 中间变量：按比例缩放
+ 485              		.loc 1 171 5 is_stmt 1 view .LVU140
+ 486              		.loc 1 171 11 is_stmt 0 view .LVU141
+ 487 0016 9FEDC67A 		vldr.32	s14, .L86+4
+ 488 001a 67EE877A 		vmul.f32	s15, s15, s14
+ 489              	.LVL21:
+ 172:./User/PID.c  ****     if (rollScaled > 10.0f) {                  // 限制上限
+ 490              		.loc 1 172 5 is_stmt 1 view .LVU142
+ 491              		.loc 1 172 8 is_stmt 0 view .LVU143
+ 492 001e B2EE047A 		vmov.f32	s14, #1.0e+1
+ 493 0022 F4EEC77A 		vcmpe.f32	s15, s14
+ 494 0026 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 495 002a 40F3A980 		ble	.L77
+ 173:./User/PID.c  ****         expRoll = 10.0f;
+ 496              		.loc 1 173 9 is_stmt 1 view .LVU144
+ 497              		.loc 1 173 17 is_stmt 0 view .LVU145
+ 498 002e C14B     		ldr	r3, .L86+8
+ 499              	.LVL22:
+ 500              		.loc 1 173 17 view .LVU146
+ 501 0030 83ED007A 		vstr.32	s14, [r3]
+ 502              	.L37:
+ 174:./User/PID.c  ****     } else if (rollScaled < -10.0f) {          // 限制下限
+ 175:./User/PID.c  ****         expRoll = -10.0f;
+ 176:./User/PID.c  ****     } else {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 13
+
+
+ 177:./User/PID.c  ****         expRoll = rollScaled;                  // 正常值
+ 178:./User/PID.c  ****     }
+ 179:./User/PID.c  **** 
+ 180:./User/PID.c  ****     // 2. Pitch 计算并限制范围
+ 181:./User/PID.c  ****     float pitchInput = (float)(CH2[2] - 1500); // 中间变量：计算偏移量
+ 503              		.loc 1 181 5 is_stmt 1 view .LVU147
+ 504              		.loc 1 181 35 is_stmt 0 view .LVU148
+ 505 0034 BD4B     		ldr	r3, .L86
+ 506              	.LVL23:
+ 507              		.loc 1 181 35 view .LVU149
+ 508 0036 9B88     		ldrh	r3, [r3, #4]
+ 509              	.LVL24:
+ 510              		.loc 1 181 39 view .LVU150
+ 511 0038 A3F2DC53 		subw	r3, r3, #1500
+ 512 003c 07EE903A 		vmov	s15, r3	@ int
+ 513              	.LVL25:
+ 514              		.loc 1 181 11 view .LVU151
+ 515 0040 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 516              	.LVL26:
+ 182:./User/PID.c  ****     float pitchScaled = -pitchInput * 0.02f;   // 中间变量：按比例缩放并取反
+ 517              		.loc 1 182 5 is_stmt 1 view .LVU152
+ 518              		.loc 1 182 11 is_stmt 0 view .LVU153
+ 519 0044 9FEDBA7A 		vldr.32	s14, .L86+4
+ 520              	.LVL27:
+ 521              		.loc 1 182 11 view .LVU154
+ 522 0048 67EEC77A 		vnmul.f32	s15, s15, s14
+ 523              	.LVL28:
+ 183:./User/PID.c  ****     if (pitchScaled > 10.0f) {                 // 限制上限
+ 524              		.loc 1 183 5 is_stmt 1 view .LVU155
+ 525              		.loc 1 183 8 is_stmt 0 view .LVU156
+ 526 004c B2EE047A 		vmov.f32	s14, #1.0e+1
+ 527              	.LVL29:
+ 528              		.loc 1 183 8 view .LVU157
+ 529 0050 F4EEC77A 		vcmpe.f32	s15, s14
+ 530 0054 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 531 0058 40F3A180 		ble	.L79
+ 184:./User/PID.c  ****         expPitch = 10.0f;
+ 532              		.loc 1 184 9 is_stmt 1 view .LVU158
+ 533              		.loc 1 184 18 is_stmt 0 view .LVU159
+ 534 005c B64B     		ldr	r3, .L86+12
+ 535              	.LVL30:
+ 536              		.loc 1 184 18 view .LVU160
+ 537 005e 83ED007A 		vstr.32	s14, [r3]
+ 538              	.L42:
+ 185:./User/PID.c  ****     } else if (pitchScaled < -10.0f) {         // 限制下限
+ 186:./User/PID.c  ****         expPitch = -10.0f;
+ 187:./User/PID.c  ****     } else {
+ 188:./User/PID.c  ****         expPitch = pitchScaled;                // 正常值
+ 189:./User/PID.c  ****     }
+ 190:./User/PID.c  **** 
+ 191:./User/PID.c  ****     // 3. Yaw 计算并限制范围
+ 192:./User/PID.c  ****     float yawInput = (float)(CH2[4] - 1500);   // 中间变量：计算偏移量
+ 539              		.loc 1 192 5 is_stmt 1 view .LVU161
+ 540              		.loc 1 192 33 is_stmt 0 view .LVU162
+ 541 0062 B24B     		ldr	r3, .L86
+ 542              	.LVL31:
+ 543              		.loc 1 192 33 view .LVU163
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 14
+
+
+ 544 0064 1B89     		ldrh	r3, [r3, #8]
+ 545              	.LVL32:
+ 546              		.loc 1 192 37 view .LVU164
+ 547 0066 A3F2DC53 		subw	r3, r3, #1500
+ 548 006a 07EE903A 		vmov	s15, r3	@ int
+ 549              	.LVL33:
+ 550              		.loc 1 192 11 view .LVU165
+ 551 006e F8EEE77A 		vcvt.f32.s32	s15, s15
+ 552              	.LVL34:
+ 193:./User/PID.c  ****     float yawScaled = -yawInput * 0.1f;        // 中间变量：按比例缩放并取反
+ 553              		.loc 1 193 5 is_stmt 1 view .LVU166
+ 554              		.loc 1 193 11 is_stmt 0 view .LVU167
+ 555 0072 9FEDB27A 		vldr.32	s14, .L86+16
+ 556 0076 67EEC77A 		vnmul.f32	s15, s15, s14
+ 557              	.LVL35:
+ 194:./User/PID.c  ****     if (yawScaled > 50.0f) {                   // 限制上限
+ 558              		.loc 1 194 5 is_stmt 1 view .LVU168
+ 559              		.loc 1 194 8 is_stmt 0 view .LVU169
+ 560 007a 9FEDB17A 		vldr.32	s14, .L86+20
+ 561 007e F4EEC77A 		vcmpe.f32	s15, s14
+ 562 0082 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 563 0086 40F39980 		ble	.L81
+ 195:./User/PID.c  ****         expYaw = 50.0f;
+ 564              		.loc 1 195 9 is_stmt 1 view .LVU170
+ 565              		.loc 1 195 16 is_stmt 0 view .LVU171
+ 566 008a AE4B     		ldr	r3, .L86+24
+ 567              	.LVL36:
+ 568              		.loc 1 195 16 view .LVU172
+ 569 008c 83ED007A 		vstr.32	s14, [r3]
+ 570              	.L47:
+ 196:./User/PID.c  ****     } else if (yawScaled < -50.0f) {           // 限制下限
+ 197:./User/PID.c  ****         expYaw = -50.0f;
+ 198:./User/PID.c  ****     } else {
+ 199:./User/PID.c  ****         expYaw = yawScaled;                    // 正常值
+ 200:./User/PID.c  ****     }
+ 201:./User/PID.c  **** 
+ 202:./User/PID.c  ****     // 4. 油门模式计算并限制范围
+ 203:./User/PID.c  ****     int16_t modeInput = CH2[3];                // 中间变量：原始输入值
+ 571              		.loc 1 203 5 is_stmt 1 view .LVU173
+ 572              		.loc 1 203 13 is_stmt 0 view .LVU174
+ 573 0090 A64B     		ldr	r3, .L86
+ 574              	.LVL37:
+ 575              		.loc 1 203 13 view .LVU175
+ 576 0092 B3F90630 		ldrsh	r3, [r3, #6]
+ 577              	.LVL38:
+ 204:./User/PID.c  ****     if (modeInput > 1800) {                    // 限制上限
+ 578              		.loc 1 204 5 is_stmt 1 view .LVU176
+ 579              		.loc 1 204 8 is_stmt 0 view .LVU177
+ 580 0096 B3F5E16F 		cmp	r3, #1800
+ 581 009a 40F39E80 		ble	.L50
+ 205:./User/PID.c  ****         expMode = 1800;
+ 582              		.loc 1 205 9 is_stmt 1 view .LVU178
+ 583              		.loc 1 205 17 is_stmt 0 view .LVU179
+ 584 009e AA4B     		ldr	r3, .L86+28
+ 585              	.LVL39:
+ 586              		.loc 1 205 17 view .LVU180
+ 587 00a0 AA4A     		ldr	r2, .L86+32
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 15
+
+
+ 588 00a2 1A60     		str	r2, [r3]	@ float
+ 589              	.LVL40:
+ 590              	.L51:
+ 206:./User/PID.c  ****     } else if (modeInput < 1000) {             // 限制下限
+ 207:./User/PID.c  ****         expMode = 1000;
+ 208:./User/PID.c  ****     } else {
+ 209:./User/PID.c  ****         expMode = modeInput;                   // 正常值
+ 210:./User/PID.c  ****     }
+ 211:./User/PID.c  ****     // expMode = limit((data[3] < 1200 ? 2.0f * data[3] - 1000.0f : 0.5f * data[3] + 800.0f), 1000,
+ 212:./User/PID.c  **** 
+ 213:./User/PID.c  ****     // 机械校准
+ 214:./User/PID.c  ****     // enum CH5_STATE curCh5State = data[5] < 1400 ? CH5_DOWN : (data[5] < 1600 ? CH5_MIDDLE : CH5_
+ 215:./User/PID.c  ****     // if (curCh5State != ch5State) {
+ 216:./User/PID.c  ****     //     ch5State = curCh5State;
+ 217:./User/PID.c  ****     //     correctFlag = 0;
+ 218:./User/PID.c  ****     // }
+ 219:./User/PID.c  **** 
+ 220:./User/PID.c  ****     // 串级 PID 控制
+ 221:./User/PID.c  ****     // printf("expRoll = %f angle.roll = %f\r\n", expRoll, angle.roll);
+ 222:./User/PID.c  ****     pidRoll = serialPIDcontrol(expRoll - angle.roll, GY86DataList.GX * RAD_TO_DEGREE, &rollOuter, &
+ 591              		.loc 1 222 5 is_stmt 1 view .LVU181
+ 592              		.loc 1 222 47 is_stmt 0 view .LVU182
+ 593 00a4 AA4D     		ldr	r5, .L86+36
+ 594 00a6 D5ED027A 		vldr.32	s15, [r5, #8]
+ 595              		.loc 1 222 66 view .LVU183
+ 596 00aa AA4C     		ldr	r4, .L86+40
+ 597 00ac D4ED040A 		vldr.32	s1, [r4, #16]
+ 598              		.loc 1 222 15 view .LVU184
+ 599 00b0 A94B     		ldr	r3, .L86+44
+ 600 00b2 93ED008A 		vldr.32	s16, [r3]
+ 601 00b6 9F4B     		ldr	r3, .L86+8
+ 602 00b8 93ED000A 		vldr.32	s0, [r3]
+ 603 00bc A749     		ldr	r1, .L86+48
+ 604 00be A848     		ldr	r0, .L86+52
+ 605 00c0 60EE880A 		vmul.f32	s1, s1, s16
+ 606 00c4 30EE670A 		vsub.f32	s0, s0, s15
+ 607 00c8 FFF7FEFF 		bl	serialPIDcontrol
+ 608              	.LVL41:
+ 609              		.loc 1 222 13 view .LVU185
+ 610 00cc A54B     		ldr	r3, .L86+56
+ 611 00ce 83ED000A 		vstr.32	s0, [r3]
+ 223:./User/PID.c  ****     pidPitch = serialPIDcontrol(expPitch - angle.pitch, GY86DataList.GY * RAD_TO_DEGREE, &pitchOute
+ 612              		.loc 1 223 5 is_stmt 1 view .LVU186
+ 613              		.loc 1 223 49 is_stmt 0 view .LVU187
+ 614 00d2 D5ED017A 		vldr.32	s15, [r5, #4]
+ 615              		.loc 1 223 69 view .LVU188
+ 616 00d6 D4ED050A 		vldr.32	s1, [r4, #20]
+ 617              		.loc 1 223 16 view .LVU189
+ 618 00da 974B     		ldr	r3, .L86+12
+ 619 00dc 93ED000A 		vldr.32	s0, [r3]
+ 620 00e0 A149     		ldr	r1, .L86+60
+ 621 00e2 A248     		ldr	r0, .L86+64
+ 622 00e4 68EE200A 		vmul.f32	s1, s16, s1
+ 623 00e8 30EE670A 		vsub.f32	s0, s0, s15
+ 624 00ec FFF7FEFF 		bl	serialPIDcontrol
+ 625              	.LVL42:
+ 626              		.loc 1 223 14 view .LVU190
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 16
+
+
+ 627 00f0 9F4B     		ldr	r3, .L86+68
+ 628 00f2 83ED000A 		vstr.32	s0, [r3]
+ 224:./User/PID.c  ****     // pidYaw = singlePIDcontrol(gyroFilterd[2] * RAD_TO_DEGREE, &yawInner);
+ 225:./User/PID.c  **** 
+ 226:./User/PID.c  ****     if (expMode > TAKEOFF_THROTTLE && fabsf(expYaw) < 5.0f) {
+ 629              		.loc 1 226 5 is_stmt 1 view .LVU191
+ 630              		.loc 1 226 17 is_stmt 0 view .LVU192
+ 631 00f6 944B     		ldr	r3, .L86+28
+ 632 00f8 93ED007A 		vldr.32	s14, [r3]
+ 633              		.loc 1 226 8 view .LVU193
+ 634 00fc DFED9D7A 		vldr.32	s15, .L86+72
+ 635 0100 B4EEE77A 		vcmpe.f32	s14, s15
+ 636 0104 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 637 0108 40F38280 		ble	.L53
+ 638              		.loc 1 226 39 discriminator 1 view .LVU194
+ 639 010c 8D4B     		ldr	r3, .L86+24
+ 640 010e D3ED007A 		vldr.32	s15, [r3]
+ 641 0112 F0EEE77A 		vabs.f32	s15, s15
+ 642              		.loc 1 226 36 discriminator 1 view .LVU195
+ 643 0116 B1EE047A 		vmov.f32	s14, #5.0e+0
+ 644 011a F4EEC77A 		vcmpe.f32	s15, s14
+ 645 011e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 646 0122 75D5     		bpl	.L53
+ 647              	.LBB2:
+ 227:./User/PID.c  ****         if (yawState != YAW_STABLE) {
+ 648              		.loc 1 227 9 is_stmt 1 view .LVU196
+ 649              		.loc 1 227 22 is_stmt 0 view .LVU197
+ 650 0124 944B     		ldr	r3, .L86+76
+ 651 0126 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 652              		.loc 1 227 12 view .LVU198
+ 653 0128 53B1     		cbz	r3, .L56
+ 228:./User/PID.c  ****             yawState = YAW_STABLE;
+ 654              		.loc 1 228 13 is_stmt 1 view .LVU199
+ 655              		.loc 1 228 22 is_stmt 0 view .LVU200
+ 656 012a 934B     		ldr	r3, .L86+76
+ 657 012c 0022     		movs	r2, #0
+ 658 012e 1A70     		strb	r2, [r3]
+ 229:./User/PID.c  ****             targetYaw = angle.yaw;
+ 659              		.loc 1 229 13 is_stmt 1 view .LVU201
+ 660              		.loc 1 229 30 is_stmt 0 view .LVU202
+ 661 0130 2A68     		ldr	r2, [r5]	@ float
+ 662              		.loc 1 229 23 view .LVU203
+ 663 0132 924B     		ldr	r3, .L86+80
+ 664 0134 1A60     		str	r2, [r3]	@ float
+ 230:./User/PID.c  ****             yawOuter.errSum = yawInner.errSum = 0.0f;
+ 665              		.loc 1 230 13 is_stmt 1 view .LVU204
+ 666              		.loc 1 230 47 is_stmt 0 view .LVU205
+ 667 0136 0023     		movs	r3, #0
+ 668 0138 914A     		ldr	r2, .L86+84
+ 669 013a 9360     		str	r3, [r2, #8]	@ float
+ 670              		.loc 1 230 29 view .LVU206
+ 671 013c 914A     		ldr	r2, .L86+88
+ 672 013e 9360     		str	r3, [r2, #8]	@ float
+ 673              	.L56:
+ 231:./User/PID.c  ****         }
+ 232:./User/PID.c  ****         float errYaw = targetYaw - angle.yaw;
+ 674              		.loc 1 232 9 is_stmt 1 view .LVU207
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 17
+
+
+ 675              		.loc 1 232 34 is_stmt 0 view .LVU208
+ 676 0140 8E4B     		ldr	r3, .L86+80
+ 677 0142 93ED000A 		vldr.32	s0, [r3]
+ 678              		.loc 1 232 41 view .LVU209
+ 679 0146 824B     		ldr	r3, .L86+36
+ 680 0148 D3ED007A 		vldr.32	s15, [r3]
+ 681              		.loc 1 232 15 view .LVU210
+ 682 014c 30EE670A 		vsub.f32	s0, s0, s15
+ 683              	.LVL43:
+ 233:./User/PID.c  ****         if (errYaw < -180.0f) {
+ 684              		.loc 1 233 9 is_stmt 1 view .LVU211
+ 685              		.loc 1 233 12 is_stmt 0 view .LVU212
+ 686 0150 DFED8D7A 		vldr.32	s15, .L86+92
+ 687 0154 B4EEE70A 		vcmpe.f32	s0, s15
+ 688 0158 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 689 015c 4CD5     		bpl	.L83
+ 234:./User/PID.c  ****             errYaw += 360.0f;
+ 690              		.loc 1 234 13 is_stmt 1 view .LVU213
+ 691              		.loc 1 234 20 is_stmt 0 view .LVU214
+ 692 015e DFED8B7A 		vldr.32	s15, .L86+96
+ 693 0162 30EE270A 		vadd.f32	s0, s0, s15
+ 694              	.LVL44:
+ 695              	.L59:
+ 235:./User/PID.c  ****         } else if (errYaw > 180.0f) {
+ 236:./User/PID.c  ****             errYaw -= 360.0f;
+ 237:./User/PID.c  ****         }
+ 238:./User/PID.c  ****         pidYaw = serialPIDcontrol(errYaw, GY86DataList.GZ * RAD_TO_DEGREE, &yawOuter, &yawInner);
+ 696              		.loc 1 238 9 is_stmt 1 view .LVU215
+ 697              		.loc 1 238 55 is_stmt 0 view .LVU216
+ 698 0166 7B4B     		ldr	r3, .L86+40
+ 699 0168 D3ED060A 		vldr.32	s1, [r3, #24]
+ 700              		.loc 1 238 18 view .LVU217
+ 701 016c 8449     		ldr	r1, .L86+84
+ 702 016e 8548     		ldr	r0, .L86+88
+ 703 0170 68EE200A 		vmul.f32	s1, s16, s1
+ 704 0174 FFF7FEFF 		bl	serialPIDcontrol
+ 705              	.LVL45:
+ 706              		.loc 1 238 16 view .LVU218
+ 707 0178 854B     		ldr	r3, .L86+100
+ 708 017a 83ED000A 		vstr.32	s0, [r3]
+ 709              	.LBE2:
+ 226:./User/PID.c  ****         if (yawState != YAW_STABLE) {
+ 710              		.loc 1 226 61 view .LVU219
+ 711 017e 5EE0     		b	.L61
+ 712              	.LVL46:
+ 713              	.L77:
+ 174:./User/PID.c  ****         expRoll = -10.0f;
+ 714              		.loc 1 174 12 is_stmt 1 view .LVU220
+ 174:./User/PID.c  ****         expRoll = -10.0f;
+ 715              		.loc 1 174 15 is_stmt 0 view .LVU221
+ 716 0180 BAEE047A 		vmov.f32	s14, #-1.0e+1
+ 717 0184 F4EEC77A 		vcmpe.f32	s15, s14
+ 718 0188 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 719 018c 03D5     		bpl	.L78
+ 175:./User/PID.c  ****     } else {
+ 720              		.loc 1 175 9 is_stmt 1 view .LVU222
+ 175:./User/PID.c  ****     } else {
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 18
+
+
+ 721              		.loc 1 175 17 is_stmt 0 view .LVU223
+ 722 018e 694B     		ldr	r3, .L86+8
+ 723              	.LVL47:
+ 175:./User/PID.c  ****     } else {
+ 724              		.loc 1 175 17 view .LVU224
+ 725 0190 83ED007A 		vstr.32	s14, [r3]
+ 726 0194 4EE7     		b	.L37
+ 727              	.LVL48:
+ 728              	.L78:
+ 177:./User/PID.c  ****     }
+ 729              		.loc 1 177 9 is_stmt 1 view .LVU225
+ 177:./User/PID.c  ****     }
+ 730              		.loc 1 177 17 is_stmt 0 view .LVU226
+ 731 0196 674B     		ldr	r3, .L86+8
+ 732              	.LVL49:
+ 177:./User/PID.c  ****     }
+ 733              		.loc 1 177 17 view .LVU227
+ 734 0198 C3ED007A 		vstr.32	s15, [r3]
+ 735 019c 4AE7     		b	.L37
+ 736              	.LVL50:
+ 737              	.L79:
+ 185:./User/PID.c  ****         expPitch = -10.0f;
+ 738              		.loc 1 185 12 is_stmt 1 view .LVU228
+ 185:./User/PID.c  ****         expPitch = -10.0f;
+ 739              		.loc 1 185 15 is_stmt 0 view .LVU229
+ 740 019e BAEE047A 		vmov.f32	s14, #-1.0e+1
+ 741 01a2 F4EEC77A 		vcmpe.f32	s15, s14
+ 742 01a6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 743 01aa 03D5     		bpl	.L80
+ 186:./User/PID.c  ****     } else {
+ 744              		.loc 1 186 9 is_stmt 1 view .LVU230
+ 186:./User/PID.c  ****     } else {
+ 745              		.loc 1 186 18 is_stmt 0 view .LVU231
+ 746 01ac 624B     		ldr	r3, .L86+12
+ 747              	.LVL51:
+ 186:./User/PID.c  ****     } else {
+ 748              		.loc 1 186 18 view .LVU232
+ 749 01ae 83ED007A 		vstr.32	s14, [r3]
+ 750 01b2 56E7     		b	.L42
+ 751              	.LVL52:
+ 752              	.L80:
+ 188:./User/PID.c  ****     }
+ 753              		.loc 1 188 9 is_stmt 1 view .LVU233
+ 188:./User/PID.c  ****     }
+ 754              		.loc 1 188 18 is_stmt 0 view .LVU234
+ 755 01b4 604B     		ldr	r3, .L86+12
+ 756              	.LVL53:
+ 188:./User/PID.c  ****     }
+ 757              		.loc 1 188 18 view .LVU235
+ 758 01b6 C3ED007A 		vstr.32	s15, [r3]
+ 759 01ba 52E7     		b	.L42
+ 760              	.LVL54:
+ 761              	.L81:
+ 196:./User/PID.c  ****         expYaw = -50.0f;
+ 762              		.loc 1 196 12 is_stmt 1 view .LVU236
+ 196:./User/PID.c  ****         expYaw = -50.0f;
+ 763              		.loc 1 196 15 is_stmt 0 view .LVU237
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 19
+
+
+ 764 01bc 9FED757A 		vldr.32	s14, .L86+104
+ 765 01c0 F4EEC77A 		vcmpe.f32	s15, s14
+ 766 01c4 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 767 01c8 03D5     		bpl	.L82
+ 197:./User/PID.c  ****     } else {
+ 768              		.loc 1 197 9 is_stmt 1 view .LVU238
+ 197:./User/PID.c  ****     } else {
+ 769              		.loc 1 197 16 is_stmt 0 view .LVU239
+ 770 01ca 5E4B     		ldr	r3, .L86+24
+ 771              	.LVL55:
+ 197:./User/PID.c  ****     } else {
+ 772              		.loc 1 197 16 view .LVU240
+ 773 01cc 83ED007A 		vstr.32	s14, [r3]
+ 774 01d0 5EE7     		b	.L47
+ 775              	.LVL56:
+ 776              	.L82:
+ 199:./User/PID.c  ****     }
+ 777              		.loc 1 199 9 is_stmt 1 view .LVU241
+ 199:./User/PID.c  ****     }
+ 778              		.loc 1 199 16 is_stmt 0 view .LVU242
+ 779 01d2 5C4B     		ldr	r3, .L86+24
+ 780              	.LVL57:
+ 199:./User/PID.c  ****     }
+ 781              		.loc 1 199 16 view .LVU243
+ 782 01d4 C3ED007A 		vstr.32	s15, [r3]
+ 783 01d8 5AE7     		b	.L47
+ 784              	.LVL58:
+ 785              	.L50:
+ 206:./User/PID.c  ****         expMode = 1000;
+ 786              		.loc 1 206 12 is_stmt 1 view .LVU244
+ 206:./User/PID.c  ****         expMode = 1000;
+ 787              		.loc 1 206 15 is_stmt 0 view .LVU245
+ 788 01da B3F57A7F 		cmp	r3, #1000
+ 789 01de 03DA     		bge	.L52
+ 207:./User/PID.c  ****     } else {
+ 790              		.loc 1 207 9 is_stmt 1 view .LVU246
+ 207:./User/PID.c  ****     } else {
+ 791              		.loc 1 207 17 is_stmt 0 view .LVU247
+ 792 01e0 594B     		ldr	r3, .L86+28
+ 793              	.LVL59:
+ 207:./User/PID.c  ****     } else {
+ 794              		.loc 1 207 17 view .LVU248
+ 795 01e2 6D4A     		ldr	r2, .L86+108
+ 796 01e4 1A60     		str	r2, [r3]	@ float
+ 797 01e6 5DE7     		b	.L51
+ 798              	.LVL60:
+ 799              	.L52:
+ 209:./User/PID.c  ****     }
+ 800              		.loc 1 209 9 is_stmt 1 view .LVU249
+ 209:./User/PID.c  ****     }
+ 801              		.loc 1 209 17 is_stmt 0 view .LVU250
+ 802 01e8 07EE903A 		vmov	s15, r3	@ int
+ 803              	.LVL61:
+ 209:./User/PID.c  ****     }
+ 804              		.loc 1 209 17 view .LVU251
+ 805 01ec F8EEE77A 		vcvt.f32.s32	s15, s15
+ 806 01f0 554B     		ldr	r3, .L86+28
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 20
+
+
+ 807              	.LVL62:
+ 209:./User/PID.c  ****     }
+ 808              		.loc 1 209 17 view .LVU252
+ 809 01f2 C3ED007A 		vstr.32	s15, [r3]
+ 810 01f6 55E7     		b	.L51
+ 811              	.LVL63:
+ 812              	.L83:
+ 813              	.LBB3:
+ 235:./User/PID.c  ****             errYaw -= 360.0f;
+ 814              		.loc 1 235 16 is_stmt 1 view .LVU253
+ 235:./User/PID.c  ****             errYaw -= 360.0f;
+ 815              		.loc 1 235 19 is_stmt 0 view .LVU254
+ 816 01f8 DFED687A 		vldr.32	s15, .L86+112
+ 817 01fc B4EEE70A 		vcmpe.f32	s0, s15
+ 818 0200 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 819 0204 AFDD     		ble	.L59
+ 236:./User/PID.c  ****         }
+ 820              		.loc 1 236 13 is_stmt 1 view .LVU255
+ 236:./User/PID.c  ****         }
+ 821              		.loc 1 236 20 is_stmt 0 view .LVU256
+ 822 0206 DFED617A 		vldr.32	s15, .L86+96
+ 823 020a 30EE670A 		vsub.f32	s0, s0, s15
+ 824              	.LVL64:
+ 236:./User/PID.c  ****         }
+ 825              		.loc 1 236 20 view .LVU257
+ 826 020e AAE7     		b	.L59
+ 827              	.LVL65:
+ 828              	.L53:
+ 236:./User/PID.c  ****         }
+ 829              		.loc 1 236 20 view .LVU258
+ 830              	.LBE3:
+ 239:./User/PID.c  ****     } else {
+ 240:./User/PID.c  ****         if (yawState != YAW_ROTATE) {
+ 831              		.loc 1 240 9 is_stmt 1 view .LVU259
+ 832              		.loc 1 240 22 is_stmt 0 view .LVU260
+ 833 0210 594B     		ldr	r3, .L86+76
+ 834 0212 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 835              		.loc 1 240 12 view .LVU261
+ 836 0214 012B     		cmp	r3, #1
+ 837 0216 07D0     		beq	.L62
+ 241:./User/PID.c  ****             yawState = YAW_ROTATE;
+ 838              		.loc 1 241 13 is_stmt 1 view .LVU262
+ 839              		.loc 1 241 22 is_stmt 0 view .LVU263
+ 840 0218 574B     		ldr	r3, .L86+76
+ 841 021a 0122     		movs	r2, #1
+ 842 021c 1A70     		strb	r2, [r3]
+ 242:./User/PID.c  ****             yawOuter.errSum = yawInner.errSum = 0.0f;
+ 843              		.loc 1 242 13 is_stmt 1 view .LVU264
+ 844              		.loc 1 242 47 is_stmt 0 view .LVU265
+ 845 021e 0023     		movs	r3, #0
+ 846 0220 574A     		ldr	r2, .L86+84
+ 847 0222 9360     		str	r3, [r2, #8]	@ float
+ 848              		.loc 1 242 29 view .LVU266
+ 849 0224 574A     		ldr	r2, .L86+88
+ 850 0226 9360     		str	r3, [r2, #8]	@ float
+ 851              	.L62:
+ 243:./User/PID.c  ****         } 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 21
+
+
+ 244:./User/PID.c  ****         pidYaw = singlePIDcontrol(GY86DataList.GZ * RAD_TO_DEGREE, &yawInner);
+ 852              		.loc 1 244 9 is_stmt 1 view .LVU267
+ 853              		.loc 1 244 47 is_stmt 0 view .LVU268
+ 854 0228 4A4B     		ldr	r3, .L86+40
+ 855 022a 93ED060A 		vldr.32	s0, [r3, #24]
+ 856              		.loc 1 244 18 view .LVU269
+ 857 022e 5448     		ldr	r0, .L86+84
+ 858 0230 28EE000A 		vmul.f32	s0, s16, s0
+ 859 0234 FFF7FEFF 		bl	singlePIDcontrol
+ 860              	.LVL66:
+ 861              		.loc 1 244 16 view .LVU270
+ 862 0238 554B     		ldr	r3, .L86+100
+ 863 023a 83ED000A 		vstr.32	s0, [r3]
+ 864              	.L61:
+ 245:./User/PID.c  ****     }
+ 246:./User/PID.c  **** 
+ 247:./User/PID.c  ****     // 电机输出（1000 对应 0% 油门，2000 对应 100% 油门）
+ 248:./User/PID.c  ****     motor1 = limit(expMode + pidRoll + pidPitch + pidYaw + pidThr, 1000, 2000);
+ 865              		.loc 1 248 5 is_stmt 1 view .LVU271
+ 866              		.loc 1 248 28 is_stmt 0 view .LVU272
+ 867 023e 424B     		ldr	r3, .L86+28
+ 868 0240 D3ED00BA 		vldr.32	s23, [r3]
+ 869 0244 474B     		ldr	r3, .L86+56
+ 870 0246 93ED008A 		vldr.32	s16, [r3]
+ 871 024a 7BEE888A 		vadd.f32	s17, s23, s16
+ 872              		.loc 1 248 38 view .LVU273
+ 873 024e 484B     		ldr	r3, .L86+68
+ 874 0250 93ED00BA 		vldr.32	s22, [r3]
+ 875 0254 38EE8B0A 		vadd.f32	s0, s17, s22
+ 876              		.loc 1 248 49 view .LVU274
+ 877 0258 4D4B     		ldr	r3, .L86+100
+ 878 025a D3ED00AA 		vldr.32	s21, [r3]
+ 879 025e 30EE2A0A 		vadd.f32	s0, s0, s21
+ 880              		.loc 1 248 14 view .LVU275
+ 881 0262 4F4B     		ldr	r3, .L86+116
+ 882 0264 93ED009A 		vldr.32	s18, [r3]
+ 883 0268 9FED4EAA 		vldr.32	s20, .L86+120
+ 884 026c DFED4E9A 		vldr.32	s19, .L86+124
+ 885 0270 B0EE4A1A 		vmov.f32	s2, s20
+ 886 0274 F0EE690A 		vmov.f32	s1, s19
+ 887 0278 30EE090A 		vadd.f32	s0, s0, s18
+ 888 027c FFF7FEFF 		bl	limit
+ 889              	.LVL67:
+ 890 0280 B0EE40CA 		vmov.f32	s24, s0
+ 891              	.LVL68:
+ 249:./User/PID.c  ****     motor2 = limit(expMode - pidRoll + pidPitch - pidYaw + pidThr, 1000, 2000);
+ 892              		.loc 1 249 5 is_stmt 1 view .LVU276
+ 893              		.loc 1 249 28 is_stmt 0 view .LVU277
+ 894 0284 3BEEC88A 		vsub.f32	s16, s23, s16
+ 895              		.loc 1 249 38 view .LVU278
+ 896 0288 7BEE087A 		vadd.f32	s15, s22, s16
+ 897              		.loc 1 249 49 view .LVU279
+ 898 028c 77EEEA7A 		vsub.f32	s15, s15, s21
+ 899              		.loc 1 249 14 view .LVU280
+ 900 0290 B0EE4A1A 		vmov.f32	s2, s20
+ 901 0294 F0EE690A 		vmov.f32	s1, s19
+ 902 0298 39EE270A 		vadd.f32	s0, s18, s15
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 22
+
+
+ 903              	.LVL69:
+ 904              		.loc 1 249 14 view .LVU281
+ 905 029c FFF7FEFF 		bl	limit
+ 906              	.LVL70:
+ 907 02a0 F0EE40CA 		vmov.f32	s25, s0
+ 908              	.LVL71:
+ 250:./User/PID.c  ****     motor3 = limit(expMode - pidRoll - pidPitch + pidYaw + pidThr, 1000, 2000);
+ 909              		.loc 1 250 5 is_stmt 1 view .LVU282
+ 910              		.loc 1 250 38 is_stmt 0 view .LVU283
+ 911 02a4 38EE4B8A 		vsub.f32	s16, s16, s22
+ 912              		.loc 1 250 49 view .LVU284
+ 913 02a8 3AEE888A 		vadd.f32	s16, s21, s16
+ 914              		.loc 1 250 14 view .LVU285
+ 915 02ac B0EE4A1A 		vmov.f32	s2, s20
+ 916 02b0 F0EE690A 		vmov.f32	s1, s19
+ 917 02b4 39EE080A 		vadd.f32	s0, s18, s16
+ 918              	.LVL72:
+ 919              		.loc 1 250 14 view .LVU286
+ 920 02b8 FFF7FEFF 		bl	limit
+ 921              	.LVL73:
+ 922 02bc B0EE40DA 		vmov.f32	s26, s0
+ 923              	.LVL74:
+ 251:./User/PID.c  ****     motor4 = limit(expMode + pidRoll - pidPitch - pidYaw + pidThr, 1000, 2000);
+ 924              		.loc 1 251 5 is_stmt 1 view .LVU287
+ 925              		.loc 1 251 38 is_stmt 0 view .LVU288
+ 926 02c0 78EECB8A 		vsub.f32	s17, s17, s22
+ 927              		.loc 1 251 49 view .LVU289
+ 928 02c4 78EEEA8A 		vsub.f32	s17, s17, s21
+ 929              		.loc 1 251 14 view .LVU290
+ 930 02c8 B0EE4A1A 		vmov.f32	s2, s20
+ 931 02cc F0EE690A 		vmov.f32	s1, s19
+ 932 02d0 39EE280A 		vadd.f32	s0, s18, s17
+ 933              	.LVL75:
+ 934              		.loc 1 251 14 view .LVU291
+ 935 02d4 FFF7FEFF 		bl	limit
+ 936              	.LVL76:
+ 937 02d8 B0EE408A 		vmov.f32	s16, s0
+ 938              	.LVL77:
+ 252:./User/PID.c  **** 
+ 253:./User/PID.c  ****     if (expMode > 1010) {
+ 939              		.loc 1 253 5 is_stmt 1 view .LVU292
+ 940              		.loc 1 253 8 is_stmt 0 view .LVU293
+ 941 02dc DFED337A 		vldr.32	s15, .L86+128
+ 942 02e0 F4EEE7BA 		vcmpe.f32	s23, s15
+ 943 02e4 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 944 02e8 64DD     		ble	.L84
+ 254:./User/PID.c  ****         TIM_SetCompare1(TIM3, motor1);
+ 945              		.loc 1 254 9 is_stmt 1 view .LVU294
+ 946 02ea 314C     		ldr	r4, .L86+132
+ 947 02ec FCEECC7A 		vcvt.u32.f32	s15, s24
+ 948 02f0 17EE901A 		vmov	r1, s15	@ int
+ 949 02f4 2046     		mov	r0, r4
+ 950 02f6 FFF7FEFF 		bl	TIM_SetCompare1
+ 951              	.LVL78:
+ 255:./User/PID.c  ****         TIM_SetCompare2(TIM3, motor2);
+ 952              		.loc 1 255 9 view .LVU295
+ 953 02fa FCEEEC7A 		vcvt.u32.f32	s15, s25
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 23
+
+
+ 954 02fe 17EE901A 		vmov	r1, s15	@ int
+ 955 0302 2046     		mov	r0, r4
+ 956 0304 FFF7FEFF 		bl	TIM_SetCompare2
+ 957              	.LVL79:
+ 256:./User/PID.c  ****         TIM_SetCompare3(TIM3, motor3);
+ 958              		.loc 1 256 9 view .LVU296
+ 959 0308 FCEECD7A 		vcvt.u32.f32	s15, s26
+ 960 030c 17EE901A 		vmov	r1, s15	@ int
+ 961 0310 2046     		mov	r0, r4
+ 962 0312 FFF7FEFF 		bl	TIM_SetCompare3
+ 963              	.LVL80:
+ 257:./User/PID.c  ****         TIM_SetCompare4(TIM3, motor4);
+ 964              		.loc 1 257 9 view .LVU297
+ 965 0316 FCEEC87A 		vcvt.u32.f32	s15, s16
+ 966 031a 17EE901A 		vmov	r1, s15	@ int
+ 967 031e 2046     		mov	r0, r4
+ 968 0320 FFF7FEFF 		bl	TIM_SetCompare4
+ 969              	.LVL81:
+ 970              	.L34:
+ 258:./User/PID.c  ****         // // BLE_Printf("%4d,%4d,%4d,%4d\n",motor1,motor2,motor3,motor4);
+ 259:./User/PID.c  ****         // OLED_ShowNum(2,1 ,motor1,4);
+ 260:./User/PID.c  ****         // OLED_ShowNum(2,13,motor2,4);
+ 261:./User/PID.c  ****         // OLED_ShowNum(4,1 ,motor4,4);
+ 262:./User/PID.c  ****         // OLED_ShowNum(4,13,motor3,4);
+ 263:./User/PID.c  ****     } else {
+ 264:./User/PID.c  ****         TIM_SetCompare1(TIM3, expMode);
+ 265:./User/PID.c  ****         TIM_SetCompare2(TIM3, expMode);
+ 266:./User/PID.c  ****         TIM_SetCompare3(TIM3, expMode);
+ 267:./User/PID.c  ****         TIM_SetCompare4(TIM3, expMode);
+ 268:./User/PID.c  ****         // OLED_ShowNum(2,1 ,motor1,4);
+ 269:./User/PID.c  ****         // OLED_ShowNum(2,13,motor2,4);
+ 270:./User/PID.c  ****         // OLED_ShowNum(4,1 ,motor4,4);
+ 271:./User/PID.c  ****         // OLED_ShowNum(4,13,motor3,4);
+ 272:./User/PID.c  ****     }
+ 273:./User/PID.c  **** }
+ 971              		.loc 1 273 1 is_stmt 0 view .LVU298
+ 972 0324 BDEC0C8B 		vldm	sp!, {d8-d13}
+ 973              	.LCFI10:
+ 974              		.cfi_remember_state
+ 975              		.cfi_restore 90
+ 976              		.cfi_restore 91
+ 977              		.cfi_restore 88
+ 978              		.cfi_restore 89
+ 979              		.cfi_restore 86
+ 980              		.cfi_restore 87
+ 981              		.cfi_restore 84
+ 982              		.cfi_restore 85
+ 983              		.cfi_restore 82
+ 984              		.cfi_restore 83
+ 985              		.cfi_restore 80
+ 986              		.cfi_restore 81
+ 987              		.cfi_def_cfa_offset 16
+ 988              	.LVL82:
+ 989              		.loc 1 273 1 view .LVU299
+ 990 0328 38BD     		pop	{r3, r4, r5, pc}
+ 991              	.L87:
+ 992 032a 00BF     		.align	2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 24
+
+
+ 993              	.L86:
+ 994 032c 00000000 		.word	CH2
+ 995 0330 0AD7A33C 		.word	1017370378
+ 996 0334 00000000 		.word	.LANCHOR2
+ 997 0338 00000000 		.word	.LANCHOR3
+ 998 033c CDCCCC3D 		.word	1036831949
+ 999 0340 00004842 		.word	1112014848
+ 1000 0344 00000000 		.word	.LANCHOR1
+ 1001 0348 00000000 		.word	.LANCHOR0
+ 1002 034c 0000E144 		.word	1155596288
+ 1003 0350 00000000 		.word	angle
+ 1004 0354 00000000 		.word	GY86DataList
+ 1005 0358 00000000 		.word	RAD_TO_DEGREE
+ 1006 035c 00000000 		.word	.LANCHOR4
+ 1007 0360 00000000 		.word	.LANCHOR5
+ 1008 0364 00000000 		.word	.LANCHOR6
+ 1009 0368 00000000 		.word	.LANCHOR7
+ 1010 036c 00000000 		.word	.LANCHOR8
+ 1011 0370 00000000 		.word	.LANCHOR9
+ 1012 0374 0040B544 		.word	1152729088
+ 1013 0378 00000000 		.word	.LANCHOR10
+ 1014 037c 00000000 		.word	.LANCHOR11
+ 1015 0380 00000000 		.word	.LANCHOR12
+ 1016 0384 00000000 		.word	.LANCHOR13
+ 1017 0388 000034C3 		.word	-1020002304
+ 1018 038c 0000B443 		.word	1135869952
+ 1019 0390 00000000 		.word	.LANCHOR14
+ 1020 0394 000048C2 		.word	-1035468800
+ 1021 0398 00007A44 		.word	1148846080
+ 1022 039c 00003443 		.word	1127481344
+ 1023 03a0 00000000 		.word	.LANCHOR15
+ 1024 03a4 0000FA44 		.word	1157234688
+ 1025 03a8 00007A44 		.word	1148846080
+ 1026 03ac 00807C44 		.word	1149009920
+ 1027 03b0 00040040 		.word	1073742848
+ 1028              	.LVL83:
+ 1029              	.L84:
+ 1030              	.LCFI11:
+ 1031              		.cfi_restore_state
+ 264:./User/PID.c  ****         TIM_SetCompare2(TIM3, expMode);
+ 1032              		.loc 1 264 9 is_stmt 1 view .LVU300
+ 1033 03b4 124C     		ldr	r4, .L88
+ 1034 03b6 FCEEEB7A 		vcvt.u32.f32	s15, s23
+ 1035 03ba 17EE901A 		vmov	r1, s15	@ int
+ 1036 03be 2046     		mov	r0, r4
+ 1037 03c0 FFF7FEFF 		bl	TIM_SetCompare1
+ 1038              	.LVL84:
+ 265:./User/PID.c  ****         TIM_SetCompare3(TIM3, expMode);
+ 1039              		.loc 1 265 9 view .LVU301
+ 1040 03c4 0F4D     		ldr	r5, .L88+4
+ 1041 03c6 D5ED007A 		vldr.32	s15, [r5]
+ 1042 03ca FCEEE77A 		vcvt.u32.f32	s15, s15
+ 1043 03ce 17EE901A 		vmov	r1, s15	@ int
+ 1044 03d2 2046     		mov	r0, r4
+ 1045 03d4 FFF7FEFF 		bl	TIM_SetCompare2
+ 1046              	.LVL85:
+ 266:./User/PID.c  ****         TIM_SetCompare4(TIM3, expMode);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 25
+
+
+ 1047              		.loc 1 266 9 view .LVU302
+ 1048 03d8 D5ED007A 		vldr.32	s15, [r5]
+ 1049 03dc FCEEE77A 		vcvt.u32.f32	s15, s15
+ 1050 03e0 17EE901A 		vmov	r1, s15	@ int
+ 1051 03e4 2046     		mov	r0, r4
+ 1052 03e6 FFF7FEFF 		bl	TIM_SetCompare3
+ 1053              	.LVL86:
+ 267:./User/PID.c  ****         // OLED_ShowNum(2,1 ,motor1,4);
+ 1054              		.loc 1 267 9 view .LVU303
+ 1055 03ea D5ED007A 		vldr.32	s15, [r5]
+ 1056 03ee FCEEE77A 		vcvt.u32.f32	s15, s15
+ 1057 03f2 17EE901A 		vmov	r1, s15	@ int
+ 1058 03f6 2046     		mov	r0, r4
+ 1059 03f8 FFF7FEFF 		bl	TIM_SetCompare4
+ 1060              	.LVL87:
+ 1061              		.loc 1 273 1 is_stmt 0 view .LVU304
+ 1062 03fc 92E7     		b	.L34
+ 1063              	.L89:
+ 1064 03fe 00BF     		.align	2
+ 1065              	.L88:
+ 1066 0400 00040040 		.word	1073742848
+ 1067 0404 00000000 		.word	.LANCHOR0
+ 1068              		.cfi_endproc
+ 1069              	.LFE130:
+ 1071              		.section	.text.TIM4_Init,"ax",%progbits
+ 1072              		.align	1
+ 1073              		.global	TIM4_Init
+ 1074              		.syntax unified
+ 1075              		.thumb
+ 1076              		.thumb_func
+ 1078              	TIM4_Init:
+ 1079              	.LFB131:
+ 274:./User/PID.c  **** 
+ 275:./User/PID.c  **** void TIM4_Init() {
+ 1080              		.loc 1 275 18 is_stmt 1 view -0
+ 1081              		.cfi_startproc
+ 1082              		@ args = 0, pretend = 0, frame = 16
+ 1083              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1084 0000 10B5     		push	{r4, lr}
+ 1085              	.LCFI12:
+ 1086              		.cfi_def_cfa_offset 8
+ 1087              		.cfi_offset 4, -8
+ 1088              		.cfi_offset 14, -4
+ 1089 0002 84B0     		sub	sp, sp, #16
+ 1090              	.LCFI13:
+ 1091              		.cfi_def_cfa_offset 24
+ 276:./User/PID.c  **** 	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
+ 1092              		.loc 1 276 2 view .LVU306
+ 277:./User/PID.c  **** 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
+ 1093              		.loc 1 277 2 view .LVU307
+ 1094 0004 0121     		movs	r1, #1
+ 1095 0006 0420     		movs	r0, #4
+ 1096 0008 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 1097              	.LVL88:
+ 278:./User/PID.c  **** 
+ 279:./User/PID.c  **** 	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+ 1098              		.loc 1 279 2 view .LVU308
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 26
+
+
+ 1099              		.loc 1 279 46 is_stmt 0 view .LVU309
+ 1100 000c 0023     		movs	r3, #0
+ 1101 000e ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 280:./User/PID.c  **** 	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+ 1102              		.loc 1 280 2 is_stmt 1 view .LVU310
+ 1103              		.loc 1 280 44 is_stmt 0 view .LVU311
+ 1104 0012 ADF80630 		strh	r3, [sp, #6]	@ movhi
+ 281:./User/PID.c  **** 	TIM_TimeBaseInitStructure.TIM_Period = 65535;
+ 1105              		.loc 1 281 2 is_stmt 1 view .LVU312
+ 1106              		.loc 1 281 39 is_stmt 0 view .LVU313
+ 1107 0016 4FF6FF73 		movw	r3, #65535
+ 1108 001a 0293     		str	r3, [sp, #8]
+ 282:./User/PID.c  **** 	TIM_TimeBaseInitStructure.TIM_Prescaler = 16 - 1; // 计数器频率为 16MHz
+ 1109              		.loc 1 282 2 is_stmt 1 view .LVU314
+ 1110              		.loc 1 282 42 is_stmt 0 view .LVU315
+ 1111 001c 0F23     		movs	r3, #15
+ 1112 001e ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 283:./User/PID.c  **** 
+ 284:./User/PID.c  **** 	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseInitStructure);
+ 1113              		.loc 1 284 2 is_stmt 1 view .LVU316
+ 1114 0022 074C     		ldr	r4, .L92
+ 1115 0024 01A9     		add	r1, sp, #4
+ 1116 0026 2046     		mov	r0, r4
+ 1117 0028 FFF7FEFF 		bl	TIM_TimeBaseInit
+ 1118              	.LVL89:
+ 285:./User/PID.c  **** 	TIM_ARRPreloadConfig(TIM4, ENABLE);
+ 1119              		.loc 1 285 2 view .LVU317
+ 1120 002c 0121     		movs	r1, #1
+ 1121 002e 2046     		mov	r0, r4
+ 1122 0030 FFF7FEFF 		bl	TIM_ARRPreloadConfig
+ 1123              	.LVL90:
+ 286:./User/PID.c  **** 	TIM_Cmd(TIM4, ENABLE);
+ 1124              		.loc 1 286 2 view .LVU318
+ 1125 0034 0121     		movs	r1, #1
+ 1126 0036 2046     		mov	r0, r4
+ 1127 0038 FFF7FEFF 		bl	TIM_Cmd
+ 1128              	.LVL91:
+ 287:./User/PID.c  **** }...
+ 1129              		.loc 1 287 1 is_stmt 0 view .LVU319
+ 1130 003c 04B0     		add	sp, sp, #16
+ 1131              	.LCFI14:
+ 1132              		.cfi_def_cfa_offset 8
+ 1133              		@ sp needed
+ 1134 003e 10BD     		pop	{r4, pc}
+ 1135              	.L93:
+ 1136              		.align	2
+ 1137              	.L92:
+ 1138 0040 00080040 		.word	1073743872
+ 1139              		.cfi_endproc
+ 1140              	.LFE131:
+ 1142              		.section	.text.pidInit,"ax",%progbits
+ 1143              		.align	1
+ 1144              		.global	pidInit
+ 1145              		.syntax unified
+ 1146              		.thumb
+ 1147              		.thumb_func
+ 1149              	pidInit:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 27
+
+
+ 1150              	.LFB126:
+  56:./User/PID.c  **** void pidInit() {
+ 1151              		.loc 1 56 16 is_stmt 1 view -0
+ 1152              		.cfi_startproc
+ 1153              		@ args = 0, pretend = 0, frame = 0
+ 1154              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1155 0000 08B5     		push	{r3, lr}
+ 1156              	.LCFI15:
+ 1157              		.cfi_def_cfa_offset 8
+ 1158              		.cfi_offset 3, -8
+ 1159              		.cfi_offset 14, -4
+  58:./User/PID.c  ****     rollOuter.Kp = outterkP;
+ 1160              		.loc 1 58 5 view .LVU321
+  58:./User/PID.c  ****     rollOuter.Kp = outterkP;
+ 1161              		.loc 1 58 18 is_stmt 0 view .LVU322
+ 1162 0002 144B     		ldr	r3, .L96
+ 1163 0004 DFF86CE0 		ldr	lr, .L96+32
+ 1164 0008 C3F80CE0 		str	lr, [r3, #12]	@ float
+  59:./User/PID.c  ****     rollOuter.Ki = outterkI;
+ 1165              		.loc 1 59 5 is_stmt 1 view .LVU323
+  59:./User/PID.c  ****     rollOuter.Ki = outterkI;
+ 1166              		.loc 1 59 18 is_stmt 0 view .LVU324
+ 1167 000c 4FF0804C 		mov	ip, #1073741824
+ 1168 0010 C3F810C0 		str	ip, [r3, #16]	@ float
+  60:./User/PID.c  ****     rollOuter.Kd = outterkD;
+ 1169              		.loc 1 60 5 is_stmt 1 view .LVU325
+  60:./User/PID.c  ****     rollOuter.Kd = outterkD;
+ 1170              		.loc 1 60 18 is_stmt 0 view .LVU326
+ 1171 0014 1048     		ldr	r0, .L96+4
+ 1172 0016 5861     		str	r0, [r3, #20]	@ float
+  62:./User/PID.c  ****     rollInner.Kp = innerkP;
+ 1173              		.loc 1 62 5 is_stmt 1 view .LVU327
+  62:./User/PID.c  ****     rollInner.Kp = innerkP;
+ 1174              		.loc 1 62 18 is_stmt 0 view .LVU328
+ 1175 0018 104A     		ldr	r2, .L96+8
+ 1176 001a 1149     		ldr	r1, .L96+12
+ 1177 001c D160     		str	r1, [r2, #12]	@ float
+  63:./User/PID.c  ****     rollInner.Ki = innerkI;
+ 1178              		.loc 1 63 5 is_stmt 1 view .LVU329
+  63:./User/PID.c  ****     rollInner.Ki = innerkI;
+ 1179              		.loc 1 63 18 is_stmt 0 view .LVU330
+ 1180 001e 0023     		movs	r3, #0
+ 1181 0020 1361     		str	r3, [r2, #16]	@ float
+  64:./User/PID.c  ****     rollInner.Kd = innerkD;
+ 1182              		.loc 1 64 5 is_stmt 1 view .LVU331
+  64:./User/PID.c  ****     rollInner.Kd = innerkD;
+ 1183              		.loc 1 64 18 is_stmt 0 view .LVU332
+ 1184 0022 5361     		str	r3, [r2, #20]	@ float
+  67:./User/PID.c  ****     pitchOuter.Kp = outterkP;
+ 1185              		.loc 1 67 5 is_stmt 1 view .LVU333
+  67:./User/PID.c  ****     pitchOuter.Kp = outterkP;
+ 1186              		.loc 1 67 19 is_stmt 0 view .LVU334
+ 1187 0024 0F4A     		ldr	r2, .L96+16
+ 1188 0026 C2F80CE0 		str	lr, [r2, #12]	@ float
+  68:./User/PID.c  ****     pitchOuter.Ki = outterkI;
+ 1189              		.loc 1 68 5 is_stmt 1 view .LVU335
+  68:./User/PID.c  ****     pitchOuter.Ki = outterkI;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 28
+
+
+ 1190              		.loc 1 68 19 is_stmt 0 view .LVU336
+ 1191 002a C2F810C0 		str	ip, [r2, #16]	@ float
+  69:./User/PID.c  ****     pitchOuter.Kd = outterkD;
+ 1192              		.loc 1 69 5 is_stmt 1 view .LVU337
+  69:./User/PID.c  ****     pitchOuter.Kd = outterkD;
+ 1193              		.loc 1 69 19 is_stmt 0 view .LVU338
+ 1194 002e 5061     		str	r0, [r2, #20]	@ float
+  71:./User/PID.c  ****     pitchInner.Kp = innerkP;
+ 1195              		.loc 1 71 5 is_stmt 1 view .LVU339
+  71:./User/PID.c  ****     pitchInner.Kp = innerkP;
+ 1196              		.loc 1 71 19 is_stmt 0 view .LVU340
+ 1197 0030 0D4A     		ldr	r2, .L96+20
+ 1198 0032 D160     		str	r1, [r2, #12]	@ float
+  72:./User/PID.c  ****     pitchInner.Ki = innerkI;
+ 1199              		.loc 1 72 5 is_stmt 1 view .LVU341
+  72:./User/PID.c  ****     pitchInner.Ki = innerkI;
+ 1200              		.loc 1 72 19 is_stmt 0 view .LVU342
+ 1201 0034 1361     		str	r3, [r2, #16]	@ float
+  73:./User/PID.c  ****     pitchInner.Kd = innerkD;
+ 1202              		.loc 1 73 5 is_stmt 1 view .LVU343
+  73:./User/PID.c  ****     pitchInner.Kd = innerkD;
+ 1203              		.loc 1 73 19 is_stmt 0 view .LVU344
+ 1204 0036 5361     		str	r3, [r2, #20]	@ float
+  76:./User/PID.c  ****     yawOuter.Kp = outterkP;
+ 1205              		.loc 1 76 5 is_stmt 1 view .LVU345
+  76:./User/PID.c  ****     yawOuter.Kp = outterkP;
+ 1206              		.loc 1 76 17 is_stmt 0 view .LVU346
+ 1207 0038 0C4A     		ldr	r2, .L96+24
+ 1208 003a C2F80CE0 		str	lr, [r2, #12]	@ float
+  77:./User/PID.c  ****     yawOuter.Ki = outterkI;
+ 1209              		.loc 1 77 5 is_stmt 1 view .LVU347
+  77:./User/PID.c  ****     yawOuter.Ki = outterkI;
+ 1210              		.loc 1 77 17 is_stmt 0 view .LVU348
+ 1211 003e C2F810C0 		str	ip, [r2, #16]	@ float
+  78:./User/PID.c  ****     yawOuter.Kd = outterkD;
+ 1212              		.loc 1 78 5 is_stmt 1 view .LVU349
+  78:./User/PID.c  ****     yawOuter.Kd = outterkD;
+ 1213              		.loc 1 78 17 is_stmt 0 view .LVU350
+ 1214 0042 5061     		str	r0, [r2, #20]	@ float
+  80:./User/PID.c  ****     yawInner.Kp = innerkP;
+ 1215              		.loc 1 80 5 is_stmt 1 view .LVU351
+  80:./User/PID.c  ****     yawInner.Kp = innerkP;
+ 1216              		.loc 1 80 17 is_stmt 0 view .LVU352
+ 1217 0044 0A4A     		ldr	r2, .L96+28
+ 1218 0046 D160     		str	r1, [r2, #12]	@ float
+  81:./User/PID.c  ****     yawInner.Ki = innerkI;
+ 1219              		.loc 1 81 5 is_stmt 1 view .LVU353
+  81:./User/PID.c  ****     yawInner.Ki = innerkI;
+ 1220              		.loc 1 81 17 is_stmt 0 view .LVU354
+ 1221 0048 1361     		str	r3, [r2, #16]	@ float
+  82:./User/PID.c  ****     yawInner.Kd = innerkD;
+ 1222              		.loc 1 82 5 is_stmt 1 view .LVU355
+  82:./User/PID.c  ****     yawInner.Kd = innerkD;
+ 1223              		.loc 1 82 17 is_stmt 0 view .LVU356
+ 1224 004a 5361     		str	r3, [r2, #20]	@ float
+  84:./User/PID.c  ****     TIM4_Init();
+ 1225              		.loc 1 84 5 is_stmt 1 view .LVU357
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 29
+
+
+ 1226 004c FFF7FEFF 		bl	TIM4_Init
+ 1227              	.LVL92:
+  85:./User/PID.c  **** }
+ 1228              		.loc 1 85 1 is_stmt 0 view .LVU358
+ 1229 0050 08BD     		pop	{r3, pc}
+ 1230              	.L97:
+ 1231 0052 00BF     		.align	2
+ 1232              	.L96:
+ 1233 0054 00000000 		.word	.LANCHOR5
+ 1234 0058 9A99993E 		.word	1050253722
+ 1235 005c 00000000 		.word	.LANCHOR4
+ 1236 0060 00004040 		.word	1077936128
+ 1237 0064 00000000 		.word	.LANCHOR8
+ 1238 0068 00000000 		.word	.LANCHOR7
+ 1239 006c 00000000 		.word	.LANCHOR13
+ 1240 0070 00000000 		.word	.LANCHOR12
+ 1241 0074 0000A040 		.word	1084227584
+ 1242              		.cfi_endproc
+ 1243              	.LFE126:
+ 1245              		.global	targetHeight
+ 1246              		.global	targetYaw
+ 1247              		.global	ch5State
+ 1248              		.global	flyState
+ 1249              		.global	yawState
+ 1250              		.global	pidThr
+ 1251              		.global	pidYaw
+ 1252              		.global	pidPitch
+ 1253              		.global	pidRoll
+ 1254              		.global	expMode
+ 1255              		.global	expYaw
+ 1256              		.global	expPitch
+ 1257              		.global	expRoll
+ 1258              		.global	yawInner
+ 1259              		.global	yawOuter
+ 1260              		.global	pitchOuter
+ 1261              		.global	pitchInner
+ 1262              		.global	rollOuter
+ 1263              		.global	rollInner
+ 1264              		.global	TAKEOFF_THROTTLE
+ 1265              		.global	PWM_OUT_MAX
+ 1266              		.global	INNER_INT_MAX
+ 1267              		.global	OUTER_INT_MAX
+ 1268              		.section	.bss.ch5State,"aw",%nobits
+ 1271              	ch5State:
+ 1272 0000 00       		.space	1
+ 1273              		.section	.bss.expMode,"aw",%nobits
+ 1274              		.align	2
+ 1275              		.set	.LANCHOR0,. + 0
+ 1278              	expMode:
+ 1279 0000 00000000 		.space	4
+ 1280              		.section	.bss.expPitch,"aw",%nobits
+ 1281              		.align	2
+ 1282              		.set	.LANCHOR3,. + 0
+ 1285              	expPitch:
+ 1286 0000 00000000 		.space	4
+ 1287              		.section	.bss.expRoll,"aw",%nobits
+ 1288              		.align	2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 30
+
+
+ 1289              		.set	.LANCHOR2,. + 0
+ 1292              	expRoll:
+ 1293 0000 00000000 		.space	4
+ 1294              		.section	.bss.expYaw,"aw",%nobits
+ 1295              		.align	2
+ 1296              		.set	.LANCHOR1,. + 0
+ 1299              	expYaw:
+ 1300 0000 00000000 		.space	4
+ 1301              		.section	.bss.pidPitch,"aw",%nobits
+ 1302              		.align	2
+ 1303              		.set	.LANCHOR9,. + 0
+ 1306              	pidPitch:
+ 1307 0000 00000000 		.space	4
+ 1308              		.section	.bss.pidRoll,"aw",%nobits
+ 1309              		.align	2
+ 1310              		.set	.LANCHOR6,. + 0
+ 1313              	pidRoll:
+ 1314 0000 00000000 		.space	4
+ 1315              		.section	.bss.pidThr,"aw",%nobits
+ 1316              		.align	2
+ 1317              		.set	.LANCHOR15,. + 0
+ 1320              	pidThr:
+ 1321 0000 00000000 		.space	4
+ 1322              		.section	.bss.pidYaw,"aw",%nobits
+ 1323              		.align	2
+ 1324              		.set	.LANCHOR14,. + 0
+ 1327              	pidYaw:
+ 1328 0000 00000000 		.space	4
+ 1329              		.section	.bss.pitchInner,"aw",%nobits
+ 1330              		.align	2
+ 1331              		.set	.LANCHOR7,. + 0
+ 1334              	pitchInner:
+ 1335 0000 00000000 		.space	44
+ 1335      00000000 
+ 1335      00000000 
+ 1335      00000000 
+ 1335      00000000 
+ 1336              		.section	.bss.pitchOuter,"aw",%nobits
+ 1337              		.align	2
+ 1338              		.set	.LANCHOR8,. + 0
+ 1341              	pitchOuter:
+ 1342 0000 00000000 		.space	44
+ 1342      00000000 
+ 1342      00000000 
+ 1342      00000000 
+ 1342      00000000 
+ 1343              		.section	.bss.rollInner,"aw",%nobits
+ 1344              		.align	2
+ 1345              		.set	.LANCHOR4,. + 0
+ 1348              	rollInner:
+ 1349 0000 00000000 		.space	44
+ 1349      00000000 
+ 1349      00000000 
+ 1349      00000000 
+ 1349      00000000 
+ 1350              		.section	.bss.rollOuter,"aw",%nobits
+ 1351              		.align	2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 31
+
+
+ 1352              		.set	.LANCHOR5,. + 0
+ 1355              	rollOuter:
+ 1356 0000 00000000 		.space	44
+ 1356      00000000 
+ 1356      00000000 
+ 1356      00000000 
+ 1356      00000000 
+ 1357              		.section	.bss.targetYaw,"aw",%nobits
+ 1358              		.align	2
+ 1359              		.set	.LANCHOR11,. + 0
+ 1362              	targetYaw:
+ 1363 0000 00000000 		.space	4
+ 1364              		.section	.bss.yawInner,"aw",%nobits
+ 1365              		.align	2
+ 1366              		.set	.LANCHOR12,. + 0
+ 1369              	yawInner:
+ 1370 0000 00000000 		.space	44
+ 1370      00000000 
+ 1370      00000000 
+ 1370      00000000 
+ 1370      00000000 
+ 1371              		.section	.bss.yawOuter,"aw",%nobits
+ 1372              		.align	2
+ 1373              		.set	.LANCHOR13,. + 0
+ 1376              	yawOuter:
+ 1377 0000 00000000 		.space	44
+ 1377      00000000 
+ 1377      00000000 
+ 1377      00000000 
+ 1377      00000000 
+ 1378              		.section	.bss.yawState,"aw",%nobits
+ 1379              		.set	.LANCHOR10,. + 0
+ 1382              	yawState:
+ 1383 0000 00       		.space	1
+ 1384              		.section	.data.flyState,"aw"
+ 1387              	flyState:
+ 1388 0000 01       		.byte	1
+ 1389              		.section	.data.targetHeight,"aw"
+ 1390              		.align	2
+ 1393              	targetHeight:
+ 1394 0000 00004843 		.word	1128792064
+ 1395              		.section	.rodata.INNER_INT_MAX,"a"
+ 1396              		.align	2
+ 1399              	INNER_INT_MAX:
+ 1400 0000 00002042 		.word	1109393408
+ 1401              		.section	.rodata.OUTER_INT_MAX,"a"
+ 1402              		.align	2
+ 1405              	OUTER_INT_MAX:
+ 1406 0000 00002042 		.word	1109393408
+ 1407              		.section	.rodata.PWM_OUT_MAX,"a"
+ 1408              		.align	2
+ 1411              	PWM_OUT_MAX:
+ 1412 0000 00009643 		.word	1133903872
+ 1413              		.section	.rodata.TAKEOFF_THROTTLE,"a"
+ 1414              		.align	2
+ 1417              	TAKEOFF_THROTTLE:
+ 1418 0000 0040B544 		.word	1152729088
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 32
+
+
+ 1419              		.text
+ 1420              	.Letext0:
+ 1421              		.file 2 "./User/PID.h"
+ 1422              		.file 3 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1423              		.file 4 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 1424              		.file 5 "./CORE/stm32f4xx.h"
+ 1425              		.file 6 "./Library/stm32f4xx_tim.h"
+ 1426              		.file 7 "./User/AHRS.h"
+ 1427              		.file 8 "./Hardware/GY86.h"
+ 1428              		.file 9 "./Library/stm32f4xx_rcc.h"
+ 1429              		.file 10 "./Hardware/Receiver.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 33
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 PID.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:20     .text.limit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:25     .text.limit:0000000000000000 limit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:62     .text.serialPIDcontrol:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:68     .text.serialPIDcontrol:0000000000000000 serialPIDcontrol
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:276    .text.serialPIDcontrol:0000000000000130 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:287    .text.singlePIDcontrol:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:293    .text.singlePIDcontrol:0000000000000000 singlePIDcontrol
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:428    .text.singlePIDcontrol:00000000000000b8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:440    .text.pidControl:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:446    .text.pidControl:0000000000000000 pidControl
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:994    .text.pidControl:000000000000032c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1033   .text.pidControl:00000000000003b4 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1066   .text.pidControl:0000000000000400 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1072   .text.TIM4_Init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1078   .text.TIM4_Init:0000000000000000 TIM4_Init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1138   .text.TIM4_Init:0000000000000040 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1143   .text.pidInit:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1149   .text.pidInit:0000000000000000 pidInit
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1233   .text.pidInit:0000000000000054 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1393   .data.targetHeight:0000000000000000 targetHeight
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1362   .bss.targetYaw:0000000000000000 targetYaw
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1271   .bss.ch5State:0000000000000000 ch5State
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1387   .data.flyState:0000000000000000 flyState
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1382   .bss.yawState:0000000000000000 yawState
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1320   .bss.pidThr:0000000000000000 pidThr
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1327   .bss.pidYaw:0000000000000000 pidYaw
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1306   .bss.pidPitch:0000000000000000 pidPitch
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1313   .bss.pidRoll:0000000000000000 pidRoll
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1278   .bss.expMode:0000000000000000 expMode
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1299   .bss.expYaw:0000000000000000 expYaw
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1285   .bss.expPitch:0000000000000000 expPitch
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1292   .bss.expRoll:0000000000000000 expRoll
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1369   .bss.yawInner:0000000000000000 yawInner
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1376   .bss.yawOuter:0000000000000000 yawOuter
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1341   .bss.pitchOuter:0000000000000000 pitchOuter
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1334   .bss.pitchInner:0000000000000000 pitchInner
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1355   .bss.rollOuter:0000000000000000 rollOuter
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1348   .bss.rollInner:0000000000000000 rollInner
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1417   .rodata.TAKEOFF_THROTTLE:0000000000000000 TAKEOFF_THROTTLE
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1411   .rodata.PWM_OUT_MAX:0000000000000000 PWM_OUT_MAX
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1399   .rodata.INNER_INT_MAX:0000000000000000 INNER_INT_MAX
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1405   .rodata.OUTER_INT_MAX:0000000000000000 OUTER_INT_MAX
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1272   .bss.ch5State:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1274   .bss.expMode:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1281   .bss.expPitch:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1288   .bss.expRoll:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1295   .bss.expYaw:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1302   .bss.pidPitch:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1309   .bss.pidRoll:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1316   .bss.pidThr:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1323   .bss.pidYaw:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1330   .bss.pitchInner:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1337   .bss.pitchOuter:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1344   .bss.rollInner:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1351   .bss.rollOuter:0000000000000000 $d
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s 			page 34
+
+
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1358   .bss.targetYaw:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1365   .bss.yawInner:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1372   .bss.yawOuter:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1383   .bss.yawState:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1390   .data.targetHeight:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1396   .rodata.INNER_INT_MAX:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1402   .rodata.OUTER_INT_MAX:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1408   .rodata.PWM_OUT_MAX:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc6lWmfT.s:1414   .rodata.TAKEOFF_THROTTLE:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+deltaT
+TIM_SetCompare1
+TIM_SetCompare2
+TIM_SetCompare3
+TIM_SetCompare4
+CH2
+angle
+GY86DataList
+RAD_TO_DEGREE
+RCC_APB1PeriphClockCmd
+TIM_TimeBaseInit
+TIM_ARRPreloadConfig
+TIM_Cmd

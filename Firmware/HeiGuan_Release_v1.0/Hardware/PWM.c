@@ -31,9 +31,9 @@ void PWM_Init()
 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource1,GPIO_AF_TIM3);
 	//��ʼ��TIM3��ʱ����Ԫ,PWM����Ϊ20ms����50HzƵ��.ÿ0.02�����2000��
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-	TIM_TimeBaseStructure.TIM_Prescaler = 161 -1;
+	TIM_TimeBaseStructure.TIM_Prescaler = 16 -1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseStructure.TIM_Period = 2000 -1;
+	TIM_TimeBaseStructure.TIM_Period = 20000 -1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);
 	//��ʼ��TIM3CH1~4��PWM���ģʽ
@@ -70,10 +70,10 @@ void Motor_Init()
 	PWM_Init();
 }
 
-void Motor_SetSpeed_All(int8_t speed)
+void Motor_SetSpeed_All(uint16_t speed)
 {
-	speed = speed < 100 ? (speed > 0 ? speed : 0) : 100;
-	PWM_SetCompareAll(speed+100);
+	speed = speed < 2000 ? (speed > 1000 ? speed : 1000) : 2000;
+	PWM_SetCompareAll(speed);
 }	
 
 

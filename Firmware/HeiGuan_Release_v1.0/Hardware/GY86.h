@@ -5,24 +5,25 @@
 #include "stm32f4xx.h"
 #include "Delay.h"
 #include "MyIIC.h"
+#include "Parameters.h"
 
 
 /* Public Variables -------------------------------------------------------------------*/
-struct GY86_Data{
-	int16_t AX;
-	int16_t AY;
-	int16_t AZ;
+typedef struct {
+	float AX;
+	float AY;
+	float AZ;
 	int16_t CORE_Temperature;
-	int16_t GX;
-	int16_t GY;
-	int16_t GZ;
-	int16_t GaX;
-	int16_t GaY;
-	int16_t GaZ;
-	int32_t Height;
-};
+	float GX;
+	float GY;
+	float GZ;
+	float GaX;
+	float GaY;
+	float GaZ;
+	float Height;
+}GY86_Data;
 
-extern struct GY86_Data GY86DataList;
+extern volatile GY86_Data GY86DataList;
 
 /* Public Functions -------------------------------------------------------------------*/
 

@@ -20,25 +20,23 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#define DEBUG
 
-/** @addtogroup Template_Project
-  * @{
-  */ 
+volatile float deltaT = 0.003f;
+Angle angle;
+float height = 0.0f;
+int8_t correctFlag = -1;
+// quaternion of sensor frame relative to auxiliary frame
+volatile float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
+float rollOffset=-2.14783647,pitchOffset = 2.14783647,rollOffsetSum, pitchOffsetSum;
 
-/* Private typedef -----------------------------------------------------------*/
-
-/* Private define ------------------------------------------------------------*/
-
-/* Private macro -------------------------------------------------------------*/
-
-/* Private variables ---------------------------------------------------------*/
-static __IO uint32_t uwTimingDelay;
-RCC_ClocksTypeDef RCC_Clocks;
-
-/* Private function prototypes -----------------------------------------------*/
-
-
-/* Private functions ---------------------------------------------------------*/
+void toEulerAngles(Angle *angle) {
+	angle->yaw = atan2(2 * q1 * q2  + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3* q3 + 1) * RAD_TO_DEGREE; 				// yaw, z-axis
+	// angle->pitch = asin(-2 * q1 * q3 + 2 * q0* q2) * RAD_TO_DEGREE - pitchOffset; 							    // pitch x-axis
+	// angle->roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1) * RAD_TO_DEGREE - rollOffset; // roll y-axis
+  angle->roll = asin(-2 * q1 * q3 + 2 * q0* q2) * RAD_TO_DEGREE - pitchOffset; 							    // pitch x-axis
+	angle->pitch = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1) * RAD_TO_DEGREE - rollOffset; // roll y-axis
+}
 
 /**
   * @brief  Main program
@@ -47,30 +45,6 @@ RCC_ClocksTypeDef RCC_Clocks;
   */
 int main(void)
 {
-	
-	
-	
-/* System -------------------------------------------------------------------*/ 
- 
-  /*!< At this stage the microcontroller clock setting is already configured, 
-       this is done through SystemInit() function which is called from startup
-       files before to branch to application main.
-       To reconfigure the default setting of SystemInit() function, 
-       refer to system_stm32f4xx.c file */
-
-  /* SysTick end of count event each 10ms */
-  RCC_GetClocksFreq(&RCC_Clocks);
-  SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
-  
-  /* Add your application code here */
-  /* Insert 50 ms delay */
-  Delay(5);
-  
-	
-	
-	
-	
-	
 /* Initials -------------------------------------------------------------------*/ 
 	LD2_init();
 	GY86_init();
@@ -81,108 +55,235 @@ int main(void)
 	Motor_Init();
 	LD2_ON();
   LoadParameters();
-	// while(1)
-	{
-		// GY86_GetData();
-    OLED_ShowSignedNum(1,1,params_ram.test,6);
-		// OLED_ShowSignedNum(1,1,GY86DataList.AX,5);
-		// OLED_ShowSignedNum(2,1,GY86DataList.AY,5);
-		// OLED_ShowSignedNum(3,1,GY86DataList.AZ,5);
-		// OLED_ShowSignedNum(1,8,GY86DataList.GX,5);
-		// OLED_ShowSignedNum(2,8,GY86DataList.GY,5);
-		// OLED_ShowSignedNum(3,8,GY86DataList.GZ,5);
-		
-		// OLED_ShowSignedNum(4,1,GY86DataList.GaX,5);
-		// OLED_ShowSignedNum(4,8,GY86DataList.GaY,5);
-	
-		Delay_s(3);
-    params_ram.test = 19198;
-    StoreParameters();
-    LoadParameters();
-    OLED_ShowSignedNum(1,1,params_ram.test,6);
-		// OLED2_ShowNum(1,1,CH2[1],5);
-		// OLED2_ShowNum(1,8,CH2[2],5);
-		
-		// OLED2_ShowNum(2,1,CH2[3],5);
-		// OLED2_ShowNum(2,8,CH2[4],5);
-		
-		// OLED2_ShowNum(3,1,CH2[5],5);
-		// OLED2_ShowNum(3,8,CH2[6],5);
-
-    // OLED2_ShowNum(4,1,CH2[7],5);
-		// OLED2_ShowNum(4,8,CH2[8],5);
-		
-		// BLE_Printf("Acc:%d-%d-%d\n",GY86DataList.AX,GY86DataList.AY,GY86DataList.AZ);
-		// BLE_Printf("G:%d-%d-%d\n",GY86DataList.GX,GY86DataList.GY,GY86DataList.GZ);
-
-//		BLE_Printf("CH[1]:%d  CH[2]:%d\n",CH2[1],CH2[2]);
-//		BLE_Printf("CH[3]:%d  CH[4]:%d\n",CH2[3],CH2[4]);
-//		BLE_Printf("CH[5]:%d  CH[6]:%d\n",CH2[5],CH2[6]);
-//		BLE_Printf("CH[7]:%d  CH[8]:%d\n",CH2[7],CH2[8]);
-
-		// Motor_SetSpeed_All((CH2[3]/10)-100);
-		
-	}
-
-//	LD2_OFF();
-//	PWM_SetCompare1(140-1);
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-  * @brief  Inserts a delay time.
-  * @param  nTime: specifies the delay time length, in milliseconds.
-  * @retval None
-  */
-void Delay(__IO uint32_t nTime)
-{ 
-  uwTimingDelay = nTime;
-
-  while(uwTimingDelay != 0);
-}
-
-/**
-  * @brief  Decrements the TimingDelay variable.
-  * @param  None
-  * @retval None
-  */
-void TimingDelay_Decrement(void)
-{
-  if (uwTimingDelay != 0x00)
-  { 
-    uwTimingDelay--;
+  pidInit();
+  while (1)
+  {
+    int8_t boot_delay_s_times = 0;
+    int8_t boot_flag = 0;
+    int8_t para_flag = 0;
+    int8_t para_PID_flag = 0;
+    int8_t para_IMU_flag = 0;
+    int8_t para_baro_flag = 0;
+    int8_t save_flag = 0;
+    OLED_ShowString(1,5,"HEI GUAN");
+    if (CH2[5]<1100){
+      OLED_ShowString(2,1,"* Boot Engines  ");
+      OLED_ShowString(3,1,"  Parameter set ");
+      OLED_ShowString(4,1,"  Save Changes  ");
+      while (CH2[2]>1900 && CH2[1]<1100 && CH2[1] <1100 && CH2[2]>1900){
+        Delay_s(1);
+        boot_delay_s_times++;
+        if (boot_delay_s_times==2){boot_flag = 1;break;}
+      }
+      while (boot_flag){
+        GY86_GetData();
+        #ifdef DEBUG
+        // Motor_SetSpeed_All((CH2[3]));
+        // OLED_ShowString(2,1,"AX:");
+        // OLED_ShowString(3,1,"AY:"); 
+        // OLED_ShowString(4,1,"AZ:");
+        // OLED_ShowFNum(2,4,GY86DataList.AX,10,8);
+        // OLED_ShowFNum(3,4,GY86DataList.AY,10,8);
+        // OLED_ShowFNum(4,4,GY86DataList.AZ,10,8);
+        // OLED2_ShowString(2,1,"GX:");
+        // OLED2_ShowString(3,1,"GY:");
+        // OLED2_ShowString(4,1,"GZ:");
+        // OLED2_ShowFNum(2,4,GY86DataList.GX,10,8);
+        // OLED2_ShowFNum(3,4,GY86DataList.GY,10,8);
+        // OLED2_ShowFNum(4,4,GY86DataList.GZ,10,8);
+        // sendInfo();
+        #endif
+        deltaT = TIM4->CNT / 1000000.0f;
+		    TIM4->CNT = 0;
+        MahonyAHRSupdate(GY86DataList.GX , GY86DataList.GY , GY86DataList.GZ , 
+						             GY86DataList.AX , GY86DataList.AY , GY86DataList.AZ , 
+                         GY86DataList.GaX, GY86DataList.GaY, GY86DataList.GaZ);
+        pidControl();
+        toEulerAngles(&angle);
+        if (angle.roll > 90 || angle.pitch>90)
+        {
+          boot_flag = 0;
+        }
+        
+        if (correctFlag != -1) {
+          if (correctFlag == 0) {
+            rollOffsetSum = params_ram.rollOffset = 0.0f;
+            pitchOffsetSum = params_ram.pitchOffset = 0.0f;
+          }
+          rollOffsetSum += angle.roll;
+          pitchOffsetSum += angle.pitch;
+          if (++correctFlag == 100) {
+            rollOffset = rollOffsetSum / 100.0f;
+            pitchOffset = pitchOffsetSum / 100.0f;
+            correctFlag = -1;
+            // StoreParameters();
+            // LoadParameters();
+            OLED_ShowFNum(2,1,pitchOffset,10,9);
+            OLED_ShowFNum(3,1,rollOffset,10,9);
+            Delay_s(10);
+          }
+        }
+        if (boot_delay_s_times<2) boot_delay_s_times++;
+        while (CH2[6] >1900){
+          Motor_SetSpeed_All(0);
+          correctFlag = 0;
+          Delay_s(1);
+          boot_delay_s_times--;
+          if (boot_delay_s_times==0){boot_flag = 0;break;}
+        }
+      }
+    }else if(CH2[5]<1600){ 
+      OLED_ShowString(2,1,"  Boot Engines  ");
+      OLED_ShowString(3,1,"* Parameter set ");
+      OLED_ShowString(4,1,"  Save Changes  ");
+      if (CH2[6] >1900) para_flag = 1;
+      while (para_flag)
+      {
+        Delay_ms(100);
+        if (CH2[5]<1100){  
+          OLED_ShowString(2,1,"* PID setting   ");
+          OLED_ShowString(3,1,"  IMU calibrate ");
+          OLED_ShowString(4,1,"  Baro calibrate");
+          if (CH2[6] >1900) para_PID_flag = 1;
+          while (para_PID_flag)
+          {
+            while (CH2[5]<1100&&para_PID_flag){  
+              OLED_ShowString(2,1,"* kp:");
+              OLED_ShowString(3,1,"  ki:");
+              OLED_ShowString(4,1,"  kd:");
+              OLED_ShowFNum(2,6,params_ram.kp,8,3);
+              OLED_ShowFNum(3,6,params_ram.ki,8,3);
+              OLED_ShowFNum(4,6,params_ram.kd,8,3);
+              if (CH2[4]<1100){
+                params_ram.kp = params_ram.kp -1;
+                Delay_s(1);
+              }else if(CH2[4]>1100&&CH2[4]<1200){
+                params_ram.kp = params_ram.kp -0.1;
+                Delay_ms(500);
+              }else if(CH2[4]>1200&&CH2[4]<1400){
+                params_ram.kp = params_ram.kp -0.05;
+                Delay_ms(500);
+              }else if(CH2[4]>1600&&CH2[4]<1800){
+                params_ram.kp = params_ram.kp +0.05;
+                Delay_ms(500);
+              }else if(CH2[4]>1800&&CH2[4]<1900){
+                params_ram.kp = params_ram.kp +0.1;
+                Delay_ms(500);
+              }else if(CH2[4]>1900){
+                params_ram.kp = params_ram.kp +1;
+                Delay_s(1);
+              }
+              if (CH2[1]<1100) {para_PID_flag = 0;}
+              Delay_ms(500);
+            }
+            while (CH2[5]>1200&&CH2[5]<1800&&para_PID_flag){ 
+              OLED_ShowString(2,1,"  kp:");
+              OLED_ShowString(3,1,"* ki:");
+              OLED_ShowString(4,1,"  kd:");
+              OLED_ShowFNum(2,6,params_ram.kp,8,3);
+              OLED_ShowFNum(3,6,params_ram.ki,8,3);
+              OLED_ShowFNum(4,6,params_ram.kd,8,3);
+              if (CH2[4]<1100){
+                params_ram.ki = params_ram.ki -1;
+                Delay_s(1);
+              }else if(CH2[4]>1100&&CH2[4]<1200){
+                params_ram.ki = params_ram.ki -0.1;
+                Delay_ms(500);
+              }else if(CH2[4]>1200&&CH2[4]<1400){
+                params_ram.ki = params_ram.ki -0.05;
+                Delay_ms(500);
+              }else if(CH2[4]>1600&&CH2[4]<1800){
+                params_ram.ki = params_ram.ki +0.05;
+                Delay_ms(500);
+              }else if(CH2[4]>1800&&CH2[4]<1900){
+                params_ram.ki = params_ram.ki +0.1;
+                Delay_ms(500);
+              }else if(CH2[4]>1900){
+                params_ram.ki = params_ram.ki +1;
+                Delay_s(1);
+              }
+              if (CH2[1]<1100) {para_PID_flag = 0;}
+              Delay_ms(500);
+            }
+            while (CH2[5]>1800&&para_PID_flag){  
+              OLED_ShowString(2,1,"  kp:");
+              OLED_ShowString(3,1,"  ki:");
+              OLED_ShowString(4,1,"* kd:");
+              OLED_ShowFNum(2,6,params_ram.kp,8,3);
+              OLED_ShowFNum(3,6,params_ram.ki,8,3);
+              OLED_ShowFNum(4,6,params_ram.kd,8,3);
+              if (CH2[4]<1100){
+                params_ram.kd = params_ram.kd -1;
+                Delay_s(1);
+              }else if(CH2[4]>1100&&CH2[4]<1200){
+                params_ram.kd = params_ram.kd -0.1;
+                Delay_ms(500);
+              }else if(CH2[4]>1200&&CH2[4]<1400){
+                params_ram.kd = params_ram.kd -0.05;
+                Delay_ms(500);
+              }else if(CH2[4]>1600&&CH2[4]<1800){
+                params_ram.kd = params_ram.kd +0.05;
+                Delay_ms(500);
+              }else if(CH2[4]>1800&&CH2[4]<1900){
+                params_ram.kd = params_ram.kd +0.1;
+                Delay_ms(500);
+              }else if(CH2[4]>1900){
+                params_ram.kd = params_ram.kd +1;
+                Delay_s(1);
+              }
+              if (CH2[1]<1100) {para_PID_flag = 0;}
+              Delay_ms(500);
+            }
+          }       
+        }else if(CH2[5]<1600){
+          OLED_ShowString(2,1,"  PID setting   ");
+          OLED_ShowString(3,1,"* IMU calibrate ");
+          OLED_ShowString(4,1,"  Baro calibrate");
+          if (CH2[6] >1900) para_IMU_flag = 1;
+          while (para_IMU_flag)
+          {
+            OLED_ShowString(2,1," IMU calibrating");
+            OLED_ShowString(3,1,"                ");
+            OLED_ShowString(4,1,"                ");
+            IMU_Calibrate();
+            OLED_ShowString(2,1," IMU calibrating");
+            OLED_ShowString(3,1,"    Success!    ");
+            OLED_ShowString(4,1,"                ");
+            para_IMU_flag = 0;
+            Delay_ms(500);
+          }
+        }else{
+          OLED_ShowString(2,1,"  PID setting   ");
+          OLED_ShowString(3,1,"  IMU calibrate ");
+          OLED_ShowString(4,1,"* Baro calibrate");
+          if (CH2[6] >1900) para_baro_flag = 1;
+          while (para_baro_flag)
+          {  
+            OLED_ShowString(2,1,"Baro calibrating");
+            OLED_ShowString(3,1,"                ");
+            OLED_ShowString(4,1,"                ");
+            // Baro_Calibrate();
+            if (CH2[1]<1100) {para_baro_flag = 0;}
+            Delay_ms(500);
+          }
+        }
+        if (CH2[1]<1100) {para_flag = 0;}
+      }    
+    }else{    
+      OLED_ShowString(2,1,"  Boot Engines  ");
+      OLED_ShowString(3,1,"  Parameter set ");
+      OLED_ShowString(4,1,"* Save Changes  ");
+      if (CH2[6] >1900) save_flag = 1;
+      while (save_flag)
+      {
+        OLED_ShowString(2,1," Saving Changes!");
+        OLED_ShowString(3,1,"                ");
+        OLED_ShowString(4,1,"                ");
+        StoreParameters();
+        LoadParameters();
+        save_flag = 0;
+      }
+    }
   }
 }
-
-
-
 

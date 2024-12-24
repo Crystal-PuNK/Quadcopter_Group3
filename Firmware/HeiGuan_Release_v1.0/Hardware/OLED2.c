@@ -615,4 +615,48 @@ void OLED2_Init(void)
 }
 
 
-
+/**
+  * @brief  OLED显示浮点数字（十进制，带符号数）
+  * @param  Line 起始行位置，范围：1~4
+  * @param  Column 起始列位置，范围：1~16
+  * @param  Number 要显示的数字
+  * @param  Length 要显示数字的长度，范围：1~10
+  * @param  Flength 要显示的小数点后几位
+  * @retval 无
+  */
+void OLED2_ShowFNum(uint8_t Line, uint8_t Column, float Number, uint8_t Length,uint8_t Flength)
+{
+    uint8_t i;
+    uint8_t flag = 1;
+    float Number1;
+    uint32_t Number2;
+    if (Number >= 0)
+    {
+        OLED2_ShowChar(Line, Column, '+');
+        Number1 = Number;
+    }
+    else
+    {
+        OLED2_ShowChar(Line, Column, '-');
+        Number1 = -Number;
+    }
+    //将浮点数转换成整数然后显示
+    Number2 = (int)(Number1 * OLED2_Pow(10,Flength));
+    
+    
+    for (i = Length; i > 0; i--)                            
+    {
+        if(i == (Length - Flength))
+        {
+            OLED2_ShowChar(Line,Column + i + flag,'.');
+            flag = 0;
+            OLED2_ShowChar(Line, Column + i + flag, Number2 / OLED2_Pow(10, Length - i) % 10 + '0');
+        }
+        else
+        {
+            OLED2_ShowChar(Line, Column + i + flag, Number2 / OLED2_Pow(10, Length - i) % 10 + '0');
+        }
+        
+    }    
+        
+}
