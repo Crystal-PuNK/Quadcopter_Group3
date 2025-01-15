@@ -1,0 +1,305 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Systick.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.HSE_SetSysClock,"ax",%progbits
+  20              		.align	1
+  21              		.global	HSE_SetSysClock
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	HSE_SetSysClock:
+  27              	.LVL0:
+  28              	.LFB123:
+  29              		.file 1 "./User/Systick.c"
+   1:./User/Systick.c **** /*
+   2:./User/Systick.c **** * 使用HSE时，设置系统时钟的步骤
+   3:./User/Systick.c **** * 1、开启HSE ，并等待 HSE 稳定
+   4:./User/Systick.c **** * 2、设置 AHB、APB2、APB1的预分频因子
+   5:./User/Systick.c **** * 3、设置PLL的时钟来源
+   6:./User/Systick.c **** *    设置VCO输入时钟 分频因子        m
+   7:./User/Systick.c **** *    设置VCO输出时钟 倍频因子        n
+   8:./User/Systick.c **** *    设置PLLCLK时钟分频因子          p
+   9:./User/Systick.c **** *    设置OTG FS,SDIO,RNG时钟分频因子 q
+  10:./User/Systick.c **** * 4、开启PLL，并等待PLL稳定
+  11:./User/Systick.c **** * 5、把PLLCK切换为系统时钟SYSCLK
+  12:./User/Systick.c **** * 6、读取时钟切换状态位，确保PLLCLK被选为系统时钟
+  13:./User/Systick.c **** */
+  14:./User/Systick.c **** 
+  15:./User/Systick.c **** /*
+  16:./User/Systick.c **** * m: VCO输入时钟 分频因子，取值2~63
+  17:./User/Systick.c **** * n: VCO输出时钟 倍频因子，取值192~432
+  18:./User/Systick.c **** * p: PLLCLK时钟分频因子  ，取值2，4，6，8
+  19:./User/Systick.c **** * q: OTG FS,SDIO,RNG时钟分频因子，取值4~15
+  20:./User/Systick.c **** * 函数调用举例，使用HSE设置时钟
+  21:./User/Systick.c **** * SYSCLK=HCLK=168M,PCLK2=HCLK/2=84M,PCLK1=HCLK/4=42M
+  22:./User/Systick.c **** * HSE_SetSysClock(25, 336, 2, 7);
+  23:./User/Systick.c **** * HSE作为时钟来源，经过PLL倍频作为系统时钟，这是通常的做法
+  24:./User/Systick.c **** 
+  25:./User/Systick.c **** * 系统时钟超频到216M爽一下
+  26:./User/Systick.c **** * HSE_SetSysClock(25, 432, 2, 9);
+  27:./User/Systick.c **** */
+  28:./User/Systick.c **** 
+  29:./User/Systick.c **** #include "Systick.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s 			page 2
+
+
+  30:./User/Systick.c **** #include "stm32f4xx_rcc.h"
+  31:./User/Systick.c **** 
+  32:./User/Systick.c **** 
+  33:./User/Systick.c **** void HSE_SetSysClock(uint32_t m, uint32_t n, uint32_t p, uint32_t q)
+  34:./User/Systick.c **** {
+  30              		.loc 1 34 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 34 1 is_stmt 0 view .LVU1
+  35 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 20
+  38              		.cfi_offset 4, -20
+  39              		.cfi_offset 5, -16
+  40              		.cfi_offset 6, -12
+  41              		.cfi_offset 7, -8
+  42              		.cfi_offset 14, -4
+  43 0002 85B0     		sub	sp, sp, #20
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 40
+  46 0004 0446     		mov	r4, r0
+  47 0006 0D46     		mov	r5, r1
+  48 0008 1646     		mov	r6, r2
+  49 000a 1F46     		mov	r7, r3
+  35:./User/Systick.c ****     __IO uint32_t HSEStartUpStatus = 0;
+  50              		.loc 1 35 5 is_stmt 1 view .LVU2
+  51              		.loc 1 35 19 is_stmt 0 view .LVU3
+  52 000c 0022     		movs	r2, #0
+  53              	.LVL1:
+  54              		.loc 1 35 19 view .LVU4
+  55 000e 0392     		str	r2, [sp, #12]
+  36:./User/Systick.c **** 
+  37:./User/Systick.c ****     // 使能HSE，开启外部晶振，野火F407使用 HSE=25M
+  38:./User/Systick.c ****     RCC_HSEConfig(RCC_HSE_ON);
+  56              		.loc 1 38 5 is_stmt 1 view .LVU5
+  57 0010 0120     		movs	r0, #1
+  58              	.LVL2:
+  59              		.loc 1 38 5 is_stmt 0 view .LVU6
+  60 0012 FFF7FEFF 		bl	RCC_HSEConfig
+  61              	.LVL3:
+  39:./User/Systick.c **** 
+  40:./User/Systick.c ****     // 等待HSE启动稳定
+  41:./User/Systick.c ****     HSEStartUpStatus = RCC_WaitForHSEStartUp();
+  62              		.loc 1 41 5 is_stmt 1 view .LVU7
+  63              		.loc 1 41 24 is_stmt 0 view .LVU8
+  64 0016 FFF7FEFF 		bl	RCC_WaitForHSEStartUp
+  65              	.LVL4:
+  66              		.loc 1 41 22 view .LVU9
+  67 001a 0390     		str	r0, [sp, #12]
+  42:./User/Systick.c **** 
+  43:./User/Systick.c ****     if (HSEStartUpStatus == SUCCESS) {
+  68              		.loc 1 43 5 is_stmt 1 view .LVU10
+  69              		.loc 1 43 26 is_stmt 0 view .LVU11
+  70 001c 039A     		ldr	r2, [sp, #12]
+  71              		.loc 1 43 8 view .LVU12
+  72 001e 012A     		cmp	r2, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s 			page 3
+
+
+  73 0020 00D0     		beq	.L8
+  74              	.L2:
+  44:./User/Systick.c ****         // 调压器电压输出级别配置为1，以便在器件为最大频率
+  45:./User/Systick.c ****         // 工作时使性能和功耗实现平衡
+  46:./User/Systick.c ****         RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+  47:./User/Systick.c ****         PWR->CR |= PWR_CR_VOS;
+  48:./User/Systick.c **** 
+  49:./User/Systick.c ****         // HCLK = SYSCLK / 1
+  50:./User/Systick.c ****         RCC_HCLKConfig(RCC_SYSCLK_Div1);
+  51:./User/Systick.c **** 
+  52:./User/Systick.c ****         // PCLK2 = HCLK / 2
+  53:./User/Systick.c ****         RCC_PCLK2Config(RCC_HCLK_Div1);
+  54:./User/Systick.c **** 
+  55:./User/Systick.c ****         // PCLK1 = HCLK / 4
+  56:./User/Systick.c ****         RCC_PCLK1Config(RCC_HCLK_Div2);
+  57:./User/Systick.c **** 
+  58:./User/Systick.c ****         // 如果要超频就得在这里下手啦
+  59:./User/Systick.c ****         // 设置PLL来源时钟，设置VCO分频因子m，设置VCO倍频因子n，
+  60:./User/Systick.c ****         //  设置系统时钟分频因子p，设置OTG FS,SDIO,RNG分频因子q
+  61:./User/Systick.c ****         RCC_PLLConfig(RCC_PLLSource_HSE, m, n, p, q);
+  62:./User/Systick.c **** 
+  63:./User/Systick.c ****         // 使能PLL
+  64:./User/Systick.c ****         RCC_PLLCmd(ENABLE);
+  65:./User/Systick.c **** 
+  66:./User/Systick.c ****         // 等待 PLL稳定
+  67:./User/Systick.c ****         while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET) {
+  68:./User/Systick.c ****         }
+  69:./User/Systick.c **** 
+  70:./User/Systick.c ****         // /*-----------------------------------------------------*/
+  71:./User/Systick.c ****         // // 配置FLASH预取指,指令缓存,数据缓存和等待状态
+  72:./User/Systick.c ****         // FLASH->ACR = FLASH_ACR_PRFTEN
+  73:./User/Systick.c ****         //             | FLASH_ACR_ICEN
+  74:./User/Systick.c ****         //             | FLASH_ACR_DCEN
+  75:./User/Systick.c ****         //             | FLASH_ACR_LATENCY_5WS;
+  76:./User/Systick.c ****         // /*-----------------------------------------------------*/
+  77:./User/Systick.c **** 
+  78:./User/Systick.c ****         // 当PLL稳定之后，把PLL时钟切换为系统时钟SYSCLK
+  79:./User/Systick.c ****         RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+  80:./User/Systick.c **** 
+  81:./User/Systick.c ****         // 读取时钟切换状态位，确保PLLCLK被选为系统时钟
+  82:./User/Systick.c ****         while (RCC_GetSYSCLKSource() != 0x08) {
+  83:./User/Systick.c ****         }
+  84:./User/Systick.c ****     } else {
+  85:./User/Systick.c ****         // HSE启动出错处理
+  86:./User/Systick.c **** 
+  87:./User/Systick.c ****         while (1) {
+  75              		.loc 1 87 9 is_stmt 1 discriminator 1 view .LVU13
+  88:./User/Systick.c ****         }
+  76              		.loc 1 88 9 discriminator 1 view .LVU14
+  87:./User/Systick.c ****         }
+  77              		.loc 1 87 15 discriminator 1 view .LVU15
+  78 0022 FEE7     		b	.L2
+  79              	.L8:
+  46:./User/Systick.c ****         PWR->CR |= PWR_CR_VOS;
+  80              		.loc 1 46 9 view .LVU16
+  46:./User/Systick.c ****         PWR->CR |= PWR_CR_VOS;
+  81              		.loc 1 46 22 is_stmt 0 view .LVU17
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s 			page 4
+
+
+  82 0024 164A     		ldr	r2, .L9
+  83 0026 136C     		ldr	r3, [r2, #64]
+  84 0028 43F08053 		orr	r3, r3, #268435456
+  85 002c 1364     		str	r3, [r2, #64]
+  47:./User/Systick.c **** 
+  86              		.loc 1 47 9 is_stmt 1 view .LVU18
+  47:./User/Systick.c **** 
+  87              		.loc 1 47 17 is_stmt 0 view .LVU19
+  88 002e A2F5E432 		sub	r2, r2, #116736
+  89 0032 1368     		ldr	r3, [r2]
+  90 0034 43F44043 		orr	r3, r3, #49152
+  91 0038 1360     		str	r3, [r2]
+  50:./User/Systick.c **** 
+  92              		.loc 1 50 9 is_stmt 1 view .LVU20
+  93 003a 0020     		movs	r0, #0
+  94 003c FFF7FEFF 		bl	RCC_HCLKConfig
+  95              	.LVL5:
+  53:./User/Systick.c **** 
+  96              		.loc 1 53 9 view .LVU21
+  97 0040 0020     		movs	r0, #0
+  98 0042 FFF7FEFF 		bl	RCC_PCLK2Config
+  99              	.LVL6:
+  56:./User/Systick.c **** 
+ 100              		.loc 1 56 9 view .LVU22
+ 101 0046 4FF48050 		mov	r0, #4096
+ 102 004a FFF7FEFF 		bl	RCC_PCLK1Config
+ 103              	.LVL7:
+  61:./User/Systick.c **** 
+ 104              		.loc 1 61 9 view .LVU23
+ 105 004e 0097     		str	r7, [sp]
+ 106 0050 3346     		mov	r3, r6
+ 107 0052 2A46     		mov	r2, r5
+ 108 0054 2146     		mov	r1, r4
+ 109 0056 4FF48000 		mov	r0, #4194304
+ 110 005a FFF7FEFF 		bl	RCC_PLLConfig
+ 111              	.LVL8:
+  64:./User/Systick.c **** 
+ 112              		.loc 1 64 9 view .LVU24
+ 113 005e 0120     		movs	r0, #1
+ 114 0060 FFF7FEFF 		bl	RCC_PLLCmd
+ 115              	.LVL9:
+  67:./User/Systick.c ****         }
+ 116              		.loc 1 67 9 view .LVU25
+ 117              	.L3:
+  68:./User/Systick.c **** 
+ 118              		.loc 1 68 9 discriminator 1 view .LVU26
+  67:./User/Systick.c ****         }
+ 119              		.loc 1 67 15 discriminator 1 view .LVU27
+  67:./User/Systick.c ****         }
+ 120              		.loc 1 67 16 is_stmt 0 discriminator 1 view .LVU28
+ 121 0064 3920     		movs	r0, #57
+ 122 0066 FFF7FEFF 		bl	RCC_GetFlagStatus
+ 123              	.LVL10:
+  67:./User/Systick.c ****         }
+ 124              		.loc 1 67 15 discriminator 1 view .LVU29
+ 125 006a 0028     		cmp	r0, #0
+ 126 006c FAD0     		beq	.L3
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s 			page 5
+
+
+  79:./User/Systick.c **** 
+ 127              		.loc 1 79 9 is_stmt 1 view .LVU30
+ 128 006e 0220     		movs	r0, #2
+ 129 0070 FFF7FEFF 		bl	RCC_SYSCLKConfig
+ 130              	.LVL11:
+  82:./User/Systick.c ****         }
+ 131              		.loc 1 82 9 view .LVU31
+ 132              	.L4:
+  83:./User/Systick.c ****     } else {
+ 133              		.loc 1 83 9 discriminator 1 view .LVU32
+  82:./User/Systick.c ****         }
+ 134              		.loc 1 82 15 discriminator 1 view .LVU33
+  82:./User/Systick.c ****         }
+ 135              		.loc 1 82 16 is_stmt 0 discriminator 1 view .LVU34
+ 136 0074 FFF7FEFF 		bl	RCC_GetSYSCLKSource
+ 137              	.LVL12:
+  82:./User/Systick.c ****         }
+ 138              		.loc 1 82 15 discriminator 1 view .LVU35
+ 139 0078 0828     		cmp	r0, #8
+ 140 007a FBD1     		bne	.L4
+  89:./User/Systick.c ****     }
+  90:./User/Systick.c **** }...
+ 141              		.loc 1 90 1 view .LVU36
+ 142 007c 05B0     		add	sp, sp, #20
+ 143              	.LCFI2:
+ 144              		.cfi_def_cfa_offset 20
+ 145              		@ sp needed
+ 146 007e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 147              	.LVL13:
+ 148              	.L10:
+ 149              		.loc 1 90 1 view .LVU37
+ 150              		.align	2
+ 151              	.L9:
+ 152 0080 00380240 		.word	1073887232
+ 153              		.cfi_endproc
+ 154              	.LFE123:
+ 156              		.text
+ 157              	.Letext0:
+ 158              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 159              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 160              		.file 4 "./CORE/stm32f4xx.h"
+ 161              		.file 5 "./Library/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Systick.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s:20     .text.HSE_SetSysClock:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s:26     .text.HSE_SetSysClock:0000000000000000 HSE_SetSysClock
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cczndJeg.s:152    .text.HSE_SetSysClock:0000000000000080 $d
+
+UNDEFINED SYMBOLS
+RCC_HSEConfig
+RCC_WaitForHSEStartUp
+RCC_HCLKConfig
+RCC_PCLK2Config
+RCC_PCLK1Config
+RCC_PLLConfig
+RCC_PLLCmd
+RCC_GetFlagStatus
+RCC_SYSCLKConfig
+RCC_GetSYSCLKSource

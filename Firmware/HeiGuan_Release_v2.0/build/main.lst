@@ -1,0 +1,2856 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	__aeabi_f2d
+  20              		.global	__aeabi_dmul
+  21              		.global	__aeabi_d2f
+  22              		.global	__aeabi_dsub
+  23              		.section	.text.toEulerAngles,"ax",%progbits
+  24              		.align	1
+  25              		.global	toEulerAngles
+  26              		.syntax unified
+  27              		.thumb
+  28              		.thumb_func
+  30              	toEulerAngles:
+  31              	.LVL0:
+  32              	.LFB126:
+  33              		.file 1 "./User/main.c"
+   1:./User/main.c **** /**
+   2:./User/main.c ****   ******************************************************************************
+   3:./User/main.c ****   * @file    Project/STM32F4xx_StdPeriph_Templates/main.c 
+   4:./User/main.c ****   * @author  MCD Application Team
+   5:./User/main.c ****   * @version V1.8.1
+   6:./User/main.c ****   * @date    27-January-2022
+   7:./User/main.c ****   * @brief   Main program body
+   8:./User/main.c ****   ******************************************************************************
+   9:./User/main.c ****   * @attention
+  10:./User/main.c ****   *
+  11:./User/main.c ****   * Copyright (c) 2016 STMicroelectronics.
+  12:./User/main.c ****   * All rights reserved.
+  13:./User/main.c ****   *
+  14:./User/main.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  15:./User/main.c ****   * in the root directory of this software component.
+  16:./User/main.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  17:./User/main.c ****   *
+  18:./User/main.c ****   ******************************************************************************
+  19:./User/main.c ****   */
+  20:./User/main.c **** 
+  21:./User/main.c **** /* Includes ------------------------------------------------------------------*/
+  22:./User/main.c **** #include "main.h"
+  23:./User/main.c **** 
+  24:./User/main.c **** 
+  25:./User/main.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 2
+
+
+  26:./User/main.c **** 
+  27:./User/main.c **** volatile float deltaT = 0.003f;
+  28:./User/main.c **** Angle angle;
+  29:./User/main.c **** float height = 0.0f;
+  30:./User/main.c **** int8_t correctFlag = -1;
+  31:./User/main.c **** RCC_ClocksTypeDef RCC_ClockFreq_test;
+  32:./User/main.c **** // quaternion of sensor frame relative to auxiliary frame
+  33:./User/main.c **** volatile float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
+  34:./User/main.c **** float rollOffset=0,pitchOffset = 0,rollOffsetSum, pitchOffsetSum;
+  35:./User/main.c **** int32_t counttttt = 0;
+  36:./User/main.c **** // void toEulerAngles(Angle *angle) {
+  37:./User/main.c **** // 	angle->yaw   = atan2(2 * q1 * q2  + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3* q3 + 1) * RAD_TO_DEGREE
+  38:./User/main.c **** // 	angle->pitch = asin(-2 * q1 * q3 + 2 * q0* q2) * RAD_TO_DEGREE - pitchOffset; 							    // pit
+  39:./User/main.c **** // 	angle->roll  = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1) * RAD_TO_DEGREE 
+  40:./User/main.c **** //   // angle->yaw   = atan2(2 * q1 * q2  - 2 * q0 * q3, -2 * q2 * q2 - 2 * q3* q3 + 1) * RAD_TO_DE
+  41:./User/main.c **** // 	// angle->pitch =  asin(-2 * q1 * q3 - 2 * q0* q2) * RAD_TO_DEGREE - pitchOffset; 							    //
+  42:./User/main.c **** // 	// angle->roll  = atan2(2 * q2 * q3 - 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1) * RAD_TO_DEGR
+  43:./User/main.c **** // }
+  44:./User/main.c **** void toEulerAngles(Angle *angle) {
+  34              		.loc 1 44 34 view -0
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 8
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+  38              		.loc 1 44 34 is_stmt 0 view .LVU1
+  39 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  40              	.LCFI0:
+  41              		.cfi_def_cfa_offset 32
+  42              		.cfi_offset 4, -32
+  43              		.cfi_offset 5, -28
+  44              		.cfi_offset 6, -24
+  45              		.cfi_offset 7, -20
+  46              		.cfi_offset 8, -16
+  47              		.cfi_offset 9, -12
+  48              		.cfi_offset 10, -8
+  49              		.cfi_offset 14, -4
+  50 0004 2DED068B 		vpush.64	{d8, d9, d10}
+  51              	.LCFI1:
+  52              		.cfi_def_cfa_offset 56
+  53              		.cfi_offset 80, -56
+  54              		.cfi_offset 81, -52
+  55              		.cfi_offset 82, -48
+  56              		.cfi_offset 83, -44
+  57              		.cfi_offset 84, -40
+  58              		.cfi_offset 85, -36
+  59 0008 82B0     		sub	sp, sp, #8
+  60              	.LCFI2:
+  61              		.cfi_def_cfa_offset 64
+  62 000a 0546     		mov	r5, r0
+  45:./User/main.c **** 	angle->yaw = atan2(2 * q1 * q2  + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3* q3 + 1) * RAD_TO_DEGREE; 			
+  63              		.loc 1 45 2 is_stmt 1 view .LVU2
+  64              		.loc 1 45 23 is_stmt 0 view .LVU3
+  65 000c DFF8B881 		ldr	r8, .L3+16
+  66 0010 D8ED007A 		vldr.32	s15, [r8]
+  67 0014 77EEA77A 		vadd.f32	s15, s15, s15
+  68              		.loc 1 45 28 view .LVU4
+  69 0018 674C     		ldr	r4, .L3
+  70 001a 94ED008A 		vldr.32	s16, [r4]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 3
+
+
+  71 001e 27EE888A 		vmul.f32	s16, s15, s16
+  72              		.loc 1 45 38 view .LVU5
+  73 0022 DFF8A8A1 		ldr	r10, .L3+20
+  74 0026 DAED007A 		vldr.32	s15, [r10]
+  75 002a 77EEA77A 		vadd.f32	s15, s15, s15
+  76              		.loc 1 45 43 view .LVU6
+  77 002e DFF8A091 		ldr	r9, .L3+24
+  78 0032 99ED007A 		vldr.32	s14, [r9]
+  79 0036 67EE877A 		vmul.f32	s15, s15, s14
+  80              		.loc 1 45 34 view .LVU7
+  81 003a 38EE278A 		vadd.f32	s16, s16, s15
+  82              		.loc 1 45 52 view .LVU8
+  83 003e D4ED007A 		vldr.32	s15, [r4]
+  84 0042 B8EE009A 		vmov.f32	s18, #-2.0e+0
+  85 0046 67EE897A 		vmul.f32	s15, s15, s18
+  86              		.loc 1 45 57 view .LVU9
+  87 004a 94ED007A 		vldr.32	s14, [r4]
+  88 004e 67EE877A 		vmul.f32	s15, s15, s14
+  89              		.loc 1 45 66 view .LVU10
+  90 0052 99ED007A 		vldr.32	s14, [r9]
+  91 0056 37EE077A 		vadd.f32	s14, s14, s14
+  92              		.loc 1 45 70 view .LVU11
+  93 005a D9ED006A 		vldr.32	s13, [r9]
+  94 005e 27EE267A 		vmul.f32	s14, s14, s13
+  95              		.loc 1 45 62 view .LVU12
+  96 0062 77EEC77A 		vsub.f32	s15, s15, s14
+  97              		.loc 1 45 75 view .LVU13
+  98 0066 F7EE008A 		vmov.f32	s17, #1.0e+0
+  99              		.loc 1 45 15 view .LVU14
+ 100 006a 77EEA87A 		vadd.f32	s15, s15, s17
+ 101 006e 17EE900A 		vmov	r0, s15
+ 102              	.LVL1:
+ 103              		.loc 1 45 15 view .LVU15
+ 104 0072 FFF7FEFF 		bl	__aeabi_f2d
+ 105              	.LVL2:
+ 106 0076 41EC1A0B 		vmov	d10, r0, r1
+ 107 007a 18EE100A 		vmov	r0, s16
+ 108 007e FFF7FEFF 		bl	__aeabi_f2d
+ 109              	.LVL3:
+ 110 0082 B0EE4A1A 		vmov.f32	s2, s20
+ 111 0086 F0EE6A1A 		vmov.f32	s3, s21
+ 112 008a 41EC100B 		vmov	d0, r0, r1
+ 113 008e FFF7FEFF 		bl	atan2
+ 114              	.LVL4:
+ 115 0092 8DED000B 		vstr.64	d0, [sp]
+ 116              		.loc 1 45 80 view .LVU16
+ 117 0096 494B     		ldr	r3, .L3+4
+ 118 0098 1868     		ldr	r0, [r3]	@ float
+ 119 009a FFF7FEFF 		bl	__aeabi_f2d
+ 120              	.LVL5:
+ 121 009e 0646     		mov	r6, r0
+ 122 00a0 0F46     		mov	r7, r1
+ 123 00a2 0246     		mov	r2, r0
+ 124 00a4 0B46     		mov	r3, r1
+ 125 00a6 DDE90001 		ldrd	r0, [sp]
+ 126 00aa FFF7FEFF 		bl	__aeabi_dmul
+ 127              	.LVL6:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 4
+
+
+ 128 00ae FFF7FEFF 		bl	__aeabi_d2f
+ 129              	.LVL7:
+ 130              		.loc 1 45 13 view .LVU17
+ 131 00b2 2860     		str	r0, [r5]	@ float
+  46:./User/main.c **** 	angle->roll = asin(-2 * q1 * q3 + 2 * q0* q2) * RAD_TO_DEGREE - rollOffset; 							    // pitch
+ 132              		.loc 1 46 2 is_stmt 1 view .LVU18
+ 133              		.loc 1 46 24 is_stmt 0 view .LVU19
+ 134 00b4 98ED007A 		vldr.32	s14, [r8]
+ 135 00b8 27EE097A 		vmul.f32	s14, s14, s18
+ 136              		.loc 1 46 29 view .LVU20
+ 137 00bc D9ED007A 		vldr.32	s15, [r9]
+ 138 00c0 27EE277A 		vmul.f32	s14, s14, s15
+ 139              		.loc 1 46 38 view .LVU21
+ 140 00c4 DAED007A 		vldr.32	s15, [r10]
+ 141 00c8 77EEA77A 		vadd.f32	s15, s15, s15
+ 142              		.loc 1 46 42 view .LVU22
+ 143 00cc D4ED006A 		vldr.32	s13, [r4]
+ 144 00d0 67EEA67A 		vmul.f32	s15, s15, s13
+ 145              		.loc 1 46 16 view .LVU23
+ 146 00d4 77EE277A 		vadd.f32	s15, s14, s15
+ 147 00d8 17EE900A 		vmov	r0, s15
+ 148 00dc FFF7FEFF 		bl	__aeabi_f2d
+ 149              	.LVL8:
+ 150 00e0 41EC100B 		vmov	d0, r0, r1
+ 151 00e4 FFF7FEFF 		bl	asin
+ 152              	.LVL9:
+ 153 00e8 53EC102B 		vmov	r2, r3, d0
+ 154              		.loc 1 46 48 view .LVU24
+ 155 00ec 3046     		mov	r0, r6
+ 156 00ee 3946     		mov	r1, r7
+ 157 00f0 FFF7FEFF 		bl	__aeabi_dmul
+ 158              	.LVL10:
+ 159 00f4 CDE90001 		strd	r0, [sp]
+ 160              		.loc 1 46 64 view .LVU25
+ 161 00f8 314B     		ldr	r3, .L3+8
+ 162 00fa 1868     		ldr	r0, [r3]	@ float
+ 163 00fc FFF7FEFF 		bl	__aeabi_f2d
+ 164              	.LVL11:
+ 165 0100 0246     		mov	r2, r0
+ 166 0102 0B46     		mov	r3, r1
+ 167 0104 DDE90001 		ldrd	r0, [sp]
+ 168 0108 FFF7FEFF 		bl	__aeabi_dsub
+ 169              	.LVL12:
+ 170 010c FFF7FEFF 		bl	__aeabi_d2f
+ 171              	.LVL13:
+ 172              		.loc 1 46 14 view .LVU26
+ 173 0110 A860     		str	r0, [r5, #8]	@ float
+  47:./User/main.c **** 	angle->pitch = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1) * RAD_TO_DEGREE -pi
+ 174              		.loc 1 47 2 is_stmt 1 view .LVU27
+ 175              		.loc 1 47 25 is_stmt 0 view .LVU28
+ 176 0112 D4ED007A 		vldr.32	s15, [r4]
+ 177 0116 77EEA77A 		vadd.f32	s15, s15, s15
+ 178              		.loc 1 47 30 view .LVU29
+ 179 011a 99ED008A 		vldr.32	s16, [r9]
+ 180 011e 27EE888A 		vmul.f32	s16, s15, s16
+ 181              		.loc 1 47 39 view .LVU30
+ 182 0122 DAED007A 		vldr.32	s15, [r10]
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 5
+
+
+ 183 0126 77EEA77A 		vadd.f32	s15, s15, s15
+ 184              		.loc 1 47 44 view .LVU31
+ 185 012a 98ED007A 		vldr.32	s14, [r8]
+ 186 012e 67EE877A 		vmul.f32	s15, s15, s14
+ 187              		.loc 1 47 35 view .LVU32
+ 188 0132 38EE278A 		vadd.f32	s16, s16, s15
+ 189              		.loc 1 47 53 view .LVU33
+ 190 0136 D8ED007A 		vldr.32	s15, [r8]
+ 191 013a 67EE897A 		vmul.f32	s15, s15, s18
+ 192              		.loc 1 47 58 view .LVU34
+ 193 013e 98ED007A 		vldr.32	s14, [r8]
+ 194 0142 67EE877A 		vmul.f32	s15, s15, s14
+ 195              		.loc 1 47 67 view .LVU35
+ 196 0146 94ED007A 		vldr.32	s14, [r4]
+ 197 014a 37EE077A 		vadd.f32	s14, s14, s14
+ 198              		.loc 1 47 71 view .LVU36
+ 199 014e D4ED006A 		vldr.32	s13, [r4]
+ 200 0152 27EE267A 		vmul.f32	s14, s14, s13
+ 201              		.loc 1 47 63 view .LVU37
+ 202 0156 77EEC77A 		vsub.f32	s15, s15, s14
+ 203              		.loc 1 47 17 view .LVU38
+ 204 015a 77EEA87A 		vadd.f32	s15, s15, s17
+ 205 015e 17EE900A 		vmov	r0, s15
+ 206 0162 FFF7FEFF 		bl	__aeabi_f2d
+ 207              	.LVL14:
+ 208 0166 41EC190B 		vmov	d9, r0, r1
+ 209 016a 18EE100A 		vmov	r0, s16
+ 210 016e FFF7FEFF 		bl	__aeabi_f2d
+ 211              	.LVL15:
+ 212 0172 B0EE491A 		vmov.f32	s2, s18
+ 213 0176 F0EE691A 		vmov.f32	s3, s19
+ 214 017a 41EC100B 		vmov	d0, r0, r1
+ 215 017e FFF7FEFF 		bl	atan2
+ 216              	.LVL16:
+ 217 0182 53EC102B 		vmov	r2, r3, d0
+ 218              		.loc 1 47 81 view .LVU39
+ 219 0186 3046     		mov	r0, r6
+ 220 0188 3946     		mov	r1, r7
+ 221 018a FFF7FEFF 		bl	__aeabi_dmul
+ 222              	.LVL17:
+ 223 018e 0646     		mov	r6, r0
+ 224 0190 0F46     		mov	r7, r1
+ 225              		.loc 1 47 97 view .LVU40
+ 226 0192 0C4B     		ldr	r3, .L3+12
+ 227 0194 1868     		ldr	r0, [r3]	@ float
+ 228 0196 FFF7FEFF 		bl	__aeabi_f2d
+ 229              	.LVL18:
+ 230 019a 0246     		mov	r2, r0
+ 231 019c 0B46     		mov	r3, r1
+ 232 019e 3046     		mov	r0, r6
+ 233 01a0 3946     		mov	r1, r7
+ 234 01a2 FFF7FEFF 		bl	__aeabi_dsub
+ 235              	.LVL19:
+ 236 01a6 FFF7FEFF 		bl	__aeabi_d2f
+ 237              	.LVL20:
+ 238              		.loc 1 47 15 view .LVU41
+ 239 01aa 6860     		str	r0, [r5, #4]	@ float
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 6
+
+
+  48:./User/main.c **** }
+ 240              		.loc 1 48 1 view .LVU42
+ 241 01ac 02B0     		add	sp, sp, #8
+ 242              	.LCFI3:
+ 243              		.cfi_def_cfa_offset 56
+ 244              		@ sp needed
+ 245 01ae BDEC068B 		vldm	sp!, {d8-d10}
+ 246              	.LCFI4:
+ 247              		.cfi_restore 84
+ 248              		.cfi_restore 85
+ 249              		.cfi_restore 82
+ 250              		.cfi_restore 83
+ 251              		.cfi_restore 80
+ 252              		.cfi_restore 81
+ 253              		.cfi_def_cfa_offset 32
+ 254 01b2 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 255              	.LVL21:
+ 256              	.L4:
+ 257              		.loc 1 48 1 view .LVU43
+ 258 01b6 00BF     		.align	2
+ 259              	.L3:
+ 260 01b8 00000000 		.word	.LANCHOR1
+ 261 01bc 00000000 		.word	RAD_TO_DEGREE
+ 262 01c0 00000000 		.word	.LANCHOR4
+ 263 01c4 00000000 		.word	.LANCHOR5
+ 264 01c8 00000000 		.word	.LANCHOR0
+ 265 01cc 00000000 		.word	.LANCHOR2
+ 266 01d0 00000000 		.word	.LANCHOR3
+ 267              		.cfi_endproc
+ 268              	.LFE126:
+ 270              		.section	.rodata.main.str1.4,"aMS",%progbits,1
+ 271              		.align	2
+ 272              	.LC0:
+ 273 0000 48454920 		.ascii	"HEI GUAN\000"
+ 273      4755414E 
+ 273      00
+ 274 0009 000000   		.align	2
+ 275              	.LC1:
+ 276 000c 2A20426F 		.ascii	"* Boot Engines  \000"
+ 276      6F742045 
+ 276      6E67696E 
+ 276      65732020 
+ 276      00
+ 277 001d 000000   		.align	2
+ 278              	.LC2:
+ 279 0020 20205061 		.ascii	"  Parameter set \000"
+ 279      72616D65 
+ 279      74657220 
+ 279      73657420 
+ 279      00
+ 280 0031 000000   		.align	2
+ 281              	.LC3:
+ 282 0034 20205361 		.ascii	"  Save Changes  \000"
+ 282      76652043 
+ 282      68616E67 
+ 282      65732020 
+ 282      00
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 7
+
+
+ 283 0045 000000   		.align	2
+ 284              	.LC4:
+ 285 0048 2020426F 		.ascii	"  Boot Engines  \000"
+ 285      6F742045 
+ 285      6E67696E 
+ 285      65732020 
+ 285      00
+ 286 0059 000000   		.align	2
+ 287              	.LC5:
+ 288 005c 2A205061 		.ascii	"* Parameter set \000"
+ 288      72616D65 
+ 288      74657220 
+ 288      73657420 
+ 288      00
+ 289 006d 000000   		.align	2
+ 290              	.LC6:
+ 291 0070 2A205049 		.ascii	"* PID setting   \000"
+ 291      44207365 
+ 291      7474696E 
+ 291      67202020 
+ 291      00
+ 292 0081 000000   		.align	2
+ 293              	.LC7:
+ 294 0084 2020494D 		.ascii	"  IMU calibrate \000"
+ 294      55206361 
+ 294      6C696272 
+ 294      61746520 
+ 294      00
+ 295 0095 000000   		.align	2
+ 296              	.LC8:
+ 297 0098 20204261 		.ascii	"  Baro calibrate\000"
+ 297      726F2063 
+ 297      616C6962 
+ 297      72617465 
+ 297      00
+ 298 00a9 000000   		.align	2
+ 299              	.LC9:
+ 300 00ac 2A206B70 		.ascii	"* kp:\000"
+ 300      3A00
+ 301 00b2 0000     		.align	2
+ 302              	.LC10:
+ 303 00b4 20206B69 		.ascii	"  ki:\000"
+ 303      3A00
+ 304 00ba 0000     		.align	2
+ 305              	.LC11:
+ 306 00bc 20206B64 		.ascii	"  kd:\000"
+ 306      3A00
+ 307              		.global	__aeabi_dadd
+ 308 00c2 0000     		.align	2
+ 309              	.LC12:
+ 310 00c4 20206B70 		.ascii	"  kp:\000"
+ 310      3A00
+ 311 00ca 0000     		.align	2
+ 312              	.LC13:
+ 313 00cc 2A206B69 		.ascii	"* ki:\000"
+ 313      3A00
+ 314 00d2 0000     		.align	2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 8
+
+
+ 315              	.LC14:
+ 316 00d4 2A206B64 		.ascii	"* kd:\000"
+ 316      3A00
+ 317 00da 0000     		.align	2
+ 318              	.LC15:
+ 319 00dc 20205049 		.ascii	"  PID setting   \000"
+ 319      44207365 
+ 319      7474696E 
+ 319      67202020 
+ 319      00
+ 320 00ed 000000   		.align	2
+ 321              	.LC16:
+ 322 00f0 2A20494D 		.ascii	"* IMU calibrate \000"
+ 322      55206361 
+ 322      6C696272 
+ 322      61746520 
+ 322      00
+ 323 0101 000000   		.align	2
+ 324              	.LC17:
+ 325 0104 20494D55 		.ascii	" IMU calibrating\000"
+ 325      2063616C 
+ 325      69627261 
+ 325      74696E67 
+ 325      00
+ 326 0115 000000   		.align	2
+ 327              	.LC18:
+ 328 0118 20202020 		.ascii	"                \000"
+ 328      20202020 
+ 328      20202020 
+ 328      20202020 
+ 328      00
+ 329 0129 000000   		.align	2
+ 330              	.LC19:
+ 331 012c 20202020 		.ascii	"    Success!    \000"
+ 331      53756363 
+ 331      65737321 
+ 331      20202020 
+ 331      00
+ 332 013d 000000   		.align	2
+ 333              	.LC20:
+ 334 0140 2A204261 		.ascii	"* Baro calibrate\000"
+ 334      726F2063 
+ 334      616C6962 
+ 334      72617465 
+ 334      00
+ 335 0151 000000   		.align	2
+ 336              	.LC21:
+ 337 0154 4261726F 		.ascii	"Baro calibrating\000"
+ 337      2063616C 
+ 337      69627261 
+ 337      74696E67 
+ 337      00
+ 338 0165 000000   		.align	2
+ 339              	.LC22:
+ 340 0168 2A205361 		.ascii	"* Save Changes  \000"
+ 340      76652043 
+ 340      68616E67 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 9
+
+
+ 340      65732020 
+ 340      00
+ 341 0179 000000   		.align	2
+ 342              	.LC23:
+ 343 017c 20536176 		.ascii	" Saving Changes!\000"
+ 343      696E6720 
+ 343      4368616E 
+ 343      67657321 
+ 343      00
+ 344              		.section	.text.main,"ax",%progbits
+ 345              		.align	1
+ 346              		.global	main
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ 351              	main:
+ 352              	.LFB127:
+  49:./User/main.c **** 
+  50:./User/main.c **** /**
+  51:./User/main.c ****   * @brief  Main program
+  52:./User/main.c ****   * @param  None
+  53:./User/main.c ****   * @retval None
+  54:./User/main.c ****   */
+  55:./User/main.c **** int main(void)
+  56:./User/main.c **** {
+ 353              		.loc 1 56 1 is_stmt 1 view -0
+ 354              		.cfi_startproc
+ 355              		@ args = 0, pretend = 0, frame = 0
+ 356              		@ frame_needed = 0, uses_anonymous_args = 0
+ 357 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 358              	.LCFI5:
+ 359              		.cfi_def_cfa_offset 24
+ 360              		.cfi_offset 4, -24
+ 361              		.cfi_offset 5, -20
+ 362              		.cfi_offset 6, -16
+ 363              		.cfi_offset 7, -12
+ 364              		.cfi_offset 8, -8
+ 365              		.cfi_offset 14, -4
+  57:./User/main.c ****   // RCC_GetClocksFreq(&RCC_ClockFreq_test);                              /* Get the frequencies of
+  58:./User/main.c ****   // HSE_SetSysClock(4,84,2,7);  
+  59:./User/main.c ****   SystemInit();
+ 366              		.loc 1 59 3 view .LVU45
+ 367 0004 FFF7FEFF 		bl	SystemInit
+ 368              	.LVL22:
+  60:./User/main.c ****   RCC_GetClocksFreq(&RCC_ClockFreq_test);                              /* Get the frequencies of di
+ 369              		.loc 1 60 3 view .LVU46
+ 370 0008 A748     		ldr	r0, .L116
+ 371 000a FFF7FEFF 		bl	RCC_GetClocksFreq
+ 372              	.LVL23:
+  61:./User/main.c **** /* Initials -------------------------------------------------------------------*/ 
+  62:./User/main.c **** 	LD2_init();
+ 373              		.loc 1 62 2 view .LVU47
+ 374 000e FFF7FEFF 		bl	LD2_init
+ 375              	.LVL24:
+  63:./User/main.c **** 	GY86_init();
+ 376              		.loc 1 63 2 view .LVU48
+ 377 0012 FFF7FEFF 		bl	GY86_init
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 10
+
+
+ 378              	.LVL25:
+  64:./User/main.c **** 	OLED_Init();
+ 379              		.loc 1 64 2 view .LVU49
+ 380 0016 FFF7FEFF 		bl	OLED_Init
+ 381              	.LVL26:
+  65:./User/main.c **** 	OLED2_Init();
+ 382              		.loc 1 65 2 view .LVU50
+ 383 001a FFF7FEFF 		bl	OLED2_Init
+ 384              	.LVL27:
+  66:./User/main.c **** 	BLE_Init();
+ 385              		.loc 1 66 2 view .LVU51
+ 386 001e FFF7FEFF 		bl	BLE_Init
+ 387              	.LVL28:
+  67:./User/main.c **** 	REC_Init2();
+ 388              		.loc 1 67 2 view .LVU52
+ 389 0022 FFF7FEFF 		bl	REC_Init2
+ 390              	.LVL29:
+  68:./User/main.c **** 	Motor_Init();
+ 391              		.loc 1 68 2 view .LVU53
+ 392 0026 FFF7FEFF 		bl	Motor_Init
+ 393              	.LVL30:
+  69:./User/main.c **** 	LD2_ON();
+ 394              		.loc 1 69 2 view .LVU54
+ 395 002a FFF7FEFF 		bl	LD2_ON
+ 396              	.LVL31:
+  70:./User/main.c ****   LoadParameters();
+ 397              		.loc 1 70 3 view .LVU55
+ 398 002e FFF7FEFF 		bl	LoadParameters
+ 399              	.LVL32:
+  71:./User/main.c ****   pidInit();
+ 400              		.loc 1 71 3 view .LVU56
+ 401 0032 FFF7FEFF 		bl	pidInit
+ 402              	.LVL33:
+ 403 0036 8BE0     		b	.L6
+ 404              	.LVL34:
+ 405              	.L97:
+ 406              	.LBB2:
+  72:./User/main.c ****   // while (1)
+  73:./User/main.c ****   // {
+  74:./User/main.c ****   //   Motor_SetSpeed_All(CH2[3]);
+  75:./User/main.c ****   // }
+  76:./User/main.c ****   
+  77:./User/main.c **** 
+  78:./User/main.c ****   while (1)
+  79:./User/main.c ****   {
+  80:./User/main.c ****     int8_t boot_delay_s_times = 0;
+  81:./User/main.c ****     int8_t boot_flag = 0;
+ 407              		.loc 1 81 12 is_stmt 0 view .LVU57
+ 408 0038 0025     		movs	r5, #0
+ 409 003a 86E0     		b	.L19
+ 410              	.LVL35:
+ 411              	.L96:
+  82:./User/main.c ****     int8_t para_flag = 0;
+  83:./User/main.c ****     int8_t para_PID_flag = 0;
+  84:./User/main.c ****     int8_t para_IMU_flag = 0;
+  85:./User/main.c ****     int8_t para_baro_flag = 0;
+  86:./User/main.c ****     int8_t save_flag = 0;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 11
+
+
+  87:./User/main.c ****     OLED_ShowString(1,5,"HEI GUAN");
+  88:./User/main.c ****     if (CH2[5]<1100){
+  89:./User/main.c ****       OLED_ShowString(2,1,"* Boot Engines  ");
+  90:./User/main.c ****       OLED_ShowString(3,1,"  Parameter set ");
+  91:./User/main.c ****       OLED_ShowString(4,1,"  Save Changes  ");
+  92:./User/main.c ****       while (CH2[2]>1900 && CH2[1]<1100 && CH2[1] <1100 && CH2[2]>1900){
+  93:./User/main.c ****         Delay_s(1);
+  94:./User/main.c ****         boot_delay_s_times++;
+  95:./User/main.c ****         if (boot_delay_s_times==2){boot_flag = 1;break;}
+  96:./User/main.c ****       }
+  97:./User/main.c ****       while (boot_flag){    
+  98:./User/main.c ****         GY86_GetData();
+ 412              		.loc 1 98 9 is_stmt 1 view .LVU58
+ 413 003c FFF7FEFF 		bl	GY86_GetData
+ 414              	.LVL36:
+  99:./User/main.c ****         #ifdef DEBUG
+ 100:./User/main.c ****         // Motor_SetSpeed_All((CH2[3]));
+ 101:./User/main.c ****         // OLED_ShowString(2,1,"AX:");
+ 102:./User/main.c ****         // OLED_ShowString(3,1,"AY:"); 
+ 103:./User/main.c ****         // OLED_ShowString(4,1,"AZ:");
+ 104:./User/main.c ****         // OLED_ShowFNum(2,4,GY86DataList.AX,10,8);
+ 105:./User/main.c ****         // OLED_ShowFNum(3,4,GY86DataList.AY,10,8);
+ 106:./User/main.c ****         // OLED_ShowFNum(4,4,GY86DataList.AZ,10,8);
+ 107:./User/main.c ****         // OLED2_ShowString(2,1,"GX:");
+ 108:./User/main.c ****         // OLED2_ShowString(3,1,"GY:");
+ 109:./User/main.c ****         // OLED2_ShowString(4,1,"GZ:");
+ 110:./User/main.c ****         // OLED2_ShowFNum(2,4,GY86DataList.GX,10,8);
+ 111:./User/main.c ****         // OLED2_ShowFNum(3,4,GY86DataList.GY,10,8);
+ 112:./User/main.c ****         // OLED2_ShowFNum(4,4,GY86DataList.GZ,10,8);
+ 113:./User/main.c ****         
+ 114:./User/main.c ****         #endif
+ 115:./User/main.c ****         counttttt++;
+ 415              		.loc 1 115 9 view .LVU59
+ 416              		.loc 1 115 18 is_stmt 0 view .LVU60
+ 417 0040 9A4A     		ldr	r2, .L116+4
+ 418 0042 1368     		ldr	r3, [r2]
+ 419 0044 0133     		adds	r3, r3, #1
+ 420 0046 1360     		str	r3, [r2]
+ 116:./User/main.c ****         if(counttttt ==20){
+ 421              		.loc 1 116 9 is_stmt 1 view .LVU61
+ 422              		.loc 1 116 11 is_stmt 0 view .LVU62
+ 423 0048 142B     		cmp	r3, #20
+ 424 004a 3AD0     		beq	.L93
+ 425              	.L11:
+ 117:./User/main.c ****           sendVOFA();
+ 118:./User/main.c ****           counttttt=0;
+ 119:./User/main.c ****         }
+ 120:./User/main.c ****         // sendVOFA();
+ 121:./User/main.c ****         deltaT = TIM4->CNT / 1000000.0f;
+ 426              		.loc 1 121 9 is_stmt 1 view .LVU63
+ 427              		.loc 1 121 22 is_stmt 0 view .LVU64
+ 428 004c 984B     		ldr	r3, .L116+8
+ 429 004e D3ED097A 		vldr.32	s15, [r3, #36]	@ int
+ 430              		.loc 1 121 28 view .LVU65
+ 431 0052 F8EE677A 		vcvt.f32.u32	s15, s15
+ 432 0056 DFED976A 		vldr.32	s13, .L116+12
+ 433 005a 87EEA67A 		vdiv.f32	s14, s15, s13
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 12
+
+
+ 434              		.loc 1 121 16 view .LVU66
+ 435 005e 964A     		ldr	r2, .L116+16
+ 436 0060 82ED007A 		vstr.32	s14, [r2]
+ 122:./User/main.c **** 		    TIM4->CNT = 0;
+ 437              		.loc 1 122 7 is_stmt 1 view .LVU67
+ 438              		.loc 1 122 17 is_stmt 0 view .LVU68
+ 439 0064 0022     		movs	r2, #0
+ 440 0066 5A62     		str	r2, [r3, #36]
+ 123:./User/main.c ****         MahonyAHRSupdate(GY86DataList.GX , GY86DataList.GY , GY86DataList.GZ , 
+ 441              		.loc 1 123 9 is_stmt 1 view .LVU69
+ 442 0068 944B     		ldr	r3, .L116+20
+ 443 006a 93ED040A 		vldr.32	s0, [r3, #16]
+ 444 006e D3ED050A 		vldr.32	s1, [r3, #20]
+ 445 0072 93ED061A 		vldr.32	s2, [r3, #24]
+ 446 0076 D3ED001A 		vldr.32	s3, [r3]
+ 447 007a 93ED012A 		vldr.32	s4, [r3, #4]
+ 448 007e D3ED022A 		vldr.32	s5, [r3, #8]
+ 449 0082 93ED073A 		vldr.32	s6, [r3, #28]
+ 450 0086 D3ED083A 		vldr.32	s7, [r3, #32]
+ 451 008a 93ED094A 		vldr.32	s8, [r3, #36]
+ 452 008e FFF7FEFF 		bl	MahonyAHRSupdate
+ 453              	.LVL37:
+ 124:./User/main.c **** 						             GY86DataList.AX , GY86DataList.AY , GY86DataList.AZ , 
+ 125:./User/main.c ****                          GY86DataList.GaX, GY86DataList.GaY, GY86DataList.GaZ);
+ 126:./User/main.c ****         pidControl();
+ 454              		.loc 1 126 9 view .LVU70
+ 455 0092 FFF7FEFF 		bl	pidControl
+ 456              	.LVL38:
+ 127:./User/main.c ****         toEulerAngles(&angle);
+ 457              		.loc 1 127 9 view .LVU71
+ 458 0096 8A4E     		ldr	r6, .L116+24
+ 459 0098 3046     		mov	r0, r6
+ 460 009a FFF7FEFF 		bl	toEulerAngles
+ 461              	.LVL39:
+ 128:./User/main.c ****         // OLED_ShowNum(2,1,CH2[3],5);
+ 129:./User/main.c ****         if (angle.roll > 90 || angle.pitch>90)
+ 462              		.loc 1 129 9 view .LVU72
+ 463              		.loc 1 129 18 is_stmt 0 view .LVU73
+ 464 009e D6ED027A 		vldr.32	s15, [r6, #8]
+ 465              		.loc 1 129 12 view .LVU74
+ 466 00a2 9FED887A 		vldr.32	s14, .L116+28
+ 467 00a6 F4EEC77A 		vcmpe.f32	s15, s14
+ 468 00aa F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 469 00ae 0EDC     		bgt	.L77
+ 470              		.loc 1 129 37 discriminator 1 view .LVU75
+ 471 00b0 D6ED016A 		vldr.32	s13, [r6, #4]
+ 472              		.loc 1 129 29 discriminator 1 view .LVU76
+ 473 00b4 F4EEC76A 		vcmpe.f32	s13, s14
+ 474 00b8 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 475 00bc 08DD     		ble	.L12
+ 130:./User/main.c ****         {
+ 131:./User/main.c ****           boot_flag = 0;
+ 476              		.loc 1 131 21 view .LVU77
+ 477 00be 0025     		movs	r5, #0
+ 478              	.LVL40:
+ 479              		.loc 1 131 21 view .LVU78
+ 480 00c0 06E0     		b	.L12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 13
+
+
+ 481              	.LVL41:
+ 482              	.L93:
+ 117:./User/main.c ****           counttttt=0;
+ 483              		.loc 1 117 11 is_stmt 1 view .LVU79
+ 484 00c2 FFF7FEFF 		bl	sendVOFA
+ 485              	.LVL42:
+ 118:./User/main.c ****         }
+ 486              		.loc 1 118 11 view .LVU80
+ 118:./User/main.c ****         }
+ 487              		.loc 1 118 20 is_stmt 0 view .LVU81
+ 488 00c6 794B     		ldr	r3, .L116+4
+ 489 00c8 0022     		movs	r2, #0
+ 490 00ca 1A60     		str	r2, [r3]
+ 491 00cc BEE7     		b	.L11
+ 492              	.L77:
+ 493              		.loc 1 131 21 view .LVU82
+ 494 00ce 0025     		movs	r5, #0
+ 495              	.LVL43:
+ 496              	.L12:
+ 132:./User/main.c ****         }
+ 133:./User/main.c ****         
+ 134:./User/main.c ****         if (correctFlag != -1) {
+ 497              		.loc 1 134 9 is_stmt 1 view .LVU83
+ 498              		.loc 1 134 25 is_stmt 0 view .LVU84
+ 499 00d0 7D4B     		ldr	r3, .L116+32
+ 500 00d2 93F90030 		ldrsb	r3, [r3]
+ 501              		.loc 1 134 12 view .LVU85
+ 502 00d6 B3F1FF3F 		cmp	r3, #-1
+ 503 00da 1FD0     		beq	.L13
+ 135:./User/main.c ****           if (correctFlag == 0) {
+ 504              		.loc 1 135 11 is_stmt 1 view .LVU86
+ 505              		.loc 1 135 14 is_stmt 0 view .LVU87
+ 506 00dc 3BB9     		cbnz	r3, .L14
+ 136:./User/main.c ****             rollOffsetSum = params_ram.rollOffset = 0.0f;
+ 507              		.loc 1 136 13 is_stmt 1 view .LVU88
+ 508              		.loc 1 136 51 is_stmt 0 view .LVU89
+ 509 00de 7B49     		ldr	r1, .L116+36
+ 510 00e0 0022     		movs	r2, #0
+ 511 00e2 8A65     		str	r2, [r1, #88]	@ float
+ 512              		.loc 1 136 27 view .LVU90
+ 513 00e4 7A48     		ldr	r0, .L116+40
+ 514 00e6 0260     		str	r2, [r0]	@ float
+ 137:./User/main.c ****             pitchOffsetSum = params_ram.pitchOffset = 0.0f;
+ 515              		.loc 1 137 13 is_stmt 1 view .LVU91
+ 516              		.loc 1 137 53 is_stmt 0 view .LVU92
+ 517 00e8 CA65     		str	r2, [r1, #92]	@ float
+ 518              		.loc 1 137 28 view .LVU93
+ 519 00ea 7A49     		ldr	r1, .L116+44
+ 520 00ec 0A60     		str	r2, [r1]	@ float
+ 521              	.L14:
+ 138:./User/main.c ****           }
+ 139:./User/main.c ****           rollOffsetSum += angle.roll;
+ 522              		.loc 1 139 11 is_stmt 1 view .LVU94
+ 523              		.loc 1 139 25 is_stmt 0 view .LVU95
+ 524 00ee 784A     		ldr	r2, .L116+40
+ 525 00f0 92ED007A 		vldr.32	s14, [r2]
+ 526 00f4 77EE877A 		vadd.f32	s15, s15, s14
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 14
+
+
+ 527 00f8 C2ED007A 		vstr.32	s15, [r2]
+ 140:./User/main.c ****           pitchOffsetSum += angle.pitch;
+ 528              		.loc 1 140 11 is_stmt 1 view .LVU96
+ 529              		.loc 1 140 34 is_stmt 0 view .LVU97
+ 530 00fc 704A     		ldr	r2, .L116+24
+ 531 00fe 92ED017A 		vldr.32	s14, [r2, #4]
+ 532              		.loc 1 140 26 view .LVU98
+ 533 0102 744A     		ldr	r2, .L116+44
+ 534 0104 D2ED006A 		vldr.32	s13, [r2]
+ 535 0108 37EE267A 		vadd.f32	s14, s14, s13
+ 536 010c 82ED007A 		vstr.32	s14, [r2]
+ 141:./User/main.c ****           if (++correctFlag == 100) {
+ 537              		.loc 1 141 11 is_stmt 1 view .LVU99
+ 538              		.loc 1 141 15 is_stmt 0 view .LVU100
+ 539 0110 0133     		adds	r3, r3, #1
+ 540 0112 5BB2     		sxtb	r3, r3
+ 541              		.loc 1 141 14 view .LVU101
+ 542 0114 6C4A     		ldr	r2, .L116+32
+ 543 0116 1370     		strb	r3, [r2]
+ 544 0118 642B     		cmp	r3, #100
+ 545 011a 4BD0     		beq	.L94
+ 546              	.L13:
+ 142:./User/main.c ****             rollOffset = rollOffsetSum / 100.0f;
+ 143:./User/main.c ****             pitchOffset = pitchOffsetSum / 100.0f;
+ 144:./User/main.c ****             correctFlag = -1;
+ 145:./User/main.c ****             // StoreParameters();
+ 146:./User/main.c ****             // LoadParameters();
+ 147:./User/main.c ****             // BLE_Printf("rolloffset:%f\n",rollOffset);
+ 148:./User/main.c ****             // BLE_Printf("pitchoffset:%d\n",pitchOffset*10000);
+ 149:./User/main.c ****             // Delay_s(10);
+ 150:./User/main.c ****           }
+ 151:./User/main.c ****         }
+ 152:./User/main.c ****         if (boot_delay_s_times<2) boot_delay_s_times++;
+ 547              		.loc 1 152 9 is_stmt 1 view .LVU102
+ 548              		.loc 1 152 12 is_stmt 0 view .LVU103
+ 549 011c 012C     		cmp	r4, #1
+ 550 011e 59DD     		ble	.L95
+ 551              	.L17:
+ 153:./User/main.c ****         while (CH2[6] >1900){
+ 552              		.loc 1 153 15 is_stmt 1 view .LVU104
+ 553              		.loc 1 153 19 is_stmt 0 view .LVU105
+ 554 0120 6D4B     		ldr	r3, .L116+48
+ 555 0122 9A89     		ldrh	r2, [r3, #12]
+ 556              		.loc 1 153 15 view .LVU106
+ 557 0124 40F26C73 		movw	r3, #1900
+ 558 0128 9A42     		cmp	r2, r3
+ 559 012a 0ED9     		bls	.L19
+ 154:./User/main.c ****           Motor_SetSpeed_All(0);
+ 560              		.loc 1 154 11 is_stmt 1 view .LVU107
+ 561 012c 0020     		movs	r0, #0
+ 562 012e FFF7FEFF 		bl	Motor_SetSpeed_All
+ 563              	.LVL44:
+ 155:./User/main.c ****           correctFlag = 0;
+ 564              		.loc 1 155 11 view .LVU108
+ 565              		.loc 1 155 23 is_stmt 0 view .LVU109
+ 566 0132 654B     		ldr	r3, .L116+32
+ 567 0134 0022     		movs	r2, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 15
+
+
+ 568 0136 1A70     		strb	r2, [r3]
+ 156:./User/main.c ****           Delay_s(1);
+ 569              		.loc 1 156 11 is_stmt 1 view .LVU110
+ 570 0138 0120     		movs	r0, #1
+ 571 013a 0021     		movs	r1, #0
+ 572 013c FFF7FEFF 		bl	Delay_s
+ 573              	.LVL45:
+ 157:./User/main.c ****           boot_delay_s_times--;
+ 574              		.loc 1 157 11 view .LVU111
+ 575              		.loc 1 157 29 is_stmt 0 view .LVU112
+ 576 0140 013C     		subs	r4, r4, #1
+ 577              	.LVL46:
+ 578              		.loc 1 157 29 view .LVU113
+ 579 0142 64B2     		sxtb	r4, r4
+ 580              	.LVL47:
+ 158:./User/main.c ****           if (boot_delay_s_times==0){boot_flag = 0;break;}
+ 581              		.loc 1 158 11 is_stmt 1 view .LVU114
+ 582              		.loc 1 158 14 is_stmt 0 view .LVU115
+ 583 0144 002C     		cmp	r4, #0
+ 584 0146 EBD1     		bne	.L17
+ 585              		.loc 1 158 48 view .LVU116
+ 586 0148 2546     		mov	r5, r4
+ 587              	.LVL48:
+ 588              	.L19:
+  97:./User/main.c ****         GY86_GetData();
+ 589              		.loc 1 97 13 is_stmt 1 view .LVU117
+ 590 014a 002D     		cmp	r5, #0
+ 591 014c 7FF476AF 		bne	.L96
+ 592              	.LVL49:
+ 593              	.L6:
+  97:./User/main.c ****         GY86_GetData();
+ 594              		.loc 1 97 13 is_stmt 0 view .LVU118
+ 595              	.LBE2:
+  78:./User/main.c ****   {
+ 596              		.loc 1 78 3 is_stmt 1 view .LVU119
+ 597              	.LBB3:
+  80:./User/main.c ****     int8_t boot_flag = 0;
+ 598              		.loc 1 80 5 view .LVU120
+  81:./User/main.c ****     int8_t para_flag = 0;
+ 599              		.loc 1 81 5 view .LVU121
+  82:./User/main.c ****     int8_t para_PID_flag = 0;
+ 600              		.loc 1 82 5 view .LVU122
+  83:./User/main.c ****     int8_t para_IMU_flag = 0;
+ 601              		.loc 1 83 5 view .LVU123
+  84:./User/main.c ****     int8_t para_baro_flag = 0;
+ 602              		.loc 1 84 5 view .LVU124
+  85:./User/main.c ****     int8_t save_flag = 0;
+ 603              		.loc 1 85 5 view .LVU125
+  86:./User/main.c ****     OLED_ShowString(1,5,"HEI GUAN");
+ 604              		.loc 1 86 5 view .LVU126
+  87:./User/main.c ****     if (CH2[5]<1100){
+ 605              		.loc 1 87 5 view .LVU127
+ 606 0150 624A     		ldr	r2, .L116+52
+ 607 0152 0521     		movs	r1, #5
+ 608 0154 0120     		movs	r0, #1
+ 609 0156 FFF7FEFF 		bl	OLED_ShowString
+ 610              	.LVL50:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 16
+
+
+  88:./User/main.c ****       OLED_ShowString(2,1,"* Boot Engines  ");
+ 611              		.loc 1 88 5 view .LVU128
+  88:./User/main.c ****       OLED_ShowString(2,1,"* Boot Engines  ");
+ 612              		.loc 1 88 12 is_stmt 0 view .LVU129
+ 613 015a 5F4B     		ldr	r3, .L116+48
+ 614 015c 5B89     		ldrh	r3, [r3, #10]
+  88:./User/main.c ****       OLED_ShowString(2,1,"* Boot Engines  ");
+ 615              		.loc 1 88 8 view .LVU130
+ 616 015e 40F24B42 		movw	r2, #1099
+ 617 0162 9342     		cmp	r3, r2
+ 618 0164 3BD8     		bhi	.L7
+  89:./User/main.c ****       OLED_ShowString(3,1,"  Parameter set ");
+ 619              		.loc 1 89 7 is_stmt 1 view .LVU131
+ 620 0166 5E4A     		ldr	r2, .L116+56
+ 621 0168 0121     		movs	r1, #1
+ 622 016a 0220     		movs	r0, #2
+ 623 016c FFF7FEFF 		bl	OLED_ShowString
+ 624              	.LVL51:
+  90:./User/main.c ****       OLED_ShowString(4,1,"  Save Changes  ");
+ 625              		.loc 1 90 7 view .LVU132
+ 626 0170 5C4A     		ldr	r2, .L116+60
+ 627 0172 0121     		movs	r1, #1
+ 628 0174 0320     		movs	r0, #3
+ 629 0176 FFF7FEFF 		bl	OLED_ShowString
+ 630              	.LVL52:
+  91:./User/main.c ****       while (CH2[2]>1900 && CH2[1]<1100 && CH2[1] <1100 && CH2[2]>1900){
+ 631              		.loc 1 91 7 view .LVU133
+ 632 017a 5B4A     		ldr	r2, .L116+64
+ 633 017c 0121     		movs	r1, #1
+ 634 017e 0420     		movs	r0, #4
+ 635 0180 FFF7FEFF 		bl	OLED_ShowString
+ 636              	.LVL53:
+  92:./User/main.c ****         Delay_s(1);
+ 637              		.loc 1 92 7 view .LVU134
+  80:./User/main.c ****     int8_t boot_flag = 0;
+ 638              		.loc 1 80 12 is_stmt 0 view .LVU135
+ 639 0184 0024     		movs	r4, #0
+ 640              	.LVL54:
+ 641              	.L8:
+  92:./User/main.c ****         Delay_s(1);
+ 642              		.loc 1 92 13 is_stmt 1 view .LVU136
+  92:./User/main.c ****         Delay_s(1);
+ 643              		.loc 1 92 17 is_stmt 0 view .LVU137
+ 644 0186 544B     		ldr	r3, .L116+48
+ 645 0188 9A88     		ldrh	r2, [r3, #4]
+  92:./User/main.c ****         Delay_s(1);
+ 646              		.loc 1 92 13 view .LVU138
+ 647 018a 40F26C73 		movw	r3, #1900
+ 648 018e 9A42     		cmp	r2, r3
+ 649 0190 23D9     		bls	.L76
+  92:./User/main.c ****         Delay_s(1);
+ 650              		.loc 1 92 32 discriminator 1 view .LVU139
+ 651 0192 514B     		ldr	r3, .L116+48
+ 652 0194 5A88     		ldrh	r2, [r3, #2]
+  92:./User/main.c ****         Delay_s(1);
+ 653              		.loc 1 92 26 discriminator 1 view .LVU140
+ 654 0196 40F24B43 		movw	r3, #1099
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 17
+
+
+ 655 019a 9A42     		cmp	r2, r3
+ 656 019c 3FF64CAF 		bhi	.L97
+  93:./User/main.c ****         boot_delay_s_times++;
+ 657              		.loc 1 93 9 is_stmt 1 view .LVU141
+ 658 01a0 0120     		movs	r0, #1
+ 659 01a2 0021     		movs	r1, #0
+ 660 01a4 FFF7FEFF 		bl	Delay_s
+ 661              	.LVL55:
+  94:./User/main.c ****         if (boot_delay_s_times==2){boot_flag = 1;break;}
+ 662              		.loc 1 94 9 view .LVU142
+  94:./User/main.c ****         if (boot_delay_s_times==2){boot_flag = 1;break;}
+ 663              		.loc 1 94 27 is_stmt 0 view .LVU143
+ 664 01a8 0134     		adds	r4, r4, #1
+ 665              	.LVL56:
+  94:./User/main.c ****         if (boot_delay_s_times==2){boot_flag = 1;break;}
+ 666              		.loc 1 94 27 view .LVU144
+ 667 01aa 64B2     		sxtb	r4, r4
+ 668              	.LVL57:
+  95:./User/main.c ****       }
+ 669              		.loc 1 95 9 is_stmt 1 view .LVU145
+  95:./User/main.c ****       }
+ 670              		.loc 1 95 12 is_stmt 0 view .LVU146
+ 671 01ac 022C     		cmp	r4, #2
+ 672 01ae EAD1     		bne	.L8
+  95:./User/main.c ****       }
+ 673              		.loc 1 95 46 view .LVU147
+ 674 01b0 0125     		movs	r5, #1
+ 675 01b2 CAE7     		b	.L19
+ 676              	.LVL58:
+ 677              	.L94:
+ 142:./User/main.c ****             pitchOffset = pitchOffsetSum / 100.0f;
+ 678              		.loc 1 142 13 is_stmt 1 view .LVU148
+ 142:./User/main.c ****             pitchOffset = pitchOffsetSum / 100.0f;
+ 679              		.loc 1 142 40 is_stmt 0 view .LVU149
+ 680 01b4 DFED4D6A 		vldr.32	s13, .L116+68
+ 681 01b8 87EEA66A 		vdiv.f32	s12, s15, s13
+ 142:./User/main.c ****             pitchOffset = pitchOffsetSum / 100.0f;
+ 682              		.loc 1 142 24 view .LVU150
+ 683 01bc 4C4B     		ldr	r3, .L116+72
+ 684 01be 83ED006A 		vstr.32	s12, [r3]
+ 143:./User/main.c ****             correctFlag = -1;
+ 685              		.loc 1 143 13 is_stmt 1 view .LVU151
+ 143:./User/main.c ****             correctFlag = -1;
+ 686              		.loc 1 143 42 is_stmt 0 view .LVU152
+ 687 01c2 C7EE267A 		vdiv.f32	s15, s14, s13
+ 143:./User/main.c ****             correctFlag = -1;
+ 688              		.loc 1 143 25 view .LVU153
+ 689 01c6 4B4B     		ldr	r3, .L116+76
+ 690 01c8 C3ED007A 		vstr.32	s15, [r3]
+ 144:./User/main.c ****             // StoreParameters();
+ 691              		.loc 1 144 13 is_stmt 1 view .LVU154
+ 144:./User/main.c ****             // StoreParameters();
+ 692              		.loc 1 144 25 is_stmt 0 view .LVU155
+ 693 01cc 1346     		mov	r3, r2
+ 694 01ce FF22     		movs	r2, #255
+ 695 01d0 1A70     		strb	r2, [r3]
+ 696 01d2 A3E7     		b	.L13
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 18
+
+
+ 697              	.L95:
+ 152:./User/main.c ****         while (CH2[6] >1900){
+ 698              		.loc 1 152 35 is_stmt 1 discriminator 1 view .LVU156
+ 152:./User/main.c ****         while (CH2[6] >1900){
+ 699              		.loc 1 152 53 is_stmt 0 discriminator 1 view .LVU157
+ 700 01d4 0134     		adds	r4, r4, #1
+ 701              	.LVL59:
+ 152:./User/main.c ****         while (CH2[6] >1900){
+ 702              		.loc 1 152 53 discriminator 1 view .LVU158
+ 703 01d6 64B2     		sxtb	r4, r4
+ 704              	.LVL60:
+ 152:./User/main.c ****         while (CH2[6] >1900){
+ 705              		.loc 1 152 53 discriminator 1 view .LVU159
+ 706 01d8 A2E7     		b	.L17
+ 707              	.LVL61:
+ 708              	.L76:
+  81:./User/main.c ****     int8_t para_flag = 0;
+ 709              		.loc 1 81 12 view .LVU160
+ 710 01da 0025     		movs	r5, #0
+ 711 01dc B5E7     		b	.L19
+ 712              	.LVL62:
+ 713              	.L7:
+ 159:./User/main.c ****         }
+ 160:./User/main.c ****         
+ 161:./User/main.c ****       }
+ 162:./User/main.c ****     }else if(CH2[5]<1600){ 
+ 714              		.loc 1 162 11 is_stmt 1 view .LVU161
+ 715              		.loc 1 162 13 is_stmt 0 view .LVU162
+ 716 01de B3F5C86F 		cmp	r3, #1600
+ 717 01e2 2DD3     		bcc	.L98
+ 163:./User/main.c ****       OLED_ShowString(2,1,"  Boot Engines  ");
+ 164:./User/main.c ****       OLED_ShowString(3,1,"* Parameter set ");
+ 165:./User/main.c ****       OLED_ShowString(4,1,"  Save Changes  ");
+ 166:./User/main.c ****       if (CH2[6] >1900) para_flag = 1;
+ 167:./User/main.c ****       while (para_flag)
+ 168:./User/main.c ****       {
+ 169:./User/main.c ****         Delay_ms(100);
+ 170:./User/main.c ****         if (CH2[5]<1100){  
+ 171:./User/main.c ****           OLED_ShowString(2,1,"* PID setting   ");
+ 172:./User/main.c ****           OLED_ShowString(3,1,"  IMU calibrate ");
+ 173:./User/main.c ****           OLED_ShowString(4,1,"  Baro calibrate");
+ 174:./User/main.c ****           if (CH2[6] >1900) para_PID_flag = 1;
+ 175:./User/main.c ****           while (para_PID_flag)
+ 176:./User/main.c ****           {
+ 177:./User/main.c ****             while (CH2[5]<1100&&para_PID_flag){  
+ 178:./User/main.c ****               OLED_ShowString(2,1,"* kp:");
+ 179:./User/main.c ****               OLED_ShowString(3,1,"  ki:");
+ 180:./User/main.c ****               OLED_ShowString(4,1,"  kd:");
+ 181:./User/main.c ****               OLED_ShowFNum(2,6,params_ram.kp,8,3);
+ 182:./User/main.c ****               OLED_ShowFNum(3,6,params_ram.ki,8,3);
+ 183:./User/main.c ****               OLED_ShowFNum(4,6,params_ram.kd,8,3);
+ 184:./User/main.c ****               if (CH2[4]<1100){
+ 185:./User/main.c ****                 params_ram.kp = params_ram.kp -1;
+ 186:./User/main.c ****                 Delay_s(1);
+ 187:./User/main.c ****               }else if(CH2[4]>1100&&CH2[4]<1200){
+ 188:./User/main.c ****                 params_ram.kp = params_ram.kp -0.1;
+ 189:./User/main.c ****                 Delay_ms(500);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 19
+
+
+ 190:./User/main.c ****               }else if(CH2[4]>1200&&CH2[4]<1400){
+ 191:./User/main.c ****                 params_ram.kp = params_ram.kp -0.05;
+ 192:./User/main.c ****                 Delay_ms(500);
+ 193:./User/main.c ****               }else if(CH2[4]>1600&&CH2[4]<1800){
+ 194:./User/main.c ****                 params_ram.kp = params_ram.kp +0.05;
+ 195:./User/main.c ****                 Delay_ms(500);
+ 196:./User/main.c ****               }else if(CH2[4]>1800&&CH2[4]<1900){
+ 197:./User/main.c ****                 params_ram.kp = params_ram.kp +0.1;
+ 198:./User/main.c ****                 Delay_ms(500);
+ 199:./User/main.c ****               }else if(CH2[4]>1900){
+ 200:./User/main.c ****                 params_ram.kp = params_ram.kp +1;
+ 201:./User/main.c ****                 Delay_s(1);
+ 202:./User/main.c ****               }
+ 203:./User/main.c ****               if (CH2[1]<1100) {para_PID_flag = 0;}
+ 204:./User/main.c ****               Delay_ms(500);
+ 205:./User/main.c ****             }
+ 206:./User/main.c ****             while (CH2[5]>1200&&CH2[5]<1800&&para_PID_flag){ 
+ 207:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 208:./User/main.c ****               OLED_ShowString(3,1,"* ki:");
+ 209:./User/main.c ****               OLED_ShowString(4,1,"  kd:");
+ 210:./User/main.c ****               OLED_ShowFNum(2,6,params_ram.kp,8,3);
+ 211:./User/main.c ****               OLED_ShowFNum(3,6,params_ram.ki,8,3);
+ 212:./User/main.c ****               OLED_ShowFNum(4,6,params_ram.kd,8,3);
+ 213:./User/main.c ****               if (CH2[4]<1100){
+ 214:./User/main.c ****                 params_ram.ki = params_ram.ki -1;
+ 215:./User/main.c ****                 Delay_s(1);
+ 216:./User/main.c ****               }else if(CH2[4]>1100&&CH2[4]<1200){
+ 217:./User/main.c ****                 params_ram.ki = params_ram.ki -0.1;
+ 218:./User/main.c ****                 Delay_ms(500);
+ 219:./User/main.c ****               }else if(CH2[4]>1200&&CH2[4]<1400){
+ 220:./User/main.c ****                 params_ram.ki = params_ram.ki -0.05;
+ 221:./User/main.c ****                 Delay_ms(500);
+ 222:./User/main.c ****               }else if(CH2[4]>1600&&CH2[4]<1800){
+ 223:./User/main.c ****                 params_ram.ki = params_ram.ki +0.05;
+ 224:./User/main.c ****                 Delay_ms(500);
+ 225:./User/main.c ****               }else if(CH2[4]>1800&&CH2[4]<1900){
+ 226:./User/main.c ****                 params_ram.ki = params_ram.ki +0.1;
+ 227:./User/main.c ****                 Delay_ms(500);
+ 228:./User/main.c ****               }else if(CH2[4]>1900){
+ 229:./User/main.c ****                 params_ram.ki = params_ram.ki +1;
+ 230:./User/main.c ****                 Delay_s(1);
+ 231:./User/main.c ****               }
+ 232:./User/main.c ****               if (CH2[1]<1100) {para_PID_flag = 0;}
+ 233:./User/main.c ****               Delay_ms(500);
+ 234:./User/main.c ****             }
+ 235:./User/main.c ****             while (CH2[5]>1800&&para_PID_flag){  
+ 236:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 237:./User/main.c ****               OLED_ShowString(3,1,"  ki:");
+ 238:./User/main.c ****               OLED_ShowString(4,1,"* kd:");
+ 239:./User/main.c ****               OLED_ShowFNum(2,6,params_ram.kp,8,3);
+ 240:./User/main.c ****               OLED_ShowFNum(3,6,params_ram.ki,8,3);
+ 241:./User/main.c ****               OLED_ShowFNum(4,6,params_ram.kd,8,3);
+ 242:./User/main.c ****               if (CH2[4]<1100){
+ 243:./User/main.c ****                 params_ram.kd = params_ram.kd -1;
+ 244:./User/main.c ****                 Delay_s(1);
+ 245:./User/main.c ****               }else if(CH2[4]>1100&&CH2[4]<1200){
+ 246:./User/main.c ****                 params_ram.kd = params_ram.kd -0.1;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 20
+
+
+ 247:./User/main.c ****                 Delay_ms(500);
+ 248:./User/main.c ****               }else if(CH2[4]>1200&&CH2[4]<1400){
+ 249:./User/main.c ****                 params_ram.kd = params_ram.kd -0.05;
+ 250:./User/main.c ****                 Delay_ms(500);
+ 251:./User/main.c ****               }else if(CH2[4]>1600&&CH2[4]<1800){
+ 252:./User/main.c ****                 params_ram.kd = params_ram.kd +0.05;
+ 253:./User/main.c ****                 Delay_ms(500);
+ 254:./User/main.c ****               }else if(CH2[4]>1800&&CH2[4]<1900){
+ 255:./User/main.c ****                 params_ram.kd = params_ram.kd +0.1;
+ 256:./User/main.c ****                 Delay_ms(500);
+ 257:./User/main.c ****               }else if(CH2[4]>1900){
+ 258:./User/main.c ****                 params_ram.kd = params_ram.kd +1;
+ 259:./User/main.c ****                 Delay_s(1);
+ 260:./User/main.c ****               }
+ 261:./User/main.c ****               if (CH2[1]<1100) {para_PID_flag = 0;}
+ 262:./User/main.c ****               Delay_ms(500);
+ 263:./User/main.c ****             }
+ 264:./User/main.c ****           }       
+ 265:./User/main.c ****         }else if(CH2[5]<1600){
+ 266:./User/main.c ****           OLED_ShowString(2,1,"  PID setting   ");
+ 267:./User/main.c ****           OLED_ShowString(3,1,"* IMU calibrate ");
+ 268:./User/main.c ****           OLED_ShowString(4,1,"  Baro calibrate");
+ 269:./User/main.c ****           if (CH2[6] >1900) para_IMU_flag = 1;
+ 270:./User/main.c ****           while (para_IMU_flag)
+ 271:./User/main.c ****           {
+ 272:./User/main.c ****             OLED_ShowString(2,1," IMU calibrating");
+ 273:./User/main.c ****             OLED_ShowString(3,1,"                ");
+ 274:./User/main.c ****             OLED_ShowString(4,1,"                ");
+ 275:./User/main.c ****             IMU_Calibrate();
+ 276:./User/main.c ****             OLED_ShowString(2,1," IMU calibrating");
+ 277:./User/main.c ****             OLED_ShowString(3,1,"    Success!    ");
+ 278:./User/main.c ****             OLED_ShowString(4,1,"                ");
+ 279:./User/main.c ****             para_IMU_flag = 0;
+ 280:./User/main.c ****             Delay_ms(500);
+ 281:./User/main.c ****           }
+ 282:./User/main.c ****         }else{
+ 283:./User/main.c ****           OLED_ShowString(2,1,"  PID setting   ");
+ 284:./User/main.c ****           OLED_ShowString(3,1,"  IMU calibrate ");
+ 285:./User/main.c ****           OLED_ShowString(4,1,"* Baro calibrate");
+ 286:./User/main.c ****           if (CH2[6] >1900) para_baro_flag = 1;
+ 287:./User/main.c ****           while (para_baro_flag)
+ 288:./User/main.c ****           {  
+ 289:./User/main.c ****             OLED_ShowString(2,1,"Baro calibrating");
+ 290:./User/main.c ****             OLED_ShowString(3,1,"                ");
+ 291:./User/main.c ****             OLED_ShowString(4,1,"                ");
+ 292:./User/main.c ****             // Baro_Calibrate();
+ 293:./User/main.c ****             if (CH2[1]<1100) {para_baro_flag = 0;}
+ 294:./User/main.c ****             Delay_ms(500);
+ 295:./User/main.c ****           }
+ 296:./User/main.c ****         }
+ 297:./User/main.c ****         if (CH2[1]<1100) {para_flag = 0;}
+ 298:./User/main.c ****       }    
+ 299:./User/main.c ****     }else{    
+ 300:./User/main.c ****       OLED_ShowString(2,1,"  Boot Engines  ");
+ 718              		.loc 1 300 7 is_stmt 1 view .LVU163
+ 719 01e4 444A     		ldr	r2, .L116+80
+ 720 01e6 0121     		movs	r1, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 21
+
+
+ 721 01e8 0220     		movs	r0, #2
+ 722 01ea FFF7FEFF 		bl	OLED_ShowString
+ 723              	.LVL63:
+ 301:./User/main.c ****       OLED_ShowString(3,1,"  Parameter set ");
+ 724              		.loc 1 301 7 view .LVU164
+ 725 01ee 3D4A     		ldr	r2, .L116+60
+ 726 01f0 0121     		movs	r1, #1
+ 727 01f2 0320     		movs	r0, #3
+ 728 01f4 FFF7FEFF 		bl	OLED_ShowString
+ 729              	.LVL64:
+ 302:./User/main.c ****       OLED_ShowString(4,1,"* Save Changes  ");
+ 730              		.loc 1 302 7 view .LVU165
+ 731 01f8 404A     		ldr	r2, .L116+84
+ 732 01fa 0121     		movs	r1, #1
+ 733 01fc 0420     		movs	r0, #4
+ 734 01fe FFF7FEFF 		bl	OLED_ShowString
+ 735              	.LVL65:
+ 303:./User/main.c ****       if (CH2[6] >1900) save_flag = 1;
+ 736              		.loc 1 303 7 view .LVU166
+ 737              		.loc 1 303 14 is_stmt 0 view .LVU167
+ 738 0202 354B     		ldr	r3, .L116+48
+ 739 0204 9A89     		ldrh	r2, [r3, #12]
+ 740              		.loc 1 303 10 view .LVU168
+ 741 0206 40F26C73 		movw	r3, #1900
+ 742 020a 9A42     		cmp	r2, r3
+ 743 020c 00F26F83 		bhi	.L89
+  86:./User/main.c ****     OLED_ShowString(1,5,"HEI GUAN");
+ 744              		.loc 1 86 12 view .LVU169
+ 745 0210 0023     		movs	r3, #0
+ 746              	.L72:
+ 747              	.LVL66:
+ 304:./User/main.c ****       while (save_flag)
+ 748              		.loc 1 304 13 is_stmt 1 view .LVU170
+ 749 0212 002B     		cmp	r3, #0
+ 750 0214 9CD0     		beq	.L6
+ 305:./User/main.c ****       {
+ 306:./User/main.c ****         OLED_ShowString(2,1," Saving Changes!");
+ 751              		.loc 1 306 9 view .LVU171
+ 752 0216 3A4A     		ldr	r2, .L116+88
+ 753 0218 0121     		movs	r1, #1
+ 754 021a 0220     		movs	r0, #2
+ 755 021c FFF7FEFF 		bl	OLED_ShowString
+ 756              	.LVL67:
+ 307:./User/main.c ****         OLED_ShowString(3,1,"                ");
+ 757              		.loc 1 307 9 view .LVU172
+ 758 0220 384C     		ldr	r4, .L116+92
+ 759 0222 2246     		mov	r2, r4
+ 760 0224 0121     		movs	r1, #1
+ 761 0226 0320     		movs	r0, #3
+ 762 0228 FFF7FEFF 		bl	OLED_ShowString
+ 763              	.LVL68:
+ 308:./User/main.c ****         OLED_ShowString(4,1,"                ");
+ 764              		.loc 1 308 9 view .LVU173
+ 765 022c 2246     		mov	r2, r4
+ 766 022e 0121     		movs	r1, #1
+ 767 0230 0420     		movs	r0, #4
+ 768 0232 FFF7FEFF 		bl	OLED_ShowString
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 22
+
+
+ 769              	.LVL69:
+ 309:./User/main.c ****         StoreParameters();
+ 770              		.loc 1 309 9 view .LVU174
+ 771 0236 FFF7FEFF 		bl	StoreParameters
+ 772              	.LVL70:
+ 310:./User/main.c ****         LoadParameters();
+ 773              		.loc 1 310 9 view .LVU175
+ 774 023a FFF7FEFF 		bl	LoadParameters
+ 775              	.LVL71:
+ 311:./User/main.c ****         save_flag = 0;
+ 776              		.loc 1 311 9 view .LVU176
+ 304:./User/main.c ****       {
+ 777              		.loc 1 304 13 view .LVU177
+ 778 023e 87E7     		b	.L6
+ 779              	.L98:
+ 163:./User/main.c ****       OLED_ShowString(3,1,"* Parameter set ");
+ 780              		.loc 1 163 7 view .LVU178
+ 781 0240 2D4A     		ldr	r2, .L116+80
+ 782 0242 0121     		movs	r1, #1
+ 783 0244 0220     		movs	r0, #2
+ 784 0246 FFF7FEFF 		bl	OLED_ShowString
+ 785              	.LVL72:
+ 164:./User/main.c ****       OLED_ShowString(4,1,"  Save Changes  ");
+ 786              		.loc 1 164 7 view .LVU179
+ 787 024a 2F4A     		ldr	r2, .L116+96
+ 788 024c 0121     		movs	r1, #1
+ 789 024e 0320     		movs	r0, #3
+ 790 0250 FFF7FEFF 		bl	OLED_ShowString
+ 791              	.LVL73:
+ 165:./User/main.c ****       if (CH2[6] >1900) para_flag = 1;
+ 792              		.loc 1 165 7 view .LVU180
+ 793 0254 244A     		ldr	r2, .L116+64
+ 794 0256 0121     		movs	r1, #1
+ 795 0258 0420     		movs	r0, #4
+ 796 025a FFF7FEFF 		bl	OLED_ShowString
+ 797              	.LVL74:
+ 166:./User/main.c ****       while (para_flag)
+ 798              		.loc 1 166 7 view .LVU181
+ 166:./User/main.c ****       while (para_flag)
+ 799              		.loc 1 166 14 is_stmt 0 view .LVU182
+ 800 025e 1E4B     		ldr	r3, .L116+48
+ 801 0260 9A89     		ldrh	r2, [r3, #12]
+ 166:./User/main.c ****       while (para_flag)
+ 802              		.loc 1 166 10 view .LVU183
+ 803 0262 40F26C73 		movw	r3, #1900
+ 804 0266 9A42     		cmp	r2, r3
+ 805 0268 00F23D83 		bhi	.L80
+  82:./User/main.c ****     int8_t para_PID_flag = 0;
+ 806              		.loc 1 82 12 view .LVU184
+ 807 026c 0027     		movs	r7, #0
+ 808              	.L23:
+ 809              	.LVL75:
+ 297:./User/main.c ****       }    
+ 810              		.loc 1 297 37 view .LVU185
+ 811 026e 0026     		movs	r6, #0
+ 812 0270 B046     		mov	r8, r6
+ 813 0272 3446     		mov	r4, r6
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 23
+
+
+ 814 0274 D9E2     		b	.L70
+ 815              	.LVL76:
+ 816              	.L115:
+ 171:./User/main.c ****           OLED_ShowString(3,1,"  IMU calibrate ");
+ 817              		.loc 1 171 11 is_stmt 1 view .LVU186
+ 818 0276 254A     		ldr	r2, .L116+100
+ 819 0278 0121     		movs	r1, #1
+ 820 027a 0220     		movs	r0, #2
+ 821 027c FFF7FEFF 		bl	OLED_ShowString
+ 822              	.LVL77:
+ 172:./User/main.c ****           OLED_ShowString(4,1,"  Baro calibrate");
+ 823              		.loc 1 172 11 view .LVU187
+ 824 0280 234A     		ldr	r2, .L116+104
+ 825 0282 0121     		movs	r1, #1
+ 826 0284 0320     		movs	r0, #3
+ 827 0286 FFF7FEFF 		bl	OLED_ShowString
+ 828              	.LVL78:
+ 173:./User/main.c ****           if (CH2[6] >1900) para_PID_flag = 1;
+ 829              		.loc 1 173 11 view .LVU188
+ 830 028a 224A     		ldr	r2, .L116+108
+ 831 028c 0121     		movs	r1, #1
+ 832 028e 0420     		movs	r0, #4
+ 833 0290 FFF7FEFF 		bl	OLED_ShowString
+ 834              	.LVL79:
+ 174:./User/main.c ****           while (para_PID_flag)
+ 835              		.loc 1 174 11 view .LVU189
+ 174:./User/main.c ****           while (para_PID_flag)
+ 836              		.loc 1 174 18 is_stmt 0 view .LVU190
+ 837 0294 104B     		ldr	r3, .L116+48
+ 838 0296 9A89     		ldrh	r2, [r3, #12]
+ 174:./User/main.c ****           while (para_PID_flag)
+ 839              		.loc 1 174 14 view .LVU191
+ 840 0298 40F26C73 		movw	r3, #1900
+ 841 029c 9A42     		cmp	r2, r3
+ 842 029e 00F28E82 		bhi	.L81
+ 843              	.LVL80:
+ 844              	.L55:
+ 175:./User/main.c ****           {
+ 845              		.loc 1 175 17 is_stmt 1 view .LVU192
+ 846 02a2 002C     		cmp	r4, #0
+ 847 02a4 50D1     		bne	.L57
+ 848 02a6 BAE2     		b	.L58
+ 849              	.L117:
+ 850              		.align	2
+ 851              	.L116:
+ 852 02a8 00000000 		.word	.LANCHOR6
+ 853 02ac 00000000 		.word	.LANCHOR7
+ 854 02b0 00080040 		.word	1073743872
+ 855 02b4 00247449 		.word	1232348160
+ 856 02b8 00000000 		.word	.LANCHOR8
+ 857 02bc 00000000 		.word	GY86DataList
+ 858 02c0 00000000 		.word	.LANCHOR9
+ 859 02c4 0000B442 		.word	1119092736
+ 860 02c8 00000000 		.word	.LANCHOR10
+ 861 02cc 00000000 		.word	params_ram
+ 862 02d0 00000000 		.word	.LANCHOR11
+ 863 02d4 00000000 		.word	.LANCHOR12
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 24
+
+
+ 864 02d8 00000000 		.word	CH2
+ 865 02dc 00000000 		.word	.LC0
+ 866 02e0 0C000000 		.word	.LC1
+ 867 02e4 20000000 		.word	.LC2
+ 868 02e8 34000000 		.word	.LC3
+ 869 02ec 0000C842 		.word	1120403456
+ 870 02f0 00000000 		.word	.LANCHOR4
+ 871 02f4 00000000 		.word	.LANCHOR5
+ 872 02f8 48000000 		.word	.LC4
+ 873 02fc 68010000 		.word	.LC22
+ 874 0300 7C010000 		.word	.LC23
+ 875 0304 18010000 		.word	.LC18
+ 876 0308 5C000000 		.word	.LC5
+ 877 030c 70000000 		.word	.LC6
+ 878 0310 84000000 		.word	.LC7
+ 879 0314 98000000 		.word	.LC8
+ 880              	.L99:
+ 185:./User/main.c ****                 Delay_s(1);
+ 881              		.loc 1 185 17 view .LVU193
+ 185:./User/main.c ****                 Delay_s(1);
+ 882              		.loc 1 185 43 is_stmt 0 view .LVU194
+ 883 0318 D5ED137A 		vldr.32	s15, [r5, #76]
+ 185:./User/main.c ****                 Delay_s(1);
+ 884              		.loc 1 185 47 view .LVU195
+ 885 031c B7EE007A 		vmov.f32	s14, #1.0e+0
+ 886 0320 77EEC77A 		vsub.f32	s15, s15, s14
+ 185:./User/main.c ****                 Delay_s(1);
+ 887              		.loc 1 185 31 view .LVU196
+ 888 0324 C5ED137A 		vstr.32	s15, [r5, #76]
+ 186:./User/main.c ****               }else if(CH2[4]>1100&&CH2[4]<1200){
+ 889              		.loc 1 186 17 is_stmt 1 view .LVU197
+ 890 0328 0120     		movs	r0, #1
+ 891 032a 0021     		movs	r1, #0
+ 892 032c FFF7FEFF 		bl	Delay_s
+ 893              	.LVL81:
+ 894              	.L29:
+ 203:./User/main.c ****               Delay_ms(500);
+ 895              		.loc 1 203 15 view .LVU198
+ 203:./User/main.c ****               Delay_ms(500);
+ 896              		.loc 1 203 22 is_stmt 0 view .LVU199
+ 897 0330 BD4B     		ldr	r3, .L118+16
+ 898 0332 5A88     		ldrh	r2, [r3, #2]
+ 203:./User/main.c ****               Delay_ms(500);
+ 899              		.loc 1 203 18 view .LVU200
+ 900 0334 40F24B43 		movw	r3, #1099
+ 901 0338 9A42     		cmp	r2, r3
+ 902 033a 00D8     		bhi	.L34
+ 203:./User/main.c ****               Delay_ms(500);
+ 903              		.loc 1 203 47 view .LVU201
+ 904 033c 0024     		movs	r4, #0
+ 905              	.LVL82:
+ 906              	.L34:
+ 204:./User/main.c ****             }
+ 907              		.loc 1 204 15 is_stmt 1 view .LVU202
+ 908 033e 4FF4FA70 		mov	r0, #500
+ 909 0342 0021     		movs	r1, #0
+ 910 0344 FFF7FEFF 		bl	Delay_ms
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 25
+
+
+ 911              	.LVL83:
+ 912              	.L57:
+ 177:./User/main.c ****               OLED_ShowString(2,1,"* kp:");
+ 913              		.loc 1 177 19 view .LVU203
+ 177:./User/main.c ****               OLED_ShowString(2,1,"* kp:");
+ 914              		.loc 1 177 23 is_stmt 0 view .LVU204
+ 915 0348 B74B     		ldr	r3, .L118+16
+ 916 034a 5A89     		ldrh	r2, [r3, #10]
+ 177:./User/main.c ****               OLED_ShowString(2,1,"* kp:");
+ 917              		.loc 1 177 19 view .LVU205
+ 918 034c 40F24B43 		movw	r3, #1099
+ 919 0350 9A42     		cmp	r2, r3
+ 920 0352 00F2B780 		bhi	.L44
+ 177:./User/main.c ****               OLED_ShowString(2,1,"* kp:");
+ 921              		.loc 1 177 31 discriminator 1 view .LVU206
+ 922 0356 002C     		cmp	r4, #0
+ 923 0358 00F0B480 		beq	.L44
+ 178:./User/main.c ****               OLED_ShowString(3,1,"  ki:");
+ 924              		.loc 1 178 15 is_stmt 1 view .LVU207
+ 925 035c B34A     		ldr	r2, .L118+20
+ 926 035e 0121     		movs	r1, #1
+ 927 0360 0220     		movs	r0, #2
+ 928 0362 FFF7FEFF 		bl	OLED_ShowString
+ 929              	.LVL84:
+ 179:./User/main.c ****               OLED_ShowString(4,1,"  kd:");
+ 930              		.loc 1 179 15 view .LVU208
+ 931 0366 B24A     		ldr	r2, .L118+24
+ 932 0368 0121     		movs	r1, #1
+ 933 036a 0320     		movs	r0, #3
+ 934 036c FFF7FEFF 		bl	OLED_ShowString
+ 935              	.LVL85:
+ 180:./User/main.c ****               OLED_ShowFNum(2,6,params_ram.kp,8,3);
+ 936              		.loc 1 180 15 view .LVU209
+ 937 0370 B04A     		ldr	r2, .L118+28
+ 938 0372 0121     		movs	r1, #1
+ 939 0374 0420     		movs	r0, #4
+ 940 0376 FFF7FEFF 		bl	OLED_ShowString
+ 941              	.LVL86:
+ 181:./User/main.c ****               OLED_ShowFNum(3,6,params_ram.ki,8,3);
+ 942              		.loc 1 181 15 view .LVU210
+ 943 037a AF4D     		ldr	r5, .L118+32
+ 944 037c 0323     		movs	r3, #3
+ 945 037e 0822     		movs	r2, #8
+ 946 0380 95ED130A 		vldr.32	s0, [r5, #76]
+ 947 0384 0621     		movs	r1, #6
+ 948 0386 0220     		movs	r0, #2
+ 949 0388 FFF7FEFF 		bl	OLED_ShowFNum
+ 950              	.LVL87:
+ 182:./User/main.c ****               OLED_ShowFNum(4,6,params_ram.kd,8,3);
+ 951              		.loc 1 182 15 view .LVU211
+ 952 038c 0323     		movs	r3, #3
+ 953 038e 0822     		movs	r2, #8
+ 954 0390 95ED140A 		vldr.32	s0, [r5, #80]
+ 955 0394 0621     		movs	r1, #6
+ 956 0396 1846     		mov	r0, r3
+ 957 0398 FFF7FEFF 		bl	OLED_ShowFNum
+ 958              	.LVL88:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 26
+
+
+ 183:./User/main.c ****               if (CH2[4]<1100){
+ 959              		.loc 1 183 15 view .LVU212
+ 960 039c 0323     		movs	r3, #3
+ 961 039e 0822     		movs	r2, #8
+ 962 03a0 95ED150A 		vldr.32	s0, [r5, #84]
+ 963 03a4 0621     		movs	r1, #6
+ 964 03a6 0420     		movs	r0, #4
+ 965 03a8 FFF7FEFF 		bl	OLED_ShowFNum
+ 966              	.LVL89:
+ 184:./User/main.c ****                 params_ram.kp = params_ram.kp -1;
+ 967              		.loc 1 184 15 view .LVU213
+ 184:./User/main.c ****                 params_ram.kp = params_ram.kp -1;
+ 968              		.loc 1 184 22 is_stmt 0 view .LVU214
+ 969 03ac 9E4B     		ldr	r3, .L118+16
+ 970 03ae 1B89     		ldrh	r3, [r3, #8]
+ 184:./User/main.c ****                 params_ram.kp = params_ram.kp -1;
+ 971              		.loc 1 184 18 view .LVU215
+ 972 03b0 40F24B42 		movw	r2, #1099
+ 973 03b4 9342     		cmp	r3, r2
+ 974 03b6 AFD9     		bls	.L99
+ 187:./User/main.c ****                 params_ram.kp = params_ram.kp -0.1;
+ 975              		.loc 1 187 21 is_stmt 1 view .LVU216
+ 187:./User/main.c ****                 params_ram.kp = params_ram.kp -0.1;
+ 976              		.loc 1 187 35 is_stmt 0 view .LVU217
+ 977 03b8 A3F24D42 		subw	r2, r3, #1101
+ 978 03bc 92B2     		uxth	r2, r2
+ 187:./User/main.c ****                 params_ram.kp = params_ram.kp -0.1;
+ 979              		.loc 1 187 23 view .LVU218
+ 980 03be 622A     		cmp	r2, #98
+ 981 03c0 20D9     		bls	.L100
+ 190:./User/main.c ****                 params_ram.kp = params_ram.kp -0.05;
+ 982              		.loc 1 190 21 is_stmt 1 view .LVU219
+ 190:./User/main.c ****                 params_ram.kp = params_ram.kp -0.05;
+ 983              		.loc 1 190 35 is_stmt 0 view .LVU220
+ 984 03c2 A3F2B142 		subw	r2, r3, #1201
+ 985 03c6 92B2     		uxth	r2, r2
+ 190:./User/main.c ****                 params_ram.kp = params_ram.kp -0.05;
+ 986              		.loc 1 190 23 view .LVU221
+ 987 03c8 C62A     		cmp	r2, #198
+ 988 03ca 2DD9     		bls	.L101
+ 193:./User/main.c ****                 params_ram.kp = params_ram.kp +0.05;
+ 989              		.loc 1 193 21 is_stmt 1 view .LVU222
+ 193:./User/main.c ****                 params_ram.kp = params_ram.kp +0.05;
+ 990              		.loc 1 193 35 is_stmt 0 view .LVU223
+ 991 03cc A3F24162 		subw	r2, r3, #1601
+ 992 03d0 92B2     		uxth	r2, r2
+ 193:./User/main.c ****                 params_ram.kp = params_ram.kp +0.05;
+ 993              		.loc 1 193 23 view .LVU224
+ 994 03d2 C62A     		cmp	r2, #198
+ 995 03d4 3AD9     		bls	.L102
+ 196:./User/main.c ****                 params_ram.kp = params_ram.kp +0.1;
+ 996              		.loc 1 196 21 is_stmt 1 view .LVU225
+ 196:./User/main.c ****                 params_ram.kp = params_ram.kp +0.1;
+ 997              		.loc 1 196 35 is_stmt 0 view .LVU226
+ 998 03d6 A3F20972 		subw	r2, r3, #1801
+ 999 03da 92B2     		uxth	r2, r2
+ 196:./User/main.c ****                 params_ram.kp = params_ram.kp +0.1;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 27
+
+
+ 1000              		.loc 1 196 23 view .LVU227
+ 1001 03dc 622A     		cmp	r2, #98
+ 1002 03de 47D9     		bls	.L103
+ 199:./User/main.c ****                 params_ram.kp = params_ram.kp +1;
+ 1003              		.loc 1 199 21 is_stmt 1 view .LVU228
+ 199:./User/main.c ****                 params_ram.kp = params_ram.kp +1;
+ 1004              		.loc 1 199 23 is_stmt 0 view .LVU229
+ 1005 03e0 40F26C72 		movw	r2, #1900
+ 1006 03e4 9342     		cmp	r3, r2
+ 1007 03e6 A3D9     		bls	.L29
+ 200:./User/main.c ****                 Delay_s(1);
+ 1008              		.loc 1 200 17 is_stmt 1 view .LVU230
+ 200:./User/main.c ****                 Delay_s(1);
+ 1009              		.loc 1 200 43 is_stmt 0 view .LVU231
+ 1010 03e8 934B     		ldr	r3, .L118+32
+ 1011 03ea D3ED137A 		vldr.32	s15, [r3, #76]
+ 200:./User/main.c ****                 Delay_s(1);
+ 1012              		.loc 1 200 47 view .LVU232
+ 1013 03ee B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1014 03f2 77EE877A 		vadd.f32	s15, s15, s14
+ 200:./User/main.c ****                 Delay_s(1);
+ 1015              		.loc 1 200 31 view .LVU233
+ 1016 03f6 C3ED137A 		vstr.32	s15, [r3, #76]
+ 201:./User/main.c ****               }
+ 1017              		.loc 1 201 17 is_stmt 1 view .LVU234
+ 1018 03fa 0120     		movs	r0, #1
+ 1019 03fc 0021     		movs	r1, #0
+ 1020 03fe FFF7FEFF 		bl	Delay_s
+ 1021              	.LVL90:
+ 1022 0402 95E7     		b	.L29
+ 1023              	.L100:
+ 188:./User/main.c ****                 Delay_ms(500);
+ 1024              		.loc 1 188 17 view .LVU235
+ 188:./User/main.c ****                 Delay_ms(500);
+ 1025              		.loc 1 188 43 is_stmt 0 view .LVU236
+ 1026 0404 8C4D     		ldr	r5, .L118+32
+ 1027 0406 E86C     		ldr	r0, [r5, #76]	@ float
+ 1028 0408 FFF7FEFF 		bl	__aeabi_f2d
+ 1029              	.LVL91:
+ 188:./User/main.c ****                 Delay_ms(500);
+ 1030              		.loc 1 188 47 view .LVU237
+ 1031 040c 82A3     		adr	r3, .L118
+ 1032 040e D3E90023 		ldrd	r2, [r3]
+ 1033 0412 FFF7FEFF 		bl	__aeabi_dsub
+ 1034              	.LVL92:
+ 1035 0416 FFF7FEFF 		bl	__aeabi_d2f
+ 1036              	.LVL93:
+ 188:./User/main.c ****                 Delay_ms(500);
+ 1037              		.loc 1 188 31 view .LVU238
+ 1038 041a E864     		str	r0, [r5, #76]	@ float
+ 189:./User/main.c ****               }else if(CH2[4]>1200&&CH2[4]<1400){
+ 1039              		.loc 1 189 17 is_stmt 1 view .LVU239
+ 1040 041c 4FF4FA70 		mov	r0, #500
+ 1041 0420 0021     		movs	r1, #0
+ 1042 0422 FFF7FEFF 		bl	Delay_ms
+ 1043              	.LVL94:
+ 1044 0426 83E7     		b	.L29
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 28
+
+
+ 1045              	.L101:
+ 191:./User/main.c ****                 Delay_ms(500);
+ 1046              		.loc 1 191 17 view .LVU240
+ 191:./User/main.c ****                 Delay_ms(500);
+ 1047              		.loc 1 191 43 is_stmt 0 view .LVU241
+ 1048 0428 834D     		ldr	r5, .L118+32
+ 1049 042a E86C     		ldr	r0, [r5, #76]	@ float
+ 1050 042c FFF7FEFF 		bl	__aeabi_f2d
+ 1051              	.LVL95:
+ 191:./User/main.c ****                 Delay_ms(500);
+ 1052              		.loc 1 191 47 view .LVU242
+ 1053 0430 7BA3     		adr	r3, .L118+8
+ 1054 0432 D3E90023 		ldrd	r2, [r3]
+ 1055 0436 FFF7FEFF 		bl	__aeabi_dsub
+ 1056              	.LVL96:
+ 1057 043a FFF7FEFF 		bl	__aeabi_d2f
+ 1058              	.LVL97:
+ 191:./User/main.c ****                 Delay_ms(500);
+ 1059              		.loc 1 191 31 view .LVU243
+ 1060 043e E864     		str	r0, [r5, #76]	@ float
+ 192:./User/main.c ****               }else if(CH2[4]>1600&&CH2[4]<1800){
+ 1061              		.loc 1 192 17 is_stmt 1 view .LVU244
+ 1062 0440 4FF4FA70 		mov	r0, #500
+ 1063 0444 0021     		movs	r1, #0
+ 1064 0446 FFF7FEFF 		bl	Delay_ms
+ 1065              	.LVL98:
+ 1066 044a 71E7     		b	.L29
+ 1067              	.L102:
+ 194:./User/main.c ****                 Delay_ms(500);
+ 1068              		.loc 1 194 17 view .LVU245
+ 194:./User/main.c ****                 Delay_ms(500);
+ 1069              		.loc 1 194 43 is_stmt 0 view .LVU246
+ 1070 044c 7A4D     		ldr	r5, .L118+32
+ 1071 044e E86C     		ldr	r0, [r5, #76]	@ float
+ 1072 0450 FFF7FEFF 		bl	__aeabi_f2d
+ 1073              	.LVL99:
+ 194:./User/main.c ****                 Delay_ms(500);
+ 1074              		.loc 1 194 47 view .LVU247
+ 1075 0454 72A3     		adr	r3, .L118+8
+ 1076 0456 D3E90023 		ldrd	r2, [r3]
+ 1077 045a FFF7FEFF 		bl	__aeabi_dadd
+ 1078              	.LVL100:
+ 1079 045e FFF7FEFF 		bl	__aeabi_d2f
+ 1080              	.LVL101:
+ 194:./User/main.c ****                 Delay_ms(500);
+ 1081              		.loc 1 194 31 view .LVU248
+ 1082 0462 E864     		str	r0, [r5, #76]	@ float
+ 195:./User/main.c ****               }else if(CH2[4]>1800&&CH2[4]<1900){
+ 1083              		.loc 1 195 17 is_stmt 1 view .LVU249
+ 1084 0464 4FF4FA70 		mov	r0, #500
+ 1085 0468 0021     		movs	r1, #0
+ 1086 046a FFF7FEFF 		bl	Delay_ms
+ 1087              	.LVL102:
+ 1088 046e 5FE7     		b	.L29
+ 1089              	.L103:
+ 197:./User/main.c ****                 Delay_ms(500);
+ 1090              		.loc 1 197 17 view .LVU250
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 29
+
+
+ 197:./User/main.c ****                 Delay_ms(500);
+ 1091              		.loc 1 197 43 is_stmt 0 view .LVU251
+ 1092 0470 714D     		ldr	r5, .L118+32
+ 1093 0472 E86C     		ldr	r0, [r5, #76]	@ float
+ 1094 0474 FFF7FEFF 		bl	__aeabi_f2d
+ 1095              	.LVL103:
+ 197:./User/main.c ****                 Delay_ms(500);
+ 1096              		.loc 1 197 47 view .LVU252
+ 1097 0478 67A3     		adr	r3, .L118
+ 1098 047a D3E90023 		ldrd	r2, [r3]
+ 1099 047e FFF7FEFF 		bl	__aeabi_dadd
+ 1100              	.LVL104:
+ 1101 0482 FFF7FEFF 		bl	__aeabi_d2f
+ 1102              	.LVL105:
+ 197:./User/main.c ****                 Delay_ms(500);
+ 1103              		.loc 1 197 31 view .LVU253
+ 1104 0486 E864     		str	r0, [r5, #76]	@ float
+ 198:./User/main.c ****               }else if(CH2[4]>1900){
+ 1105              		.loc 1 198 17 is_stmt 1 view .LVU254
+ 1106 0488 4FF4FA70 		mov	r0, #500
+ 1107 048c 0021     		movs	r1, #0
+ 1108 048e FFF7FEFF 		bl	Delay_ms
+ 1109              	.LVL106:
+ 1110 0492 4DE7     		b	.L29
+ 1111              	.L104:
+ 214:./User/main.c ****                 Delay_s(1);
+ 1112              		.loc 1 214 17 view .LVU255
+ 214:./User/main.c ****                 Delay_s(1);
+ 1113              		.loc 1 214 43 is_stmt 0 view .LVU256
+ 1114 0494 D5ED147A 		vldr.32	s15, [r5, #80]
+ 214:./User/main.c ****                 Delay_s(1);
+ 1115              		.loc 1 214 47 view .LVU257
+ 1116 0498 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1117 049c 77EEC77A 		vsub.f32	s15, s15, s14
+ 214:./User/main.c ****                 Delay_s(1);
+ 1118              		.loc 1 214 31 view .LVU258
+ 1119 04a0 C5ED147A 		vstr.32	s15, [r5, #80]
+ 215:./User/main.c ****               }else if(CH2[4]>1100&&CH2[4]<1200){
+ 1120              		.loc 1 215 17 is_stmt 1 view .LVU259
+ 1121 04a4 0120     		movs	r0, #1
+ 1122 04a6 0021     		movs	r1, #0
+ 1123 04a8 FFF7FEFF 		bl	Delay_s
+ 1124              	.LVL107:
+ 1125              	.L38:
+ 232:./User/main.c ****               Delay_ms(500);
+ 1126              		.loc 1 232 15 view .LVU260
+ 232:./User/main.c ****               Delay_ms(500);
+ 1127              		.loc 1 232 22 is_stmt 0 view .LVU261
+ 1128 04ac 5E4B     		ldr	r3, .L118+16
+ 1129 04ae 5A88     		ldrh	r2, [r3, #2]
+ 232:./User/main.c ****               Delay_ms(500);
+ 1130              		.loc 1 232 18 view .LVU262
+ 1131 04b0 40F24B43 		movw	r3, #1099
+ 1132 04b4 9A42     		cmp	r2, r3
+ 1133 04b6 00D8     		bhi	.L43
+ 232:./User/main.c ****               Delay_ms(500);
+ 1134              		.loc 1 232 47 view .LVU263
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 30
+
+
+ 1135 04b8 0024     		movs	r4, #0
+ 1136              	.LVL108:
+ 1137              	.L43:
+ 233:./User/main.c ****             }
+ 1138              		.loc 1 233 15 is_stmt 1 view .LVU264
+ 1139 04ba 4FF4FA70 		mov	r0, #500
+ 1140 04be 0021     		movs	r1, #0
+ 1141 04c0 FFF7FEFF 		bl	Delay_ms
+ 1142              	.LVL109:
+ 1143              	.L44:
+ 206:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1144              		.loc 1 206 19 view .LVU265
+ 206:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1145              		.loc 1 206 23 is_stmt 0 view .LVU266
+ 1146 04c4 584B     		ldr	r3, .L118+16
+ 1147 04c6 5B89     		ldrh	r3, [r3, #10]
+ 206:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1148              		.loc 1 206 31 view .LVU267
+ 1149 04c8 A3F2B143 		subw	r3, r3, #1201
+ 1150 04cc 9BB2     		uxth	r3, r3
+ 206:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1151              		.loc 1 206 19 view .LVU268
+ 1152 04ce 40F25622 		movw	r2, #598
+ 1153 04d2 9342     		cmp	r3, r2
+ 1154 04d4 00F2CE80 		bhi	.L54
+ 206:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1155              		.loc 1 206 44 discriminator 1 view .LVU269
+ 1156 04d8 002C     		cmp	r4, #0
+ 1157 04da 00F0CB80 		beq	.L54
+ 207:./User/main.c ****               OLED_ShowString(3,1,"* ki:");
+ 1158              		.loc 1 207 15 is_stmt 1 view .LVU270
+ 1159 04de 574A     		ldr	r2, .L118+36
+ 1160 04e0 0121     		movs	r1, #1
+ 1161 04e2 0220     		movs	r0, #2
+ 1162 04e4 FFF7FEFF 		bl	OLED_ShowString
+ 1163              	.LVL110:
+ 208:./User/main.c ****               OLED_ShowString(4,1,"  kd:");
+ 1164              		.loc 1 208 15 view .LVU271
+ 1165 04e8 554A     		ldr	r2, .L118+40
+ 1166 04ea 0121     		movs	r1, #1
+ 1167 04ec 0320     		movs	r0, #3
+ 1168 04ee FFF7FEFF 		bl	OLED_ShowString
+ 1169              	.LVL111:
+ 209:./User/main.c ****               OLED_ShowFNum(2,6,params_ram.kp,8,3);
+ 1170              		.loc 1 209 15 view .LVU272
+ 1171 04f2 504A     		ldr	r2, .L118+28
+ 1172 04f4 0121     		movs	r1, #1
+ 1173 04f6 0420     		movs	r0, #4
+ 1174 04f8 FFF7FEFF 		bl	OLED_ShowString
+ 1175              	.LVL112:
+ 210:./User/main.c ****               OLED_ShowFNum(3,6,params_ram.ki,8,3);
+ 1176              		.loc 1 210 15 view .LVU273
+ 1177 04fc 4E4D     		ldr	r5, .L118+32
+ 1178 04fe 0323     		movs	r3, #3
+ 1179 0500 0822     		movs	r2, #8
+ 1180 0502 95ED130A 		vldr.32	s0, [r5, #76]
+ 1181 0506 0621     		movs	r1, #6
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 31
+
+
+ 1182 0508 0220     		movs	r0, #2
+ 1183 050a FFF7FEFF 		bl	OLED_ShowFNum
+ 1184              	.LVL113:
+ 211:./User/main.c ****               OLED_ShowFNum(4,6,params_ram.kd,8,3);
+ 1185              		.loc 1 211 15 view .LVU274
+ 1186 050e 0323     		movs	r3, #3
+ 1187 0510 0822     		movs	r2, #8
+ 1188 0512 95ED140A 		vldr.32	s0, [r5, #80]
+ 1189 0516 0621     		movs	r1, #6
+ 1190 0518 1846     		mov	r0, r3
+ 1191 051a FFF7FEFF 		bl	OLED_ShowFNum
+ 1192              	.LVL114:
+ 212:./User/main.c ****               if (CH2[4]<1100){
+ 1193              		.loc 1 212 15 view .LVU275
+ 1194 051e 0323     		movs	r3, #3
+ 1195 0520 0822     		movs	r2, #8
+ 1196 0522 95ED150A 		vldr.32	s0, [r5, #84]
+ 1197 0526 0621     		movs	r1, #6
+ 1198 0528 0420     		movs	r0, #4
+ 1199 052a FFF7FEFF 		bl	OLED_ShowFNum
+ 1200              	.LVL115:
+ 213:./User/main.c ****                 params_ram.ki = params_ram.ki -1;
+ 1201              		.loc 1 213 15 view .LVU276
+ 213:./User/main.c ****                 params_ram.ki = params_ram.ki -1;
+ 1202              		.loc 1 213 22 is_stmt 0 view .LVU277
+ 1203 052e 3E4B     		ldr	r3, .L118+16
+ 1204 0530 1B89     		ldrh	r3, [r3, #8]
+ 213:./User/main.c ****                 params_ram.ki = params_ram.ki -1;
+ 1205              		.loc 1 213 18 view .LVU278
+ 1206 0532 40F24B42 		movw	r2, #1099
+ 1207 0536 9342     		cmp	r3, r2
+ 1208 0538 ACD9     		bls	.L104
+ 216:./User/main.c ****                 params_ram.ki = params_ram.ki -0.1;
+ 1209              		.loc 1 216 21 is_stmt 1 view .LVU279
+ 216:./User/main.c ****                 params_ram.ki = params_ram.ki -0.1;
+ 1210              		.loc 1 216 35 is_stmt 0 view .LVU280
+ 1211 053a A3F24D42 		subw	r2, r3, #1101
+ 1212 053e 92B2     		uxth	r2, r2
+ 216:./User/main.c ****                 params_ram.ki = params_ram.ki -0.1;
+ 1213              		.loc 1 216 23 view .LVU281
+ 1214 0540 622A     		cmp	r2, #98
+ 1215 0542 20D9     		bls	.L105
+ 219:./User/main.c ****                 params_ram.ki = params_ram.ki -0.05;
+ 1216              		.loc 1 219 21 is_stmt 1 view .LVU282
+ 219:./User/main.c ****                 params_ram.ki = params_ram.ki -0.05;
+ 1217              		.loc 1 219 35 is_stmt 0 view .LVU283
+ 1218 0544 A3F2B142 		subw	r2, r3, #1201
+ 1219 0548 92B2     		uxth	r2, r2
+ 219:./User/main.c ****                 params_ram.ki = params_ram.ki -0.05;
+ 1220              		.loc 1 219 23 view .LVU284
+ 1221 054a C62A     		cmp	r2, #198
+ 1222 054c 2DD9     		bls	.L106
+ 222:./User/main.c ****                 params_ram.ki = params_ram.ki +0.05;
+ 1223              		.loc 1 222 21 is_stmt 1 view .LVU285
+ 222:./User/main.c ****                 params_ram.ki = params_ram.ki +0.05;
+ 1224              		.loc 1 222 35 is_stmt 0 view .LVU286
+ 1225 054e A3F24162 		subw	r2, r3, #1601
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 32
+
+
+ 1226 0552 92B2     		uxth	r2, r2
+ 222:./User/main.c ****                 params_ram.ki = params_ram.ki +0.05;
+ 1227              		.loc 1 222 23 view .LVU287
+ 1228 0554 C62A     		cmp	r2, #198
+ 1229 0556 3AD9     		bls	.L107
+ 225:./User/main.c ****                 params_ram.ki = params_ram.ki +0.1;
+ 1230              		.loc 1 225 21 is_stmt 1 view .LVU288
+ 225:./User/main.c ****                 params_ram.ki = params_ram.ki +0.1;
+ 1231              		.loc 1 225 35 is_stmt 0 view .LVU289
+ 1232 0558 A3F20972 		subw	r2, r3, #1801
+ 1233 055c 92B2     		uxth	r2, r2
+ 225:./User/main.c ****                 params_ram.ki = params_ram.ki +0.1;
+ 1234              		.loc 1 225 23 view .LVU290
+ 1235 055e 622A     		cmp	r2, #98
+ 1236 0560 47D9     		bls	.L108
+ 228:./User/main.c ****                 params_ram.ki = params_ram.ki +1;
+ 1237              		.loc 1 228 21 is_stmt 1 view .LVU291
+ 228:./User/main.c ****                 params_ram.ki = params_ram.ki +1;
+ 1238              		.loc 1 228 23 is_stmt 0 view .LVU292
+ 1239 0562 40F26C72 		movw	r2, #1900
+ 1240 0566 9342     		cmp	r3, r2
+ 1241 0568 A0D9     		bls	.L38
+ 229:./User/main.c ****                 Delay_s(1);
+ 1242              		.loc 1 229 17 is_stmt 1 view .LVU293
+ 229:./User/main.c ****                 Delay_s(1);
+ 1243              		.loc 1 229 43 is_stmt 0 view .LVU294
+ 1244 056a 334B     		ldr	r3, .L118+32
+ 1245 056c D3ED147A 		vldr.32	s15, [r3, #80]
+ 229:./User/main.c ****                 Delay_s(1);
+ 1246              		.loc 1 229 47 view .LVU295
+ 1247 0570 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1248 0574 77EE877A 		vadd.f32	s15, s15, s14
+ 229:./User/main.c ****                 Delay_s(1);
+ 1249              		.loc 1 229 31 view .LVU296
+ 1250 0578 C3ED147A 		vstr.32	s15, [r3, #80]
+ 230:./User/main.c ****               }
+ 1251              		.loc 1 230 17 is_stmt 1 view .LVU297
+ 1252 057c 0120     		movs	r0, #1
+ 1253 057e 0021     		movs	r1, #0
+ 1254 0580 FFF7FEFF 		bl	Delay_s
+ 1255              	.LVL116:
+ 1256 0584 92E7     		b	.L38
+ 1257              	.L105:
+ 217:./User/main.c ****                 Delay_ms(500);
+ 1258              		.loc 1 217 17 view .LVU298
+ 217:./User/main.c ****                 Delay_ms(500);
+ 1259              		.loc 1 217 43 is_stmt 0 view .LVU299
+ 1260 0586 2C4D     		ldr	r5, .L118+32
+ 1261 0588 286D     		ldr	r0, [r5, #80]	@ float
+ 1262 058a FFF7FEFF 		bl	__aeabi_f2d
+ 1263              	.LVL117:
+ 217:./User/main.c ****                 Delay_ms(500);
+ 1264              		.loc 1 217 47 view .LVU300
+ 1265 058e 22A3     		adr	r3, .L118
+ 1266 0590 D3E90023 		ldrd	r2, [r3]
+ 1267 0594 FFF7FEFF 		bl	__aeabi_dsub
+ 1268              	.LVL118:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 33
+
+
+ 1269 0598 FFF7FEFF 		bl	__aeabi_d2f
+ 1270              	.LVL119:
+ 217:./User/main.c ****                 Delay_ms(500);
+ 1271              		.loc 1 217 31 view .LVU301
+ 1272 059c 2865     		str	r0, [r5, #80]	@ float
+ 218:./User/main.c ****               }else if(CH2[4]>1200&&CH2[4]<1400){
+ 1273              		.loc 1 218 17 is_stmt 1 view .LVU302
+ 1274 059e 4FF4FA70 		mov	r0, #500
+ 1275 05a2 0021     		movs	r1, #0
+ 1276 05a4 FFF7FEFF 		bl	Delay_ms
+ 1277              	.LVL120:
+ 1278 05a8 80E7     		b	.L38
+ 1279              	.L106:
+ 220:./User/main.c ****                 Delay_ms(500);
+ 1280              		.loc 1 220 17 view .LVU303
+ 220:./User/main.c ****                 Delay_ms(500);
+ 1281              		.loc 1 220 43 is_stmt 0 view .LVU304
+ 1282 05aa 234D     		ldr	r5, .L118+32
+ 1283 05ac 286D     		ldr	r0, [r5, #80]	@ float
+ 1284 05ae FFF7FEFF 		bl	__aeabi_f2d
+ 1285              	.LVL121:
+ 220:./User/main.c ****                 Delay_ms(500);
+ 1286              		.loc 1 220 47 view .LVU305
+ 1287 05b2 1BA3     		adr	r3, .L118+8
+ 1288 05b4 D3E90023 		ldrd	r2, [r3]
+ 1289 05b8 FFF7FEFF 		bl	__aeabi_dsub
+ 1290              	.LVL122:
+ 1291 05bc FFF7FEFF 		bl	__aeabi_d2f
+ 1292              	.LVL123:
+ 220:./User/main.c ****                 Delay_ms(500);
+ 1293              		.loc 1 220 31 view .LVU306
+ 1294 05c0 2865     		str	r0, [r5, #80]	@ float
+ 221:./User/main.c ****               }else if(CH2[4]>1600&&CH2[4]<1800){
+ 1295              		.loc 1 221 17 is_stmt 1 view .LVU307
+ 1296 05c2 4FF4FA70 		mov	r0, #500
+ 1297 05c6 0021     		movs	r1, #0
+ 1298 05c8 FFF7FEFF 		bl	Delay_ms
+ 1299              	.LVL124:
+ 1300 05cc 6EE7     		b	.L38
+ 1301              	.L107:
+ 223:./User/main.c ****                 Delay_ms(500);
+ 1302              		.loc 1 223 17 view .LVU308
+ 223:./User/main.c ****                 Delay_ms(500);
+ 1303              		.loc 1 223 43 is_stmt 0 view .LVU309
+ 1304 05ce 1A4D     		ldr	r5, .L118+32
+ 1305 05d0 286D     		ldr	r0, [r5, #80]	@ float
+ 1306 05d2 FFF7FEFF 		bl	__aeabi_f2d
+ 1307              	.LVL125:
+ 223:./User/main.c ****                 Delay_ms(500);
+ 1308              		.loc 1 223 47 view .LVU310
+ 1309 05d6 12A3     		adr	r3, .L118+8
+ 1310 05d8 D3E90023 		ldrd	r2, [r3]
+ 1311 05dc FFF7FEFF 		bl	__aeabi_dadd
+ 1312              	.LVL126:
+ 1313 05e0 FFF7FEFF 		bl	__aeabi_d2f
+ 1314              	.LVL127:
+ 223:./User/main.c ****                 Delay_ms(500);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 34
+
+
+ 1315              		.loc 1 223 31 view .LVU311
+ 1316 05e4 2865     		str	r0, [r5, #80]	@ float
+ 224:./User/main.c ****               }else if(CH2[4]>1800&&CH2[4]<1900){
+ 1317              		.loc 1 224 17 is_stmt 1 view .LVU312
+ 1318 05e6 4FF4FA70 		mov	r0, #500
+ 1319 05ea 0021     		movs	r1, #0
+ 1320 05ec FFF7FEFF 		bl	Delay_ms
+ 1321              	.LVL128:
+ 1322 05f0 5CE7     		b	.L38
+ 1323              	.L108:
+ 226:./User/main.c ****                 Delay_ms(500);
+ 1324              		.loc 1 226 17 view .LVU313
+ 226:./User/main.c ****                 Delay_ms(500);
+ 1325              		.loc 1 226 43 is_stmt 0 view .LVU314
+ 1326 05f2 114D     		ldr	r5, .L118+32
+ 1327 05f4 286D     		ldr	r0, [r5, #80]	@ float
+ 1328 05f6 FFF7FEFF 		bl	__aeabi_f2d
+ 1329              	.LVL129:
+ 226:./User/main.c ****                 Delay_ms(500);
+ 1330              		.loc 1 226 47 view .LVU315
+ 1331 05fa 07A3     		adr	r3, .L118
+ 1332 05fc D3E90023 		ldrd	r2, [r3]
+ 1333 0600 FFF7FEFF 		bl	__aeabi_dadd
+ 1334              	.LVL130:
+ 1335 0604 FFF7FEFF 		bl	__aeabi_d2f
+ 1336              	.LVL131:
+ 226:./User/main.c ****                 Delay_ms(500);
+ 1337              		.loc 1 226 31 view .LVU316
+ 1338 0608 2865     		str	r0, [r5, #80]	@ float
+ 227:./User/main.c ****               }else if(CH2[4]>1900){
+ 1339              		.loc 1 227 17 is_stmt 1 view .LVU317
+ 1340 060a 4FF4FA70 		mov	r0, #500
+ 1341 060e 0021     		movs	r1, #0
+ 1342 0610 FFF7FEFF 		bl	Delay_ms
+ 1343              	.LVL132:
+ 1344 0614 4AE7     		b	.L38
+ 1345              	.L119:
+ 1346 0616 00BF     		.align	3
+ 1347              	.L118:
+ 1348 0618 9A999999 		.word	-1717986918
+ 1349 061c 9999B93F 		.word	1069128089
+ 1350 0620 9A999999 		.word	-1717986918
+ 1351 0624 9999A93F 		.word	1068079513
+ 1352 0628 00000000 		.word	CH2
+ 1353 062c AC000000 		.word	.LC9
+ 1354 0630 B4000000 		.word	.LC10
+ 1355 0634 BC000000 		.word	.LC11
+ 1356 0638 00000000 		.word	params_ram
+ 1357 063c C4000000 		.word	.LC12
+ 1358 0640 CC000000 		.word	.LC13
+ 1359              	.L109:
+ 243:./User/main.c ****                 Delay_s(1);
+ 1360              		.loc 1 243 17 view .LVU318
+ 243:./User/main.c ****                 Delay_s(1);
+ 1361              		.loc 1 243 43 is_stmt 0 view .LVU319
+ 1362 0644 D5ED157A 		vldr.32	s15, [r5, #84]
+ 243:./User/main.c ****                 Delay_s(1);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 35
+
+
+ 1363              		.loc 1 243 47 view .LVU320
+ 1364 0648 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1365 064c 77EEC77A 		vsub.f32	s15, s15, s14
+ 243:./User/main.c ****                 Delay_s(1);
+ 1366              		.loc 1 243 31 view .LVU321
+ 1367 0650 C5ED157A 		vstr.32	s15, [r5, #84]
+ 244:./User/main.c ****               }else if(CH2[4]>1100&&CH2[4]<1200){
+ 1368              		.loc 1 244 17 is_stmt 1 view .LVU322
+ 1369 0654 0120     		movs	r0, #1
+ 1370 0656 0021     		movs	r1, #0
+ 1371 0658 FFF7FEFF 		bl	Delay_s
+ 1372              	.LVL133:
+ 1373              	.L48:
+ 261:./User/main.c ****               Delay_ms(500);
+ 1374              		.loc 1 261 15 view .LVU323
+ 261:./User/main.c ****               Delay_ms(500);
+ 1375              		.loc 1 261 22 is_stmt 0 view .LVU324
+ 1376 065c AA4B     		ldr	r3, .L120+16
+ 1377 065e 5A88     		ldrh	r2, [r3, #2]
+ 261:./User/main.c ****               Delay_ms(500);
+ 1378              		.loc 1 261 18 view .LVU325
+ 1379 0660 40F24B43 		movw	r3, #1099
+ 1380 0664 9A42     		cmp	r2, r3
+ 1381 0666 00D8     		bhi	.L53
+ 261:./User/main.c ****               Delay_ms(500);
+ 1382              		.loc 1 261 47 view .LVU326
+ 1383 0668 0024     		movs	r4, #0
+ 1384              	.LVL134:
+ 1385              	.L53:
+ 262:./User/main.c ****             }
+ 1386              		.loc 1 262 15 is_stmt 1 view .LVU327
+ 1387 066a 4FF4FA70 		mov	r0, #500
+ 1388 066e 0021     		movs	r1, #0
+ 1389 0670 FFF7FEFF 		bl	Delay_ms
+ 1390              	.LVL135:
+ 1391              	.L54:
+ 235:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1392              		.loc 1 235 19 view .LVU328
+ 235:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1393              		.loc 1 235 23 is_stmt 0 view .LVU329
+ 1394 0674 A44B     		ldr	r3, .L120+16
+ 1395 0676 5B89     		ldrh	r3, [r3, #10]
+ 235:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1396              		.loc 1 235 19 view .LVU330
+ 1397 0678 B3F5E16F 		cmp	r3, #1800
+ 1398 067c 7FF611AE 		bls	.L55
+ 235:./User/main.c ****               OLED_ShowString(2,1,"  kp:");
+ 1399              		.loc 1 235 31 discriminator 1 view .LVU331
+ 1400 0680 002C     		cmp	r4, #0
+ 1401 0682 3FF40EAE 		beq	.L55
+ 236:./User/main.c ****               OLED_ShowString(3,1,"  ki:");
+ 1402              		.loc 1 236 15 is_stmt 1 view .LVU332
+ 1403 0686 A14A     		ldr	r2, .L120+20
+ 1404 0688 0121     		movs	r1, #1
+ 1405 068a 0220     		movs	r0, #2
+ 1406 068c FFF7FEFF 		bl	OLED_ShowString
+ 1407              	.LVL136:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 36
+
+
+ 237:./User/main.c ****               OLED_ShowString(4,1,"* kd:");
+ 1408              		.loc 1 237 15 view .LVU333
+ 1409 0690 9F4A     		ldr	r2, .L120+24
+ 1410 0692 0121     		movs	r1, #1
+ 1411 0694 0320     		movs	r0, #3
+ 1412 0696 FFF7FEFF 		bl	OLED_ShowString
+ 1413              	.LVL137:
+ 238:./User/main.c ****               OLED_ShowFNum(2,6,params_ram.kp,8,3);
+ 1414              		.loc 1 238 15 view .LVU334
+ 1415 069a 9E4A     		ldr	r2, .L120+28
+ 1416 069c 0121     		movs	r1, #1
+ 1417 069e 0420     		movs	r0, #4
+ 1418 06a0 FFF7FEFF 		bl	OLED_ShowString
+ 1419              	.LVL138:
+ 239:./User/main.c ****               OLED_ShowFNum(3,6,params_ram.ki,8,3);
+ 1420              		.loc 1 239 15 view .LVU335
+ 1421 06a4 9C4D     		ldr	r5, .L120+32
+ 1422 06a6 0323     		movs	r3, #3
+ 1423 06a8 0822     		movs	r2, #8
+ 1424 06aa 95ED130A 		vldr.32	s0, [r5, #76]
+ 1425 06ae 0621     		movs	r1, #6
+ 1426 06b0 0220     		movs	r0, #2
+ 1427 06b2 FFF7FEFF 		bl	OLED_ShowFNum
+ 1428              	.LVL139:
+ 240:./User/main.c ****               OLED_ShowFNum(4,6,params_ram.kd,8,3);
+ 1429              		.loc 1 240 15 view .LVU336
+ 1430 06b6 0323     		movs	r3, #3
+ 1431 06b8 0822     		movs	r2, #8
+ 1432 06ba 95ED140A 		vldr.32	s0, [r5, #80]
+ 1433 06be 0621     		movs	r1, #6
+ 1434 06c0 1846     		mov	r0, r3
+ 1435 06c2 FFF7FEFF 		bl	OLED_ShowFNum
+ 1436              	.LVL140:
+ 241:./User/main.c ****               if (CH2[4]<1100){
+ 1437              		.loc 1 241 15 view .LVU337
+ 1438 06c6 0323     		movs	r3, #3
+ 1439 06c8 0822     		movs	r2, #8
+ 1440 06ca 95ED150A 		vldr.32	s0, [r5, #84]
+ 1441 06ce 0621     		movs	r1, #6
+ 1442 06d0 0420     		movs	r0, #4
+ 1443 06d2 FFF7FEFF 		bl	OLED_ShowFNum
+ 1444              	.LVL141:
+ 242:./User/main.c ****                 params_ram.kd = params_ram.kd -1;
+ 1445              		.loc 1 242 15 view .LVU338
+ 242:./User/main.c ****                 params_ram.kd = params_ram.kd -1;
+ 1446              		.loc 1 242 22 is_stmt 0 view .LVU339
+ 1447 06d6 8C4B     		ldr	r3, .L120+16
+ 1448 06d8 1B89     		ldrh	r3, [r3, #8]
+ 242:./User/main.c ****                 params_ram.kd = params_ram.kd -1;
+ 1449              		.loc 1 242 18 view .LVU340
+ 1450 06da 40F24B42 		movw	r2, #1099
+ 1451 06de 9342     		cmp	r3, r2
+ 1452 06e0 B0D9     		bls	.L109
+ 245:./User/main.c ****                 params_ram.kd = params_ram.kd -0.1;
+ 1453              		.loc 1 245 21 is_stmt 1 view .LVU341
+ 245:./User/main.c ****                 params_ram.kd = params_ram.kd -0.1;
+ 1454              		.loc 1 245 35 is_stmt 0 view .LVU342
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 37
+
+
+ 1455 06e2 A3F24D42 		subw	r2, r3, #1101
+ 1456 06e6 92B2     		uxth	r2, r2
+ 245:./User/main.c ****                 params_ram.kd = params_ram.kd -0.1;
+ 1457              		.loc 1 245 23 view .LVU343
+ 1458 06e8 622A     		cmp	r2, #98
+ 1459 06ea 20D9     		bls	.L110
+ 248:./User/main.c ****                 params_ram.kd = params_ram.kd -0.05;
+ 1460              		.loc 1 248 21 is_stmt 1 view .LVU344
+ 248:./User/main.c ****                 params_ram.kd = params_ram.kd -0.05;
+ 1461              		.loc 1 248 35 is_stmt 0 view .LVU345
+ 1462 06ec A3F2B142 		subw	r2, r3, #1201
+ 1463 06f0 92B2     		uxth	r2, r2
+ 248:./User/main.c ****                 params_ram.kd = params_ram.kd -0.05;
+ 1464              		.loc 1 248 23 view .LVU346
+ 1465 06f2 C62A     		cmp	r2, #198
+ 1466 06f4 2DD9     		bls	.L111
+ 251:./User/main.c ****                 params_ram.kd = params_ram.kd +0.05;
+ 1467              		.loc 1 251 21 is_stmt 1 view .LVU347
+ 251:./User/main.c ****                 params_ram.kd = params_ram.kd +0.05;
+ 1468              		.loc 1 251 35 is_stmt 0 view .LVU348
+ 1469 06f6 A3F24162 		subw	r2, r3, #1601
+ 1470 06fa 92B2     		uxth	r2, r2
+ 251:./User/main.c ****                 params_ram.kd = params_ram.kd +0.05;
+ 1471              		.loc 1 251 23 view .LVU349
+ 1472 06fc C62A     		cmp	r2, #198
+ 1473 06fe 3AD9     		bls	.L112
+ 254:./User/main.c ****                 params_ram.kd = params_ram.kd +0.1;
+ 1474              		.loc 1 254 21 is_stmt 1 view .LVU350
+ 254:./User/main.c ****                 params_ram.kd = params_ram.kd +0.1;
+ 1475              		.loc 1 254 35 is_stmt 0 view .LVU351
+ 1476 0700 A3F20972 		subw	r2, r3, #1801
+ 1477 0704 92B2     		uxth	r2, r2
+ 254:./User/main.c ****                 params_ram.kd = params_ram.kd +0.1;
+ 1478              		.loc 1 254 23 view .LVU352
+ 1479 0706 622A     		cmp	r2, #98
+ 1480 0708 47D9     		bls	.L113
+ 257:./User/main.c ****                 params_ram.kd = params_ram.kd +1;
+ 1481              		.loc 1 257 21 is_stmt 1 view .LVU353
+ 257:./User/main.c ****                 params_ram.kd = params_ram.kd +1;
+ 1482              		.loc 1 257 23 is_stmt 0 view .LVU354
+ 1483 070a 40F26C72 		movw	r2, #1900
+ 1484 070e 9342     		cmp	r3, r2
+ 1485 0710 A4D9     		bls	.L48
+ 258:./User/main.c ****                 Delay_s(1);
+ 1486              		.loc 1 258 17 is_stmt 1 view .LVU355
+ 258:./User/main.c ****                 Delay_s(1);
+ 1487              		.loc 1 258 43 is_stmt 0 view .LVU356
+ 1488 0712 814B     		ldr	r3, .L120+32
+ 1489 0714 D3ED157A 		vldr.32	s15, [r3, #84]
+ 258:./User/main.c ****                 Delay_s(1);
+ 1490              		.loc 1 258 47 view .LVU357
+ 1491 0718 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 1492 071c 77EE877A 		vadd.f32	s15, s15, s14
+ 258:./User/main.c ****                 Delay_s(1);
+ 1493              		.loc 1 258 31 view .LVU358
+ 1494 0720 C3ED157A 		vstr.32	s15, [r3, #84]
+ 259:./User/main.c ****               }
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 38
+
+
+ 1495              		.loc 1 259 17 is_stmt 1 view .LVU359
+ 1496 0724 0120     		movs	r0, #1
+ 1497 0726 0021     		movs	r1, #0
+ 1498 0728 FFF7FEFF 		bl	Delay_s
+ 1499              	.LVL142:
+ 1500 072c 96E7     		b	.L48
+ 1501              	.L110:
+ 246:./User/main.c ****                 Delay_ms(500);
+ 1502              		.loc 1 246 17 view .LVU360
+ 246:./User/main.c ****                 Delay_ms(500);
+ 1503              		.loc 1 246 43 is_stmt 0 view .LVU361
+ 1504 072e 7A4D     		ldr	r5, .L120+32
+ 1505 0730 686D     		ldr	r0, [r5, #84]	@ float
+ 1506 0732 FFF7FEFF 		bl	__aeabi_f2d
+ 1507              	.LVL143:
+ 246:./User/main.c ****                 Delay_ms(500);
+ 1508              		.loc 1 246 47 view .LVU362
+ 1509 0736 70A3     		adr	r3, .L120
+ 1510 0738 D3E90023 		ldrd	r2, [r3]
+ 1511 073c FFF7FEFF 		bl	__aeabi_dsub
+ 1512              	.LVL144:
+ 1513 0740 FFF7FEFF 		bl	__aeabi_d2f
+ 1514              	.LVL145:
+ 246:./User/main.c ****                 Delay_ms(500);
+ 1515              		.loc 1 246 31 view .LVU363
+ 1516 0744 6865     		str	r0, [r5, #84]	@ float
+ 247:./User/main.c ****               }else if(CH2[4]>1200&&CH2[4]<1400){
+ 1517              		.loc 1 247 17 is_stmt 1 view .LVU364
+ 1518 0746 4FF4FA70 		mov	r0, #500
+ 1519 074a 0021     		movs	r1, #0
+ 1520 074c FFF7FEFF 		bl	Delay_ms
+ 1521              	.LVL146:
+ 1522 0750 84E7     		b	.L48
+ 1523              	.L111:
+ 249:./User/main.c ****                 Delay_ms(500);
+ 1524              		.loc 1 249 17 view .LVU365
+ 249:./User/main.c ****                 Delay_ms(500);
+ 1525              		.loc 1 249 43 is_stmt 0 view .LVU366
+ 1526 0752 714D     		ldr	r5, .L120+32
+ 1527 0754 686D     		ldr	r0, [r5, #84]	@ float
+ 1528 0756 FFF7FEFF 		bl	__aeabi_f2d
+ 1529              	.LVL147:
+ 249:./User/main.c ****                 Delay_ms(500);
+ 1530              		.loc 1 249 47 view .LVU367
+ 1531 075a 69A3     		adr	r3, .L120+8
+ 1532 075c D3E90023 		ldrd	r2, [r3]
+ 1533 0760 FFF7FEFF 		bl	__aeabi_dsub
+ 1534              	.LVL148:
+ 1535 0764 FFF7FEFF 		bl	__aeabi_d2f
+ 1536              	.LVL149:
+ 249:./User/main.c ****                 Delay_ms(500);
+ 1537              		.loc 1 249 31 view .LVU368
+ 1538 0768 6865     		str	r0, [r5, #84]	@ float
+ 250:./User/main.c ****               }else if(CH2[4]>1600&&CH2[4]<1800){
+ 1539              		.loc 1 250 17 is_stmt 1 view .LVU369
+ 1540 076a 4FF4FA70 		mov	r0, #500
+ 1541 076e 0021     		movs	r1, #0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 39
+
+
+ 1542 0770 FFF7FEFF 		bl	Delay_ms
+ 1543              	.LVL150:
+ 1544 0774 72E7     		b	.L48
+ 1545              	.L112:
+ 252:./User/main.c ****                 Delay_ms(500);
+ 1546              		.loc 1 252 17 view .LVU370
+ 252:./User/main.c ****                 Delay_ms(500);
+ 1547              		.loc 1 252 43 is_stmt 0 view .LVU371
+ 1548 0776 684D     		ldr	r5, .L120+32
+ 1549 0778 686D     		ldr	r0, [r5, #84]	@ float
+ 1550 077a FFF7FEFF 		bl	__aeabi_f2d
+ 1551              	.LVL151:
+ 252:./User/main.c ****                 Delay_ms(500);
+ 1552              		.loc 1 252 47 view .LVU372
+ 1553 077e 60A3     		adr	r3, .L120+8
+ 1554 0780 D3E90023 		ldrd	r2, [r3]
+ 1555 0784 FFF7FEFF 		bl	__aeabi_dadd
+ 1556              	.LVL152:
+ 1557 0788 FFF7FEFF 		bl	__aeabi_d2f
+ 1558              	.LVL153:
+ 252:./User/main.c ****                 Delay_ms(500);
+ 1559              		.loc 1 252 31 view .LVU373
+ 1560 078c 6865     		str	r0, [r5, #84]	@ float
+ 253:./User/main.c ****               }else if(CH2[4]>1800&&CH2[4]<1900){
+ 1561              		.loc 1 253 17 is_stmt 1 view .LVU374
+ 1562 078e 4FF4FA70 		mov	r0, #500
+ 1563 0792 0021     		movs	r1, #0
+ 1564 0794 FFF7FEFF 		bl	Delay_ms
+ 1565              	.LVL154:
+ 1566 0798 60E7     		b	.L48
+ 1567              	.L113:
+ 255:./User/main.c ****                 Delay_ms(500);
+ 1568              		.loc 1 255 17 view .LVU375
+ 255:./User/main.c ****                 Delay_ms(500);
+ 1569              		.loc 1 255 43 is_stmt 0 view .LVU376
+ 1570 079a 5F4D     		ldr	r5, .L120+32
+ 1571 079c 686D     		ldr	r0, [r5, #84]	@ float
+ 1572 079e FFF7FEFF 		bl	__aeabi_f2d
+ 1573              	.LVL155:
+ 255:./User/main.c ****                 Delay_ms(500);
+ 1574              		.loc 1 255 47 view .LVU377
+ 1575 07a2 55A3     		adr	r3, .L120
+ 1576 07a4 D3E90023 		ldrd	r2, [r3]
+ 1577 07a8 FFF7FEFF 		bl	__aeabi_dadd
+ 1578              	.LVL156:
+ 1579 07ac FFF7FEFF 		bl	__aeabi_d2f
+ 1580              	.LVL157:
+ 255:./User/main.c ****                 Delay_ms(500);
+ 1581              		.loc 1 255 31 view .LVU378
+ 1582 07b0 6865     		str	r0, [r5, #84]	@ float
+ 256:./User/main.c ****               }else if(CH2[4]>1900){
+ 1583              		.loc 1 256 17 is_stmt 1 view .LVU379
+ 1584 07b2 4FF4FA70 		mov	r0, #500
+ 1585 07b6 0021     		movs	r1, #0
+ 1586 07b8 FFF7FEFF 		bl	Delay_ms
+ 1587              	.LVL158:
+ 1588 07bc 4EE7     		b	.L48
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 40
+
+
+ 1589              	.L81:
+ 174:./User/main.c ****           while (para_PID_flag)
+ 1590              		.loc 1 174 43 is_stmt 0 view .LVU380
+ 1591 07be 3C46     		mov	r4, r7
+ 1592              	.LVL159:
+ 174:./User/main.c ****           while (para_PID_flag)
+ 1593              		.loc 1 174 43 view .LVU381
+ 1594 07c0 6FE5     		b	.L55
+ 1595              	.LVL160:
+ 1596              	.L114:
+ 272:./User/main.c ****             OLED_ShowString(3,1,"                ");
+ 1597              		.loc 1 272 13 is_stmt 1 view .LVU382
+ 1598 07c2 DFF87881 		ldr	r8, .L120+68
+ 1599              	.LVL161:
+ 272:./User/main.c ****             OLED_ShowString(3,1,"                ");
+ 1600              		.loc 1 272 13 is_stmt 0 view .LVU383
+ 1601 07c6 4246     		mov	r2, r8
+ 1602 07c8 0121     		movs	r1, #1
+ 1603 07ca 0220     		movs	r0, #2
+ 1604 07cc FFF7FEFF 		bl	OLED_ShowString
+ 1605              	.LVL162:
+ 273:./User/main.c ****             OLED_ShowString(4,1,"                ");
+ 1606              		.loc 1 273 13 is_stmt 1 view .LVU384
+ 1607 07d0 524D     		ldr	r5, .L120+36
+ 1608 07d2 2A46     		mov	r2, r5
+ 1609 07d4 0121     		movs	r1, #1
+ 1610 07d6 0320     		movs	r0, #3
+ 1611 07d8 FFF7FEFF 		bl	OLED_ShowString
+ 1612              	.LVL163:
+ 274:./User/main.c ****             IMU_Calibrate();
+ 1613              		.loc 1 274 13 view .LVU385
+ 1614 07dc 2A46     		mov	r2, r5
+ 1615 07de 0121     		movs	r1, #1
+ 1616 07e0 0420     		movs	r0, #4
+ 1617 07e2 FFF7FEFF 		bl	OLED_ShowString
+ 1618              	.LVL164:
+ 275:./User/main.c ****             OLED_ShowString(2,1," IMU calibrating");
+ 1619              		.loc 1 275 13 view .LVU386
+ 1620 07e6 FFF7FEFF 		bl	IMU_Calibrate
+ 1621              	.LVL165:
+ 276:./User/main.c ****             OLED_ShowString(3,1,"    Success!    ");
+ 1622              		.loc 1 276 13 view .LVU387
+ 1623 07ea 4246     		mov	r2, r8
+ 1624 07ec 0121     		movs	r1, #1
+ 1625 07ee 0220     		movs	r0, #2
+ 1626 07f0 FFF7FEFF 		bl	OLED_ShowString
+ 1627              	.LVL166:
+ 277:./User/main.c ****             OLED_ShowString(4,1,"                ");
+ 1628              		.loc 1 277 13 view .LVU388
+ 1629 07f4 4A4A     		ldr	r2, .L120+40
+ 1630 07f6 0121     		movs	r1, #1
+ 1631 07f8 0320     		movs	r0, #3
+ 1632 07fa FFF7FEFF 		bl	OLED_ShowString
+ 1633              	.LVL167:
+ 278:./User/main.c ****             para_IMU_flag = 0;
+ 1634              		.loc 1 278 13 view .LVU389
+ 1635 07fe 2A46     		mov	r2, r5
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 41
+
+
+ 1636 0800 0121     		movs	r1, #1
+ 1637 0802 0420     		movs	r0, #4
+ 1638 0804 FFF7FEFF 		bl	OLED_ShowString
+ 1639              	.LVL168:
+ 279:./User/main.c ****             Delay_ms(500);
+ 1640              		.loc 1 279 13 view .LVU390
+ 280:./User/main.c ****           }
+ 1641              		.loc 1 280 13 view .LVU391
+ 1642 0808 4FF4FA70 		mov	r0, #500
+ 1643 080c 0021     		movs	r1, #0
+ 1644 080e FFF7FEFF 		bl	Delay_ms
+ 1645              	.LVL169:
+ 270:./User/main.c ****           {
+ 1646              		.loc 1 270 17 view .LVU392
+ 279:./User/main.c ****             Delay_ms(500);
+ 1647              		.loc 1 279 27 is_stmt 0 view .LVU393
+ 1648 0812 4FF00008 		mov	r8, #0
+ 1649 0816 02E0     		b	.L58
+ 1650              	.LVL170:
+ 1651              	.L60:
+ 270:./User/main.c ****           {
+ 1652              		.loc 1 270 17 is_stmt 1 view .LVU394
+ 1653 0818 B8F1000F 		cmp	r8, #0
+ 1654 081c D1D1     		bne	.L114
+ 1655              	.LVL171:
+ 1656              	.L58:
+ 297:./User/main.c ****       }    
+ 1657              		.loc 1 297 9 view .LVU395
+ 297:./User/main.c ****       }    
+ 1658              		.loc 1 297 16 is_stmt 0 view .LVU396
+ 1659 081e 3A4B     		ldr	r3, .L120+16
+ 1660 0820 5A88     		ldrh	r2, [r3, #2]
+ 297:./User/main.c ****       }    
+ 1661              		.loc 1 297 12 view .LVU397
+ 1662 0822 40F24B43 		movw	r3, #1099
+ 1663 0826 9A42     		cmp	r2, r3
+ 1664 0828 5FD9     		bls	.L88
+ 1665              	.LVL172:
+ 1666              	.L70:
+ 167:./User/main.c ****       {
+ 1667              		.loc 1 167 13 is_stmt 1 view .LVU398
+ 1668 082a 002F     		cmp	r7, #0
+ 1669 082c 3FF490AC 		beq	.L6
+ 169:./User/main.c ****         if (CH2[5]<1100){  
+ 1670              		.loc 1 169 9 view .LVU399
+ 1671 0830 6420     		movs	r0, #100
+ 1672 0832 0021     		movs	r1, #0
+ 1673 0834 FFF7FEFF 		bl	Delay_ms
+ 1674              	.LVL173:
+ 170:./User/main.c ****           OLED_ShowString(2,1,"* PID setting   ");
+ 1675              		.loc 1 170 9 view .LVU400
+ 170:./User/main.c ****           OLED_ShowString(2,1,"* PID setting   ");
+ 1676              		.loc 1 170 16 is_stmt 0 view .LVU401
+ 1677 0838 334B     		ldr	r3, .L120+16
+ 1678 083a 5B89     		ldrh	r3, [r3, #10]
+ 170:./User/main.c ****           OLED_ShowString(2,1,"* PID setting   ");
+ 1679              		.loc 1 170 12 view .LVU402
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 42
+
+
+ 1680 083c 40F24B42 		movw	r2, #1099
+ 1681 0840 9342     		cmp	r3, r2
+ 1682 0842 7FF618AD 		bls	.L115
+ 265:./User/main.c ****           OLED_ShowString(2,1,"  PID setting   ");
+ 1683              		.loc 1 265 15 is_stmt 1 view .LVU403
+ 265:./User/main.c ****           OLED_ShowString(2,1,"  PID setting   ");
+ 1684              		.loc 1 265 17 is_stmt 0 view .LVU404
+ 1685 0846 B3F5C86F 		cmp	r3, #1600
+ 1686 084a 16D2     		bcs	.L59
+ 266:./User/main.c ****           OLED_ShowString(3,1,"* IMU calibrate ");
+ 1687              		.loc 1 266 11 is_stmt 1 view .LVU405
+ 1688 084c 354A     		ldr	r2, .L120+44
+ 1689 084e 0121     		movs	r1, #1
+ 1690 0850 0220     		movs	r0, #2
+ 1691 0852 FFF7FEFF 		bl	OLED_ShowString
+ 1692              	.LVL174:
+ 267:./User/main.c ****           OLED_ShowString(4,1,"  Baro calibrate");
+ 1693              		.loc 1 267 11 view .LVU406
+ 1694 0856 344A     		ldr	r2, .L120+48
+ 1695 0858 0121     		movs	r1, #1
+ 1696 085a 0320     		movs	r0, #3
+ 1697 085c FFF7FEFF 		bl	OLED_ShowString
+ 1698              	.LVL175:
+ 268:./User/main.c ****           if (CH2[6] >1900) para_IMU_flag = 1;
+ 1699              		.loc 1 268 11 view .LVU407
+ 1700 0860 324A     		ldr	r2, .L120+52
+ 1701 0862 0121     		movs	r1, #1
+ 1702 0864 0420     		movs	r0, #4
+ 1703 0866 FFF7FEFF 		bl	OLED_ShowString
+ 1704              	.LVL176:
+ 269:./User/main.c ****           while (para_IMU_flag)
+ 1705              		.loc 1 269 11 view .LVU408
+ 269:./User/main.c ****           while (para_IMU_flag)
+ 1706              		.loc 1 269 18 is_stmt 0 view .LVU409
+ 1707 086a 274B     		ldr	r3, .L120+16
+ 1708 086c 9A89     		ldrh	r2, [r3, #12]
+ 269:./User/main.c ****           while (para_IMU_flag)
+ 1709              		.loc 1 269 14 view .LVU410
+ 1710 086e 40F26C73 		movw	r3, #1900
+ 1711 0872 9A42     		cmp	r2, r3
+ 1712 0874 D0D9     		bls	.L60
+ 269:./User/main.c ****           while (para_IMU_flag)
+ 1713              		.loc 1 269 43 view .LVU411
+ 1714 0876 B846     		mov	r8, r7
+ 1715              	.LVL177:
+ 269:./User/main.c ****           while (para_IMU_flag)
+ 1716              		.loc 1 269 43 view .LVU412
+ 1717 0878 CEE7     		b	.L60
+ 1718              	.LVL178:
+ 1719              	.L59:
+ 283:./User/main.c ****           OLED_ShowString(3,1,"  IMU calibrate ");
+ 1720              		.loc 1 283 11 is_stmt 1 view .LVU413
+ 1721 087a 2A4A     		ldr	r2, .L120+44
+ 1722 087c 0121     		movs	r1, #1
+ 1723 087e 0220     		movs	r0, #2
+ 1724 0880 FFF7FEFF 		bl	OLED_ShowString
+ 1725              	.LVL179:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 43
+
+
+ 284:./User/main.c ****           OLED_ShowString(4,1,"* Baro calibrate");
+ 1726              		.loc 1 284 11 view .LVU414
+ 1727 0884 2A4A     		ldr	r2, .L120+56
+ 1728 0886 0121     		movs	r1, #1
+ 1729 0888 0320     		movs	r0, #3
+ 1730 088a FFF7FEFF 		bl	OLED_ShowString
+ 1731              	.LVL180:
+ 285:./User/main.c ****           if (CH2[6] >1900) para_baro_flag = 1;
+ 1732              		.loc 1 285 11 view .LVU415
+ 1733 088e 294A     		ldr	r2, .L120+60
+ 1734 0890 0121     		movs	r1, #1
+ 1735 0892 0420     		movs	r0, #4
+ 1736 0894 FFF7FEFF 		bl	OLED_ShowString
+ 1737              	.LVL181:
+ 286:./User/main.c ****           while (para_baro_flag)
+ 1738              		.loc 1 286 11 view .LVU416
+ 286:./User/main.c ****           while (para_baro_flag)
+ 1739              		.loc 1 286 18 is_stmt 0 view .LVU417
+ 1740 0898 1B4B     		ldr	r3, .L120+16
+ 1741 089a 9A89     		ldrh	r2, [r3, #12]
+ 286:./User/main.c ****           while (para_baro_flag)
+ 1742              		.loc 1 286 14 view .LVU418
+ 1743 089c 40F26C73 		movw	r3, #1900
+ 1744 08a0 9A42     		cmp	r2, r3
+ 1745 08a2 06D9     		bls	.L66
+ 286:./User/main.c ****           while (para_baro_flag)
+ 1746              		.loc 1 286 44 view .LVU419
+ 1747 08a4 3E46     		mov	r6, r7
+ 1748              	.LVL182:
+ 286:./User/main.c ****           while (para_baro_flag)
+ 1749              		.loc 1 286 44 view .LVU420
+ 1750 08a6 04E0     		b	.L66
+ 1751              	.L65:
+ 1752              	.LVL183:
+ 294:./User/main.c ****           }
+ 1753              		.loc 1 294 13 is_stmt 1 view .LVU421
+ 1754 08a8 4FF4FA70 		mov	r0, #500
+ 1755 08ac 0021     		movs	r1, #0
+ 1756 08ae FFF7FEFF 		bl	Delay_ms
+ 1757              	.LVL184:
+ 1758              	.L66:
+ 287:./User/main.c ****           {  
+ 1759              		.loc 1 287 17 view .LVU422
+ 1760 08b2 002E     		cmp	r6, #0
+ 1761 08b4 B3D0     		beq	.L58
+ 289:./User/main.c ****             OLED_ShowString(3,1,"                ");
+ 1762              		.loc 1 289 13 view .LVU423
+ 1763 08b6 204A     		ldr	r2, .L120+64
+ 1764 08b8 0121     		movs	r1, #1
+ 1765 08ba 0220     		movs	r0, #2
+ 1766 08bc FFF7FEFF 		bl	OLED_ShowString
+ 1767              	.LVL185:
+ 290:./User/main.c ****             OLED_ShowString(4,1,"                ");
+ 1768              		.loc 1 290 13 view .LVU424
+ 1769 08c0 164D     		ldr	r5, .L120+36
+ 1770 08c2 2A46     		mov	r2, r5
+ 1771 08c4 0121     		movs	r1, #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 44
+
+
+ 1772 08c6 0320     		movs	r0, #3
+ 1773 08c8 FFF7FEFF 		bl	OLED_ShowString
+ 1774              	.LVL186:
+ 291:./User/main.c ****             // Baro_Calibrate();
+ 1775              		.loc 1 291 13 view .LVU425
+ 1776 08cc 2A46     		mov	r2, r5
+ 1777 08ce 0121     		movs	r1, #1
+ 1778 08d0 0420     		movs	r0, #4
+ 1779 08d2 FFF7FEFF 		bl	OLED_ShowString
+ 1780              	.LVL187:
+ 293:./User/main.c ****             Delay_ms(500);
+ 1781              		.loc 1 293 13 view .LVU426
+ 293:./User/main.c ****             Delay_ms(500);
+ 1782              		.loc 1 293 20 is_stmt 0 view .LVU427
+ 1783 08d6 0C4B     		ldr	r3, .L120+16
+ 1784 08d8 5A88     		ldrh	r2, [r3, #2]
+ 293:./User/main.c ****             Delay_ms(500);
+ 1785              		.loc 1 293 16 view .LVU428
+ 1786 08da 40F24B43 		movw	r3, #1099
+ 1787 08de 9A42     		cmp	r2, r3
+ 1788 08e0 E2D8     		bhi	.L65
+ 293:./User/main.c ****             Delay_ms(500);
+ 1789              		.loc 1 293 46 view .LVU429
+ 1790 08e2 0026     		movs	r6, #0
+ 1791              	.LVL188:
+ 293:./User/main.c ****             Delay_ms(500);
+ 1792              		.loc 1 293 46 view .LVU430
+ 1793 08e4 E0E7     		b	.L65
+ 1794              	.LVL189:
+ 1795              	.L80:
+ 166:./User/main.c ****       while (para_flag)
+ 1796              		.loc 1 166 35 view .LVU431
+ 1797 08e6 0127     		movs	r7, #1
+ 1798 08e8 C1E4     		b	.L23
+ 1799              	.LVL190:
+ 1800              	.L88:
+ 297:./User/main.c ****       }    
+ 1801              		.loc 1 297 37 view .LVU432
+ 1802 08ea 0027     		movs	r7, #0
+ 1803              	.LVL191:
+ 297:./User/main.c ****       }    
+ 1804              		.loc 1 297 37 view .LVU433
+ 1805 08ec 9DE7     		b	.L70
+ 1806              	.LVL192:
+ 1807              	.L89:
+ 303:./User/main.c ****       while (save_flag)
+ 1808              		.loc 1 303 35 view .LVU434
+ 1809 08ee 0123     		movs	r3, #1
+ 1810 08f0 8FE4     		b	.L72
+ 1811              	.L121:
+ 1812 08f2 00BFAFF3 		.align	3
+ 1812      0080
+ 1813              	.L120:
+ 1814 08f8 9A999999 		.word	-1717986918
+ 1815 08fc 9999B93F 		.word	1069128089
+ 1816 0900 9A999999 		.word	-1717986918
+ 1817 0904 9999A93F 		.word	1068079513
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 45
+
+
+ 1818 0908 00000000 		.word	CH2
+ 1819 090c C4000000 		.word	.LC12
+ 1820 0910 B4000000 		.word	.LC10
+ 1821 0914 D4000000 		.word	.LC14
+ 1822 0918 00000000 		.word	params_ram
+ 1823 091c 18010000 		.word	.LC18
+ 1824 0920 2C010000 		.word	.LC19
+ 1825 0924 DC000000 		.word	.LC15
+ 1826 0928 F0000000 		.word	.LC16
+ 1827 092c 98000000 		.word	.LC8
+ 1828 0930 84000000 		.word	.LC7
+ 1829 0934 40010000 		.word	.LC20
+ 1830 0938 54010000 		.word	.LC21
+ 1831 093c 04010000 		.word	.LC17
+ 1832              	.LBE3:
+ 1833              		.cfi_endproc
+ 1834              	.LFE127:
+ 1836              		.global	counttttt
+ 1837              		.global	pitchOffsetSum
+ 1838              		.global	rollOffsetSum
+ 1839              		.global	pitchOffset
+ 1840              		.global	rollOffset
+ 1841              		.global	q3
+ 1842              		.global	q2
+ 1843              		.global	q1
+ 1844              		.global	q0
+ 1845              		.global	RCC_ClockFreq_test
+ 1846              		.global	correctFlag
+ 1847              		.global	height
+ 1848              		.global	angle
+ 1849              		.global	deltaT
+ 1850              		.section	.bss.RCC_ClockFreq_test,"aw",%nobits
+ 1851              		.align	2
+ 1852              		.set	.LANCHOR6,. + 0
+ 1855              	RCC_ClockFreq_test:
+ 1856 0000 00000000 		.space	16
+ 1856      00000000 
+ 1856      00000000 
+ 1856      00000000 
+ 1857              		.section	.bss.angle,"aw",%nobits
+ 1858              		.align	2
+ 1859              		.set	.LANCHOR9,. + 0
+ 1862              	angle:
+ 1863 0000 00000000 		.space	12
+ 1863      00000000 
+ 1863      00000000 
+ 1864              		.section	.bss.counttttt,"aw",%nobits
+ 1865              		.align	2
+ 1866              		.set	.LANCHOR7,. + 0
+ 1869              	counttttt:
+ 1870 0000 00000000 		.space	4
+ 1871              		.section	.bss.height,"aw",%nobits
+ 1872              		.align	2
+ 1875              	height:
+ 1876 0000 00000000 		.space	4
+ 1877              		.section	.bss.pitchOffset,"aw",%nobits
+ 1878              		.align	2
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 46
+
+
+ 1879              		.set	.LANCHOR5,. + 0
+ 1882              	pitchOffset:
+ 1883 0000 00000000 		.space	4
+ 1884              		.section	.bss.pitchOffsetSum,"aw",%nobits
+ 1885              		.align	2
+ 1886              		.set	.LANCHOR12,. + 0
+ 1889              	pitchOffsetSum:
+ 1890 0000 00000000 		.space	4
+ 1891              		.section	.bss.q1,"aw",%nobits
+ 1892              		.align	2
+ 1893              		.set	.LANCHOR0,. + 0
+ 1896              	q1:
+ 1897 0000 00000000 		.space	4
+ 1898              		.section	.bss.q2,"aw",%nobits
+ 1899              		.align	2
+ 1900              		.set	.LANCHOR1,. + 0
+ 1903              	q2:
+ 1904 0000 00000000 		.space	4
+ 1905              		.section	.bss.q3,"aw",%nobits
+ 1906              		.align	2
+ 1907              		.set	.LANCHOR3,. + 0
+ 1910              	q3:
+ 1911 0000 00000000 		.space	4
+ 1912              		.section	.bss.rollOffset,"aw",%nobits
+ 1913              		.align	2
+ 1914              		.set	.LANCHOR4,. + 0
+ 1917              	rollOffset:
+ 1918 0000 00000000 		.space	4
+ 1919              		.section	.bss.rollOffsetSum,"aw",%nobits
+ 1920              		.align	2
+ 1921              		.set	.LANCHOR11,. + 0
+ 1924              	rollOffsetSum:
+ 1925 0000 00000000 		.space	4
+ 1926              		.section	.data.correctFlag,"aw"
+ 1927              		.set	.LANCHOR10,. + 0
+ 1930              	correctFlag:
+ 1931 0000 FF       		.byte	-1
+ 1932              		.section	.data.deltaT,"aw"
+ 1933              		.align	2
+ 1934              		.set	.LANCHOR8,. + 0
+ 1937              	deltaT:
+ 1938 0000 A69B443B 		.word	994352038
+ 1939              		.section	.data.q0,"aw"
+ 1940              		.align	2
+ 1941              		.set	.LANCHOR2,. + 0
+ 1944              	q0:
+ 1945 0000 0000803F 		.word	1065353216
+ 1946              		.text
+ 1947              	.Letext0:
+ 1948              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1949              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 1950              		.file 4 "./CORE/stm32f4xx.h"
+ 1951              		.file 5 "./Library/stm32f4xx_rcc.h"
+ 1952              		.file 6 "./User/Parameters.h"
+ 1953              		.file 7 "./Hardware/GY86.h"
+ 1954              		.file 8 "./User/AHRS.h"
+ 1955              		.file 9 "./Hardware/Receiver.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 47
+
+
+ 1956              		.file 10 "./User/PID.h"
+ 1957              		.file 11 "./User/VOFA+.h"
+ 1958              		.file 12 "./Hardware/PWM.h"
+ 1959              		.file 13 "./User/Delay.h"
+ 1960              		.file 14 "./Hardware/OLED.h"
+ 1961              		.file 15 "./User/GuassNewton.h"
+ 1962              		.file 16 "./CORE/system_stm32f4xx.h"
+ 1963              		.file 17 "./Hardware/LD2.h"
+ 1964              		.file 18 "./Hardware/OLED2.h"
+ 1965              		.file 19 "./Hardware/ATKBLE01.h"
+ 1966              		.file 20 "/Applications/ARM/arm-none-eabi/include/math.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 48
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:24     .text.toEulerAngles:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:30     .text.toEulerAngles:0000000000000000 toEulerAngles
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:260    .text.toEulerAngles:00000000000001b8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:271    .rodata.main.str1.4:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:345    .text.main:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:351    .text.main:0000000000000000 main
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:852    .text.main:00000000000002a8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:883    .text.main:0000000000000318 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1348   .text.main:0000000000000618 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1362   .text.main:0000000000000644 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1814   .text.main:00000000000008f8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1869   .bss.counttttt:0000000000000000 counttttt
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1889   .bss.pitchOffsetSum:0000000000000000 pitchOffsetSum
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1924   .bss.rollOffsetSum:0000000000000000 rollOffsetSum
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1882   .bss.pitchOffset:0000000000000000 pitchOffset
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1917   .bss.rollOffset:0000000000000000 rollOffset
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1910   .bss.q3:0000000000000000 q3
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1903   .bss.q2:0000000000000000 q2
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1896   .bss.q1:0000000000000000 q1
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1944   .data.q0:0000000000000000 q0
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1855   .bss.RCC_ClockFreq_test:0000000000000000 RCC_ClockFreq_test
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1930   .data.correctFlag:0000000000000000 correctFlag
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1875   .bss.height:0000000000000000 height
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1862   .bss.angle:0000000000000000 angle
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1937   .data.deltaT:0000000000000000 deltaT
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1851   .bss.RCC_ClockFreq_test:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1858   .bss.angle:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1865   .bss.counttttt:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1872   .bss.height:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1878   .bss.pitchOffset:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1885   .bss.pitchOffsetSum:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1892   .bss.q1:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1899   .bss.q2:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1906   .bss.q3:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1913   .bss.rollOffset:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1920   .bss.rollOffsetSum:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1933   .data.deltaT:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s:1940   .data.q0:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_f2d
+__aeabi_dmul
+__aeabi_d2f
+__aeabi_dsub
+atan2
+asin
+RAD_TO_DEGREE
+__aeabi_dadd
+SystemInit
+RCC_GetClocksFreq
+LD2_init
+GY86_init
+OLED_Init
+OLED2_Init
+BLE_Init
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cck8Lagj.s 			page 49
+
+
+REC_Init2
+Motor_Init
+LD2_ON
+LoadParameters
+pidInit
+GY86_GetData
+MahonyAHRSupdate
+pidControl
+sendVOFA
+Motor_SetSpeed_All
+Delay_s
+OLED_ShowString
+StoreParameters
+GY86DataList
+params_ram
+CH2
+Delay_ms
+OLED_ShowFNum
+IMU_Calibrate

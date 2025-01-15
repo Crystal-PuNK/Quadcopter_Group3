@@ -1,0 +1,297 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"VOFA+.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text._write,"ax",%progbits
+  20              		.align	1
+  21              		.global	_write
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	_write:
+  27              	.LVL0:
+  28              	.LFB126:
+  29              		.file 1 "./User/VOFA+.c"
+   1:./User/VOFA+.c **** #include "VOFA+.h"
+   2:./User/VOFA+.c **** #include "stm32f4xx.h"
+   3:./User/VOFA+.c **** #include <stdio.h>
+   4:./User/VOFA+.c **** #include <string.h>
+   5:./User/VOFA+.c **** #include "AHRS.h"
+   6:./User/VOFA+.c **** #include "PID.h"
+   7:./User/VOFA+.c **** #include "stm32f4xx_usart.h"
+   8:./User/VOFA+.c **** #include "GY86.h"
+   9:./User/VOFA+.c **** 
+  10:./User/VOFA+.c **** extern Angle angle;
+  11:./User/VOFA+.c **** extern float height;
+  12:./User/VOFA+.c **** extern volatile float q0, q1, q2, q3;
+  13:./User/VOFA+.c **** extern PID_t rollInner, rollOuter, pitchInner, pitchOuter, yawInner, heightSingle;
+  14:./User/VOFA+.c **** 
+  15:./User/VOFA+.c **** #define CH_COUNT 8
+  16:./User/VOFA+.c **** 
+  17:./User/VOFA+.c **** float fdata[CH_COUNT];
+  18:./User/VOFA+.c **** unsigned char tail[4] = {0x00, 0x00, 0x80, 0x7f};
+  19:./User/VOFA+.c **** 
+  20:./User/VOFA+.c **** extern float expRoll, expPitch, expMode, expYaw;
+  21:./User/VOFA+.c **** extern float pidRoll, pidPitch, pidThr, targetHeight;
+  22:./User/VOFA+.c **** 
+  23:./User/VOFA+.c **** int _write(int fd, char *pBuffer, int size) {
+  30              		.loc 1 23 45 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 23 45 is_stmt 0 view .LVU1
+  35 0000 70B5     		push	{r4, r5, r6, lr}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s 			page 2
+
+
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 4, -16
+  39              		.cfi_offset 5, -12
+  40              		.cfi_offset 6, -8
+  41              		.cfi_offset 14, -4
+  42 0002 0E46     		mov	r6, r1
+  43 0004 1546     		mov	r5, r2
+  24:./User/VOFA+.c ****     for (int i = 0; i < size; i++) {
+  44              		.loc 1 24 5 is_stmt 1 view .LVU2
+  45              	.LBB2:
+  46              		.loc 1 24 10 view .LVU3
+  47              	.LVL1:
+  48              		.loc 1 24 14 is_stmt 0 view .LVU4
+  49 0006 0024     		movs	r4, #0
+  50              		.loc 1 24 5 view .LVU5
+  51 0008 0AE0     		b	.L2
+  52              	.LVL2:
+  53              	.L3:
+  25:./User/VOFA+.c ****         while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET) {};
+  54              		.loc 1 25 70 is_stmt 1 discriminator 1 view .LVU6
+  55              		.loc 1 25 15 discriminator 1 view .LVU7
+  56              		.loc 1 25 16 is_stmt 0 discriminator 1 view .LVU8
+  57 000a 4021     		movs	r1, #64
+  58 000c 0648     		ldr	r0, .L5
+  59 000e FFF7FEFF 		bl	USART_GetFlagStatus
+  60              	.LVL3:
+  61              		.loc 1 25 15 discriminator 1 view .LVU9
+  62 0012 0028     		cmp	r0, #0
+  63 0014 F9D0     		beq	.L3
+  64              		.loc 1 25 71 is_stmt 1 discriminator 2 view .LVU10
+  26:./User/VOFA+.c ****         USART_SendData(USART1, (u16)pBuffer[i]);
+  65              		.loc 1 26 9 discriminator 2 view .LVU11
+  66 0016 315D     		ldrb	r1, [r6, r4]	@ zero_extendqisi2
+  67 0018 0348     		ldr	r0, .L5
+  68 001a FFF7FEFF 		bl	USART_SendData
+  69              	.LVL4:
+  24:./User/VOFA+.c ****     for (int i = 0; i < size; i++) {
+  70              		.loc 1 24 31 discriminator 2 view .LVU12
+  24:./User/VOFA+.c ****     for (int i = 0; i < size; i++) {
+  71              		.loc 1 24 32 is_stmt 0 discriminator 2 view .LVU13
+  72 001e 0134     		adds	r4, r4, #1
+  73              	.LVL5:
+  74              	.L2:
+  24:./User/VOFA+.c ****     for (int i = 0; i < size; i++) {
+  75              		.loc 1 24 21 is_stmt 1 discriminator 2 view .LVU14
+  24:./User/VOFA+.c ****     for (int i = 0; i < size; i++) {
+  76              		.loc 1 24 5 is_stmt 0 discriminator 2 view .LVU15
+  77 0020 AC42     		cmp	r4, r5
+  78 0022 F2DB     		blt	.L3
+  79              	.LBE2:
+  27:./User/VOFA+.c ****     }
+  28:./User/VOFA+.c ****     return size;
+  80              		.loc 1 28 5 is_stmt 1 view .LVU16
+  29:./User/VOFA+.c **** }
+  81              		.loc 1 29 1 is_stmt 0 view .LVU17
+  82 0024 2846     		mov	r0, r5
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s 			page 3
+
+
+  83 0026 70BD     		pop	{r4, r5, r6, pc}
+  84              	.LVL6:
+  85              	.L6:
+  86              		.loc 1 29 1 view .LVU18
+  87              		.align	2
+  88              	.L5:
+  89 0028 00100140 		.word	1073811456
+  90              		.cfi_endproc
+  91              	.LFE126:
+  93              		.section	.text.sendVOFA,"ax",%progbits
+  94              		.align	1
+  95              		.global	sendVOFA
+  96              		.syntax unified
+  97              		.thumb
+  98              		.thumb_func
+ 100              	sendVOFA:
+ 101              	.LFB127:
+  30:./User/VOFA+.c **** 
+  31:./User/VOFA+.c **** void sendVOFA() {
+ 102              		.loc 1 31 17 is_stmt 1 view -0
+ 103              		.cfi_startproc
+ 104              		@ args = 0, pretend = 0, frame = 0
+ 105              		@ frame_needed = 0, uses_anonymous_args = 0
+ 106 0000 08B5     		push	{r3, lr}
+ 107              	.LCFI1:
+ 108              		.cfi_def_cfa_offset 8
+ 109              		.cfi_offset 3, -8
+ 110              		.cfi_offset 14, -4
+  32:./User/VOFA+.c ****     fdata[0] = angle.roll;
+ 111              		.loc 1 32 5 view .LVU20
+ 112              		.loc 1 32 21 is_stmt 0 view .LVU21
+ 113 0002 164B     		ldr	r3, .L9
+ 114 0004 9B68     		ldr	r3, [r3, #8]	@ float
+ 115              		.loc 1 32 14 view .LVU22
+ 116 0006 1649     		ldr	r1, .L9+4
+ 117 0008 0B60     		str	r3, [r1]	@ float
+  33:./User/VOFA+.c ****     fdata[1] = expRoll;
+ 118              		.loc 1 33 5 is_stmt 1 view .LVU23
+ 119              		.loc 1 33 14 is_stmt 0 view .LVU24
+ 120 000a 164B     		ldr	r3, .L9+8
+ 121 000c 1B68     		ldr	r3, [r3]	@ float
+ 122 000e 4B60     		str	r3, [r1, #4]	@ float
+  34:./User/VOFA+.c ****     fdata[2] = expMode;
+ 123              		.loc 1 34 5 is_stmt 1 view .LVU25
+ 124              		.loc 1 34 14 is_stmt 0 view .LVU26
+ 125 0010 154B     		ldr	r3, .L9+12
+ 126 0012 1B68     		ldr	r3, [r3]	@ float
+ 127 0014 8B60     		str	r3, [r1, #8]	@ float
+  35:./User/VOFA+.c ****     fdata[3] = pidRoll;
+ 128              		.loc 1 35 5 is_stmt 1 view .LVU27
+ 129              		.loc 1 35 14 is_stmt 0 view .LVU28
+ 130 0016 154B     		ldr	r3, .L9+16
+ 131 0018 1B68     		ldr	r3, [r3]	@ float
+ 132 001a CB60     		str	r3, [r1, #12]	@ float
+  36:./User/VOFA+.c ****     fdata[4] = GY86DataList.GY * RAD_TO_DEGREE;
+ 133              		.loc 1 36 5 is_stmt 1 view .LVU29
+ 134              		.loc 1 36 28 is_stmt 0 view .LVU30
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s 			page 4
+
+
+ 135 001c 144B     		ldr	r3, .L9+20
+ 136 001e D3ED057A 		vldr.32	s15, [r3, #20]
+ 137              		.loc 1 36 32 view .LVU31
+ 138 0022 144B     		ldr	r3, .L9+24
+ 139 0024 93ED007A 		vldr.32	s14, [r3]
+ 140 0028 67EE877A 		vmul.f32	s15, s15, s14
+ 141              		.loc 1 36 14 view .LVU32
+ 142 002c C1ED047A 		vstr.32	s15, [r1, #16]
+  37:./User/VOFA+.c ****     fdata[5] = rollInner.outputP;
+ 143              		.loc 1 37 5 is_stmt 1 view .LVU33
+ 144              		.loc 1 37 25 is_stmt 0 view .LVU34
+ 145 0030 114B     		ldr	r3, .L9+28
+ 146 0032 DA69     		ldr	r2, [r3, #28]	@ float
+ 147              		.loc 1 37 14 view .LVU35
+ 148 0034 4A61     		str	r2, [r1, #20]	@ float
+  38:./User/VOFA+.c ****     fdata[6] = TIM4->CNT;
+ 149              		.loc 1 38 5 is_stmt 1 view .LVU36
+ 150              		.loc 1 38 20 is_stmt 0 view .LVU37
+ 151 0036 114A     		ldr	r2, .L9+32
+ 152 0038 D2ED097A 		vldr.32	s15, [r2, #36]	@ int
+ 153              		.loc 1 38 14 view .LVU38
+ 154 003c F8EE677A 		vcvt.f32.u32	s15, s15
+ 155 0040 C1ED067A 		vstr.32	s15, [r1, #24]
+  39:./User/VOFA+.c ****     fdata[7] = rollInner.outputD;
+ 156              		.loc 1 39 5 is_stmt 1 view .LVU39
+ 157              		.loc 1 39 25 is_stmt 0 view .LVU40
+ 158 0044 5B6A     		ldr	r3, [r3, #36]	@ float
+ 159              		.loc 1 39 14 view .LVU41
+ 160 0046 CB61     		str	r3, [r1, #28]	@ float
+  40:./User/VOFA+.c ****     _write(0,(char*)fdata,sizeof(fdata));
+ 161              		.loc 1 40 5 is_stmt 1 view .LVU42
+ 162 0048 2022     		movs	r2, #32
+ 163 004a 0020     		movs	r0, #0
+ 164 004c FFF7FEFF 		bl	_write
+ 165              	.LVL7:
+  41:./User/VOFA+.c ****     _write(0,(char*)tail,sizeof(tail));
+ 166              		.loc 1 41 5 view .LVU43
+ 167 0050 0422     		movs	r2, #4
+ 168 0052 0B49     		ldr	r1, .L9+36
+ 169 0054 0020     		movs	r0, #0
+ 170 0056 FFF7FEFF 		bl	_write
+ 171              	.LVL8:
+  42:./User/VOFA+.c **** }...
+ 172              		.loc 1 42 1 is_stmt 0 view .LVU44
+ 173 005a 08BD     		pop	{r3, pc}
+ 174              	.L10:
+ 175              		.align	2
+ 176              	.L9:
+ 177 005c 00000000 		.word	angle
+ 178 0060 00000000 		.word	.LANCHOR0
+ 179 0064 00000000 		.word	expRoll
+ 180 0068 00000000 		.word	expMode
+ 181 006c 00000000 		.word	pidRoll
+ 182 0070 00000000 		.word	GY86DataList
+ 183 0074 00000000 		.word	RAD_TO_DEGREE
+ 184 0078 00000000 		.word	rollInner
+ 185 007c 00080040 		.word	1073743872
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s 			page 5
+
+
+ 186 0080 00000000 		.word	.LANCHOR1
+ 187              		.cfi_endproc
+ 188              	.LFE127:
+ 190              		.global	tail
+ 191              		.global	fdata
+ 192              		.section	.bss.fdata,"aw",%nobits
+ 193              		.align	2
+ 194              		.set	.LANCHOR0,. + 0
+ 197              	fdata:
+ 198 0000 00000000 		.space	32
+ 198      00000000 
+ 198      00000000 
+ 198      00000000 
+ 198      00000000 
+ 199              		.section	.data.tail,"aw"
+ 200              		.align	2
+ 201              		.set	.LANCHOR1,. + 0
+ 204              	tail:
+ 205 0000 0000807F 		.ascii	"\000\000\200\177"
+ 206              		.text
+ 207              	.Letext0:
+ 208              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 209              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 210              		.file 4 "./CORE/stm32f4xx.h"
+ 211              		.file 5 "./User/AHRS.h"
+ 212              		.file 6 "./User/PID.h"
+ 213              		.file 7 "./Hardware/GY86.h"
+ 214              		.file 8 "./Library/stm32f4xx_usart.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 VOFA+.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:20     .text._write:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:26     .text._write:0000000000000000 _write
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:89     .text._write:0000000000000028 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:94     .text.sendVOFA:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:100    .text.sendVOFA:0000000000000000 sendVOFA
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:177    .text.sendVOFA:000000000000005c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:204    .data.tail:0000000000000000 tail
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:197    .bss.fdata:0000000000000000 fdata
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:193    .bss.fdata:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//ccVsFNqf.s:200    .data.tail:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+USART_GetFlagStatus
+USART_SendData
+angle
+expRoll
+expMode
+pidRoll
+GY86DataList
+RAD_TO_DEGREE
+rollInner

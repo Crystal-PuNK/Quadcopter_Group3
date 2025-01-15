@@ -1,0 +1,2344 @@
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"GY86.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.GY86_WriteRegister,"ax",%progbits
+  20              		.align	1
+  21              		.global	GY86_WriteRegister
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	GY86_WriteRegister:
+  27              	.LVL0:
+  28              	.LFB128:
+  29              		.file 1 "./Hardware/GY86.c"
+   1:./Hardware/GY86.c **** /* Includes --------------------------------------------------------------------*/
+   2:./Hardware/GY86.c **** #include "GY86.h"
+   3:./Hardware/GY86.c **** /* Defines -------------------------------------------------------------------*/
+   4:./Hardware/GY86.c **** 
+   5:./Hardware/GY86.c **** //Register Address
+   6:./Hardware/GY86.c **** #define MPU6050_ADDRESS                0xD0
+   7:./Hardware/GY86.c **** #define HMC5883L_ADDRESS               0x3C
+   8:./Hardware/GY86.c **** #define MS5611_ADDRESS                 0xEC
+   9:./Hardware/GY86.c **** 
+  10:./Hardware/GY86.c **** #define	MPU6050_SMPLRT_DIV	      	   0x19
+  11:./Hardware/GY86.c **** #define	MPU6050_CONFIG		           0x1A
+  12:./Hardware/GY86.c **** #define	MPU6050_GYRO_CONFIG	           0x1B
+  13:./Hardware/GY86.c **** #define	MPU6050_ACCEL_CONFIG	       0x1C
+  14:./Hardware/GY86.c **** 
+  15:./Hardware/GY86.c **** #define	MPU6050_ACCEL_XOUT_H	       0x3B
+  16:./Hardware/GY86.c **** #define	MPU6050_ACCEL_XOUT_L	       0x3C
+  17:./Hardware/GY86.c **** #define	MPU6050_ACCEL_YOUT_H	       0x3D
+  18:./Hardware/GY86.c **** #define	MPU6050_ACCEL_YOUT_L	       0x3E
+  19:./Hardware/GY86.c **** #define	MPU6050_ACCEL_ZOUT_H	       0x3F
+  20:./Hardware/GY86.c **** #define	MPU6050_ACCEL_ZOUT_L	       0x40
+  21:./Hardware/GY86.c **** #define	MPU6050_TEMP_OUT_H		       0x41
+  22:./Hardware/GY86.c **** #define	MPU6050_TEMP_OUT_L		       0x42
+  23:./Hardware/GY86.c **** #define	MPU6050_GYRO_XOUT_H		       0x43
+  24:./Hardware/GY86.c **** #define	MPU6050_GYRO_XOUT_L		       0x44
+  25:./Hardware/GY86.c **** #define	MPU6050_GYRO_YOUT_H		       0x45
+  26:./Hardware/GY86.c **** #define	MPU6050_GYRO_YOUT_L		       0x46
+  27:./Hardware/GY86.c **** #define	MPU6050_GYRO_ZOUT_H		       0x47
+  28:./Hardware/GY86.c **** #define	MPU6050_GYRO_ZOUT_L		       0x48
+  29:./Hardware/GY86.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 2
+
+
+  30:./Hardware/GY86.c **** #define	MPU6050_PWR_MGMT_1		       0x6B
+  31:./Hardware/GY86.c **** #define	MPU6050_PWR_MGMT_2		       0x6C
+  32:./Hardware/GY86.c **** #define	MPU6050_WHO_AM_I		       0x75
+  33:./Hardware/GY86.c **** 
+  34:./Hardware/GY86.c **** #define MPU6050_INT_PIN_CFG            0x37
+  35:./Hardware/GY86.c **** #define MPU6050_USER_CTRL              0x6A
+  36:./Hardware/GY86.c **** 
+  37:./Hardware/GY86.c **** 
+  38:./Hardware/GY86.c **** #define HMC5883L_CR_A                  0x00
+  39:./Hardware/GY86.c **** #define HMC5883L_CR_B                  0x01
+  40:./Hardware/GY86.c **** #define HMC5883L_MODE                  0x02
+  41:./Hardware/GY86.c **** 
+  42:./Hardware/GY86.c **** #define HMC5883L_GA_XOUT_H             0x03
+  43:./Hardware/GY86.c **** #define HMC5883L_GA_XOUT_L             0x04
+  44:./Hardware/GY86.c **** #define HMC5883L_GA_ZOUT_H             0x05
+  45:./Hardware/GY86.c **** #define HMC5883L_GA_ZOUT_L             0x06
+  46:./Hardware/GY86.c **** #define HMC5883L_GA_YOUT_H             0x07
+  47:./Hardware/GY86.c **** #define HMC5883L_GA_YOUT_L             0x08
+  48:./Hardware/GY86.c **** #define HMC5883L_STATUS                0x09
+  49:./Hardware/GY86.c **** #define HMC5883L_IDENTIFY_A            0x0A
+  50:./Hardware/GY86.c **** #define HMC5883L_IDENTIFY_B            0x0B
+  51:./Hardware/GY86.c **** #define HMC5883L_IDENTIFY_C            0x0C
+  52:./Hardware/GY86.c **** 
+  53:./Hardware/GY86.c **** #define MS5611_RESET                   0x1E
+  54:./Hardware/GY86.c **** #define MS5611_D1_OSR_256              0x40
+  55:./Hardware/GY86.c **** #define MS5611_D1_OSR_512              0x42
+  56:./Hardware/GY86.c **** #define MS5611_D1_OSR_1024             0x44
+  57:./Hardware/GY86.c **** #define MS5611_D1_OSR_2048             0x46
+  58:./Hardware/GY86.c **** #define MS5611_D1_OSR_4096             0x48
+  59:./Hardware/GY86.c **** #define MS5611_D2_OSR_256              0x50
+  60:./Hardware/GY86.c **** #define MS5611_D2_OSR_512              0x52
+  61:./Hardware/GY86.c **** #define MS5611_D2_OSR_1024             0x54
+  62:./Hardware/GY86.c **** #define MS5611_D2_OSR_2048             0x56
+  63:./Hardware/GY86.c **** #define MS5611_D2_OSR_4096             0x58
+  64:./Hardware/GY86.c **** #define MS5611_ADC_READ                0x00
+  65:./Hardware/GY86.c **** #define MS5611_PROM_RESERVED           0xA0
+  66:./Hardware/GY86.c **** #define MS5611_PROM_COEFFICIENT_1      0xA2
+  67:./Hardware/GY86.c **** #define MS5611_PROM_COEFFICIENT_2      0xA4
+  68:./Hardware/GY86.c **** #define MS5611_PROM_COEFFICIENT_3      0xA6
+  69:./Hardware/GY86.c **** #define MS5611_PROM_COEFFICIENT_4      0xA8
+  70:./Hardware/GY86.c **** #define MS5611_PROM_COEFFICIENT_5      0xAA
+  71:./Hardware/GY86.c **** #define MS5611_PROM_COEFFICIENT_6      0xAC
+  72:./Hardware/GY86.c **** #define MS5611_PROM_CRC                0xAE
+  73:./Hardware/GY86.c **** /* Private Functions -----------------------------------------------------------*/
+  74:./Hardware/GY86.c **** 
+  75:./Hardware/GY86.c **** void     MPU6050_init(void);
+  76:./Hardware/GY86.c **** void     HMC5883L_init(void);
+  77:./Hardware/GY86.c **** void     MS5611_init(void);
+  78:./Hardware/GY86.c **** 
+  79:./Hardware/GY86.c **** void     GY86_WriteRegister(uint8_t GY86_DeviceAddress, uint8_t RegAddress, uint8_t Data);
+  80:./Hardware/GY86.c **** uint8_t  GY86_ReadRegister(uint8_t GY86_DeviceAddress,uint8_t RegAddress);
+  81:./Hardware/GY86.c **** void     MS5611_SendCommand(uint8_t Command);
+  82:./Hardware/GY86.c **** uint32_t MS5611_ReadADC();
+  83:./Hardware/GY86.c **** uint16_t MS5611_ReadC_x(uint8_t MS5611_PROM_Cx_ADDRESS);
+  84:./Hardware/GY86.c **** static const float PI = 3.1415926535897932384626433f;
+  85:./Hardware/GY86.c **** 
+  86:./Hardware/GY86.c **** void MS5611_GetTemperature(uint8_t MS5611_D2_OSR_xxxx);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 3
+
+
+  87:./Hardware/GY86.c **** void MS5611_GetPressure(uint8_t MS5611_D1_OSR_xxxx);
+  88:./Hardware/GY86.c **** 
+  89:./Hardware/GY86.c **** 
+  90:./Hardware/GY86.c **** /* Variables -------------------------------------------------------------------*/
+  91:./Hardware/GY86.c **** // Public
+  92:./Hardware/GY86.c **** volatile GY86_Data GY86DataList={1,2,3,0,0,0,0,0,0,0,0};
+  93:./Hardware/GY86.c **** // Private
+  94:./Hardware/GY86.c **** // struct GY86_Data* Original_Data_List = &GY86DataList;
+  95:./Hardware/GY86.c **** 
+  96:./Hardware/GY86.c **** //Pressure sensitivity
+  97:./Hardware/GY86.c **** uint16_t SENS_T1 = 0;
+  98:./Hardware/GY86.c **** //Pressure offset 
+  99:./Hardware/GY86.c **** uint16_t OFF_T1  = 0;
+ 100:./Hardware/GY86.c **** //Temperature coefficient of pressure sensitivity 
+ 101:./Hardware/GY86.c **** double TCS     = 0;
+ 102:./Hardware/GY86.c **** //Temperature coefficient of pressure offset
+ 103:./Hardware/GY86.c **** double TCO     = 0;
+ 104:./Hardware/GY86.c **** //Reference temperature
+ 105:./Hardware/GY86.c **** uint16_t T_REF   = 0;
+ 106:./Hardware/GY86.c **** //Temperature coefficient of the temperature
+ 107:./Hardware/GY86.c **** double TEMPSENS  = 0;
+ 108:./Hardware/GY86.c **** uint32_t D1_Pressur     = 0;
+ 109:./Hardware/GY86.c **** uint32_t D2_Temperature = 0;
+ 110:./Hardware/GY86.c **** int32_t  dT      = 0;
+ 111:./Hardware/GY86.c **** int32_t  TEMP_100times  = 0;
+ 112:./Hardware/GY86.c **** int64_t  OFF     = 0;
+ 113:./Hardware/GY86.c **** int64_t  SENS    = 0;
+ 114:./Hardware/GY86.c **** int32_t  P_100times     = 0;
+ 115:./Hardware/GY86.c **** 
+ 116:./Hardware/GY86.c **** /* Functions -------------------------------------------------------------------*/
+ 117:./Hardware/GY86.c **** 
+ 118:./Hardware/GY86.c **** void GY86_init(void)
+ 119:./Hardware/GY86.c **** {
+ 120:./Hardware/GY86.c **** 	MyIIC_Init();
+ 121:./Hardware/GY86.c **** 	MPU6050_init();
+ 122:./Hardware/GY86.c **** 	HMC5883L_init();
+ 123:./Hardware/GY86.c **** 	MS5611_init();
+ 124:./Hardware/GY86.c **** 
+ 125:./Hardware/GY86.c **** }
+ 126:./Hardware/GY86.c **** 
+ 127:./Hardware/GY86.c **** 
+ 128:./Hardware/GY86.c **** 
+ 129:./Hardware/GY86.c **** /*********************************************************************************
+ 130:./Hardware/GY86.c ****  *MPU6050�ĳ�ʼ��������
+ 131:./Hardware/GY86.c ****  * - PB8��PB9�ĳ�ʼ��
+ 132:./Hardware/GY86.c ****  *     - ��©���
+ 133:./Hardware/GY86.c ****  *     - PB8ģ��SCL��PB9ģ��SDA
+ 134:./Hardware/GY86.c ****  * - PB8��PB9��Ĭ������ߵ�ƽ
+ 135:./Hardware/GY86.c ****  *     - ʹ��SDA��SCL�����ͷ�״̬
+ 136:./Hardware/GY86.c ****  ********************************************************************************/
+ 137:./Hardware/GY86.c **** void MPU6050_init(void)
+ 138:./Hardware/GY86.c **** {
+ 139:./Hardware/GY86.c **** 	//���˯��,ѡ��ʱ�ӣ�������ʱ�ӣ�
+ 140:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_PWR_MGMT_1  ,0x01);
+ 141:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_PWR_MGMT_2  ,0x00);
+ 142:./Hardware/GY86.c **** 	//ѡ���Ƶ��ԽСˢ��Խ��
+ 143:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_SMPLRT_DIV  ,0x09);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 4
+
+
+ 144:./Hardware/GY86.c **** 	//�ⲿͬ���Լ���ͨ�˲�
+ 145:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_CONFIG      ,0x06);
+ 146:./Hardware/GY86.c **** 	//������ �Բⲻʹ�ܣ��������ѡ�� ±2000º/s
+ 147:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_GYRO_CONFIG ,0x00);
+ 148:./Hardware/GY86.c **** 	//���ٶ� �Բⲻʹ�ܣ��������ѡ�񣬸�ͨ�˲��� ±8g
+ 149:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_ACCEL_CONFIG,0x10);
+ 150:./Hardware/GY86.c **** 	//ʹ��AUXIIC-BYPASS
+ 151:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_INT_PIN_CFG ,0x02);
+ 152:./Hardware/GY86.c **** 	//�ر�IICMASTERmode
+ 153:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_USER_CTRL   ,0x00);
+ 154:./Hardware/GY86.c **** }	
+ 155:./Hardware/GY86.c **** 
+ 156:./Hardware/GY86.c **** 
+ 157:./Hardware/GY86.c **** /*********************************************************************************
+ 158:./Hardware/GY86.c ****  *HMC5883L�ĳ�ʼ��������
+ 159:./Hardware/GY86.c ****  * - PB8��PB9�ĳ�ʼ��
+ 160:./Hardware/GY86.c ****  *     - ��©���
+ 161:./Hardware/GY86.c ****  *     - PB8ģ��SCL��PB9ģ��SDA
+ 162:./Hardware/GY86.c ****  * - PB8��PB9��Ĭ������ߵ�ƽ
+ 163:./Hardware/GY86.c ****  *     - ʹ��SDA��SCL�����ͷ�״̬
+ 164:./Hardware/GY86.c ****  ********************************************************************************/
+ 165:./Hardware/GY86.c **** void HMC5883L_init(void)
+ 166:./Hardware/GY86.c **** {
+ 167:./Hardware/GY86.c **** 	//���üĴ���AΪ 0111 0000
+ 168:./Hardware/GY86.c **** 	GY86_WriteRegister(HMC5883L_ADDRESS,HMC5883L_CR_A, 0x70);
+ 169:./Hardware/GY86.c **** 	//���üĴ���BΪ 0010 0000
+ 170:./Hardware/GY86.c **** 	GY86_WriteRegister(HMC5883L_ADDRESS,HMC5883L_CR_B, 0x20);
+ 171:./Hardware/GY86.c **** 	//ģʽ�Ĵ��� Ϊ 0000 0000
+ 172:./Hardware/GY86.c **** 	GY86_WriteRegister(HMC5883L_ADDRESS,HMC5883L_MODE, 0x00);
+ 173:./Hardware/GY86.c **** }
+ 174:./Hardware/GY86.c **** 	
+ 175:./Hardware/GY86.c **** void MS5611_init(void)
+ 176:./Hardware/GY86.c **** {
+ 177:./Hardware/GY86.c **** 	//RESET��оƬ
+ 178:./Hardware/GY86.c **** 	MS5611_SendCommand(MS5611_RESET);
+ 179:./Hardware/GY86.c **** 	
+ 180:./Hardware/GY86.c **** 	SENS_T1 = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_1) << 15;
+ 181:./Hardware/GY86.c **** 	OFF_T1  = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_2) << 16;
+ 182:./Hardware/GY86.c **** 	TCS     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_3) / 256.0;
+ 183:./Hardware/GY86.c **** 	TCO     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_4) / 128.0 ;
+ 184:./Hardware/GY86.c **** 	T_REF   = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_5) << 8 ;
+ 185:./Hardware/GY86.c **** 	TEMPSENS= MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_6) / 8388608.0;
+ 186:./Hardware/GY86.c **** }
+ 187:./Hardware/GY86.c **** 
+ 188:./Hardware/GY86.c **** void GY86_GetData(void)
+ 189:./Hardware/GY86.c **** {
+ 190:./Hardware/GY86.c **** 	uint16_t DataH,DataL;
+ 191:./Hardware/GY86.c **** 	
+ 192:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_XOUT_H);
+ 193:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_XOUT_L);
+ 194:./Hardware/GY86.c **** 	GY86DataList.AX = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[0])*params_
+ 195:./Hardware/GY86.c **** 	
+ 196:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_YOUT_H);
+ 197:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_YOUT_L);
+ 198:./Hardware/GY86.c **** 	GY86DataList.AY = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[1])*params_
+ 199:./Hardware/GY86.c **** 	
+ 200:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_ZOUT_H);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 5
+
+
+ 201:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_ZOUT_L);
+ 202:./Hardware/GY86.c **** 	GY86DataList.AZ = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[2])*params_
+ 203:./Hardware/GY86.c **** 	
+ 204:./Hardware/GY86.c **** 	// DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_TEMP_OUT_H);
+ 205:./Hardware/GY86.c **** 	// DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_TEMP_OUT_L);
+ 206:./Hardware/GY86.c **** 	// GY86DataList.CORE_Temperature = (DataH << 8) | DataL;
+ 207:./Hardware/GY86.c **** 	
+ 208:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_XOUT_H);
+ 209:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_XOUT_L);
+ 210:./Hardware/GY86.c **** 	GY86DataList.GX = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[0]) * 
+ 211:./Hardware/GY86.c **** 	
+ 212:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_YOUT_H);
+ 213:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_YOUT_L);
+ 214:./Hardware/GY86.c **** 	GY86DataList.GY = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[1]) * 
+ 215:./Hardware/GY86.c **** 	
+ 216:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_ZOUT_H);
+ 217:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_ZOUT_L);
+ 218:./Hardware/GY86.c **** 	GY86DataList.GZ = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[2]) * 
+ 219:./Hardware/GY86.c **** 	
+ 220:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_XOUT_H);
+ 221:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_XOUT_L);
+ 222:./Hardware/GY86.c **** 	GY86DataList.GaX = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[0]) * params_ram.mag_s
+ 223:./Hardware/GY86.c **** 	
+ 224:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_YOUT_H);
+ 225:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_YOUT_L);
+ 226:./Hardware/GY86.c **** 	GY86DataList.GaY = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[1]) * params_ram.mag_s
+ 227:./Hardware/GY86.c **** 	
+ 228:./Hardware/GY86.c **** 	DataH = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_ZOUT_H);
+ 229:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_ZOUT_L);
+ 230:./Hardware/GY86.c **** 	GY86DataList.GaZ = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[2]) * params_ram.mag_s
+ 231:./Hardware/GY86.c **** 	
+ 232:./Hardware/GY86.c **** 	// MS5611_GetPressure(MS5611_D2_OSR_4096);
+ 233:./Hardware/GY86.c **** 	// GY86DataList.Height = P_100times;
+ 234:./Hardware/GY86.c **** 	
+ 235:./Hardware/GY86.c **** 
+ 236:./Hardware/GY86.c **** }
+ 237:./Hardware/GY86.c **** 
+ 238:./Hardware/GY86.c ****  
+ 239:./Hardware/GY86.c **** 
+ 240:./Hardware/GY86.c ****  
+ 241:./Hardware/GY86.c **** 
+ 242:./Hardware/GY86.c **** 
+ 243:./Hardware/GY86.c **** 
+ 244:./Hardware/GY86.c **** 
+ 245:./Hardware/GY86.c **** 
+ 246:./Hardware/GY86.c **** /*********************************************************************************
+ 247:./Hardware/GY86.c ****  * д��/��ȡ ָ���Ĵ�����ֵ
+ 248:./Hardware/GY86.c ****  *   - ģ��ָ����ַд��ָ����ַ������IICʱ��
+ 249:./Hardware/GY86.c ****  ********************************************************************************/
+ 250:./Hardware/GY86.c **** void GY86_WriteRegister(uint8_t GY86_DeviceAddress, uint8_t RegAddress, uint8_t Data)
+ 251:./Hardware/GY86.c **** {
+  30              		.loc 1 251 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 251 1 is_stmt 0 view .LVU1
+  35 0000 70B5     		push	{r4, r5, r6, lr}
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 6
+
+
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 4, -16
+  39              		.cfi_offset 5, -12
+  40              		.cfi_offset 6, -8
+  41              		.cfi_offset 14, -4
+  42 0002 0646     		mov	r6, r0
+  43 0004 0D46     		mov	r5, r1
+  44 0006 1446     		mov	r4, r2
+ 252:./Hardware/GY86.c **** 	MyIIC_Start();
+  45              		.loc 1 252 2 is_stmt 1 view .LVU2
+  46 0008 FFF7FEFF 		bl	MyIIC_Start
+  47              	.LVL1:
+ 253:./Hardware/GY86.c **** 	MyIIC_SendByte(GY86_DeviceAddress | 0x00);
+  48              		.loc 1 253 2 view .LVU3
+  49 000c 3046     		mov	r0, r6
+  50 000e FFF7FEFF 		bl	MyIIC_SendByte
+  51              	.LVL2:
+ 254:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+  52              		.loc 1 254 2 view .LVU4
+  53 0012 FFF7FEFF 		bl	MyIIC_ReceiveACK
+  54              	.LVL3:
+ 255:./Hardware/GY86.c **** 	MyIIC_SendByte(RegAddress);
+  55              		.loc 1 255 2 view .LVU5
+  56 0016 2846     		mov	r0, r5
+  57 0018 FFF7FEFF 		bl	MyIIC_SendByte
+  58              	.LVL4:
+ 256:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+  59              		.loc 1 256 2 view .LVU6
+  60 001c FFF7FEFF 		bl	MyIIC_ReceiveACK
+  61              	.LVL5:
+ 257:./Hardware/GY86.c **** 	MyIIC_SendByte(Data);
+  62              		.loc 1 257 2 view .LVU7
+  63 0020 2046     		mov	r0, r4
+  64 0022 FFF7FEFF 		bl	MyIIC_SendByte
+  65              	.LVL6:
+ 258:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+  66              		.loc 1 258 2 view .LVU8
+  67 0026 FFF7FEFF 		bl	MyIIC_ReceiveACK
+  68              	.LVL7:
+ 259:./Hardware/GY86.c **** 	MyIIC_Stop();
+  69              		.loc 1 259 2 view .LVU9
+  70 002a FFF7FEFF 		bl	MyIIC_Stop
+  71              	.LVL8:
+ 260:./Hardware/GY86.c **** }
+  72              		.loc 1 260 1 is_stmt 0 view .LVU10
+  73 002e 70BD     		pop	{r4, r5, r6, pc}
+  74              		.cfi_endproc
+  75              	.LFE128:
+  77              		.section	.text.MPU6050_init,"ax",%progbits
+  78              		.align	1
+  79              		.global	MPU6050_init
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  84              	MPU6050_init:
+  85              	.LFB124:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 7
+
+
+ 138:./Hardware/GY86.c **** 	//���˯��,ѡ��ʱ�ӣ�������ʱ�ӣ�
+  86              		.loc 1 138 1 is_stmt 1 view -0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90 0000 08B5     		push	{r3, lr}
+  91              	.LCFI1:
+  92              		.cfi_def_cfa_offset 8
+  93              		.cfi_offset 3, -8
+  94              		.cfi_offset 14, -4
+ 140:./Hardware/GY86.c **** 	GY86_WriteRegister(MPU6050_ADDRESS,MPU6050_PWR_MGMT_2  ,0x00);
+  95              		.loc 1 140 2 view .LVU12
+  96 0002 0122     		movs	r2, #1
+  97 0004 6B21     		movs	r1, #107
+  98 0006 D020     		movs	r0, #208
+  99 0008 FFF7FEFF 		bl	GY86_WriteRegister
+ 100              	.LVL9:
+ 141:./Hardware/GY86.c **** 	//ѡ���Ƶ��ԽСˢ��Խ��
+ 101              		.loc 1 141 2 view .LVU13
+ 102 000c 0022     		movs	r2, #0
+ 103 000e 6C21     		movs	r1, #108
+ 104 0010 D020     		movs	r0, #208
+ 105 0012 FFF7FEFF 		bl	GY86_WriteRegister
+ 106              	.LVL10:
+ 143:./Hardware/GY86.c **** 	//�ⲿͬ���Լ���ͨ�˲�
+ 107              		.loc 1 143 2 view .LVU14
+ 108 0016 0922     		movs	r2, #9
+ 109 0018 1921     		movs	r1, #25
+ 110 001a D020     		movs	r0, #208
+ 111 001c FFF7FEFF 		bl	GY86_WriteRegister
+ 112              	.LVL11:
+ 145:./Hardware/GY86.c **** 	//������ �Բⲻʹ�ܣ��������ѡ�� ±2000º/s
+ 113              		.loc 1 145 2 view .LVU15
+ 114 0020 0622     		movs	r2, #6
+ 115 0022 1A21     		movs	r1, #26
+ 116 0024 D020     		movs	r0, #208
+ 117 0026 FFF7FEFF 		bl	GY86_WriteRegister
+ 118              	.LVL12:
+ 147:./Hardware/GY86.c **** 	//���ٶ� �Բⲻʹ�ܣ��������ѡ�񣬸�ͨ�˲��� ±8g
+ 119              		.loc 1 147 2 view .LVU16
+ 120 002a 0022     		movs	r2, #0
+ 121 002c 1B21     		movs	r1, #27
+ 122 002e D020     		movs	r0, #208
+ 123 0030 FFF7FEFF 		bl	GY86_WriteRegister
+ 124              	.LVL13:
+ 149:./Hardware/GY86.c **** 	//ʹ��AUXIIC-BYPASS
+ 125              		.loc 1 149 2 view .LVU17
+ 126 0034 1022     		movs	r2, #16
+ 127 0036 1C21     		movs	r1, #28
+ 128 0038 D020     		movs	r0, #208
+ 129 003a FFF7FEFF 		bl	GY86_WriteRegister
+ 130              	.LVL14:
+ 151:./Hardware/GY86.c **** 	//�ر�IICMASTERmode
+ 131              		.loc 1 151 2 view .LVU18
+ 132 003e 0222     		movs	r2, #2
+ 133 0040 3721     		movs	r1, #55
+ 134 0042 D020     		movs	r0, #208
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 8
+
+
+ 135 0044 FFF7FEFF 		bl	GY86_WriteRegister
+ 136              	.LVL15:
+ 153:./Hardware/GY86.c **** }	
+ 137              		.loc 1 153 2 view .LVU19
+ 138 0048 0022     		movs	r2, #0
+ 139 004a 6A21     		movs	r1, #106
+ 140 004c D020     		movs	r0, #208
+ 141 004e FFF7FEFF 		bl	GY86_WriteRegister
+ 142              	.LVL16:
+ 154:./Hardware/GY86.c **** 
+ 143              		.loc 1 154 1 is_stmt 0 view .LVU20
+ 144 0052 08BD     		pop	{r3, pc}
+ 145              		.cfi_endproc
+ 146              	.LFE124:
+ 148              		.section	.text.HMC5883L_init,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	HMC5883L_init
+ 151              		.syntax unified
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	HMC5883L_init:
+ 156              	.LFB125:
+ 166:./Hardware/GY86.c **** 	//���üĴ���AΪ 0111 0000
+ 157              		.loc 1 166 1 is_stmt 1 view -0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 0
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 161 0000 08B5     		push	{r3, lr}
+ 162              	.LCFI2:
+ 163              		.cfi_def_cfa_offset 8
+ 164              		.cfi_offset 3, -8
+ 165              		.cfi_offset 14, -4
+ 168:./Hardware/GY86.c **** 	//���üĴ���BΪ 0010 0000
+ 166              		.loc 1 168 2 view .LVU22
+ 167 0002 7022     		movs	r2, #112
+ 168 0004 0021     		movs	r1, #0
+ 169 0006 3C20     		movs	r0, #60
+ 170 0008 FFF7FEFF 		bl	GY86_WriteRegister
+ 171              	.LVL17:
+ 170:./Hardware/GY86.c **** 	//ģʽ�Ĵ��� Ϊ 0000 0000
+ 172              		.loc 1 170 2 view .LVU23
+ 173 000c 2022     		movs	r2, #32
+ 174 000e 0121     		movs	r1, #1
+ 175 0010 3C20     		movs	r0, #60
+ 176 0012 FFF7FEFF 		bl	GY86_WriteRegister
+ 177              	.LVL18:
+ 172:./Hardware/GY86.c **** }
+ 178              		.loc 1 172 2 view .LVU24
+ 179 0016 0022     		movs	r2, #0
+ 180 0018 0221     		movs	r1, #2
+ 181 001a 3C20     		movs	r0, #60
+ 182 001c FFF7FEFF 		bl	GY86_WriteRegister
+ 183              	.LVL19:
+ 173:./Hardware/GY86.c **** 	
+ 184              		.loc 1 173 1 is_stmt 0 view .LVU25
+ 185 0020 08BD     		pop	{r3, pc}
+ 186              		.cfi_endproc
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 9
+
+
+ 187              	.LFE125:
+ 189              		.section	.text.GY86_ReadRegister,"ax",%progbits
+ 190              		.align	1
+ 191              		.global	GY86_ReadRegister
+ 192              		.syntax unified
+ 193              		.thumb
+ 194              		.thumb_func
+ 196              	GY86_ReadRegister:
+ 197              	.LVL20:
+ 198              	.LFB129:
+ 261:./Hardware/GY86.c **** 
+ 262:./Hardware/GY86.c **** uint8_t GY86_ReadRegister(uint8_t GY86_DeviceAddress,uint8_t RegAddress)
+ 263:./Hardware/GY86.c **** {
+ 199              		.loc 1 263 1 is_stmt 1 view -0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203              		.loc 1 263 1 is_stmt 0 view .LVU27
+ 204 0000 38B5     		push	{r3, r4, r5, lr}
+ 205              	.LCFI3:
+ 206              		.cfi_def_cfa_offset 16
+ 207              		.cfi_offset 3, -16
+ 208              		.cfi_offset 4, -12
+ 209              		.cfi_offset 5, -8
+ 210              		.cfi_offset 14, -4
+ 211 0002 0446     		mov	r4, r0
+ 212 0004 0D46     		mov	r5, r1
+ 264:./Hardware/GY86.c **** 	uint8_t Data;
+ 213              		.loc 1 264 2 is_stmt 1 view .LVU28
+ 265:./Hardware/GY86.c **** 	MyIIC_Start();
+ 214              		.loc 1 265 2 view .LVU29
+ 215 0006 FFF7FEFF 		bl	MyIIC_Start
+ 216              	.LVL21:
+ 266:./Hardware/GY86.c **** 	MyIIC_SendByte(GY86_DeviceAddress | 0x00);
+ 217              		.loc 1 266 2 view .LVU30
+ 218 000a 2046     		mov	r0, r4
+ 219 000c FFF7FEFF 		bl	MyIIC_SendByte
+ 220              	.LVL22:
+ 267:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 221              		.loc 1 267 2 view .LVU31
+ 222 0010 FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 223              	.LVL23:
+ 268:./Hardware/GY86.c **** 	MyIIC_SendByte(RegAddress);
+ 224              		.loc 1 268 2 view .LVU32
+ 225 0014 2846     		mov	r0, r5
+ 226 0016 FFF7FEFF 		bl	MyIIC_SendByte
+ 227              	.LVL24:
+ 269:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 228              		.loc 1 269 2 view .LVU33
+ 229 001a FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 230              	.LVL25:
+ 270:./Hardware/GY86.c **** 	
+ 271:./Hardware/GY86.c **** 	MyIIC_Start();
+ 231              		.loc 1 271 2 view .LVU34
+ 232 001e FFF7FEFF 		bl	MyIIC_Start
+ 233              	.LVL26:
+ 272:./Hardware/GY86.c **** 	MyIIC_SendByte(GY86_DeviceAddress | 0x01);
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 10
+
+
+ 234              		.loc 1 272 2 view .LVU35
+ 235 0022 44F00100 		orr	r0, r4, #1
+ 236 0026 FFF7FEFF 		bl	MyIIC_SendByte
+ 237              	.LVL27:
+ 273:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 238              		.loc 1 273 2 view .LVU36
+ 239 002a FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 240              	.LVL28:
+ 274:./Hardware/GY86.c **** 	Data = MyIIC_ReceiveByte();
+ 241              		.loc 1 274 2 view .LVU37
+ 242              		.loc 1 274 9 is_stmt 0 view .LVU38
+ 243 002e FFF7FEFF 		bl	MyIIC_ReceiveByte
+ 244              	.LVL29:
+ 245 0032 0446     		mov	r4, r0
+ 246              	.LVL30:
+ 275:./Hardware/GY86.c **** 	MyIIC_SendACK(1);
+ 247              		.loc 1 275 2 is_stmt 1 view .LVU39
+ 248 0034 0120     		movs	r0, #1
+ 249 0036 FFF7FEFF 		bl	MyIIC_SendACK
+ 250              	.LVL31:
+ 276:./Hardware/GY86.c **** 	MyIIC_Stop();
+ 251              		.loc 1 276 2 view .LVU40
+ 252 003a FFF7FEFF 		bl	MyIIC_Stop
+ 253              	.LVL32:
+ 277:./Hardware/GY86.c **** 	
+ 278:./Hardware/GY86.c **** 	return Data;
+ 254              		.loc 1 278 2 view .LVU41
+ 279:./Hardware/GY86.c **** }
+ 255              		.loc 1 279 1 is_stmt 0 view .LVU42
+ 256 003e 2046     		mov	r0, r4
+ 257 0040 38BD     		pop	{r3, r4, r5, pc}
+ 258              		.loc 1 279 1 view .LVU43
+ 259              		.cfi_endproc
+ 260              	.LFE129:
+ 262              		.global	__aeabi_i2d
+ 263              		.global	__aeabi_ddiv
+ 264              		.global	__aeabi_f2d
+ 265              		.global	__aeabi_dsub
+ 266              		.global	__aeabi_dmul
+ 267              		.global	__aeabi_d2f
+ 268              		.section	.text.GY86_GetData,"ax",%progbits
+ 269              		.align	1
+ 270              		.global	GY86_GetData
+ 271              		.syntax unified
+ 272              		.thumb
+ 273              		.thumb_func
+ 275              	GY86_GetData:
+ 276              	.LFB127:
+ 189:./Hardware/GY86.c **** 	uint16_t DataH,DataL;
+ 277              		.loc 1 189 1 is_stmt 1 view -0
+ 278              		.cfi_startproc
+ 279              		@ args = 0, pretend = 0, frame = 0
+ 280              		@ frame_needed = 0, uses_anonymous_args = 0
+ 281 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 282              	.LCFI4:
+ 283              		.cfi_def_cfa_offset 24
+ 284              		.cfi_offset 3, -24
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 11
+
+
+ 285              		.cfi_offset 4, -20
+ 286              		.cfi_offset 5, -16
+ 287              		.cfi_offset 6, -12
+ 288              		.cfi_offset 7, -8
+ 289              		.cfi_offset 14, -4
+ 290 0002 2DED028B 		vpush.64	{d8}
+ 291              	.LCFI5:
+ 292              		.cfi_def_cfa_offset 32
+ 293              		.cfi_offset 80, -32
+ 294              		.cfi_offset 81, -28
+ 190:./Hardware/GY86.c **** 	
+ 295              		.loc 1 190 2 view .LVU45
+ 192:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_XOUT_L);
+ 296              		.loc 1 192 2 view .LVU46
+ 192:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_XOUT_L);
+ 297              		.loc 1 192 10 is_stmt 0 view .LVU47
+ 298 0006 3B21     		movs	r1, #59
+ 299 0008 D020     		movs	r0, #208
+ 300 000a FFF7FEFF 		bl	GY86_ReadRegister
+ 301              	.LVL33:
+ 302 000e 0446     		mov	r4, r0
+ 303              	.LVL34:
+ 193:./Hardware/GY86.c **** 	GY86DataList.AX = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[0])*params_
+ 304              		.loc 1 193 2 is_stmt 1 view .LVU48
+ 193:./Hardware/GY86.c **** 	GY86DataList.AX = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[0])*params_
+ 305              		.loc 1 193 10 is_stmt 0 view .LVU49
+ 306 0010 3C21     		movs	r1, #60
+ 307 0012 D020     		movs	r0, #208
+ 308 0014 FFF7FEFF 		bl	GY86_ReadRegister
+ 309              	.LVL35:
+ 194:./Hardware/GY86.c **** 	
+ 310              		.loc 1 194 2 is_stmt 1 view .LVU50
+ 194:./Hardware/GY86.c **** 	
+ 311              		.loc 1 194 22 is_stmt 0 view .LVU51
+ 312 0018 40EA0420 		orr	r0, r0, r4, lsl #8
+ 313              	.LVL36:
+ 194:./Hardware/GY86.c **** 	
+ 314              		.loc 1 194 22 view .LVU52
+ 315 001c 03B2     		sxth	r3, r0
+ 316 001e 07EE903A 		vmov	s15, r3	@ int
+ 194:./Hardware/GY86.c **** 	
+ 317              		.loc 1 194 54 view .LVU53
+ 318 0022 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 319 0026 9FED9C8A 		vldr.32	s16, .L11+16
+ 320 002a 67EE887A 		vmul.f32	s15, s15, s16
+ 194:./Hardware/GY86.c **** 	
+ 321              		.loc 1 194 88 view .LVU54
+ 322 002e 9B4C     		ldr	r4, .L11+20
+ 323              	.LVL37:
+ 194:./Hardware/GY86.c **** 	
+ 324              		.loc 1 194 88 view .LVU55
+ 325 0030 94ED017A 		vldr.32	s14, [r4, #4]
+ 194:./Hardware/GY86.c **** 	
+ 326              		.loc 1 194 63 view .LVU56
+ 327 0034 77EEC77A 		vsub.f32	s15, s15, s14
+ 194:./Hardware/GY86.c **** 	
+ 328              		.loc 1 194 115 view .LVU57
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 12
+
+
+ 329 0038 94ED047A 		vldr.32	s14, [r4, #16]
+ 194:./Hardware/GY86.c **** 	
+ 330              		.loc 1 194 92 view .LVU58
+ 331 003c 67EE877A 		vmul.f32	s15, s15, s14
+ 194:./Hardware/GY86.c **** 	
+ 332              		.loc 1 194 18 view .LVU59
+ 333 0040 974D     		ldr	r5, .L11+24
+ 334 0042 C5ED007A 		vstr.32	s15, [r5]
+ 196:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_YOUT_L);
+ 335              		.loc 1 196 2 is_stmt 1 view .LVU60
+ 196:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_YOUT_L);
+ 336              		.loc 1 196 10 is_stmt 0 view .LVU61
+ 337 0046 3D21     		movs	r1, #61
+ 338 0048 D020     		movs	r0, #208
+ 339 004a FFF7FEFF 		bl	GY86_ReadRegister
+ 340              	.LVL38:
+ 341 004e 0646     		mov	r6, r0
+ 342              	.LVL39:
+ 197:./Hardware/GY86.c **** 	GY86DataList.AY = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[1])*params_
+ 343              		.loc 1 197 2 is_stmt 1 view .LVU62
+ 197:./Hardware/GY86.c **** 	GY86DataList.AY = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[1])*params_
+ 344              		.loc 1 197 10 is_stmt 0 view .LVU63
+ 345 0050 3E21     		movs	r1, #62
+ 346 0052 D020     		movs	r0, #208
+ 347 0054 FFF7FEFF 		bl	GY86_ReadRegister
+ 348              	.LVL40:
+ 198:./Hardware/GY86.c **** 	
+ 349              		.loc 1 198 2 is_stmt 1 view .LVU64
+ 198:./Hardware/GY86.c **** 	
+ 350              		.loc 1 198 22 is_stmt 0 view .LVU65
+ 351 0058 40EA0620 		orr	r0, r0, r6, lsl #8
+ 352              	.LVL41:
+ 198:./Hardware/GY86.c **** 	
+ 353              		.loc 1 198 22 view .LVU66
+ 354 005c 03B2     		sxth	r3, r0
+ 355 005e 07EE903A 		vmov	s15, r3	@ int
+ 198:./Hardware/GY86.c **** 	
+ 356              		.loc 1 198 54 view .LVU67
+ 357 0062 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 358 0066 67EE887A 		vmul.f32	s15, s15, s16
+ 198:./Hardware/GY86.c **** 	
+ 359              		.loc 1 198 88 view .LVU68
+ 360 006a 94ED027A 		vldr.32	s14, [r4, #8]
+ 198:./Hardware/GY86.c **** 	
+ 361              		.loc 1 198 63 view .LVU69
+ 362 006e 77EEC77A 		vsub.f32	s15, s15, s14
+ 198:./Hardware/GY86.c **** 	
+ 363              		.loc 1 198 115 view .LVU70
+ 364 0072 94ED057A 		vldr.32	s14, [r4, #20]
+ 198:./Hardware/GY86.c **** 	
+ 365              		.loc 1 198 92 view .LVU71
+ 366 0076 67EE877A 		vmul.f32	s15, s15, s14
+ 198:./Hardware/GY86.c **** 	
+ 367              		.loc 1 198 18 view .LVU72
+ 368 007a C5ED017A 		vstr.32	s15, [r5, #4]
+ 200:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_ZOUT_L);
+ 369              		.loc 1 200 2 is_stmt 1 view .LVU73
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 13
+
+
+ 200:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_ACCEL_ZOUT_L);
+ 370              		.loc 1 200 10 is_stmt 0 view .LVU74
+ 371 007e 3F21     		movs	r1, #63
+ 372 0080 D020     		movs	r0, #208
+ 373 0082 FFF7FEFF 		bl	GY86_ReadRegister
+ 374              	.LVL42:
+ 375 0086 0646     		mov	r6, r0
+ 376              	.LVL43:
+ 201:./Hardware/GY86.c **** 	GY86DataList.AZ = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[2])*params_
+ 377              		.loc 1 201 2 is_stmt 1 view .LVU75
+ 201:./Hardware/GY86.c **** 	GY86DataList.AZ = (((int16_t)((DataH << 8) | DataL))/4096.0f - params_ram.accel_offset[2])*params_
+ 378              		.loc 1 201 10 is_stmt 0 view .LVU76
+ 379 0088 4021     		movs	r1, #64
+ 380 008a D020     		movs	r0, #208
+ 381 008c FFF7FEFF 		bl	GY86_ReadRegister
+ 382              	.LVL44:
+ 202:./Hardware/GY86.c **** 	
+ 383              		.loc 1 202 2 is_stmt 1 view .LVU77
+ 202:./Hardware/GY86.c **** 	
+ 384              		.loc 1 202 22 is_stmt 0 view .LVU78
+ 385 0090 40EA0620 		orr	r0, r0, r6, lsl #8
+ 386              	.LVL45:
+ 202:./Hardware/GY86.c **** 	
+ 387              		.loc 1 202 22 view .LVU79
+ 388 0094 03B2     		sxth	r3, r0
+ 389 0096 07EE903A 		vmov	s15, r3	@ int
+ 202:./Hardware/GY86.c **** 	
+ 390              		.loc 1 202 54 view .LVU80
+ 391 009a F8EEE77A 		vcvt.f32.s32	s15, s15
+ 392 009e 67EE887A 		vmul.f32	s15, s15, s16
+ 202:./Hardware/GY86.c **** 	
+ 393              		.loc 1 202 88 view .LVU81
+ 394 00a2 94ED037A 		vldr.32	s14, [r4, #12]
+ 202:./Hardware/GY86.c **** 	
+ 395              		.loc 1 202 63 view .LVU82
+ 396 00a6 77EEC77A 		vsub.f32	s15, s15, s14
+ 202:./Hardware/GY86.c **** 	
+ 397              		.loc 1 202 115 view .LVU83
+ 398 00aa 94ED067A 		vldr.32	s14, [r4, #24]
+ 202:./Hardware/GY86.c **** 	
+ 399              		.loc 1 202 92 view .LVU84
+ 400 00ae 67EE877A 		vmul.f32	s15, s15, s14
+ 202:./Hardware/GY86.c **** 	
+ 401              		.loc 1 202 18 view .LVU85
+ 402 00b2 C5ED027A 		vstr.32	s15, [r5, #8]
+ 208:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_XOUT_L);
+ 403              		.loc 1 208 2 is_stmt 1 view .LVU86
+ 208:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_XOUT_L);
+ 404              		.loc 1 208 10 is_stmt 0 view .LVU87
+ 405 00b6 4321     		movs	r1, #67
+ 406 00b8 D020     		movs	r0, #208
+ 407 00ba FFF7FEFF 		bl	GY86_ReadRegister
+ 408              	.LVL46:
+ 409 00be 0646     		mov	r6, r0
+ 410              	.LVL47:
+ 209:./Hardware/GY86.c **** 	GY86DataList.GX = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[0]) * 
+ 411              		.loc 1 209 2 is_stmt 1 view .LVU88
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 14
+
+
+ 209:./Hardware/GY86.c **** 	GY86DataList.GX = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[0]) * 
+ 412              		.loc 1 209 10 is_stmt 0 view .LVU89
+ 413 00c0 4421     		movs	r1, #68
+ 414 00c2 D020     		movs	r0, #208
+ 415 00c4 FFF7FEFF 		bl	GY86_ReadRegister
+ 416              	.LVL48:
+ 210:./Hardware/GY86.c **** 	
+ 417              		.loc 1 210 2 is_stmt 1 view .LVU90
+ 210:./Hardware/GY86.c **** 	
+ 418              		.loc 1 210 38 is_stmt 0 view .LVU91
+ 419 00c8 3602     		lsls	r6, r6, #8
+ 420              	.LVL49:
+ 210:./Hardware/GY86.c **** 	
+ 421              		.loc 1 210 22 view .LVU92
+ 422 00ca 36B2     		sxth	r6, r6
+ 210:./Hardware/GY86.c **** 	
+ 423              		.loc 1 210 52 view .LVU93
+ 424 00cc 3043     		orrs	r0, r0, r6
+ 425              	.LVL50:
+ 210:./Hardware/GY86.c **** 	
+ 426              		.loc 1 210 52 view .LVU94
+ 427 00ce FFF7FEFF 		bl	__aeabi_i2d
+ 428              	.LVL51:
+ 429 00d2 6DA3     		adr	r3, .L11
+ 430 00d4 D3E90023 		ldrd	r2, [r3]
+ 431 00d8 FFF7FEFF 		bl	__aeabi_ddiv
+ 432              	.LVL52:
+ 433 00dc 0646     		mov	r6, r0
+ 434 00de 0F46     		mov	r7, r1
+ 210:./Hardware/GY86.c **** 	
+ 435              		.loc 1 210 93 view .LVU95
+ 436 00e0 E069     		ldr	r0, [r4, #28]	@ float
+ 437 00e2 FFF7FEFF 		bl	__aeabi_f2d
+ 438              	.LVL53:
+ 439 00e6 0246     		mov	r2, r0
+ 440 00e8 0B46     		mov	r3, r1
+ 210:./Hardware/GY86.c **** 	
+ 441              		.loc 1 210 69 view .LVU96
+ 442 00ea 3046     		mov	r0, r6
+ 443 00ec 3946     		mov	r1, r7
+ 444 00ee FFF7FEFF 		bl	__aeabi_dsub
+ 445              	.LVL54:
+ 446 00f2 0646     		mov	r6, r0
+ 447 00f4 0F46     		mov	r7, r1
+ 210:./Hardware/GY86.c **** 	
+ 448              		.loc 1 210 121 view .LVU97
+ 449 00f6 A06A     		ldr	r0, [r4, #40]	@ float
+ 450 00f8 FFF7FEFF 		bl	__aeabi_f2d
+ 451              	.LVL55:
+ 452 00fc 0246     		mov	r2, r0
+ 453 00fe 0B46     		mov	r3, r1
+ 210:./Hardware/GY86.c **** 	
+ 454              		.loc 1 210 98 view .LVU98
+ 455 0100 3046     		mov	r0, r6
+ 456 0102 3946     		mov	r1, r7
+ 457 0104 FFF7FEFF 		bl	__aeabi_dmul
+ 458              	.LVL56:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 15
+
+
+ 210:./Hardware/GY86.c **** 	
+ 459              		.loc 1 210 125 view .LVU99
+ 460 0108 61A3     		adr	r3, .L11+8
+ 461 010a D3E90023 		ldrd	r2, [r3]
+ 462 010e FFF7FEFF 		bl	__aeabi_dmul
+ 463              	.LVL57:
+ 464 0112 FFF7FEFF 		bl	__aeabi_d2f
+ 465              	.LVL58:
+ 210:./Hardware/GY86.c **** 	
+ 466              		.loc 1 210 18 view .LVU100
+ 467 0116 2861     		str	r0, [r5, #16]	@ float
+ 212:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_YOUT_L);
+ 468              		.loc 1 212 2 is_stmt 1 view .LVU101
+ 212:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_YOUT_L);
+ 469              		.loc 1 212 10 is_stmt 0 view .LVU102
+ 470 0118 4521     		movs	r1, #69
+ 471 011a D020     		movs	r0, #208
+ 472 011c FFF7FEFF 		bl	GY86_ReadRegister
+ 473              	.LVL59:
+ 474 0120 0646     		mov	r6, r0
+ 475              	.LVL60:
+ 213:./Hardware/GY86.c **** 	GY86DataList.GY = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[1]) * 
+ 476              		.loc 1 213 2 is_stmt 1 view .LVU103
+ 213:./Hardware/GY86.c **** 	GY86DataList.GY = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[1]) * 
+ 477              		.loc 1 213 10 is_stmt 0 view .LVU104
+ 478 0122 4621     		movs	r1, #70
+ 479 0124 D020     		movs	r0, #208
+ 480 0126 FFF7FEFF 		bl	GY86_ReadRegister
+ 481              	.LVL61:
+ 214:./Hardware/GY86.c **** 	
+ 482              		.loc 1 214 2 is_stmt 1 view .LVU105
+ 214:./Hardware/GY86.c **** 	
+ 483              		.loc 1 214 38 is_stmt 0 view .LVU106
+ 484 012a 3602     		lsls	r6, r6, #8
+ 485              	.LVL62:
+ 214:./Hardware/GY86.c **** 	
+ 486              		.loc 1 214 22 view .LVU107
+ 487 012c 36B2     		sxth	r6, r6
+ 214:./Hardware/GY86.c **** 	
+ 488              		.loc 1 214 52 view .LVU108
+ 489 012e 3043     		orrs	r0, r0, r6
+ 490              	.LVL63:
+ 214:./Hardware/GY86.c **** 	
+ 491              		.loc 1 214 52 view .LVU109
+ 492 0130 FFF7FEFF 		bl	__aeabi_i2d
+ 493              	.LVL64:
+ 494 0134 54A3     		adr	r3, .L11
+ 495 0136 D3E90023 		ldrd	r2, [r3]
+ 496 013a FFF7FEFF 		bl	__aeabi_ddiv
+ 497              	.LVL65:
+ 498 013e 0646     		mov	r6, r0
+ 499 0140 0F46     		mov	r7, r1
+ 214:./Hardware/GY86.c **** 	
+ 500              		.loc 1 214 93 view .LVU110
+ 501 0142 206A     		ldr	r0, [r4, #32]	@ float
+ 502 0144 FFF7FEFF 		bl	__aeabi_f2d
+ 503              	.LVL66:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 16
+
+
+ 504 0148 0246     		mov	r2, r0
+ 505 014a 0B46     		mov	r3, r1
+ 214:./Hardware/GY86.c **** 	
+ 506              		.loc 1 214 69 view .LVU111
+ 507 014c 3046     		mov	r0, r6
+ 508 014e 3946     		mov	r1, r7
+ 509 0150 FFF7FEFF 		bl	__aeabi_dsub
+ 510              	.LVL67:
+ 511 0154 0646     		mov	r6, r0
+ 512 0156 0F46     		mov	r7, r1
+ 214:./Hardware/GY86.c **** 	
+ 513              		.loc 1 214 121 view .LVU112
+ 514 0158 E06A     		ldr	r0, [r4, #44]	@ float
+ 515 015a FFF7FEFF 		bl	__aeabi_f2d
+ 516              	.LVL68:
+ 517 015e 0246     		mov	r2, r0
+ 518 0160 0B46     		mov	r3, r1
+ 214:./Hardware/GY86.c **** 	
+ 519              		.loc 1 214 98 view .LVU113
+ 520 0162 3046     		mov	r0, r6
+ 521 0164 3946     		mov	r1, r7
+ 522 0166 FFF7FEFF 		bl	__aeabi_dmul
+ 523              	.LVL69:
+ 214:./Hardware/GY86.c **** 	
+ 524              		.loc 1 214 125 view .LVU114
+ 525 016a 49A3     		adr	r3, .L11+8
+ 526 016c D3E90023 		ldrd	r2, [r3]
+ 527 0170 FFF7FEFF 		bl	__aeabi_dmul
+ 528              	.LVL70:
+ 529 0174 FFF7FEFF 		bl	__aeabi_d2f
+ 530              	.LVL71:
+ 214:./Hardware/GY86.c **** 	
+ 531              		.loc 1 214 18 view .LVU115
+ 532 0178 6861     		str	r0, [r5, #20]	@ float
+ 216:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_ZOUT_L);
+ 533              		.loc 1 216 2 is_stmt 1 view .LVU116
+ 216:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(MPU6050_ADDRESS,MPU6050_GYRO_ZOUT_L);
+ 534              		.loc 1 216 10 is_stmt 0 view .LVU117
+ 535 017a 4721     		movs	r1, #71
+ 536 017c D020     		movs	r0, #208
+ 537 017e FFF7FEFF 		bl	GY86_ReadRegister
+ 538              	.LVL72:
+ 539 0182 0646     		mov	r6, r0
+ 540              	.LVL73:
+ 217:./Hardware/GY86.c **** 	GY86DataList.GZ = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[2]) * 
+ 541              		.loc 1 217 2 is_stmt 1 view .LVU118
+ 217:./Hardware/GY86.c **** 	GY86DataList.GZ = (((int16_t)(DataH << 8) | DataL)/(32768.0/250.0) - params_ram.gyro_offset[2]) * 
+ 542              		.loc 1 217 10 is_stmt 0 view .LVU119
+ 543 0184 4821     		movs	r1, #72
+ 544 0186 D020     		movs	r0, #208
+ 545 0188 FFF7FEFF 		bl	GY86_ReadRegister
+ 546              	.LVL74:
+ 218:./Hardware/GY86.c **** 	
+ 547              		.loc 1 218 2 is_stmt 1 view .LVU120
+ 218:./Hardware/GY86.c **** 	
+ 548              		.loc 1 218 38 is_stmt 0 view .LVU121
+ 549 018c 3602     		lsls	r6, r6, #8
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 17
+
+
+ 550              	.LVL75:
+ 218:./Hardware/GY86.c **** 	
+ 551              		.loc 1 218 22 view .LVU122
+ 552 018e 36B2     		sxth	r6, r6
+ 218:./Hardware/GY86.c **** 	
+ 553              		.loc 1 218 52 view .LVU123
+ 554 0190 3043     		orrs	r0, r0, r6
+ 555              	.LVL76:
+ 218:./Hardware/GY86.c **** 	
+ 556              		.loc 1 218 52 view .LVU124
+ 557 0192 FFF7FEFF 		bl	__aeabi_i2d
+ 558              	.LVL77:
+ 559 0196 3CA3     		adr	r3, .L11
+ 560 0198 D3E90023 		ldrd	r2, [r3]
+ 561 019c FFF7FEFF 		bl	__aeabi_ddiv
+ 562              	.LVL78:
+ 563 01a0 0646     		mov	r6, r0
+ 564 01a2 0F46     		mov	r7, r1
+ 218:./Hardware/GY86.c **** 	
+ 565              		.loc 1 218 93 view .LVU125
+ 566 01a4 606A     		ldr	r0, [r4, #36]	@ float
+ 567 01a6 FFF7FEFF 		bl	__aeabi_f2d
+ 568              	.LVL79:
+ 569 01aa 0246     		mov	r2, r0
+ 570 01ac 0B46     		mov	r3, r1
+ 218:./Hardware/GY86.c **** 	
+ 571              		.loc 1 218 69 view .LVU126
+ 572 01ae 3046     		mov	r0, r6
+ 573 01b0 3946     		mov	r1, r7
+ 574 01b2 FFF7FEFF 		bl	__aeabi_dsub
+ 575              	.LVL80:
+ 576 01b6 0646     		mov	r6, r0
+ 577 01b8 0F46     		mov	r7, r1
+ 218:./Hardware/GY86.c **** 	
+ 578              		.loc 1 218 121 view .LVU127
+ 579 01ba 206B     		ldr	r0, [r4, #48]	@ float
+ 580 01bc FFF7FEFF 		bl	__aeabi_f2d
+ 581              	.LVL81:
+ 582 01c0 0246     		mov	r2, r0
+ 583 01c2 0B46     		mov	r3, r1
+ 218:./Hardware/GY86.c **** 	
+ 584              		.loc 1 218 98 view .LVU128
+ 585 01c4 3046     		mov	r0, r6
+ 586 01c6 3946     		mov	r1, r7
+ 587 01c8 FFF7FEFF 		bl	__aeabi_dmul
+ 588              	.LVL82:
+ 218:./Hardware/GY86.c **** 	
+ 589              		.loc 1 218 125 view .LVU129
+ 590 01cc 30A3     		adr	r3, .L11+8
+ 591 01ce D3E90023 		ldrd	r2, [r3]
+ 592 01d2 FFF7FEFF 		bl	__aeabi_dmul
+ 593              	.LVL83:
+ 594 01d6 FFF7FEFF 		bl	__aeabi_d2f
+ 595              	.LVL84:
+ 218:./Hardware/GY86.c **** 	
+ 596              		.loc 1 218 18 view .LVU130
+ 597 01da A861     		str	r0, [r5, #24]	@ float
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 18
+
+
+ 220:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_XOUT_L);
+ 598              		.loc 1 220 2 is_stmt 1 view .LVU131
+ 220:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_XOUT_L);
+ 599              		.loc 1 220 10 is_stmt 0 view .LVU132
+ 600 01dc 0321     		movs	r1, #3
+ 601 01de 3C20     		movs	r0, #60
+ 602 01e0 FFF7FEFF 		bl	GY86_ReadRegister
+ 603              	.LVL85:
+ 604 01e4 0646     		mov	r6, r0
+ 605              	.LVL86:
+ 221:./Hardware/GY86.c **** 	GY86DataList.GaX = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[0]) * params_ram.mag_s
+ 606              		.loc 1 221 2 is_stmt 1 view .LVU133
+ 221:./Hardware/GY86.c **** 	GY86DataList.GaX = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[0]) * params_ram.mag_s
+ 607              		.loc 1 221 10 is_stmt 0 view .LVU134
+ 608 01e6 0421     		movs	r1, #4
+ 609 01e8 3C20     		movs	r0, #60
+ 610 01ea FFF7FEFF 		bl	GY86_ReadRegister
+ 611              	.LVL87:
+ 222:./Hardware/GY86.c **** 	
+ 612              		.loc 1 222 2 is_stmt 1 view .LVU135
+ 222:./Hardware/GY86.c **** 	
+ 613              		.loc 1 222 39 is_stmt 0 view .LVU136
+ 614 01ee 3602     		lsls	r6, r6, #8
+ 615              	.LVL88:
+ 222:./Hardware/GY86.c **** 	
+ 616              		.loc 1 222 23 view .LVU137
+ 617 01f0 36B2     		sxth	r6, r6
+ 222:./Hardware/GY86.c **** 	
+ 618              		.loc 1 222 45 view .LVU138
+ 619 01f2 40EA0603 		orr	r3, r0, r6
+ 620 01f6 07EE903A 		vmov	s15, r3	@ int
+ 222:./Hardware/GY86.c **** 	
+ 621              		.loc 1 222 77 view .LVU139
+ 622 01fa 94ED0D7A 		vldr.32	s14, [r4, #52]
+ 222:./Hardware/GY86.c **** 	
+ 623              		.loc 1 222 54 view .LVU140
+ 624 01fe F8EEE77A 		vcvt.f32.s32	s15, s15
+ 625 0202 77EEC77A 		vsub.f32	s15, s15, s14
+ 222:./Hardware/GY86.c **** 	
+ 626              		.loc 1 222 104 view .LVU141
+ 627 0206 94ED107A 		vldr.32	s14, [r4, #64]
+ 222:./Hardware/GY86.c **** 	
+ 628              		.loc 1 222 82 view .LVU142
+ 629 020a 67EE877A 		vmul.f32	s15, s15, s14
+ 222:./Hardware/GY86.c **** 	
+ 630              		.loc 1 222 19 view .LVU143
+ 631 020e C5ED077A 		vstr.32	s15, [r5, #28]
+ 224:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_YOUT_L);
+ 632              		.loc 1 224 2 is_stmt 1 view .LVU144
+ 224:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_YOUT_L);
+ 633              		.loc 1 224 10 is_stmt 0 view .LVU145
+ 634 0212 0721     		movs	r1, #7
+ 635 0214 3C20     		movs	r0, #60
+ 636              	.LVL89:
+ 224:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_YOUT_L);
+ 637              		.loc 1 224 10 view .LVU146
+ 638 0216 FFF7FEFF 		bl	GY86_ReadRegister
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 19
+
+
+ 639              	.LVL90:
+ 640 021a 0646     		mov	r6, r0
+ 641              	.LVL91:
+ 225:./Hardware/GY86.c **** 	GY86DataList.GaY = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[1]) * params_ram.mag_s
+ 642              		.loc 1 225 2 is_stmt 1 view .LVU147
+ 225:./Hardware/GY86.c **** 	GY86DataList.GaY = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[1]) * params_ram.mag_s
+ 643              		.loc 1 225 10 is_stmt 0 view .LVU148
+ 644 021c 0821     		movs	r1, #8
+ 645 021e 3C20     		movs	r0, #60
+ 646 0220 FFF7FEFF 		bl	GY86_ReadRegister
+ 647              	.LVL92:
+ 226:./Hardware/GY86.c **** 	
+ 648              		.loc 1 226 2 is_stmt 1 view .LVU149
+ 226:./Hardware/GY86.c **** 	
+ 649              		.loc 1 226 39 is_stmt 0 view .LVU150
+ 650 0224 3602     		lsls	r6, r6, #8
+ 651              	.LVL93:
+ 226:./Hardware/GY86.c **** 	
+ 652              		.loc 1 226 23 view .LVU151
+ 653 0226 36B2     		sxth	r6, r6
+ 226:./Hardware/GY86.c **** 	
+ 654              		.loc 1 226 45 view .LVU152
+ 655 0228 40EA0603 		orr	r3, r0, r6
+ 656 022c 07EE903A 		vmov	s15, r3	@ int
+ 226:./Hardware/GY86.c **** 	
+ 657              		.loc 1 226 77 view .LVU153
+ 658 0230 94ED0E7A 		vldr.32	s14, [r4, #56]
+ 226:./Hardware/GY86.c **** 	
+ 659              		.loc 1 226 54 view .LVU154
+ 660 0234 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 661 0238 77EEC77A 		vsub.f32	s15, s15, s14
+ 226:./Hardware/GY86.c **** 	
+ 662              		.loc 1 226 104 view .LVU155
+ 663 023c 94ED117A 		vldr.32	s14, [r4, #68]
+ 226:./Hardware/GY86.c **** 	
+ 664              		.loc 1 226 82 view .LVU156
+ 665 0240 67EE877A 		vmul.f32	s15, s15, s14
+ 226:./Hardware/GY86.c **** 	
+ 666              		.loc 1 226 19 view .LVU157
+ 667 0244 C5ED087A 		vstr.32	s15, [r5, #32]
+ 228:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_ZOUT_L);
+ 668              		.loc 1 228 2 is_stmt 1 view .LVU158
+ 228:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_ZOUT_L);
+ 669              		.loc 1 228 10 is_stmt 0 view .LVU159
+ 670 0248 0521     		movs	r1, #5
+ 671 024a 3C20     		movs	r0, #60
+ 672              	.LVL94:
+ 228:./Hardware/GY86.c **** 	DataL = GY86_ReadRegister(HMC5883L_ADDRESS,HMC5883L_GA_ZOUT_L);
+ 673              		.loc 1 228 10 view .LVU160
+ 674 024c FFF7FEFF 		bl	GY86_ReadRegister
+ 675              	.LVL95:
+ 676 0250 0646     		mov	r6, r0
+ 677              	.LVL96:
+ 229:./Hardware/GY86.c **** 	GY86DataList.GaZ = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[2]) * params_ram.mag_s
+ 678              		.loc 1 229 2 is_stmt 1 view .LVU161
+ 229:./Hardware/GY86.c **** 	GY86DataList.GaZ = (((int16_t)(DataH << 8) | DataL) - params_ram.mag_offset[2]) * params_ram.mag_s
+ 679              		.loc 1 229 10 is_stmt 0 view .LVU162
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 20
+
+
+ 680 0252 0621     		movs	r1, #6
+ 681 0254 3C20     		movs	r0, #60
+ 682 0256 FFF7FEFF 		bl	GY86_ReadRegister
+ 683              	.LVL97:
+ 230:./Hardware/GY86.c **** 	
+ 684              		.loc 1 230 2 is_stmt 1 view .LVU163
+ 230:./Hardware/GY86.c **** 	
+ 685              		.loc 1 230 39 is_stmt 0 view .LVU164
+ 686 025a 3602     		lsls	r6, r6, #8
+ 687              	.LVL98:
+ 230:./Hardware/GY86.c **** 	
+ 688              		.loc 1 230 23 view .LVU165
+ 689 025c 36B2     		sxth	r6, r6
+ 230:./Hardware/GY86.c **** 	
+ 690              		.loc 1 230 45 view .LVU166
+ 691 025e 40EA0603 		orr	r3, r0, r6
+ 692 0262 07EE903A 		vmov	s15, r3	@ int
+ 230:./Hardware/GY86.c **** 	
+ 693              		.loc 1 230 77 view .LVU167
+ 694 0266 94ED0F7A 		vldr.32	s14, [r4, #60]
+ 230:./Hardware/GY86.c **** 	
+ 695              		.loc 1 230 54 view .LVU168
+ 696 026a F8EEE77A 		vcvt.f32.s32	s15, s15
+ 697 026e 77EEC77A 		vsub.f32	s15, s15, s14
+ 230:./Hardware/GY86.c **** 	
+ 698              		.loc 1 230 104 view .LVU169
+ 699 0272 94ED127A 		vldr.32	s14, [r4, #72]
+ 230:./Hardware/GY86.c **** 	
+ 700              		.loc 1 230 82 view .LVU170
+ 701 0276 67EE877A 		vmul.f32	s15, s15, s14
+ 230:./Hardware/GY86.c **** 	
+ 702              		.loc 1 230 19 view .LVU171
+ 703 027a C5ED097A 		vstr.32	s15, [r5, #36]
+ 236:./Hardware/GY86.c **** 
+ 704              		.loc 1 236 1 view .LVU172
+ 705 027e BDEC028B 		vldm	sp!, {d8}
+ 706              	.LCFI6:
+ 707              		.cfi_restore 80
+ 708              		.cfi_restore 81
+ 709              		.cfi_def_cfa_offset 24
+ 710 0282 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 711              	.L12:
+ 712 0284 AFF30080 		.align	3
+ 713              	.L11:
+ 714 0288 FCA9F1D2 		.word	-755914244
+ 715 028c 4D626040 		.word	1080058445
+ 716 0290 000000A0 		.word	-1610612736
+ 717 0294 46DF913F 		.word	1066524486
+ 718 0298 00008039 		.word	964689920
+ 719 029c 00000000 		.word	params_ram
+ 720 02a0 00000000 		.word	.LANCHOR0
+ 721              		.cfi_endproc
+ 722              	.LFE127:
+ 724              		.section	.text.MS5611_SendCommand,"ax",%progbits
+ 725              		.align	1
+ 726              		.global	MS5611_SendCommand
+ 727              		.syntax unified
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 21
+
+
+ 728              		.thumb
+ 729              		.thumb_func
+ 731              	MS5611_SendCommand:
+ 732              	.LVL99:
+ 733              	.LFB130:
+ 280:./Hardware/GY86.c **** 
+ 281:./Hardware/GY86.c **** void MS5611_SendCommand(uint8_t Command)
+ 282:./Hardware/GY86.c **** {
+ 734              		.loc 1 282 1 is_stmt 1 view -0
+ 735              		.cfi_startproc
+ 736              		@ args = 0, pretend = 0, frame = 0
+ 737              		@ frame_needed = 0, uses_anonymous_args = 0
+ 738              		.loc 1 282 1 is_stmt 0 view .LVU174
+ 739 0000 10B5     		push	{r4, lr}
+ 740              	.LCFI7:
+ 741              		.cfi_def_cfa_offset 8
+ 742              		.cfi_offset 4, -8
+ 743              		.cfi_offset 14, -4
+ 744 0002 0446     		mov	r4, r0
+ 283:./Hardware/GY86.c **** 	MyIIC_Start();
+ 745              		.loc 1 283 2 is_stmt 1 view .LVU175
+ 746 0004 FFF7FEFF 		bl	MyIIC_Start
+ 747              	.LVL100:
+ 284:./Hardware/GY86.c **** 	MyIIC_SendByte(MS5611_ADDRESS | 0x00);
+ 748              		.loc 1 284 2 view .LVU176
+ 749 0008 EC20     		movs	r0, #236
+ 750 000a FFF7FEFF 		bl	MyIIC_SendByte
+ 751              	.LVL101:
+ 285:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 752              		.loc 1 285 2 view .LVU177
+ 753 000e FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 754              	.LVL102:
+ 286:./Hardware/GY86.c **** 	MyIIC_SendByte(Command);
+ 755              		.loc 1 286 2 view .LVU178
+ 756 0012 2046     		mov	r0, r4
+ 757 0014 FFF7FEFF 		bl	MyIIC_SendByte
+ 758              	.LVL103:
+ 287:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 759              		.loc 1 287 2 view .LVU179
+ 760 0018 FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 761              	.LVL104:
+ 288:./Hardware/GY86.c **** 	MyIIC_Stop();
+ 762              		.loc 1 288 2 view .LVU180
+ 763 001c FFF7FEFF 		bl	MyIIC_Stop
+ 764              	.LVL105:
+ 289:./Hardware/GY86.c **** }
+ 765              		.loc 1 289 1 is_stmt 0 view .LVU181
+ 766 0020 10BD     		pop	{r4, pc}
+ 767              		.cfi_endproc
+ 768              	.LFE130:
+ 770              		.section	.text.MS5611_ReadADC,"ax",%progbits
+ 771              		.align	1
+ 772              		.global	MS5611_ReadADC
+ 773              		.syntax unified
+ 774              		.thumb
+ 775              		.thumb_func
+ 777              	MS5611_ReadADC:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 22
+
+
+ 778              	.LFB131:
+ 290:./Hardware/GY86.c ****  
+ 291:./Hardware/GY86.c **** uint32_t MS5611_ReadADC()
+ 292:./Hardware/GY86.c **** {
+ 779              		.loc 1 292 1 is_stmt 1 view -0
+ 780              		.cfi_startproc
+ 781              		@ args = 0, pretend = 0, frame = 0
+ 782              		@ frame_needed = 0, uses_anonymous_args = 0
+ 783 0000 10B5     		push	{r4, lr}
+ 784              	.LCFI8:
+ 785              		.cfi_def_cfa_offset 8
+ 786              		.cfi_offset 4, -8
+ 787              		.cfi_offset 14, -4
+ 293:./Hardware/GY86.c **** 	uint32_t Data;
+ 788              		.loc 1 293 2 view .LVU183
+ 294:./Hardware/GY86.c **** 	MyIIC_Start();
+ 789              		.loc 1 294 2 view .LVU184
+ 790 0002 FFF7FEFF 		bl	MyIIC_Start
+ 791              	.LVL106:
+ 295:./Hardware/GY86.c **** 	MyIIC_SendByte(MS5611_ADDRESS | 0x00);
+ 792              		.loc 1 295 2 view .LVU185
+ 793 0006 EC20     		movs	r0, #236
+ 794 0008 FFF7FEFF 		bl	MyIIC_SendByte
+ 795              	.LVL107:
+ 296:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 796              		.loc 1 296 2 view .LVU186
+ 797 000c FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 798              	.LVL108:
+ 297:./Hardware/GY86.c **** 	MyIIC_SendByte(MS5611_ADC_READ);
+ 799              		.loc 1 297 2 view .LVU187
+ 800 0010 0020     		movs	r0, #0
+ 801 0012 FFF7FEFF 		bl	MyIIC_SendByte
+ 802              	.LVL109:
+ 298:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 803              		.loc 1 298 2 view .LVU188
+ 804 0016 FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 805              	.LVL110:
+ 299:./Hardware/GY86.c **** 	
+ 300:./Hardware/GY86.c **** 	MyIIC_Start();
+ 806              		.loc 1 300 2 view .LVU189
+ 807 001a FFF7FEFF 		bl	MyIIC_Start
+ 808              	.LVL111:
+ 301:./Hardware/GY86.c **** 	MyIIC_SendByte(MS5611_ADDRESS | 0x01);
+ 809              		.loc 1 301 2 view .LVU190
+ 810 001e ED20     		movs	r0, #237
+ 811 0020 FFF7FEFF 		bl	MyIIC_SendByte
+ 812              	.LVL112:
+ 302:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 813              		.loc 1 302 2 view .LVU191
+ 814 0024 FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 815              	.LVL113:
+ 303:./Hardware/GY86.c **** 	Data = MyIIC_ReceiveByte();
+ 816              		.loc 1 303 2 view .LVU192
+ 817              		.loc 1 303 9 is_stmt 0 view .LVU193
+ 818 0028 FFF7FEFF 		bl	MyIIC_ReceiveByte
+ 819              	.LVL114:
+ 304:./Hardware/GY86.c **** 	Data = Data << 8;
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 23
+
+
+ 820              		.loc 1 304 2 is_stmt 1 view .LVU194
+ 305:./Hardware/GY86.c **** 	MyIIC_SendACK(1);
+ 821              		.loc 1 305 2 view .LVU195
+ 822 002c 0120     		movs	r0, #1
+ 823 002e FFF7FEFF 		bl	MyIIC_SendACK
+ 824              	.LVL115:
+ 306:./Hardware/GY86.c **** 	Data = MyIIC_ReceiveByte();
+ 825              		.loc 1 306 2 view .LVU196
+ 826              		.loc 1 306 9 is_stmt 0 view .LVU197
+ 827 0032 FFF7FEFF 		bl	MyIIC_ReceiveByte
+ 828              	.LVL116:
+ 307:./Hardware/GY86.c **** 	Data = Data << 8;
+ 829              		.loc 1 307 2 is_stmt 1 view .LVU198
+ 308:./Hardware/GY86.c **** 	MyIIC_SendACK(1);
+ 830              		.loc 1 308 2 view .LVU199
+ 831 0036 0120     		movs	r0, #1
+ 832 0038 FFF7FEFF 		bl	MyIIC_SendACK
+ 833              	.LVL117:
+ 309:./Hardware/GY86.c **** 	Data = MyIIC_ReceiveByte();
+ 834              		.loc 1 309 2 view .LVU200
+ 835              		.loc 1 309 9 is_stmt 0 view .LVU201
+ 836 003c FFF7FEFF 		bl	MyIIC_ReceiveByte
+ 837              	.LVL118:
+ 310:./Hardware/GY86.c **** 	Data = Data << 8;
+ 838              		.loc 1 310 2 is_stmt 1 view .LVU202
+ 839              		.loc 1 310 7 is_stmt 0 view .LVU203
+ 840 0040 0402     		lsls	r4, r0, #8
+ 841              	.LVL119:
+ 311:./Hardware/GY86.c **** 	MyIIC_SendACK(0);
+ 842              		.loc 1 311 2 is_stmt 1 view .LVU204
+ 843 0042 0020     		movs	r0, #0
+ 844 0044 FFF7FEFF 		bl	MyIIC_SendACK
+ 845              	.LVL120:
+ 312:./Hardware/GY86.c **** 	MyIIC_Stop();
+ 846              		.loc 1 312 2 view .LVU205
+ 847 0048 FFF7FEFF 		bl	MyIIC_Stop
+ 848              	.LVL121:
+ 313:./Hardware/GY86.c **** 	
+ 314:./Hardware/GY86.c **** 	return Data;
+ 849              		.loc 1 314 2 view .LVU206
+ 315:./Hardware/GY86.c **** }
+ 850              		.loc 1 315 1 is_stmt 0 view .LVU207
+ 851 004c 2046     		mov	r0, r4
+ 852 004e 10BD     		pop	{r4, pc}
+ 853              		.loc 1 315 1 view .LVU208
+ 854              		.cfi_endproc
+ 855              	.LFE131:
+ 857              		.section	.text.MS5611_ReadC_x,"ax",%progbits
+ 858              		.align	1
+ 859              		.global	MS5611_ReadC_x
+ 860              		.syntax unified
+ 861              		.thumb
+ 862              		.thumb_func
+ 864              	MS5611_ReadC_x:
+ 865              	.LVL122:
+ 866              	.LFB132:
+ 316:./Hardware/GY86.c **** 
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 24
+
+
+ 317:./Hardware/GY86.c **** 
+ 318:./Hardware/GY86.c **** uint16_t MS5611_ReadC_x(uint8_t MS5611_PROM_Cx_ADDRESS)
+ 319:./Hardware/GY86.c **** {
+ 867              		.loc 1 319 1 is_stmt 1 view -0
+ 868              		.cfi_startproc
+ 869              		@ args = 0, pretend = 0, frame = 0
+ 870              		@ frame_needed = 0, uses_anonymous_args = 0
+ 871              		.loc 1 319 1 is_stmt 0 view .LVU210
+ 872 0000 10B5     		push	{r4, lr}
+ 873              	.LCFI9:
+ 874              		.cfi_def_cfa_offset 8
+ 875              		.cfi_offset 4, -8
+ 876              		.cfi_offset 14, -4
+ 877 0002 0446     		mov	r4, r0
+ 320:./Hardware/GY86.c **** 	uint32_t Data;
+ 878              		.loc 1 320 2 is_stmt 1 view .LVU211
+ 321:./Hardware/GY86.c **** 	MyIIC_Start();
+ 879              		.loc 1 321 2 view .LVU212
+ 880 0004 FFF7FEFF 		bl	MyIIC_Start
+ 881              	.LVL123:
+ 322:./Hardware/GY86.c **** 	MyIIC_SendByte(MS5611_ADDRESS | 0x00);
+ 882              		.loc 1 322 2 view .LVU213
+ 883 0008 EC20     		movs	r0, #236
+ 884 000a FFF7FEFF 		bl	MyIIC_SendByte
+ 885              	.LVL124:
+ 323:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 886              		.loc 1 323 2 view .LVU214
+ 887 000e FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 888              	.LVL125:
+ 324:./Hardware/GY86.c **** 	MyIIC_SendByte(MS5611_PROM_Cx_ADDRESS);
+ 889              		.loc 1 324 2 view .LVU215
+ 890 0012 2046     		mov	r0, r4
+ 891 0014 FFF7FEFF 		bl	MyIIC_SendByte
+ 892              	.LVL126:
+ 325:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 893              		.loc 1 325 2 view .LVU216
+ 894 0018 FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 895              	.LVL127:
+ 326:./Hardware/GY86.c **** 	
+ 327:./Hardware/GY86.c **** 	MyIIC_Start();
+ 896              		.loc 1 327 2 view .LVU217
+ 897 001c FFF7FEFF 		bl	MyIIC_Start
+ 898              	.LVL128:
+ 328:./Hardware/GY86.c **** 	MyIIC_SendByte(MS5611_ADDRESS | 0x01);
+ 899              		.loc 1 328 2 view .LVU218
+ 900 0020 ED20     		movs	r0, #237
+ 901 0022 FFF7FEFF 		bl	MyIIC_SendByte
+ 902              	.LVL129:
+ 329:./Hardware/GY86.c **** 	MyIIC_ReceiveACK();
+ 903              		.loc 1 329 2 view .LVU219
+ 904 0026 FFF7FEFF 		bl	MyIIC_ReceiveACK
+ 905              	.LVL130:
+ 330:./Hardware/GY86.c **** 	Data = MyIIC_ReceiveByte();
+ 906              		.loc 1 330 2 view .LVU220
+ 907              		.loc 1 330 9 is_stmt 0 view .LVU221
+ 908 002a FFF7FEFF 		bl	MyIIC_ReceiveByte
+ 909              	.LVL131:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 25
+
+
+ 331:./Hardware/GY86.c **** 	Data = Data << 8;
+ 910              		.loc 1 331 2 is_stmt 1 view .LVU222
+ 332:./Hardware/GY86.c **** 	MyIIC_SendACK(1);
+ 911              		.loc 1 332 2 view .LVU223
+ 912 002e 0120     		movs	r0, #1
+ 913 0030 FFF7FEFF 		bl	MyIIC_SendACK
+ 914              	.LVL132:
+ 333:./Hardware/GY86.c **** 	Data = MyIIC_ReceiveByte();
+ 915              		.loc 1 333 2 view .LVU224
+ 916              		.loc 1 333 9 is_stmt 0 view .LVU225
+ 917 0034 FFF7FEFF 		bl	MyIIC_ReceiveByte
+ 918              	.LVL133:
+ 334:./Hardware/GY86.c **** 	Data = Data << 8;
+ 919              		.loc 1 334 2 is_stmt 1 view .LVU226
+ 920              		.loc 1 334 7 is_stmt 0 view .LVU227
+ 921 0038 0402     		lsls	r4, r0, #8
+ 922              	.LVL134:
+ 335:./Hardware/GY86.c **** 	MyIIC_SendACK(0);
+ 923              		.loc 1 335 2 is_stmt 1 view .LVU228
+ 924 003a 0020     		movs	r0, #0
+ 925 003c FFF7FEFF 		bl	MyIIC_SendACK
+ 926              	.LVL135:
+ 336:./Hardware/GY86.c **** 	MyIIC_Stop();
+ 927              		.loc 1 336 2 view .LVU229
+ 928 0040 FFF7FEFF 		bl	MyIIC_Stop
+ 929              	.LVL136:
+ 337:./Hardware/GY86.c **** 	
+ 338:./Hardware/GY86.c **** 	return Data;
+ 930              		.loc 1 338 2 view .LVU230
+ 339:./Hardware/GY86.c **** }
+ 931              		.loc 1 339 1 is_stmt 0 view .LVU231
+ 932 0044 04F47F40 		and	r0, r4, #65280
+ 933 0048 10BD     		pop	{r4, pc}
+ 934              		.loc 1 339 1 view .LVU232
+ 935              		.cfi_endproc
+ 936              	.LFE132:
+ 938              		.section	.text.MS5611_init,"ax",%progbits
+ 939              		.align	1
+ 940              		.global	MS5611_init
+ 941              		.syntax unified
+ 942              		.thumb
+ 943              		.thumb_func
+ 945              	MS5611_init:
+ 946              	.LFB126:
+ 176:./Hardware/GY86.c **** 	//RESET��оƬ
+ 947              		.loc 1 176 1 is_stmt 1 view -0
+ 948              		.cfi_startproc
+ 949              		@ args = 0, pretend = 0, frame = 0
+ 950              		@ frame_needed = 0, uses_anonymous_args = 0
+ 951 0000 08B5     		push	{r3, lr}
+ 952              	.LCFI10:
+ 953              		.cfi_def_cfa_offset 8
+ 954              		.cfi_offset 3, -8
+ 955              		.cfi_offset 14, -4
+ 178:./Hardware/GY86.c **** 	
+ 956              		.loc 1 178 2 view .LVU234
+ 957 0002 1E20     		movs	r0, #30
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 26
+
+
+ 958 0004 FFF7FEFF 		bl	MS5611_SendCommand
+ 959              	.LVL137:
+ 180:./Hardware/GY86.c **** 	OFF_T1  = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_2) << 16;
+ 960              		.loc 1 180 2 view .LVU235
+ 180:./Hardware/GY86.c **** 	OFF_T1  = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_2) << 16;
+ 961              		.loc 1 180 12 is_stmt 0 view .LVU236
+ 962 0008 A220     		movs	r0, #162
+ 963 000a FFF7FEFF 		bl	MS5611_ReadC_x
+ 964              	.LVL138:
+ 180:./Hardware/GY86.c **** 	OFF_T1  = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_2) << 16;
+ 965              		.loc 1 180 54 view .LVU237
+ 966 000e C003     		lsls	r0, r0, #15
+ 180:./Hardware/GY86.c **** 	OFF_T1  = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_2) << 16;
+ 967              		.loc 1 180 10 view .LVU238
+ 968 0010 1A4B     		ldr	r3, .L21
+ 969 0012 1880     		strh	r0, [r3]	@ movhi
+ 181:./Hardware/GY86.c **** 	TCS     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_3) / 256.0;
+ 970              		.loc 1 181 2 is_stmt 1 view .LVU239
+ 181:./Hardware/GY86.c **** 	TCS     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_3) / 256.0;
+ 971              		.loc 1 181 12 is_stmt 0 view .LVU240
+ 972 0014 A420     		movs	r0, #164
+ 973 0016 FFF7FEFF 		bl	MS5611_ReadC_x
+ 974              	.LVL139:
+ 181:./Hardware/GY86.c **** 	TCS     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_3) / 256.0;
+ 975              		.loc 1 181 10 view .LVU241
+ 976 001a 194B     		ldr	r3, .L21+4
+ 977 001c 0022     		movs	r2, #0
+ 978 001e 1A80     		strh	r2, [r3]	@ movhi
+ 182:./Hardware/GY86.c **** 	TCO     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_4) / 128.0 ;
+ 979              		.loc 1 182 2 is_stmt 1 view .LVU242
+ 182:./Hardware/GY86.c **** 	TCO     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_4) / 128.0 ;
+ 980              		.loc 1 182 12 is_stmt 0 view .LVU243
+ 981 0020 A620     		movs	r0, #166
+ 982 0022 FFF7FEFF 		bl	MS5611_ReadC_x
+ 983              	.LVL140:
+ 182:./Hardware/GY86.c **** 	TCO     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_4) / 128.0 ;
+ 984              		.loc 1 182 54 view .LVU244
+ 985 0026 FFF7FEFF 		bl	__aeabi_i2d
+ 986              	.LVL141:
+ 987 002a 0022     		movs	r2, #0
+ 988 002c 154B     		ldr	r3, .L21+8
+ 989 002e FFF7FEFF 		bl	__aeabi_dmul
+ 990              	.LVL142:
+ 182:./Hardware/GY86.c **** 	TCO     = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_4) / 128.0 ;
+ 991              		.loc 1 182 10 view .LVU245
+ 992 0032 154B     		ldr	r3, .L21+12
+ 993 0034 C3E90001 		strd	r0, [r3]
+ 183:./Hardware/GY86.c **** 	T_REF   = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_5) << 8 ;
+ 994              		.loc 1 183 2 is_stmt 1 view .LVU246
+ 183:./Hardware/GY86.c **** 	T_REF   = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_5) << 8 ;
+ 995              		.loc 1 183 12 is_stmt 0 view .LVU247
+ 996 0038 A820     		movs	r0, #168
+ 997 003a FFF7FEFF 		bl	MS5611_ReadC_x
+ 998              	.LVL143:
+ 183:./Hardware/GY86.c **** 	T_REF   = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_5) << 8 ;
+ 999              		.loc 1 183 54 view .LVU248
+ 1000 003e FFF7FEFF 		bl	__aeabi_i2d
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 27
+
+
+ 1001              	.LVL144:
+ 1002 0042 0022     		movs	r2, #0
+ 1003 0044 4FF07E53 		mov	r3, #1065353216
+ 1004 0048 FFF7FEFF 		bl	__aeabi_dmul
+ 1005              	.LVL145:
+ 183:./Hardware/GY86.c **** 	T_REF   = MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_5) << 8 ;
+ 1006              		.loc 1 183 10 view .LVU249
+ 1007 004c 0F4B     		ldr	r3, .L21+16
+ 1008 004e C3E90001 		strd	r0, [r3]
+ 184:./Hardware/GY86.c **** 	TEMPSENS= MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_6) / 8388608.0;
+ 1009              		.loc 1 184 2 is_stmt 1 view .LVU250
+ 184:./Hardware/GY86.c **** 	TEMPSENS= MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_6) / 8388608.0;
+ 1010              		.loc 1 184 12 is_stmt 0 view .LVU251
+ 1011 0052 AA20     		movs	r0, #170
+ 1012 0054 FFF7FEFF 		bl	MS5611_ReadC_x
+ 1013              	.LVL146:
+ 184:./Hardware/GY86.c **** 	TEMPSENS= MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_6) / 8388608.0;
+ 1014              		.loc 1 184 54 view .LVU252
+ 1015 0058 0002     		lsls	r0, r0, #8
+ 184:./Hardware/GY86.c **** 	TEMPSENS= MS5611_ReadC_x(MS5611_PROM_COEFFICIENT_6) / 8388608.0;
+ 1016              		.loc 1 184 10 view .LVU253
+ 1017 005a 0D4B     		ldr	r3, .L21+20
+ 1018 005c 1880     		strh	r0, [r3]	@ movhi
+ 185:./Hardware/GY86.c **** }
+ 1019              		.loc 1 185 2 is_stmt 1 view .LVU254
+ 185:./Hardware/GY86.c **** }
+ 1020              		.loc 1 185 12 is_stmt 0 view .LVU255
+ 1021 005e AC20     		movs	r0, #172
+ 1022 0060 FFF7FEFF 		bl	MS5611_ReadC_x
+ 1023              	.LVL147:
+ 185:./Hardware/GY86.c **** }
+ 1024              		.loc 1 185 54 view .LVU256
+ 1025 0064 FFF7FEFF 		bl	__aeabi_i2d
+ 1026              	.LVL148:
+ 1027 0068 0022     		movs	r2, #0
+ 1028 006a 4FF07A53 		mov	r3, #1048576000
+ 1029 006e FFF7FEFF 		bl	__aeabi_dmul
+ 1030              	.LVL149:
+ 185:./Hardware/GY86.c **** }
+ 1031              		.loc 1 185 10 view .LVU257
+ 1032 0072 084B     		ldr	r3, .L21+24
+ 1033 0074 C3E90001 		strd	r0, [r3]
+ 186:./Hardware/GY86.c **** 
+ 1034              		.loc 1 186 1 view .LVU258
+ 1035 0078 08BD     		pop	{r3, pc}
+ 1036              	.L22:
+ 1037 007a 00BF     		.align	2
+ 1038              	.L21:
+ 1039 007c 00000000 		.word	.LANCHOR1
+ 1040 0080 00000000 		.word	.LANCHOR2
+ 1041 0084 0000703F 		.word	1064304640
+ 1042 0088 00000000 		.word	.LANCHOR3
+ 1043 008c 00000000 		.word	.LANCHOR4
+ 1044 0090 00000000 		.word	.LANCHOR5
+ 1045 0094 00000000 		.word	.LANCHOR6
+ 1046              		.cfi_endproc
+ 1047              	.LFE126:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 28
+
+
+ 1049              		.section	.text.GY86_init,"ax",%progbits
+ 1050              		.align	1
+ 1051              		.global	GY86_init
+ 1052              		.syntax unified
+ 1053              		.thumb
+ 1054              		.thumb_func
+ 1056              	GY86_init:
+ 1057              	.LFB123:
+ 119:./Hardware/GY86.c **** 	MyIIC_Init();
+ 1058              		.loc 1 119 1 is_stmt 1 view -0
+ 1059              		.cfi_startproc
+ 1060              		@ args = 0, pretend = 0, frame = 0
+ 1061              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1062 0000 08B5     		push	{r3, lr}
+ 1063              	.LCFI11:
+ 1064              		.cfi_def_cfa_offset 8
+ 1065              		.cfi_offset 3, -8
+ 1066              		.cfi_offset 14, -4
+ 120:./Hardware/GY86.c **** 	MPU6050_init();
+ 1067              		.loc 1 120 2 view .LVU260
+ 1068 0002 FFF7FEFF 		bl	MyIIC_Init
+ 1069              	.LVL150:
+ 121:./Hardware/GY86.c **** 	HMC5883L_init();
+ 1070              		.loc 1 121 2 view .LVU261
+ 1071 0006 FFF7FEFF 		bl	MPU6050_init
+ 1072              	.LVL151:
+ 122:./Hardware/GY86.c **** 	MS5611_init();
+ 1073              		.loc 1 122 2 view .LVU262
+ 1074 000a FFF7FEFF 		bl	HMC5883L_init
+ 1075              	.LVL152:
+ 123:./Hardware/GY86.c **** 
+ 1076              		.loc 1 123 2 view .LVU263
+ 1077 000e FFF7FEFF 		bl	MS5611_init
+ 1078              	.LVL153:
+ 125:./Hardware/GY86.c **** 
+ 1079              		.loc 1 125 1 is_stmt 0 view .LVU264
+ 1080 0012 08BD     		pop	{r3, pc}
+ 1081              		.cfi_endproc
+ 1082              	.LFE123:
+ 1084              		.global	__aeabi_dadd
+ 1085              		.global	__aeabi_d2iz
+ 1086              		.section	.text.MS5611_GetTemperature,"ax",%progbits
+ 1087              		.align	1
+ 1088              		.global	MS5611_GetTemperature
+ 1089              		.syntax unified
+ 1090              		.thumb
+ 1091              		.thumb_func
+ 1093              	MS5611_GetTemperature:
+ 1094              	.LVL154:
+ 1095              	.LFB133:
+ 340:./Hardware/GY86.c ****  
+ 341:./Hardware/GY86.c **** void MS5611_GetTemperature(uint8_t MS5611_D2_OSR_xxxx)
+ 342:./Hardware/GY86.c **** {
+ 1096              		.loc 1 342 1 is_stmt 1 view -0
+ 1097              		.cfi_startproc
+ 1098              		@ args = 0, pretend = 0, frame = 0
+ 1099              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 29
+
+
+ 1100              		.loc 1 342 1 is_stmt 0 view .LVU266
+ 1101 0000 08B5     		push	{r3, lr}
+ 1102              	.LCFI12:
+ 1103              		.cfi_def_cfa_offset 8
+ 1104              		.cfi_offset 3, -8
+ 1105              		.cfi_offset 14, -4
+ 343:./Hardware/GY86.c **** 	MS5611_SendCommand(MS5611_D2_OSR_xxxx);
+ 1106              		.loc 1 343 2 is_stmt 1 view .LVU267
+ 1107 0002 FFF7FEFF 		bl	MS5611_SendCommand
+ 1108              	.LVL155:
+ 344:./Hardware/GY86.c **** 	Delay_ms(10);
+ 1109              		.loc 1 344 2 view .LVU268
+ 1110 0006 0A20     		movs	r0, #10
+ 1111 0008 0021     		movs	r1, #0
+ 1112 000a FFF7FEFF 		bl	Delay_ms
+ 1113              	.LVL156:
+ 345:./Hardware/GY86.c **** 	D2_Temperature = MS5611_ReadADC();
+ 1114              		.loc 1 345 2 view .LVU269
+ 1115              		.loc 1 345 19 is_stmt 0 view .LVU270
+ 1116 000e FFF7FEFF 		bl	MS5611_ReadADC
+ 1117              	.LVL157:
+ 1118              		.loc 1 345 17 view .LVU271
+ 1119 0012 0B4B     		ldr	r3, .L27
+ 1120 0014 1860     		str	r0, [r3]
+ 346:./Hardware/GY86.c **** 	
+ 347:./Hardware/GY86.c **** 	dT = D2_Temperature - T_REF;
+ 1121              		.loc 1 347 2 is_stmt 1 view .LVU272
+ 1122              		.loc 1 347 22 is_stmt 0 view .LVU273
+ 1123 0016 0B4B     		ldr	r3, .L27+4
+ 1124 0018 1B88     		ldrh	r3, [r3]
+ 1125 001a C01A     		subs	r0, r0, r3
+ 1126              		.loc 1 347 5 view .LVU274
+ 1127 001c 0A4B     		ldr	r3, .L27+8
+ 1128 001e 1860     		str	r0, [r3]
+ 348:./Hardware/GY86.c **** 	TEMP_100times = 2000 + dT * TEMPSENS;
+ 1129              		.loc 1 348 2 is_stmt 1 view .LVU275
+ 1130              		.loc 1 348 28 is_stmt 0 view .LVU276
+ 1131 0020 FFF7FEFF 		bl	__aeabi_i2d
+ 1132              	.LVL158:
+ 1133 0024 094B     		ldr	r3, .L27+12
+ 1134 0026 D3E90023 		ldrd	r2, [r3]
+ 1135 002a FFF7FEFF 		bl	__aeabi_dmul
+ 1136              	.LVL159:
+ 1137              		.loc 1 348 23 view .LVU277
+ 1138 002e 0022     		movs	r2, #0
+ 1139 0030 074B     		ldr	r3, .L27+16
+ 1140 0032 FFF7FEFF 		bl	__aeabi_dadd
+ 1141              	.LVL160:
+ 1142              		.loc 1 348 16 view .LVU278
+ 1143 0036 FFF7FEFF 		bl	__aeabi_d2iz
+ 1144              	.LVL161:
+ 1145 003a 064B     		ldr	r3, .L27+20
+ 1146 003c 1860     		str	r0, [r3]
+ 349:./Hardware/GY86.c **** }
+ 1147              		.loc 1 349 1 view .LVU279
+ 1148 003e 08BD     		pop	{r3, pc}
+ 1149              	.L28:
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 30
+
+
+ 1150              		.align	2
+ 1151              	.L27:
+ 1152 0040 00000000 		.word	.LANCHOR7
+ 1153 0044 00000000 		.word	.LANCHOR5
+ 1154 0048 00000000 		.word	.LANCHOR8
+ 1155 004c 00000000 		.word	.LANCHOR6
+ 1156 0050 00409F40 		.word	1084178432
+ 1157 0054 00000000 		.word	.LANCHOR9
+ 1158              		.cfi_endproc
+ 1159              	.LFE133:
+ 1161              		.global	__aeabi_d2lz
+ 1162              		.global	__aeabi_l2d
+ 1163              		.section	.text.MS5611_GetPressure,"ax",%progbits
+ 1164              		.align	1
+ 1165              		.global	MS5611_GetPressure
+ 1166              		.syntax unified
+ 1167              		.thumb
+ 1168              		.thumb_func
+ 1170              	MS5611_GetPressure:
+ 1171              	.LVL162:
+ 1172              	.LFB134:
+ 350:./Hardware/GY86.c **** 
+ 351:./Hardware/GY86.c **** void MS5611_GetPressure(uint8_t MS5611_D1_OSR_xxxx)
+ 352:./Hardware/GY86.c **** {
+ 1173              		.loc 1 352 1 is_stmt 1 view -0
+ 1174              		.cfi_startproc
+ 1175              		@ args = 0, pretend = 0, frame = 24
+ 1176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1177              		.loc 1 352 1 is_stmt 0 view .LVU281
+ 1178 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 1179              	.LCFI13:
+ 1180              		.cfi_def_cfa_offset 32
+ 1181              		.cfi_offset 4, -32
+ 1182              		.cfi_offset 5, -28
+ 1183              		.cfi_offset 6, -24
+ 1184              		.cfi_offset 7, -20
+ 1185              		.cfi_offset 8, -16
+ 1186              		.cfi_offset 9, -12
+ 1187              		.cfi_offset 10, -8
+ 1188              		.cfi_offset 14, -4
+ 1189 0004 86B0     		sub	sp, sp, #24
+ 1190              	.LCFI14:
+ 1191              		.cfi_def_cfa_offset 56
+ 1192 0006 0446     		mov	r4, r0
+ 353:./Hardware/GY86.c **** 	MS5611_GetTemperature(MS5611_D1_OSR_4096);
+ 1193              		.loc 1 353 2 is_stmt 1 view .LVU282
+ 1194 0008 4820     		movs	r0, #72
+ 1195              	.LVL163:
+ 1196              		.loc 1 353 2 is_stmt 0 view .LVU283
+ 1197 000a FFF7FEFF 		bl	MS5611_GetTemperature
+ 1198              	.LVL164:
+ 354:./Hardware/GY86.c **** 	double T2 = 0;
+ 1199              		.loc 1 354 2 is_stmt 1 view .LVU284
+ 355:./Hardware/GY86.c **** 	double OFF2 = 0;
+ 1200              		.loc 1 355 2 view .LVU285
+ 356:./Hardware/GY86.c **** 	double SENS2 = 0;
+ 1201              		.loc 1 356 2 view .LVU286
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 31
+
+
+ 357:./Hardware/GY86.c **** 	MS5611_SendCommand(MS5611_D1_OSR_xxxx);
+ 1202              		.loc 1 357 2 view .LVU287
+ 1203 000e 2046     		mov	r0, r4
+ 1204 0010 FFF7FEFF 		bl	MS5611_SendCommand
+ 1205              	.LVL165:
+ 358:./Hardware/GY86.c **** 	Delay_ms(10);
+ 1206              		.loc 1 358 2 view .LVU288
+ 1207 0014 0A20     		movs	r0, #10
+ 1208 0016 0021     		movs	r1, #0
+ 1209 0018 FFF7FEFF 		bl	Delay_ms
+ 1210              	.LVL166:
+ 359:./Hardware/GY86.c **** 	D1_Pressur = MS5611_ReadADC();
+ 1211              		.loc 1 359 2 view .LVU289
+ 1212              		.loc 1 359 15 is_stmt 0 view .LVU290
+ 1213 001c FFF7FEFF 		bl	MS5611_ReadADC
+ 1214              	.LVL167:
+ 1215 0020 0446     		mov	r4, r0
+ 1216              		.loc 1 359 13 view .LVU291
+ 1217 0022 6F4B     		ldr	r3, .L35+8
+ 1218 0024 1860     		str	r0, [r3]
+ 360:./Hardware/GY86.c **** 	OFF  = OFF_T1  + TCO * dT;
+ 1219              		.loc 1 360 2 is_stmt 1 view .LVU292
+ 1220              		.loc 1 360 23 is_stmt 0 view .LVU293
+ 1221 0026 6F4B     		ldr	r3, .L35+12
+ 1222 0028 D3F800A0 		ldr	r10, [r3]
+ 1223 002c 5046     		mov	r0, r10
+ 1224 002e FFF7FEFF 		bl	__aeabi_i2d
+ 1225              	.LVL168:
+ 1226 0032 0646     		mov	r6, r0
+ 1227 0034 0F46     		mov	r7, r1
+ 1228 0036 6C4B     		ldr	r3, .L35+16
+ 1229 0038 D3E90023 		ldrd	r2, [r3]
+ 1230 003c FFF7FEFF 		bl	__aeabi_dmul
+ 1231              	.LVL169:
+ 1232 0040 8046     		mov	r8, r0
+ 1233 0042 8946     		mov	r9, r1
+ 1234              		.loc 1 360 17 view .LVU294
+ 1235 0044 694B     		ldr	r3, .L35+20
+ 1236 0046 1888     		ldrh	r0, [r3]
+ 1237 0048 FFF7FEFF 		bl	__aeabi_i2d
+ 1238              	.LVL170:
+ 1239 004c 4246     		mov	r2, r8
+ 1240 004e 4B46     		mov	r3, r9
+ 1241 0050 FFF7FEFF 		bl	__aeabi_dadd
+ 1242              	.LVL171:
+ 1243              		.loc 1 360 7 view .LVU295
+ 1244 0054 FFF7FEFF 		bl	__aeabi_d2lz
+ 1245              	.LVL172:
+ 1246 0058 8046     		mov	r8, r0
+ 1247 005a 0D46     		mov	r5, r1
+ 1248 005c 644B     		ldr	r3, .L35+24
+ 1249 005e 1860     		str	r0, [r3]
+ 1250 0060 5960     		str	r1, [r3, #4]
+ 361:./Hardware/GY86.c **** 	SENS = SENS_T1 + TCS * dT;
+ 1251              		.loc 1 361 2 is_stmt 1 view .LVU296
+ 1252              		.loc 1 361 23 is_stmt 0 view .LVU297
+ 1253 0062 644B     		ldr	r3, .L35+28
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 32
+
+
+ 1254 0064 D3E90023 		ldrd	r2, [r3]
+ 1255 0068 3046     		mov	r0, r6
+ 1256 006a 3946     		mov	r1, r7
+ 1257 006c FFF7FEFF 		bl	__aeabi_dmul
+ 1258              	.LVL173:
+ 1259 0070 0646     		mov	r6, r0
+ 1260 0072 0F46     		mov	r7, r1
+ 1261              		.loc 1 361 17 view .LVU298
+ 1262 0074 604B     		ldr	r3, .L35+32
+ 1263 0076 1888     		ldrh	r0, [r3]
+ 1264 0078 FFF7FEFF 		bl	__aeabi_i2d
+ 1265              	.LVL174:
+ 1266 007c 3246     		mov	r2, r6
+ 1267 007e 3B46     		mov	r3, r7
+ 1268 0080 FFF7FEFF 		bl	__aeabi_dadd
+ 1269              	.LVL175:
+ 1270              		.loc 1 361 7 view .LVU299
+ 1271 0084 FFF7FEFF 		bl	__aeabi_d2lz
+ 1272              	.LVL176:
+ 1273 0088 0746     		mov	r7, r0
+ 1274 008a 0E46     		mov	r6, r1
+ 1275 008c 5B4B     		ldr	r3, .L35+36
+ 1276 008e 1860     		str	r0, [r3]
+ 1277 0090 5960     		str	r1, [r3, #4]
+ 362:./Hardware/GY86.c **** 	
+ 363:./Hardware/GY86.c **** 	
+ 364:./Hardware/GY86.c **** 	if(TEMP_100times < 2000)
+ 1278              		.loc 1 364 2 is_stmt 1 view .LVU300
+ 1279              		.loc 1 364 19 is_stmt 0 view .LVU301
+ 1280 0092 5B4B     		ldr	r3, .L35+40
+ 1281 0094 D3F80090 		ldr	r9, [r3]
+ 1282              		.loc 1 364 4 view .LVU302
+ 1283 0098 B9F5FA6F 		cmp	r9, #2000
+ 1284 009c 49DA     		bge	.L32
+ 365:./Hardware/GY86.c **** 	{
+ 366:./Hardware/GY86.c **** 		T2 = (dT*dT)/2147483648.0;
+ 1285              		.loc 1 366 3 is_stmt 1 view .LVU303
+ 1286              		.loc 1 366 15 is_stmt 0 view .LVU304
+ 1287 009e 0AFB0AF0 		mul	r0, r10, r10
+ 1288 00a2 FFF7FEFF 		bl	__aeabi_i2d
+ 1289              	.LVL177:
+ 1290              		.loc 1 366 6 view .LVU305
+ 1291 00a6 0022     		movs	r2, #0
+ 1292 00a8 4FF07853 		mov	r3, #1040187392
+ 1293 00ac FFF7FEFF 		bl	__aeabi_dmul
+ 1294              	.LVL178:
+ 1295 00b0 CDE90401 		strd	r0, [sp, #16]
+ 1296              	.LVL179:
+ 367:./Hardware/GY86.c **** 		OFF2 = 5*(TEMP_100times-2000)*(TEMP_100times-2000)/2;
+ 1297              		.loc 1 367 3 is_stmt 1 view .LVU306
+ 1298              		.loc 1 367 26 is_stmt 0 view .LVU307
+ 1299 00b4 A9F5FA6A 		sub	r10, r9, #2000
+ 1300              		.loc 1 367 32 view .LVU308
+ 1301 00b8 0AFB0AFA 		mul	r10, r10, r10
+ 1302 00bc 0AEB8A0A 		add	r10, r10, r10, lsl #2
+ 1303              		.loc 1 367 53 view .LVU309
+ 1304 00c0 0AEBDA70 		add	r0, r10, r10, lsr #31
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 33
+
+
+ 1305              	.LVL180:
+ 1306              		.loc 1 367 8 view .LVU310
+ 1307 00c4 4010     		asrs	r0, r0, #1
+ 1308 00c6 FFF7FEFF 		bl	__aeabi_i2d
+ 1309              	.LVL181:
+ 1310 00ca CDE90201 		strd	r0, [sp, #8]
+ 1311              	.LVL182:
+ 368:./Hardware/GY86.c **** 		SENS2 = 5*(TEMP_100times-2000)*(TEMP_100times-2000)/4;
+ 1312              		.loc 1 368 3 is_stmt 1 view .LVU311
+ 1313              		.loc 1 368 54 is_stmt 0 view .LVU312
+ 1314 00ce 5046     		mov	r0, r10
+ 1315              	.LVL183:
+ 1316              		.loc 1 368 54 view .LVU313
+ 1317 00d0 BAF1000F 		cmp	r10, #0
+ 1318 00d4 2ADB     		blt	.L34
+ 1319              	.L31:
+ 1320              		.loc 1 368 9 view .LVU314
+ 1321 00d6 8010     		asrs	r0, r0, #2
+ 1322 00d8 FFF7FEFF 		bl	__aeabi_i2d
+ 1323              	.LVL184:
+ 1324 00dc CDE90001 		strd	r0, [sp]
+ 1325              	.LVL185:
+ 369:./Hardware/GY86.c **** 		
+ 370:./Hardware/GY86.c **** 		if(TEMP_100times < -1500)
+ 1326              		.loc 1 370 3 is_stmt 1 view .LVU315
+ 1327              		.loc 1 370 5 is_stmt 0 view .LVU316
+ 1328 00e0 484B     		ldr	r3, .L35+44
+ 1329 00e2 9945     		cmp	r9, r3
+ 1330 00e4 2DDA     		bge	.L30
+ 371:./Hardware/GY86.c **** 		{
+ 372:./Hardware/GY86.c **** 			OFF2  = OFF2  + 7 *(TEMP_100times+1500)*(TEMP_100times+1500);
+ 1331              		.loc 1 372 4 is_stmt 1 view .LVU317
+ 1332              		.loc 1 372 37 is_stmt 0 view .LVU318
+ 1333 00e6 09F2DC5A 		addw	r10, r9, #1500
+ 1334              		.loc 1 372 43 view .LVU319
+ 1335 00ea 0AFB0AFA 		mul	r10, r10, r10
+ 1336              		.loc 1 372 18 view .LVU320
+ 1337 00ee CAEBCA00 		rsb	r0, r10, r10, lsl #3
+ 1338              	.LVL186:
+ 1339              		.loc 1 372 18 view .LVU321
+ 1340 00f2 FFF7FEFF 		bl	__aeabi_i2d
+ 1341              	.LVL187:
+ 1342 00f6 0246     		mov	r2, r0
+ 1343 00f8 0B46     		mov	r3, r1
+ 1344              		.loc 1 372 10 view .LVU322
+ 1345 00fa DDE90201 		ldrd	r0, [sp, #8]
+ 1346 00fe FFF7FEFF 		bl	__aeabi_dadd
+ 1347              	.LVL188:
+ 1348 0102 CDE90201 		strd	r0, [sp, #8]
+ 1349              	.LVL189:
+ 373:./Hardware/GY86.c **** 			SENS2 = SENS2 + 11*(TEMP_100times+1500)*(TEMP_100times+1500)/2;
+ 1350              		.loc 1 373 4 is_stmt 1 view .LVU323
+ 1351              		.loc 1 373 43 is_stmt 0 view .LVU324
+ 1352 0106 0AEB8A00 		add	r0, r10, r10, lsl #2
+ 1353              	.LVL190:
+ 1354              		.loc 1 373 43 view .LVU325
+ 1355 010a 0AEB400A 		add	r10, r10, r0, lsl #1
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 34
+
+
+ 1356              		.loc 1 373 64 view .LVU326
+ 1357 010e 0AEBDA7A 		add	r10, r10, r10, lsr #31
+ 1358              		.loc 1 373 18 view .LVU327
+ 1359 0112 4FEA6A00 		asr	r0, r10, #1
+ 1360 0116 FFF7FEFF 		bl	__aeabi_i2d
+ 1361              	.LVL191:
+ 1362 011a 0246     		mov	r2, r0
+ 1363 011c 0B46     		mov	r3, r1
+ 1364              		.loc 1 373 10 view .LVU328
+ 1365 011e DDE90001 		ldrd	r0, [sp]
+ 1366 0122 FFF7FEFF 		bl	__aeabi_dadd
+ 1367              	.LVL192:
+ 1368 0126 CDE90001 		strd	r0, [sp]
+ 1369              	.LVL193:
+ 1370              		.loc 1 373 10 view .LVU329
+ 1371 012a 0AE0     		b	.L30
+ 1372              	.LVL194:
+ 1373              	.L34:
+ 368:./Hardware/GY86.c **** 		
+ 1374              		.loc 1 368 54 view .LVU330
+ 1375 012c 0AF10300 		add	r0, r10, #3
+ 1376 0130 D1E7     		b	.L31
+ 1377              	.LVL195:
+ 1378              	.L32:
+ 356:./Hardware/GY86.c **** 	MS5611_SendCommand(MS5611_D1_OSR_xxxx);
+ 1379              		.loc 1 356 9 view .LVU331
+ 1380 0132 9FED297B 		vldr.64	d7, .L35
+ 1381 0136 8DED007B 		vstr.64	d7, [sp]
+ 355:./Hardware/GY86.c **** 	double SENS2 = 0;
+ 1382              		.loc 1 355 9 view .LVU332
+ 1383 013a 8DED027B 		vstr.64	d7, [sp, #8]
+ 354:./Hardware/GY86.c **** 	double OFF2 = 0;
+ 1384              		.loc 1 354 9 view .LVU333
+ 1385 013e 8DED047B 		vstr.64	d7, [sp, #16]
+ 1386              	.LVL196:
+ 1387              	.L30:
+ 374:./Hardware/GY86.c **** 		}
+ 375:./Hardware/GY86.c **** 		 
+ 376:./Hardware/GY86.c **** 	}
+ 377:./Hardware/GY86.c **** 	
+ 378:./Hardware/GY86.c **** 	
+ 379:./Hardware/GY86.c **** 	TEMP_100times = TEMP_100times - T2;
+ 1388              		.loc 1 379 2 is_stmt 1 view .LVU334
+ 1389              		.loc 1 379 32 is_stmt 0 view .LVU335
+ 1390 0142 4846     		mov	r0, r9
+ 1391 0144 FFF7FEFF 		bl	__aeabi_i2d
+ 1392              	.LVL197:
+ 1393 0148 DDE90423 		ldrd	r2, [sp, #16]
+ 1394 014c FFF7FEFF 		bl	__aeabi_dsub
+ 1395              	.LVL198:
+ 1396              		.loc 1 379 16 view .LVU336
+ 1397 0150 FFF7FEFF 		bl	__aeabi_d2iz
+ 1398              	.LVL199:
+ 1399 0154 2A4B     		ldr	r3, .L35+40
+ 1400 0156 1860     		str	r0, [r3]
+ 380:./Hardware/GY86.c **** 	OFF =  OFF - OFF2;
+ 1401              		.loc 1 380 2 is_stmt 1 view .LVU337
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 35
+
+
+ 1402              		.loc 1 380 13 is_stmt 0 view .LVU338
+ 1403 0158 4046     		mov	r0, r8
+ 1404 015a 2946     		mov	r1, r5
+ 1405 015c FFF7FEFF 		bl	__aeabi_l2d
+ 1406              	.LVL200:
+ 1407 0160 DDE90223 		ldrd	r2, [sp, #8]
+ 1408 0164 FFF7FEFF 		bl	__aeabi_dsub
+ 1409              	.LVL201:
+ 1410              		.loc 1 380 6 view .LVU339
+ 1411 0168 FFF7FEFF 		bl	__aeabi_d2lz
+ 1412              	.LVL202:
+ 1413 016c 8046     		mov	r8, r0
+ 1414 016e 0D46     		mov	r5, r1
+ 1415 0170 1F4B     		ldr	r3, .L35+24
+ 1416 0172 1860     		str	r0, [r3]
+ 1417 0174 5960     		str	r1, [r3, #4]
+ 381:./Hardware/GY86.c **** 	SENS = SENS -SENS2;
+ 1418              		.loc 1 381 2 is_stmt 1 view .LVU340
+ 1419              		.loc 1 381 14 is_stmt 0 view .LVU341
+ 1420 0176 3846     		mov	r0, r7
+ 1421 0178 3146     		mov	r1, r6
+ 1422 017a FFF7FEFF 		bl	__aeabi_l2d
+ 1423              	.LVL203:
+ 1424 017e DDE90023 		ldrd	r2, [sp]
+ 1425 0182 FFF7FEFF 		bl	__aeabi_dsub
+ 1426              	.LVL204:
+ 1427              		.loc 1 381 7 view .LVU342
+ 1428 0186 FFF7FEFF 		bl	__aeabi_d2lz
+ 1429              	.LVL205:
+ 1430 018a 1C4B     		ldr	r3, .L35+36
+ 1431 018c 1860     		str	r0, [r3]
+ 1432 018e 5960     		str	r1, [r3, #4]
+ 382:./Hardware/GY86.c **** 	
+ 383:./Hardware/GY86.c **** 	
+ 384:./Hardware/GY86.c **** 	P_100times = (D1_Pressur * SENS / 2097152.0 - OFF)/32768.0;
+ 1433              		.loc 1 384 2 is_stmt 1 view .LVU343
+ 1434              		.loc 1 384 27 is_stmt 0 view .LVU344
+ 1435 0190 A4FB0003 		umull	r0, r3, r4, r0
+ 1436              		.loc 1 384 34 view .LVU345
+ 1437 0194 04FB0131 		mla	r1, r4, r1, r3
+ 1438 0198 FFF7FEFF 		bl	__aeabi_l2d
+ 1439              	.LVL206:
+ 1440 019c 0022     		movs	r2, #0
+ 1441 019e 1A4B     		ldr	r3, .L35+48
+ 1442 01a0 FFF7FEFF 		bl	__aeabi_dmul
+ 1443              	.LVL207:
+ 1444 01a4 0646     		mov	r6, r0
+ 1445 01a6 0F46     		mov	r7, r1
+ 1446              		.loc 1 384 46 view .LVU346
+ 1447 01a8 4046     		mov	r0, r8
+ 1448 01aa 2946     		mov	r1, r5
+ 1449 01ac FFF7FEFF 		bl	__aeabi_l2d
+ 1450              	.LVL208:
+ 1451 01b0 0246     		mov	r2, r0
+ 1452 01b2 0B46     		mov	r3, r1
+ 1453 01b4 3046     		mov	r0, r6
+ 1454 01b6 3946     		mov	r1, r7
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 36
+
+
+ 1455 01b8 FFF7FEFF 		bl	__aeabi_dsub
+ 1456              	.LVL209:
+ 1457              		.loc 1 384 52 view .LVU347
+ 1458 01bc 0022     		movs	r2, #0
+ 1459 01be 4FF07C53 		mov	r3, #1056964608
+ 1460 01c2 FFF7FEFF 		bl	__aeabi_dmul
+ 1461              	.LVL210:
+ 1462              		.loc 1 384 13 view .LVU348
+ 1463 01c6 FFF7FEFF 		bl	__aeabi_d2iz
+ 1464              	.LVL211:
+ 1465 01ca 104B     		ldr	r3, .L35+52
+ 1466 01cc 1860     		str	r0, [r3]
+ 385:./Hardware/GY86.c **** }
+ 1467              		.loc 1 385 1 view .LVU349
+ 1468 01ce 06B0     		add	sp, sp, #24
+ 1469              	.LCFI15:
+ 1470              		.cfi_def_cfa_offset 32
+ 1471              	.LVL212:
+ 1472              		.loc 1 385 1 view .LVU350
+ 1473              		@ sp needed
+ 1474 01d0 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 1475              	.LVL213:
+ 1476              	.L36:
+ 1477              		.loc 1 385 1 view .LVU351
+ 1478 01d4 AFF30080 		.align	3
+ 1479              	.L35:
+ 1480 01d8 00000000 		.word	0
+ 1481 01dc 00000000 		.word	0
+ 1482 01e0 00000000 		.word	.LANCHOR10
+ 1483 01e4 00000000 		.word	.LANCHOR8
+ 1484 01e8 00000000 		.word	.LANCHOR4
+ 1485 01ec 00000000 		.word	.LANCHOR2
+ 1486 01f0 00000000 		.word	.LANCHOR11
+ 1487 01f4 00000000 		.word	.LANCHOR3
+ 1488 01f8 00000000 		.word	.LANCHOR1
+ 1489 01fc 00000000 		.word	.LANCHOR12
+ 1490 0200 00000000 		.word	.LANCHOR9
+ 1491 0204 24FAFFFF 		.word	-1500
+ 1492 0208 0000A03E 		.word	1050673152
+ 1493 020c 00000000 		.word	.LANCHOR13
+ 1494              		.cfi_endproc
+ 1495              	.LFE134:
+ 1497              		.global	P_100times
+ 1498              		.global	SENS
+ 1499              		.global	OFF
+ 1500              		.global	TEMP_100times
+ 1501              		.global	dT
+ 1502              		.global	D2_Temperature
+ 1503              		.global	D1_Pressur
+ 1504              		.global	TEMPSENS
+ 1505              		.global	T_REF
+ 1506              		.global	TCO
+ 1507              		.global	TCS
+ 1508              		.global	OFF_T1
+ 1509              		.global	SENS_T1
+ 1510              		.global	GY86DataList
+ 1511              		.section	.bss.D1_Pressur,"aw",%nobits
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 37
+
+
+ 1512              		.align	2
+ 1513              		.set	.LANCHOR10,. + 0
+ 1516              	D1_Pressur:
+ 1517 0000 00000000 		.space	4
+ 1518              		.section	.bss.D2_Temperature,"aw",%nobits
+ 1519              		.align	2
+ 1520              		.set	.LANCHOR7,. + 0
+ 1523              	D2_Temperature:
+ 1524 0000 00000000 		.space	4
+ 1525              		.section	.bss.OFF,"aw",%nobits
+ 1526              		.align	3
+ 1527              		.set	.LANCHOR11,. + 0
+ 1530              	OFF:
+ 1531 0000 00000000 		.space	8
+ 1531      00000000 
+ 1532              		.section	.bss.OFF_T1,"aw",%nobits
+ 1533              		.align	1
+ 1534              		.set	.LANCHOR2,. + 0
+ 1537              	OFF_T1:
+ 1538 0000 0000     		.space	2
+ 1539              		.section	.bss.P_100times,"aw",%nobits
+ 1540              		.align	2
+ 1541              		.set	.LANCHOR13,. + 0
+ 1544              	P_100times:
+ 1545 0000 00000000 		.space	4
+ 1546              		.section	.bss.SENS,"aw",%nobits
+ 1547              		.align	3
+ 1548              		.set	.LANCHOR12,. + 0
+ 1551              	SENS:
+ 1552 0000 00000000 		.space	8
+ 1552      00000000 
+ 1553              		.section	.bss.SENS_T1,"aw",%nobits
+ 1554              		.align	1
+ 1555              		.set	.LANCHOR1,. + 0
+ 1558              	SENS_T1:
+ 1559 0000 0000     		.space	2
+ 1560              		.section	.bss.TCO,"aw",%nobits
+ 1561              		.align	3
+ 1562              		.set	.LANCHOR4,. + 0
+ 1565              	TCO:
+ 1566 0000 00000000 		.space	8
+ 1566      00000000 
+ 1567              		.section	.bss.TCS,"aw",%nobits
+ 1568              		.align	3
+ 1569              		.set	.LANCHOR3,. + 0
+ 1572              	TCS:
+ 1573 0000 00000000 		.space	8
+ 1573      00000000 
+ 1574              		.section	.bss.TEMPSENS,"aw",%nobits
+ 1575              		.align	3
+ 1576              		.set	.LANCHOR6,. + 0
+ 1579              	TEMPSENS:
+ 1580 0000 00000000 		.space	8
+ 1580      00000000 
+ 1581              		.section	.bss.TEMP_100times,"aw",%nobits
+ 1582              		.align	2
+ 1583              		.set	.LANCHOR9,. + 0
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 38
+
+
+ 1586              	TEMP_100times:
+ 1587 0000 00000000 		.space	4
+ 1588              		.section	.bss.T_REF,"aw",%nobits
+ 1589              		.align	1
+ 1590              		.set	.LANCHOR5,. + 0
+ 1593              	T_REF:
+ 1594 0000 0000     		.space	2
+ 1595              		.section	.bss.dT,"aw",%nobits
+ 1596              		.align	2
+ 1597              		.set	.LANCHOR8,. + 0
+ 1600              	dT:
+ 1601 0000 00000000 		.space	4
+ 1602              		.section	.data.GY86DataList,"aw"
+ 1603              		.align	2
+ 1604              		.set	.LANCHOR0,. + 0
+ 1607              	GY86DataList:
+ 1608 0000 0000803F 		.word	1065353216
+ 1609 0004 00000040 		.word	1073741824
+ 1610 0008 00004040 		.word	1077936128
+ 1611 000c 0000     		.short	0
+ 1612 000e 0000     		.space	2
+ 1613 0010 00000000 		.word	0
+ 1614 0014 00000000 		.word	0
+ 1615 0018 00000000 		.word	0
+ 1616 001c 00000000 		.word	0
+ 1617 0020 00000000 		.word	0
+ 1618 0024 00000000 		.word	0
+ 1619 0028 00000000 		.word	0
+ 1620              		.text
+ 1621              	.Letext0:
+ 1622              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 1623              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 1624              		.file 4 "./User/Parameters.h"
+ 1625              		.file 5 "./Hardware/GY86.h"
+ 1626              		.file 6 "./User/Delay.h"
+ 1627              		.file 7 "./Hardware/MyIIC.h"
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 39
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 GY86.c
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:20     .text.GY86_WriteRegister:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:26     .text.GY86_WriteRegister:0000000000000000 GY86_WriteRegister
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:78     .text.MPU6050_init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:84     .text.MPU6050_init:0000000000000000 MPU6050_init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:149    .text.HMC5883L_init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:155    .text.HMC5883L_init:0000000000000000 HMC5883L_init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:190    .text.GY86_ReadRegister:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:196    .text.GY86_ReadRegister:0000000000000000 GY86_ReadRegister
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:269    .text.GY86_GetData:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:275    .text.GY86_GetData:0000000000000000 GY86_GetData
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:714    .text.GY86_GetData:0000000000000288 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:725    .text.MS5611_SendCommand:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:731    .text.MS5611_SendCommand:0000000000000000 MS5611_SendCommand
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:771    .text.MS5611_ReadADC:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:777    .text.MS5611_ReadADC:0000000000000000 MS5611_ReadADC
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:858    .text.MS5611_ReadC_x:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:864    .text.MS5611_ReadC_x:0000000000000000 MS5611_ReadC_x
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:939    .text.MS5611_init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:945    .text.MS5611_init:0000000000000000 MS5611_init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1039   .text.MS5611_init:000000000000007c $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1050   .text.GY86_init:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1056   .text.GY86_init:0000000000000000 GY86_init
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1087   .text.MS5611_GetTemperature:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1093   .text.MS5611_GetTemperature:0000000000000000 MS5611_GetTemperature
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1152   .text.MS5611_GetTemperature:0000000000000040 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1164   .text.MS5611_GetPressure:0000000000000000 $t
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1170   .text.MS5611_GetPressure:0000000000000000 MS5611_GetPressure
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1480   .text.MS5611_GetPressure:00000000000001d8 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1544   .bss.P_100times:0000000000000000 P_100times
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1551   .bss.SENS:0000000000000000 SENS
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1530   .bss.OFF:0000000000000000 OFF
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1586   .bss.TEMP_100times:0000000000000000 TEMP_100times
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1600   .bss.dT:0000000000000000 dT
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1523   .bss.D2_Temperature:0000000000000000 D2_Temperature
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1516   .bss.D1_Pressur:0000000000000000 D1_Pressur
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1579   .bss.TEMPSENS:0000000000000000 TEMPSENS
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1593   .bss.T_REF:0000000000000000 T_REF
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1565   .bss.TCO:0000000000000000 TCO
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1572   .bss.TCS:0000000000000000 TCS
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1537   .bss.OFF_T1:0000000000000000 OFF_T1
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1558   .bss.SENS_T1:0000000000000000 SENS_T1
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1607   .data.GY86DataList:0000000000000000 GY86DataList
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1512   .bss.D1_Pressur:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1519   .bss.D2_Temperature:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1526   .bss.OFF:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1533   .bss.OFF_T1:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1540   .bss.P_100times:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1547   .bss.SENS:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1554   .bss.SENS_T1:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1561   .bss.TCO:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1568   .bss.TCS:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1575   .bss.TEMPSENS:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1582   .bss.TEMP_100times:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1589   .bss.T_REF:0000000000000000 $d
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1596   .bss.dT:0000000000000000 $d
+ARM GAS  /var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s 			page 40
+
+
+/var/folders/yl/_q9l42k90g1g4mdhbs226msm0000gn/T//cc7TXy1g.s:1603   .data.GY86DataList:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+MyIIC_Start
+MyIIC_SendByte
+MyIIC_ReceiveACK
+MyIIC_Stop
+MyIIC_ReceiveByte
+MyIIC_SendACK
+__aeabi_i2d
+__aeabi_ddiv
+__aeabi_f2d
+__aeabi_dsub
+__aeabi_dmul
+__aeabi_d2f
+params_ram
+MyIIC_Init
+__aeabi_dadd
+__aeabi_d2iz
+Delay_ms
+__aeabi_d2lz
+__aeabi_l2d
